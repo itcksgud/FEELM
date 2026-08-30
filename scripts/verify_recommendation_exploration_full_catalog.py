@@ -6,6 +6,7 @@ import json
 from pathlib import Path
 
 from recommendation_exploration_full_catalog import POLICIES, canonical_bytes, sha256
+from recommendation_evidence_paths import repository_path
 
 
 def main() -> None:
@@ -40,13 +41,13 @@ def main() -> None:
     assert manifest["conclusion"]["exploration_2_plus_1"] is None
     assert manifest["conclusion"]["ranking_champion"] is None
     for record in manifest["artifacts"].values():
-        path = Path(record["path"])
+        path = repository_path(record["path"])
         assert path.is_file() and path.stat().st_size == record["bytes"] and sha256(path) == record["sha256"]
-    lock = json.loads(Path(manifest["artifacts"]["protocol_lock"]["path"]).read_text(encoding="utf-8"))
+    lock = json.loads(repository_path(manifest["artifacts"]["protocol_lock"]["path"]).read_text(encoding="utf-8"))
     assert lock["protocol"] == protocol
     assert lock["protocol_hash"] == hashlib.sha256(canonical_bytes(protocol)).hexdigest()
-    validation = json.loads(Path(manifest["artifacts"]["validation_result"]["path"]).read_text(encoding="utf-8"))
-    test = json.loads(Path(manifest["artifacts"]["test_result"]["path"]).read_text(encoding="utf-8"))
+    validation = json.loads(repository_path(manifest["artifacts"]["validation_result"]["path"]).read_text(encoding="utf-8"))
+    test = json.loads(repository_path(manifest["artifacts"]["test_result"]["path"]).read_text(encoding="utf-8"))
     assert validation["phase"] == "VALIDATION" and test["phase"] == "TEST"
     assert validation["selection"]["policies_locked_without_new_search"] == list(POLICIES)
     assert set(test["metrics"]) == set(POLICIES)

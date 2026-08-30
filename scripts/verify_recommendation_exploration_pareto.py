@@ -5,6 +5,8 @@ import hashlib
 import json
 from pathlib import Path
 
+from recommendation_evidence_paths import repository_path
+
 
 def sha256(path: Path) -> str:
     digest = hashlib.sha256()
@@ -36,7 +38,7 @@ def main() -> None:
     for record in manifest["artifacts"].values():
         if record.get("tracked") is False:
             continue
-        path = Path(record["path"])
+        path = repository_path(record["path"])
         assert path.is_file() and path.stat().st_size == record["bytes"] and sha256(path) == record["sha256"]
     results = manifest["metrics"]
     assert "POPULARITY" in results["validation_metrics"] and "POPULARITY" in results["test_metrics"]
@@ -44,7 +46,7 @@ def main() -> None:
     selected = {entry["policy"] for entry in results["budget_selections"].values() if entry["policy"]}
     assert selected.issubset(results["validation_metrics"])
     assert set(results["test_metrics"]) == {"POPULARITY", *selected}
-    provenance = json.loads(Path(manifest["artifacts"]["reason_provenance"]["path"]).read_text(encoding="utf-8"))
+    provenance = json.loads(repository_path(manifest["artifacts"]["reason_provenance"]["path"]).read_text(encoding="utf-8"))
     assert provenance["reasonUiApproved"] is False and provenance["rankingChampion"] is None
     assert {entry["feature"] for entry in provenance["features"]} == {
         "BAYESIAN_POPULARITY", "GENRE_AFFINITY", "NOVELTY_PRIOR", "MARGINAL_GENRE_DIVERSITY"

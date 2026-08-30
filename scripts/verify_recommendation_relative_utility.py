@@ -6,6 +6,8 @@ import hashlib
 import json
 from pathlib import Path
 
+from recommendation_evidence_paths import repository_path
+
 
 EXPECTED_K = {"1", "3", "5", "10", "20"}
 
@@ -28,7 +30,7 @@ def main() -> int:
     if protocol.get("candidate_policy") != "C6_DISCRETE_QUANTIZED_MIDRANK_ECDF_V2":
         errors.append("candidate policy drift")
     result_record = manifest.get("result", {})
-    result_path = Path(result_record.get("path", ""))
+    result_path = repository_path(result_record.get("path", ""))
     if not result_path.is_file() or sha256_file(result_path) != result_record.get("sha256"):
         errors.append("result artifact missing or checksum drift")
         result = {}

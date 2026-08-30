@@ -27,6 +27,7 @@ from recommendation_exploration_pareto import (
     pareto_front,
     user_genre_profiles,
 )
+from recommendation_evidence_paths import repository_path
 
 PROTOCOL = "rec-ev-004b-full-catalog-v1"
 POLICIES = ("POPULARITY", "CONTENT_GENRE", "HYBRID_CONTENT_25", "EXPLORE_05_ON_POPULARITY")
@@ -53,11 +54,11 @@ def write_json(path: Path, value: Any) -> None:
 
 
 def artifact(path: Path) -> dict[str, Any]:
-    return {"path": str(path), "sha256": sha256(path), "bytes": path.stat().st_size}
+    return {"path": path.as_posix(), "sha256": sha256(path), "bytes": path.stat().st_size}
 
 
 def exact_artifact(record: dict[str, Any]) -> Path:
-    path = Path(record["path"])
+    path = repository_path(record["path"])
     if not path.is_file() or path.stat().st_size != record["bytes"] or sha256(path) != record["sha256"]:
         raise RuntimeError("source artifact checksum mismatch")
     return path

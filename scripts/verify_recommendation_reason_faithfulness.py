@@ -6,6 +6,7 @@ import json
 from pathlib import Path
 
 from recommendation_reason_faithfulness import classify_reason
+from recommendation_evidence_paths import repository_path
 
 
 def sha256(path: Path) -> str:
@@ -36,7 +37,7 @@ def main() -> None:
     for record in manifest["artifacts"].values():
         if record.get("tracked") is False:
             continue
-        path = Path(record["path"])
+        path = repository_path(record["path"])
         assert path.is_file() and path.stat().st_size == record["bytes"] and sha256(path) == record["sha256"]
     metrics = manifest["metrics"]
     assert set(metrics["ablation"]) == {
@@ -46,9 +47,9 @@ def main() -> None:
     for values in metrics["coverage"].values():
         assert values["evaluated_recommendations"] == total
         assert 0 <= values["faithful_rank_effect"] <= values["positive_contribution"] <= total
-    contract = json.loads(Path(manifest["artifacts"]["typed_contract"]["path"]).read_text(encoding="utf-8"))
+    contract = json.loads(repository_path(manifest["artifacts"]["typed_contract"]["path"]).read_text(encoding="utf-8"))
     assert contract["uiCopyApproved"] is False and contract["displayCountApproved"] is False
-    fixtures = json.loads(Path(manifest["artifacts"]["failure_fixtures"]["path"]).read_text(encoding="utf-8"))
+    fixtures = json.loads(repository_path(manifest["artifacts"]["failure_fixtures"]["path"]).read_text(encoding="utf-8"))
     assert fixtures["containsRawIds"] is False
     for fixture in fixtures["fixtures"]:
         values = fixture["input"]
