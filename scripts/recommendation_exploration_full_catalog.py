@@ -27,7 +27,7 @@ from recommendation_exploration_pareto import (
     pareto_front,
     user_genre_profiles,
 )
-from recommendation_evidence_paths import repository_path
+from recommendation_evidence_paths import artifact_matches, repository_path
 
 PROTOCOL = "rec-ev-004b-full-catalog-v1"
 POLICIES = ("POPULARITY", "CONTENT_GENRE", "HYBRID_CONTENT_25", "EXPLORE_05_ON_POPULARITY")
@@ -59,7 +59,7 @@ def artifact(path: Path) -> dict[str, Any]:
 
 def exact_artifact(record: dict[str, Any]) -> Path:
     path = repository_path(record["path"])
-    if not path.is_file() or path.stat().st_size != record["bytes"] or sha256(path) != record["sha256"]:
+    if not artifact_matches(path, record):
         raise RuntimeError("source artifact checksum mismatch")
     return path
 

@@ -6,7 +6,7 @@ import hashlib
 import json
 from pathlib import Path
 
-from recommendation_evidence_paths import repository_path
+from recommendation_evidence_paths import artifact_matches, repository_path
 
 
 EXPECTED_K = {"1", "3", "5", "10", "20"}
@@ -31,7 +31,7 @@ def main() -> int:
         errors.append("candidate policy drift")
     result_record = manifest.get("result", {})
     result_path = repository_path(result_record.get("path", ""))
-    if not result_path.is_file() or sha256_file(result_path) != result_record.get("sha256"):
+    if not artifact_matches(result_path, result_record):
         errors.append("result artifact missing or checksum drift")
         result = {}
     else:

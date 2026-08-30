@@ -5,7 +5,7 @@ import hashlib
 import json
 from pathlib import Path
 
-from recommendation_evidence_paths import repository_path
+from recommendation_evidence_paths import artifact_matches, repository_path
 
 
 def sha256(path: Path) -> str:
@@ -39,7 +39,7 @@ def main() -> None:
         if record.get("tracked") is False:
             continue
         path = repository_path(record["path"])
-        assert path.is_file() and path.stat().st_size == record["bytes"] and sha256(path) == record["sha256"]
+        assert artifact_matches(path, record)
     results = manifest["metrics"]
     assert "POPULARITY" in results["validation_metrics"] and "POPULARITY" in results["test_metrics"]
     assert set(results["budget_selections"]) == {"0%", "1%", "3%", "5%"}
