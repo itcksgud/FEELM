@@ -1,0 +1,17 @@
+{
+  "schema_version": 1,
+  "run_id": "EXP-20260829-004",
+  "tracked": {
+    "result": {
+      "path": "docs/recommendation/evidence/results/rec-ev-007-local-20260829.json",
+      "sha256": "e9df695ac8510b1fbe5cc139eb5dfb01f6d8e5521ac63ba37156bb22da8c9fc6"
+    },
+    "manifest": "docs/recommendation/evidence/manifests/rec-ev-007.json",
+    "evidence": "docs/recommendation/evidence/REC-EV-007-fold-in-benchmark.md"
+  },
+  "source": {
+    "evidence_id": "REC-EV-003",
+    "factor_payload_sha256": "05416efc51861020b4786c693572997fea8ba8a41312db896d5bb681db85fcd4",
+    "metadata_policy": "checksum-and-shape-only; no raw factor path in result manifest"
+  }
+}

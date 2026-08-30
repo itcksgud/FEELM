@@ -1,0 +1,21 @@
+schema_version: 1
+status: COMPLETED
+run_id: EXP-20260830-006
+hypothesis: Quantizing continuous star predictions to the observed rating lattice and using tie midranks reduces discrete ECDF boundary bias.
+changed_factor: relative_utility_policy
+baseline_run_id: REC-EV-014
+dataset:
+  name: ml-32m
+  archive_sha256: e4a68655d7386b8f95f2f2424b2ff975dfdd15ffd59e0d864a14dca43e99d6ee
+protocol:
+  source: REC-EV-003B selected star predictions
+  evaluation_boundary: 1573330512
+  test_used: false
+  rating_step: 0.5
+  k_values: [1, 3, 5, 10, 20]
+gates:
+  minimum_mae_improvement: 0.15
+  minimum_absolute_bias_reduction: 0.40
+  spearman_non_regression: true
+  all_rating_style_segments_must_improve: true
+decision: ADOPT_C6_LOCAL_EXPERIMENT_V2_KEEP_PRODUCT_BLOCKED

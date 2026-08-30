@@ -1,0 +1,539 @@
+{
+  "schema_version": 1,
+  "evidence_id": "REC-EV-003",
+  "run_at_utc": "2026-08-29T11:38:13.840810+00:00",
+  "source": {
+    "split_manifest": "docs\\recommendation\\evidence\\manifests\\global-time-v1.json",
+    "split_manifest_sha256": "fa55e29328f0aa8ea5822c32ae964ee9a6ae5817479834a017cf2325bf39ab0a",
+    "baseline_manifest": "docs\\recommendation\\evidence\\manifests\\rec-ev-002.json",
+    "baseline_manifest_sha256": "184d50699daa66a769b124c65e3d17788b9324a6e287328b6dbd66dde7aab05d",
+    "cohort_manifest": "docs\\recommendation\\evidence\\manifests\\cold-start-cohort-v1.json",
+    "cohort_manifest_sha256": "1f736c4ab9fecb607c00e854409d52a2d34a34959eea935913fb447246ad7c3f",
+    "archive_sha256": "e4a68655d7386b8f95f2f2424b2ff975dfdd15ffd59e0d864a14dca43e99d6ee",
+    "test_used": false
+  },
+  "protocol": {
+    "version": "cold-start-foldin-v1",
+    "split_version": "global-time-v1",
+    "cohort_version": "cold-start-cohort-v1",
+    "calibration_boundary": 1573330512,
+    "k_values": [
+      0,
+      1,
+      3,
+      5,
+      10,
+      20
+    ],
+    "onboarding_order": "earliest timestamp then movie_id",
+    "cohort_excluded_from_als_and_bias": true,
+    "calibration_source": "cohort Validation early half",
+    "evaluation_source": "cohort Validation late half",
+    "candidate_policy": "SAMPLED_1_POSITIVE_PLUS_99_NEGATIVES",
+    "bootstrap_repeats": 1000,
+    "seed": 42
+  },
+  "cohort": {
+    "users": 3014,
+    "excluded_train_rows": 1954040,
+    "remaining_train_rows": 23646123,
+    "remaining_train_users": 167477,
+    "calibration_rows": 211309,
+    "evaluation_rows": 167194,
+    "sampled_ranking_users": 2553,
+    "rating_mean_quartiles": {
+      "Q1_LOWER_MEAN": 1008,
+      "Q2": 765,
+      "Q3": 663,
+      "Q4_HIGHER_MEAN": 578
+    }
+  },
+  "model": {
+    "als": {
+      "rank": 32,
+      "reg_param": 0.1,
+      "max_iter": 10,
+      "seed": 42,
+      "fold_in_regularization": "reg_param * available_rating_count"
+    },
+    "bias": {
+      "iterations": 10,
+      "reg_user": 10.0,
+      "reg_item": 25.0
+    }
+  },
+  "metrics": {
+    "k_curve": {
+      "0": {
+        "cohort_users": 3014,
+        "evaluation_rows": 167194,
+        "direct_user_coverage": 0.0,
+        "mean_available_onboarding_factors": 0.0,
+        "macro_mae": 0.755154,
+        "fallback_isotonic": {
+          "rows": 167194,
+          "coverage": 1.0,
+          "mae": 0.728494,
+          "rmse": 0.939439,
+          "mean_error": -0.049977,
+          "ece_decile": 0.050499,
+          "within_0_5": 0.44562,
+          "within_1_0": 0.741378
+        },
+        "direct_raw": {
+          "rows": 0,
+          "coverage": 0.0,
+          "mae": NaN,
+          "rmse": NaN,
+          "mean_error": NaN,
+          "ece_decile": NaN,
+          "within_0_5": NaN,
+          "within_1_0": NaN
+        },
+        "sampled_ranking": {
+          "protocol": "SAMPLED_1_POSITIVE_PLUS_NEGATIVES",
+          "users": 2553,
+          "user_coverage": 1.0,
+          "hit_rate_at_10": 0.699177,
+          "ndcg_at_10": 0.461799,
+          "mrr": 0.395076,
+          "median_rank": 4.0
+        },
+        "profile_mean_stability": {
+          "users": 3014,
+          "mean_absolute_error": null,
+          "p90_absolute_error": null,
+          "within_0_25": null,
+          "within_0_5": null
+        }
+      },
+      "1": {
+        "cohort_users": 3014,
+        "evaluation_rows": 167194,
+        "direct_user_coverage": 0.999336,
+        "mean_available_onboarding_factors": 0.999336,
+        "macro_mae": 0.774274,
+        "fallback_isotonic": {
+          "rows": 167194,
+          "coverage": 1.0,
+          "mae": 0.745167,
+          "rmse": 0.959506,
+          "mean_error": -0.018179,
+          "ece_decile": 0.028085,
+          "within_0_5": 0.424848,
+          "within_1_0": 0.723979
+        },
+        "direct_raw": {
+          "rows": 119134,
+          "coverage": 0.712549,
+          "mae": 0.965526,
+          "rmse": 1.233901,
+          "mean_error": -0.506548,
+          "ece_decile": 0.612278,
+          "within_0_5": 0.336059,
+          "within_1_0": 0.602355
+        },
+        "sampled_ranking": {
+          "protocol": "SAMPLED_1_POSITIVE_PLUS_NEGATIVES",
+          "users": 2553,
+          "user_coverage": 1.0,
+          "hit_rate_at_10": 0.241676,
+          "ndcg_at_10": 0.115272,
+          "mrr": 0.102642,
+          "median_rank": 27.0
+        },
+        "profile_mean_stability": {
+          "users": 3014,
+          "mean_absolute_error": 0.891183,
+          "p90_absolute_error": 1.741349,
+          "within_0_25": 0.15793,
+          "within_0_5": 0.315528
+        }
+      },
+      "3": {
+        "cohort_users": 3014,
+        "evaluation_rows": 167194,
+        "direct_user_coverage": 1.0,
+        "mean_available_onboarding_factors": 2.999336,
+        "macro_mae": 0.759642,
+        "fallback_isotonic": {
+          "rows": 167194,
+          "coverage": 1.0,
+          "mae": 0.732001,
+          "rmse": 0.946001,
+          "mean_error": -0.022715,
+          "ece_decile": 0.034454,
+          "within_0_5": 0.442241,
+          "within_1_0": 0.736653
+        },
+        "direct_raw": {
+          "rows": 119159,
+          "coverage": 0.712699,
+          "mae": 0.82808,
+          "rmse": 1.074111,
+          "mean_error": -0.266811,
+          "ece_decile": 0.408679,
+          "within_0_5": 0.391745,
+          "within_1_0": 0.680393
+        },
+        "sampled_ranking": {
+          "protocol": "SAMPLED_1_POSITIVE_PLUS_NEGATIVES",
+          "users": 2553,
+          "user_coverage": 1.0,
+          "hit_rate_at_10": 0.327066,
+          "ndcg_at_10": 0.155525,
+          "mrr": 0.126253,
+          "median_rank": 24.0
+        },
+        "profile_mean_stability": {
+          "users": 3014,
+          "mean_absolute_error": 0.689719,
+          "p90_absolute_error": 1.358955,
+          "within_0_25": 0.223623,
+          "within_0_5": 0.414068
+        }
+      },
+      "5": {
+        "cohort_users": 3014,
+        "evaluation_rows": 167194,
+        "direct_user_coverage": 1.0,
+        "mean_available_onboarding_factors": 4.999005,
+        "macro_mae": 0.750732,
+        "fallback_isotonic": {
+          "rows": 167194,
+          "coverage": 1.0,
+          "mae": 0.725615,
+          "rmse": 0.940423,
+          "mean_error": -0.0188,
+          "ece_decile": 0.031978,
+          "within_0_5": 0.44626,
+          "within_1_0": 0.740302
+        },
+        "direct_raw": {
+          "rows": 119159,
+          "coverage": 0.712699,
+          "mae": 0.78523,
+          "rmse": 1.024129,
+          "mean_error": -0.181004,
+          "ece_decile": 0.334854,
+          "within_0_5": 0.412902,
+          "within_1_0": 0.707718
+        },
+        "sampled_ranking": {
+          "protocol": "SAMPLED_1_POSITIVE_PLUS_NEGATIVES",
+          "users": 2553,
+          "user_coverage": 1.0,
+          "hit_rate_at_10": 0.376812,
+          "ndcg_at_10": 0.174916,
+          "mrr": 0.135231,
+          "median_rank": 21.0
+        },
+        "profile_mean_stability": {
+          "users": 3014,
+          "mean_absolute_error": 0.603646,
+          "p90_absolute_error": 1.218028,
+          "within_0_25": 0.256138,
+          "within_0_5": 0.489715
+        }
+      },
+      "10": {
+        "cohort_users": 3014,
+        "evaluation_rows": 167194,
+        "direct_user_coverage": 1.0,
+        "mean_available_onboarding_factors": 9.997346,
+        "macro_mae": 0.731145,
+        "fallback_isotonic": {
+          "rows": 167194,
+          "coverage": 1.0,
+          "mae": 0.710714,
+          "rmse": 0.926859,
+          "mean_error": -0.00216,
+          "ece_decile": 0.032265,
+          "within_0_5": 0.45565,
+          "within_1_0": 0.748298
+        },
+        "direct_raw": {
+          "rows": 119159,
+          "coverage": 0.712699,
+          "mae": 0.73645,
+          "rmse": 0.970652,
+          "mean_error": -0.093795,
+          "ece_decile": 0.259663,
+          "within_0_5": 0.443315,
+          "within_1_0": 0.738249
+        },
+        "sampled_ranking": {
+          "protocol": "SAMPLED_1_POSITIVE_PLUS_NEGATIVES",
+          "users": 2553,
+          "user_coverage": 1.0,
+          "hit_rate_at_10": 0.415198,
+          "ndcg_at_10": 0.194043,
+          "mrr": 0.148263,
+          "median_rank": 15.0
+        },
+        "profile_mean_stability": {
+          "users": 3014,
+          "mean_absolute_error": 0.507881,
+          "p90_absolute_error": 1.060322,
+          "within_0_25": 0.315528,
+          "within_0_5": 0.572661
+        }
+      },
+      "20": {
+        "cohort_users": 3014,
+        "evaluation_rows": 167194,
+        "direct_user_coverage": 1.0,
+        "mean_available_onboarding_factors": 19.99071,
+        "macro_mae": 0.713993,
+        "fallback_isotonic": {
+          "rows": 167194,
+          "coverage": 1.0,
+          "mae": 0.696172,
+          "rmse": 0.912607,
+          "mean_error": -0.002891,
+          "ece_decile": 0.027675,
+          "within_0_5": 0.464861,
+          "within_1_0": 0.760129
+        },
+        "direct_raw": {
+          "rows": 119159,
+          "coverage": 0.712699,
+          "mae": 0.698932,
+          "rmse": 0.932852,
+          "mean_error": -0.050503,
+          "ece_decile": 0.199722,
+          "within_0_5": 0.470724,
+          "within_1_0": 0.763106
+        },
+        "sampled_ranking": {
+          "protocol": "SAMPLED_1_POSITIVE_PLUS_NEGATIVES",
+          "users": 2553,
+          "user_coverage": 1.0,
+          "hit_rate_at_10": 0.472385,
+          "ndcg_at_10": 0.221903,
+          "mrr": 0.165695,
+          "median_rank": 12.0
+        },
+        "profile_mean_stability": {
+          "users": 3014,
+          "mean_absolute_error": 0.412387,
+          "p90_absolute_error": 0.877516,
+          "within_0_25": 0.397147,
+          "within_0_5": 0.67286
+        }
+      }
+    },
+    "paired_mae_vs_k0": {
+      "1": {
+        "users": 3014,
+        "mean_difference": 0.01912,
+        "ci95_low": 0.014319,
+        "ci95_high": 0.024341
+      },
+      "3": {
+        "users": 3014,
+        "mean_difference": 0.004488,
+        "ci95_low": -0.000283,
+        "ci95_high": 0.009409
+      },
+      "5": {
+        "users": 3014,
+        "mean_difference": -0.004422,
+        "ci95_low": -0.009785,
+        "ci95_high": 0.000386
+      },
+      "10": {
+        "users": 3014,
+        "mean_difference": -0.024009,
+        "ci95_low": -0.029277,
+        "ci95_high": -0.018618
+      },
+      "20": {
+        "users": 3014,
+        "mean_difference": -0.041161,
+        "ci95_low": -0.046768,
+        "ci95_high": -0.035832
+      }
+    },
+    "by_rating_mean_quartile": {
+      "Q1_LOWER_MEAN": {
+        "0": {
+          "users": 1008,
+          "macro_mae": 0.72598
+        },
+        "1": {
+          "users": 1008,
+          "macro_mae": 0.764542
+        },
+        "3": {
+          "users": 1008,
+          "macro_mae": 0.752312
+        },
+        "5": {
+          "users": 1008,
+          "macro_mae": 0.747952
+        },
+        "10": {
+          "users": 1008,
+          "macro_mae": 0.740553
+        },
+        "20": {
+          "users": 1008,
+          "macro_mae": 0.733983
+        }
+      },
+      "Q2": {
+        "0": {
+          "users": 765,
+          "macro_mae": 0.67557
+        },
+        "1": {
+          "users": 765,
+          "macro_mae": 0.700419
+        },
+        "3": {
+          "users": 765,
+          "macro_mae": 0.693747
+        },
+        "5": {
+          "users": 765,
+          "macro_mae": 0.688694
+        },
+        "10": {
+          "users": 765,
+          "macro_mae": 0.677373
+        },
+        "20": {
+          "users": 765,
+          "macro_mae": 0.668774
+        }
+      },
+      "Q3": {
+        "0": {
+          "users": 663,
+          "macro_mae": 0.741664
+        },
+        "1": {
+          "users": 663,
+          "macro_mae": 0.757241
+        },
+        "3": {
+          "users": 663,
+          "macro_mae": 0.745998
+        },
+        "5": {
+          "users": 663,
+          "macro_mae": 0.736848
+        },
+        "10": {
+          "users": 663,
+          "macro_mae": 0.711508
+        },
+        "20": {
+          "users": 663,
+          "macro_mae": 0.6932
+        }
+      },
+      "Q4_HIGHER_MEAN": {
+        "0": {
+          "users": 578,
+          "macro_mae": 0.926838
+        },
+        "1": {
+          "users": 578,
+          "macro_mae": 0.908532
+        },
+        "3": {
+          "users": 578,
+          "macro_mae": 0.875289
+        },
+        "5": {
+          "users": 578,
+          "macro_mae": 0.853616
+        },
+        "10": {
+          "users": 578,
+          "macro_mae": 0.808429
+        },
+        "20": {
+          "users": 578,
+          "macro_mae": 0.76283
+        }
+      }
+    }
+  },
+  "artifacts": {
+    "cohort": {
+      "path": "outputs\\recommendation-evidence\\rec-ev-003\\cohort.parquet",
+      "sha256": "1125ad840dda5f3d9ef7750241a03caf1e3eb3742b198b4dc37a3d7644a7667a",
+      "bytes": 62956,
+      "rows": 3014
+    },
+    "onboarding_first_20": {
+      "path": "outputs\\recommendation-evidence\\rec-ev-003\\onboarding_first_20.parquet",
+      "sha256": "e426e5560c07544b2df619fefeff187a61b1668e6d8776705f5b8445bafee2c2",
+      "bytes": 356879,
+      "rows": 60280
+    },
+    "cohort_excluded_bias": {
+      "path": "outputs\\recommendation-evidence\\rec-ev-003\\cohort_excluded_bias_parameters.npz",
+      "sha256": "a852d4c70a5944bb1f88d79c7fc17cfe937a4c2cf985124b184e846a945b20d4",
+      "bytes": 2600633
+    },
+    "cohort_excluded_item_factors": {
+      "path": "outputs\\recommendation-evidence\\rec-ev-003\\cohort_excluded_item_factors.npz",
+      "sha256": "05416efc51861020b4786c693572997fea8ba8a41312db896d5bb681db85fcd4",
+      "bytes": 4730112
+    },
+    "foldin_user_factors": {
+      "path": "outputs\\recommendation-evidence\\rec-ev-003\\foldin_user_factors.npz",
+      "sha256": "cc534abe0d92bc01e11d7b9b142630b265039fc9f42a31d3491be8270265c43a",
+      "bytes": 1667155
+    },
+    "calibrators": {
+      "path": "outputs\\recommendation-evidence\\rec-ev-003\\cold_start_calibrators.json",
+      "sha256": "81e3f8d70a50f885b66ba9e9b2af2348a26633a1db15fb36584a26aac0c9bd40",
+      "bytes": 48029
+    },
+    "validation_predictions": {
+      "path": "outputs\\recommendation-evidence\\rec-ev-003\\cold_start_validation_predictions.parquet",
+      "sha256": "02cffdb89786953c7e1e5f8f3f60f27ba0156b0710a59f7e3c1730189deea3c5",
+      "bytes": 51938728,
+      "rows": 378503
+    },
+    "sampled_ranking": {
+      "path": "outputs\\recommendation-evidence\\rec-ev-003\\cold_start_sampled_ranking.parquet",
+      "sha256": "b8de593e513ae3fc12889ee4391e98f609f71fd6028d01df82855ba2f6bc1528",
+      "bytes": 15762093,
+      "rows": 255300
+    }
+  },
+  "validation": {
+    "status": "PASS",
+    "cohort_absent_from_model_train": true,
+    "all_users_have_20_ordered_inputs": true,
+    "calibration_precedes_evaluation": true,
+    "all_k_fallback_predictions_finite": true,
+    "same_evaluation_users_for_all_k": true
+  },
+  "runtime": {
+    "python": "3.12.5",
+    "numpy": "1.26.4",
+    "pandas": "2.2.3",
+    "pyarrow": "20.0.0",
+    "pyspark": "4.2.0",
+    "scikit_learn": "1.9.0",
+    "spark_master": "local[4]",
+    "spark_driver_memory": "8g",
+    "als_train_seconds": 146.341,
+    "total_seconds": 179.691
+  },
+  "conclusion": {
+    "summary": "평가 사용자 3,014명을 학습에서 제외한 결과, 사용자 macro MAE는 K0 0.7552에서 K20 0.7140로 변했고 sampled NDCG@10은 K0 0.4618에서 K20 0.2219로 변했다. 두 지표의 최선에서 모두 0.01 이내인 가장 작은 K는 NO_SINGLE_K_WITHIN_0.01_OF_BOTH_BEST_METRICS다. K10은 K0 대비 예상 별점 MAE가 처음 유의하게 개선된 지점이지만 모든 K의 sampled ranking이 K0 Popularity보다 나빴다. 따라서 Fold-in을 단독 순위로 전환하지 않고 Popularity prior와 혼합하는 후속 실험이 먼저다.",
+    "data_quality_knee": "NO_SINGLE_K_WITHIN_0.01_OF_BOTH_BEST_METRICS",
+    "onboarding_product_gate": "BLOCKED_BY_RANKING_MODEL_AND_REACT_INPUT_COST",
+    "confidence_gate": "K10_FIRST_SIGNIFICANT_MAE_GAIN_BUT_SEGMENT_REGRESSION",
+    "ranking_gate": "FAILS_K0_POPULARITY_BASELINE_AT_ALL_K",
+    "next_experiment": "REC-EV-003B popularity-prior blend and ALS tuning"
+  }
+}

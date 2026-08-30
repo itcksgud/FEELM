@@ -1,0 +1,108 @@
+schema_version: 1
+status: APPROVED
+champions:
+  rating_prediction: null
+  personal_ranking: null
+  exploration_reranking: null
+  similar_movies: null
+  party_aggregation: null
+models:
+  - version: bias-fallback-exp-20260829-001
+    status: VALIDATED_BASELINE
+    purpose: rating_prediction_and_cold_identity_fallback
+    run_id: EXP-20260829-001
+    evidence: docs/recommendation/evidence/REC-EV-002-prediction-calibration.md
+    artifact: outputs/recommendation-evidence/rec-ev-002/bias_parameters.npz
+    validation_eval:
+      coverage: 1.0
+      raw_mae: 0.733893
+      isotonic_mae: 0.737942
+      isotonic_ece_decile: 0.018453
+    decision: KEEP_AS_BASELINE_NOT_CHAMPION
+    reason: 전체 미래 상태를 예측하지만 cold-start·다중 seed·Test gate 전에는 champion으로 승격하지 않는다.
+
+  - version: als-r32-reg010-i10-s42-exp-20260829-001
+    status: EXPERIMENTAL_NOT_ADOPTED
+    purpose: warm_rating_prediction_and_sampled_ranking
+    run_id: EXP-20260829-001
+    evidence: docs/recommendation/evidence/REC-EV-002-prediction-calibration.md
+    artifact: outputs/recommendation-evidence/rec-ev-002/als_factors.npz
+    validation_eval:
+      direct_coverage: 0.117374
+      warm_isotonic_mae: 0.6268
+      warm_isotonic_ece_decile: 0.020354
+      sampled_ndcg_at_10: 0.259481
+      sampled_popularity_ndcg_at_10: 0.472726
+    decision: DO_NOT_ADOPT_YET
+    reason: warm 예상 별점은 개선했지만 coverage가 낮고 sampled ranking에서 Popularity를 이기지 못했다.
+
+  - version: cold-foldin-standalone-exp-20260829-002
+    status: REJECTED_FOR_RANKING
+    purpose: cold_start_rating_prediction_and_ranking
+    run_id: EXP-20260829-002
+    evidence: docs/recommendation/evidence/REC-EV-003-cold-start.md
+    artifact: outputs/recommendation-evidence/rec-ev-003/foldin_user_factors.npz
+    validation_eval:
+      cohort_users: 3014
+      k10_macro_mae: 0.731145
+      k20_macro_mae: 0.713993
+      k0_sampled_ndcg_at_10: 0.461799
+      k20_sampled_ndcg_at_10: 0.221903
+    decision: REJECT_AS_STANDALONE_RANK_SCORE
+    reason: K10·K20 별점 오차는 개선했지만 모든 K에서 Popularity ranking을 크게 하회했다.
+
+  - version: cold-dual-head-blend-exp-20260829-003
+    status: VALIDATED_CANDIDATE_NOT_CHAMPION
+    purpose: cold_start_star_only_with_popularity_ranking
+    run_id: EXP-20260829-003
+    evidence: docs/recommendation/evidence/REC-EV-003B-cold-start-blend.md
+    artifact: outputs/recommendation-evidence/rec-ev-003b/selected_star_predictions.parquet
+    validation_eval:
+      first_statistical_k: 1
+      first_practical_k: 10
+      k10_star_alpha: 0.3
+      k10_macro_mae: 0.725313
+      k10_relative_improvement: 0.039513
+      k20_star_alpha: 0.4
+      ranking_alpha_all_k: 0.0
+    decision: USE_K10_ONLY_AS_UI_COMPARISON_CANDIDATE
+    reason: 별점 head는 실질 개선 Gate를 통과했지만 순위 head는 모든 K에서 Popularity 유지가 최적이었다.
+
+  - version: party-balanced-offline-exp-20260829-005
+    status: VALIDATED_OFFLINE_COMPARISON_NOT_ADOPTED
+    purpose: synthetic_party_aggregation_policy_comparison
+    run_id: EXP-20260829-005
+    evidence: docs/recommendation/evidence/REC-EV-005-party-policy.md
+    artifact: outputs/recommendation-evidence/rec-ev-005/party_policy_metrics.parquet
+    validation_eval:
+      validation_parties: 270
+      selected_floor: 0.5
+      selected_floor_weight: 0.5
+      selected_gap_weight: 0.25
+      test_parties: 270
+      balanced_delta_mean_utility: -0.001349
+      balanced_delta_mean_ci95: [-0.003739, 0.000659]
+      balanced_delta_min_utility: 0.000538
+      balanced_delta_min_ci95: [-0.003494, 0.004453]
+      balanced_delta_member_gap: -0.004249
+      balanced_delta_gap_ci95: [-0.011559, 0.002376]
+      four_member_common_rated_test_coverage: [0.006948, 0.010204]
+    decision: DO_NOT_ADOPT_PRODUCT_POLICY
+    reason: Balanced의 세 paired CI가 모두 0을 포함하고 4인 공통평가 coverage가 약 1%라 개선·일반화 근거가 없으며 실제 파티 만족도도 관측하지 않았다.
+
+  - version: c6-discrete-quantized-midrank-ecdf-v2
+    status: ADOPTED_LOCAL_EXPERIMENT_ONLY
+    purpose: normalize_predicted_and_observed_ratings_on_a_personal_discrete_scale
+    run_id: EXP-20260830-006
+    evidence: docs/recommendation/evidence/REC-EV-015-relative-utility.md
+    artifact: docs/recommendation/evidence/results/rec-ev-015-evaluation.json
+    validation_eval:
+      users: 3014
+      rows: 167194
+      k10_mae_baseline: 0.191921
+      k10_mae_candidate: 0.147411
+      k10_relative_mae_improvement: 0.231918
+      k10_absolute_bias_reduction: 0.531171
+      all_k_and_rating_style_segment_gates: true
+    decision: ADOPT_C6_LOCAL_EXPERIMENT_V2_KEEP_PRODUCT_BLOCKED
+    reason: 평점 격자 quantization과 midrank가 모든 K·평점 성향 구간에서 v1의 경계 편향을 줄였지만 C1 제품 calibration과 만족도는 증명하지 않았다.

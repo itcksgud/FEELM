@@ -1,0 +1,507 @@
+openapi: 3.1.0
+info:
+  title: FEELM C5 Local Report and Profile
+  version: 0.1.0-local
+  description: >-
+    Local-only factual half-year reports, PRIVATE-default public resources,
+    loopback report sharing, and providerless in-app notifications.
+servers:
+  - url: http://127.0.0.1:8080
+tags:
+  - { name: TasteReport, description: Immutable factual calendar-half reports }
+  - { name: ReportExport, description: Local temporary PDF exports }
+  - { name: Privacy, description: PRIVATE-default resource visibility }
+  - { name: PublicProfile, description: Exact capability target public reads }
+  - { name: ReportShare, description: Loopback fragment exchange report sharing }
+  - { name: Notification, description: Providerless in-app notifications }
+x-contract-status: APPROVED_LOCAL_MVP_PROFILE
+x-main-openapi-merged: true
+x-production-activation: false
+x-forbidden-capabilities:
+  - EXPECTED_STAR_OR_SATISFACTION
+  - TASTE_DIAGNOSIS_OR_COMPARISON
+  - EXTERNAL_NOTIFICATION_OR_STORAGE
+  - ACCOUNT_LIFECYCLE
+security:
+  - localBearer: []
+paths:
+  /api/v1/me/taste-reports:
+    get:
+      tags: [TasteReport]
+      operationId: listMyTasteReports
+      summary: List my factual half-year report revisions
+      x-implementation-status: READY_LOCAL_MVP
+      security: [{ localBearer: [] }]
+      parameters: [{ $ref: '#/components/parameters/Cursor' }, { $ref: '#/components/parameters/Limit' }]
+      responses:
+        '200': { description: owner report revisions, content: { application/json: { schema: { $ref: '#/components/schemas/TasteReportSummaryPage' } } } }
+        '401': { $ref: '#/components/responses/Unauthorized' }
+    post:
+      tags: [TasteReport]
+      operationId: createMyTasteReportRevision
+      summary: Create an immutable factual report revision
+      x-implementation-status: READY_LOCAL_MVP
+      security: [{ localBearer: [] }]
+      parameters: [{ $ref: '#/components/parameters/IdempotencyKey' }]
+      requestBody:
+        required: true
+        content: { application/json: { schema: { $ref: '#/components/schemas/CreateTasteReportRequest' } } }
+      responses:
+        '201': { description: immutable report revision, content: { application/json: { schema: { $ref: '#/components/schemas/TasteReport' } } } }
+        '400': { $ref: '#/components/responses/BadRequest' }
+        '401': { $ref: '#/components/responses/Unauthorized' }
+        '409': { $ref: '#/components/responses/Conflict' }
+  /api/v1/me/taste-reports/{reportId}:
+    get:
+      tags: [TasteReport]
+      operationId: getMyTasteReport
+      summary: Read my report and actual period movies
+      x-implementation-status: READY_LOCAL_MVP
+      security: [{ localBearer: [] }]
+      parameters:
+        - { $ref: '#/components/parameters/ReportId' }
+        - { $ref: '#/components/parameters/Cursor' }
+        - { $ref: '#/components/parameters/Limit' }
+      responses:
+        '200': { description: factual report and actual period movies, content: { application/json: { schema: { $ref: '#/components/schemas/TasteReport' } } } }
+        '401': { $ref: '#/components/responses/Unauthorized' }
+        '404': { $ref: '#/components/responses/NotFound' }
+  /api/v1/me/taste-reports/{reportId}/exports:
+    post:
+      tags: [ReportExport]
+      operationId: createMyTasteReportExport
+      summary: Create a local PDF export job
+      x-implementation-status: READY_LOCAL_MVP
+      security: [{ localBearer: [] }]
+      parameters: [{ $ref: '#/components/parameters/ReportId' }, { $ref: '#/components/parameters/IdempotencyKey' }]
+      responses:
+        '202': { description: local PDF job, content: { application/json: { schema: { $ref: '#/components/schemas/ReportExport' } } } }
+        '401': { $ref: '#/components/responses/Unauthorized' }
+        '404': { $ref: '#/components/responses/NotFound' }
+  /api/v1/me/report-exports/{exportId}:
+    get:
+      tags: [ReportExport]
+      operationId: getMyTasteReportExport
+      summary: Read my local PDF export state
+      x-implementation-status: READY_LOCAL_MVP
+      security: [{ localBearer: [] }]
+      parameters: [{ $ref: '#/components/parameters/ExportId' }]
+      responses:
+        '200': { description: owner export state, content: { application/json: { schema: { $ref: '#/components/schemas/ReportExport' } } } }
+        '401': { $ref: '#/components/responses/Unauthorized' }
+        '404': { $ref: '#/components/responses/NotFound' }
+  /api/v1/me/report-exports/{exportId}/content:
+    get:
+      tags: [ReportExport]
+      operationId: downloadMyTasteReportExport
+      summary: Download my unexpired local PDF
+      x-implementation-status: READY_LOCAL_MVP
+      security: [{ localBearer: [] }]
+      parameters: [{ $ref: '#/components/parameters/ExportId' }]
+      responses:
+        '200': { description: accessible local PDF, headers: { Content-Disposition: { schema: { type: string } } }, content: { application/pdf: { schema: { type: string, format: binary } } } }
+        '401': { $ref: '#/components/responses/Unauthorized' }
+        '404': { $ref: '#/components/responses/NotFound' }
+        '409': { $ref: '#/components/responses/Conflict' }
+  /api/v1/me/privacy-settings:
+    get:
+      tags: [Privacy]
+      operationId: getMyPrivacySettings
+      summary: Read PRIVATE-default resource settings
+      x-implementation-status: READY_LOCAL_MVP
+      security: [{ localBearer: [] }]
+      responses:
+        '200': { description: PRIVATE-default resource settings, content: { application/json: { schema: { $ref: '#/components/schemas/PrivacySettings' } } } }
+        '401': { $ref: '#/components/responses/Unauthorized' }
+    put:
+      tags: [Privacy]
+      operationId: replaceMyPrivacySettings
+      summary: Replace resource privacy settings
+      x-implementation-status: READY_LOCAL_MVP
+      security: [{ localBearer: [] }]
+      parameters: [{ $ref: '#/components/parameters/IdempotencyKey' }]
+      requestBody:
+        required: true
+        content: { application/json: { schema: { $ref: '#/components/schemas/ReplacePrivacySettingsRequest' } } }
+      responses:
+        '200': { description: replaced resource settings, content: { application/json: { schema: { $ref: '#/components/schemas/PrivacySettings' } } } }
+        '400': { $ref: '#/components/responses/BadRequest' }
+        '401': { $ref: '#/components/responses/Unauthorized' }
+        '409': { $ref: '#/components/responses/Conflict' }
+  /api/v1/public/profiles/{publicProfileId}:
+    get:
+      tags: [PublicProfile]
+      operationId: getPublicUserProfile
+      summary: Read an opted-in public nickname
+      x-implementation-status: READY_LOCAL_MVP
+      security: []
+      parameters: [{ $ref: '#/components/parameters/PublicProfileId' }]
+      responses:
+        '200': { description: opted-in nickname only, content: { application/json: { schema: { $ref: '#/components/schemas/PublicProfile' } } } }
+        '404': { $ref: '#/components/responses/NotFound' }
+  /api/v1/public/profiles/{publicProfileId}/film:
+    get:
+      tags: [PublicProfile]
+      operationId: listPublicUserFilmFrames
+      summary: List all opted-in active Film frames
+      x-implementation-status: READY_LOCAL_MVP
+      security: []
+      parameters: [{ $ref: '#/components/parameters/PublicProfileId' }, { $ref: '#/components/parameters/Cursor' }, { $ref: '#/components/parameters/Limit' }]
+      responses:
+        '200': { description: all opted-in active Frames, content: { application/json: { schema: { $ref: '#/components/schemas/PublicFilmPage' } } } }
+        '404': { $ref: '#/components/responses/NotFound' }
+  /api/v1/public/profiles/{publicProfileId}/popcorns:
+    get:
+      tags: [PublicProfile]
+      operationId: listPublicUserPopcorns
+      summary: List all opted-in active Popcorns
+      x-implementation-status: READY_LOCAL_MVP
+      security: []
+      parameters: [{ $ref: '#/components/parameters/PublicProfileId' }, { $ref: '#/components/parameters/Cursor' }, { $ref: '#/components/parameters/Limit' }]
+      responses:
+        '200': { description: all opted-in active Popcorns, content: { application/json: { schema: { $ref: '#/components/schemas/PublicPopcornPage' } } } }
+        '404': { $ref: '#/components/responses/NotFound' }
+  /api/v1/me/taste-reports/{reportId}/shares:
+    post:
+      tags: [ReportShare]
+      operationId: createMyTasteReportShare
+      summary: Create a raw-once loopback report grant
+      x-implementation-status: READY_LOCAL_MVP
+      security: [{ localBearer: [] }]
+      parameters: [{ $ref: '#/components/parameters/ReportId' }, { $ref: '#/components/parameters/IdempotencyKey' }]
+      responses:
+        '201':
+          description: raw-once loopback grant
+          headers: { Cache-Control: { $ref: '#/components/headers/NoStore' }, Referrer-Policy: { $ref: '#/components/headers/NoReferrer' } }
+          content: { application/json: { schema: { $ref: '#/components/schemas/CreatedReportShare' } } }
+        '401': { $ref: '#/components/responses/Unauthorized' }
+        '404': { $ref: '#/components/responses/NotFound' }
+        '409': { $ref: '#/components/responses/Conflict' }
+  /api/v1/me/report-shares/{shareId}/revoke:
+    post:
+      tags: [ReportShare]
+      operationId: revokeMyTasteReportShare
+      summary: Revoke a report share and viewer sessions
+      x-implementation-status: READY_LOCAL_MVP
+      security: [{ localBearer: [] }]
+      parameters: [{ $ref: '#/components/parameters/ShareId' }, { $ref: '#/components/parameters/IdempotencyKey' }]
+      responses:
+        '204': { description: grant and viewer sessions revoked }
+        '401': { $ref: '#/components/responses/Unauthorized' }
+        '404': { $ref: '#/components/responses/NotFound' }
+  /api/v1/public/report-shares/exchange:
+    post:
+      tags: [ReportShare]
+      operationId: exchangeTasteReportShare
+      summary: Exchange a fragment secret for a viewer session
+      x-implementation-status: READY_LOCAL_MVP
+      security: []
+      requestBody:
+        required: true
+        content: { application/json: { schema: { $ref: '#/components/schemas/ExchangeReportShareRequest' } } }
+      responses:
+        '200':
+          description: raw-once 15-minute report viewer session
+          headers: { Cache-Control: { $ref: '#/components/headers/NoStore' }, Referrer-Policy: { $ref: '#/components/headers/NoReferrer' } }
+          content: { application/json: { schema: { $ref: '#/components/schemas/ReportViewerSession' } } }
+        '404': { $ref: '#/components/responses/NotFound' }
+  /api/v1/public/shared-report:
+    get:
+      tags: [ReportShare]
+      operationId: getSharedTasteReport
+      summary: Read the immutable shared report projection
+      x-implementation-status: READY_LOCAL_MVP
+      security: [{ reportViewerSession: [] }]
+      parameters: [{ $ref: '#/components/parameters/Cursor' }, { $ref: '#/components/parameters/Limit' }]
+      responses:
+        '200':
+          description: immutable report-only projection
+          headers: { Cache-Control: { $ref: '#/components/headers/NoStore' }, Referrer-Policy: { $ref: '#/components/headers/NoReferrer' } }
+          content: { application/json: { schema: { $ref: '#/components/schemas/SharedTasteReport' } } }
+        '404': { $ref: '#/components/responses/NotFound' }
+  /api/v1/me/notification-settings:
+    get:
+      tags: [Notification]
+      operationId: getMyNotificationSettings
+      summary: Read providerless notification settings
+      x-implementation-status: READY_LOCAL_MVP
+      security: [{ localBearer: [] }]
+      responses:
+        '200': { description: providerless settings, content: { application/json: { schema: { $ref: '#/components/schemas/NotificationSettings' } } } }
+        '401': { $ref: '#/components/responses/Unauthorized' }
+    put:
+      tags: [Notification]
+      operationId: replaceMyNotificationSettings
+      summary: Replace providerless notification settings
+      x-implementation-status: READY_LOCAL_MVP
+      security: [{ localBearer: [] }]
+      parameters: [{ $ref: '#/components/parameters/IdempotencyKey' }]
+      requestBody:
+        required: true
+        content: { application/json: { schema: { $ref: '#/components/schemas/ReplaceNotificationSettingsRequest' } } }
+      responses:
+        '200': { description: replaced in-app setting, content: { application/json: { schema: { $ref: '#/components/schemas/NotificationSettings' } } } }
+        '401': { $ref: '#/components/responses/Unauthorized' }
+        '409': { $ref: '#/components/responses/Conflict' }
+  /api/v1/me/notifications:
+    get:
+      tags: [Notification]
+      operationId: listMyNotifications
+      summary: List my in-app notifications
+      x-implementation-status: READY_LOCAL_MVP
+      security: [{ localBearer: [] }]
+      parameters: [{ $ref: '#/components/parameters/Cursor' }, { $ref: '#/components/parameters/Limit' }]
+      responses:
+        '200': { description: actor in-app notification page, content: { application/json: { schema: { $ref: '#/components/schemas/NotificationPage' } } } }
+        '401': { $ref: '#/components/responses/Unauthorized' }
+  /api/v1/me/notifications/{notificationId}/state:
+    put:
+      tags: [Notification]
+      operationId: updateMyNotificationState
+      summary: Read or dismiss an in-app notification
+      x-implementation-status: READY_LOCAL_MVP
+      security: [{ localBearer: [] }]
+      parameters: [{ $ref: '#/components/parameters/NotificationId' }, { $ref: '#/components/parameters/IdempotencyKey' }]
+      requestBody:
+        required: true
+        content: { application/json: { schema: { $ref: '#/components/schemas/UpdateNotificationStateRequest' } } }
+      responses:
+        '200': { description: updated state, content: { application/json: { schema: { $ref: '#/components/schemas/InAppNotification' } } } }
+        '401': { $ref: '#/components/responses/Unauthorized' }
+        '404': { $ref: '#/components/responses/NotFound' }
+        '409': { $ref: '#/components/responses/Conflict' }
+components:
+  securitySchemes:
+    localBearer: { type: http, scheme: bearer, bearerFormat: LocalAccessToken }
+    reportViewerSession: { type: apiKey, in: header, name: X-Report-Viewer-Session }
+  parameters:
+    ReportId: { name: reportId, in: path, required: true, schema: { type: string, format: uuid } }
+    ExportId: { name: exportId, in: path, required: true, schema: { type: string, format: uuid } }
+    PublicProfileId: { name: publicProfileId, in: path, required: true, schema: { type: string, format: uuid } }
+    ShareId: { name: shareId, in: path, required: true, schema: { type: string, format: uuid } }
+    NotificationId: { name: notificationId, in: path, required: true, schema: { type: string, format: uuid } }
+    Cursor: { name: cursor, in: query, required: false, schema: { type: string, minLength: 1, maxLength: 2048 } }
+    Limit: { name: limit, in: query, required: false, schema: { type: integer, minimum: 1, maximum: 100, default: 20 } }
+    IdempotencyKey: { name: Idempotency-Key, in: header, required: true, schema: { type: string, minLength: 8, maxLength: 128, pattern: '^[!-~]+$' } }
+  headers:
+    NoStore:
+      description: 민감한 local C5 response와 오류를 저장하지 않는다.
+      schema: { type: string, const: 'no-store, private' }
+    NoReferrer:
+      description: capability나 resource context를 referrer로 전달하지 않는다.
+      schema: { type: string, const: no-referrer }
+  responses:
+    BadRequest: { description: invalid request, headers: { Cache-Control: { $ref: '#/components/headers/NoStore' }, Referrer-Policy: { $ref: '#/components/headers/NoReferrer' } }, content: { application/json: { schema: { $ref: '#/components/schemas/C5Error' } } } }
+    Unauthorized: { description: local login required, headers: { Cache-Control: { $ref: '#/components/headers/NoStore' }, Referrer-Policy: { $ref: '#/components/headers/NoReferrer' } }, content: { application/json: { schema: { $ref: '#/components/schemas/C5Error' } } } }
+    NotFound: { description: unavailable or private resource, headers: { Cache-Control: { $ref: '#/components/headers/NoStore' }, Referrer-Policy: { $ref: '#/components/headers/NoReferrer' } }, content: { application/json: { schema: { $ref: '#/components/schemas/C5Error' } } } }
+    Conflict: { description: 'revision, state, or idempotency conflict', headers: { Cache-Control: { $ref: '#/components/headers/NoStore' }, Referrer-Policy: { $ref: '#/components/headers/NoReferrer' } }, content: { application/json: { schema: { $ref: '#/components/schemas/C5Error' } } } }
+  schemas:
+    PageState:
+      type: object
+      required: [totalCount, hasNext, nextCursor]
+      properties:
+        totalCount: { type: integer, minimum: 0 }
+        hasNext: { type: boolean }
+        nextCursor: { type: [string, 'null'] }
+    CreateTasteReportRequest:
+      type: object
+      additionalProperties: false
+      required: [periodStart]
+      properties: { periodStart: { type: string, format: date } }
+    TasteReportSummary:
+      type: object
+      additionalProperties: false
+      required: [reportId, periodStart, periodEnd, revision, status, createdAt]
+      properties:
+        reportId: { type: string, format: uuid }
+        periodStart: { type: string, format: date }
+        periodEnd: { type: string, format: date }
+        revision: { type: integer, minimum: 1 }
+        status: { type: string, enum: [READY, EMPTY_NO_ACTIVITY, SUPERSEDED] }
+        createdAt: { type: string, format: date-time }
+    TasteReportSummaryPage:
+      allOf:
+        - { $ref: '#/components/schemas/PageState' }
+        - type: object
+          required: [items]
+          properties: { items: { type: array, maxItems: 100, items: { $ref: '#/components/schemas/TasteReportSummary' } } }
+    FactualReportMetrics:
+      type: object
+      additionalProperties: false
+      required: [viewingCount, ratedCount, averageRating]
+      properties:
+        viewingCount: { type: integer, minimum: 0 }
+        ratedCount: { type: integer, minimum: 0 }
+        averageRating:
+          type: [number, 'null']
+          minimum: 0.5
+          maximum: 5
+          multipleOf: 0.01
+          description: Active rating의 산술 평균을 소수 둘째 자리에서 반올림한 값. 개별 rating의 0.5 배수 제약을 평균에 적용하지 않는다.
+    ReportMovieItem:
+      type: object
+      additionalProperties: false
+      required: [movieId, displayTitle, watchedAt, rating]
+      properties:
+        movieId: { type: string, format: uuid }
+        displayTitle: { type: string }
+        posterUrl: { type: [string, 'null'], format: uri }
+        watchedAt: { type: string, format: date-time }
+        rating: { type: [number, 'null'], minimum: 0.5, maximum: 5, multipleOf: 0.5 }
+    ReportMoviePage:
+      allOf:
+        - { $ref: '#/components/schemas/PageState' }
+        - type: object
+          required: [items]
+          properties: { items: { type: array, maxItems: 100, items: { $ref: '#/components/schemas/ReportMovieItem' } } }
+    TasteReport:
+      allOf:
+        - { $ref: '#/components/schemas/TasteReportSummary' }
+        - type: object
+          required: [metrics, periodItems]
+          properties:
+            metrics: { $ref: '#/components/schemas/FactualReportMetrics' }
+            periodItems: { $ref: '#/components/schemas/ReportMoviePage' }
+    ReportExport:
+      type: object
+      additionalProperties: false
+      required: [exportId, reportId, status, createdAt, expiresAt]
+      properties:
+        exportId: { type: string, format: uuid }
+        reportId: { type: string, format: uuid }
+        status: { type: string, enum: [PENDING, READY, FAILED, EXPIRED] }
+        createdAt: { type: string, format: date-time }
+        expiresAt: { type: string, format: date-time }
+        downloadHref: { type: [string, 'null'], format: uri-reference }
+    ResourcePrivacy:
+      type: object
+      additionalProperties: false
+      required: [resource, visibility]
+      properties:
+        resource: { type: string, enum: [PROFILE, FILM, POPCORN] }
+        visibility: { type: string, enum: [PRIVATE, PUBLIC] }
+    PrivacySettings:
+      type: object
+      additionalProperties: false
+      required: [publicProfileId, revision, resources]
+      properties:
+        publicProfileId: { type: string, format: uuid }
+        revision: { type: integer, minimum: 1 }
+        resources: { type: array, minItems: 3, maxItems: 3, items: { $ref: '#/components/schemas/ResourcePrivacy' } }
+    ReplacePrivacySettingsRequest:
+      type: object
+      additionalProperties: false
+      required: [expectedRevision, resources]
+      properties:
+        expectedRevision: { type: integer, minimum: 1 }
+        resources: { type: array, minItems: 3, maxItems: 3, items: { $ref: '#/components/schemas/ResourcePrivacy' } }
+    PublicProfile:
+      type: object
+      additionalProperties: false
+      required: [publicProfileId, nickname]
+      properties:
+        publicProfileId: { type: string, format: uuid }
+        nickname: { type: string }
+    PublicFilmItem:
+      type: object
+      additionalProperties: false
+      required: [frameId, movieId, displayTitle, watchedAt]
+      properties:
+        frameId: { type: string, format: uuid }
+        movieId: { type: string, format: uuid }
+        displayTitle: { type: string }
+        watchedAt: { type: string, format: date-time }
+    PublicFilmPage:
+      allOf:
+        - { $ref: '#/components/schemas/PageState' }
+        - type: object
+          required: [items]
+          properties: { items: { type: array, maxItems: 100, items: { $ref: '#/components/schemas/PublicFilmItem' } } }
+    PublicPopcornItem:
+      type: object
+      additionalProperties: false
+      required: [popcornId, frameId, movieId, displayTitle]
+      properties:
+        popcornId: { type: string, format: uuid }
+        frameId: { type: string, format: uuid }
+        movieId: { type: string, format: uuid }
+        displayTitle: { type: string }
+    PublicPopcornPage:
+      allOf:
+        - { $ref: '#/components/schemas/PageState' }
+        - type: object
+          required: [items]
+          properties: { items: { type: array, maxItems: 100, items: { $ref: '#/components/schemas/PublicPopcornItem' } } }
+    CreatedReportShare:
+      type: object
+      additionalProperties: false
+      required: [shareId, reportId, rawToken, shareHref, expiresAt]
+      properties:
+        shareId: { type: string, format: uuid }
+        reportId: { type: string, format: uuid }
+        rawToken: { type: string, minLength: 43 }
+        shareHref: { type: string, format: uri-reference }
+        expiresAt: { type: string, format: date-time }
+    ExchangeReportShareRequest:
+      type: object
+      additionalProperties: false
+      required: [rawToken]
+      properties: { rawToken: { type: string, minLength: 43, maxLength: 256 } }
+    ReportViewerSession:
+      type: object
+      additionalProperties: false
+      required: [viewerSessionToken, expiresAt]
+      properties:
+        viewerSessionToken: { type: string, minLength: 43 }
+        expiresAt: { type: string, format: date-time }
+    SharedTasteReport:
+      type: object
+      additionalProperties: false
+      required: [report, ownerNickname]
+      properties:
+        report: { $ref: '#/components/schemas/TasteReport' }
+        ownerNickname: { type: string }
+    NotificationSettings:
+      type: object
+      additionalProperties: false
+      required: [watchConfirmationDueEnabled, revision]
+      properties:
+        watchConfirmationDueEnabled: { type: boolean }
+        revision: { type: integer, minimum: 1 }
+    ReplaceNotificationSettingsRequest:
+      type: object
+      additionalProperties: false
+      required: [watchConfirmationDueEnabled, expectedRevision]
+      properties:
+        watchConfirmationDueEnabled: { type: boolean }
+        expectedRevision: { type: integer, minimum: 1 }
+    InAppNotification:
+      type: object
+      additionalProperties: false
+      required: [notificationId, category, state, message, createdAt]
+      properties:
+        notificationId: { type: string, format: uuid }
+        category: { type: string, const: WATCH_CONFIRMATION_DUE }
+        state: { type: string, enum: [UNREAD, READ, DISMISSED] }
+        message: { type: string }
+        createdAt: { type: string, format: date-time }
+    NotificationPage:
+      allOf:
+        - { $ref: '#/components/schemas/PageState' }
+        - type: object
+          required: [items]
+          properties: { items: { type: array, maxItems: 100, items: { $ref: '#/components/schemas/InAppNotification' } } }
+    UpdateNotificationStateRequest:
+      type: object
+      additionalProperties: false
+      required: [state]
+      properties: { state: { type: string, enum: [READ, DISMISSED] } }
+    C5Error:
+      type: object
+      additionalProperties: false
+      required: [code, message, traceId, fieldErrors]
+      properties:
+        code: { type: string, enum: [VALIDATION_ERROR, INVALID_CURSOR, UNAUTHORIZED, RESOURCE_NOT_FOUND, REVISION_CONFLICT, IDEMPOTENCY_KEY_REUSED, INVALID_STATE_TRANSITION, REPORT_NOT_READY, EXPORT_EXPIRED, SHARE_UNAVAILABLE] }
+        message: { type: string }
+        traceId: { type: string }
+        fieldErrors: { type: array, items: { type: object, required: [field, reason], properties: { field: { type: string }, reason: { type: string } } } }

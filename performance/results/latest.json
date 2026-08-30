@@ -1,0 +1,80 @@
+{
+  "schemaVersion": 1,
+  "measuredAtUtc": "2026-08-29T13:12:43.0242559+00:00",
+  "gitCommit": "e2768cd35ab51f942a16bd1ed8b8da713ca6a40e",
+  "gitWorkingTreeDirty": true,
+  "dataset": {
+    "movieCount": 87585,
+    "catalogVersion": "catalog-performance-87585-v1",
+    "generator": "performance/seed-87585.sql"
+  },
+  "environment": {
+    "operatingSystem": "Microsoft Windows NT 10.0.26200.0",
+    "javaVersion": "java version \"17.0.12\" 2024-07-16 LTS",
+    "postgresImage": "postgres:17.6-alpine",
+    "databasePort": 55432,
+    "backendPort": 18081,
+    "cacheMode": "active-version check per request; immutable full-catalog in-memory snapshot"
+  },
+  "parameters": {
+    "requests": 200,
+    "warmupRequests": 10,
+    "concurrency": 1
+  },
+  "initialCacheBuild": {
+    "milliseconds": 1906.997,
+    "statusCode": 200,
+    "itemCount": 20,
+    "error": null
+  },
+  "metrics": [
+    {
+      "name": "search-query-20",
+      "path": "/api/v1/movies?query=needle&limit=20",
+      "requests": 200,
+      "errors": 0,
+      "minMs": 66.354,
+      "p50Ms": 72.243,
+      "p95Ms": 97.411,
+      "p99Ms": 103.906,
+      "maxMs": 118.519,
+      "meanMs": 76.444,
+      "gateTargetMs": 300.0,
+      "gatePassed": true
+    },
+    {
+      "name": "search-blank-query-20",
+      "path": "/api/v1/movies?query=%20%20%20&limit=20",
+      "requests": 200,
+      "errors": 0,
+      "minMs": 6.593,
+      "p50Ms": 8.047,
+      "p95Ms": 10.606,
+      "p99Ms": 11.343,
+      "maxMs": 21.399,
+      "meanMs": 8.514,
+      "gateTargetMs": null,
+      "gatePassed": true
+    },
+    {
+      "name": "movie-detail",
+      "path": "/api/v1/movies/82000000-0000-0000-0000-000000000001",
+      "requests": 200,
+      "errors": 0,
+      "minMs": 1.07,
+      "p50Ms": 1.442,
+      "p95Ms": 1.896,
+      "p99Ms": 2.52,
+      "maxMs": 3.154,
+      "meanMs": 1.489,
+      "gateTargetMs": 200.0,
+      "gatePassed": true
+    }
+  ],
+  "summary": {
+    "status": "PASS",
+    "totalErrors": 0,
+    "searchP95TargetMs": 300.0,
+    "detailP95TargetMs": 200.0
+  }
+}

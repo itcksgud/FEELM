@@ -1,0 +1,79 @@
+{
+  "aggregate_version": "spark-als-scaling-aggregate-v1",
+  "claim_boundary": "local engineering evidence only; not multi-host production capacity",
+  "comparison": {
+    "absolute_prediction_coverage_difference": 0.0,
+    "absolute_rmse_difference": 0.0,
+    "median_als_fit_speedup": 1.5930449879768636
+  },
+  "decision": "LOCAL_SCALE_OUT_SUPPORTED",
+  "gate": {
+    "maximum_absolute_rmse_difference": 0.01,
+    "maximum_prediction_coverage_difference": 1e-12,
+    "minimum_median_als_fit_speedup": 1.2
+  },
+  "gate_passed": true,
+  "input_aggregates": {
+    "train_rows": 5119729,
+    "validation_rows": 640171
+  },
+  "measured_at_utc": "2026-08-29T15:54:36.802047+00:00",
+  "one_worker": {
+    "als_fit_median_seconds": 21.455697500001406,
+    "als_fit_seconds": [
+      21.455697500001406,
+      20.910602999996627,
+      21.460860799998045
+    ],
+    "application_total_median_seconds": 40.08414469999843,
+    "application_total_seconds": [
+      40.08414469999843,
+      40.0681545999978,
+      42.15188810000109
+    ],
+    "prediction_coverage": [
+      0.14224636854840347,
+      0.14224636854840347,
+      0.14224636854840347
+    ],
+    "prediction_coverage_median": 0.14224636854840347,
+    "repetitions": 3,
+    "rmse": [
+      0.9156139390387873,
+      0.9156139390387873,
+      0.9156139390387873
+    ],
+    "rmse_median": 0.9156139390387873
+  },
+  "protocol_sha256": "61372442ce7959aaced6426f10acc6efb010e368d496fc301182e86d47039409",
+  "safe_to_track": true,
+  "schema_version": 1,
+  "scope": "same physical Windows host, Spark standalone master, separate worker JVMs",
+  "two_workers": {
+    "als_fit_median_seconds": 13.468356299999868,
+    "als_fit_seconds": [
+      13.784395999995468,
+      13.384967899997719,
+      13.468356299999868
+    ],
+    "application_total_median_seconds": 31.299237100000028,
+    "application_total_seconds": [
+      31.36951240000053,
+      30.966282900000806,
+      31.299237100000028
+    ],
+    "prediction_coverage": [
+      0.14224636854840347,
+      0.14224636854840347,
+      0.14224636854840347
+    ],
+    "prediction_coverage_median": 0.14224636854840347,
+    "repetitions": 3,
+    "rmse": [
+      0.9156139390387873,
+      0.9156139390387873,
+      0.9156139390387873
+    ],
+    "rmse_median": 0.9156139390387873
+  }
+}

@@ -92,7 +92,7 @@
 | GET | `/me/recommendations/personalized` | 개인 맞춤 추천 | FR-10 |
 | GET | `/me/recommendations/discovery` | 새로운 맛 발견 추천 | FR-12 |
 
-기본 추천은 개인 맞춤 2개와 발견 1개로 구성한다. 발견 후보가 없으면 개인 맞춤 3개로 채운다. 각 항목은 UI가 유형을 표시할 수 있도록 `recommendationType: PERSONALIZED | DISCOVERY`를 필수로 포함한다. 추천 응답에 `score`, `scoreDisplay`, `reasons[]`, `generatedAt`을 포함하는 안을 검토하며 적합도의 원시 점수 노출은 미정이다. 구독하지 않은 OTT에서만 제공되는 영화도 후보에서 제외하지 않는다. `관심없음` 기능과 피드백 API는 현재 범위에서 제외한다.
+현재 기본 추천은 `BASELINE_THREE`이며 최초 3편 뒤 요청마다 최대 3편을 server-side collection에 누적한다. 2+1 discovery는 REC-EV-013 v1 Gate 실패 때문에 새 evidence·제품 결정 전 차단한다. 추천 응답의 예상 별점·이유 공개는 별도 결정이다. 구독하지 않은 OTT 영화도 후보에서 제외하지 않는다. 명시적 `NOT_INTERESTED` mutation은 Rating과 분리하며 Rating 제출 완료와 함께 목록·향후 후보 제외 사유가 된다. 감상 완료만으로는 기존 추천을 제거하지 않는다.
 
 ### Party
 

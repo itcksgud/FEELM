@@ -1,0 +1,281 @@
+schema_version: 1
+project: FEELM-standalone
+contract_slice: C4A-EMAIL-MEMBERSHIP-ONBOARDING
+status: APPROVED_LOCAL_PROFILE_WITH_BLOCKED_PRODUCTION_EXTENSIONS
+rules:
+  local_profile_implementation_authorized: true
+  production_activation_forbidden: true
+  production_email_oauth_restart_lifecycle_forbidden: true
+  required_decision_ids:
+    - DN-C4A-001
+    - DN-C4A-002
+    - DN-C4A-003
+    - DN-C4A-004
+    - DN-C4A-005
+  social_production_adapter_blocked: true
+  main_openapi_local_profile_merged: true
+  common_registry_update_forbidden: true
+  status_semantics:
+    DONE_LOCAL_PROFILE_DECISIONS: conservative local-profile tokens are fixed; this is not production activation
+    DONE_LOCAL_PROFILE_CONTRACT: the 13 authorized local operations are merged into main OpenAPI
+    READY_LOCAL_PROFILE: local-only implementation may start
+    READY_LOCAL_PROFILE_NEGATIVE_ONLY: only fail-closed absence/reservation tests may start; external capability remains blocked
+    BLOCKED: a local predecessor is incomplete
+    BLOCKED_PRODUCTION_PROMOTION: production activation needs separate authority
+  local_operation_ids:
+    - createEmailSignup
+    - verifySignupEmail
+    - resendSignupEmailVerification
+    - loginWithEmail
+    - refreshAuthentication
+    - logoutCurrentSession
+    - getMyMembership
+    - updateMyNickname
+    - listOnboardingMovies
+    - replaceOnboardingPreferences
+    - completeOnboarding
+    - getMyOttSubscriptions
+    - replaceMyOttSubscriptions
+  blocked_operation_ids: [restartOnboarding]
+  local_screen_ids: [SCR-C4A-001, SCR-C4A-002, SCR-C4A-003, SCR-C4A-004, SCR-C4A-005, SCR-C4A-006, SCR-C4A-007]
+  acceptance_universe: AC-C4A-001..085
+  blocked_acceptance_ids: [AC-C4A-034, AC-C4A-045, AC-C4A-067]
+  production_negative_acceptance_ids: [AC-C4A-007, AC-C4A-061, AC-C4A-073, AC-C4A-081, AC-C4A-082]
+  local_entity_ids:
+    - USER_ACCOUNT
+    - EMAIL_CREDENTIAL
+    - USER_PROFILE
+    - EMAIL_SIGNUP_PUBLIC_FLOW
+    - EMAIL_VERIFICATION_CHALLENGE
+    - VERIFICATION_DELIVERY_MATERIAL
+    - PUBLIC_AUTH_IDEMPOTENCY_RECORD
+    - PUBLIC_AUTH_IDEMPOTENCY_SCOPE_ALIAS
+    - PUBLIC_AUTH_IDEMPOTENCY_REQUEST_HMAC_ALIAS
+    - PENDING_SIGNUP_RECOVERY_ATTEMPT
+    - AUTH_SESSION
+    - AUTH_REFRESH_TOKEN
+    - ONBOARDING_JOURNEY
+    - ONBOARDING_PREFERENCE
+    - OTT_SUBSCRIPTION_SET
+    - USER_OTT_SUBSCRIPTION
+    - MOVIE_IDENTITY
+    - OTT_PROVIDER
+    - IDEMPOTENCY_RECORD
+    - DOMAIN_OUTBOX
+  blocked_entity_ids: [SOCIAL_PROVIDER_CAPABILITY, SOCIAL_IDENTITY, SOCIAL_LINK_TRANSACTION]
+
+tasks:
+  - id: TASK-C4A-001
+    title: C4A P0 제품·보안 결정 승인
+    status: DONE_LOCAL_PROFILE_DECISIONS
+    depends_on: []
+    decision_record_ids: [DN-C4A-001, DN-C4A-002, DN-C4A-003, DN-C4A-004, DN-C4A-005]
+    outputs:
+      - approved choices with rationale and rollback
+      - updated C4A OpenAPI/state/ERD/AC without stale proposed semantics
+    acceptance_ids: []
+    verify:
+      - product/security owner review
+      - py -3.12 docs/c4-membership-onboarding/validate_contract.py
+
+  - id: TASK-C4A-002
+    title: C4A local profile 계약 승격과 차단 경계 고정
+    status: DONE_LOCAL_PROFILE_CONTRACT
+    depends_on: []
+    requirement_ids: [FR-01, FR-02, FR-03, NFR-07, REQ-C4A-DELIVERY, REQ-C4A-AUTH-HARDENING, REQ-C4A-JSON-CONSTRAINTS]
+    outputs:
+      - APPROVED_LOCAL_PROFILE_WITH_BLOCKED_PRODUCTION_EXTENSIONS contract set
+      - main OpenAPI remains unchanged until a separate implementation task
+      - exact 13-operation local authority and blocked extension manifest
+    acceptance_ids: [AC-C4A-016, AC-C4A-019, AC-C4A-046]
+    verify:
+      - npm run openapi:lint
+      - npm run contracts:check
+
+  - id: TASK-C4A-003
+    title: Membership·profile·challenge·onboarding·subscription migration 기반
+    status: READY_LOCAL_PROFILE
+    depends_on: [TASK-C4A-002]
+    requirement_ids: [FR-01, FR-02, FR-03, NFR-07, REQ-C4A-DELIVERY, REQ-C4A-AUTH-HARDENING, REQ-C4A-JSON-CONSTRAINTS]
+    outputs:
+      - Flyway migration and constraints
+      - stable email signup public flow, versioned current challenge, pending recovery and 30-day purge
+      - refresh family and generation lineage tables with race/replay constraints
+      - reserved social identity and linking transaction tables remain migration-blocked until DN-C4A-005 approval
+      - idempotency and safe outbox integration
+      - C4A canonical public idempotency record plus current/previous scope and request-HMAC alias rows, key-version retention, and C1 actor-ledger separation
+      - PENDING_SIGNUP_RECOVERY_ATTEMPT admittedAt/prior-flow winner-loser lineage
+      - verification delivery material encryption/key-version/lease/deletion constraints
+      - flow/challenge/user composite ownership and exact REAL/DECOY partial constraints
+      - NOT_CONFIGURED OTT set one-to-one signup/backfill constraint
+      - no-raw-secret schema checks
+    acceptance_ids: [AC-C4A-002, AC-C4A-009, AC-C4A-012, AC-C4A-023, AC-C4A-027, AC-C4A-042, AC-C4A-046, AC-C4A-047, AC-C4A-069, AC-C4A-070, AC-C4A-071, AC-C4A-074, AC-C4A-077, AC-C4A-078, AC-C4A-079, AC-C4A-080, AC-C4A-084, AC-C4A-085]
+    verify:
+      - backend clean test after migration review
+
+  - id: TASK-C4A-004
+    title: Email signup·verification·resend backend
+    status: BLOCKED
+    depends_on: [TASK-C4A-003]
+    decision_record_ids: [DN-C4A-002, DN-C4A-003]
+    requirement_ids: [FR-01, REQ-C4A-NICKNAME, REQ-C4A-EMAIL-SECURITY, REQ-C4A-DELIVERY, REQ-C4A-AUTH-HARDENING]
+    outputs:
+      - createEmailSignup
+      - verifySignupEmail
+      - resendSignupEmailVerification
+      - hash-only password/challenge handling
+      - generic actual/decoy signup response and timing-equivalent path
+      - stable signupId and versioned challenge recovery/purge lifecycle
+      - exact actual/decoy public status-code matrix and structured rate limits
+      - HTTPS fragment to POST-body verification boundary
+      - encrypted single-use delivery material and crash-safe post-commit dispatch
+      - PostgreSQL-only wrong-attempt authority and idempotency-before-Redis order
+      - sorted current/previous public-scope locks, secret-body keyed HMAC equality, and terminal replay cleanup
+      - current/previous Redis aggregate quota and shared initial-signup/resend mail quota
+    acceptance_ids: [AC-C4A-001, AC-C4A-002, AC-C4A-003, AC-C4A-004, AC-C4A-005, AC-C4A-008, AC-C4A-009, AC-C4A-010, AC-C4A-011, AC-C4A-012, AC-C4A-065, AC-C4A-066, AC-C4A-069, AC-C4A-070, AC-C4A-071, AC-C4A-072, AC-C4A-075, AC-C4A-077, AC-C4A-078, AC-C4A-079, AC-C4A-080, AC-C4A-083, AC-C4A-085]
+    verify:
+      - backend membership integration tests
+
+  - id: TASK-C4A-005
+    title: Email login·refresh·logout·profile backend
+    status: BLOCKED
+    depends_on: [TASK-C4A-003, TASK-C4A-004]
+    decision_record_ids: [DN-C4A-001, DN-C4A-002, DN-C4A-003]
+    requirement_ids: [FR-01, REQ-C4A-NICKNAME, NFR-07, REQ-C4A-AUTH-HARDENING]
+    outputs:
+      - loginWithEmail
+      - approved refresh transport
+      - Origin and signed double-submit CSRF validation for refresh/logout
+      - atomic rotation lineage, 5-second concurrent race handling, replay family revoke
+      - PostgreSQL clock race boundary and terminal-plus-30-day lineage cleanup
+      - production/local cookie profiles and cookie-less logout retry
+      - exact JWT algorithm/issuer/audience/kid/claim validation and key rotation readiness
+      - repeated Set-Cookie issue/rotate/clear and invalid-session logout mapping
+      - trusted-proxy coarse-IP HMAC projection and refresh rate admission
+      - bounded access-after-logout contract test
+      - logoutCurrentSession
+      - getMyMembership and updateMyNickname
+      - C1 auth compatibility tests
+    acceptance_ids: [AC-C4A-013, AC-C4A-014, AC-C4A-015, AC-C4A-016, AC-C4A-017, AC-C4A-018, AC-C4A-019, AC-C4A-020, AC-C4A-021, AC-C4A-022, AC-C4A-061, AC-C4A-062, AC-C4A-063, AC-C4A-064, AC-C4A-073, AC-C4A-074, AC-C4A-076, AC-C4A-081, AC-C4A-082, AC-C4A-083, AC-C4A-085]
+    verify:
+      - backend auth integration and cross-slice tests
+
+  - id: TASK-C4A-006
+    title: Local Mailpit adapter와 production mail fail-closed boundary
+    status: BLOCKED
+    depends_on: [TASK-C4A-004]
+    decision_record_ids: [DN-C4A-003]
+    requirement_ids: [REQ-C4A-EMAIL-SECURITY, REQ-C4A-DELIVERY]
+    outputs:
+      - keyless local Mailpit adapter
+      - production credential config Gate
+      - delivery failure and resend integration
+      - versioned secret-store decryption, worker lease, terminal deletion, and crash-window tests
+    acceptance_ids: [AC-C4A-006, AC-C4A-007, AC-C4A-009, AC-C4A-011, AC-C4A-046, AC-C4A-077]
+    verify:
+      - Mailpit integration test without credentials
+      - production profile missing-secret failure test
+
+  - id: TASK-C4A-007
+    title: Onboarding preferences·complete·skip backend
+    status: BLOCKED
+    depends_on: [TASK-C4A-003, TASK-C4A-005]
+    decision_record_ids: [DN-C4A-004]
+    requirement_ids: [FR-02, REQ-C4A-JSON-CONSTRAINTS]
+    outputs:
+      - listOnboardingMovies
+      - replaceOnboardingPreferences
+      - completeOnboarding
+      - C1 Rating separation invariant test
+    acceptance_ids: [AC-C4A-023, AC-C4A-024, AC-C4A-025, AC-C4A-026, AC-C4A-027, AC-C4A-028, AC-C4A-029, AC-C4A-030, AC-C4A-031, AC-C4A-032, AC-C4A-033, AC-C4A-035, AC-C4A-036, AC-C4A-068]
+    blocked_acceptance_ids: [AC-C4A-034]
+    verify:
+      - backend onboarding integration tests
+
+  - id: TASK-C4A-008
+    title: OTT subscription set backend
+    status: BLOCKED
+    depends_on: [TASK-C4A-003, TASK-C4A-005]
+    requirement_ids: [FR-03, REQ-C4A-JSON-CONSTRAINTS]
+    outputs:
+      - getMyOttSubscriptions
+      - replaceMyOttSubscriptions
+      - C0 provider reference and offer-sort integration
+    acceptance_ids: [AC-C4A-037, AC-C4A-038, AC-C4A-039, AC-C4A-040, AC-C4A-041, AC-C4A-042, AC-C4A-043]
+    verify:
+      - backend subscription and Catalog integration tests
+
+  - id: TASK-C4A-009
+    title: Social provider local fail-closed reservation
+    status: READY_LOCAL_PROFILE_NEGATIVE_ONLY
+    depends_on: [TASK-C4A-002]
+    decision_record_ids: [DN-C4A-005]
+    requirement_ids: [REQ-C4A-SOCIAL]
+    outputs:
+      - no public social OAuth operation or route
+      - disabled capability response and absent-provider contract tests
+      - no provider credential in local configuration or repository
+    blocked_outputs:
+      - Google·Kakao·Naver adapter, redirect callback, account linking, and provider credential Gate
+    acceptance_ids: [AC-C4A-044, AC-C4A-046]
+    blocked_acceptance_ids: [AC-C4A-045, AC-C4A-067]
+    verify:
+      - provider contract tests with secret injection outside repository
+
+  - id: TASK-C4A-010
+    title: React email membership·profile 화면
+    status: BLOCKED
+    depends_on: [TASK-C4A-002, TASK-C4A-004, TASK-C4A-005, TASK-C4A-006]
+    requirement_ids: [FR-01, REQ-C4A-NICKNAME, NFR-07]
+    outputs:
+      - SCR-C4A-001, SCR-C4A-002, SCR-C4A-003, SCR-C4A-007
+      - auth client boundary without secret persistence
+    acceptance_ids: [AC-C4A-050, AC-C4A-051, AC-C4A-052, AC-C4A-057, AC-C4A-058, AC-C4A-059, AC-C4A-061, AC-C4A-064, AC-C4A-065, AC-C4A-066]
+    verify:
+      - frontend RTL/MSW tests
+      - frontend production build
+
+  - id: TASK-C4A-011
+    title: React onboarding·OTT 화면
+    status: BLOCKED
+    depends_on: [TASK-C4A-002, TASK-C4A-007, TASK-C4A-008]
+    requirement_ids: [FR-02, FR-03]
+    outputs:
+      - SCR-C4A-004, SCR-C4A-005, SCR-C4A-006
+      - accessible button-first LIKE/DISLIKE controls
+    acceptance_ids: [AC-C4A-035, AC-C4A-036, AC-C4A-053, AC-C4A-054, AC-C4A-055, AC-C4A-056, AC-C4A-058, AC-C4A-059]
+    verify:
+      - frontend RTL/MSW tests
+      - frontend production build
+
+  - id: TASK-C4A-012
+    title: C4A security·race·failure·E2E Gate
+    status: BLOCKED
+    depends_on: [TASK-C4A-007, TASK-C4A-008, TASK-C4A-010, TASK-C4A-011]
+    requirement_ids: [FR-01, FR-02, FR-03, NFR-07, REQ-C4A-EMAIL-SECURITY]
+    outputs:
+      - signup through logout Playwright scenario
+      - hash/secret/log scan
+      - idempotency, unique race, rollback suite
+      - Mailpit ephemeral-secret trace test
+      - mandatory AC-C4A-077 through AC-C4A-085 integrated security/race/schema gate
+    acceptance_ids: [AC-C4A-003, AC-C4A-005, AC-C4A-012, AC-C4A-017, AC-C4A-022, AC-C4A-027, AC-C4A-033, AC-C4A-042, AC-C4A-046, AC-C4A-047, AC-C4A-048, AC-C4A-049, AC-C4A-060, AC-C4A-061, AC-C4A-062, AC-C4A-063, AC-C4A-064, AC-C4A-065, AC-C4A-066, AC-C4A-068, AC-C4A-069, AC-C4A-070, AC-C4A-071, AC-C4A-072, AC-C4A-073, AC-C4A-074, AC-C4A-075, AC-C4A-076, AC-C4A-077, AC-C4A-078, AC-C4A-079, AC-C4A-080, AC-C4A-081, AC-C4A-082, AC-C4A-083, AC-C4A-084, AC-C4A-085]
+    verify:
+      - backend clean test
+      - frontend test and build
+      - Playwright C4A suite
+      - secret scan
+
+  - id: TASK-C4A-013
+    title: C4A blind handoff와 공통 계약 승격 감사
+    status: BLOCKED_PRODUCTION_PROMOTION
+    depends_on: [TASK-C4A-012]
+    requirement_ids: [FR-01, FR-02, FR-03, NFR-07]
+    outputs:
+      - blind handoff score and blockers
+      - main contract/task/trace registry promotion evidence
+    acceptance_ids: [AC-C4A-016, AC-C4A-027, AC-C4A-043, AC-C4A-046, AC-C4A-060, AC-C4A-064, AC-C4A-068, AC-C4A-069, AC-C4A-070, AC-C4A-071, AC-C4A-072, AC-C4A-073, AC-C4A-074, AC-C4A-075, AC-C4A-076]
+    blocked_acceptance_ids: [AC-C4A-067]
+    verify:
+      - npm run verify
+      - independent read-only contract audit

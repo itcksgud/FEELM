@@ -1,0 +1,1312 @@
+openapi: 3.1.0
+info:
+  title: FEELM C4A Local Email Membership and Onboarding API
+  version: 0.2.0-c4a-local
+  summary: local 이메일 membership, LIKE/DISLIKE onboarding, KR OTT subscription 계약
+  description: |
+    APPROVED_LOCAL_PROFILE_WITH_BLOCKED_PRODUCTION_EXTENSIONS. 보수 token은 local profile에만
+    채택됐다. main OpenAPI, production email, OAuth, restart, password/account lifecycle은 차단한다.
+servers:
+  - url: http://localhost:8080
+security:
+  - bearerAuth: []
+tags:
+  - name: Membership
+    description: 이메일 signup·verification·pending membership
+  - name: Authentication
+    description: local profile에 승인된 login·refresh·logout boundary
+  - name: Onboarding
+    description: Rating과 분리된 LIKE/DISLIKE journey·skip
+  - name: MyProfile
+    description: 본인 nickname·membership 요약
+  - name: MyOttSubscriptions
+    description: C0 KR provider를 참조하는 본인 subscription set
+x-contract-status: APPROVED_LOCAL_PROFILE_WITH_BLOCKED_PRODUCTION_EXTENSIONS
+x-main-openapi-merged: true
+x-local-profile-implementation-status: AUTHORIZED_13_OPERATIONS
+x-production-activation-status: BLOCKED
+x-auth-cookie-csrf-reservation:
+  status: AUTHORIZED_LOCAL_PROFILE
+  decisionRequired: DN-C4A-001
+  refreshCookie: __Host-feelm_refresh
+  csrfCookie: __Host-feelm_csrf
+  csrfHeader: X-CSRF-Token
+  mutationProtection: exact Origin allowlist plus session-bound signed double-submit
+  rotation: refresh and CSRF values rotate together after each successful refresh
+  cookieProfiles:
+    productionHttps:
+      refresh: {name: __Host-feelm_refresh, secure: true, httpOnly: true, sameSite: Lax, path: /, domain: null}
+      csrf: {name: __Host-feelm_csrf, secure: true, httpOnly: false, sameSite: Lax, path: /, domain: null}
+    localHttpLoopbackOnly:
+      refresh: {name: feelm_local_refresh, secure: false, httpOnly: true, sameSite: Lax, path: /, domain: null}
+      csrf: {name: feelm_local_csrf, secure: false, httpOnly: false, sameSite: Lax, path: /, domain: null}
+    clearAdds: {maxAge: 0, expires: 'Thu, 01 Jan 1970 00:00:00 GMT'}
+    mixedProfileCookies: forbidden
+x-email-verification-security:
+  status: AUTHORIZED_LOCAL_PROFILE
+  decisionRequired: DN-C4A-003
+  frontendOriginSource: pinned versioned server configuration only
+  requestHostHeadersTrusted: false
+  ignoredRequestHeaders: [Host, Forwarded, X-Forwarded-Host]
+  linkTransport: exact HTTPS frontend origin plus fragment, then POST body
+  invalidOriginBehavior: dispatch and readiness fail closed
+  returnedHandleState: stable EMAIL_SIGNUP_PUBLIC_FLOW actual or decoy row for 24 hours without extension
+  challengeModel: REAL flow current_challenge_id references versioned EMAIL_VERIFICATION_CHALLENGE; DECOY has no challenge
+  pendingRecovery: before created_at plus 30 days, same-password re-signup creates a new REAL flow after prior flow expiry
+  pendingPurge: created_at plus 30 days; re-signup does not extend; verification race is atomic
+x-verification-delivery-boundary:
+  status: AUTHORIZED_LOCAL_PROFILE
+  decisionRequired: DN-C4A-003
+  model: encrypted single-use delivery material referenced by a safe outbox
+  challengePersistence: SHA-256 hash only; raw verification secret is never a database, outbox, log, trace, or HTTP target value
+  encryption: AES-256-GCM envelope encryption with ciphertext, nonce, and delivery_key_version in VERIFICATION_DELIVERY_MATERIAL
+  keySource: versioned secret store; missing or unknown versions fail readiness and dispatch closed
+  keyRetention: a decrypt key version cannot retire while any unexpired material references it
+  outboxPayload: materialId and challenge pseudonym only; no raw secret, ciphertext, nonce, email, or link
+  dispatch: worker lease after DB commit; resolve recipient by challenge owner join, decrypt only in memory, and construct the pinned-origin fragment link
+  recipientSecretScope: raw recipient and link are forbidden in database, outbox, cache, log, trace, metric, and test artifact; they may exist only transiently in worker memory and the TLS provider request wire
+  providerObservability: redact request and response body, headers, recipient, link, and adapter exception details
+  deletion: remove ciphertext and nonce on provider acceptance or challenge terminal, superseded, or expired; never later than challenge expiry
+  crashWindows:
+    beforeProviderAcceptance: lease expiry retries the same material and same challenge
+    afterProviderAcceptanceBeforeDelete: at-least-once duplicate of the same single-use link is allowed; no new secret or challenge
+    afterChallengeConsumed: duplicate delivery is harmless because the challenge hash consumes exactly once
+x-access-jwt-boundary:
+  status: AUTHORIZED_LOCAL_PROFILE
+  decisionRequired: DN-C4A-001
+  algorithmAllowlist: [RS256]
+  requiredHeaders: [alg, kid, typ]
+  requiredClaims: [iss, aud, sub, sid, jti, iat, nbf, exp]
+  issuer: exact versioned FEELM issuer configuration
+  audience: exact FEELM resource-server audience
+  leewaySeconds: 30
+  maxLifetime: 10m
+  subjectFormat: UUID
+  forbiddenClaims: [email, nickname, password, refreshToken]
+  keyRotation: versioned public-key registry accepts current and previous key for at most 48h overlap
+  failure: unknown or missing kid, disallowed alg, bad iss or aud, invalid time, malformed UUID, missing or stale registry returns 401; non-test resource-server readiness fails closed
+x-cookie-response-boundary:
+  repeatedHeader: Set-Cookie
+  headerCount: 2
+  commaFolding: forbidden
+  profiles: [productionHttps, localHttpLoopbackOnly]
+x-auth-idempotency-boundary:
+  order: canonical validation and scope, PostgreSQL lookup/replay-or-409, Redis admission on miss, domain transaction with result
+  activeActorLedger: C1 IDEMPOTENCY_RECORD keyed by actor user
+  publicAuthLedger: C4A canonical PUBLIC_AUTH_IDEMPOTENCY_RECORD plus scope and request-HMAC alias tables; never place anonymous identity or signupId in actor_user_id
+  publicScope:
+    createSignup: PRE_SIGNUP_IDENTITY current and previous HMAC projections
+    verifyAndResend: SIGNUP_FLOW canonical stable signup UUID
+  canonicalRecordPrimaryKey: [record_id]
+  scopeAliasUnique: [scope_kind, scope_value, operation_code, idempotency_key]
+  aliasWrite: on miss insert every accepted current and previous identity projection alias to the same canonical record in one transaction so old and new deployments observe the same winner
+  requestDigestAlias: PUBLIC_AUTH_IDEMPOTENCY_REQUEST_HMAC_ALIAS stores every accepted current and previous keyed canonical-body HMAC for the canonical record so old and new deployments can verify equality
+  lock: sorted PostgreSQL transaction advisory locks for every accepted current and previous derived scope plus operation and key
+  requestEquality: constant-time comparison against current or previous HMAC-SHA-256 digest aliases of the canonical body
+  forbiddenRequestDigest: unkeyed hash of a body containing password or verificationSecret
+  keyRetention: identity-scope and request-HMAC keys cannot retire while a live public record references them
+  atomicity: public record, REAL or DECOY flow or transition, recovery attempt, safe response, audit, and outbox commit or roll back together
+  redisFailureResultsPersisted: false
+  retention:
+    signupAndResendWrongVerify: through public flow expiry; flow cleanup deletes nonterminal records together
+    verifySuccess: terminal result plus 24h independent of flow cleanup
+    activeLogout: revoked session terminal result plus 24h
+  replay: does not consume Redis counters, attempts, cooldowns, mail, or audit; raw tokens are never persisted
+  terminalReplay: verify success remains terminal plus 24h independent of public-flow foreign-key cleanup
+  cookieLessLogout: no idempotency record
+x-pending-signup-recovery-linearization:
+  observation: only a request that initially sees an expired prior REAL flow creates an attempt
+  attempt: PENDING_SIGNUP_RECOVERY_ATTEMPT with PostgreSQL admitted_at and prior_expired_signup_id before account lock
+  winner: account-lock revalidation creates a flow linked by recovery_attempt_id and recovery_from_signup_id and marks WON
+  concurrentLoser: admitted before winner linearization and blocked on the same account may link LOST_REPLAY only to a winner for the same prior flow
+  laterRequest: a request that initially sees the new OPEN REAL flow creates no recovery attempt and follows DECOY
+  atomicity: attempt status, winner or replay response, public idempotency record, and flow changes commit together
+x-auth-rate-limit-authority:
+  status: AUTHORIZED_LOCAL_PROFILE
+  decisionRequired: DN-C4A-003
+  decisionDependencies: [DN-C4A-001, DN-C4A-003]
+  store: shared Redis
+  clock: Redis server UTC TIME
+  operation: atomic counter plus TTL via Lua or Redis Function
+  localFallback: forbidden
+  unavailableBehavior: 503 before identity, challenge, or session mutation
+  policies:
+    globalEmergency:
+      policy: versioned capacity-derived integer limit required at approval
+      missingConfiguration: non-test readiness fails closed
+    sharedMail:
+      operations: [createEmailSignup, resendSignupEmailVerification]
+      identity: [{limit: 5, window: 1h}, {limit: 10, window: 1d}]
+      coarseIp: [{limit: 20, window: 1h}, {limit: 100, window: 1d}]
+      actualAndDecoy: consume on idempotency miss
+    verify:
+      coarseIp: [{limit: 30, window: 1h}]
+    login:
+      identityFailures: {threshold: 5, window: 15m, delay: exponential-30s-to-15m}
+      coarseIp: {limit: 50, window: 15m, throttle: 15m}
+    refresh:
+      sessionFamily: {limit: 30, window: 1m}
+      coarseIp: {limit: 120, window: 15m}
+  networkProjection:
+    trustedProxy: only the immediate peer in configured trusted-proxy CIDRs may supply one canonical configured Forwarded or X-Forwarded-For chain
+    untrustedPeer: socket peer IP only; forwarded headers ignored
+    malformedOrAmbiguous: reject before rate admission
+    coarseIp: {ipv4Prefix: 24, ipv6Prefix: 56}
+    keyedProjection: HMAC with explicit key version
+    rotationAggregation: one Redis Function atomically sums current and previous counters for the same logical window, rejects on the aggregate limit, and increments only current on allow
+    retirement: previous remains until the maximum quota window and pre-signup idempotency retention both drain; no third active version before drain
+    keyFailure: missing or unknown key version fails non-test readiness closed
+x-password-hashing-boundary:
+  status: AUTHORIZED_LOCAL_PROFILE
+  decisionRequired: DN-C4A-002
+  algorithm: Argon2id
+  hardFloor: 'm=19456 KiB,t=2,p=1'
+  performanceTarget: 'p95<=500ms'
+  conflictBehavior: keep security floor and fail non-test auth readiness/startup
+  dummyVerification: same production algorithm, version, memory, time, and parallelism parameters for unknown login and decoy signup
+  calibration: current hash, dummy hash, and every supported stored PHC verify workload
+  publicTiming: commonFloor=max(p99 supported workloads)+25ms plus 0..75ms CSPRNG server jitter
+  calibrationFailure: missing, stale, unsupported PHC, or commonFloor violation fails non-test readiness closed
+x-refresh-lineage-boundary:
+  status: AUTHORIZED_LOCAL_PROFILE
+  decisionRequired: DN-C4A-001
+  raceClock: PostgreSQL primary clock_timestamp under row lock
+  raceGrace: 5s
+  retention: family terminal timestamp plus 30 days
+  cleanup: delete family token hashes and AUTH_SESSION together
+x-social-linking-reservation:
+  status: BLOCKED
+  decisionRequired: DN-C4A-005
+  publicOperations: []
+  identityKey: [provider, issuer, subjectHmac]
+  transactionBinding: [authenticatedUser, authenticationSession, provider, expectedIssuer, exactRedirectUri]
+  proof: [stateHash, encryptedPkceVerifier, pkceS256Challenge, nonceHash]
+  mixUpDefense: server-side provider and issuer allowlist; callback cannot choose token endpoint or issuer
+  emailClaimAutoMerge: false
+x-blocked-capabilities:
+  - id: SOCIAL_GOOGLE
+    decisionRequired: DN-C4A-005
+    status: BLOCKED
+  - id: SOCIAL_KAKAO
+    decisionRequired: DN-C4A-005
+    status: BLOCKED
+  - id: SOCIAL_NAVER
+    decisionRequired: DN-C4A-005
+    status: BLOCKED
+  - id: ONBOARDING_RESTART
+    decisionRequired: DN-C4A-004
+    status: BLOCKED
+  - id: PRODUCTION_EMAIL
+    decisionRequired: DN-C4A-003
+    status: BLOCKED
+  - id: PASSWORD_ACCOUNT_LIFECYCLE
+    decisionRequired: DN-C4A-001
+    status: BLOCKED
+
+paths:
+  /api/v1/auth/sign-up:
+    post:
+      tags: [Membership]
+      operationId: createEmailSignup
+      x-implementation-status: AUTHORIZED_LOCAL_CONTRACT
+      summary: 이메일·비밀번호·nickname으로 pending membership 생성
+      security: []
+      x-local-decision-authority: [DN-C4A-002, DN-C4A-003]
+      x-enumeration-response-policy:
+        status: AUTHORIZED_LOCAL_PROFILE
+        actualHandle: persistent opaque UUID for the new REAL public flow, distinct from every challenge ID
+        duplicateOrUnknownHandle: persistent decoy opaque UUID with no account, secret, or mail
+        returnedHandleRetentionHours: 24
+        followUpState: same persisted cooldown, attempts, expiry, and revision for actual and decoy
+        publicShape: masked email, QUEUED, response-time plus 10-minute expiry, response-time plus 60-second resend, revision 1
+        responseFloor: calibrated commonFloor=max(p99 supported PHC workloads)+25ms
+        responseJitterMilliseconds: {minimum: 0, maximum: 75}
+        duplicateWork: dummy Argon2id plus queue-equivalent work
+        stableHandleEntity: EMAIL_SIGNUP_PUBLIC_FLOW
+        currentChallenge: versioned internal current_challenge_id for REAL only
+        flowExpires: createdAt plus 24 hours without resend extension
+        pendingRecovery: only after prior REAL flow is EXPIRED and before pendingPurgeAt; preserve nickname and OTT set
+        pendingPurge: account createdAt plus 30 days without re-signup extension
+        exactPublicCodes:
+          malformed: {status: 400, code: VALIDATION_ERROR}
+          idempotencyConflict: {status: 409, code: IDEMPOTENCY_KEY_REUSED}
+          stateConflict: {status: 409, code: AUTH_STATE_CONFLICT}
+          throttled: {status: 429, code: AUTH_FLOW_THROTTLED}
+          dependency: {status: 503, code: AUTH_DEPENDENCY_UNAVAILABLE}
+      parameters:
+        - $ref: '#/components/parameters/IdempotencyKey'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateEmailSignupRequest'
+      responses:
+        '202':
+          description: >-
+            존재 여부와 무관하게 같은 shape인 generic pending 상태. signupId와 expiry/resend 시각은
+            신규 account에는 actual challenge handle이고 duplicate/unknown에는 persisted decoy handle이다.
+            raw verification secret을 포함하지 않는다.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PendingEmailSignup'
+        '400': {$ref: '#/components/responses/PublicSignupBadRequest'}
+        '409': {$ref: '#/components/responses/PublicAuthConflict'}
+        '429': {$ref: '#/components/responses/AuthThrottled'}
+        '503': {$ref: '#/components/responses/AuthDependencyUnavailable'}
+
+  /api/v1/auth/email-verifications:
+    post:
+      tags: [Membership]
+      operationId: verifySignupEmail
+      x-implementation-status: AUTHORIZED_LOCAL_CONTRACT
+      summary: email verification challenge 소비와 membership 활성화
+      security: []
+      x-local-decision-authority: [DN-C4A-003]
+      x-generic-handle-policy:
+        persistence: returned actual and decoy rows exist for 24 hours
+        decoyBehavior: every submitted secret follows the wrong-attempt transition
+        concurrency: row lock gives verify or resend exactly one transition winner
+        unknownHandle: generic invalid-or-expired response without account detail
+        exactPublicCodes:
+          malformed: {status: 400, code: VALIDATION_ERROR}
+          wrong: {status: 400, code: VERIFICATION_INVALID}
+          unknownTerminalOrExpired: {status: 400, code: SIGNUP_FLOW_INVALID_OR_EXPIRED}
+          attemptsExhausted: {status: 429, code: VERIFICATION_ATTEMPTS_EXHAUSTED}
+          throttled: {status: 429, code: AUTH_FLOW_THROTTLED}
+          idempotencyConflict: {status: 409, code: IDEMPOTENCY_KEY_REUSED}
+          stateConflict: {status: 409, code: AUTH_STATE_CONFLICT}
+          dependency: {status: 503, code: AUTH_DEPENDENCY_UNAVAILABLE}
+      parameters:
+        - $ref: '#/components/parameters/IdempotencyKey'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/VerifyEmailRequest'
+      responses:
+        '200':
+          description: membership ACTIVE. 자동 login/token 발급 없이 login 화면으로 진행한다.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EmailVerificationResult'
+        '400': {$ref: '#/components/responses/PublicVerificationBadRequest'}
+        '409': {$ref: '#/components/responses/PublicAuthConflict'}
+        '429': {$ref: '#/components/responses/AuthFlowRateLimited'}
+        '503': {$ref: '#/components/responses/AuthDependencyUnavailable'}
+
+  /api/v1/auth/email-verification-resends:
+    post:
+      tags: [Membership]
+      operationId: resendSignupEmailVerification
+      x-implementation-status: AUTHORIZED_LOCAL_CONTRACT
+      summary: pending signup email verification 재전송 요청
+      security: []
+      x-local-decision-authority: [DN-C4A-003]
+      x-generic-handle-policy:
+        persistence: returned actual and decoy rows exist for 24 hours
+        decoyBehavior: update the same cooldown, attempt, expiry, and revision state without mail
+        concurrency: row lock gives verify or resend exactly one transition winner
+        unknownHandle: generic invalid-or-expired response without account detail
+        stableSignupId: unchanged; REAL current_challenge_id/version and flow revision advance
+        exactPublicCodes:
+          accepted: {status: 202}
+          invalidOrExpired: {status: 400, code: SIGNUP_FLOW_INVALID_OR_EXPIRED}
+          throttled: {status: 429, code: AUTH_FLOW_THROTTLED}
+          idempotencyConflict: {status: 409, code: IDEMPOTENCY_KEY_REUSED}
+          stateConflict: {status: 409, code: AUTH_STATE_CONFLICT}
+          dependency: {status: 503, code: AUTH_DEPENDENCY_UNAVAILABLE}
+      parameters:
+        - $ref: '#/components/parameters/IdempotencyKey'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ResendEmailVerificationRequest'
+      responses:
+        '202':
+          description: 열거를 줄이는 generic delivery state. raw secret 없음.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VerificationDeliveryState'
+        '400': {$ref: '#/components/responses/PublicResendBadRequest'}
+        '409': {$ref: '#/components/responses/PublicAuthConflict'}
+        '429': {$ref: '#/components/responses/AuthThrottled'}
+        '503': {$ref: '#/components/responses/AuthDependencyUnavailable'}
+
+  /api/v1/auth/login:
+    post:
+      tags: [Authentication]
+      operationId: loginWithEmail
+      x-implementation-status: AUTHORIZED_LOCAL_CONTRACT
+      summary: ACTIVE email membership 로그인
+      security: []
+      x-local-decision-authority: [DN-C4A-001, DN-C4A-003]
+      x-enumeration-timing-policy:
+        exactPublicCodes:
+          malformed: {status: 400, code: VALIDATION_ERROR}
+          invalidCredentials: {status: 401, code: INVALID_CREDENTIALS}
+          originFailure: {status: 403, code: AUTH_ORIGIN_FORBIDDEN}
+          pendingAfterCorrectPassword: {status: 403, code: EMAIL_VERIFICATION_REQUIRED}
+          throttled: {status: 429, code: AUTH_FLOW_THROTTLED}
+          dependency: {status: 503, code: AUTH_DEPENDENCY_UNAVAILABLE}
+        originFailure: {status: 403, code: AUTH_ORIGIN_FORBIDDEN, beforeCredentialWork: true}
+        unknownEmail: verify fixed dummy PHC hash with current production Argon2id parameters
+        wrongPassword: verify stored PHC hash
+        commonFailure: {status: 401, code: INVALID_CREDENTIALS, timing: 'calibrated commonFloor=max(p99 supported PHC workloads)+25ms plus CSPRNG 0..75ms jitter'}
+        pendingAfterCorrectPassword: {status: 403, code: EMAIL_VERIFICATION_REQUIRED}
+      parameters:
+        - $ref: '#/components/parameters/OriginHeader'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/EmailLoginRequest'
+      responses:
+        '200':
+          description: DN-C4A-001의 proposed access bearer와 선택 cookie profile의 refresh/CSRF cookie 발급
+          x-set-cookie-contract:
+            repeatedHeader: Set-Cookie
+            count: 2
+            commaFolding: forbidden
+            action: issue
+            profiles: [productionHttps, localHttpLoopbackOnly]
+          headers:
+            Set-Cookie:
+              description: >-
+                production HTTPS profile은 __Host-feelm_refresh (Secure, HttpOnly, SameSite=Lax, Path=/)와
+                JavaScript-readable __Host-feelm_csrf (Secure, SameSite=Lax, Path=/)를 발급한다.
+                loopback local HTTP profile은 feelm_local_refresh (non-Secure, HttpOnly, SameSite=Lax, Path=/)와
+                JavaScript-readable feelm_local_csrf (non-Secure, SameSite=Lax, Path=/)를 발급한다.
+                선택 profile의 두 header를 각각 전송하며 Domain은 없고 profile을 섞지 않는다.
+              schema: {type: string}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthenticationResult'
+        '400': {$ref: '#/components/responses/LoginBadRequest'}
+        '401': {$ref: '#/components/responses/InvalidCredentials'}
+        '403': {$ref: '#/components/responses/LoginForbidden'}
+        '429': {$ref: '#/components/responses/AuthThrottled'}
+        '503': {$ref: '#/components/responses/AuthDependencyUnavailable'}
+
+  /api/v1/auth/refresh:
+    post:
+      tags: [Authentication]
+      operationId: refreshAuthentication
+      x-implementation-status: AUTHORIZED_LOCAL_CONTRACT
+      summary: proposed refresh rotation으로 access bearer 갱신
+      security:
+        - refreshCookie: []
+          csrfCookie: []
+        - localRefreshCookie: []
+          localCsrfCookie: []
+      x-local-decision-authority: [DN-C4A-001]
+      x-race-clock: PostgreSQL primary clock_timestamp under session and token row lock
+      x-cookie-profile-auth: exactly one complete production or local pair; mixed or partial pairs are forbidden
+      x-exact-errors:
+        invalidSession: {status: 401, code: AUTH_SESSION_INVALID}
+        origin: {status: 403, code: AUTH_ORIGIN_FORBIDDEN}
+        csrf: {status: 403, code: CSRF_FORBIDDEN}
+        race: {status: 409, code: REFRESH_RACE_RETRY_NEW_COOKIE}
+        throttled: {status: 429, code: AUTH_FLOW_THROTTLED}
+        dependency: {status: 503, code: AUTH_DEPENDENCY_UNAVAILABLE}
+      parameters:
+        - $ref: '#/components/parameters/OriginHeader'
+        - $ref: '#/components/parameters/CsrfTokenHeader'
+      responses:
+        '200':
+          description: 회전된 refresh cookie와 새 access bearer
+          x-set-cookie-contract:
+            repeatedHeader: Set-Cookie
+            count: 2
+            commaFolding: forbidden
+            action: rotate
+            profiles: [productionHttps, localHttpLoopbackOnly]
+          headers:
+            Set-Cookie:
+              description: >-
+                새 refresh와 새 signed CSRF cookie를 별도 Set-Cookie header로 함께 회전한다.
+                이전 CSRF header/cookie pair는 새 refresh generation에 사용할 수 없다.
+              schema: {type: string}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthenticationResult'
+        '401': {$ref: '#/components/responses/AuthSessionInvalid'}
+        '403': {$ref: '#/components/responses/AuthMutationForbidden'}
+        '409': {$ref: '#/components/responses/RefreshRaceConflict'}
+        '429': {$ref: '#/components/responses/AuthThrottled'}
+        '503': {$ref: '#/components/responses/AuthDependencyUnavailable'}
+
+  /api/v1/auth/logout:
+    post:
+      tags: [Authentication]
+      operationId: logoutCurrentSession
+      x-implementation-status: AUTHORIZED_LOCAL_CONTRACT
+      summary: refresh cookie가 가리키는 current authentication session 폐기
+      security:
+        - refreshCookie: []
+          csrfCookie: []
+        - localRefreshCookie: []
+          localCsrfCookie: []
+        - {}
+      x-local-decision-authority: [DN-C4A-001]
+      x-logout-retry-policy:
+        origin: exact allowed Origin is mandatory for every branch, including cookie-less retry
+        bothAuthCookiesAbsent: 204 with both exact clear headers; no CSRF, idempotency, DB, or audit mutation required
+        partialPair: 403 CSRF_FORBIDDEN
+        completePairInvalidSession: valid Origin and CSRF but unknown, expired, or revoked refresh returns 401 AUTH_SESSION_INVALID
+        successfulReplay: same idempotency key replays 204 and exact clear without another audit mutation
+        clearAttributes: selected profile issuance attributes plus Max-Age=0 and epoch Expires
+        exactErrors:
+          origin: {status: 403, code: AUTH_ORIGIN_FORBIDDEN}
+          csrfOrPartialPair: {status: 403, code: CSRF_FORBIDDEN}
+          invalidSession: {status: 401, code: AUTH_SESSION_INVALID}
+          idempotencyConflict: {status: 409, code: IDEMPOTENCY_KEY_REUSED}
+          dependency: {status: 503, code: AUTH_DEPENDENCY_UNAVAILABLE}
+      parameters:
+        - $ref: '#/components/parameters/OptionalIdempotencyKey'
+        - $ref: '#/components/parameters/OriginHeader'
+        - $ref: '#/components/parameters/OptionalCsrfTokenHeader'
+      responses:
+        '204':
+          description: >-
+            current refresh family를 즉시 revoke하고 refresh/CSRF cookie를 제거한다. 이미 발급된
+            access JWT는 server-side denylist가 없는 v1 후보에서 최대 10분 exp까지 유효할 수 있다.
+          x-set-cookie-contract:
+            repeatedHeader: Set-Cookie
+            count: 2
+            commaFolding: forbidden
+            action: clear
+            profiles: [productionHttps, localHttpLoopbackOnly]
+          headers:
+            Set-Cookie:
+              description: >-
+                선택 profile의 refresh/CSRF name, Path=/, no Domain, SameSite=Lax, Secure/HttpOnly를 발급과
+                동일하게 유지하고 Max-Age=0, Expires=Thu, 01 Jan 1970 00:00:00 GMT를 더한 두 header.
+              schema: {type: string}
+        '401': {$ref: '#/components/responses/AuthSessionInvalid'}
+        '403': {$ref: '#/components/responses/AuthMutationForbidden'}
+        '409': {$ref: '#/components/responses/IdempotencyConflict'}
+        '503': {$ref: '#/components/responses/AuthDependencyUnavailable'}
+
+  /api/v1/me:
+    get:
+      tags: [MyProfile]
+      operationId: getMyMembership
+      x-implementation-status: AUTHORIZED_LOCAL_CONTRACT
+      summary: 내 membership·nickname·onboarding 요약
+      x-local-decision-authority: [DN-C4A-001]
+      security: [{bearerAuth: []}]
+      responses:
+        '200':
+          description: internal userId와 raw email을 포함하지 않는 내 요약
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MyMembership'
+        '401': {$ref: '#/components/responses/Unauthorized'}
+        '503': {$ref: '#/components/responses/ServiceUnavailable'}
+    patch:
+      tags: [MyProfile]
+      operationId: updateMyNickname
+      x-implementation-status: AUTHORIZED_LOCAL_CONTRACT
+      summary: 내 nickname 변경
+      x-local-decision-authority: [DN-C4A-001, DN-C4A-002]
+      security: [{bearerAuth: []}]
+      parameters:
+        - $ref: '#/components/parameters/IdempotencyKey'
+        - $ref: '#/components/parameters/ExpectedRevision'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateNicknameRequest'
+      responses:
+        '200':
+          description: nickname과 profile revision 갱신
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MyMembership'
+        '400': {$ref: '#/components/responses/ValidationError'}
+        '401': {$ref: '#/components/responses/Unauthorized'}
+        '409': {$ref: '#/components/responses/Conflict'}
+        '503': {$ref: '#/components/responses/ServiceUnavailable'}
+
+  /api/v1/onboarding/movies:
+    get:
+      tags: [Onboarding]
+      operationId: listOnboardingMovies
+      x-implementation-status: AUTHORIZED_LOCAL_CONTRACT
+      summary: versioned 초기 LIKE/DISLIKE movie 목록
+      x-local-decision-authority: [DN-C4A-001, DN-C4A-004]
+      security: [{bearerAuth: []}]
+      responses:
+        '200':
+          description: 후보가 없어도 200과 빈 items. local versioned baseline이며 개인화·production 성능 주장이 아니다.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OnboardingMoviePage'
+        '401': {$ref: '#/components/responses/Unauthorized'}
+        '503': {$ref: '#/components/responses/ServiceUnavailable'}
+
+  /api/v1/onboarding/preferences:
+    put:
+      tags: [Onboarding]
+      operationId: replaceOnboardingPreferences
+      x-implementation-status: AUTHORIZED_LOCAL_CONTRACT
+      summary: 현재 journey LIKE/DISLIKE 전체 set 교체
+      x-local-decision-authority: [DN-C4A-001, DN-C4A-004]
+      security: [{bearerAuth: []}]
+      parameters:
+        - $ref: '#/components/parameters/IdempotencyKey'
+        - $ref: '#/components/parameters/ExpectedRevision'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ReplaceOnboardingPreferencesRequest'
+      responses:
+        '200':
+          description: Rating과 분리된 preference set 저장
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OnboardingState'
+        '400': {$ref: '#/components/responses/ValidationError'}
+        '401': {$ref: '#/components/responses/Unauthorized'}
+        '409': {$ref: '#/components/responses/Conflict'}
+        '503': {$ref: '#/components/responses/ServiceUnavailable'}
+
+  /api/v1/onboarding/complete:
+    post:
+      tags: [Onboarding]
+      operationId: completeOnboarding
+      x-implementation-status: AUTHORIZED_LOCAL_CONTRACT
+      summary: SUBMITTED 또는 SKIPPED로 current journey 완료
+      x-local-decision-authority: [DN-C4A-001, DN-C4A-004]
+      security: [{bearerAuth: []}]
+      parameters:
+        - $ref: '#/components/parameters/IdempotencyKey'
+        - $ref: '#/components/parameters/ExpectedRevision'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CompleteOnboardingRequest'
+      responses:
+        '200':
+          description: 추천 계산 완료가 아닌 onboarding state 완료
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OnboardingState'
+        '400': {$ref: '#/components/responses/ValidationError'}
+        '401': {$ref: '#/components/responses/Unauthorized'}
+        '409': {$ref: '#/components/responses/Conflict'}
+        '503': {$ref: '#/components/responses/ServiceUnavailable'}
+
+  /api/v1/onboarding/restart:
+    post:
+      tags: [Onboarding]
+      operationId: restartOnboarding
+      summary: 완료·skip journey 재수행 후보
+      x-decision-required: [DN-C4A-001, DN-C4A-004]
+      x-implementation-status: BLOCKED
+      parameters:
+        - $ref: '#/components/parameters/IdempotencyKey'
+        - $ref: '#/components/parameters/ExpectedRevision'
+      responses:
+        '200':
+          description: 승인 시 새 journey revision과 prior preference supersede
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OnboardingState'
+        '401': {$ref: '#/components/responses/Unauthorized'}
+        '409': {$ref: '#/components/responses/Conflict'}
+        '503': {$ref: '#/components/responses/ServiceUnavailable'}
+
+  /api/v1/me/ott-subscriptions:
+    get:
+      tags: [MyOttSubscriptions]
+      operationId: getMyOttSubscriptions
+      x-implementation-status: AUTHORIZED_LOCAL_CONTRACT
+      summary: 내 KR OTT subscription set 상태
+      x-local-decision-authority: [DN-C4A-001]
+      security: [{bearerAuth: []}]
+      responses:
+        '200':
+          description: NOT_CONFIGURED/CONFIGURED/SKIPPED와 provider set
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MyOttSubscriptionSet'
+        '401': {$ref: '#/components/responses/Unauthorized'}
+        '503': {$ref: '#/components/responses/ServiceUnavailable'}
+    put:
+      tags: [MyOttSubscriptions]
+      operationId: replaceMyOttSubscriptions
+      x-implementation-status: AUTHORIZED_LOCAL_CONTRACT
+      summary: 내 KR OTT subscription set 전체 교체 또는 skip
+      x-local-decision-authority: [DN-C4A-001]
+      security: [{bearerAuth: []}]
+      parameters:
+        - $ref: '#/components/parameters/IdempotencyKey'
+        - $ref: '#/components/parameters/ExpectedRevision'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ReplaceOttSubscriptionsRequest'
+      responses:
+        '200':
+          description: atomic set replacement
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MyOttSubscriptionSet'
+        '400': {$ref: '#/components/responses/ValidationError'}
+        '401': {$ref: '#/components/responses/Unauthorized'}
+        '404': {$ref: '#/components/responses/ResourceNotFound'}
+        '409': {$ref: '#/components/responses/Conflict'}
+        '503': {$ref: '#/components/responses/ServiceUnavailable'}
+
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      description: DN-C4A-001 proposed; 현재 C1 required bearer 호환안
+    refreshCookie:
+      type: apiKey
+      in: cookie
+      name: __Host-feelm_refresh
+      description: Secure, HttpOnly, SameSite=Lax, Path=/, no Domain인 rotating opaque refresh 후보
+    csrfCookie:
+      type: apiKey
+      in: cookie
+      name: __Host-feelm_csrf
+      description: >-
+        Secure, SameSite=Lax, Path=/, no Domain. refresh generation/session에 서명·결합되며
+        JavaScript가 같은 값을 X-CSRF-Token으로 제출한다.
+    localRefreshCookie:
+      type: apiKey
+      in: cookie
+      name: feelm_local_refresh
+      description: loopback local HTTP 전용 non-Secure, HttpOnly, SameSite=Lax, Path=/, no Domain refresh cookie
+    localCsrfCookie:
+      type: apiKey
+      in: cookie
+      name: feelm_local_csrf
+      description: loopback local HTTP 전용 non-Secure, JavaScript-readable, SameSite=Lax, Path=/, no Domain CSRF cookie
+
+  parameters:
+    IdempotencyKey:
+      name: Idempotency-Key
+      in: header
+      required: true
+      schema:
+        type: string
+        minLength: 8
+        maxLength: 128
+        pattern: '^[!-~]+$'
+    OptionalIdempotencyKey:
+      name: Idempotency-Key
+      in: header
+      required: false
+      description: active-session logout mutation에는 사용; auth cookie가 모두 없는 204 clear retry에는 없어도 된다.
+      schema:
+        type: string
+        minLength: 8
+        maxLength: 128
+        pattern: '^[!-~]+$'
+    ExpectedRevision:
+      name: X-Expected-Revision
+      in: header
+      required: true
+      schema:
+        type: integer
+        minimum: 1
+    OriginHeader:
+      name: Origin
+      in: header
+      required: true
+      description: login/refresh/logout은 server exact allowlist와 일치해야 하며 absent/null도 mutation 전에 거부한다.
+      schema:
+        type: string
+        format: uri
+    CsrfTokenHeader:
+      name: X-CSRF-Token
+      in: header
+      required: true
+      description: 선택 profile의 CSRF cookie와 같고 refresh session/generation에 유효하게 서명된 값
+      schema:
+        type: string
+        minLength: 32
+        maxLength: 512
+    OptionalCsrfTokenHeader:
+      name: X-CSRF-Token
+      in: header
+      required: false
+      description: auth cookie가 모두 없는 logout retry에서만 생략 가능; 하나라도 있으면 선택 profile의 signed cookie와 함께 필수다.
+      schema: {type: string, minLength: 32, maxLength: 512}
+
+  responses:
+    ValidationError:
+      description: 요청 값 오류
+      content:
+        application/json:
+          schema: {$ref: '#/components/schemas/ErrorResponse'}
+    Unauthorized:
+      description: 인증 없음 또는 승인된 transport에서 token/session 무효
+      content:
+        application/json:
+          schema: {$ref: '#/components/schemas/ErrorResponse'}
+    ResourceNotFound:
+      description: 존재하지 않거나 actor 소유가 아닌 resource
+      content:
+        application/json:
+          schema: {$ref: '#/components/schemas/ErrorResponse'}
+    Conflict:
+      description: state, revision, unique 또는 idempotency 충돌
+      content:
+        application/json:
+          schema: {$ref: '#/components/schemas/ErrorResponse'}
+    ServiceUnavailable:
+      description: DB 또는 필수 identity service를 안전하게 처리할 수 없음
+      content:
+        application/json:
+          schema: {$ref: '#/components/schemas/ErrorResponse'}
+    PublicSignupBadRequest:
+      description: signup validation failure
+      content:
+        application/json:
+          schema: {$ref: '#/components/schemas/PublicSignupBadRequestError'}
+    PublicVerificationBadRequest:
+      description: exact verification invalid or expired state
+      content:
+        application/json:
+          schema: {$ref: '#/components/schemas/PublicVerificationBadRequestError'}
+    PublicResendBadRequest:
+      description: exact resend invalid or expired state
+      content:
+        application/json:
+          schema: {$ref: '#/components/schemas/PublicResendBadRequestError'}
+    LoginBadRequest:
+      description: exact login request validation failure
+      content:
+        application/json:
+          schema: {$ref: '#/components/schemas/LoginBadRequestError'}
+    PublicAuthConflict:
+      description: exact public-auth idempotency or state conflict
+      content:
+        application/json:
+          schema: {$ref: '#/components/schemas/PublicAuthConflictError'}
+    AuthFlowRateLimited:
+      description: exact public-auth throttle or verification-attempt exhaustion
+      headers:
+        Retry-After:
+          schema: {type: integer, minimum: 1}
+      content:
+        application/json:
+          schema: {$ref: '#/components/schemas/AuthFlowRateLimitedError'}
+    AuthThrottled:
+      description: exact distributed auth throttle
+      headers:
+        Retry-After:
+          schema: {type: integer, minimum: 1}
+      content:
+        application/json:
+          schema: {$ref: '#/components/schemas/AuthThrottledError'}
+    AuthDependencyUnavailable:
+      description: public auth authority unavailable before mutation
+      content:
+        application/json:
+          schema: {$ref: '#/components/schemas/AuthDependencyUnavailableError'}
+    InvalidCredentials:
+      description: unknown email or wrong password without enumeration detail
+      content:
+        application/json:
+          schema: {$ref: '#/components/schemas/InvalidCredentialsError'}
+    LoginForbidden:
+      description: exact Origin failed or a correct pending credential cannot become a protected actor
+      content:
+        application/json:
+          schema: {$ref: '#/components/schemas/LoginForbiddenError'}
+    AuthSessionInvalid:
+      description: refresh family is unknown, expired, or revoked
+      content:
+        application/json:
+          schema: {$ref: '#/components/schemas/AuthSessionInvalidError'}
+    AuthMutationForbidden:
+      description: exact Origin or signed double-submit CSRF validation failed
+      content:
+        application/json:
+          schema: {$ref: '#/components/schemas/AuthMutationForbiddenError'}
+    RefreshRaceConflict:
+      description: immediately previous generation lost a concurrent refresh race
+      content:
+        application/json:
+          schema: {$ref: '#/components/schemas/RefreshRaceConflictError'}
+    IdempotencyConflict:
+      description: active mutation idempotency key body conflict
+      content:
+        application/json:
+          schema: {$ref: '#/components/schemas/IdempotencyConflictError'}
+
+  schemas:
+    CreateEmailSignupRequest:
+      type: object
+      additionalProperties: false
+      required: [email, password, nickname]
+      x-local-decision-authority: [DN-C4A-002, DN-C4A-003]
+      properties:
+        email:
+          type: string
+          format: email
+          maxLength: 320
+        password:
+          type: string
+          format: password
+          minLength: 15
+          maxLength: 128
+          description: DN-C4A-002 packet의 proposed single-factor password 15~128자
+        nickname:
+          type: string
+          minLength: 2
+          maxLength: 20
+          description: trim+NFKC+casefold와 Letter/Number/underscore 전역 unique proposed
+
+    PendingEmailSignup:
+      type: object
+      additionalProperties: false
+      required: [signupId, membershipStatus, emailMasked, deliveryStatus, verificationExpiresAt, resendAvailableAt, revision]
+      properties:
+        signupId: {type: string, format: uuid}
+        membershipStatus:
+          type: string
+          const: PENDING_EMAIL_VERIFICATION
+        emailMasked: {type: string}
+        deliveryStatus:
+          type: string
+          const: QUEUED
+          description: 실제 delivery/account 존재 상태를 노출하지 않는 public generic 값
+        verificationExpiresAt:
+          type: string
+          format: date-time
+          description: actual 또는 persisted decoy signup handle 모두 response 기준 now+10m 후보
+        resendAvailableAt:
+          type: string
+          format: date-time
+          description: actual 또는 persisted decoy signup handle 모두 response 기준 now+60s 후보
+        revision: {type: integer, const: 1}
+
+    VerifyEmailRequest:
+      type: object
+      additionalProperties: false
+      required: [signupId, verificationSecret]
+      properties:
+        signupId: {type: string, format: uuid}
+        verificationSecret:
+          type: string
+          minLength: 1
+          maxLength: 256
+          writeOnly: true
+          description: >-
+            request Host/Forwarded/X-Forwarded-Host가 아니라 pinned server config의 exact HTTPS frontend
+            origin fragment로만 전달한다. frontend가 즉시 읽고 history.replaceState로 제거한 뒤 이 POST
+            body에만 전송한다. raw 저장·로그·응답 금지.
+
+    ResendEmailVerificationRequest:
+      type: object
+      additionalProperties: false
+      required: [signupId]
+      properties:
+        signupId: {type: string, format: uuid}
+
+    VerificationDeliveryState:
+      type: object
+      additionalProperties: false
+      required: [signupId, deliveryStatus, verificationExpiresAt, resendAvailableAt, revision]
+      properties:
+        signupId:
+          type: string
+          format: uuid
+          description: request handle echo; actual/decoy 여부를 나타내지 않음
+        deliveryStatus:
+          type: string
+          const: QUEUED
+        verificationExpiresAt: {type: string, format: date-time}
+        resendAvailableAt: {type: string, format: date-time}
+        revision: {type: integer, minimum: 2, description: stable signupId public-flow revision}
+
+    EmailVerificationResult:
+      type: object
+      additionalProperties: false
+      required: [membershipStatus, emailMasked, nextAction, revision]
+      properties:
+        membershipStatus: {type: string, const: ACTIVE}
+        emailMasked: {type: string}
+        nextAction: {type: string, const: LOGIN}
+        revision: {type: integer, minimum: 1}
+
+    EmailLoginRequest:
+      type: object
+      additionalProperties: false
+      required: [email, password]
+      properties:
+        email: {type: string, format: email, maxLength: 320}
+        password:
+          type: string
+          format: password
+          minLength: 15
+          maxLength: 128
+          writeOnly: true
+
+    AuthenticationResult:
+      type: object
+      additionalProperties: false
+      required: [tokenType, accessToken, expiresInSeconds, membership]
+      x-local-decision-authority: [DN-C4A-001]
+      properties:
+        tokenType: {type: string, const: Bearer}
+        accessToken:
+          type: string
+          readOnly: true
+          description: response 전달만 허용; 저장·로그·fixture 금지
+        expiresInSeconds:
+          type: integer
+          minimum: 1
+          description: local access JWT TTL은 600초
+        membership: {$ref: '#/components/schemas/MyMembership'}
+
+    MyMembership:
+      type: object
+      additionalProperties: false
+      required: [membershipStatus, emailMasked, nickname, profileRevision, onboarding]
+      properties:
+        membershipStatus:
+          type: string
+          enum: [PENDING_EMAIL_VERIFICATION, ACTIVE]
+        emailMasked: {type: string}
+        nickname: {type: string}
+        profileRevision: {type: integer, minimum: 1}
+        onboarding: {$ref: '#/components/schemas/OnboardingSummary'}
+
+    UpdateNicknameRequest:
+      type: object
+      additionalProperties: false
+      required: [nickname]
+      x-local-decision-authority: [DN-C4A-002]
+      properties:
+        nickname:
+          type: string
+          minLength: 2
+          maxLength: 20
+
+    OnboardingMoviePage:
+      type: object
+      additionalProperties: false
+      required: [catalogVersion, selectionPolicyVersion, targetCount, items]
+      properties:
+        catalogVersion: {type: string}
+        selectionPolicyVersion:
+          type: string
+          description: local 보수 baseline의 versioned policy identifier
+        targetCount:
+          type: integer
+          minimum: 0
+          description: 최대 10개이며 K10은 권장 목표일 뿐 minimum이 아님
+        items:
+          type: array
+          maxItems: 10
+          x-unique-by: movieId
+          items: {$ref: '#/components/schemas/OnboardingMovie'}
+
+    OnboardingMovie:
+      type: object
+      additionalProperties: false
+      required: [movieId, title, posterUrl]
+      properties:
+        movieId: {type: string, format: uuid}
+        title: {type: string}
+        posterUrl: {type: [string, 'null'], format: uri}
+
+    ReplaceOnboardingPreferencesRequest:
+      type: object
+      additionalProperties: false
+      required: [catalogVersion, selectionPolicyVersion, preferences]
+      properties:
+        catalogVersion: {type: string}
+        selectionPolicyVersion: {type: string}
+        preferences:
+          type: array
+          maxItems: 10
+          uniqueItems: true
+          x-unique-by: movieId
+          items: {$ref: '#/components/schemas/OnboardingPreferenceInput'}
+
+    OnboardingPreferenceInput:
+      type: object
+      additionalProperties: false
+      required: [movieId, preference]
+      properties:
+        movieId: {type: string, format: uuid}
+        preference:
+          type: string
+          enum: [LIKE, DISLIKE]
+
+    CompleteOnboardingRequest:
+      type: object
+      additionalProperties: false
+      required: [completionMode, expectedPreferenceCount]
+      properties:
+        completionMode:
+          type: string
+          enum: [SUBMITTED, SKIPPED]
+        expectedPreferenceCount:
+          type: integer
+          minimum: 0
+          description: locked current active preference count와 반드시 같아야 하며 client 값만 신뢰하지 않는다.
+      allOf:
+        - if:
+            properties: {completionMode: {const: SKIPPED}}
+            required: [completionMode]
+          then:
+            properties: {expectedPreferenceCount: {const: 0}}
+        - if:
+            properties: {completionMode: {const: SUBMITTED}}
+            required: [completionMode]
+          then:
+            properties:
+              expectedPreferenceCount: {type: integer, minimum: 1, maximum: 10}
+
+    OnboardingState:
+      type: object
+      additionalProperties: false
+      required: [status, preferenceCount, likeCount, dislikeCount, revision, recommendationProjection]
+      properties:
+        status:
+          type: string
+          enum: [NOT_STARTED, IN_PROGRESS, COMPLETED, SKIPPED]
+        preferenceCount: {type: integer, minimum: 0, maximum: 10}
+        likeCount: {type: integer, minimum: 0, maximum: 10}
+        dislikeCount: {type: integer, minimum: 0, maximum: 10}
+        requiredPreferenceCount:
+          type: [integer, 'null']
+          minimum: 0
+          description: DN-C4A-004 승인 뒤 SUBMITTED minimum
+        maximumPreferenceCount:
+          type: [integer, 'null']
+          minimum: 0
+        revision: {type: integer, minimum: 1}
+        recommendationProjection:
+          type: string
+          enum: [NOT_REQUESTED, PENDING, READY, FAILED]
+          description: journey completion과 별도이며 READY도 순위 개선 주장이 아님
+      x-count-invariant: preferenceCount = likeCount + dislikeCount = locked active preference row count
+      allOf:
+        - if:
+            properties: {status: {enum: [NOT_STARTED, SKIPPED]}}
+            required: [status]
+          then:
+            properties:
+              preferenceCount: {const: 0}
+              likeCount: {const: 0}
+              dislikeCount: {const: 0}
+        - if:
+            properties: {status: {const: COMPLETED}}
+            required: [status]
+          then:
+            properties:
+              preferenceCount: {type: integer, minimum: 1, maximum: 10}
+
+    OnboardingSummary:
+      type: object
+      additionalProperties: false
+      required: [status, preferenceCount, revision]
+      properties:
+        status:
+          type: string
+          enum: [NOT_STARTED, IN_PROGRESS, COMPLETED, SKIPPED]
+        preferenceCount: {type: integer, minimum: 0, maximum: 10}
+        revision: {type: integer, minimum: 1}
+      allOf:
+        - if:
+            properties: {status: {enum: [NOT_STARTED, SKIPPED]}}
+            required: [status]
+          then:
+            properties: {preferenceCount: {const: 0}}
+        - if:
+            properties: {status: {const: COMPLETED}}
+            required: [status]
+          then:
+            properties: {preferenceCount: {type: integer, minimum: 1, maximum: 10}}
+
+    ReplaceOttSubscriptionsRequest:
+      type: object
+      additionalProperties: false
+      required: [selectionMode, providerIds]
+      properties:
+        selectionMode:
+          type: string
+          enum: [CONFIGURED, SKIPPED]
+        providerIds:
+          type: array
+          uniqueItems: true
+          items: {type: string, format: uuid}
+          description: SKIPPED면 empty, CONFIGURED면 empty도 명시적 no-subscription
+      allOf:
+        - if:
+            properties: {selectionMode: {const: SKIPPED}}
+            required: [selectionMode]
+          then:
+            properties: {providerIds: {type: array, maxItems: 0}}
+
+    MyOttSubscriptionSet:
+      type: object
+      additionalProperties: false
+      required: [region, selectionStatus, providerIds, revision]
+      properties:
+        region: {type: string, const: KR}
+        selectionStatus:
+          type: string
+          enum: [NOT_CONFIGURED, CONFIGURED, SKIPPED]
+        providerIds:
+          type: array
+          uniqueItems: true
+          items: {type: string, format: uuid}
+        revision: {type: integer, minimum: 1}
+      allOf:
+        - if:
+            properties:
+              selectionStatus: {enum: [NOT_CONFIGURED, SKIPPED]}
+            required: [selectionStatus]
+          then:
+            properties: {providerIds: {type: array, maxItems: 0}}
+
+    FieldError:
+      type: object
+      additionalProperties: false
+      required: [field, reason]
+      properties:
+        field: {type: string}
+        reason: {type: string}
+
+    ErrorResponse:
+      type: object
+      additionalProperties: false
+      required: [code, message, traceId, fieldErrors]
+      properties:
+        code: {type: string}
+        message: {type: string}
+        traceId: {type: string}
+        fieldErrors:
+          type: array
+          items: {$ref: '#/components/schemas/FieldError'}
+        currentRevision:
+          type: [integer, 'null']
+          minimum: 1
+    PublicSignupBadRequestError:
+      allOf:
+        - $ref: '#/components/schemas/ErrorResponse'
+        - type: object
+          properties: {code: {type: string, const: VALIDATION_ERROR}}
+    PublicVerificationBadRequestError:
+      allOf:
+        - $ref: '#/components/schemas/ErrorResponse'
+        - type: object
+          properties:
+            code:
+              type: string
+              enum: [VALIDATION_ERROR, VERIFICATION_INVALID, SIGNUP_FLOW_INVALID_OR_EXPIRED]
+    PublicResendBadRequestError:
+      allOf:
+        - $ref: '#/components/schemas/ErrorResponse'
+        - type: object
+          properties:
+            code:
+              type: string
+              enum: [VALIDATION_ERROR, SIGNUP_FLOW_INVALID_OR_EXPIRED]
+    PublicAuthConflictError:
+      allOf:
+        - $ref: '#/components/schemas/ErrorResponse'
+        - type: object
+          properties:
+            code:
+              type: string
+              enum: [IDEMPOTENCY_KEY_REUSED, AUTH_STATE_CONFLICT]
+    LoginBadRequestError:
+      allOf:
+        - $ref: '#/components/schemas/ErrorResponse'
+        - type: object
+          properties: {code: {type: string, const: VALIDATION_ERROR}}
+    AuthFlowRateLimitedError:
+      allOf:
+        - $ref: '#/components/schemas/ErrorResponse'
+        - type: object
+          properties:
+            code:
+              type: string
+              enum: [VERIFICATION_ATTEMPTS_EXHAUSTED, AUTH_FLOW_THROTTLED]
+    AuthThrottledError:
+      allOf:
+        - $ref: '#/components/schemas/ErrorResponse'
+        - type: object
+          properties: {code: {type: string, const: AUTH_FLOW_THROTTLED}}
+    AuthDependencyUnavailableError:
+      allOf:
+        - $ref: '#/components/schemas/ErrorResponse'
+        - type: object
+          properties: {code: {type: string, const: AUTH_DEPENDENCY_UNAVAILABLE}}
+    InvalidCredentialsError:
+      allOf:
+        - $ref: '#/components/schemas/ErrorResponse'
+        - type: object
+          properties: {code: {type: string, const: INVALID_CREDENTIALS}}
+    LoginForbiddenError:
+      allOf:
+        - $ref: '#/components/schemas/ErrorResponse'
+        - type: object
+          properties:
+            code:
+              type: string
+              enum: [AUTH_ORIGIN_FORBIDDEN, EMAIL_VERIFICATION_REQUIRED]
+    AuthSessionInvalidError:
+      allOf:
+        - $ref: '#/components/schemas/ErrorResponse'
+        - type: object
+          properties: {code: {type: string, const: AUTH_SESSION_INVALID}}
+    AuthMutationForbiddenError:
+      allOf:
+        - $ref: '#/components/schemas/ErrorResponse'
+        - type: object
+          properties:
+            code:
+              type: string
+              enum: [AUTH_ORIGIN_FORBIDDEN, CSRF_FORBIDDEN]
+    RefreshRaceConflictError:
+      allOf:
+        - $ref: '#/components/schemas/ErrorResponse'
+        - type: object
+          properties: {code: {type: string, const: REFRESH_RACE_RETRY_NEW_COOKIE}}
+    IdempotencyConflictError:
+      allOf:
+        - $ref: '#/components/schemas/ErrorResponse'
+        - type: object
+          properties: {code: {type: string, const: IDEMPOTENCY_KEY_REUSED}}

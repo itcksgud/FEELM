@@ -1,0 +1,68 @@
+{
+  "artifactKind": "REC_EV_006_SCORING_FEATURE_PROVENANCE",
+  "budgetPolicyReferences": {
+    "0%": {
+      "policy": "POPULARITY",
+      "realized_ndcg_loss": 0.0,
+      "validation_status": "LOCKED_BEFORE_TEST"
+    },
+    "1%": {
+      "policy": "EXPLORE_05_ON_POPULARITY",
+      "realized_ndcg_loss": 0.006867,
+      "validation_status": "LOCKED_BEFORE_TEST"
+    },
+    "3%": {
+      "policy": "EXPLORE_05_ON_POPULARITY",
+      "realized_ndcg_loss": 0.006867,
+      "validation_status": "LOCKED_BEFORE_TEST"
+    },
+    "5%": {
+      "policy": "EXPLORE_05_ON_POPULARITY",
+      "realized_ndcg_loss": 0.006867,
+      "validation_status": "LOCKED_BEFORE_TEST"
+    }
+  },
+  "features": [
+    {
+      "faithfulnessGate": "score contribution present",
+      "feature": "BAYESIAN_POPULARITY",
+      "reasonCandidate": "POPULARITY_BASELINE",
+      "scope": "ITEM",
+      "source": "REC-EV-001 Train rating count and sum"
+    },
+    {
+      "faithfulnessGate": "non-zero signed dot-product contribution",
+      "feature": "GENRE_AFFINITY",
+      "reasonCandidate": "GENRE_AFFINITY",
+      "scope": "USER_ITEM",
+      "source": "Train-only user centered-rating genre vector and movies.csv genres"
+    },
+    {
+      "faithfulnessGate": "selected policy has exploration weight and positive novelty contribution",
+      "feature": "NOVELTY_PRIOR",
+      "reasonCandidate": "LESS_POPULAR_DISCOVERY",
+      "scope": "ITEM",
+      "source": "Train-only item rating count self-information"
+    },
+    {
+      "faithfulnessGate": "item selection changed at its greedy position",
+      "feature": "MARGINAL_GENRE_DIVERSITY",
+      "reasonCandidate": "LIST_DIVERSITY",
+      "scope": "LIST_ITEM",
+      "source": "Greedy list-state maximum genre cosine distance"
+    }
+  ],
+  "prohibitedClaims": [
+    "reason display count",
+    "reason UI approval",
+    "causal user preference explanation",
+    "online exploration satisfaction",
+    "full-catalog quality",
+    "personal ranking champion"
+  ],
+  "rankingChampion": null,
+  "reasonUiApproved": false,
+  "schemaVersion": 1,
+  "sourceEvidence": "REC-EV-004",
+  "validationRelevanceBase": "POPULARITY"
+}

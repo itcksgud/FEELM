@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="500" height="750" viewBox="0 0 500 750" role="img" aria-labelledby="title desc">
+  <title id="title">포스터 없음</title>
+  <desc id="desc">영화 포스터가 없을 때 사용하는 FEELM 기본 이미지</desc>
+  <rect width="500" height="750" fill="#efede8"/>
+  <path d="M0 0 500 750M500 0 0 750" stroke="#d5d2cc" stroke-width="3"/>
+  <circle cx="250" cy="337" r="76" fill="none" stroke="#8a8781" stroke-width="7"/>
+  <path d="M223 292v90l77-45-77-45Z" fill="#8a8781"/>
+  <text x="250" y="470" text-anchor="middle" font-family="Arial, sans-serif" font-size="30" font-weight="700" fill="#3c3a36">FEELM</text>
+  <text x="250" y="512" text-anchor="middle" font-family="Arial, sans-serif" font-size="18" fill="#8a8781">POSTER NOT AVAILABLE</text>
+</svg>

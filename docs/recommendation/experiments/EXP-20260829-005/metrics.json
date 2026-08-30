@@ -1,0 +1,35 @@
+{
+  "schema_version": 1,
+  "run_id": "EXP-20260829-005",
+  "validation_parties": 270,
+  "test_parties": 270,
+  "balanced_parameters": {
+    "floor": 0.5,
+    "floor_weight": 0.5,
+    "gap_weight": 0.25
+  },
+  "heldout_test": {
+    "average": {
+      "mean_utility": 0.560961,
+      "min_utility": 0.394402,
+      "member_gap": 0.323467
+    },
+    "balanced": {
+      "mean_utility": 0.559611,
+      "min_utility": 0.39494,
+      "member_gap": 0.319218,
+      "predicted_relevance_loss": 0.001718
+    },
+    "balanced_paired_delta_vs_average": {
+      "mean_utility": {"mean": -0.001349, "ci95": [-0.003739, 0.000659]},
+      "min_utility": {"mean": 0.000538, "ci95": [-0.003494, 0.004453]},
+      "member_gap": {"mean": -0.004249, "ci95": [-0.011559, 0.002376]}
+    },
+    "four_member_common_rated_coverage": {
+      "dissimilar": 0.006948,
+      "middle": 0.010204,
+      "similar": 0.009847
+    }
+  },
+  "clear_improvement_over_average": false
+}

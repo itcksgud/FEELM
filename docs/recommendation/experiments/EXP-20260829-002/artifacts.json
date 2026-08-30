@@ -1,0 +1,14 @@
+{
+  "schema_version": 1,
+  "run_id": "EXP-20260829-002",
+  "tracked": {
+    "manifest": "docs/recommendation/evidence/manifests/rec-ev-003.json",
+    "evidence": "docs/recommendation/evidence/REC-EV-003-cold-start.md",
+    "cohort": "docs/recommendation/evidence/manifests/cold-start-cohort-v1.json"
+  },
+  "ignored": {
+    "item_factors": {"path": "outputs/recommendation-evidence/rec-ev-003/cohort_excluded_item_factors.npz", "sha256": "05416efc51861020b4786c693572997fea8ba8a41312db896d5bb681db85fcd4"},
+    "user_factors": {"path": "outputs/recommendation-evidence/rec-ev-003/foldin_user_factors.npz", "sha256": "cc534abe0d92bc01e11d7b9b142630b265039fc9f42a31d3491be8270265c43a"},
+    "predictions": {"path": "outputs/recommendation-evidence/rec-ev-003/cold_start_validation_predictions.parquet", "sha256": "02cffdb89786953c7e1e5f8f3f60f27ba0156b0710a59f7e3c1730189deea3c5"}
+  }
+}

@@ -1,0 +1,73 @@
+{
+  "schemaVersion": 1,
+  "authority": "docs/spec/approved-slices.json",
+  "publicProductSlices": [
+    {
+      "sliceId": "C0_CATALOG",
+      "status": "APPROVED",
+      "contractMode": "BASE",
+      "root": "docs",
+      "contracts": {
+        "productScope": "docs/spec/00-product-scope.md",
+        "glossary": "docs/spec/01-glossary-and-policies.md",
+        "businessRules": "docs/spec/02-business-rules.md",
+        "stateMachines": "docs/spec/03-state-machines.md",
+        "navigation": "docs/ui/navigation-map.md",
+        "screens": "docs/ui/screen-contracts.md",
+        "dataDictionary": "docs/data/data-dictionary.md",
+        "logicalErd": "docs/data/logical-erd.md",
+        "acceptance": "docs/testing/acceptance-tests.md",
+        "fixtures": "docs/testing/fixtures.md",
+        "traceability": "docs/traceability/requirements.csv"
+      }
+    },
+    {
+      "sliceId": "C1_RATING_FILM",
+      "status": "APPROVED",
+      "contractMode": "EXTENSION",
+      "root": "docs/c1-draft",
+      "stablePath": true,
+      "contracts": {
+        "productScope": "docs/c1-draft/00-product-scope.md",
+        "glossary": "docs/c1-draft/01-glossary-and-policies.md",
+        "businessRules": "docs/c1-draft/02-business-rules.md",
+        "stateMachines": "docs/c1-draft/03-state-machines.md",
+        "navigation": "docs/c1-draft/ui/navigation-map.md",
+        "screens": "docs/c1-draft/ui/screen-contracts.md",
+        "dataDictionary": "docs/c1-draft/data/data-dictionary.md",
+        "logicalErd": "docs/c1-draft/data/logical-erd.md",
+        "acceptance": "docs/c1-draft/testing/acceptance-tests.md",
+        "fixtures": "docs/c1-draft/testing/fixtures.md",
+        "traceability": "docs/c1-draft/traceability/requirements.csv"
+      }
+    },
+    {
+      "sliceId": "C2B_LOCAL_BASELINE_DISCOVERY",
+      "status": "APPROVED_LOCAL_BASELINE_WITH_BLOCKED_EXTENSIONS",
+      "contractMode": "LOCAL_BASELINE_EXTENSION",
+      "root": "docs/c2b-personal-discovery",
+      "productionActivation": false,
+      "contracts": {
+        "productScope": "docs/c2b-personal-discovery/00-product-scope.md",
+        "glossary": "docs/c2b-personal-discovery/01-glossary-and-policies.md",
+        "businessRules": "docs/c2b-personal-discovery/02-business-rules.md",
+        "stateMachines": "docs/c2b-personal-discovery/03-state-machines.md",
+        "navigation": "docs/c2b-personal-discovery/ui/navigation-map.md",
+        "screens": "docs/c2b-personal-discovery/ui/screen-contracts.md",
+        "dataDictionary": "docs/c2b-personal-discovery/data/data-dictionary.md",
+        "logicalErd": "docs/c2b-personal-discovery/data/logical-erd.md",
+        "acceptance": "docs/c2b-personal-discovery/testing/acceptance-tests.md",
+        "fixtures": "docs/c2b-personal-discovery/testing/fixtures.md",
+        "traceability": "docs/c2b-personal-discovery/traceability/requirements.csv"
+      }
+    }
+  ],
+  "internalSlices": [
+    {
+      "sliceId": "C2A_RECOMMENDATION_INTERNAL",
+      "status": "APPROVED_C2A_INTERNAL_POPULARITY_ONLY",
+      "root": "docs/c2-recommendation",
+      "includedInPublicProductAuthority": false
+    }
+  ]
+}

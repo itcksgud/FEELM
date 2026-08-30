@@ -1,0 +1,2857 @@
+openapi: 3.1.0
+info:
+  title: FEELM Catalog, Rating, Discovery, Membership and Local Report API
+  version: 0.6.0-c5-local
+  summary: C0~C4 계약과 C5 local factual report·public resource·share·notification 계약
+  description: |
+    FEELM standalone의 C0 Catalog와 C1 Rating·Film 승인 계약에 로컬 개발용 C2B
+    비개인화 인기 baseline 세로 기능을 더한 계약이다. C2B의 production activation,
+    개인화, XAI, 예상 별점, exposure/action 수집은 승인되지 않았다.
+    C0 조회 인증은 기존처럼 선택 사항이며 C1 및 C2B operation은 bearer 인증이 필수다.
+    C3는 loopback 개발에서만 tracked allowlist fake actor header를 사용한다. production 인증,
+    개인화, 예상 별점, 만족도 추정은 승인되지 않았다.
+    C4는 local email signup·Mailpit verification·로그인과 membership·onboarding만 승인한다.
+    production email, social login, password/account lifecycle, onboarding restart는 차단 상태다.
+    C5는 factual half-year report, PRIVATE-default public resource, loopback report share,
+    providerless in-app notification의 local MVP만 승인하며 production/external capability는 차단한다.
+servers:
+  - url: http://localhost:8080
+    description: Local Spring API
+tags:
+  - name: Movies
+    description: 공개 영화 검색, 상세, 유사 영화, OTT 시청 옵션
+  - name: CatalogFacets
+    description: 검색 필터에 사용하는 Catalog 기준 정보
+  - name: OttProviders
+    description: 한국 지역 OTT provider 기준 정보
+  - name: Viewing
+    description: OTT 클릭, 감상 확인, 지연 평가 대상
+  - name: Ratings
+    description: 내 정수 1~5 Rating 생성·수정·삭제와 조회
+  - name: Film
+    description: Rating에서 파생된 내 Frame과 Film
+  - name: Taste
+    description: Popcorn Bucket과 취향 원천 집계
+  - name: PersonalDiscovery
+    description: 로컬 개발에서만 승인된 비개인화 인기 baseline 추천 컬렉션
+  - name: OttCatalogComparison
+    description: local actor의 KR FLATRATE 실제 영화 전체 비교
+  - name: Party
+    description: owner 포함 최대 4명의 local-only Party
+  - name: TasteReport
+    description: immutable factual calendar-half reports
+  - name: ReportExport
+    description: local temporary PDF exports
+  - name: Privacy
+    description: PRIVATE-default resource visibility
+  - name: PublicProfile
+    description: exact opt-in public resource reads
+  - name: ReportShare
+    description: loopback fragment exchange report sharing
+  - name: Notification
+    description: providerless in-app notifications
+  - name: PartyInvitation
+    description: allowlist fake actor 초대와 수락
+  - name: PartyBaseline
+    description: 개인화·만족도 추정 없는 결정적 catalog baseline
+  - name: Membership
+    description: local 이메일 signup·verification membership
+  - name: Authentication
+    description: local login·refresh·logout session boundary
+  - name: Onboarding
+    description: Rating과 분리된 LIKE/DISLIKE onboarding
+  - name: MyProfile
+    description: 내 membership·nickname local profile
+  - name: MyOttSubscriptions
+    description: 내 KR OTT subscription 전체 교체
+paths:
+  /api/v1/movies:
+    get:
+      tags:
+        - Movies
+      operationId: searchMovies
+      summary: 영화 검색·필터
+      description: |
+        제목·원제·감독·배우를 검색한다. 서로 다른 filter category는 AND,
+        같은 category의 복수 값은 OR다. query가 있으면 기본 RELEVANCE,
+        없으면 POPULARITY 순이다.
+      security:
+        - {}
+        - bearerAuth: []
+      parameters:
+        - name: query
+          in: query
+          description: trim 후 1~100자. 생략하거나 공백이면 query 없음으로 처리한다.
+          schema:
+            type: string
+            maxLength: 100
+          example: 나우 유 씨 미
+        - name: genreIds
+          in: query
+          description: 같은 category 안 OR
+          style: form
+          explode: true
+          schema:
+            type: array
+            maxItems: 20
+            items:
+              type: string
+              format: uuid
+        - name: countryCodes
+          in: query
+          description: ISO 3166-1 alpha-2. 같은 category 안 OR
+          style: form
+          explode: true
+          schema:
+            type: array
+            maxItems: 20
+            items:
+              type: string
+              pattern: ^[A-Z]{2}$
+          example:
+            - US
+            - KR
+        - name: releaseYearFrom
+          in: query
+          schema:
+            type: integer
+            minimum: 1870
+            maximum: 2100
+        - name: releaseYearTo
+          in: query
+          schema:
+            type: integer
+            minimum: 1870
+            maximum: 2100
+        - name: ottProviderIds
+          in: query
+          description: KR availability provider. 같은 category 안 OR
+          style: form
+          explode: true
+          schema:
+            type: array
+            maxItems: 20
+            items:
+              type: string
+              format: uuid
+        - name: ottMonetizationTypes
+          in: query
+          description: 생략하면 FLATRATE만 적용
+          style: form
+          explode: true
+          schema:
+            type: array
+            maxItems: 5
+            default:
+              - FLATRATE
+            items:
+              $ref: "#/components/schemas/MonetizationType"
+        - name: sort
+          in: query
+          schema:
+            $ref: "#/components/schemas/MovieSort"
+        - $ref: "#/components/parameters/Cursor"
+        - $ref: "#/components/parameters/Limit"
+      responses:
+        "200":
+          description: 검색 성공. 결과가 없어도 200이다.
+          headers:
+            X-Catalog-Version:
+              $ref: "#/components/headers/CatalogVersion"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/MovieSearchPage"
+              examples:
+                result:
+                  value:
+                    catalogVersion: catalog-20260829-01
+                    totalCount: 1
+                    hasNext: false
+                    nextCursor: null
+                    items:
+                      - movieId: 6b226903-0ca4-4f5a-9bf0-50d6cedd224c
+                        displayTitle: 나우 유 씨 미
+                        displayTitleLocale: ko-KR
+                        releaseYear: 2013
+                        posterUrl: https://image.tmdb.org/t/p/w500/example.jpg
+                        genres:
+                          - genreId: 2d07d5d3-486f-4638-9d58-49331e798c76
+                            name: 범죄
+                        externalRating:
+                          source: TMDB
+                          value: 7.3
+                          scale: 10
+                          ratingCount: 12800
+                        availability:
+                          region: KR
+                          availabilityStatus: LISTED
+                          freshness: FRESH
+                          snapshotAt: 2026-08-29T08:00:00Z
+                          flatrateProviders:
+                            - providerId: d392a4d5-0428-4e06-aa41-aef899c06842
+                              name: Netflix
+                              logoUrl: https://image.tmdb.org/t/p/original/example-logo.jpg
+                              isSubscribed: null
+                    appliedFilters:
+                      query: 나우 유 씨 미
+                      genreIds: []
+                      countryCodes: []
+                      releaseYearFrom: null
+                      releaseYearTo: null
+                      ottProviderIds: []
+                      ottMonetizationTypes:
+                        - FLATRATE
+                      sort: RELEVANCE
+        "400":
+          $ref: "#/components/responses/ValidationError"
+        "401":
+          $ref: "#/components/responses/InvalidAccessToken"
+        "503":
+          $ref: "#/components/responses/CatalogUnavailable"
+  /api/v1/movies/{movieId}:
+    get:
+      tags:
+        - Movies
+      operationId: getMovie
+      summary: 영화 상세 조회
+      security:
+        - {}
+        - bearerAuth: []
+      parameters:
+        - $ref: "#/components/parameters/MovieId"
+      responses:
+        "200":
+          description: Catalog-visible 영화 상세
+          headers:
+            X-Catalog-Version:
+              $ref: "#/components/headers/CatalogVersion"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/MovieDetail"
+        "400":
+          $ref: "#/components/responses/ValidationError"
+        "401":
+          $ref: "#/components/responses/InvalidAccessToken"
+        "404":
+          $ref: "#/components/responses/MovieNotFound"
+        "503":
+          $ref: "#/components/responses/CatalogUnavailable"
+  /api/v1/movies/{movieId}/similar:
+    get:
+      tags:
+        - Movies
+      operationId: getSimilarMovies
+      summary: 유사 영화 조회
+      security:
+        - {}
+        - bearerAuth: []
+      parameters:
+        - $ref: "#/components/parameters/MovieId"
+        - name: limit
+          in: query
+          schema:
+            type: integer
+            minimum: 1
+            maximum: 30
+            default: 10
+      responses:
+        "200":
+          description: 같은 similarityVersion의 결정적 목록
+          headers:
+            X-Catalog-Version:
+              $ref: "#/components/headers/CatalogVersion"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SimilarMovieResponse"
+        "400":
+          $ref: "#/components/responses/ValidationError"
+        "401":
+          $ref: "#/components/responses/InvalidAccessToken"
+        "404":
+          $ref: "#/components/responses/MovieNotFound"
+        "503":
+          $ref: "#/components/responses/CatalogUnavailable"
+  /api/v1/movies/{movieId}/ott-offers:
+    get:
+      tags:
+        - Movies
+      operationId: getMovieOttOffers
+      summary: 한국 OTT 시청 옵션 조회
+      description: 구독형·구매·대여·무료·광고형을 별도 그룹으로 반환한다.
+      security:
+        - {}
+        - bearerAuth: []
+      parameters:
+        - $ref: "#/components/parameters/MovieId"
+      responses:
+        "200":
+          description: 데이터 미등록과 상태 미확인을 body 상태로 구분한다.
+          headers:
+            X-Catalog-Version:
+              $ref: "#/components/headers/CatalogVersion"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/OttAvailability"
+        "400":
+          $ref: "#/components/responses/ValidationError"
+        "401":
+          $ref: "#/components/responses/InvalidAccessToken"
+        "404":
+          $ref: "#/components/responses/MovieNotFound"
+        "503":
+          $ref: "#/components/responses/CatalogUnavailable"
+  /api/v1/catalog/genres:
+    get:
+      tags:
+        - CatalogFacets
+      operationId: listGenres
+      summary: 검색 가능한 장르 목록
+      security:
+        - {}
+      responses:
+        "200":
+          description: 표시 순서가 고정된 장르 목록
+          headers:
+            X-Catalog-Version:
+              $ref: "#/components/headers/CatalogVersion"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GenreListResponse"
+        "503":
+          $ref: "#/components/responses/CatalogUnavailable"
+  /api/v1/catalog/countries:
+    get:
+      tags:
+        - CatalogFacets
+      operationId: listCountries
+      summary: 검색 가능한 제작 국가 목록
+      security:
+        - {}
+      responses:
+        "200":
+          description: 영화가 하나 이상 연결된 국가 목록
+          headers:
+            X-Catalog-Version:
+              $ref: "#/components/headers/CatalogVersion"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CountryListResponse"
+        "503":
+          $ref: "#/components/responses/CatalogUnavailable"
+  /api/v1/ott-providers:
+    get:
+      tags:
+        - OttProviders
+      operationId: listOttProviders
+      summary: KR 필터·설정용 OTT provider 목록
+      security:
+        - {}
+        - bearerAuth: []
+      responses:
+        "200":
+          description: 현재 Catalog에서 사용 가능한 provider 기준 정보
+          headers:
+            X-Catalog-Version:
+              $ref: "#/components/headers/CatalogVersion"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/OttProviderListResponse"
+        "401":
+          $ref: "#/components/responses/InvalidAccessToken"
+        "503":
+          $ref: "#/components/responses/CatalogUnavailable"
+  /api/v1/watch-intents:
+    post:
+      tags:
+        - Viewing
+      operationId: createWatchIntent
+      summary: OTT 외부 이동 직전 클릭 사실 기록
+      description: |
+        새 intent면 CREATED, 같은 user/movie의 active intent가 있으면 시각을 갱신하지 않고
+        ACTIVE_REUSED, ViewingRecord가 이미 있으면 intent를 만들지 않고 ALREADY_WATCHED를 반환한다.
+        서로 다른 Idempotency-Key의 실제 클릭은 각 한 건의 OTT_LINK_CLICKED event를 기록한다.
+      parameters:
+        - $ref: "#/components/parameters/C2BIdempotencyKey"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateWatchIntentRequest"
+      responses:
+        "200":
+          description: active intent 재사용, 이미 감상한 영화, 또는 같은 key의 최초 응답 replay
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/WatchIntentClickResult"
+        "201":
+          description: 새 WatchIntent 생성. destination을 받은 뒤 외부 이동한다.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/WatchIntentClickResult"
+        "400":
+          $ref: "#/components/responses/ValidationError"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "404":
+          $ref: "#/components/responses/ResourceNotFound"
+        "409":
+          $ref: "#/components/responses/Conflict"
+        "503":
+          $ref: "#/components/responses/ServiceUnavailable"
+      security:
+        - bearerAuth: []
+  /api/v1/me/watch-intents/pending-confirmation:
+    get:
+      tags:
+        - Viewing
+      operationId: listPendingWatchConfirmations
+      summary: 감상 확인이 필요한 내 항목 조회
+      parameters:
+        - $ref: "#/components/parameters/Cursor"
+        - $ref: "#/components/parameters/Limit"
+      responses:
+        "200":
+          description: 빈 목록도 200
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PendingWatchConfirmationPage"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "503":
+          $ref: "#/components/responses/ServiceUnavailable"
+      security:
+        - bearerAuth: []
+  /api/v1/watch-intents/{watchIntentId}/confirmation:
+    post:
+      tags:
+        - Viewing
+      operationId: confirmWatchIntent
+      summary: 실제 감상 여부 응답
+      parameters:
+        - $ref: "#/components/parameters/WatchIntentId"
+        - $ref: "#/components/parameters/C2BIdempotencyKey"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ConfirmWatchIntentRequest"
+      responses:
+        "200":
+          description: terminal 상태와 watched=true일 때 생성된 ViewingRecord
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/WatchConfirmationResult"
+        "400":
+          $ref: "#/components/responses/ValidationError"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "404":
+          $ref: "#/components/responses/ResourceNotFound"
+        "409":
+          $ref: "#/components/responses/Conflict"
+        "503":
+          $ref: "#/components/responses/ServiceUnavailable"
+      security:
+        - bearerAuth: []
+  /api/v1/me/viewing-records/unrated:
+    get:
+      tags:
+        - Viewing
+        - Ratings
+      operationId: listUnratedViewingRecords
+      summary: 감상 확인 후 평가하지 않은 영화 조회
+      parameters:
+        - $ref: "#/components/parameters/Cursor"
+        - $ref: "#/components/parameters/Limit"
+      responses:
+        "200":
+          description: 빈 목록도 200
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UnratedViewingRecordPage"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "503":
+          $ref: "#/components/responses/ServiceUnavailable"
+      security:
+        - bearerAuth: []
+  /api/v1/me/ratings:
+    get:
+      tags:
+        - Ratings
+      operationId: listMyRatings
+      summary: 내 활성 Rating 목록
+      parameters:
+        - $ref: "#/components/parameters/Cursor"
+        - $ref: "#/components/parameters/Limit"
+      responses:
+        "200":
+          description: 빈 목록도 200
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/RatingPage"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "503":
+          $ref: "#/components/responses/ServiceUnavailable"
+      security:
+        - bearerAuth: []
+  /api/v1/me/ratings/{movieId}:
+    put:
+      tags:
+        - Ratings
+      operationId: putMyRating
+      summary: 정수 1~5 Rating 생성 또는 수정
+      description: active projection의 visibilityStatus=UI_READY이고 active flavor mapping에 assignment가 정확히 하나인 영화만 허용한다.
+      parameters:
+        - $ref: "#/components/parameters/MovieId"
+        - $ref: "#/components/parameters/IdempotencyKey"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/PutRatingRequest"
+      responses:
+        "200":
+          description: create/update 또는 idempotent replay 완료
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/RatingMutationResult"
+        "400":
+          $ref: "#/components/responses/ValidationError"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "404":
+          $ref: "#/components/responses/ResourceNotFound"
+        "409":
+          $ref: "#/components/responses/Conflict"
+        "503":
+          $ref: "#/components/responses/ServiceUnavailable"
+      security:
+        - bearerAuth: []
+    delete:
+      tags:
+        - Ratings
+      operationId: deleteMyRating
+      summary: 내 Rating 삭제
+      description: |
+        Rating을 soft-delete하고 ViewingRecord를 WATCHED_CONFIRMED로 유지한다. Frame·Popcorn과
+        contribution을 제거하고 Flavor/Taste aggregate를 역산하며 event·outbox를 같은 transaction에 기록한다.
+      parameters:
+        - $ref: "#/components/parameters/MovieId"
+        - $ref: "#/components/parameters/IdempotencyKey"
+        - $ref: "#/components/parameters/ExpectedRevision"
+      responses:
+        "200":
+          description: soft-delete와 파생 projection 제거·집계 역산이 원자적으로 완료됨
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/RatingDeletionResult"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "404":
+          $ref: "#/components/responses/ResourceNotFound"
+        "409":
+          $ref: "#/components/responses/Conflict"
+        "503":
+          $ref: "#/components/responses/ServiceUnavailable"
+      security:
+        - bearerAuth: []
+  /api/v1/me/film:
+    get:
+      tags:
+        - Film
+      operationId: getMyFilm
+      summary: 내 전체 Film과 Frame 목록
+      parameters:
+        - $ref: "#/components/parameters/Cursor"
+        - $ref: "#/components/parameters/Limit"
+      responses:
+        "200":
+          description: Frame가 없어도 200
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/FilmPage"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "503":
+          $ref: "#/components/responses/ServiceUnavailable"
+      security:
+        - bearerAuth: []
+  /api/v1/me/film/frames/{frameId}:
+    get:
+      tags:
+        - Film
+      operationId: getMyFrame
+      summary: 내 Frame 상세
+      parameters:
+        - $ref: "#/components/parameters/FrameId"
+      responses:
+        "200":
+          description: Frame 상세
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/FrameDetail"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "404":
+          $ref: "#/components/responses/ResourceNotFound"
+        "503":
+          $ref: "#/components/responses/ServiceUnavailable"
+      security:
+        - bearerAuth: []
+  /api/v1/me/popcorn-bucket:
+    get:
+      tags:
+        - Taste
+      operationId: getMyPopcornBucket
+      summary: 내 Popcorn flavor별 수량·평균 Rating
+      responses:
+        "200":
+          description: Popcorn이 없어도 200
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PopcornBucket"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "503":
+          $ref: "#/components/responses/ServiceUnavailable"
+      security:
+        - bearerAuth: []
+  /api/v1/me/taste-profile:
+    get:
+      tags:
+        - Taste
+      operationId: getMyTasteProfile
+      summary: 확정 source dimension의 취향 원천 집계
+      description: 최종 취향 점수와 키워드는 포함하지 않는다.
+      responses:
+        "200":
+          description: aggregate가 없어도 200
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/TasteProfile"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "503":
+          $ref: "#/components/responses/ServiceUnavailable"
+      security:
+        - bearerAuth: []
+  /api/v1/me/recommendations/personal-discovery:
+    get:
+      tags: [PersonalDiscovery]
+      operationId: getMyPersonalDiscoveryRecommendations
+      x-implementation-status: AUTHORIZED_LOCAL_CONTRACT
+      x-production-activation: false
+      summary: 로컬 비개인화 인기 baseline 추천 컬렉션 조회
+      description: 개인화, XAI 추천 사유, 예상 별점, exposure/action 의미를 포함하지 않는다.
+      responses:
+        "200":
+          description: 최초 또는 기존 active 컬렉션
+          headers:
+            Cache-Control:
+              description: directive 순서와 무관하게 private와 no-store를 모두 포함한다.
+              schema: { type: string }
+              example: "no-store, private"
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/RecommendationDelivery" }
+        "401": { $ref: "#/components/responses/Unauthorized" }
+        "503": { $ref: "#/components/responses/ServiceUnavailable" }
+      security: [{ bearerAuth: [] }]
+  /api/v1/me/recommendation-deliveries/{deliveryId}/append:
+    post:
+      tags: [PersonalDiscovery]
+      operationId: appendMyPersonalDiscoveryRecommendations
+      x-implementation-status: AUTHORIZED_LOCAL_CONTRACT
+      x-production-activation: false
+      summary: active baseline 컬렉션에 최대 3편 추가
+      parameters:
+        - $ref: "#/components/parameters/DeliveryId"
+        - $ref: "#/components/parameters/IdempotencyKey"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: "#/components/schemas/AppendRecommendationsRequest" }
+      responses:
+        "201":
+          description: 새 append 결과
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/RecommendationAppendCreated" }
+        "200":
+          description: 저장된 canonical append 결과 replay
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/RecommendationAppendReplay" }
+        "400": { $ref: "#/components/responses/ValidationError" }
+        "401": { $ref: "#/components/responses/Unauthorized" }
+        "404": { $ref: "#/components/responses/ResourceNotFound" }
+        "409": { $ref: "#/components/responses/Conflict" }
+        "503": { $ref: "#/components/responses/ServiceUnavailable" }
+      security: [{ bearerAuth: [] }]
+  /api/v1/me/recommendation-delivery-items/{deliveryItemId}/dismissals:
+    post:
+      tags: [PersonalDiscovery]
+      operationId: dismissMyRecommendationAsNotInterested
+      x-implementation-status: AUTHORIZED_LOCAL_CONTRACT
+      x-production-activation: false
+      summary: 추천 항목을 관심 없음으로 제외
+      parameters:
+        - $ref: "#/components/parameters/DeliveryItemId"
+        - $ref: "#/components/parameters/IdempotencyKey"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: "#/components/schemas/DismissRecommendationRequest" }
+      responses:
+        "201":
+          description: 새 dismissal 결과
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/RecommendationDismissalCreated" }
+        "200":
+          description: 저장된 canonical dismissal 결과 replay
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/RecommendationDismissalReplay" }
+        "400": { $ref: "#/components/responses/ValidationError" }
+        "401": { $ref: "#/components/responses/Unauthorized" }
+        "404": { $ref: "#/components/responses/ResourceNotFound" }
+        "409": { $ref: "#/components/responses/Conflict" }
+        "503": { $ref: "#/components/responses/ServiceUnavailable" }
+      security: [{ bearerAuth: [] }]
+  /api/v1/me/ott-catalog-comparisons:
+    post:
+      tags: [OttCatalogComparison]
+      operationId: createOttCatalogComparison
+      summary: KR 정액제 OTT catalog 비교 생성
+      security: [{ localActor: [] }]
+      parameters:
+        - $ref: "#/components/parameters/IdempotencyKey"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: "#/components/schemas/C3CreateOttCatalogComparisonRequest" }
+      responses:
+        "201":
+          description: immutable READY catalog comparison
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/C3OttCatalogComparison" }
+        "400": { $ref: "#/components/responses/ValidationError" }
+        "401": { $ref: "#/components/responses/Unauthorized" }
+        "409": { $ref: "#/components/responses/Conflict" }
+        "503": { $ref: "#/components/responses/ServiceUnavailable" }
+  /api/v1/me/ott-catalog-comparisons/{comparisonId}:
+    get:
+      tags: [OttCatalogComparison]
+      operationId: getOttCatalogComparison
+      summary: owner의 immutable catalog comparison 조회
+      security: [{ localActor: [] }]
+      parameters:
+        - $ref: "#/components/parameters/C3ComparisonId"
+      responses:
+        "200":
+          description: provider별 실제 영화 count와 전체 목록 link
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/C3OttCatalogComparison" }
+        "401": { $ref: "#/components/responses/Unauthorized" }
+        "404": { $ref: "#/components/responses/ResourceNotFound" }
+        "503": { $ref: "#/components/responses/ServiceUnavailable" }
+  /api/v1/me/ott-catalog-comparisons/{comparisonId}/movies:
+    get:
+      tags: [OttCatalogComparison]
+      operationId: listOttCatalogComparisonMovies
+      summary: provider 실제 영화 전체 cursor page
+      security: [{ localActor: [] }]
+      parameters:
+        - $ref: "#/components/parameters/C3ComparisonId"
+        - $ref: "#/components/parameters/C3ProviderIdQuery"
+        - $ref: "#/components/parameters/C3Cursor"
+        - $ref: "#/components/parameters/C3Limit"
+      responses:
+        "200":
+          description: 대표 subset이 아닌 전체 traversal page
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/C3CatalogMoviePage" }
+        "400": { $ref: "#/components/responses/ValidationError" }
+        "401": { $ref: "#/components/responses/Unauthorized" }
+        "404": { $ref: "#/components/responses/ResourceNotFound" }
+        "503": { $ref: "#/components/responses/ServiceUnavailable" }
+  /api/v1/me/parties:
+    get:
+      tags: [Party]
+      operationId: listMyParties
+      summary: local actor가 소유하거나 참여한 Party 목록
+      security: [{ localActor: [] }]
+      parameters:
+        - $ref: "#/components/parameters/C3Cursor"
+        - $ref: "#/components/parameters/C3Limit"
+      responses:
+        "200":
+          description: Party page
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/C3PartyPage" }
+        "401": { $ref: "#/components/responses/Unauthorized" }
+    post:
+      tags: [Party]
+      operationId: createParty
+      summary: provider 2~4개로 owner-only Party 생성
+      security: [{ localActor: [] }]
+      parameters:
+        - $ref: "#/components/parameters/IdempotencyKey"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: "#/components/schemas/C3CreatePartyRequest" }
+      responses:
+        "201":
+          description: DRAFT Party
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/C3Party" }
+        "400": { $ref: "#/components/responses/ValidationError" }
+        "401": { $ref: "#/components/responses/Unauthorized" }
+        "409": { $ref: "#/components/responses/Conflict" }
+        "503": { $ref: "#/components/responses/ServiceUnavailable" }
+  /api/v1/me/party-invitations:
+    get:
+      tags: [PartyInvitation]
+      operationId: listMyPartyInvitations
+      summary: local recipient invitation 목록
+      security: [{ localActor: [] }]
+      parameters:
+        - $ref: "#/components/parameters/C3Cursor"
+        - $ref: "#/components/parameters/C3Limit"
+      responses:
+        "200":
+          description: recipient invitation page
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/C3PartyInvitationPage" }
+        "401": { $ref: "#/components/responses/Unauthorized" }
+  /api/v1/me/party-invitations/{invitationId}/accept:
+    post:
+      tags: [PartyInvitation]
+      operationId: acceptPartyInvitation
+      summary: recipient가 PENDING invitation 수락
+      security: [{ localActor: [] }]
+      parameters:
+        - $ref: "#/components/parameters/C3InvitationId"
+        - $ref: "#/components/parameters/IdempotencyKey"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: "#/components/schemas/C3AcceptPartyInvitationRequest" }
+      responses:
+        "200":
+          description: ACCEPTED invitation과 joined Party
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/C3AcceptPartyInvitationResponse" }
+        "400": { $ref: "#/components/responses/ValidationError" }
+        "401": { $ref: "#/components/responses/Unauthorized" }
+        "404": { $ref: "#/components/responses/ResourceNotFound" }
+        "409": { $ref: "#/components/responses/Conflict" }
+  /api/v1/parties/{partyId}:
+    get:
+      tags: [Party]
+      operationId: getParty
+      summary: owner 또는 accepted member Party 상세
+      security: [{ localActor: [] }]
+      parameters:
+        - $ref: "#/components/parameters/C3PartyId"
+      responses:
+        "200":
+          description: Party detail
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/C3Party" }
+        "401": { $ref: "#/components/responses/Unauthorized" }
+        "404": { $ref: "#/components/responses/ResourceNotFound" }
+  /api/v1/parties/{partyId}/invitations:
+    get:
+      tags: [PartyInvitation]
+      operationId: listPartyInvitations
+      summary: owner Party invitation 목록
+      security: [{ localActor: [] }]
+      parameters:
+        - $ref: "#/components/parameters/C3PartyId"
+        - $ref: "#/components/parameters/C3Cursor"
+        - $ref: "#/components/parameters/C3Limit"
+      responses:
+        "200":
+          description: owner invitation page
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/C3PartyInvitationPage" }
+        "401": { $ref: "#/components/responses/Unauthorized" }
+        "404": { $ref: "#/components/responses/ResourceNotFound" }
+    post:
+      tags: [PartyInvitation]
+      operationId: createPartyInvitation
+      summary: owner가 allowlist fake actor 초대
+      security: [{ localActor: [] }]
+      parameters:
+        - $ref: "#/components/parameters/C3PartyId"
+        - $ref: "#/components/parameters/IdempotencyKey"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: "#/components/schemas/C3CreatePartyInvitationRequest" }
+      responses:
+        "201":
+          description: PENDING invitation
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/C3PartyInvitation" }
+        "400": { $ref: "#/components/responses/ValidationError" }
+        "401": { $ref: "#/components/responses/Unauthorized" }
+        "404": { $ref: "#/components/responses/ResourceNotFound" }
+        "409": { $ref: "#/components/responses/Conflict" }
+  /api/v1/parties/{partyId}/baseline-recommendations:
+    get:
+      tags: [PartyBaseline]
+      operationId: listPartyBaselineRecommendations
+      summary: 개인화 없는 설명 가능한 실제 영화 baseline
+      description: Party provider coverage와 C0 catalog popularity만 사용한다.
+      security: [{ localActor: [] }]
+      parameters:
+        - $ref: "#/components/parameters/C3PartyId"
+        - $ref: "#/components/parameters/C3Cursor"
+        - $ref: "#/components/parameters/C3Limit"
+      responses:
+        "200":
+          description: deterministic actual-movie baseline page
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/C3PartyBaselinePage" }
+        "400": { $ref: "#/components/responses/ValidationError" }
+        "401": { $ref: "#/components/responses/Unauthorized" }
+        "404": { $ref: "#/components/responses/ResourceNotFound" }
+        "503": { $ref: "#/components/responses/ServiceUnavailable" }
+  /api/v1/auth/sign-up:
+    $ref: "../c4-membership-onboarding/api/openapi.fragment.yaml#/paths/~1api~1v1~1auth~1sign-up"
+  /api/v1/auth/email-verifications:
+    $ref: "../c4-membership-onboarding/api/openapi.fragment.yaml#/paths/~1api~1v1~1auth~1email-verifications"
+  /api/v1/auth/email-verification-resends:
+    $ref: "../c4-membership-onboarding/api/openapi.fragment.yaml#/paths/~1api~1v1~1auth~1email-verification-resends"
+  /api/v1/auth/login:
+    $ref: "../c4-membership-onboarding/api/openapi.fragment.yaml#/paths/~1api~1v1~1auth~1login"
+  /api/v1/auth/refresh:
+    $ref: "../c4-membership-onboarding/api/openapi.fragment.yaml#/paths/~1api~1v1~1auth~1refresh"
+  /api/v1/auth/logout:
+    $ref: "../c4-membership-onboarding/api/openapi.fragment.yaml#/paths/~1api~1v1~1auth~1logout"
+  /api/v1/me:
+    $ref: "../c4-membership-onboarding/api/openapi.fragment.yaml#/paths/~1api~1v1~1me"
+  /api/v1/onboarding/movies:
+    $ref: "../c4-membership-onboarding/api/openapi.fragment.yaml#/paths/~1api~1v1~1onboarding~1movies"
+  /api/v1/onboarding/preferences:
+    $ref: "../c4-membership-onboarding/api/openapi.fragment.yaml#/paths/~1api~1v1~1onboarding~1preferences"
+  /api/v1/onboarding/complete:
+    $ref: "../c4-membership-onboarding/api/openapi.fragment.yaml#/paths/~1api~1v1~1onboarding~1complete"
+  /api/v1/me/ott-subscriptions:
+    $ref: "../c4-membership-onboarding/api/openapi.fragment.yaml#/paths/~1api~1v1~1me~1ott-subscriptions"
+  /api/v1/me/taste-reports:
+    $ref: "../c5-report-profile/api/openapi.fragment.yaml#/paths/~1api~1v1~1me~1taste-reports"
+  /api/v1/me/taste-reports/{reportId}:
+    $ref: "../c5-report-profile/api/openapi.fragment.yaml#/paths/~1api~1v1~1me~1taste-reports~1{reportId}"
+  /api/v1/me/taste-reports/{reportId}/exports:
+    $ref: "../c5-report-profile/api/openapi.fragment.yaml#/paths/~1api~1v1~1me~1taste-reports~1{reportId}~1exports"
+  /api/v1/me/report-exports/{exportId}:
+    $ref: "../c5-report-profile/api/openapi.fragment.yaml#/paths/~1api~1v1~1me~1report-exports~1{exportId}"
+  /api/v1/me/report-exports/{exportId}/content:
+    $ref: "../c5-report-profile/api/openapi.fragment.yaml#/paths/~1api~1v1~1me~1report-exports~1{exportId}~1content"
+  /api/v1/me/privacy-settings:
+    $ref: "../c5-report-profile/api/openapi.fragment.yaml#/paths/~1api~1v1~1me~1privacy-settings"
+  /api/v1/public/profiles/{publicProfileId}:
+    $ref: "../c5-report-profile/api/openapi.fragment.yaml#/paths/~1api~1v1~1public~1profiles~1{publicProfileId}"
+  /api/v1/public/profiles/{publicProfileId}/film:
+    $ref: "../c5-report-profile/api/openapi.fragment.yaml#/paths/~1api~1v1~1public~1profiles~1{publicProfileId}~1film"
+  /api/v1/public/profiles/{publicProfileId}/popcorns:
+    $ref: "../c5-report-profile/api/openapi.fragment.yaml#/paths/~1api~1v1~1public~1profiles~1{publicProfileId}~1popcorns"
+  /api/v1/me/taste-reports/{reportId}/shares:
+    $ref: "../c5-report-profile/api/openapi.fragment.yaml#/paths/~1api~1v1~1me~1taste-reports~1{reportId}~1shares"
+  /api/v1/me/report-shares/{shareId}/revoke:
+    $ref: "../c5-report-profile/api/openapi.fragment.yaml#/paths/~1api~1v1~1me~1report-shares~1{shareId}~1revoke"
+  /api/v1/public/report-shares/exchange:
+    $ref: "../c5-report-profile/api/openapi.fragment.yaml#/paths/~1api~1v1~1public~1report-shares~1exchange"
+  /api/v1/public/shared-report:
+    $ref: "../c5-report-profile/api/openapi.fragment.yaml#/paths/~1api~1v1~1public~1shared-report"
+  /api/v1/me/notification-settings:
+    $ref: "../c5-report-profile/api/openapi.fragment.yaml#/paths/~1api~1v1~1me~1notification-settings"
+  /api/v1/me/notifications:
+    $ref: "../c5-report-profile/api/openapi.fragment.yaml#/paths/~1api~1v1~1me~1notifications"
+  /api/v1/me/notifications/{notificationId}/state:
+    $ref: "../c5-report-profile/api/openapi.fragment.yaml#/paths/~1api~1v1~1me~1notifications~1{notificationId}~1state"
+  /api/v1/me/recommendation-interpretation-experiment:
+    $ref: "../c6-recommendation-interpretation/api/openapi.fragment.yaml#/paths/~1api~1v1~1me~1recommendation-interpretation-experiment"
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+    localActor:
+      type: apiKey
+      in: header
+      name: X-Local-Actor-Id
+      description: loopback local fixture allowlist UUID only; production authentication이 아님
+    refreshCookie:
+      type: apiKey
+      in: cookie
+      name: __Host-feelm_refresh
+    csrfCookie:
+      type: apiKey
+      in: cookie
+      name: __Host-feelm_csrf
+    localRefreshCookie:
+      type: apiKey
+      in: cookie
+      name: feelm_local_refresh
+    localCsrfCookie:
+      type: apiKey
+      in: cookie
+      name: feelm_local_csrf
+    localBearer:
+      type: http
+      scheme: bearer
+      bearerFormat: LocalAccessToken
+    reportViewerSession:
+      type: apiKey
+      in: header
+      name: X-Report-Viewer-Session
+  parameters:
+    MovieId:
+      name: movieId
+      in: path
+      required: true
+      schema:
+        type: string
+        format: uuid
+    Cursor:
+      name: cursor
+      in: query
+      description: 같은 API operation·query·revision 조건에만 재사용 가능한 opaque cursor
+      schema:
+        type: string
+        maxLength: 2048
+    Limit:
+      name: limit
+      in: query
+      schema:
+        type: integer
+        minimum: 1
+        maximum: 50
+        default: 20
+    IdempotencyKey:
+      name: Idempotency-Key
+      in: header
+      required: true
+      schema:
+        type: string
+        minLength: 8
+        maxLength: 128
+        pattern: ^[!-~]+$
+    ExpectedRevision:
+      name: X-Expected-Revision
+      in: header
+      required: true
+      schema:
+        type: integer
+        minimum: 1
+    WatchIntentId:
+      name: watchIntentId
+      in: path
+      required: true
+      schema:
+        type: string
+        format: uuid
+    FrameId:
+      name: frameId
+      in: path
+      required: true
+      schema:
+        type: string
+        format: uuid
+    DeliveryId:
+      name: deliveryId
+      in: path
+      required: true
+      schema: { type: string, format: uuid }
+    DeliveryItemId:
+      name: deliveryItemId
+      in: path
+      required: true
+      schema: { type: string, format: uuid }
+    C2BIdempotencyKey:
+      name: Idempotency-Key
+      in: header
+      required: true
+      schema: { type: string, format: uuid }
+    C3ComparisonId:
+      name: comparisonId
+      in: path
+      required: true
+      schema: { type: string, format: uuid }
+    C3PartyId:
+      name: partyId
+      in: path
+      required: true
+      schema: { type: string, format: uuid }
+    C3InvitationId:
+      name: invitationId
+      in: path
+      required: true
+      schema: { type: string, format: uuid }
+    C3ProviderIdQuery:
+      name: providerId
+      in: query
+      required: true
+      schema: { type: string, format: uuid }
+    C3Cursor:
+      name: cursor
+      in: query
+      required: false
+      description: actor/resource/materialization/sort key에 결합된 opaque local cursor
+      schema: { type: string, minLength: 1, maxLength: 2048 }
+    C3Limit:
+      name: limit
+      in: query
+      required: false
+      schema: { type: integer, minimum: 1, maximum: 100, default: 20 }
+  headers:
+    CatalogVersion:
+      description: 응답을 생성한 Catalog read model version
+      schema:
+        type: string
+  responses:
+    ValidationError:
+      description: 요청 값 오류
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/ErrorResponse"
+          example:
+            code: VALIDATION_ERROR
+            message: 요청 값을 확인해 주세요.
+            traceId: 01J6H0M5Z4A40B5Y9M7A04M6R8
+            fieldErrors:
+              - field: releaseYearFrom
+                reason: must_be_less_than_or_equal_to_releaseYearTo
+    InvalidAccessToken:
+      description: 선택적으로 전달된 token이 유효하지 않음
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/ErrorResponse"
+          example:
+            code: INVALID_ACCESS_TOKEN
+            message: 인증 정보를 확인해 주세요.
+            traceId: 01J6H0M5Z4A40B5Y9M7A04M6R8
+            fieldErrors: []
+    MovieNotFound:
+      description: 존재하지 않거나 공개할 수 없는 영화
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/ErrorResponse"
+          example:
+            code: MOVIE_NOT_FOUND
+            message: 영화 정보를 찾을 수 없어요.
+            traceId: 01J6H0M5Z4A40B5Y9M7A04M6R8
+            fieldErrors: []
+    CatalogUnavailable:
+      description: 로컬 Catalog read model을 조회할 수 없음
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/ErrorResponse"
+          example:
+            code: CATALOG_UNAVAILABLE
+            message: 영화 정보를 불러올 수 없어요. 잠시 후 다시 시도해 주세요.
+            traceId: 01J6H0M5Z4A40B5Y9M7A04M6R8
+            fieldErrors: []
+    Unauthorized:
+      description: 인증 정보 또는 local actor가 없거나 유효하지 않음
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/ErrorResponse"
+    ResourceNotFound:
+      description: 존재하지 않거나 actor 소유가 아닌 resource
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/ErrorResponse"
+    Conflict:
+      description: revision, 상태, idempotency 충돌
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/ErrorResponse"
+    ServiceUnavailable:
+      description: C1 DB transaction을 안전하게 처리할 수 없음
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/ErrorResponse"
+  schemas:
+    C3ProviderIdSet:
+      type: array
+      minItems: 2
+      maxItems: 4
+      uniqueItems: true
+      items: { type: string, format: uuid }
+    C3CreateOttCatalogComparisonRequest:
+      type: object
+      additionalProperties: false
+      required: [providerIds]
+      properties:
+        providerIds: { $ref: "#/components/schemas/C3ProviderIdSet" }
+    C3OttCatalogComparison:
+      type: object
+      additionalProperties: false
+      required: [comparisonId, status, region, monetizationType, catalogVersion, providers]
+      properties:
+        comparisonId: { type: string, format: uuid }
+        status: { type: string, const: READY }
+        region: { type: string, const: KR }
+        monetizationType: { type: string, const: FLATRATE }
+        catalogVersion: { type: string, minLength: 1 }
+        providers:
+          type: array
+          minItems: 2
+          maxItems: 4
+          items: { $ref: "#/components/schemas/C3ProviderCatalogSummary" }
+    C3ProviderCatalogSummary:
+      type: object
+      additionalProperties: false
+      required: [provider, movieCount, moviesHref]
+      properties:
+        provider: { $ref: "#/components/schemas/ProviderSummary" }
+        movieCount: { type: integer, minimum: 0 }
+        moviesHref: { type: string, format: uri-reference }
+    C3CatalogMovie:
+      type: object
+      additionalProperties: false
+      required: [movie, availableProviderIds]
+      properties:
+        movie: { $ref: "#/components/schemas/MovieSummary" }
+        availableProviderIds:
+          type: array
+          minItems: 1
+          maxItems: 4
+          uniqueItems: true
+          items: { type: string, format: uuid }
+    C3CatalogMoviePage:
+      type: object
+      additionalProperties: false
+      required: [comparisonId, providerId, totalCount, hasNext, nextCursor, items]
+      properties:
+        comparisonId: { type: string, format: uuid }
+        providerId: { type: string, format: uuid }
+        totalCount: { type: integer, minimum: 0 }
+        hasNext: { type: boolean }
+        nextCursor: { type: [string, "null"] }
+        items:
+          type: array
+          maxItems: 100
+          items: { $ref: "#/components/schemas/C3CatalogMovie" }
+      allOf:
+        - if:
+            properties: { hasNext: { const: true } }
+            required: [hasNext]
+          then:
+            properties: { nextCursor: { type: string, minLength: 1 } }
+        - if:
+            properties: { hasNext: { const: false } }
+            required: [hasNext]
+          then:
+            properties: { nextCursor: { type: "null" } }
+    C3CreatePartyRequest:
+      type: object
+      additionalProperties: false
+      required: [name, providerIds]
+      properties:
+        name: { type: string, minLength: 1, maxLength: 60 }
+        providerIds: { $ref: "#/components/schemas/C3ProviderIdSet" }
+    C3LocalActorSummary:
+      type: object
+      additionalProperties: false
+      required: [actorId, nickname]
+      properties:
+        actorId: { type: string, format: uuid }
+        nickname: { type: string, minLength: 1 }
+    C3PartyMemberSummary:
+      type: object
+      additionalProperties: false
+      required: [memberId, actor, role, joinedAt]
+      properties:
+        memberId: { type: string, format: uuid }
+        actor: { $ref: "#/components/schemas/C3LocalActorSummary" }
+        role: { type: string, enum: [OWNER, MEMBER] }
+        joinedAt: { type: string, format: date-time }
+    C3Party:
+      type: object
+      additionalProperties: false
+      required: [partyId, name, status, myRole, memberCount, maximumMemberCount, revision, providerIds, members, baselineHref]
+      properties:
+        partyId: { type: string, format: uuid }
+        name: { type: string, minLength: 1 }
+        status: { type: string, enum: [DRAFT, ACTIVE] }
+        myRole: { type: string, enum: [OWNER, MEMBER] }
+        memberCount: { type: integer, minimum: 1, maximum: 4 }
+        maximumMemberCount: { type: integer, const: 4 }
+        revision: { type: integer, minimum: 1 }
+        providerIds: { $ref: "#/components/schemas/C3ProviderIdSet" }
+        members:
+          type: array
+          minItems: 1
+          maxItems: 4
+          items: { $ref: "#/components/schemas/C3PartyMemberSummary" }
+        baselineHref: { type: string, format: uri-reference }
+    C3PartyPage:
+      type: object
+      additionalProperties: false
+      required: [totalCount, hasNext, nextCursor, items]
+      properties:
+        totalCount: { type: integer, minimum: 0 }
+        hasNext: { type: boolean }
+        nextCursor: { type: [string, "null"] }
+        items:
+          type: array
+          maxItems: 100
+          items: { $ref: "#/components/schemas/C3Party" }
+    C3CreatePartyInvitationRequest:
+      type: object
+      additionalProperties: false
+      required: [recipientActorId, expectedPartyRevision]
+      properties:
+        recipientActorId: { type: string, format: uuid }
+        expectedPartyRevision: { type: integer, minimum: 1 }
+    C3PartyInvitation:
+      type: object
+      additionalProperties: false
+      required: [invitationId, partyId, partyName, inviter, recipient, status, revision, partyRevision]
+      properties:
+        invitationId: { type: string, format: uuid }
+        partyId: { type: string, format: uuid }
+        partyName: { type: string }
+        inviter: { $ref: "#/components/schemas/C3LocalActorSummary" }
+        recipient: { $ref: "#/components/schemas/C3LocalActorSummary" }
+        status: { type: string, enum: [PENDING, ACCEPTED] }
+        revision: { type: integer, minimum: 1 }
+        partyRevision: { type: integer, minimum: 1 }
+    C3PartyInvitationPage:
+      type: object
+      additionalProperties: false
+      required: [totalCount, hasNext, nextCursor, items]
+      properties:
+        totalCount: { type: integer, minimum: 0 }
+        hasNext: { type: boolean }
+        nextCursor: { type: [string, "null"] }
+        items:
+          type: array
+          maxItems: 100
+          items: { $ref: "#/components/schemas/C3PartyInvitation" }
+    C3AcceptPartyInvitationRequest:
+      type: object
+      additionalProperties: false
+      required: [expectedPartyRevision, expectedInvitationRevision]
+      properties:
+        expectedPartyRevision: { type: integer, minimum: 1 }
+        expectedInvitationRevision: { type: integer, minimum: 1 }
+    C3AcceptPartyInvitationResponse:
+      type: object
+      additionalProperties: false
+      required: [invitation, party]
+      properties:
+        invitation: { $ref: "#/components/schemas/C3PartyInvitation" }
+        party: { $ref: "#/components/schemas/C3Party" }
+    C3PartyBaselineExplanation:
+      type: object
+      additionalProperties: false
+      required: [availableProviderCount, selectedProviderCount, catalogPopularityRank, policyVersion]
+      properties:
+        availableProviderCount: { type: integer, minimum: 1, maximum: 4 }
+        selectedProviderCount: { type: integer, minimum: 2, maximum: 4 }
+        catalogPopularityRank: { type: integer, minimum: 1 }
+        policyVersion: { type: string, const: CATALOG_POPULARITY_KR_FLATRATE_V1 }
+    C3PartyBaselineItem:
+      type: object
+      additionalProperties: false
+      required: [movie, availableProviderIds, explanation]
+      properties:
+        movie: { $ref: "#/components/schemas/MovieSummary" }
+        availableProviderIds:
+          type: array
+          minItems: 1
+          maxItems: 4
+          uniqueItems: true
+          items: { type: string, format: uuid }
+        explanation: { $ref: "#/components/schemas/C3PartyBaselineExplanation" }
+    C3PartyBaselinePage:
+      type: object
+      additionalProperties: false
+      required: [partyId, policyVersion, catalogVersion, totalCount, hasNext, nextCursor, items]
+      properties:
+        partyId: { type: string, format: uuid }
+        policyVersion: { type: string, const: CATALOG_POPULARITY_KR_FLATRATE_V1 }
+        catalogVersion: { type: string, minLength: 1 }
+        totalCount: { type: integer, minimum: 0 }
+        hasNext: { type: boolean }
+        nextCursor: { type: [string, "null"] }
+        items:
+          type: array
+          maxItems: 100
+          items: { $ref: "#/components/schemas/C3PartyBaselineItem" }
+    RecommendationDelivery:
+      type: object
+      additionalProperties: false
+      required: [deliveryId, deliveryRevision, label, composition, items, pageInfo]
+      properties:
+        deliveryId: { type: string, format: uuid }
+        deliveryRevision: { type: integer, minimum: 1 }
+        label: { type: string, enum: [POPULARITY_BASELINE] }
+        composition: { type: string, enum: [BASELINE_THREE] }
+        items:
+          type: array
+          minItems: 0
+          maxItems: 500
+          items: { $ref: "#/components/schemas/PersonalDiscoveryDeliveryItem" }
+        pageInfo: { $ref: "#/components/schemas/RecommendationPageInfo" }
+    RecommendationPageInfo:
+      type: object
+      additionalProperties: false
+      required: [activeItemCount, hasMore, nextCursor, cursorExpiresAt]
+      properties:
+        activeItemCount: { type: integer, minimum: 0, maximum: 500 }
+        hasMore: { type: boolean }
+        nextCursor: { type: [string, "null"], minLength: 32 }
+        cursorExpiresAt: { type: [string, "null"], format: date-time }
+      allOf:
+        - if:
+            properties: { hasMore: { const: true } }
+            required: [hasMore]
+          then:
+            properties:
+              nextCursor: { type: string, minLength: 32 }
+              cursorExpiresAt: { type: string, format: date-time }
+        - if:
+            properties: { hasMore: { const: false } }
+            required: [hasMore]
+          then:
+            properties:
+              nextCursor: { type: "null" }
+              cursorExpiresAt: { type: "null" }
+    PersonalDiscoveryDeliveryItem:
+      type: object
+      additionalProperties: false
+      required: [deliveryItemId, position, sourceRank, recommendationType, movie]
+      properties:
+        deliveryItemId: { type: string, format: uuid }
+        position: { type: integer, minimum: 1, maximum: 500 }
+        sourceRank: { type: integer, minimum: 1, maximum: 500 }
+        recommendationType: { type: string, enum: [POPULARITY_BASELINE] }
+        movie: { $ref: "#/components/schemas/PersonalDiscoveryMovieCard" }
+    PersonalDiscoveryMovieCard:
+      type: object
+      additionalProperties: false
+      required: [movieId, title, posterUrl, releaseYear, genres]
+      properties:
+        movieId: { type: string, format: uuid }
+        title: { type: string, minLength: 1 }
+        posterUrl: { type: [string, "null"], format: uri }
+        releaseYear: { type: [integer, "null"], minimum: 1870, maximum: 2100 }
+        genres:
+          type: array
+          items: { type: string, minLength: 1 }
+    AppendRecommendationsRequest:
+      type: object
+      additionalProperties: false
+      required: [appendEventId, expectedRevision, cursor]
+      properties:
+        appendEventId: { type: string, format: uuid }
+        expectedRevision: { type: integer, minimum: 1 }
+        cursor: { type: string, minLength: 32 }
+    PersonalDiscoverySafeIssue:
+      type: object
+      additionalProperties: false
+      required: [code, count, retriable]
+      properties:
+        code:
+          type: string
+          enum: [CANDIDATE_NOT_UI_READY, CANDIDATE_ALREADY_RATED, CANDIDATE_ALREADY_SEEN]
+        count: { type: integer, minimum: 1 }
+        retriable: { type: boolean, const: false }
+    SelectionSummary:
+      type: object
+      additionalProperties: false
+      required: [scannedCount, selectedCount, excludedCount]
+      properties:
+        scannedCount: { type: integer, minimum: 0, maximum: 500 }
+        selectedCount: { type: integer, minimum: 0, maximum: 3 }
+        excludedCount: { type: integer, minimum: 0, maximum: 500 }
+    RecommendationAppend:
+      type: object
+      additionalProperties: false
+      required: [appendEventId, deliveryId, deliveryRevision, outcome, selectionSummary, appendedItems, issues, pageInfo, replayed]
+      properties:
+        appendEventId: { type: string, format: uuid }
+        deliveryId: { type: string, format: uuid }
+        deliveryRevision: { type: integer, minimum: 1 }
+        outcome: { type: string, enum: [COMPLETE, PARTIAL, EMPTY] }
+        selectionSummary: { $ref: "#/components/schemas/SelectionSummary" }
+        appendedItems:
+          type: array
+          minItems: 0
+          maxItems: 3
+          items: { $ref: "#/components/schemas/PersonalDiscoveryDeliveryItem" }
+        issues:
+          type: array
+          maxItems: 3
+          uniqueItems: true
+          items: { $ref: "#/components/schemas/PersonalDiscoverySafeIssue" }
+        pageInfo: { $ref: "#/components/schemas/RecommendationPageInfo" }
+        replayed: { type: boolean }
+      allOf:
+        - if: { properties: { outcome: { const: COMPLETE } }, required: [outcome] }
+          then: { properties: { appendedItems: { type: array, minItems: 3, maxItems: 3 } } }
+        - if: { properties: { outcome: { const: PARTIAL } }, required: [outcome] }
+          then: { properties: { appendedItems: { type: array, minItems: 1, maxItems: 2 } } }
+        - if: { properties: { outcome: { const: EMPTY } }, required: [outcome] }
+          then: { properties: { appendedItems: { type: array, maxItems: 0 } } }
+    RecommendationAppendCreated:
+      allOf:
+        - { $ref: "#/components/schemas/RecommendationAppend" }
+        - type: object
+          properties: { replayed: { const: false } }
+    RecommendationAppendReplay:
+      allOf:
+        - { $ref: "#/components/schemas/RecommendationAppend" }
+        - type: object
+          properties: { replayed: { const: true } }
+    DismissRecommendationRequest:
+      type: object
+      additionalProperties: false
+      required: [dismissalEventId, expectedRevision, reason]
+      properties:
+        dismissalEventId: { type: string, format: uuid }
+        expectedRevision: { type: integer, minimum: 1 }
+        reason: { type: string, const: NOT_INTERESTED }
+    RecommendationDismissal:
+      type: object
+      additionalProperties: false
+      required: [dismissalEventId, deliveryItemId, deliveryRevision, status, occurredAt, replayed]
+      properties:
+        dismissalEventId: { type: string, format: uuid }
+        deliveryItemId: { type: string, format: uuid }
+        deliveryRevision: { type: integer, minimum: 1 }
+        status: { type: string, const: DISMISSED_NOT_INTERESTED }
+        occurredAt: { type: string, format: date-time }
+        replayed: { type: boolean }
+    RecommendationDismissalCreated:
+      allOf:
+        - { $ref: "#/components/schemas/RecommendationDismissal" }
+        - type: object
+          properties: { replayed: { const: false } }
+    RecommendationDismissalReplay:
+      allOf:
+        - { $ref: "#/components/schemas/RecommendationDismissal" }
+        - type: object
+          properties: { replayed: { const: true } }
+    MovieSort:
+      type: string
+      enum:
+        - RELEVANCE
+        - POPULARITY
+        - RELEASE_DATE_DESC
+        - RATING_COUNT_DESC
+    MonetizationType:
+      type: string
+      enum:
+        - FLATRATE
+        - RENT
+        - BUY
+        - FREE
+        - ADS
+    AvailabilityStatus:
+      type: string
+      enum:
+        - LISTED
+        - NONE_LISTED
+        - UNKNOWN
+    Freshness:
+      type: string
+      enum:
+        - FRESH
+        - STALE
+        - UNKNOWN
+    LinkType:
+      type: string
+      enum:
+        - AGGREGATOR
+        - DIRECT
+    Genre:
+      type: object
+      additionalProperties: false
+      required:
+        - genreId
+        - name
+      properties:
+        genreId:
+          type: string
+          format: uuid
+        name:
+          type: string
+    Country:
+      type: object
+      additionalProperties: false
+      required:
+        - code
+        - name
+      properties:
+        code:
+          type: string
+          pattern: ^[A-Z]{2}$
+        name:
+          type: string
+    ExternalRating:
+      type: object
+      additionalProperties: false
+      required:
+        - source
+        - value
+        - scale
+        - ratingCount
+      properties:
+        source:
+          type: string
+          enum:
+            - TMDB
+        value:
+          type: number
+          minimum: 0
+          maximum: 10
+        scale:
+          type: integer
+          const: 10
+        ratingCount:
+          type: integer
+          minimum: 0
+    ProviderBadge:
+      type: object
+      additionalProperties: false
+      required:
+        - providerId
+        - name
+        - logoUrl
+        - isSubscribed
+      properties:
+        providerId:
+          type: string
+          format: uuid
+        name:
+          type: string
+        logoUrl:
+          type:
+            - string
+            - "null"
+          format: uri
+        isSubscribed:
+          description: 비회원은 null
+          type:
+            - boolean
+            - "null"
+    AvailabilityPreview:
+      type: object
+      additionalProperties: false
+      required:
+        - region
+        - availabilityStatus
+        - freshness
+        - snapshotAt
+        - flatrateProviders
+      properties:
+        region:
+          type: string
+          const: KR
+        availabilityStatus:
+          $ref: "#/components/schemas/AvailabilityStatus"
+        freshness:
+          $ref: "#/components/schemas/Freshness"
+        snapshotAt:
+          type:
+            - string
+            - "null"
+          format: date-time
+        flatrateProviders:
+          type: array
+          maxItems: 3
+          items:
+            $ref: "#/components/schemas/ProviderBadge"
+    MovieCard:
+      type: object
+      additionalProperties: false
+      required:
+        - movieId
+        - displayTitle
+        - displayTitleLocale
+        - releaseYear
+        - posterUrl
+        - genres
+        - externalRating
+        - availability
+      properties:
+        movieId:
+          type: string
+          format: uuid
+        displayTitle:
+          type: string
+          minLength: 1
+        displayTitleLocale:
+          type: string
+          minLength: 2
+        releaseYear:
+          type:
+            - integer
+            - "null"
+          minimum: 1870
+          maximum: 2100
+        posterUrl:
+          type:
+            - string
+            - "null"
+          format: uri
+        genres:
+          type: array
+          minItems: 1
+          items:
+            $ref: "#/components/schemas/Genre"
+        externalRating:
+          oneOf:
+            - $ref: "#/components/schemas/ExternalRating"
+            - type: "null"
+        availability:
+          $ref: "#/components/schemas/AvailabilityPreview"
+    AppliedFilters:
+      type: object
+      additionalProperties: false
+      required:
+        - query
+        - genreIds
+        - countryCodes
+        - releaseYearFrom
+        - releaseYearTo
+        - ottProviderIds
+        - ottMonetizationTypes
+        - sort
+      properties:
+        query:
+          type:
+            - string
+            - "null"
+        genreIds:
+          type: array
+          items:
+            type: string
+            format: uuid
+        countryCodes:
+          type: array
+          items:
+            type: string
+            pattern: ^[A-Z]{2}$
+        releaseYearFrom:
+          type:
+            - integer
+            - "null"
+        releaseYearTo:
+          type:
+            - integer
+            - "null"
+        ottProviderIds:
+          type: array
+          items:
+            type: string
+            format: uuid
+        ottMonetizationTypes:
+          type: array
+          items:
+            $ref: "#/components/schemas/MonetizationType"
+        sort:
+          $ref: "#/components/schemas/MovieSort"
+    MovieSearchPage:
+      type: object
+      additionalProperties: false
+      required:
+        - catalogVersion
+        - totalCount
+        - hasNext
+        - nextCursor
+        - items
+        - appliedFilters
+      properties:
+        catalogVersion:
+          type: string
+        totalCount:
+          type: integer
+          minimum: 0
+        hasNext:
+          type: boolean
+        nextCursor:
+          type:
+            - string
+            - "null"
+        items:
+          type: array
+          items:
+            $ref: "#/components/schemas/MovieCard"
+        appliedFilters:
+          $ref: "#/components/schemas/AppliedFilters"
+    PersonCredit:
+      type: object
+      additionalProperties: false
+      required:
+        - personId
+        - name
+        - role
+        - character
+        - order
+      properties:
+        personId:
+          type: string
+          format: uuid
+        name:
+          type: string
+        role:
+          type: string
+          enum:
+            - DIRECTOR
+            - CAST
+        character:
+          type:
+            - string
+            - "null"
+        order:
+          type: integer
+          minimum: 0
+    MovieDetail:
+      type: object
+      additionalProperties: false
+      required:
+        - catalogVersion
+        - movieId
+        - displayTitle
+        - displayTitleLocale
+        - originalTitle
+        - overview
+        - overviewLocale
+        - releaseDate
+        - runtimeMinutes
+        - posterUrl
+        - backdropUrl
+        - genres
+        - productionCountries
+        - directors
+        - cast
+        - externalRating
+        - availability
+        - metadataAsOf
+      properties:
+        catalogVersion:
+          type: string
+        movieId:
+          type: string
+          format: uuid
+        displayTitle:
+          type: string
+        displayTitleLocale:
+          type: string
+        originalTitle:
+          type: string
+        overview:
+          type: string
+          minLength: 1
+        overviewLocale:
+          type: string
+        releaseDate:
+          type:
+            - string
+            - "null"
+          format: date
+        runtimeMinutes:
+          type:
+            - integer
+            - "null"
+          minimum: 1
+        posterUrl:
+          type:
+            - string
+            - "null"
+          format: uri
+        backdropUrl:
+          type:
+            - string
+            - "null"
+          format: uri
+        genres:
+          type: array
+          minItems: 1
+          items:
+            $ref: "#/components/schemas/Genre"
+        productionCountries:
+          type: array
+          items:
+            $ref: "#/components/schemas/Country"
+        directors:
+          type: array
+          items:
+            $ref: "#/components/schemas/PersonCredit"
+        cast:
+          type: array
+          maxItems: 10
+          items:
+            $ref: "#/components/schemas/PersonCredit"
+        externalRating:
+          oneOf:
+            - $ref: "#/components/schemas/ExternalRating"
+            - type: "null"
+        availability:
+          $ref: "#/components/schemas/AvailabilityPreview"
+        metadataAsOf:
+          type: string
+          format: date-time
+    SimilarityReason:
+      type: object
+      additionalProperties: false
+      required:
+        - code
+        - label
+      properties:
+        code:
+          type: string
+          enum:
+            - SHARED_GENRE
+            - SHARED_DIRECTOR
+            - SHARED_CAST
+            - SHARED_KEYWORD
+            - TEXT_SIMILARITY
+        label:
+          type: string
+    SimilarMovieItem:
+      type: object
+      additionalProperties: false
+      required:
+        - movie
+        - reasons
+      properties:
+        movie:
+          $ref: "#/components/schemas/MovieCard"
+        reasons:
+          type: array
+          maxItems: 3
+          items:
+            $ref: "#/components/schemas/SimilarityReason"
+    SimilarMovieResponse:
+      type: object
+      additionalProperties: false
+      required:
+        - catalogVersion
+        - similarityVersion
+        - items
+      properties:
+        catalogVersion:
+          type: string
+        similarityVersion:
+          type: string
+        items:
+          type: array
+          items:
+            $ref: "#/components/schemas/SimilarMovieItem"
+    OfferLink:
+      type: object
+      additionalProperties: false
+      required:
+        - type
+        - url
+      properties:
+        type:
+          $ref: "#/components/schemas/LinkType"
+        url:
+          type: string
+          format: uri
+    OttOffer:
+      type: object
+      additionalProperties: false
+      required:
+        - offerId
+        - providerId
+        - providerName
+        - logoUrl
+        - monetizationType
+        - isSubscribed
+        - link
+      properties:
+        offerId:
+          type: string
+          format: uuid
+        providerId:
+          type: string
+          format: uuid
+        providerName:
+          type: string
+        logoUrl:
+          type:
+            - string
+            - "null"
+          format: uri
+        monetizationType:
+          $ref: "#/components/schemas/MonetizationType"
+        isSubscribed:
+          type:
+            - boolean
+            - "null"
+        link:
+          oneOf:
+            - $ref: "#/components/schemas/OfferLink"
+            - type: "null"
+    OttOfferGroup:
+      type: object
+      additionalProperties: false
+      required:
+        - monetizationType
+        - offers
+      properties:
+        monetizationType:
+          $ref: "#/components/schemas/MonetizationType"
+        offers:
+          type: array
+          items:
+            $ref: "#/components/schemas/OttOffer"
+    OttAvailability:
+      type: object
+      additionalProperties: false
+      required:
+        - catalogVersion
+        - movieId
+        - region
+        - availabilityStatus
+        - freshness
+        - snapshotAt
+        - source
+        - groups
+      properties:
+        catalogVersion:
+          type: string
+        movieId:
+          type: string
+          format: uuid
+        region:
+          type: string
+          const: KR
+        availabilityStatus:
+          $ref: "#/components/schemas/AvailabilityStatus"
+        freshness:
+          $ref: "#/components/schemas/Freshness"
+        snapshotAt:
+          type:
+            - string
+            - "null"
+          format: date-time
+        source:
+          type: string
+          enum:
+            - TMDB_JUSTWATCH
+        groups:
+          type: array
+          items:
+            $ref: "#/components/schemas/OttOfferGroup"
+    GenreListResponse:
+      type: object
+      additionalProperties: false
+      required:
+        - catalogVersion
+        - items
+      properties:
+        catalogVersion:
+          type: string
+        items:
+          type: array
+          items:
+            $ref: "#/components/schemas/Genre"
+    CountryListResponse:
+      type: object
+      additionalProperties: false
+      required:
+        - catalogVersion
+        - items
+      properties:
+        catalogVersion:
+          type: string
+        items:
+          type: array
+          items:
+            $ref: "#/components/schemas/Country"
+    OttProvider:
+      type: object
+      additionalProperties: false
+      required:
+        - providerId
+        - name
+        - logoUrl
+        - displayPriority
+        - isSubscribed
+      properties:
+        providerId:
+          type: string
+          format: uuid
+        name:
+          type: string
+        logoUrl:
+          type:
+            - string
+            - "null"
+          format: uri
+        displayPriority:
+          type: integer
+          minimum: 0
+        isSubscribed:
+          type:
+            - boolean
+            - "null"
+    OttProviderListResponse:
+      type: object
+      additionalProperties: false
+      required:
+        - catalogVersion
+        - region
+        - items
+      properties:
+        catalogVersion:
+          type: string
+        region:
+          type: string
+          const: KR
+        items:
+          type: array
+          items:
+            $ref: "#/components/schemas/OttProvider"
+    FieldError:
+      type: object
+      additionalProperties: false
+      required:
+        - field
+        - reason
+      properties:
+        field:
+          type: string
+        reason:
+          type: string
+    ErrorResponse:
+      type: object
+      additionalProperties: false
+      required:
+        - code
+        - message
+        - traceId
+        - fieldErrors
+      properties:
+        code:
+          type: string
+          enum:
+            - VALIDATION_ERROR
+            - INVALID_CURSOR
+            - INVALID_ACCESS_TOKEN
+            - MOVIE_NOT_FOUND
+            - CATALOG_UNAVAILABLE
+            - UNAUTHORIZED
+            - RESOURCE_NOT_FOUND
+            - IDEMPOTENCY_KEY_REUSED
+            - REVISION_CONFLICT
+            - WATCH_INTENT_NOT_CONFIRMABLE
+            - WATCH_CONFIRMATION_REQUIRED
+            - FLAVOR_ASSIGNMENT_REQUIRED
+            - RATING_SERVICE_UNAVAILABLE
+            - LOCAL_ACTOR_UNAUTHORIZED
+            - LOCAL_ACTOR_UNAVAILABLE
+            - PARTY_CAPACITY_REACHED
+            - DUPLICATE_INVITATION
+            - INVALID_STATE_TRANSITION
+            - CATALOG_MATERIALIZATION_UNAVAILABLE
+        message:
+          type: string
+        traceId:
+          type: string
+        fieldErrors:
+          type: array
+          items:
+            $ref: "#/components/schemas/FieldError"
+    CreateWatchIntentRequest:
+      type: object
+      additionalProperties: false
+      required:
+        - movieId
+        - offerId
+      properties:
+        movieId:
+          type: string
+          format: uuid
+        offerId:
+          type: string
+          format: uuid
+    WatchIntentClickResult:
+      type: object
+      additionalProperties: false
+      required:
+        - outcome
+        - movieId
+        - providerId
+        - watchIntent
+        - destination
+      properties:
+        outcome:
+          type: string
+          enum:
+            - CREATED
+            - ACTIVE_REUSED
+            - ALREADY_WATCHED
+        movieId:
+          type: string
+          format: uuid
+        providerId:
+          type: string
+          format: uuid
+          description: 이번 실제 클릭 destination의 provider. ACTIVE_REUSED intent의 최초 provider와 다를 수 있다.
+        watchIntent:
+          description: ALREADY_WATCHED면 null, 그 외에는 새로 생성되거나 재사용된 active intent
+          oneOf:
+            - $ref: "#/components/schemas/WatchIntentSnapshot"
+            - type: "null"
+        destination:
+          $ref: "#/components/schemas/ExternalDestination"
+    WatchIntentSnapshot:
+      type: object
+      additionalProperties: false
+      required:
+        - watchIntentId
+        - status
+        - clickedAt
+        - confirmationDueAt
+        - expiresAt
+        - revision
+      properties:
+        watchIntentId:
+          type: string
+          format: uuid
+        status:
+          type: string
+          enum:
+            - LINK_CLICKED
+            - CONFIRMATION_PENDING
+        clickedAt:
+          type: string
+          format: date-time
+        confirmationDueAt:
+          type: string
+          format: date-time
+          description: 최초 active clickedAt + 48시간
+        expiresAt:
+          type: string
+          format: date-time
+          description: 최초 active clickedAt + 7일
+        revision:
+          type: integer
+          minimum: 1
+    ExternalDestination:
+      type: object
+      additionalProperties: false
+      required:
+        - linkType
+        - url
+        - externalNavigation
+      properties:
+        linkType:
+          type: string
+          enum:
+            - AGGREGATOR
+            - DIRECT
+        url:
+          type: string
+          format: uri
+        externalNavigation:
+          type: boolean
+          const: true
+    ConfirmWatchIntentRequest:
+      type: object
+      additionalProperties: false
+      required:
+        - watched
+        - expectedRevision
+      properties:
+        watched:
+          type: boolean
+        expectedRevision:
+          type: integer
+          minimum: 1
+    WatchConfirmationResult:
+      type: object
+      additionalProperties: false
+      required:
+        - watchIntentId
+        - status
+        - respondedAt
+        - revision
+        - viewingRecord
+      properties:
+        watchIntentId:
+          type: string
+          format: uuid
+        status:
+          type: string
+          enum:
+            - CONFIRMED_WATCHED
+            - CONFIRMED_NOT_WATCHED
+        respondedAt:
+          type: string
+          format: date-time
+        revision:
+          type: integer
+          minimum: 2
+        viewingRecord:
+          oneOf:
+            - $ref: "#/components/schemas/ViewingRecordSummary"
+            - type: "null"
+    MovieSummary:
+      type: object
+      additionalProperties: false
+      required:
+        - movieId
+        - displayTitle
+        - posterUrl
+        - releaseYear
+      properties:
+        movieId:
+          type: string
+          format: uuid
+        displayTitle:
+          type: string
+          minLength: 1
+        posterUrl:
+          type:
+            - string
+            - "null"
+          format: uri
+        releaseYear:
+          type:
+            - integer
+            - "null"
+          minimum: 1870
+          maximum: 2100
+    PendingWatchConfirmation:
+      type: object
+      additionalProperties: false
+      required:
+        - watchIntentId
+        - movie
+        - provider
+        - clickedAt
+        - confirmationDueAt
+        - expiresAt
+        - revision
+      properties:
+        watchIntentId:
+          type: string
+          format: uuid
+        movie:
+          $ref: "#/components/schemas/MovieSummary"
+        provider:
+          $ref: "#/components/schemas/ProviderSummary"
+        clickedAt:
+          type: string
+          format: date-time
+        confirmationDueAt:
+          type: string
+          format: date-time
+        expiresAt:
+          type: string
+          format: date-time
+        revision:
+          type: integer
+          minimum: 1
+    PendingWatchConfirmationPage:
+      allOf:
+        - $ref: "#/components/schemas/CursorPage"
+        - type: object
+          required:
+            - items
+          properties:
+            items:
+              type: array
+              items:
+                $ref: "#/components/schemas/PendingWatchConfirmation"
+    ProviderSummary:
+      type: object
+      additionalProperties: false
+      required:
+        - providerId
+        - name
+      properties:
+        providerId:
+          type: string
+          format: uuid
+        name:
+          type: string
+    ViewingRecordSummary:
+      type: object
+      additionalProperties: false
+      required:
+        - viewingRecordId
+        - movieId
+        - status
+        - watchedConfirmedAt
+        - provider
+        - revision
+      properties:
+        viewingRecordId:
+          type: string
+          format: uuid
+        movieId:
+          type: string
+          format: uuid
+        status:
+          $ref: "#/components/schemas/ViewingStatus"
+        watchedConfirmedAt:
+          type: string
+          format: date-time
+        provider:
+          $ref: "#/components/schemas/ProviderSummary"
+        revision:
+          type: integer
+          minimum: 1
+    UnratedViewingRecord:
+      type: object
+      additionalProperties: false
+      required:
+        - viewingRecordId
+        - movie
+        - watchedConfirmedAt
+        - provider
+        - revision
+      properties:
+        viewingRecordId:
+          type: string
+          format: uuid
+        movie:
+          $ref: "#/components/schemas/MovieSummary"
+        watchedConfirmedAt:
+          type: string
+          format: date-time
+        provider:
+          $ref: "#/components/schemas/ProviderSummary"
+        revision:
+          type: integer
+          minimum: 1
+    UnratedViewingRecordPage:
+      allOf:
+        - $ref: "#/components/schemas/CursorPage"
+        - type: object
+          required:
+            - items
+          properties:
+            items:
+              type: array
+              items:
+                $ref: "#/components/schemas/UnratedViewingRecord"
+    PutRatingRequest:
+      type: object
+      additionalProperties: false
+      required:
+        - value
+      properties:
+        value:
+          type: integer
+          minimum: 1
+          maximum: 5
+        expectedRevision:
+          description: create는 생략, update는 현재 Rating revision 필수
+          type:
+            - integer
+            - "null"
+          minimum: 1
+    Rating:
+      type: object
+      additionalProperties: false
+      required:
+        - ratingId
+        - movieId
+        - value
+        - revision
+        - createdAt
+        - updatedAt
+      properties:
+        ratingId:
+          type: string
+          format: uuid
+        movieId:
+          type: string
+          format: uuid
+        value:
+          type: integer
+          minimum: 1
+          maximum: 5
+        revision:
+          type: integer
+          minimum: 1
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+    RatingItem:
+      type: object
+      additionalProperties: false
+      required:
+        - rating
+        - movie
+        - watchedConfirmedAt
+        - frameId
+      properties:
+        rating:
+          $ref: "#/components/schemas/Rating"
+        movie:
+          $ref: "#/components/schemas/MovieSummary"
+        watchedConfirmedAt:
+          type: string
+          format: date-time
+        frameId:
+          type: string
+          format: uuid
+    RatingPage:
+      allOf:
+        - $ref: "#/components/schemas/CursorPage"
+        - type: object
+          required:
+            - items
+          properties:
+            items:
+              type: array
+              items:
+                $ref: "#/components/schemas/RatingItem"
+    DerivedState:
+      type: object
+      additionalProperties: false
+      required:
+        - viewingStatus
+        - frameId
+        - popcornId
+        - filmTotalCount
+        - aggregateRevision
+        - recommendationRefresh
+      properties:
+        viewingStatus:
+          $ref: "#/components/schemas/ViewingStatus"
+        frameId:
+          type: string
+          format: uuid
+        popcornId:
+          type: string
+          format: uuid
+        filmTotalCount:
+          type: integer
+          minimum: 1
+        aggregateRevision:
+          type: integer
+          minimum: 1
+        recommendationRefresh:
+          type: string
+          enum:
+            - QUEUED
+    RatingMutationResult:
+      type: object
+      additionalProperties: false
+      required:
+        - mutation
+        - rating
+        - derivedState
+      properties:
+        mutation:
+          type: string
+          enum:
+            - CREATED
+            - UPDATED
+            - REPLAYED
+        rating:
+          $ref: "#/components/schemas/Rating"
+        derivedState:
+          $ref: "#/components/schemas/DerivedState"
+    RatingDeletionResult:
+      type: object
+      additionalProperties: false
+      required:
+        - movieId
+        - ratingRemoved
+        - viewingStatus
+        - frameActive
+        - popcornActive
+        - filmTotalCount
+        - aggregateRevision
+        - recommendationRefresh
+      properties:
+        movieId:
+          type: string
+          format: uuid
+        ratingRemoved:
+          type: boolean
+          const: true
+        viewingStatus:
+          type: string
+          const: WATCHED_CONFIRMED
+        frameActive:
+          type: boolean
+          const: false
+        popcornActive:
+          type: boolean
+          const: false
+        filmTotalCount:
+          type: integer
+          minimum: 0
+        aggregateRevision:
+          type: integer
+          minimum: 1
+        recommendationRefresh:
+          type: string
+          enum:
+            - QUEUED
+    FrameSummary:
+      type: object
+      additionalProperties: false
+      required:
+        - frameId
+        - movie
+        - myRating
+        - watchedConfirmedAt
+        - createdAt
+      properties:
+        frameId:
+          type: string
+          format: uuid
+        movie:
+          $ref: "#/components/schemas/MovieSummary"
+        myRating:
+          type: integer
+          minimum: 1
+          maximum: 5
+        watchedConfirmedAt:
+          type: string
+          format: date-time
+        createdAt:
+          type: string
+          format: date-time
+    FilmPage:
+      allOf:
+        - $ref: "#/components/schemas/CursorPage"
+        - type: object
+          required:
+            - filmRevision
+            - items
+          properties:
+            filmRevision:
+              type: integer
+              minimum: 0
+            items:
+              type: array
+              items:
+                $ref: "#/components/schemas/FrameSummary"
+    FrameDetail:
+      type: object
+      additionalProperties: false
+      required:
+        - frameId
+        - movie
+        - rating
+        - watchedConfirmedAt
+        - provider
+        - createdAt
+        - derivationVersion
+      properties:
+        frameId:
+          type: string
+          format: uuid
+        movie:
+          $ref: "#/components/schemas/MovieSummary"
+        rating:
+          $ref: "#/components/schemas/Rating"
+        watchedConfirmedAt:
+          type: string
+          format: date-time
+        provider:
+          $ref: "#/components/schemas/ProviderSummary"
+        createdAt:
+          type: string
+          format: date-time
+        derivationVersion:
+          type: string
+    FlavorAggregate:
+      type: object
+      additionalProperties: false
+      required:
+        - flavorId
+        - code
+        - displayName
+        - colorToken
+        - count
+        - ratingCount
+        - averageRating
+      properties:
+        flavorId:
+          type: string
+          format: uuid
+        code:
+          type: string
+          enum:
+            - ADRENALINE
+            - WONDER
+            - JOY
+            - HEART
+            - SHADOW
+            - REAL
+            - LEGACY
+            - RHYTHM
+        displayName:
+          type: string
+        colorToken:
+          type: string
+        count:
+          type: integer
+          minimum: 0
+        ratingCount:
+          type: integer
+          minimum: 0
+        averageRating:
+          type:
+            - number
+            - "null"
+          minimum: 1
+          maximum: 5
+    PopcornBucket:
+      type: object
+      additionalProperties: false
+      required:
+        - totalCount
+        - mappingVersion
+        - aggregateRevision
+        - flavors
+      properties:
+        totalCount:
+          type: integer
+          minimum: 0
+        mappingVersion:
+          type: string
+        aggregateRevision:
+          type: integer
+          minimum: 0
+        flavors:
+          type: array
+          items:
+            $ref: "#/components/schemas/FlavorAggregate"
+    TasteAggregate:
+      type: object
+      additionalProperties: false
+      required:
+        - dimensionType
+        - dimensionKey
+        - displayName
+        - ratingCount
+        - averageRating
+      properties:
+        dimensionType:
+          type: string
+          enum:
+            - GENRE
+            - COUNTRY
+            - DIRECTOR
+        dimensionKey:
+          type: string
+        displayName:
+          type: string
+        ratingCount:
+          type: integer
+          minimum: 0
+        averageRating:
+          type:
+            - number
+            - "null"
+          minimum: 1
+          maximum: 5
+    TasteProfile:
+      type: object
+      additionalProperties: false
+      required:
+        - derivationVersion
+        - aggregateRevision
+        - items
+      properties:
+        derivationVersion:
+          type: string
+        aggregateRevision:
+          type: integer
+          minimum: 0
+        items:
+          type: array
+          items:
+            $ref: "#/components/schemas/TasteAggregate"
+    CursorPage:
+      type: object
+      required:
+        - totalCount
+        - hasNext
+        - nextCursor
+      properties:
+        totalCount:
+          type: integer
+          minimum: 0
+        hasNext:
+          type: boolean
+        nextCursor:
+          type:
+            - string
+            - "null"
+    ViewingStatus:
+      type: string
+      enum:
+        - WATCHED_CONFIRMED
+        - RATED_COMPLETED

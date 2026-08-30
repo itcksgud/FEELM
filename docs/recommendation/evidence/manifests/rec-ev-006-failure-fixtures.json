@@ -1,0 +1,108 @@
+{
+  "containsRawIds": false,
+  "contractId": "REC_REASON_FAITHFULNESS_V1",
+  "fixtures": [
+    {
+      "expected": {
+        "code": "FAITHFUL_SCORE_AND_RANK_EFFECT",
+        "state": "EMITTABLE_CANDIDATE"
+      },
+      "id": "FX-REASON-VALID-POPULARITY",
+      "input": {
+        "contribution": 0.8,
+        "featureActive": true,
+        "provenanceValid": true,
+        "rankEffect": true,
+        "sensitiveEvidence": false
+      }
+    },
+    {
+      "expected": {
+        "code": "FEATURE_NOT_IN_ACTIVE_POLICY",
+        "state": "BLOCKED"
+      },
+      "id": "FX-REASON-INACTIVE-GENRE",
+      "input": {
+        "contribution": 0.7,
+        "featureActive": false,
+        "provenanceValid": true,
+        "rankEffect": true,
+        "sensitiveEvidence": false
+      }
+    },
+    {
+      "expected": {
+        "code": "NON_POSITIVE_CONTRIBUTION",
+        "state": "BLOCKED"
+      },
+      "id": "FX-REASON-ZERO-CONTRIBUTION",
+      "input": {
+        "contribution": 0.0,
+        "featureActive": true,
+        "provenanceValid": true,
+        "rankEffect": false,
+        "sensitiveEvidence": false
+      }
+    },
+    {
+      "expected": {
+        "code": "NO_RANK_EFFECT",
+        "state": "BLOCKED"
+      },
+      "id": "FX-REASON-NO-RANK-EFFECT",
+      "input": {
+        "contribution": 0.1,
+        "featureActive": true,
+        "provenanceValid": true,
+        "rankEffect": false,
+        "sensitiveEvidence": false
+      }
+    },
+    {
+      "expected": {
+        "code": "PROVENANCE_INVALID",
+        "state": "BLOCKED"
+      },
+      "id": "FX-REASON-BAD-PROVENANCE",
+      "input": {
+        "contribution": 0.2,
+        "featureActive": true,
+        "policyVersionMatch": true,
+        "provenanceValid": false,
+        "rankEffect": true,
+        "sensitiveEvidence": false
+      }
+    },
+    {
+      "expected": {
+        "code": "POLICY_VERSION_MISMATCH",
+        "state": "BLOCKED"
+      },
+      "id": "FX-REASON-POLICY-VERSION-MISMATCH",
+      "input": {
+        "contribution": 0.2,
+        "featureActive": true,
+        "policyVersionMatch": false,
+        "provenanceValid": true,
+        "rankEffect": true,
+        "sensitiveEvidence": false
+      }
+    },
+    {
+      "expected": {
+        "code": "SENSITIVE_EVIDENCE",
+        "state": "BLOCKED"
+      },
+      "id": "FX-REASON-SENSITIVE",
+      "input": {
+        "contribution": 0.2,
+        "featureActive": true,
+        "policyVersionMatch": true,
+        "provenanceValid": true,
+        "rankEffect": true,
+        "sensitiveEvidence": true
+      }
+    }
+  ],
+  "schemaVersion": 1
+}

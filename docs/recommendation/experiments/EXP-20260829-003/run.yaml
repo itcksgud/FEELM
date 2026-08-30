@@ -1,0 +1,18 @@
+schema_version: 1
+run_id: EXP-20260829-003
+status: COMPLETED_VALIDATED_CANDIDATE
+hypothesis: 별점과 순위의 Fold-in 가중치를 분리하면 별점 개선과 Popularity 순위 비열등을 함께 달성한다.
+code_commit: working-tree-uncommitted
+protocol:
+  parent: EXP-20260829-002
+  version: cold-start-dual-head-blend-v1
+  alpha_grid: [0.0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1.0]
+  star_min_relative_improvement: 0.03
+  ranking_noninferiority: 0.01
+  selection_and_evaluation_disjoint: true
+  test_used: false
+conclusion:
+  first_statistical_k: 1
+  first_practical_k: 10
+  ranking_alpha_all_k: 0.0
+  decision: K10_STAR_UI_CANDIDATE_ONLY

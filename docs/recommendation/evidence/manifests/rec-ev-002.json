@@ -1,0 +1,406 @@
+{
+  "schema_version": 1,
+  "evidence_id": "REC-EV-002",
+  "run_at_utc": "2026-08-29T10:20:55.707035+00:00",
+  "source": {
+    "split_manifest": "docs\\recommendation\\evidence\\manifests\\global-time-v1.json",
+    "split_manifest_sha256": "fa55e29328f0aa8ea5822c32ae964ee9a6ae5817479834a017cf2325bf39ab0a",
+    "archive_sha256": "e4a68655d7386b8f95f2f2424b2ff975dfdd15ffd59e0d864a14dca43e99d6ee",
+    "train_rows": 25600163,
+    "validation_rows": 3200020,
+    "test_used": false
+  },
+  "protocol": {
+    "split_version": "global-time-v1",
+    "calibration_version": "validation-forward-half-v1",
+    "calibration_boundary": 1573330512,
+    "calibration_fit_rows": 1600010,
+    "validation_eval_rows": 1600010,
+    "same_timestamp_policy": "entire boundary timestamp goes to later half",
+    "calibration_model": "isotonic-regression-clipped-0.5-5.0",
+    "ranking_candidate_policy": "SAMPLED_1_POSITIVE_PLUS_99_NEGATIVES",
+    "ranking_negatives": 99,
+    "ranking_positive": "latest warm Validation-eval item with user-ecdf-shrunk-v1 >= 0.7",
+    "relative_utility_shrinkage": 20.0,
+    "seed": 42
+  },
+  "model": {
+    "bias": {
+      "iterations": 10,
+      "reg_user": 10.0,
+      "reg_item": 25.0
+    },
+    "popularity": {
+      "bayesian_prior_count": 50.0
+    },
+    "als": {
+      "rank": 32,
+      "reg_param": 0.1,
+      "max_iter": 10,
+      "seed": 42,
+      "implicit_prefs": false,
+      "nonnegative": false
+    }
+  },
+  "metrics": {
+    "validation_eval": {
+      "global_mean": {
+        "rows": 1600010,
+        "coverage": 1.0,
+        "mae": 0.82544,
+        "rmse": 1.059416,
+        "mean_error": -0.056935,
+        "ece_decile": 0.056935,
+        "within_0_5": 0.413644,
+        "within_1_0": 0.685411
+      },
+      "popularity": {
+        "rows": 1600010,
+        "coverage": 1.0,
+        "mae": 0.747659,
+        "rmse": 0.98244,
+        "mean_error": 0.019411,
+        "ece_decile": 0.031063,
+        "within_0_5": 0.435341,
+        "within_1_0": 0.727329
+      },
+      "bias_raw": {
+        "rows": 1600010,
+        "coverage": 1.0,
+        "mae": 0.733893,
+        "rmse": 0.971721,
+        "mean_error": 0.053378,
+        "ece_decile": 0.053378,
+        "within_0_5": 0.445869,
+        "within_1_0": 0.740672
+      },
+      "bias_isotonic": {
+        "rows": 1600010,
+        "coverage": 1.0,
+        "mae": 0.737942,
+        "rmse": 0.97006,
+        "mean_error": 0.011238,
+        "ece_decile": 0.018453,
+        "within_0_5": 0.438127,
+        "within_1_0": 0.735134
+      },
+      "als_warm_raw": {
+        "rows": 187799,
+        "coverage": 0.117374,
+        "mae": 0.635103,
+        "rmse": 0.845024,
+        "mean_error": -0.084562,
+        "ece_decile": 0.093943,
+        "within_0_5": 0.506834,
+        "within_1_0": 0.801623
+      },
+      "als_warm_isotonic": {
+        "rows": 187799,
+        "coverage": 0.117374,
+        "mae": 0.6268,
+        "rmse": 0.834089,
+        "mean_error": 0.01098,
+        "ece_decile": 0.020354,
+        "within_0_5": 0.511531,
+        "within_1_0": 0.803316
+      },
+      "als_bias_fallback_raw": {
+        "rows": 1600010,
+        "coverage": 1.0,
+        "mae": 0.731987,
+        "rmse": 0.967832,
+        "mean_error": 0.029951,
+        "ece_decile": 0.030373,
+        "within_0_5": 0.445694,
+        "within_1_0": 0.741781
+      },
+      "als_bias_fallback_isotonic": {
+        "rows": 1600010,
+        "coverage": 1.0,
+        "mae": 0.734509,
+        "rmse": 0.966791,
+        "mean_error": 0.019465,
+        "ece_decile": 0.02655,
+        "within_0_5": 0.438791,
+        "within_1_0": 0.737345
+      }
+    },
+    "by_identity_state": {
+      "KNOWN_USER_KNOWN_ITEM": {
+        "rows": 187799,
+        "bias_isotonic": {
+          "rows": 187799,
+          "coverage": 1.0,
+          "mae": 0.652951,
+          "rmse": 0.876267,
+          "mean_error": 0.069035,
+          "ece_decile": 0.069035,
+          "within_0_5": 0.500604,
+          "within_1_0": 0.792699
+        },
+        "als_bias_fallback_isotonic": {
+          "rows": 187799,
+          "coverage": 1.0,
+          "mae": 0.637212,
+          "rmse": 0.837466,
+          "mean_error": -0.064156,
+          "ece_decile": 0.073217,
+          "within_0_5": 0.49684,
+          "within_1_0": 0.797635
+        },
+        "als_direct_coverage": 1.0
+      },
+      "KNOWN_USER_NEW_ITEM": {
+        "rows": 53892,
+        "bias_isotonic": {
+          "rows": 53892,
+          "coverage": 1.0,
+          "mae": 0.717126,
+          "rmse": 0.93774,
+          "mean_error": -0.021486,
+          "ece_decile": 0.048434,
+          "within_0_5": 0.442941,
+          "within_1_0": 0.750538
+        },
+        "als_bias_fallback_isotonic": {
+          "rows": 53892,
+          "coverage": 1.0,
+          "mae": 0.714135,
+          "rmse": 0.937613,
+          "mean_error": 0.018629,
+          "ece_decile": 0.039126,
+          "within_0_5": 0.447061,
+          "within_1_0": 0.752505
+        },
+        "als_direct_coverage": 0.0
+      },
+      "NEW_USER_KNOWN_ITEM": {
+        "rows": 1275668,
+        "bias_isotonic": {
+          "rows": 1275668,
+          "coverage": 1.0,
+          "mae": 0.740071,
+          "rmse": 0.971787,
+          "mean_error": 0.011648,
+          "ece_decile": 0.018963,
+          "within_0_5": 0.437558,
+          "within_1_0": 0.735366
+        },
+        "als_bias_fallback_isotonic": {
+          "rows": 1275668,
+          "coverage": 1.0,
+          "mae": 0.738652,
+          "rmse": 0.972873,
+          "mean_error": 0.038544,
+          "ece_decile": 0.038544,
+          "within_0_5": 0.438772,
+          "within_1_0": 0.737329
+        },
+        "als_direct_coverage": 0.0
+      },
+      "NEW_USER_NEW_ITEM": {
+        "rows": 82651,
+        "bias_isotonic": {
+          "rows": 82651,
+          "coverage": 1.0,
+          "mae": 0.911782,
+          "rmse": 1.150185,
+          "mean_error": -0.105089,
+          "ece_decile": 0.114565,
+          "within_0_5": 0.301799,
+          "within_1_0": 0.590713
+        },
+        "als_bias_fallback_isotonic": {
+          "rows": 82651,
+          "coverage": 1.0,
+          "mae": 0.904916,
+          "rmse": 1.148485,
+          "mean_error": -0.084463,
+          "ece_decile": 0.098065,
+          "within_0_5": 0.301799,
+          "within_1_0": 0.590713
+        },
+        "als_direct_coverage": 0.0
+      }
+    },
+    "by_rating_mean_quartile": {
+      "Q1_LOWER_MEAN": {
+        "rows": 70032,
+        "bias_isotonic": {
+          "rows": 70032,
+          "coverage": 1.0,
+          "mae": 0.716278,
+          "rmse": 0.928136,
+          "mean_error": 0.063282,
+          "ece_decile": 0.063576,
+          "within_0_5": 0.453964,
+          "within_1_0": 0.739648
+        },
+        "als_warm_isotonic": {
+          "rows": 70032,
+          "coverage": 1.0,
+          "mae": 0.684859,
+          "rmse": 0.885543,
+          "mean_error": 0.03196,
+          "ece_decile": 0.047302,
+          "within_0_5": 0.4691,
+          "within_1_0": 0.754712
+        }
+      },
+      "Q2": {
+        "rows": 44682,
+        "bias_isotonic": {
+          "rows": 44682,
+          "coverage": 1.0,
+          "mae": 0.584866,
+          "rmse": 0.788063,
+          "mean_error": 0.038919,
+          "ece_decile": 0.03986,
+          "within_0_5": 0.548274,
+          "within_1_0": 0.830133
+        },
+        "als_warm_isotonic": {
+          "rows": 44682,
+          "coverage": 1.0,
+          "mae": 0.56114,
+          "rmse": 0.753676,
+          "mean_error": -0.012804,
+          "ece_decile": 0.026725,
+          "within_0_5": 0.565261,
+          "within_1_0": 0.841592
+        }
+      },
+      "Q3": {
+        "rows": 36298,
+        "bias_isotonic": {
+          "rows": 36298,
+          "coverage": 1.0,
+          "mae": 0.643649,
+          "rmse": 0.910148,
+          "mean_error": 0.118066,
+          "ece_decile": 0.118066,
+          "within_0_5": 0.532591,
+          "within_1_0": 0.80773
+        },
+        "als_warm_isotonic": {
+          "rows": 36298,
+          "coverage": 1.0,
+          "mae": 0.613113,
+          "rmse": 0.846181,
+          "mean_error": 0.029178,
+          "ece_decile": 0.033113,
+          "within_0_5": 0.540388,
+          "within_1_0": 0.816298
+        }
+      },
+      "Q4_HIGHER_MEAN": {
+        "rows": 36787,
+        "bias_isotonic": {
+          "rows": 36787,
+          "coverage": 1.0,
+          "mae": 0.624271,
+          "rmse": 0.841579,
+          "mean_error": 0.068188,
+          "ece_decile": 0.071406,
+          "within_0_5": 0.499932,
+          "within_1_0": 0.833392
+        },
+        "als_warm_isotonic": {
+          "rows": 36787,
+          "coverage": 1.0,
+          "mae": 0.609529,
+          "rmse": 0.813811,
+          "mean_error": -0.018028,
+          "ece_decile": 0.029965,
+          "within_0_5": 0.498573,
+          "within_1_0": 0.836546
+        }
+      }
+    },
+    "sampled_ranking": {
+      "popularity": {
+        "protocol": "SAMPLED_1_POSITIVE_PLUS_NEGATIVES",
+        "users": 3553,
+        "user_coverage": 1.0,
+        "hit_rate_at_10": 0.710667,
+        "ndcg_at_10": 0.472726,
+        "mrr": 0.40537,
+        "median_rank": 4.0
+      },
+      "bias": {
+        "protocol": "SAMPLED_1_POSITIVE_PLUS_NEGATIVES",
+        "users": 3553,
+        "user_coverage": 1.0,
+        "hit_rate_at_10": 0.683366,
+        "ndcg_at_10": 0.410621,
+        "mrr": 0.337369,
+        "median_rank": 5.0
+      },
+      "als": {
+        "protocol": "SAMPLED_1_POSITIVE_PLUS_NEGATIVES",
+        "users": 3553,
+        "user_coverage": 1.0,
+        "hit_rate_at_10": 0.559809,
+        "ndcg_at_10": 0.259481,
+        "mrr": 0.190946,
+        "median_rank": 9.0
+      }
+    }
+  },
+  "artifacts": {
+    "bias_parameters": {
+      "path": "outputs\\recommendation-evidence\\rec-ev-002\\bias_parameters.npz",
+      "sha256": "816381cfb3f7c24cc2b0c80af02b1d86b915d5397df226e47edf9cb3b526af42",
+      "bytes": 2719985
+    },
+    "validation_predictions": {
+      "path": "outputs\\recommendation-evidence\\rec-ev-002\\validation_predictions.parquet",
+      "sha256": "219c90c17d778835403b43268a22a869d32e438b08c419ed6cfb223a872b80c0",
+      "bytes": 55558409,
+      "rows": 3200020
+    },
+    "sampled_ranking_candidates": {
+      "path": "outputs\\recommendation-evidence\\rec-ev-002\\sampled_ranking_scored.parquet",
+      "sha256": "020efbafcbd9484555c3b777136a9e3a83e3de40df03d3abc9a78f515ff17a5d",
+      "bytes": 7022035,
+      "rows": 355300
+    },
+    "isotonic_calibrators": {
+      "path": "outputs\\recommendation-evidence\\rec-ev-002\\isotonic_calibrators.json",
+      "sha256": "57ab506495306073f80d0ffa7db5ce5590915e895104c7655bddd460fa3cb0aa",
+      "bytes": 49412
+    },
+    "als_model": {
+      "path": "outputs\\recommendation-evidence\\rec-ev-002\\als_factors.npz",
+      "sha256": "908ba9f99bcb55813cf25577e264893239b81025b0f36e70a715dc493b81c46d",
+      "bytes": 26189780
+    }
+  },
+  "validation": {
+    "status": "PASS",
+    "train_precedes_calibration": true,
+    "calibration_precedes_eval": true,
+    "all_validation_rows_scored_by_bias_fallback": true,
+    "als_direct_rows_match_warm_state": true
+  },
+  "runtime": {
+    "python": "3.12.5",
+    "numpy": "1.26.4",
+    "pandas": "2.2.3",
+    "pyarrow": "20.0.0",
+    "pyspark": "4.2.0",
+    "scikit_learn": "1.9.0",
+    "java_home_required": "Java 17+",
+    "spark_master": "local[4]",
+    "spark_driver_memory": "8g",
+    "bias_train_seconds": 3.4,
+    "als_train_seconds": 91.265,
+    "total_seconds": 110.165
+  },
+  "conclusion": {
+    "summary": "Validation 뒤 구간에서 ALS 직접 예측 coverage는 11.74%다. Warm 행의 보정 ALS MAE는 0.6268, 전체 행에서 Bias fallback을 합친 보정 MAE는 0.7345, 보정 Bias MAE는 0.7379였다. 따라서 ALS warm 성능을 전체 사용자 성능으로 확대 해석할 수 없고, 예상 별점 숫자 노출은 cold-start·구간별 confidence 실험 뒤에 결정한다.",
+    "predicted_star_ui_gate": "WAITING_FOR_REC-EV-003_AND_UI_COMPARISON",
+    "confidence_gate": "WAITING_FOR_COLD_START_AND_ERROR_SEGMENTS",
+    "next_experiment": "REC-EV-003 K0~K20 cold-start simulation"
+  }
+}

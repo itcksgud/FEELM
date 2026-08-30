@@ -1,0 +1,21 @@
+{
+  "schema_version": 1,
+  "run_id": "EXP-20260829-001",
+  "validation_eval_rows": 1600010,
+  "rating_prediction": {
+    "global_mean": {"coverage": 1.0, "mae": 0.82544, "rmse": 1.059416},
+    "popularity": {"coverage": 1.0, "mae": 0.747659, "rmse": 0.98244},
+    "bias_raw": {"coverage": 1.0, "mae": 0.733893, "ece_decile": 0.053378},
+    "bias_isotonic": {"coverage": 1.0, "mae": 0.737942, "ece_decile": 0.018453},
+    "als_warm_raw": {"coverage": 0.117374, "mae": 0.635103, "ece_decile": 0.093943},
+    "als_warm_isotonic": {"coverage": 0.117374, "mae": 0.6268, "ece_decile": 0.020354},
+    "als_bias_fallback_isotonic": {"coverage": 1.0, "mae": 0.734509, "ece_decile": 0.02655}
+  },
+  "sampled_ranking": {
+    "users": 3553,
+    "popularity": {"hr_at_10": 0.710667, "ndcg_at_10": 0.472726},
+    "bias": {"hr_at_10": 0.683366, "ndcg_at_10": 0.410621},
+    "als": {"hr_at_10": 0.559809, "ndcg_at_10": 0.259481}
+  },
+  "runtime_seconds": {"bias_train": 3.4, "als_train": 91.265, "total": 110.165}
+}

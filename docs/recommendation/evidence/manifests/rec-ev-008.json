@@ -1,0 +1,147 @@
+{
+  "schema_version": 1,
+  "evidence_id": "REC-EV-008",
+  "status": "COMPLETED_UI_COMPARISON_EVIDENCE",
+  "run_at_utc": "2026-08-29T15:13:13.6376574Z",
+  "authority": {
+    "product_ui_approved": false,
+    "public_navigation_enabled": false,
+    "public_api_added": false,
+    "route_boundary": "VITE_DEV_ONLY_INTERNAL_EVIDENCE_ROUTE",
+    "route": "/__evidence/rec-ev-008"
+  },
+  "protocol": {
+    "version": "rec-ev-008-static-fixture-comparison-v1",
+    "viewport": {
+      "width": 1440,
+      "height": 1200,
+      "device_scale_factor": 1
+    },
+    "browser": "PLAYWRIGHT_CHROMIUM_DESKTOP",
+    "network_requests_required": false,
+    "actual_user_study": false,
+    "actual_completion_time_observed": false
+  },
+  "sources": [
+    {
+      "evidence_id": "REC-EV-003B",
+      "path": "docs/recommendation/evidence/manifests/rec-ev-003b.json",
+      "bytes": 18435,
+      "sha256": "2be1a98b20de9733ae8fe8ae72a9c42f62b45e25c244dd856691fb0700adec7d"
+    },
+    {
+      "evidence_id": "REC-EV-005",
+      "path": "docs/recommendation/evidence/manifests/rec-ev-005.json",
+      "bytes": 31627,
+      "sha256": "c4156bf9dd1d521d9038cfeeb9d0f48e67cc8fcc0fe54bfa8b1e12d6f5c0d05a"
+    },
+    {
+      "evidence_id": "REC-EV-006",
+      "path": "docs/recommendation/evidence/manifests/rec-ev-006.json",
+      "bytes": 6775,
+      "sha256": "50c5a73bd2737c698ae5d58b354d37c65c6166e8dea448d3eeeb35deb0bf83e5"
+    },
+    {
+      "evidence_id": "REC_REASON_FAITHFULNESS_V1",
+      "path": "docs/recommendation/evidence/manifests/rec-ev-006-reason-contract.json",
+      "bytes": 1734,
+      "sha256": "ed330a5159607aa081f77494c47792b8b93b18d4aae294ea5f6d2cf1f6a9b856"
+    }
+  ],
+  "implementation": [
+    {
+      "path": "frontend/src/evidence/recEv008Fixture.ts",
+      "bytes": 3429,
+      "sha256": "df14798c208a17ad59b66c37f240cf2735928211669f7afc33c395523cef10d7"
+    },
+    {
+      "path": "frontend/src/evidence/RecEv008Lab.tsx",
+      "bytes": 10246,
+      "sha256": "ff1c5a0f1e7f9cb3df15c41b3925408252c864b5e013287544f8e4a0b8283a86"
+    },
+    {
+      "path": "frontend/src/evidence/recEv008Lab.module.css",
+      "bytes": 6970,
+      "sha256": "0af43cef2baa0eb87f6252d8fc9446842eb542c6f84fa65f173d5577766b7b42"
+    }
+  ],
+  "comparisons": [
+    {
+      "id": "EXPECTED_STAR_VISIBLE_VS_NOT_COMPUTED",
+      "variants": ["COMPUTED_EVIDENCE_ONLY_4_2_OF_5", "NOT_COMPUTED_HIDDEN"],
+      "evidence": "REC-EV-003B_K10_FIRST_PRACTICAL_STAR_GATE",
+      "decision": "WAITING_FOR_PRODUCT_APPROVAL_AND_C1_SCALE_CALIBRATION",
+      "ranking_improvement_claimed": false
+    },
+    {
+      "id": "ONBOARDING_K5_VS_K10_VS_SKIP",
+      "variants": ["K5_6_MINIMUM_ACTIONS", "K10_11_MINIMUM_ACTIONS", "SKIP_1_MINIMUM_ACTION"],
+      "evidence": "REC-EV-003B_DATA_CURVE_PLUS_STATIC_UI_ACTION_COUNT",
+      "decision": "WAITING_FOR_INPUT_BURDEN_USER_EVIDENCE",
+      "completion_or_churn_claimed": false
+    },
+    {
+      "id": "PARTY_AVERAGE_VS_BALANCED_CANDIDATE",
+      "variants": ["AVERAGE", "BALANCED_VALIDATION_SELECTED_CANDIDATE"],
+      "evidence": "REC-EV-005_HELD_OUT_TEST",
+      "decision": "DO_NOT_ADOPT_PRODUCT_POLICY",
+      "improvement_supported": false,
+      "all_three_paired_ci_cross_zero": true,
+      "four_member_common_rated_test_coverage": [0.006948, 0.010204]
+    },
+    {
+      "id": "REASON_ONE_VS_UP_TO_THREE",
+      "variants": ["ONE", "UP_TO_THREE"],
+      "evidence": "REC-EV-006_TYPED_COVERAGE_AND_ABLATION",
+      "decision": "WAITING_FOR_DISPLAY_COUNT_AND_COPY_APPROVAL",
+      "reason_evidence_status": "COMPLETED_OFFLINE_EVIDENCE",
+      "same_recommendation_three_reason_cooccurrence_claimed": false,
+      "coverage": {
+        "POPULARITY_BASELINE": 0.999825,
+        "LIST_DIVERSITY": 0.599775,
+        "LESS_POPULAR_DISCOVERY": 0.243125,
+        "GENRE_AFFINITY": 0.0
+      }
+    }
+  ],
+  "screenshots": [
+    {
+      "comparison": "stars",
+      "path": "docs/recommendation/evidence/assets/rec-ev-008/stars-1440x1200.png",
+      "bytes": 454721,
+      "sha256": "b18031d7c2aa69b996547a8787cc0b2e1a6c1b639fd569b5a6cdc7ed16711e6e"
+    },
+    {
+      "comparison": "onboarding",
+      "path": "docs/recommendation/evidence/assets/rec-ev-008/onboarding-1440x1200.png",
+      "bytes": 451600,
+      "sha256": "7c22c2a4f1233b58829dd0e6f6423746b8e36ee609a187e5733dbde478dae5ad"
+    },
+    {
+      "comparison": "party",
+      "path": "docs/recommendation/evidence/assets/rec-ev-008/party-1440x1200.png",
+      "bytes": 431417,
+      "sha256": "41371b01a1bfbbb62ee50d5d70d458e643d795d079f6c7c518db869bcab0e92d"
+    },
+    {
+      "comparison": "reasons",
+      "path": "docs/recommendation/evidence/assets/rec-ev-008/reasons-1440x1200.png",
+      "bytes": 422804,
+      "sha256": "bc2a0c19c9e822c8a175910589a03a98a04a48b811454d0c5c9d294a95de7344"
+    }
+  ],
+  "validation": {
+    "react_tests": "PASS_4_OF_4",
+    "same_viewport_screenshot_test": "PASS_1_OF_1_WITH_4_CAPTURES",
+    "accessibility_semantics": "PASS_LANDMARK_HEADINGS_LABELS_KEYBOARD",
+    "frontend_full_suite": "PASS_26_OF_26",
+    "frontend_production_build": "PASS",
+    "production_evidence_route_scan": "PASS_NOT_REGISTERED_OR_BUNDLED",
+    "manifest_verification": "PASS"
+  },
+  "conclusion": {
+    "ready_for_product_decision_packet": true,
+    "product_decision_made": false,
+    "summary": "네 표현안의 정적 정보 밀도와 최소 조작 수를 비교했으나 실제 사용자 선호·이탈·만족을 관측하지 않았다."
+  }
+}

@@ -1,0 +1,24 @@
+{
+  "schema_version": 1,
+  "run_id": "EXP-20260829-004",
+  "active_path": {
+    "policy": "BAYESIAN_POPULARITY_ONLY",
+    "ranking_alpha": 0.0,
+    "candidate_le_100_worst_p95_ms": 4.1012,
+    "candidate_1000_worst_p95_ms": 30.6875,
+    "concurrency_4_p95_ms": 15.1896,
+    "concurrency_4_throughput_rps": 332.995297
+  },
+  "artifact_lifecycle": {
+    "readiness_p95_ms": 1.3466,
+    "reload_p95_ms": 18.2387,
+    "invalid_reload_retained_previous": true
+  },
+  "inactive_fold_in_core": {
+    "worst_p95_ms": 2.1281,
+    "source_item_count": 42299,
+    "source_factor_rank": 32
+  },
+  "gate_result": "PASS"
+}
+

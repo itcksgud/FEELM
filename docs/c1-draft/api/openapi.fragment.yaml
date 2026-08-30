@@ -1,0 +1,930 @@
+openapi: 3.1.0
+info:
+  title: FEELM C1 Rating and Film API
+  version: 1.0.0-c1
+  summary: 감상 확인, Rating, Film, Popcorn, 취향 원천 집계 승인 계약
+  description: |
+    APPROVED. 기존 C0 OpenAPI에 병합할 C1 구현 계약 조각이다.
+servers:
+  - url: http://localhost:8080
+security:
+  - bearerAuth: []
+tags:
+  - name: Viewing
+    description: OTT 클릭, 감상 확인, 지연 평가 대상
+  - name: Ratings
+    description: 내 정수 1~5 Rating 생성·수정·삭제와 조회
+  - name: Film
+    description: Rating에서 파생된 내 Frame과 Film
+  - name: Taste
+    description: Popcorn Bucket과 취향 원천 집계
+
+paths:
+  /api/v1/watch-intents:
+    post:
+      tags: [Viewing]
+      operationId: createWatchIntent
+      summary: OTT 외부 이동 직전 클릭 사실 기록
+      description: |
+        새 intent면 CREATED, 같은 user/movie의 active intent가 있으면 시각을 갱신하지 않고
+        ACTIVE_REUSED, ViewingRecord가 이미 있으면 intent를 만들지 않고 ALREADY_WATCHED를 반환한다.
+        서로 다른 Idempotency-Key의 실제 클릭은 각 한 건의 OTT_LINK_CLICKED event를 기록한다.
+      parameters:
+        - $ref: '#/components/parameters/IdempotencyKey'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateWatchIntentRequest'
+      responses:
+        '201':
+          description: 새 WatchIntent 생성. destination을 받은 뒤 외부 이동한다.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WatchIntentClickResult'
+        '200':
+          description: active intent 재사용, 이미 감상한 영화, 또는 같은 key의 최초 응답 replay
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WatchIntentClickResult'
+        '400':
+          $ref: '#/components/responses/ValidationError'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/ResourceNotFound'
+        '409':
+          $ref: '#/components/responses/Conflict'
+        '503':
+          $ref: '#/components/responses/ServiceUnavailable'
+
+  /api/v1/me/watch-intents/pending-confirmation:
+    get:
+      tags: [Viewing]
+      operationId: listPendingWatchConfirmations
+      summary: 감상 확인이 필요한 내 항목 조회
+      parameters:
+        - $ref: '#/components/parameters/Cursor'
+        - $ref: '#/components/parameters/Limit'
+      responses:
+        '200':
+          description: 빈 목록도 200
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PendingWatchConfirmationPage'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '503':
+          $ref: '#/components/responses/ServiceUnavailable'
+
+  /api/v1/watch-intents/{watchIntentId}/confirmation:
+    post:
+      tags: [Viewing]
+      operationId: confirmWatchIntent
+      summary: 실제 감상 여부 응답
+      parameters:
+        - $ref: '#/components/parameters/WatchIntentId'
+        - $ref: '#/components/parameters/IdempotencyKey'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ConfirmWatchIntentRequest'
+      responses:
+        '200':
+          description: terminal 상태와 watched=true일 때 생성된 ViewingRecord
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WatchConfirmationResult'
+        '400':
+          $ref: '#/components/responses/ValidationError'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/ResourceNotFound'
+        '409':
+          $ref: '#/components/responses/Conflict'
+        '503':
+          $ref: '#/components/responses/ServiceUnavailable'
+
+  /api/v1/me/viewing-records/unrated:
+    get:
+      tags: [Viewing, Ratings]
+      operationId: listUnratedViewingRecords
+      summary: 감상 확인 후 평가하지 않은 영화 조회
+      parameters:
+        - $ref: '#/components/parameters/Cursor'
+        - $ref: '#/components/parameters/Limit'
+      responses:
+        '200':
+          description: 빈 목록도 200
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UnratedViewingRecordPage'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '503':
+          $ref: '#/components/responses/ServiceUnavailable'
+
+  /api/v1/me/ratings:
+    get:
+      tags: [Ratings]
+      operationId: listMyRatings
+      summary: 내 활성 Rating 목록
+      parameters:
+        - $ref: '#/components/parameters/Cursor'
+        - $ref: '#/components/parameters/Limit'
+      responses:
+        '200':
+          description: 빈 목록도 200
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RatingPage'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '503':
+          $ref: '#/components/responses/ServiceUnavailable'
+
+  /api/v1/me/ratings/{movieId}:
+    put:
+      tags: [Ratings]
+      operationId: putMyRating
+      summary: 정수 1~5 Rating 생성 또는 수정
+      description: active projection의 visibilityStatus=UI_READY이고 active flavor mapping에 assignment가 정확히 하나인 영화만 허용한다.
+      parameters:
+        - $ref: '#/components/parameters/MovieId'
+        - $ref: '#/components/parameters/IdempotencyKey'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PutRatingRequest'
+      responses:
+        '200':
+          description: create/update 또는 idempotent replay 완료
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RatingMutationResult'
+        '400':
+          $ref: '#/components/responses/ValidationError'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/ResourceNotFound'
+        '409':
+          $ref: '#/components/responses/Conflict'
+        '503':
+          $ref: '#/components/responses/ServiceUnavailable'
+    delete:
+      tags: [Ratings]
+      operationId: deleteMyRating
+      summary: 내 Rating 삭제
+      description: |
+        Rating을 soft-delete하고 ViewingRecord를 WATCHED_CONFIRMED로 유지한다. Frame·Popcorn과
+        contribution을 제거하고 Flavor/Taste aggregate를 역산하며 event·outbox를 같은 transaction에 기록한다.
+      parameters:
+        - $ref: '#/components/parameters/MovieId'
+        - $ref: '#/components/parameters/IdempotencyKey'
+        - $ref: '#/components/parameters/ExpectedRevision'
+      responses:
+        '200':
+          description: soft-delete와 파생 projection 제거·집계 역산이 원자적으로 완료됨
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RatingDeletionResult'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/ResourceNotFound'
+        '409':
+          $ref: '#/components/responses/Conflict'
+        '503':
+          $ref: '#/components/responses/ServiceUnavailable'
+
+  /api/v1/me/film:
+    get:
+      tags: [Film]
+      operationId: getMyFilm
+      summary: 내 전체 Film과 Frame 목록
+      parameters:
+        - $ref: '#/components/parameters/Cursor'
+        - $ref: '#/components/parameters/Limit'
+      responses:
+        '200':
+          description: Frame가 없어도 200
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FilmPage'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '503':
+          $ref: '#/components/responses/ServiceUnavailable'
+
+  /api/v1/me/film/frames/{frameId}:
+    get:
+      tags: [Film]
+      operationId: getMyFrame
+      summary: 내 Frame 상세
+      parameters:
+        - $ref: '#/components/parameters/FrameId'
+      responses:
+        '200':
+          description: Frame 상세
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FrameDetail'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/ResourceNotFound'
+        '503':
+          $ref: '#/components/responses/ServiceUnavailable'
+
+  /api/v1/me/popcorn-bucket:
+    get:
+      tags: [Taste]
+      operationId: getMyPopcornBucket
+      summary: 내 Popcorn flavor별 수량·평균 Rating
+      responses:
+        '200':
+          description: Popcorn이 없어도 200
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PopcornBucket'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '503':
+          $ref: '#/components/responses/ServiceUnavailable'
+
+  /api/v1/me/taste-profile:
+    get:
+      tags: [Taste]
+      operationId: getMyTasteProfile
+      summary: 확정 source dimension의 취향 원천 집계
+      description: 최종 취향 점수와 키워드는 포함하지 않는다.
+      responses:
+        '200':
+          description: aggregate가 없어도 200
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TasteProfile'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '503':
+          $ref: '#/components/responses/ServiceUnavailable'
+
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+
+  parameters:
+    IdempotencyKey:
+      name: Idempotency-Key
+      in: header
+      required: true
+      schema:
+        type: string
+        minLength: 8
+        maxLength: 128
+        pattern: '^[!-~]+$'
+    ExpectedRevision:
+      name: X-Expected-Revision
+      in: header
+      required: true
+      schema:
+        type: integer
+        minimum: 1
+    MovieId:
+      name: movieId
+      in: path
+      required: true
+      schema:
+        type: string
+        format: uuid
+    WatchIntentId:
+      name: watchIntentId
+      in: path
+      required: true
+      schema:
+        type: string
+        format: uuid
+    FrameId:
+      name: frameId
+      in: path
+      required: true
+      schema:
+        type: string
+        format: uuid
+    Cursor:
+      name: cursor
+      in: query
+      schema:
+        type: string
+        maxLength: 2048
+    Limit:
+      name: limit
+      in: query
+      schema:
+        type: integer
+        minimum: 1
+        maximum: 50
+        default: 20
+
+  responses:
+    ValidationError:
+      description: 요청 값 오류
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+    Unauthorized:
+      description: 인증 없음 또는 유효하지 않은 token
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+    ResourceNotFound:
+      description: 존재하지 않거나 actor 소유가 아닌 resource
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+    Conflict:
+      description: revision, 상태, idempotency 충돌
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+    ServiceUnavailable:
+      description: C1 DB transaction을 안전하게 처리할 수 없음
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+
+  schemas:
+    CreateWatchIntentRequest:
+      type: object
+      additionalProperties: false
+      required: [movieId, offerId]
+      properties:
+        movieId:
+          type: string
+          format: uuid
+        offerId:
+          type: string
+          format: uuid
+
+    WatchIntentClickResult:
+      type: object
+      additionalProperties: false
+      required: [outcome, movieId, providerId, watchIntent, destination]
+      properties:
+        outcome:
+          type: string
+          enum: [CREATED, ACTIVE_REUSED, ALREADY_WATCHED]
+        movieId:
+          type: string
+          format: uuid
+        providerId:
+          type: string
+          format: uuid
+          description: 이번 실제 클릭 destination의 provider. ACTIVE_REUSED intent의 최초 provider와 다를 수 있다.
+        watchIntent:
+          description: ALREADY_WATCHED면 null, 그 외에는 새로 생성되거나 재사용된 active intent
+          oneOf:
+            - $ref: '#/components/schemas/WatchIntentSnapshot'
+            - type: 'null'
+        destination:
+          $ref: '#/components/schemas/ExternalDestination'
+
+    WatchIntentSnapshot:
+      type: object
+      additionalProperties: false
+      required: [watchIntentId, status, clickedAt, confirmationDueAt, expiresAt, revision]
+      properties:
+        watchIntentId:
+          type: string
+          format: uuid
+        status:
+          type: string
+          enum: [LINK_CLICKED, CONFIRMATION_PENDING]
+        clickedAt:
+          type: string
+          format: date-time
+        confirmationDueAt:
+          type: string
+          format: date-time
+          description: 최초 active clickedAt + 48시간
+        expiresAt:
+          type: string
+          format: date-time
+          description: 최초 active clickedAt + 7일
+        revision:
+          type: integer
+          minimum: 1
+
+    ExternalDestination:
+      type: object
+      additionalProperties: false
+      required: [linkType, url, externalNavigation]
+      properties:
+        linkType:
+          type: string
+          enum: [AGGREGATOR, DIRECT]
+        url:
+          type: string
+          format: uri
+        externalNavigation:
+          type: boolean
+          const: true
+
+    ConfirmWatchIntentRequest:
+      type: object
+      additionalProperties: false
+      required: [watched, expectedRevision]
+      properties:
+        watched:
+          type: boolean
+        expectedRevision:
+          type: integer
+          minimum: 1
+
+    WatchConfirmationResult:
+      type: object
+      additionalProperties: false
+      required: [watchIntentId, status, respondedAt, revision, viewingRecord]
+      properties:
+        watchIntentId:
+          type: string
+          format: uuid
+        status:
+          type: string
+          enum: [CONFIRMED_WATCHED, CONFIRMED_NOT_WATCHED]
+        respondedAt:
+          type: string
+          format: date-time
+        revision:
+          type: integer
+          minimum: 2
+        viewingRecord:
+          oneOf:
+            - $ref: '#/components/schemas/ViewingRecordSummary'
+            - type: 'null'
+
+    MovieSummary:
+      type: object
+      additionalProperties: false
+      required: [movieId, displayTitle, posterUrl, releaseYear]
+      properties:
+        movieId:
+          type: string
+          format: uuid
+        displayTitle:
+          type: string
+          minLength: 1
+        posterUrl:
+          type: [string, 'null']
+          format: uri
+        releaseYear:
+          type: [integer, 'null']
+          minimum: 1870
+          maximum: 2100
+
+    PendingWatchConfirmation:
+      type: object
+      additionalProperties: false
+      required: [watchIntentId, movie, provider, clickedAt, confirmationDueAt, expiresAt, revision]
+      properties:
+        watchIntentId:
+          type: string
+          format: uuid
+        movie:
+          $ref: '#/components/schemas/MovieSummary'
+        provider:
+          $ref: '#/components/schemas/ProviderSummary'
+        clickedAt:
+          type: string
+          format: date-time
+        confirmationDueAt:
+          type: string
+          format: date-time
+        expiresAt:
+          type: string
+          format: date-time
+        revision:
+          type: integer
+          minimum: 1
+
+    PendingWatchConfirmationPage:
+      allOf:
+        - $ref: '#/components/schemas/CursorPage'
+        - type: object
+          required: [items]
+          properties:
+            items:
+              type: array
+              items:
+                $ref: '#/components/schemas/PendingWatchConfirmation'
+
+    ProviderSummary:
+      type: object
+      additionalProperties: false
+      required: [providerId, name]
+      properties:
+        providerId:
+          type: string
+          format: uuid
+        name:
+          type: string
+
+    ViewingRecordSummary:
+      type: object
+      additionalProperties: false
+      required: [viewingRecordId, movieId, status, watchedConfirmedAt, provider, revision]
+      properties:
+        viewingRecordId:
+          type: string
+          format: uuid
+        movieId:
+          type: string
+          format: uuid
+        status:
+          $ref: '#/components/schemas/ViewingStatus'
+        watchedConfirmedAt:
+          type: string
+          format: date-time
+        provider:
+          $ref: '#/components/schemas/ProviderSummary'
+        revision:
+          type: integer
+          minimum: 1
+
+    UnratedViewingRecord:
+      type: object
+      additionalProperties: false
+      required: [viewingRecordId, movie, watchedConfirmedAt, provider, revision]
+      properties:
+        viewingRecordId:
+          type: string
+          format: uuid
+        movie:
+          $ref: '#/components/schemas/MovieSummary'
+        watchedConfirmedAt:
+          type: string
+          format: date-time
+        provider:
+          $ref: '#/components/schemas/ProviderSummary'
+        revision:
+          type: integer
+          minimum: 1
+
+    UnratedViewingRecordPage:
+      allOf:
+        - $ref: '#/components/schemas/CursorPage'
+        - type: object
+          required: [items]
+          properties:
+            items:
+              type: array
+              items:
+                $ref: '#/components/schemas/UnratedViewingRecord'
+
+    PutRatingRequest:
+      type: object
+      additionalProperties: false
+      required: [value]
+      properties:
+        value:
+          type: integer
+          minimum: 1
+          maximum: 5
+        expectedRevision:
+          description: create는 생략, update는 현재 Rating revision 필수
+          type: [integer, 'null']
+          minimum: 1
+
+    Rating:
+      type: object
+      additionalProperties: false
+      required: [ratingId, movieId, value, revision, createdAt, updatedAt]
+      properties:
+        ratingId:
+          type: string
+          format: uuid
+        movieId:
+          type: string
+          format: uuid
+        value:
+          type: integer
+          minimum: 1
+          maximum: 5
+        revision:
+          type: integer
+          minimum: 1
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+
+    RatingItem:
+      type: object
+      additionalProperties: false
+      required: [rating, movie, watchedConfirmedAt, frameId]
+      properties:
+        rating:
+          $ref: '#/components/schemas/Rating'
+        movie:
+          $ref: '#/components/schemas/MovieSummary'
+        watchedConfirmedAt:
+          type: string
+          format: date-time
+        frameId:
+          type: string
+          format: uuid
+
+    RatingPage:
+      allOf:
+        - $ref: '#/components/schemas/CursorPage'
+        - type: object
+          required: [items]
+          properties:
+            items:
+              type: array
+              items:
+                $ref: '#/components/schemas/RatingItem'
+
+    DerivedState:
+      type: object
+      additionalProperties: false
+      required: [viewingStatus, frameId, popcornId, filmTotalCount, aggregateRevision, recommendationRefresh]
+      properties:
+        viewingStatus:
+          $ref: '#/components/schemas/ViewingStatus'
+        frameId:
+          type: string
+          format: uuid
+        popcornId:
+          type: string
+          format: uuid
+        filmTotalCount:
+          type: integer
+          minimum: 1
+        aggregateRevision:
+          type: integer
+          minimum: 1
+        recommendationRefresh:
+          type: string
+          enum: [QUEUED]
+
+    RatingMutationResult:
+      type: object
+      additionalProperties: false
+      required: [mutation, rating, derivedState]
+      properties:
+        mutation:
+          type: string
+          enum: [CREATED, UPDATED, REPLAYED]
+        rating:
+          $ref: '#/components/schemas/Rating'
+        derivedState:
+          $ref: '#/components/schemas/DerivedState'
+
+    RatingDeletionResult:
+      type: object
+      additionalProperties: false
+      required: [movieId, ratingRemoved, viewingStatus, frameActive, popcornActive, filmTotalCount, aggregateRevision, recommendationRefresh]
+      properties:
+        movieId:
+          type: string
+          format: uuid
+        ratingRemoved:
+          type: boolean
+          const: true
+        viewingStatus:
+          type: string
+          const: WATCHED_CONFIRMED
+        frameActive:
+          type: boolean
+          const: false
+        popcornActive:
+          type: boolean
+          const: false
+        filmTotalCount:
+          type: integer
+          minimum: 0
+        aggregateRevision:
+          type: integer
+          minimum: 1
+        recommendationRefresh:
+          type: string
+          enum: [QUEUED]
+
+    FrameSummary:
+      type: object
+      additionalProperties: false
+      required: [frameId, movie, myRating, watchedConfirmedAt, createdAt]
+      properties:
+        frameId:
+          type: string
+          format: uuid
+        movie:
+          $ref: '#/components/schemas/MovieSummary'
+        myRating:
+          type: integer
+          minimum: 1
+          maximum: 5
+        watchedConfirmedAt:
+          type: string
+          format: date-time
+        createdAt:
+          type: string
+          format: date-time
+
+    FilmPage:
+      allOf:
+        - $ref: '#/components/schemas/CursorPage'
+        - type: object
+          required: [filmRevision, items]
+          properties:
+            filmRevision:
+              type: integer
+              minimum: 0
+            items:
+              type: array
+              items:
+                $ref: '#/components/schemas/FrameSummary'
+
+    FrameDetail:
+      type: object
+      additionalProperties: false
+      required: [frameId, movie, rating, watchedConfirmedAt, provider, createdAt, derivationVersion]
+      properties:
+        frameId:
+          type: string
+          format: uuid
+        movie:
+          $ref: '#/components/schemas/MovieSummary'
+        rating:
+          $ref: '#/components/schemas/Rating'
+        watchedConfirmedAt:
+          type: string
+          format: date-time
+        provider:
+          $ref: '#/components/schemas/ProviderSummary'
+        createdAt:
+          type: string
+          format: date-time
+        derivationVersion:
+          type: string
+
+    FlavorAggregate:
+      type: object
+      additionalProperties: false
+      required: [flavorId, code, displayName, colorToken, count, ratingCount, averageRating]
+      properties:
+        flavorId:
+          type: string
+          format: uuid
+        code:
+          type: string
+          enum: [ADRENALINE, WONDER, JOY, HEART, SHADOW, REAL, LEGACY, RHYTHM]
+        displayName:
+          type: string
+        colorToken:
+          type: string
+        count:
+          type: integer
+          minimum: 0
+        ratingCount:
+          type: integer
+          minimum: 0
+        averageRating:
+          type: [number, 'null']
+          minimum: 1
+          maximum: 5
+
+    PopcornBucket:
+      type: object
+      additionalProperties: false
+      required: [totalCount, mappingVersion, aggregateRevision, flavors]
+      properties:
+        totalCount:
+          type: integer
+          minimum: 0
+        mappingVersion:
+          type: string
+        aggregateRevision:
+          type: integer
+          minimum: 0
+        flavors:
+          type: array
+          items:
+            $ref: '#/components/schemas/FlavorAggregate'
+
+    TasteAggregate:
+      type: object
+      additionalProperties: false
+      required: [dimensionType, dimensionKey, displayName, ratingCount, averageRating]
+      properties:
+        dimensionType:
+          type: string
+          enum: [GENRE, COUNTRY, DIRECTOR]
+        dimensionKey:
+          type: string
+        displayName:
+          type: string
+        ratingCount:
+          type: integer
+          minimum: 0
+        averageRating:
+          type: [number, 'null']
+          minimum: 1
+          maximum: 5
+
+    TasteProfile:
+      type: object
+      additionalProperties: false
+      required: [derivationVersion, aggregateRevision, items]
+      properties:
+        derivationVersion:
+          type: string
+        aggregateRevision:
+          type: integer
+          minimum: 0
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/TasteAggregate'
+
+    CursorPage:
+      type: object
+      required: [totalCount, hasNext, nextCursor]
+      properties:
+        totalCount:
+          type: integer
+          minimum: 0
+        hasNext:
+          type: boolean
+        nextCursor:
+          type: [string, 'null']
+
+    ViewingStatus:
+      type: string
+      enum: [WATCHED_CONFIRMED, RATED_COMPLETED]
+
+    FieldError:
+      type: object
+      additionalProperties: false
+      required: [field, reason]
+      properties:
+        field:
+          type: string
+        reason:
+          type: string
+
+    ErrorResponse:
+      type: object
+      additionalProperties: false
+      required: [code, message, traceId, fieldErrors]
+      properties:
+        code:
+          type: string
+          enum:
+            - VALIDATION_ERROR
+            - UNAUTHORIZED
+            - RESOURCE_NOT_FOUND
+            - IDEMPOTENCY_KEY_REUSED
+            - REVISION_CONFLICT
+            - WATCH_INTENT_NOT_CONFIRMABLE
+            - WATCH_CONFIRMATION_REQUIRED
+            - FLAVOR_ASSIGNMENT_REQUIRED
+            - RATING_SERVICE_UNAVAILABLE
+        message:
+          type: string
+        traceId:
+          type: string
+        fieldErrors:
+          type: array
+          items:
+            $ref: '#/components/schemas/FieldError'

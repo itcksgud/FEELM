@@ -1,0 +1,21 @@
+:root {
+  color-scheme: light;
+  --ink-strong: #2e2c29;
+  --ink: #3c3a36;
+  --ink-muted: #706d67;
+  --ink-subtle: #8a8781;
+  --canvas: #fbfaf8;
+  --surface: #ffffff;
+  --surface-soft: #f3f1ed;
+  --line: #d5d2cc;
+  --line-strong: #b5b1aa;
+  --accent: #3c3a36;
+  --accent-soft: #ebe8e2;
+  --danger: #a33f32;
+  --focus: #6e62d6;
+  --radius-sm: 10px;
+  --radius-md: 16px;
+  --radius-lg: 24px;
+  --shadow-sm: 0 8px 30px rgba(46, 44, 41, 0.08);
+  --content: 1120px;
+}

@@ -1,0 +1,23 @@
+schema_version: 1
+run_id: EXP-20260829-005
+status: COMPLETED_OFFLINE_EVIDENCE
+hypothesis: 개인 rating-style relative utility와 최저 효용·격차 penalty를 사용한 Balanced 후보가 Average보다 최저 구성원 효용 또는 격차를 개선할 수 있다.
+code_commit: working-tree-uncommitted
+protocol:
+  version: synthetic-common-rated-party-v1
+  parents: [REC-EV-001, REC-EV-002]
+  group_sizes: [2, 3, 4]
+  group_types: [DISSIMILAR, MIDDLE, SIMILAR]
+  candidate_policy: COMMON_RATED_KNOWN_ITEM_STABLE_HASH_CAP
+  top_k: 3
+  selection_split: validation
+  evaluation_split: test
+  selection_and_evaluation_disjoint: true
+  test_used_for_threshold_or_weight_selection: false
+conclusion:
+  balanced_is_comparison_candidate_only: true
+  paired_ci_clear_improvement: false
+  four_member_test_common_rated_coverage_min: 0.006948
+  four_member_test_common_rated_coverage_max: 0.010204
+  party_satisfaction_observed: false
+  decision: DO_NOT_ADOPT_PRODUCT_POLICY

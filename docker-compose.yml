@@ -1,0 +1,130 @@
+name: feelm-standalone
+
+services:
+  postgres:
+    platform: linux/amd64
+    image: postgres:17.6-alpine@sha256:ef257d85f76e48da1c64832459b59fcaba1a4dac97bf5d7450c77753542eee94
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB:-feelm}
+      POSTGRES_USER: ${POSTGRES_USER:-feelm}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-feelm_local}
+    ports:
+      - "127.0.0.1:${POSTGRES_HOST_PORT:-5432}:5432"
+    volumes:
+      - feelm-postgres-data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U $${POSTGRES_USER} -d $${POSTGRES_DB}"]
+      interval: 5s
+      timeout: 3s
+      retries: 20
+
+  mailpit:
+    platform: linux/amd64
+    image: axllent/mailpit:v1.30.4@sha256:5a49a77c5bdbe7c5474450b4f46348d09949df3695257729c93a30369382d4f6
+    environment:
+      MP_SMTP_AUTH_ACCEPT_ANY: "0"
+      MP_SMTP_AUTH_ALLOW_INSECURE: "0"
+      MP_MAX_MESSAGES: "100"
+    ports:
+      - "127.0.0.1:${MAILPIT_SMTP_HOST_PORT:-1025}:1025"
+      - "127.0.0.1:${MAILPIT_UI_HOST_PORT:-8025}:8025"
+
+  backend:
+    platform: linux/amd64
+    build:
+      context: ./backend
+    environment:
+      SPRING_PROFILES_ACTIVE: postgres,local,compose
+      DATABASE_URL: jdbc:postgresql://postgres:5432/${POSTGRES_DB:-feelm}
+      DATABASE_USERNAME: ${POSTGRES_USER:-feelm}
+      DATABASE_PASSWORD: ${POSTGRES_PASSWORD:-feelm_local}
+      FIXED_CLOCK_INSTANT: ${FIXED_CLOCK_INSTANT:-2026-08-29T12:00:00Z}
+      AUTH_MODE: fake
+      SERVER_ADDRESS: 127.0.0.1
+      C3_ENABLED: "true"
+      C3_LOCAL_BIND_ADDRESS: 127.0.0.1
+      C4_ENABLED: "true"
+      C4_LOCAL_PROFILE: "true"
+      C4_ALLOWED_ORIGIN: ${C4_ALLOWED_ORIGIN:-http://127.0.0.1:5173}
+      C4_DELIVERY_KEY_BASE64: ${C4_DELIVERY_KEY_BASE64:-}
+      C4_DELIVERY_KEY_VERSION: ${C4_DELIVERY_KEY_VERSION:-local-v1}
+      C4_MAIL_ENABLED: "true"
+      C4_MAIL_HOST: mailpit
+      C4_MAIL_PORT: "1025"
+      CURSOR_SIGNING_KEY: ${CURSOR_SIGNING_KEY:-local-fixture-cursor-key}
+      OUTBOX_WORKER_ENABLED: ${OUTBOX_WORKER_ENABLED:-true}
+      C2_CANDIDATE_STORE_PATH: /c2-artifacts/candidates/store
+      C2_RECOMMENDER_BASE_URL: http://recommender:8000
+      C2_CLIENT_AUTH_MODE: fake
+      C2_SERVICE_TOKEN: test-c2-service-token
+      C2_RECOMMENDER_TIMEOUT_MS: ${C2_RECOMMENDER_TIMEOUT_MS:-750}
+      C2_CLIENT_LOCAL_FAKE_ENABLED: "true"
+      C6_LOCAL_ENABLED: "true"
+      C5_LOCAL_ENABLED: "true"
+      C5_ARTIFACT_DIRECTORY: /tmp/feelm-c5-artifacts
+    ports:
+      # These listeners belong to the shared backend/frontend network namespace.
+      # nginx owns 80/8081 and proxies API traffic to backend loopback:8080.
+      - "127.0.0.1:${FRONTEND_HOST_PORT:-5173}:80"
+      - "127.0.0.1:${BACKEND_HOST_PORT:-8080}:8081"
+    depends_on:
+      postgres:
+        condition: service_healthy
+      recommender:
+        condition: service_healthy
+      mailpit:
+        condition: service_started
+    volumes:
+      - feelm-recommender-artifacts:/c2-artifacts:ro
+    healthcheck:
+      test: ["CMD-SHELL", "wget -qO- http://127.0.0.1:8080/actuator/health >/dev/null || exit 1"]
+      interval: 5s
+      timeout: 3s
+      retries: 30
+      start_period: 10s
+
+  recommender-artifact-init:
+    platform: linux/amd64
+    build:
+      context: ./recommender
+    entrypoint: ["/bin/sh", "-c"]
+    command:
+      - >-
+        python -m feelm_recommender.local_stack_fixture --output-dir /artifacts
+        && find /artifacts -type d -exec chmod 0755 {} \;
+        && find /artifacts -type f -exec chmod 0644 {} \;
+    volumes:
+      - feelm-recommender-artifacts:/artifacts
+    restart: "no"
+
+  recommender:
+    platform: linux/amd64
+    build:
+      context: ./recommender
+    environment:
+      C2_AUTH_MODE: fake
+      C2_ARTIFACT_SET_MANIFEST: /artifacts/serving/artifact-set.json
+      C6_LOCAL_EXPERIMENT_ENABLED: "true"
+    ports:
+      - "127.0.0.1:${RECOMMENDER_HOST_PORT:-8000}:8000"
+    volumes:
+      - feelm-recommender-artifacts:/artifacts:ro
+    depends_on:
+      recommender-artifact-init:
+        condition: service_completed_successfully
+
+  frontend:
+    platform: linux/amd64
+    build:
+      context: ./frontend
+      args:
+        VITE_API_BASE_URL: ""
+        VITE_LOCAL_FEATURES_ENABLED: "true"
+    network_mode: service:backend
+    depends_on:
+      backend:
+        condition: service_healthy
+
+volumes:
+  feelm-postgres-data:
+  feelm-recommender-artifacts:

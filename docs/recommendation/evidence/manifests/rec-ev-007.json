@@ -1,0 +1,86 @@
+{
+  "benchmark_version": "rec-ev-007-v1",
+  "conditions": {
+    "candidate_counts": [
+      10,
+      100,
+      1000
+    ],
+    "concurrency_levels": [
+      1,
+      4,
+      8
+    ],
+    "concurrent_requests_per_scenario": 240,
+    "fold_in_iterations_per_scenario": 300,
+    "rating_k_values": [
+      0,
+      1,
+      3,
+      5,
+      10,
+      20
+    ],
+    "reload_iterations": 30,
+    "serving_iterations_per_scenario": 120,
+    "warmup_per_scenario": 20
+  },
+  "evidence_id": "REC-EV-007",
+  "gate_results": {
+    "artifact_reload": true,
+    "inactive_fold_in_core": true,
+    "readiness": true,
+    "serving_candidate_1000": true,
+    "serving_candidate_le_100": true,
+    "serving_concurrency_4": true
+  },
+  "generated_at": "2026-08-29T14:42:22.508579Z",
+  "predeclared_gates": {
+    "artifact_reload_p95_ms": 2000.0,
+    "inactive_fold_in_core_p95_ms": 100.0,
+    "readiness_p95_ms": 50.0,
+    "serving_candidate_1000_p95_ms": 1000.0,
+    "serving_candidate_le_100_p95_ms": 250.0,
+    "serving_concurrency_4_min_throughput_rps": 20.0,
+    "serving_concurrency_4_p95_ms": 500.0
+  },
+  "privacy": {
+    "host_paths_persisted": false,
+    "rating_values_persisted": false,
+    "raw_movie_ids_persisted": false,
+    "raw_user_ids_persisted": false,
+    "request_ids_persisted": false,
+    "tokens_persisted": false
+  },
+  "protocol_hash_excludes": [
+    "generated_at",
+    "environment",
+    "artifact_lifecycle.observed_metrics",
+    "serving_http.observed_metrics",
+    "inactive_fold_in_core.observed_metrics",
+    "gate_results",
+    "technical_recommendation"
+  ],
+  "protocol_sha256": "56b3c5f4716fb919b30231ffa014c3d9507fad4baf9a570d56ba14de74dbfca0",
+  "result_checksum_policy": "FULL_RESULT_BYTES_INCLUDE_GENERATED_AT_ENVIRONMENT_AND_OBSERVED_TIMINGS;_CHECKSUM_CHANGES_BY_DESIGN",
+  "result_file": "rec-ev-007-local-20260829.json",
+  "result_sha256": "e9df695ac8510b1fbe5cc139eb5dfb01f6d8e5521ac63ba37156bb22da8c9fc6",
+  "schema_version": 1,
+  "source_factor_evidence": {
+    "coverage": "REC_EV_003_COHORT_EXCLUDED_EVIDENCE_NOT_PRODUCT_TRAFFIC",
+    "evidence_id": "REC-EV-003",
+    "factor_rank": 32,
+    "item_count": 42299,
+    "payload_sha256": "05416efc51861020b4786c693572997fea8ba8a41312db896d5bb681db85fcd4"
+  },
+  "source_metadata_policy": "CHECKSUM_AND_SHAPE_ONLY_NO_RAW_FACTOR_PATH",
+  "technical_recommendation": {
+    "active_rating_snapshot_healthy_path_target_ms": 3000,
+    "basis": "predeclared_rule_applied_to_loopback_http_p99",
+    "expected_star_activation": "PROHIBITED_BY_DN_C2_008",
+    "production_validation_required": true,
+    "spring_outbound_timeout_ms": 750,
+    "stale_success_fallback": "DISABLED",
+    "status": "LOCAL_LOOPBACK_PROVISIONAL"
+  }
+}

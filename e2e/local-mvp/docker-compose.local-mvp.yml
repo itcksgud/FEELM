@@ -1,0 +1,111 @@
+services:
+  postgres:
+    image: postgres:17.6-alpine@sha256:ef257d85f76e48da1c64832459b59fcaba1a4dac97bf5d7450c77753542eee94
+    environment:
+      POSTGRES_DB: feelm_local_mvp_e2e
+      POSTGRES_USER: feelm
+      POSTGRES_PASSWORD: feelm_local
+    ports: ["127.0.0.1:55439:5432"]
+    volumes: ["postgres-data:/var/lib/postgresql/data"]
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U feelm -d feelm_local_mvp_e2e"]
+      interval: 3s
+      timeout: 3s
+      retries: 30
+
+  mailpit:
+    image: axllent/mailpit:v1.30.4@sha256:5a49a77c5bdbe7c5474450b4f46348d09949df3695257729c93a30369382d4f6
+    environment:
+      MP_SMTP_AUTH_ACCEPT_ANY: "0"
+      MP_SMTP_AUTH_ALLOW_INSECURE: "0"
+      MP_MAX_MESSAGES: "20"
+    ports:
+      - "127.0.0.1:51025:1025"
+      - "127.0.0.1:58025:8025"
+
+  recommender-artifact-init:
+    build: { context: ../../recommender }
+    entrypoint: ["/bin/sh", "-c"]
+    command:
+      - >-
+        python -m feelm_recommender.local_stack_fixture --output-dir /artifacts
+        && find /artifacts -type d -exec chmod 0755 {} \;
+        && find /artifacts -type f -exec chmod 0644 {} \;
+    volumes: ["recommender-artifacts:/artifacts"]
+    restart: "no"
+
+  recommender:
+    build: { context: ../../recommender }
+    environment:
+      C2_AUTH_MODE: fake
+      C2_ARTIFACT_SET_MANIFEST: /artifacts/serving/artifact-set.json
+      C6_LOCAL_EXPERIMENT_ENABLED: "true"
+    ports: ["127.0.0.1:58000:8000"]
+    volumes: ["recommender-artifacts:/artifacts:ro"]
+    depends_on:
+      recommender-artifact-init: { condition: service_completed_successfully }
+
+  backend:
+    build: { context: ../../backend }
+    environment:
+      SPRING_PROFILES_ACTIVE: postgres,local
+      SERVER_ADDRESS: 127.0.0.1
+      DATABASE_URL: jdbc:postgresql://postgres:5432/feelm_local_mvp_e2e
+      DATABASE_USERNAME: feelm
+      DATABASE_PASSWORD: feelm_local
+      FIXED_CLOCK_INSTANT: "2026-08-29T12:00:00Z"
+      AUTH_MODE: fake
+      C3_ENABLED: "true"
+      C3_LOCAL_BIND_ADDRESS: 127.0.0.1
+      C4_ENABLED: "true"
+      C4_LOCAL_PROFILE: "true"
+      C4_ALLOWED_ORIGIN: http://127.0.0.1:55173
+      C4_MAIL_ENABLED: "true"
+      C4_MAIL_HOST: mailpit
+      C4_MAIL_PORT: "1025"
+      C5_LOCAL_ENABLED: "true"
+      C5_ARTIFACT_DIRECTORY: /tmp/feelm-c5-e2e
+      CURSOR_SIGNING_KEY: local-mvp-e2e-cursor-key
+      OUTBOX_WORKER_ENABLED: "true"
+      C2_CANDIDATE_STORE_PATH: /c2-artifacts/candidates/store
+      C2_RECOMMENDER_BASE_URL: http://recommender:8000
+      C2_CLIENT_AUTH_MODE: fake
+      C2_CLIENT_LOCAL_FAKE_ENABLED: "true"
+      C2_SERVICE_TOKEN: test-c2-service-token
+      C2_RECOMMENDER_TIMEOUT_MS: "750"
+      C6_LOCAL_ENABLED: "true"
+    ports:
+      - "127.0.0.1:55173:55173"
+      - "127.0.0.1:58080:58080"
+    depends_on:
+      postgres: { condition: service_healthy }
+      mailpit: { condition: service_started }
+      recommender: { condition: service_healthy }
+    volumes: ["recommender-artifacts:/c2-artifacts:ro"]
+    healthcheck:
+      test: ["CMD-SHELL", "wget -qO- http://127.0.0.1:8080/actuator/health >/dev/null || exit 1"]
+      interval: 3s
+      timeout: 3s
+      retries: 50
+      start_period: 10s
+
+  frontend:
+    build:
+      context: ../../frontend
+      args:
+        VITE_API_BASE_URL: ""
+        VITE_LOCAL_FEATURES_ENABLED: "true"
+    network_mode: service:backend
+    depends_on:
+      backend: { condition: service_healthy }
+    volumes:
+      - ./nginx.local-mvp.conf:/etc/nginx/conf.d/default.conf:ro
+    healthcheck:
+      test: ["CMD-SHELL", "wget -qO- http://127.0.0.1:55173/healthz >/dev/null || exit 1"]
+      interval: 3s
+      timeout: 3s
+      retries: 30
+
+volumes:
+  postgres-data:
+  recommender-artifacts:

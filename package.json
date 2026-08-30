@@ -1,0 +1,51 @@
+{
+  "name": "feelm-contract-tooling",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Contract validation and OpenAPI mock tooling for FEELM standalone",
+  "scripts": {
+    "contracts:check": "node scripts/run-python.mjs scripts/validate_contracts.py",
+    "c1:contracts:check": "node scripts/validate-c1-contracts.mjs",
+    "c2:contracts:check": "node docs/c2-recommendation/scripts/validate-contract.mjs",
+    "c2b:contracts:check": "node scripts/run-python.mjs docs/c2b-personal-discovery/validate_contract.py && redocly lint docs/c2b-personal-discovery/api/openapi.fragment.yaml",
+    "c2b:decisions:check": "node scripts/run-python.mjs docs/c2b-personal-discovery/validate_product_decision_packet.py",
+    "c3:contracts:check": "node scripts/run-python.mjs docs/c3-party-ott-comparison/validate_contract.py && redocly lint docs/c3-party-ott-comparison/api/openapi.fragment.yaml",
+    "c3:decisions:check": "node scripts/run-python.mjs docs/c3-party-ott-comparison/validate_product_decision_packet.py",
+    "c4:contracts:check": "node scripts/run-python.mjs docs/c4-membership-onboarding/validate_contract.py && redocly lint docs/c4-membership-onboarding/api/openapi.fragment.yaml",
+    "c4:decisions:check": "node scripts/run-python.mjs docs/c4-membership-onboarding/validate_product_decision_packet.py",
+    "c5:inventory:check": "node scripts/run-python.mjs docs/c5-report-profile/validate_inventory.py",
+    "c5:contracts:check": "node scripts/run-python.mjs docs/c5-report-profile/validate_local_contract.py && redocly lint docs/c5-report-profile/api/openapi.fragment.yaml",
+    "c6:contracts:check": "node scripts/run-python.mjs docs/c6-recommendation-interpretation/validate_contract.py && redocly lint docs/c6-recommendation-interpretation/api/openapi.fragment.yaml",
+    "approvals:check": "node scripts/run-python.mjs scripts/validate_product_owner_approval.py",
+    "completion:gates:check": "node scripts/validate-completion-gates.mjs",
+    "completion:gates:mutation:check": "node scripts/test-completion-gate-validator.mjs",
+    "supply-chain:check": "node scripts/run-python.mjs scripts/validate_supply_chain_pins.py",
+    "recommendation:evidence:check": "node scripts/verify-recommendation-evidence.mjs",
+    "revision:readiness:check": "node scripts/check-revision-readiness.mjs",
+    "revision:readiness:require": "node scripts/check-revision-readiness.mjs --require-ready",
+    "verification:parity:check": "node scripts/validate-verification-parity.mjs",
+    "ci:workflow:check": "powershell -NoProfile -ExecutionPolicy Bypass -File scripts/verify-github-workflow.ps1",
+    "security:secrets:check": "node scripts/run-python.mjs scripts/verify_repository_secrets.py",
+    "security:history:check": "powershell -NoProfile -ExecutionPolicy Bypass -File scripts/verify-git-history-secrets.ps1",
+    "security:history:require": "powershell -NoProfile -ExecutionPolicy Bypass -File scripts/verify-git-history-secrets.ps1 -RequireRevisionReady",
+    "security:java:check": "powershell -NoProfile -ExecutionPolicy Bypass -File scripts/verify-java-runtime-osv.ps1",
+    "openapi:lint": "redocly lint docs/api/openapi.yaml",
+    "openapi:bundle": "redocly bundle docs/api/openapi.yaml --output outputs/openapi-bundled.yaml",
+    "openapi:mock": "node scripts/mock-openapi.mjs",
+    "openapi:mock:check": "node scripts/verify-openapi-mock.mjs",
+    "frontend:api-schema:check": "node scripts/verify-generated-api-schema.mjs",
+    "verify": "powershell -NoProfile -ExecutionPolicy Bypass -File scripts/verify-all.ps1",
+    "verify:reproduce": "powershell -NoProfile -ExecutionPolicy Bypass -File scripts/verify-reproduction.ps1",
+    "verify:e2e": "npm test --prefix e2e",
+    "verify:e2e:fresh": "powershell -NoProfile -ExecutionPolicy Bypass -File scripts/verify-e2e-fresh.ps1"
+  },
+  "devDependencies": {
+    "@hono/node-server": "2.1.1",
+    "@redocly/cli": "2.49.0",
+    "@scalar/mock-server": "0.13.0",
+    "yaml": "2.9.0"
+  },
+  "engines": {
+    "node": ">=22 <23"
+  }
+}

@@ -1,0 +1,22 @@
+spring:
+  flyway:
+    locations:
+      - classpath:db/migration
+      - classpath:db/local
+      - classpath:db/compose
+    out-of-order: true
+
+server:
+  # nginx shares the backend network namespace and proxies over loopback.
+  # Host publishing stays on 127.0.0.1 in docker-compose.yml.
+  address: ${SERVER_ADDRESS:127.0.0.1}
+
+catalog:
+  c3:
+    enabled: ${C3_ENABLED:false}
+    local-bind-address: ${C3_LOCAL_BIND_ADDRESS:127.0.0.1}
+
+c5:
+  local:
+    enabled: ${C5_LOCAL_ENABLED:false}
+  artifact-directory: ${C5_ARTIFACT_DIRECTORY:}

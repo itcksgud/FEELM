@@ -1,0 +1,159 @@
+schema_version: 1
+project: FEELM-standalone
+contract_slice: C2B-PERSONAL-DISCOVERY
+status: APPROVED_LOCAL_BASELINE_WITH_BLOCKED_EXTENSIONS
+rules:
+  local_baseline_implementation_authorized: true
+  production_activation_forbidden: true
+  blocked_extension_implementation_forbidden: true
+  main_openapi_local_baseline_merge_required: true
+  expected_star_must_remain_disabled: true
+  reason_ui_must_remain_hidden: true
+  explore05_must_remain_rejected: true
+  rec_ev_013_dependency_file: evidence-dependencies.yaml
+  c1_click_commits_before_c2b_action: true
+  prepared_replay_requires_current_c1_catalog_revalidation: true
+  top500_exact_set_boundary_required: true
+  projector_revision_and_tombstone_ordering_required: true
+  error_path_route_template_only: true
+  exposure_dual_idempotency_one_transaction_required: true
+  repeated_action_projection_winner_required: true
+  c1_eligibility_version_linearization_required: true
+  safe_issue_exact_enum_cardinality_required: true
+  delivery_mapping_version_typed_stale_required: true
+  safe_issue_code_contract_and_summary_arithmetic_required: true
+  original_201_replay_200_domain_payload_required: true
+  catalog_c1_final_commit_linearization_required: true
+  late_action_event_reconcile_required: true
+  exposure_item_keyed_contiguous_order_required: true
+  cumulative_append_preserves_existing_items_required: true
+  rating_or_explicit_dismiss_exit_required: true
+  required_decision_ids:
+    - DN-C2B-001
+    - DN-C2B-002
+    - DN-C2B-003
+    - DN-C2B-004
+    - DN-C2B-005
+    - DN-C2B-006
+
+tasks:
+  - id: TASK-C2B-001
+    title: REC-EV-013 완료와 남은 C2B 제품·운영 결정 승인
+    status: PRODUCT_DECISIONS_PENDING_LOCAL_BASELINE_AUTHORIZED
+    depends_on: []
+    decision_record_ids: [DN-C2B-001, DN-C2B-002, DN-C2B-003, DN-C2B-004, DN-C2B-005, DN-C2B-006]
+    evidence_ids: [REC-EV-006, REC-EV-007, REC-EV-011, REC-EV-004B, REC-EV-003C, REC-EV-013]
+    acceptance_ids: [AC-C2B-008, AC-C2B-009, AC-C2B-010, AC-C2B-011, AC-C2B-015, AC-C2B-016, AC-C2B-017, AC-C2B-018, AC-C2B-045, AC-C2B-051, AC-C2B-100]
+    outputs:
+      - completed REC-EV-013 dependency metadata and checksum verification
+      - approved or deferred decision records with rollback conditions
+      - DN-C2B-002 approved cumulative append/exit policy preserved while remaining five decisions stay gated
+    verify:
+      - py -3.12 docs/c2b-personal-discovery/validate_contract.py
+
+  - id: TASK-C2B-002
+    title: C2B 계약 승인 승격과 main OpenAPI 병합
+    status: DONE_LOCAL_BASELINE_CONTRACT
+    depends_on: []
+    decision_record_ids: [DN-C2B-001, DN-C2B-002, DN-C2B-003, DN-C2B-004, DN-C2B-005, DN-C2B-006]
+    acceptance_ids: [AC-C2B-001, AC-C2B-003, AC-C2B-040, AC-C2B-045, AC-C2B-051, AC-C2B-055]
+    outputs:
+      - APPROVED_LOCAL_BASELINE_WITH_BLOCKED_EXTENSIONS C2B contract status
+      - merged three-operation local baseline OpenAPI without duplicate components
+      - production and blocked-extension boundary retained
+
+  - id: TASK-C2B-003
+    title: 로컬 Delivery·append·dismissal migration 기반
+    status: READY_LOCAL_BASELINE
+    depends_on: [TASK-C2B-002]
+    acceptance_ids: [AC-C2B-019, AC-C2B-020, AC-C2B-021, AC-C2B-022, AC-C2B-025, AC-C2B-028, AC-C2B-029, AC-C2B-032, AC-C2B-034, AC-C2B-035, AC-C2B-036, AC-C2B-052, AC-C2B-053, AC-C2B-068, AC-C2B-069, AC-C2B-070, AC-C2B-072, AC-C2B-073, AC-C2B-074, AC-C2B-076, AC-C2B-077, AC-C2B-078, AC-C2B-079, AC-C2B-080, AC-C2B-081, AC-C2B-082, AC-C2B-083, AC-C2B-084, AC-C2B-085, AC-C2B-086, AC-C2B-087, AC-C2B-089, AC-C2B-090, AC-C2B-092, AC-C2B-093, AC-C2B-094, AC-C2B-097, AC-C2B-098, AC-C2B-099]
+    outputs:
+      - normalized delivery/action/projection migration
+      - C2A exposure and C1 resource-chain FK invariants
+      - shared idempotency record and eligibility-version lock schema
+      - deterministic repeated-action projection winner columns
+      - typed mapping/catalog eligibility snapshots and late-event inbox
+      - domain-result-only idempotency record and exposure keyed-order constraints
+
+  - id: TASK-C2B-004
+    title: 로컬 누적 delivery query·3편 append·dismiss와 C2A adapter 연결
+    status: READY_LOCAL_BASELINE
+    depends_on: [TASK-C2B-002, TASK-C2B-003]
+    decision_record_ids: [DN-C2B-001, DN-C2B-002, DN-C2B-003, DN-C2B-004, DN-C2B-006]
+    acceptance_ids: [AC-C2B-005, AC-C2B-006, AC-C2B-008, AC-C2B-009, AC-C2B-010, AC-C2B-011, AC-C2B-012, AC-C2B-013, AC-C2B-014, AC-C2B-015, AC-C2B-016, AC-C2B-017, AC-C2B-018, AC-C2B-037, AC-C2B-038, AC-C2B-039, AC-C2B-046, AC-C2B-047, AC-C2B-048, AC-C2B-049, AC-C2B-050, AC-C2B-052, AC-C2B-053, AC-C2B-063, AC-C2B-064, AC-C2B-065, AC-C2B-066, AC-C2B-067, AC-C2B-068, AC-C2B-069, AC-C2B-079, AC-C2B-080, AC-C2B-081, AC-C2B-082, AC-C2B-084, AC-C2B-087, AC-C2B-089, AC-C2B-090, AC-C2B-091, AC-C2B-099]
+    outputs:
+      - getMyPersonalDiscoveryRecommendations
+      - appendMyPersonalDiscoveryRecommendations
+      - dismissMyRecommendationAsNotInterested
+      - strict K/label/composition/version policy
+
+  - id: TASK-C2B-005
+    title: Exposure·action·outcome projector
+    status: BLOCKED_EXTENSION
+    depends_on: [TASK-C2B-003, TASK-C2B-004, TASK-C2B-011]
+    decision_record_ids: [DN-C2B-005, DN-C2B-006]
+    acceptance_ids: [AC-C2B-020, AC-C2B-021, AC-C2B-022, AC-C2B-023, AC-C2B-024, AC-C2B-025, AC-C2B-026, AC-C2B-027, AC-C2B-028, AC-C2B-029, AC-C2B-030, AC-C2B-031, AC-C2B-032, AC-C2B-033, AC-C2B-034, AC-C2B-035, AC-C2B-036, AC-C2B-040, AC-C2B-054, AC-C2B-057, AC-C2B-058, AC-C2B-059, AC-C2B-060, AC-C2B-061, AC-C2B-062, AC-C2B-070, AC-C2B-071, AC-C2B-072, AC-C2B-073, AC-C2B-074, AC-C2B-077, AC-C2B-078, AC-C2B-083, AC-C2B-084, AC-C2B-085, AC-C2B-086, AC-C2B-092, AC-C2B-093, AC-C2B-094, AC-C2B-095, AC-C2B-096, AC-C2B-097, AC-C2B-098]
+    outputs:
+      - commitMyRecommendationExposure
+      - recordMyRecommendationAction
+      - eventId-dedup exact resource-chain projector
+
+  - id: TASK-C2B-006
+    title: React 누적 추천·추가 추천·종료·상세·OTT attribution 화면
+    status: BLOCKED
+    depends_on: [TASK-C2B-002, TASK-C2B-004, TASK-C2B-005]
+    decision_record_ids: [DN-C2B-001, DN-C2B-002, DN-C2B-003, DN-C2B-004]
+    acceptance_ids: [AC-C2B-042, AC-C2B-043, AC-C2B-044, AC-C2B-087, AC-C2B-088, AC-C2B-091, AC-C2B-092, AC-C2B-094, AC-C2B-096]
+    outputs:
+      - SCR-C2B-001, SCR-C2B-002, SCR-C2B-003
+      - no-star/no-reason/no-discovery pre-approval rendering
+
+  - id: TASK-C2B-007
+    title: 인증·소유권·원자성·장애 격리 Gate
+    status: BLOCKED
+    depends_on: [TASK-C2B-004, TASK-C2B-005]
+    acceptance_ids: [AC-C2B-001, AC-C2B-002, AC-C2B-003, AC-C2B-004, AC-C2B-005, AC-C2B-006, AC-C2B-007, AC-C2B-022, AC-C2B-023, AC-C2B-024, AC-C2B-026, AC-C2B-027, AC-C2B-030, AC-C2B-031, AC-C2B-033, AC-C2B-034, AC-C2B-038, AC-C2B-039, AC-C2B-040, AC-C2B-041, AC-C2B-050, AC-C2B-054, AC-C2B-055, AC-C2B-056, AC-C2B-059, AC-C2B-062, AC-C2B-063, AC-C2B-064, AC-C2B-065, AC-C2B-066, AC-C2B-067, AC-C2B-068, AC-C2B-069, AC-C2B-070, AC-C2B-071, AC-C2B-072, AC-C2B-073, AC-C2B-074, AC-C2B-075, AC-C2B-076, AC-C2B-077, AC-C2B-078, AC-C2B-079, AC-C2B-080, AC-C2B-081, AC-C2B-082, AC-C2B-083, AC-C2B-084, AC-C2B-085, AC-C2B-086]
+    outputs:
+      - PostgreSQL rollback/race/idempotency tests
+      - safe logging and cross-owner tests
+
+  - id: TASK-C2B-008
+    title: C2B React·Playwright·failure E2E
+    status: BLOCKED
+    depends_on: [TASK-C2B-006, TASK-C2B-007]
+    acceptance_ids: [AC-C2B-012, AC-C2B-013, AC-C2B-014, AC-C2B-037, AC-C2B-038, AC-C2B-042, AC-C2B-043, AC-C2B-044]
+    outputs:
+      - 3-card render-to-exposure E2E
+      - detail/OTT/Rating exact attribution E2E
+
+  - id: TASK-C2B-009
+    title: 운영 auth·freshness·3편 성능 검증
+    status: BLOCKED
+    depends_on: [TASK-C2B-007, TASK-C2B-008]
+    decision_record_ids: [DN-C2B-006]
+    acceptance_ids: [AC-C2B-038, AC-C2B-039, AC-C2B-041, AC-C2B-052, AC-C2B-053, AC-C2B-055, AC-C2B-056]
+    outputs:
+      - production-topology p95/p99 and failure evidence
+      - operational credential and rotation Gate
+
+  - id: TASK-C2B-010
+    title: C2B blind handoff와 공개 승격 감사
+    status: BLOCKED
+    depends_on: [TASK-C2B-008, TASK-C2B-009]
+    acceptance_ids: [AC-C2B-001, AC-C2B-003, AC-C2B-022, AC-C2B-032, AC-C2B-038, AC-C2B-040, AC-C2B-041, AC-C2B-045]
+    outputs:
+      - independent revision-based score and blockers
+      - public contract/runtime boundary verification
+
+  - id: TASK-C2B-011
+    title: C0 Catalog lock·C1 click/event eligibility 계약 보완
+    status: BLOCKED
+    depends_on: [TASK-C2B-001]
+    decision_record_ids: [DN-C2B-005, DN-C2B-006]
+    acceptance_ids: [AC-C2B-057, AC-C2B-058, AC-C2B-059, AC-C2B-060, AC-C2B-061, AC-C2B-062, AC-C2B-064, AC-C2B-079, AC-C2B-084, AC-C2B-085]
+    outputs:
+      - createWatchIntent current click behaviorEventId/server occurredAt/outcome response contract
+      - CREATED/ACTIVE_REUSED/ALREADY_WATCHED typed event projection and ownership invariants
+      - click event unique attribution without WatchIntent-level dedup or last-touch
+      - C1 Viewing/Rating eligibility version row lock and same-transaction increment contract
+      - Catalog eligibility singleton lock amendment remains blocked with C1 event-before-action inbox/reconcile contract

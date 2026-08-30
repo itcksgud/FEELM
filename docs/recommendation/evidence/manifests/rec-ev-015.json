@@ -1,0 +1,57 @@
+{
+  "schema_version": 1,
+  "evidence_id": "REC-EV-015",
+  "run_at_utc": "2026-08-30T03:22:46.700782+00:00",
+  "source": {
+    "rec_ev_003b_manifest": {
+      "path": "docs\\recommendation\\evidence\\manifests\\rec-ev-003b.json",
+      "sha256": "2be1a98b20de9733ae8fe8ae72a9c42f62b45e25c244dd856691fb0700adec7d",
+      "bytes": 18435
+    },
+    "selected_star_predictions": {
+      "path": "outputs\\recommendation-evidence\\rec-ev-003b\\selected_star_predictions.parquet",
+      "sha256": "bb3181d9d859c316c2da0421d339fa9205e3b5a2eac6109c91035b172a860727",
+      "bytes": 4318324,
+      "rows": 378503
+    },
+    "cold_predictions": {
+      "path": "outputs\\recommendation-evidence\\rec-ev-003\\cold_start_validation_predictions.parquet",
+      "sha256": "02cffdb89786953c7e1e5f8f3f60f27ba0156b0710a59f7e3c1730189deea3c5",
+      "bytes": 51938728,
+      "rows": 378503
+    },
+    "onboarding": {
+      "path": "outputs\\recommendation-evidence\\rec-ev-003\\onboarding_first_20.parquet",
+      "sha256": "e426e5560c07544b2df619fefeff187a61b1668e6d8776705f5b8445bafee2c2",
+      "bytes": 356879,
+      "rows": 60280
+    },
+    "test_used": false
+  },
+  "protocol": {
+    "version": "relative-utility-discrete-policy-eval-v1",
+    "baseline_policy": "C6_RIGHT_INCLUSIVE_RAW_ECDF_V1",
+    "candidate_policy": "C6_DISCRETE_QUANTIZED_MIDRANK_ECDF_V2",
+    "minimum_mae_improvement": 0.15,
+    "minimum_absolute_bias_reduction": 0.4,
+    "spearman_non_regression": true,
+    "all_rating_style_segments_must_improve": true
+  },
+  "result": {
+    "path": "docs\\recommendation\\evidence\\results\\rec-ev-015-evaluation.json",
+    "sha256": "108342f9fb0a7edf51319d5ee0b3c1cc2e93b7222b191c0649b08cee0a843159",
+    "bytes": 9950
+  },
+  "runtime": {
+    "python": "3.12.5",
+    "pandas": "2.2.3",
+    "numpy": "1.26.4",
+    "seconds": 1.857
+  },
+  "conclusion": {
+    "all_k_pass": true,
+    "decision": "ADOPT_C6_LOCAL_EXPERIMENT_V2_KEEP_PRODUCT_BLOCKED",
+    "product_display_approved": false,
+    "satisfaction_claim_supported": false
+  }
+}

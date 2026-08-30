@@ -1,0 +1,206 @@
+schema_version: 1
+status: IN_PROGRESS
+authority:
+  product_plan: docs/planning/standalone-project-plan.md
+  product_owner_approval_request: docs/planning/product-owner-approval-request-20260830.md
+  repository_rules: AGENTS.md
+  local_runbook: docs/runbook/local-development.md
+completion_definition:
+  - contract_is_approved_and_machine_validated
+  - database_api_and_ui_follow_the_same_semantics
+  - happy_path_failure_path_and_authorization_are_automated
+  - compose_e2e_uses_real_services_not_mocks
+  - performance_or_recommendation_claims_have_versioned_evidence
+  - secrets_and_external_identifiers_do_not_leak
+  - a_clean_revision_can_be_reproduced_in_a_new_checkout
+gates:
+  - id: GATE-C0-CATALOG
+    title: Catalog search detail OTT and ingestion
+    status: IMPLEMENTED_AWAITING_REVISION_REPRODUCTION
+    evidence:
+      - docs/planning/c0-blind-handoff-20260829.md
+      - docs/testing/automated-tests.md
+      - performance/results/latest.md
+    remaining:
+      - user_authorized_revision
+      - clean_checkout_blind_handoff
+
+  - id: GATE-C1-RATING_FILM
+    title: Watch intent Rating Film Popcorn and Taste
+    status: IMPLEMENTED_AWAITING_REVISION_REPRODUCTION
+    evidence:
+      - docs/planning/c1-blind-handoff-20260829.md
+      - docs/testing/c1-automated-tests.md
+    remaining:
+      - user_authorized_revision
+      - clean_checkout_blind_handoff
+
+  - id: GATE-C2A-INTERNAL_RECOMMENDATION
+    title: Evidence-bounded internal Popularity recommendation
+    status: IMPLEMENTED_AWAITING_REVISION_REPRODUCTION
+    evidence:
+      - docs/c2-recommendation/README.md
+      - docs/recommendation/evidence/REC-EV-003B-cold-start-blend.md
+      - docs/recommendation/evidence/REC-EV-003C-rating-scale-alignment.md
+      - docs/recommendation/evidence/REC-EV-007-fold-in-benchmark.md
+      - docs/testing/c2a-compose-integration.md
+      - docs/planning/c2a-blind-handoff-20260830.md
+    remaining:
+      - user_authorized_revision
+      - clean_checkout_blind_handoff
+      - production_topology_and_operational_auth_validation
+
+  - id: GATE-C2B-PERSONAL_DISCOVERY
+    title: Local popularity-baseline personal discovery
+    product_scope: APPROVED_LOCAL_MVP
+    implementation_scope: LOCAL_ONLY
+    production_readiness: BLOCKED
+    status: IMPLEMENTED_AWAITING_REVISION_REPRODUCTION
+    evidence:
+      - docs/c2b-personal-discovery/README.md
+      - docs/c2b-personal-discovery/product-decision-packet.md
+      - docs/c2b-personal-discovery/api/openapi.fragment.yaml
+      - docs/api/openapi.yaml
+      - backend/src/test/java/com/feelm/catalog/c2b/PersonalDiscoveryPostgresAcceptanceTest.java
+      - frontend/src/test/RecommendationsPage.test.tsx
+      - e2e/c2b/c2b-personal-discovery.spec.ts
+      - e2e/local-mvp/local-mvp.spec.ts
+      - scripts/verify-c2b-e2e.ps1
+      - docs/testing/local-mvp-compose-e2e-20260830.md
+    remaining:
+      - blocked_personalization_xai_expected_star_exposure_and_action_extensions
+      - production_topology_and_operational_auth_validation
+      - user_authorized_revision
+      - clean_checkout_blind_handoff
+
+  - id: GATE-C3-PARTY_OTT_COMPARE
+    title: Local party lifecycle and KR OTT comparison
+    product_scope: APPROVED_LOCAL_MVP
+    implementation_scope: LOCAL_ONLY
+    production_readiness: BLOCKED
+    status: IMPLEMENTED_AWAITING_REVISION_REPRODUCTION
+    evidence:
+      - docs/c3-party-ott-comparison/README.md
+      - docs/c3-party-ott-comparison/product-decision-packet.md
+      - docs/c3-party-ott-comparison/api/openapi.fragment.yaml
+      - docs/api/openapi.yaml
+      - backend/src/test/java/com/feelm/catalog/c3/C3LocalPostgresAcceptanceTest.java
+      - backend/src/test/java/com/feelm/catalog/c3/LocalComposeLoopbackTopologyTest.java
+      - frontend/src/test/C3Screens.test.tsx
+      - e2e/local-mvp/local-mvp.spec.ts
+      - docs/testing/local-mvp-compose-e2e-20260830.md
+    remaining:
+      - blocked_party_public_champion_and_typed_signal_weighting
+      - production_auth_invitation_and_topology_validation
+      - user_authorized_revision
+      - clean_checkout_blind_handoff
+
+  - id: GATE-C4-MEMBERSHIP_ONBOARDING
+    title: Local membership authentication and onboarding
+    product_scope: APPROVED_LOCAL_MVP
+    implementation_scope: LOCAL_ONLY
+    production_readiness: BLOCKED
+    status: IMPLEMENTED_AWAITING_REVISION_REPRODUCTION
+    evidence:
+      - docs/c4-membership-onboarding/README.md
+      - docs/c4-membership-onboarding/product-decision-packet.md
+      - docs/c4-membership-onboarding/api/openapi.fragment.yaml
+      - docs/api/openapi.yaml
+      - backend/src/main/resources/db/migration/V8__c4_local_membership_onboarding.sql
+      - backend/src/test/java/com/feelm/catalog/c4/C4LocalVerticalPostgresAcceptanceTest.java
+      - backend/src/test/java/com/feelm/catalog/c4/C4MailpitCaptureIntegrationTest.java
+      - frontend/src/test/C4Screens.test.tsx
+      - e2e/local-mvp/local-mvp.spec.ts
+      - docs/testing/local-mvp-compose-e2e-20260830.md
+    remaining:
+      - blocked_oauth_restart_password_recovery_change_and_delete
+      - production_email_origin_key_cookie_and_auth_validation
+      - user_authorized_revision
+      - clean_checkout_blind_handoff
+
+  - id: GATE-C5-REPORT_PROFILE
+    title: Local factual report profile sharing and in-app notification
+    product_scope: APPROVED_LOCAL_MVP
+    implementation_scope: LOCAL_ONLY
+    production_readiness: BLOCKED
+    status: IMPLEMENTED_AWAITING_REVISION_REPRODUCTION
+    evidence:
+      - docs/c5-report-profile/README.md
+      - docs/c5-report-profile/product-decision-packet.md
+      - docs/c5-report-profile/local-contract.md
+      - docs/c5-report-profile/api/openapi.fragment.yaml
+      - docs/api/openapi.yaml
+      - backend/src/main/resources/db/migration/V9__c5_local_report_profile_foundation.sql
+      - backend/src/test/java/com/feelm/catalog/c5/C5LocalPostgresAcceptanceTest.java
+      - backend/src/test/java/com/feelm/catalog/c5/service/C5LocalPdfStoreTest.java
+      - frontend/src/test/C5Screens.test.tsx
+      - e2e/local-mvp/local-mvp.spec.ts
+      - docs/testing/local-mvp-compose-e2e-20260830.md
+    remaining:
+      - blocked_account_lifecycle_expected_star_satisfaction_and_taste_diagnosis
+      - production_provider_public_origin_storage_and_notification_validation
+      - user_authorized_revision
+      - clean_checkout_blind_handoff
+
+  - id: GATE-C6-RECOMMENDATION_INTERPRETATION_EXPERIMENT
+    title: Local-only recommendation interpretation evidence lab
+    product_scope: APPROVED_LOCAL_EXPERIMENT
+    implementation_scope: LOCAL_DEV_ONLY
+    production_readiness: BLOCKED
+    status: IMPLEMENTED_AWAITING_REVISION_REPRODUCTION
+    evidence:
+      - docs/c6-recommendation-interpretation/README.md
+      - docs/c6-recommendation-interpretation/local-contract.md
+      - docs/c6-recommendation-interpretation/api/openapi.fragment.yaml
+      - docs/c6-recommendation-interpretation/testing/acceptance-tests.md
+      - docs/api/openapi.yaml
+      - docs/recommendation/evidence/REC-EV-014-local-interpretation-lab.md
+      - docs/recommendation/evidence/REC-EV-015-relative-utility.md
+      - docs/recommendation/evidence/manifests/rec-ev-015.json
+      - recommender/tests/test_interpretation.py
+      - recommender/tests/test_interpretation_api.py
+      - backend/src/test/java/com/feelm/catalog/c6/C6PostgresDataAdapterIntegrationTest.java
+      - backend/src/test/java/com/feelm/catalog/c6/JdkC6RecommenderClientTest.java
+      - frontend/src/test/C6RecommendationInterpretationLab.test.tsx
+      - scripts/verify-c6-production-bundle.mjs
+      - e2e/local-mvp/local-mvp.spec.ts
+      - docs/testing/local-mvp-compose-e2e-20260830.md
+    remaining:
+      - product_activation_requires_paired_scale_and_user_evidence
+      - production_topology_and_operational_auth_validation
+      - user_authorized_revision
+      - clean_checkout_blind_handoff
+
+  - id: GATE-SYSTEM-REPRODUCTION
+    title: Whole-system reproducibility security and measurable scale
+    status: BLOCKED_BY_REVISION
+    evidence:
+      - .github/workflows/ci.yml
+      - scripts/verify-e2e-fresh.ps1
+      - scripts/verify-reproduction.ps1
+      - scripts/verify-c2-compose.ps1
+      - scripts/check-revision-readiness.mjs
+      - scripts/verify-git-history-secrets.ps1
+      - scripts/validate_supply_chain_pins.py
+      - scripts/validate-completion-gates.mjs
+      - scripts/test-completion-gate-validator.mjs
+      - performance/results/spark-als-scaling/latest.md
+      - performance/results/spark-als-scaling/latest.json
+      - docs/testing/dependency-security-audit-20260830.md
+      - docs/testing/reproducibility-verification-20260830.md
+      - e2e/local-mvp/README.md
+      - e2e/local-mvp/run-local-mvp-e2e.ps1
+      - e2e/local-mvp/local-mvp.spec.ts
+      - docs/planning/local-mvp-completion-reflection-20260830.md
+      - docs/testing/local-mvp-compose-e2e-20260830.md
+    remaining:
+      - fixed_revision_ci_dependency_audit
+      - fixed_revision_secret_history_scan
+      - multi_host_network_and_failure_benchmark_before_production_scale_claim
+      - user_authorized_revision
+      - clean_checkout_blind_handoff
+blocked_actions_requiring_user_authority:
+  - commit_or_push
+  - deployment
+  - operational_email_or_oauth_credentials
+  - activation_of_product_semantics_not_supported_by_evidence

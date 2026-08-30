@@ -1,0 +1,192 @@
+name: FEELM CI
+
+on:
+  push:
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  contracts:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4
+        with:
+          node-version: 22.14.0
+          cache: npm
+      - run: npm ci
+      - name: Lint GitHub Actions workflow with pinned actionlint
+        shell: bash
+        run: |
+          set -euo pipefail
+          tool_root="$RUNNER_TEMP/feelm-actionlint-1.7.12"
+          mkdir -p "$tool_root"
+          curl --fail --location --silent --show-error \
+            --output "$tool_root/actionlint.tar.gz" \
+            https://github.com/rhysd/actionlint/releases/download/v1.7.12/actionlint_1.7.12_linux_amd64.tar.gz
+          echo "8aca8db96f1b94770f1b0d72b6dddcb1ebb8123cb3712530b08cc387b349a3d8  $tool_root/actionlint.tar.gz" | sha256sum --check --strict
+          tar --extract --gzip --file "$tool_root/actionlint.tar.gz" --directory "$tool_root" actionlint
+          "$tool_root/actionlint" -no-color .github/workflows/ci.yml
+      - run: npm run revision:readiness:require
+      - run: npm run verification:parity:check
+      - run: npm run contracts:check
+      - run: npm run c1:contracts:check
+      - run: npm run c2:contracts:check
+      - run: npm run c2b:contracts:check
+      - run: npm run c2b:decisions:check
+      - run: npm run c3:contracts:check
+      - run: npm run c3:decisions:check
+      - run: npm run c4:contracts:check
+      - run: npm run c4:decisions:check
+      - run: npm run c5:contracts:check
+      - run: npm run c6:contracts:check
+      - run: npm run approvals:check
+      - run: npm run completion:gates:check
+      - run: npm run completion:gates:mutation:check
+      - run: npm run supply-chain:check
+      - run: npm run security:secrets:check
+      - run: npm run openapi:lint
+      - run: npm run openapi:mock:check
+      - run: docker compose config
+
+  backend:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+      - uses: actions/setup-java@cf277c60eb25467037889841efdb72551f06f6c3 # v4
+        with:
+          distribution: temurin
+          java-version: '17.0.20+8'
+          cache: gradle
+      - run: bash backend/gradlew -p backend --dependency-verification strict test
+
+  frontend:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4
+        with:
+          node-version: 22.14.0
+          cache: npm
+          cache-dependency-path: frontend/package-lock.json
+      - run: npm ci --prefix frontend
+      - run: npm run frontend:api-schema:check
+      - run: npm run test --prefix frontend
+      - run: npm run build --prefix frontend
+
+  recommender:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065 # v5
+        with:
+          python-version: '3.12.5'
+          cache: pip
+      - run: python -m pip install --require-hashes -r recommender/requirements-test.lock
+      - run: python -m pip install --no-deps --no-build-isolation -e ./recommender
+      - run: python -m unittest discover -s recommender/tests -p 'test_*.py' -v
+
+  recommendation-evidence:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4
+        with:
+          node-version: 22.14.0
+          cache: npm
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065 # v5
+        with:
+          python-version: '3.12.5'
+          cache: pip
+      - run: npm ci
+      - run: python -m pip install --require-hashes -r scripts/requirements-build-tools.lock
+      - run: python -m pip install --no-build-isolation --require-hashes -r requirements-data.lock
+      - run: npm run recommendation:evidence:check
+
+  dependency-audit:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4
+        with:
+          node-version: 22.14.0
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065 # v5
+        with:
+          python-version: '3.12.5'
+      - uses: actions/setup-java@cf277c60eb25467037889841efdb72551f06f6c3 # v4
+        with:
+          distribution: temurin
+          java-version: '17.0.20+8'
+          cache: gradle
+      - name: Scan full Git history with pinned Gitleaks and positive control
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p .codex-tmp/gitleaks .codex-tmp/gitleaks-control
+          curl --fail --location --silent --show-error \
+            --output .codex-tmp/gitleaks/gitleaks.tar.gz \
+            https://github.com/gitleaks/gitleaks/releases/download/v8.29.1/gitleaks_8.29.1_linux_x64.tar.gz
+          echo "e4eb209d04e20339d77122a3bdf9cd41351255cfb27ebcb75e85325e04f88924  .codex-tmp/gitleaks/gitleaks.tar.gz" | sha256sum --check --strict
+          tar --extract --gzip --file .codex-tmp/gitleaks/gitleaks.tar.gz --directory .codex-tmp/gitleaks gitleaks
+          control_token="ghp_$(printf '%s' "$(cat /proc/sys/kernel/random/uuid)$(cat /proc/sys/kernel/random/uuid)" | sha256sum | cut -c1-36)"
+          printf 'github_token = "%s"\n' "$control_token" > .codex-tmp/gitleaks-control/control.txt
+          set +e
+          .codex-tmp/gitleaks/gitleaks dir --no-banner --redact --exit-code 23 .codex-tmp/gitleaks-control >/dev/null 2>&1
+          control_exit=$?
+          set -e
+          test "$control_exit" -eq 23
+          .codex-tmp/gitleaks/gitleaks git --no-banner --redact .
+      - run: npm audit --json
+      - run: npm audit --prefix frontend --json
+      - run: npm audit --prefix e2e --json
+      - run: python -m pip install --require-hashes -r scripts/requirements-audit-tools.lock
+      - run: python -m pip_audit -r requirements-data.lock --progress-spinner off
+      - run: python -m pip_audit -r recommender/requirements.lock --progress-spinner off
+      - run: python -m pip_audit -r recommender/requirements-test.lock --progress-spinner off
+      - run: python -m pip_audit -r scripts/requirements-audit-tools.lock --progress-spinner off
+      - run: python -m pip_audit -r scripts/requirements-build-tools.lock --progress-spinner off
+      - run: python -m pip_audit -r scripts/requirements-lock-tools.lock --progress-spinner off
+      - name: Build runtime-only Java SBOM
+        run: bash backend/gradlew -p backend --dependency-verification strict writeRuntimeCycloneDx
+      - name: Scan Java runtime with pinned OSV Scanner
+        shell: bash
+        run: |
+          curl --fail --location --silent --show-error \
+            --output osv-scanner \
+            https://github.com/google/osv-scanner/releases/download/v2.5.1/osv-scanner_linux_amd64
+          echo "f9f25499a2c8cc367b3af45df2ea7eeca7fbccceab9c35079968f4b3652194be  osv-scanner" | sha256sum --check --strict
+          chmod +x osv-scanner
+          ./osv-scanner scan source -L backend/build/reports/runtime.cdx.json
+
+  catalog-pipeline:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065 # v5
+        with:
+          python-version: '3.12.5'
+          cache: pip
+      - run: python -m pip install --require-hashes -r scripts/requirements-build-tools.lock
+      - run: python -m pip install --no-deps --no-build-isolation -e ./data-pipeline
+      - run: python -m unittest discover -s data-pipeline/tests -p 'test_*.py' -v
+
+  catalog-e2e:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4
+        with:
+          node-version: 22.14.0
+          cache: npm
+          cache-dependency-path: e2e/package-lock.json
+      - run: npm ci --prefix e2e
+      - run: npm exec --prefix e2e playwright install --with-deps chromium
+      - run: docker compose up -d --build --wait
+      - run: npm test --prefix e2e
+      - run: pwsh -NoProfile -File scripts/verify-c2-compose.ps1
+      - if: always()
+        run: docker compose down --volumes

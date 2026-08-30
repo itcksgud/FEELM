@@ -1,0 +1,153 @@
+{
+  "ablation": {
+    "BASE_ONLY": {
+      "delta_diversity_vs_full": -0.040917,
+      "delta_ndcg_vs_full": 0.006001,
+      "delta_novelty_vs_full": -0.212122,
+      "intra_list_diversity": 0.709684,
+      "ndcg_at_10": 0.377911,
+      "novelty_bits": 14.976216,
+      "recall_at_10": 0.623
+    },
+    "FULL": {
+      "delta_diversity_vs_full": 0.0,
+      "delta_ndcg_vs_full": 0.0,
+      "delta_novelty_vs_full": 0.0,
+      "intra_list_diversity": 0.750601,
+      "ndcg_at_10": 0.37191,
+      "novelty_bits": 15.188338,
+      "recall_at_10": 0.61825
+    },
+    "WITHOUT_DIVERSITY": {
+      "delta_diversity_vs_full": -0.038859,
+      "delta_ndcg_vs_full": 0.002872,
+      "delta_novelty_vs_full": -0.119485,
+      "intra_list_diversity": 0.711742,
+      "ndcg_at_10": 0.374782,
+      "novelty_bits": 15.068853,
+      "recall_at_10": 0.6165
+    },
+    "WITHOUT_NOVELTY": {
+      "delta_diversity_vs_full": -0.007819,
+      "delta_ndcg_vs_full": 0.005473,
+      "delta_novelty_vs_full": -0.15651,
+      "intra_list_diversity": 0.742782,
+      "ndcg_at_10": 0.377383,
+      "novelty_bits": 15.031828,
+      "recall_at_10": 0.62525
+    },
+    "WITHOUT_POPULARITY": {
+      "delta_diversity_vs_full": 0.249388,
+      "delta_ndcg_vs_full": -0.371455,
+      "delta_novelty_vs_full": 8.416789,
+      "intra_list_diversity": 0.999989,
+      "ndcg_at_10": 0.000455,
+      "novelty_bits": 23.605127,
+      "recall_at_10": 0.00125
+    }
+  },
+  "by_position": {
+    "1": {
+      "diversity_rank_effect": 0,
+      "novelty_rank_effect": 38,
+      "popularity_rank_effect": 4000,
+      "recommendations": 4000
+    },
+    "10": {
+      "diversity_rank_effect": 2876,
+      "novelty_rank_effect": 1670,
+      "popularity_rank_effect": 3997,
+      "recommendations": 4000
+    },
+    "2": {
+      "diversity_rank_effect": 1471,
+      "novelty_rank_effect": 213,
+      "popularity_rank_effect": 4000,
+      "recommendations": 4000
+    },
+    "3": {
+      "diversity_rank_effect": 2472,
+      "novelty_rank_effect": 545,
+      "popularity_rank_effect": 4000,
+      "recommendations": 4000
+    },
+    "4": {
+      "diversity_rank_effect": 2821,
+      "novelty_rank_effect": 812,
+      "popularity_rank_effect": 4000,
+      "recommendations": 4000
+    },
+    "5": {
+      "diversity_rank_effect": 2852,
+      "novelty_rank_effect": 985,
+      "popularity_rank_effect": 4000,
+      "recommendations": 4000
+    },
+    "6": {
+      "diversity_rank_effect": 2816,
+      "novelty_rank_effect": 1153,
+      "popularity_rank_effect": 4000,
+      "recommendations": 4000
+    },
+    "7": {
+      "diversity_rank_effect": 2847,
+      "novelty_rank_effect": 1293,
+      "popularity_rank_effect": 4000,
+      "recommendations": 4000
+    },
+    "8": {
+      "diversity_rank_effect": 2910,
+      "novelty_rank_effect": 1443,
+      "popularity_rank_effect": 3999,
+      "recommendations": 4000
+    },
+    "9": {
+      "diversity_rank_effect": 2926,
+      "novelty_rank_effect": 1573,
+      "popularity_rank_effect": 3997,
+      "recommendations": 4000
+    }
+  },
+  "coverage": {
+    "GENRE_AFFINITY": {
+      "blocked_feature_inactive": 40000,
+      "blocked_no_rank_effect": 0,
+      "emittable_candidate_coverage": 0.0,
+      "evaluated_recommendations": 40000,
+      "faithful_rank_effect": 0,
+      "positive_contribution": 0,
+      "positive_contribution_coverage": 0.0
+    },
+    "LESS_POPULAR_DISCOVERY": {
+      "blocked_feature_inactive": 0,
+      "blocked_no_rank_effect": 30275,
+      "emittable_candidate_coverage": 0.243125,
+      "evaluated_recommendations": 40000,
+      "faithful_rank_effect": 9725,
+      "positive_contribution": 40000,
+      "positive_contribution_coverage": 1.0
+    },
+    "LIST_DIVERSITY": {
+      "blocked_feature_inactive": 0,
+      "blocked_no_rank_effect": 7554,
+      "emittable_candidate_coverage": 0.599775,
+      "evaluated_recommendations": 40000,
+      "faithful_rank_effect": 23991,
+      "positive_contribution": 31545,
+      "positive_contribution_coverage": 0.788625
+    },
+    "POPULARITY_BASELINE": {
+      "blocked_feature_inactive": 0,
+      "blocked_no_rank_effect": 7,
+      "emittable_candidate_coverage": 0.999825,
+      "evaluated_recommendations": 40000,
+      "faithful_rank_effect": 39993,
+      "positive_contribution": 40000,
+      "positive_contribution_coverage": 1.0
+    }
+  },
+  "evidence_id": "REC-EV-006",
+  "policy": "EXPLORE_05",
+  "recommendations": 40000,
+  "schema_version": 1
+}

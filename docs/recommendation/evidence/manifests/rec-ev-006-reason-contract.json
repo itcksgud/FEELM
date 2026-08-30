@@ -1,0 +1,65 @@
+{
+  "blockedCodes": [
+    "SENSITIVE_EVIDENCE",
+    "PROVENANCE_INVALID",
+    "FEATURE_NOT_IN_ACTIVE_POLICY",
+    "NON_POSITIVE_CONTRIBUTION",
+    "NO_RANK_EFFECT",
+    "POLICY_VERSION_MISMATCH"
+  ],
+  "contractId": "REC_REASON_FAITHFULNESS_V1",
+  "displayCountApproved": false,
+  "emissionRule": {
+    "allOf": [
+      "feature active in exact scoring policy",
+      "positive score contribution",
+      "rank or selected-position effect under single-feature ablation",
+      "matching policy/provenance version",
+      "no sensitive evidence"
+    ],
+    "note": "EMITTABLE_CANDIDATE is structured evidence for REC-EV-008, not UI display approval"
+  },
+  "prohibitedOutputFields": [
+    "userId",
+    "movieLensUserId",
+    "rawRating",
+    "rawFeatureVector",
+    "filesystemPath",
+    "token",
+    "uiCopy",
+    "displayCount"
+  ],
+  "reasonTypes": [
+    {
+      "active": true,
+      "allowedState": "EMITTABLE_CANDIDATE",
+      "code": "POPULARITY_BASELINE",
+      "feature": "BAYESIAN_POPULARITY"
+    },
+    {
+      "active": true,
+      "allowedState": "EMITTABLE_CANDIDATE_IF_ABLATION_EFFECT",
+      "code": "LESS_POPULAR_DISCOVERY",
+      "feature": "NOVELTY_PRIOR"
+    },
+    {
+      "active": true,
+      "allowedState": "EMITTABLE_CANDIDATE_IF_ABLATION_EFFECT",
+      "code": "LIST_DIVERSITY",
+      "feature": "MARGINAL_GENRE_DIVERSITY"
+    },
+    {
+      "active": false,
+      "allowedState": "BLOCKED_FEATURE_NOT_IN_ACTIVE_POLICY",
+      "code": "GENRE_AFFINITY",
+      "feature": "GENRE_AFFINITY"
+    }
+  ],
+  "schemaVersion": 1,
+  "sourceEvidence": "REC-EV-004",
+  "states": [
+    "EMITTABLE_CANDIDATE",
+    "BLOCKED"
+  ],
+  "uiCopyApproved": false
+}

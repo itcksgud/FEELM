@@ -1,0 +1,475 @@
+openapi: 3.1.0
+info:
+  title: FEELM C2 Internal Recommendation Serving API
+  version: 0.1.0-c2a
+  summary: Spring to FastAPI service-UUID ranking and expected-star candidate contract
+  description: |
+    APPROVED for the internal C2A Popularity-only slice and not merged into the public
+    docs/api/openapi.yaml. Ranking remains Bayesian Popularity with Fold-in alpha 0.
+    Expected-star stays fail-closed DISABLED pending its evidence gates.
+servers:
+  - url: http://recommender:8000
+security:
+  - serviceAuth: []
+tags:
+  - name: InternalRecommendation
+    description: Versioned service-to-service ranking and optional expected-star candidate
+  - name: InternalHealth
+    description: Separate process liveness and artifact-aware readiness
+
+paths:
+  /internal/v1/recommendations/rank:
+    post:
+      tags: [InternalRecommendation]
+      operationId: rankRecommendationsInternal
+      summary: Rank a versioned service-UUID candidate set
+      description: |
+        Valid candidates are ranked by Bayesian Popularity. Invalid or unmapped items
+        may be excluded with a PARTIAL response. Expected-star calculation is independent
+        and cannot change item rank.
+      parameters:
+        - $ref: '#/components/parameters/RequestId'
+        - $ref: '#/components/parameters/Traceparent'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RecommendationRequest'
+      responses:
+        '200':
+          description: Complete, partial, or empty safe result
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RecommendationResponse'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '422':
+          $ref: '#/components/responses/ValidationError'
+        '503':
+          $ref: '#/components/responses/ServiceUnavailable'
+
+  /internal/health/live:
+    get:
+      tags: [InternalHealth]
+      operationId: getRecommenderLiveness
+      summary: Process liveness only
+      responses:
+        '200':
+          description: Process event loop is live; this does not assert artifact readiness
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LivenessResponse'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+
+  /internal/health/ready:
+    get:
+      tags: [InternalHealth]
+      operationId: getRecommenderReadiness
+      summary: Artifact-aware serving readiness
+      responses:
+        '200':
+          description: A fully compatible artifact set can serve Popularity ranking
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ReadinessResponse'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '503':
+          description: No safe ready artifact set
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ReadinessResponse'
+
+components:
+  securitySchemes:
+    serviceAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: opaque-service-credential
+      description: Internal service credential. Issuance and rotation are gated by DN-C2-004.
+
+  parameters:
+    RequestId:
+      name: X-Request-Id
+      in: header
+      required: true
+      schema:
+        type: string
+        format: uuid
+      description: Must equal the request body requestId.
+    Traceparent:
+      name: traceparent
+      in: header
+      required: false
+      schema:
+        type: string
+        pattern: '^[0-9a-f]{2}-[0-9a-f]{32}-[0-9a-f]{16}-[0-9a-f]{2}$'
+
+  responses:
+    Unauthorized:
+      description: Missing or invalid service credential
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/InternalErrorResponse'
+    Forbidden:
+      description: Authenticated principal is not allowed to call recommendation serving
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/InternalErrorResponse'
+    ValidationError:
+      description: Request schema, UUID, Rating, or correlation mismatch
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/InternalErrorResponse'
+    ServiceUnavailable:
+      description: No compatible ready artifact set or request deadline expired
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/InternalErrorResponse'
+
+  schemas:
+    RecommendationRequest:
+      type: object
+      additionalProperties: false
+      required: [requestId, candidateSet, preferenceInput, starPolicy]
+      properties:
+        requestId:
+          type: string
+          format: uuid
+        candidateSet:
+          $ref: '#/components/schemas/CandidateSet'
+        preferenceInput:
+          $ref: '#/components/schemas/PreferenceInput'
+        starPolicy:
+          type: string
+          enum: [DISABLED, REC_EV_003B_CANDIDATE]
+          default: DISABLED
+
+    CandidateSet:
+      type: object
+      additionalProperties: false
+      required: [candidateSetVersion, movieIds]
+      properties:
+        candidateSetVersion:
+          type: string
+          minLength: 1
+          maxLength: 128
+        movieIds:
+          type: array
+          minItems: 1
+          uniqueItems: true
+          items:
+            type: string
+            format: uuid
+
+    PreferenceInput:
+      type: object
+      additionalProperties: false
+      required: [inputVersion, ratings]
+      properties:
+        inputVersion:
+          type: string
+          minLength: 1
+          maxLength: 128
+        ratings:
+          type: array
+          uniqueItems: true
+          items:
+            $ref: '#/components/schemas/RatingInput'
+
+    RatingInput:
+      type: object
+      additionalProperties: false
+      required: [movieId, value, revision]
+      properties:
+        movieId:
+          type: string
+          format: uuid
+        value:
+          type: integer
+          minimum: 1
+          maximum: 5
+        revision:
+          type: integer
+          minimum: 1
+
+    RecommendationResponse:
+      type: object
+      additionalProperties: false
+      required: [requestId, outcome, snapshot, items, issues]
+      properties:
+        requestId:
+          type: string
+          format: uuid
+        outcome:
+          type: string
+          enum: [COMPLETE, PARTIAL, EMPTY]
+        snapshot:
+          $ref: '#/components/schemas/ServingSnapshot'
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/RecommendationItem'
+        issues:
+          type: array
+          items:
+            $ref: '#/components/schemas/RecommendationIssue'
+
+    ServingSnapshot:
+      type: object
+      additionalProperties: false
+      required:
+        - recommendationVersion
+        - artifactSetVersion
+        - compatibilityId
+        - policyVersion
+        - rankingPolicy
+        - rankingAlpha
+        - mappingVersion
+        - catalogVersion
+        - candidateSetVersion
+        - inputVersion
+        - modelVersions
+        - payloadChecksums
+      properties:
+        recommendationVersion:
+          type: string
+          minLength: 1
+        artifactSetVersion:
+          type: string
+          minLength: 1
+        compatibilityId:
+          type: string
+          minLength: 1
+        policyVersion:
+          type: string
+          minLength: 1
+        rankingPolicy:
+          type: string
+          const: BAYESIAN_POPULARITY_ONLY
+        rankingAlpha:
+          type: number
+          const: 0.0
+        mappingVersion:
+          type: string
+          minLength: 1
+        catalogVersion:
+          type: string
+          minLength: 1
+        candidateSetVersion:
+          type: string
+          minLength: 1
+        inputVersion:
+          type: string
+          minLength: 1
+        modelVersions:
+          $ref: '#/components/schemas/ModelVersions'
+        payloadChecksums:
+          $ref: '#/components/schemas/PayloadChecksums'
+
+    ModelVersions:
+      type: object
+      additionalProperties: false
+      required: [bias, factors, calibration, mapping]
+      properties:
+        bias:
+          type: string
+        factors:
+          type: string
+        calibration:
+          type: string
+        mapping:
+          type: string
+
+    PayloadChecksums:
+      type: object
+      additionalProperties: false
+      required: [bias, factors, calibration, mapping]
+      properties:
+        bias:
+          $ref: '#/components/schemas/Sha256'
+        factors:
+          $ref: '#/components/schemas/Sha256'
+        calibration:
+          $ref: '#/components/schemas/Sha256'
+        mapping:
+          $ref: '#/components/schemas/Sha256'
+
+    Sha256:
+      type: string
+      pattern: '^[0-9a-f]{64}$'
+
+    RecommendationItem:
+      type: object
+      additionalProperties: false
+      required: [movieId, rank, rankingSource, expectedStar, reasons]
+      properties:
+        movieId:
+          type: string
+          format: uuid
+        rank:
+          type: integer
+          minimum: 1
+        rankingSource:
+          type: string
+          const: BAYESIAN_POPULARITY
+        expectedStar:
+          $ref: '#/components/schemas/ExpectedStar'
+        reasons:
+          type: array
+          items:
+            $ref: '#/components/schemas/RecommendationReason'
+
+    ExpectedStar:
+      type: object
+      additionalProperties: false
+      required: [status, value, displayEligible, confidence, confidencePolicyVersion]
+      properties:
+        status:
+          type: string
+          enum: [NOT_COMPUTED, ESTIMATED]
+        value:
+          type: [number, 'null']
+          minimum: 1
+          maximum: 5
+        displayEligible:
+          type: boolean
+          description: Must remain false until REC-PD-001 and a confidence policy are approved.
+        confidence:
+          type: string
+          enum:
+            - NOT_EVALUATED
+            - INSUFFICIENT_DATA
+            - EVIDENCE_REVIEW_REQUIRED
+            - LOW
+            - MEDIUM
+            - HIGH
+        confidencePolicyVersion:
+          type: [string, 'null']
+
+    RecommendationReason:
+      type: object
+      additionalProperties: false
+      required: [code, reasonVersion, evidence]
+      properties:
+        code:
+          type: string
+          enum: [POPULARITY_BASELINE]
+        reasonVersion:
+          type: string
+          minLength: 1
+        evidence:
+          type: object
+          additionalProperties: false
+          required: [kind, policyVersion]
+          properties:
+            kind:
+              type: string
+              const: RANKING_POLICY
+            policyVersion:
+              type: string
+              minLength: 1
+
+    RecommendationIssue:
+      type: object
+      additionalProperties: false
+      required: [scope, code, movieId, retriable]
+      properties:
+        scope:
+          type: string
+          enum: [CANDIDATE, STAR_HEAD]
+        code:
+          type: string
+          enum:
+            - INVALID_SERVICE_ID
+            - SERVICE_ID_NOT_MAPPED
+            - DUPLICATE_SERVICE_ID
+            - MODEL_ITEM_NOT_AVAILABLE
+            - VALIDATED_K_INPUT_NOT_AVAILABLE
+            - STAR_HEAD_UNAVAILABLE
+            - STAR_SCALE_INCOMPATIBLE
+        movieId:
+          type: [string, 'null']
+          format: uuid
+        retriable:
+          type: boolean
+
+    InternalErrorResponse:
+      type: object
+      additionalProperties: false
+      required: [requestId, code, message, retriable]
+      properties:
+        requestId:
+          type: string
+          format: uuid
+        code:
+          type: string
+          enum:
+            - INTERNAL_AUTH_REQUIRED
+            - INTERNAL_AUTH_FORBIDDEN
+            - INVALID_RECOMMENDATION_REQUEST
+            - REQUEST_ID_MISMATCH
+            - ARTIFACT_SET_NOT_READY
+            - ARTIFACT_COMPATIBILITY_FAILURE
+            - RECOMMENDATION_DEADLINE_EXCEEDED
+        message:
+          type: string
+          description: Safe fixed message without tokens, user IDs, ratings, paths, or raw bodies.
+        retriable:
+          type: boolean
+
+    LivenessResponse:
+      type: object
+      additionalProperties: false
+      required: [status]
+      properties:
+        status:
+          type: string
+          const: LIVE
+
+    ReadinessResponse:
+      type: object
+      additionalProperties: false
+      required: [status, artifactSetVersion, checks]
+      properties:
+        status:
+          type: string
+          enum: [READY, NOT_READY]
+        artifactSetVersion:
+          type: [string, 'null']
+        checks:
+          type: array
+          items:
+            $ref: '#/components/schemas/ReadinessCheck'
+
+    ReadinessCheck:
+      type: object
+      additionalProperties: false
+      required: [artifactKind, status, reasonCode]
+      properties:
+        artifactKind:
+          type: string
+          enum:
+            - regularized-bias-v1
+            - spark-explicit-als-item-factors-v1
+            - head-calibration-bundle-v2
+            - movielens-service-item-mapping-v1
+            - serving-dry-run
+        status:
+          type: string
+          enum: [PASS, FAIL]
+        reasonCode:
+          type: [string, 'null']
+          description: Safe allowlisted code; never a path or exception body.

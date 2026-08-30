@@ -1,0 +1,39 @@
+schema_version: 1
+run_id: EXP-20260829-001
+status: COMPLETED_BASELINE
+hypothesis: regularized Bias보다 ALS가 warm 예상 별점과 동일 후보 순위에서 모두 개선될 것이다.
+changed_factor: model_family
+baseline_run_id: null
+code_commit: working-tree-uncommitted
+dataset:
+  name: ml-32m
+  checksum: e4a68655d7386b8f95f2f2424b2ff975dfdd15ffd59e0d864a14dca43e99d6ee
+protocol:
+  split_version: global-time-v1
+  calibration_version: validation-forward-half-v1
+  candidate_policy: SAMPLED_1_POSITIVE_PLUS_99_NEGATIVES
+  relevance_policy: user-ecdf-shrunk-v1
+  test_used: false
+  seeds: [42]
+models:
+  bias:
+    iterations: 10
+    reg_user: 10.0
+    reg_item: 25.0
+  popularity:
+    bayesian_prior_count: 50.0
+  als:
+    rank: 32
+    reg_param: 0.1
+    max_iter: 10
+    implicit_prefs: false
+    seed: 42
+calibration:
+  type: isotonic
+  bounds: [0.5, 5.0]
+  fit_source: validation_early_half
+  evaluation_source: validation_late_half
+conclusion:
+  decision: DO_NOT_ADOPT_ALS_YET
+  reason: warm prediction improved, but direct coverage was 11.74% and sampled ranking lost to Popularity.
+  next_experiment: REC-EV-003

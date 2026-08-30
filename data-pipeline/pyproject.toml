@@ -1,0 +1,17 @@
+[build-system]
+requires = ["setuptools>=75"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "feelm-catalog-pipeline"
+version = "0.1.0"
+description = "MovieLens and TMDB catalog normalizer for FEELM"
+requires-python = ">=3.12"
+dependencies = []
+
+[project.scripts]
+feelm-catalog = "feelm_catalog_pipeline.cli:main"
+
+[tool.setuptools]
+packages = ["feelm_catalog_pipeline"]
+

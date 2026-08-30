@@ -1,0 +1,14 @@
+{
+  "evaluation_rows": 167194,
+  "evaluation_users": 3014,
+  "all_k_pass": true,
+  "k10": {
+    "baseline_mae": 0.191921,
+    "candidate_mae": 0.147411,
+    "relative_mae_improvement": 0.231918,
+    "absolute_bias_reduction": 0.531171,
+    "baseline_spearman": 0.498314,
+    "candidate_spearman": 0.581074
+  },
+  "canonical_result": "docs/recommendation/evidence/results/rec-ev-015-evaluation.json"
+}

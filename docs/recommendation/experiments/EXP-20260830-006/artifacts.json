@@ -1,0 +1,13 @@
+{
+  "result": {
+    "path": "docs/recommendation/evidence/results/rec-ev-015-evaluation.json",
+    "sha256": "108342f9fb0a7edf51319d5ee0b3c1cc2e93b7222b191c0649b08cee0a843159",
+    "bytes": 9950
+  },
+  "selected_star_predictions": {
+    "path": "outputs/recommendation-evidence/rec-ev-003b/selected_star_predictions.parquet",
+    "sha256": "bb3181d9d859c316c2da0421d339fa9205e3b5a2eac6109c91035b172a860727",
+    "rows": 378503,
+    "tracked": false
+  }
+}

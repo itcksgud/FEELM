@@ -1,0 +1,46 @@
+schema_version: 1
+status: TEMPLATE
+run:
+  run_id: EXP-YYYYMMDD-NNN
+  hypothesis: ""
+  changed_factor: ""
+  baseline_run_id: ""
+  code_commit: ""
+  dataset:
+    name: ml-32m
+    checksum: ""
+    catalog_version: ""
+  protocol:
+    split_version: global-time-v1
+    candidate_policy: full-catalog-known-at-cutoff
+    relevance_policy: user-ecdf-shrunk-v1
+    seeds: []
+  model:
+    name: ""
+    parameters: {}
+    calibration_version: ""
+  metrics:
+    overall: {}
+    segments:
+      cold_start: {}
+      user_activity: {}
+      item_popularity: {}
+      genre_and_era: {}
+    confidence_intervals: {}
+    prediction_coverage: null
+  cost:
+    train_seconds: null
+    recommend_seconds: null
+    spark_workers: null
+  conclusion:
+    observed_change: ""
+    tradeoffs: ""
+    limitations: ""
+    decision: PENDING
+    next_experiment: ""
+  artifacts:
+    metrics_json: ""
+    user_metrics_parquet: ""
+    recommendations_parquet: ""
+    model: ""
+    spark_report: ""

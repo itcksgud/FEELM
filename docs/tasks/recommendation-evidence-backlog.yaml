@@ -1,0 +1,174 @@
+schema_version: 1
+project: FEELM-standalone
+workstream: RECOMMENDATION-EVIDENCE
+status: LOCAL_PRODUCT_BOUNDARIES_APPROVED
+tasks:
+  - id: TASK-REC-EV-001
+    title: 고정 time split과 사용자 rating-style profile
+    status: DONE
+    depends_on: []
+    outputs:
+      - versioned split manifest
+      - docs/recommendation/evidence/REC-EV-001-rating-style.md
+    verify:
+      - dataset checksum and no-future-leakage test
+
+  - id: TASK-REC-EV-002
+    title: Bias·Popularity·ALS 기준선과 예상 별점 calibration
+    status: DONE
+    depends_on: [TASK-REC-EV-001]
+    outputs:
+      - baseline metrics
+      - docs/recommendation/evidence/REC-EV-002-prediction-calibration.md
+
+  - id: TASK-REC-EV-003
+    title: K0~K20 cold-start 시뮬레이션
+    status: DONE
+    depends_on: [TASK-REC-EV-002]
+    outputs:
+      - cold-start curves
+      - docs/recommendation/evidence/REC-EV-003-cold-start.md
+
+  - id: TASK-REC-EV-003B
+    title: 예상 별점·추천 순위 cold-start dual-head blend
+    status: DONE
+    depends_on: [TASK-REC-EV-003]
+    outputs:
+      - selected star and ranking blend weights
+      - docs/recommendation/evidence/REC-EV-003B-cold-start-blend.md
+    verify:
+      - disjoint selection/evaluation and practical K gate
+
+  - id: TASK-REC-EV-004
+    title: Hybrid·탐험 관련성 손실 Pareto
+    status: DONE
+    depends_on: [TASK-REC-EV-002]
+    outputs:
+      - novelty-diversity-relevance comparison
+      - docs/recommendation/evidence/REC-EV-004-exploration-pareto.md
+      - docs/recommendation/evidence/manifests/rec-ev-004.json
+      - docs/recommendation/evidence/manifests/rec-ev-004-reason-provenance.json
+    verify:
+      - Validation locks Pareto and candidate relevance-loss budgets before held-out Test
+      - sampled candidate scope is explicit and no product weight or ranking champion is approved
+      - tracked evidence contains no raw MovieLens user or movie IDs
+
+  - id: TASK-REC-EV-010
+    title: Hybrid·탐험 full-catalog 잠금 재검증
+    status: DONE
+    depends_on: [TASK-REC-EV-004]
+    outputs:
+      - docs/recommendation/evidence/REC-EV-004B-full-catalog-pareto.md
+      - docs/recommendation/evidence/manifests/rec-ev-004b.json
+      - docs/recommendation/evidence/results/rec-ev-004b-protocol-lock.json
+      - docs/recommendation/evidence/results/rec-ev-004b-validation.json
+      - docs/recommendation/evidence/results/rec-ev-004b-test.json
+    verify:
+      - Validation locks the exact four REC-EV-004 policies and source hashes before Test can be read
+      - every warm user scans all 50,977 Train-known movies, excludes Train-seen movies, and never injects the held-out positive
+      - deterministic Top-500 candidate recall and Top-10 relevance, discovery, segment, resource, paired-CI, and deidentified failure results are tracked
+      - product exploration weight, 2+1 layout, and ranking champion remain unapproved
+
+  - id: TASK-REC-EV-011
+    title: Cold-start Fold-in full-catalog ranking
+    status: DONE
+    depends_on: [TASK-REC-EV-003B, TASK-REC-EV-010]
+    outputs:
+      - docs/recommendation/evidence/REC-EV-011-cold-foldin-full-catalog.md
+      - docs/recommendation/evidence/manifests/rec-ev-011.json
+      - docs/recommendation/evidence/results/rec-ev-011-protocol-lock.json
+      - docs/recommendation/evidence/results/rec-ev-011-selection.json
+      - docs/recommendation/evidence/results/rec-ev-011-evaluation.json
+    verify:
+      - K-specific alpha is selected on 1,230 users and locked before the 1,323 evaluation users open
+      - all 50,977 Train-known movies are scanned, first-K seen is excluded, and held-out positive is not injected
+      - sampled alpha-zero result remains disclosed; expected-star and public UI remain closed
+
+  - id: TASK-REC-EV-012
+    title: 재학습 없는 factor-similarity 후보 비교 조건부 실험
+    status: DONE
+    depends_on: [TASK-REC-EV-011]
+    outputs:
+      - conditional skip record in insight log
+    verify:
+      - skipped because REC-EV-011 produced a nonzero K10 offline candidate; no hidden experiment result
+
+  - id: TASK-REC-EV-013
+    title: constrained 2+1 discovery reranking
+    status: DONE
+    depends_on: [TASK-REC-EV-011, TASK-REC-EV-012]
+    outputs:
+      - docs/recommendation/evidence/REC-EV-013-constrained-two-plus-one.md
+      - docs/recommendation/evidence/manifests/rec-ev-013.json
+      - docs/recommendation/evidence/results/rec-ev-013-lock.json
+      - docs/recommendation/evidence/results/rec-ev-013-selection.json
+      - docs/recommendation/evidence/results/rec-ev-013-evaluation.json
+    verify:
+      - top two stay fixed; unknown genre contributes zero; positive is not injected
+      - selection locks null because every candidate misses the predeclared NDCG@3 budget
+      - evaluation opens once after lock verification and product/discovery policies remain null
+
+  - id: TASK-REC-EV-005
+    title: 합성 파티 집계 정책 비교
+    status: DONE
+    depends_on: [TASK-REC-EV-002]
+    outputs:
+      - group scenario matrix
+      - docs/recommendation/evidence/REC-EV-005-party-policy.md
+      - docs/recommendation/evidence/manifests/rec-ev-005.json
+    verify:
+      - Validation selects similarity thresholds and Balanced parameters; held-out Test evaluates them
+      - all 2/3/4-member x similar/middle/dissimilar cells meet the minimum sampled-party count
+      - tracked evidence contains no raw MovieLens user or movie IDs
+
+  - id: TASK-REC-EV-006
+    title: 구조화 추천 이유 coverage·faithfulness
+    status: DONE
+    depends_on: [TASK-REC-EV-002, TASK-REC-EV-004]
+    outputs:
+      - reason ablation and failure fixtures
+      - docs/recommendation/evidence/REC-EV-006-reason-faithfulness.md
+      - docs/recommendation/evidence/manifests/rec-ev-006.json
+      - docs/recommendation/evidence/manifests/rec-ev-006-reason-contract.json
+      - docs/recommendation/evidence/manifests/rec-ev-006-failure-fixtures.json
+    verify:
+      - reason candidate requires active feature, positive contribution, ablation rank effect, and matching provenance
+      - inactive, zero-effect, version-mismatch, and sensitive fixtures fail closed
+      - UI copy and display count remain unapproved
+
+  - id: TASK-REC-EV-007
+    title: FastAPI Fold-in p95 benchmark
+    status: DONE
+    depends_on: [TASK-REC-EV-002]
+    outputs:
+      - serving benchmark
+      - docs/recommendation/evidence/REC-EV-007-fold-in-benchmark.md
+      - docs/recommendation/evidence/results/rec-ev-007-local-20260829.json
+      - docs/recommendation/evidence/manifests/rec-ev-007.json
+    verify:
+      - rec-ev-007-v1 predeclared local gates pass; production topology validation remains required
+
+  - id: TASK-REC-EV-008
+    title: React 예상 별점·추천 이유·파티 화면 비교
+    status: DONE
+    depends_on: [TASK-REC-EV-003, TASK-REC-EV-005, TASK-REC-EV-006]
+    outputs:
+      - comparison screenshots
+      - docs/recommendation/evidence/REC-EV-008-ui-comparison.md
+      - docs/recommendation/evidence/manifests/rec-ev-008.json
+    verify:
+      - React comparison and accessibility semantics tests pass
+      - four 1440x1200 Playwright screenshots match the manifest
+      - DEV-only route adds no public navigation or OpenAPI operation
+
+  - id: TASK-REC-EV-009
+    title: 제품 소유자 결정 패킷 조립
+    status: DONE
+    depends_on: [TASK-REC-EV-003, TASK-REC-EV-004, TASK-REC-EV-005, TASK-REC-EV-006, TASK-REC-EV-007, TASK-REC-EV-008, TASK-REC-EV-010, TASK-REC-EV-011, TASK-REC-EV-012, TASK-REC-EV-013]
+    outputs:
+      - approved local product-boundary packet for REC-PD-001, REC-PD-003, REC-PD-005, REC-PD-007
+      - docs/recommendation/product-decision-packet.md
+    verify:
+      - each decision includes product impact, screenshot, same-condition metrics, recommendation, counterfactual loss, uncertainty, and rollback cost
+      - REC-PD-003 explicitly shares one approval boundary with DN-C4A-004
+      - all four conservative local decisions match the recorded standalone approval

@@ -1,0 +1,10 @@
+services:
+  backend:
+    environment:
+      SPRING_PROFILES_ACTIVE: postgres
+      CATALOG_ARTIFACT_PATH: /catalog-input/catalog.jsonl
+    volumes:
+      - type: bind
+        source: ${CATALOG_ARTIFACT_HOST_PATH:?Set CATALOG_ARTIFACT_HOST_PATH to an absolute JSONL artifact path}
+        target: /catalog-input/catalog.jsonl
+        read_only: true

@@ -1,0 +1,43 @@
+spring:
+  flyway:
+    locations:
+      - classpath:db/migration
+      - classpath:db/local
+    # Local fixtures use the reserved V100+ range. This lets a newly added
+    # production migration such as V2 be applied to an existing fixture DB
+    # without dropping the developer's volume. Production postgres-only runs
+    # keep Flyway's default out-of-order=false behavior.
+    out-of-order: true
+
+server:
+  address: ${SERVER_ADDRESS:127.0.0.1}
+
+catalog:
+  fixed-clock: ${FIXED_CLOCK_INSTANT:2026-08-29T12:00:00Z}
+  auth-mode: ${AUTH_MODE:fake}
+  c4:
+    # Existing local tests and developer commands stay opt-in. Compose and the
+    # C4 acceptance test enable the slice explicitly with all required keys.
+    enabled: ${C4_ENABLED:false}
+    local-profile: true
+    allowed-origin: ${C4_ALLOWED_ORIGIN:http://127.0.0.1:5173}
+  c3:
+    enabled: ${C3_ENABLED:false}
+    local-bind-address: ${C3_LOCAL_BIND_ADDRESS:127.0.0.1}
+  c2:
+    recommender:
+      candidate-store-path: ${C2_CANDIDATE_STORE_PATH:/c2-artifacts/candidates/store}
+      base-url: ${C2_RECOMMENDER_BASE_URL:http://127.0.0.1:8000}
+      auth-mode: ${C2_CLIENT_AUTH_MODE:}
+      service-token: ${C2_SERVICE_TOKEN:}
+      # REC-EV-007 local-loopback candidate; still not a production SLA.
+      timeout-ms: ${C2_RECOMMENDER_TIMEOUT_MS:750}
+      local-fake-enabled: ${C2_CLIENT_LOCAL_FAKE_ENABLED:false}
+  c6:
+    local:
+      enabled: ${C6_LOCAL_ENABLED:false}
+
+c5:
+  local:
+    enabled: ${C5_LOCAL_ENABLED:false}
+  artifact-directory: ${C5_ARTIFACT_DIRECTORY:}

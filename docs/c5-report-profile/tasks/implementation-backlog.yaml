@@ -1,0 +1,48 @@
+contract: C5_LOCAL_MVP_PROFILE
+productionActivation: false
+tasks:
+  - id: TASK-C5-001
+    slice: contract
+    status: DONE
+    outputs: [local-contract, openapi-fragment, data, ui, acceptance, trace]
+  - id: TASK-C5-002
+    slice: report
+    status: READY
+    dependsOn: [TASK-C5-001]
+    outputs: [migration, immutable-report-service, owner-api, postgres-tests]
+  - id: TASK-C5-003
+    slice: privacy-public
+    status: READY
+    dependsOn: [TASK-C5-002]
+    outputs: [privacy-api, public-full-pages, oracle-tests]
+  - id: TASK-C5-004
+    slice: export
+    status: READY
+    dependsOn: [TASK-C5-002]
+    outputs: [local-pdf-worker, expiry-cleanup, artifact-tests]
+  - id: TASK-C5-005
+    slice: share
+    status: READY
+    dependsOn: [TASK-C5-002, TASK-C5-003]
+    outputs: [hash-only-grant, fragment-exchange, viewer-session, revoke-tests]
+  - id: TASK-C5-006
+    slice: notification
+    status: READY
+    dependsOn: [TASK-C5-001]
+    outputs: [providerless-setting, projection, state-api, retention-tests]
+  - id: TASK-C5-007
+    slice: frontend
+    status: READY
+    dependsOn: [TASK-C5-002, TASK-C5-003, TASK-C5-004, TASK-C5-005, TASK-C5-006]
+    outputs: [eight-screens, api-client, rtl-tests]
+  - id: TASK-C5-008
+    slice: compose-e2e
+    status: BLOCKED_BY_IMPLEMENTATION
+    dependsOn: [TASK-C5-007]
+    outputs: [browser-e2e, privacy-security-audit, completion-gate]
+blocked:
+  - ACCOUNT_RECOVERY_CHANGE_DELETE
+  - TASTE_COMPARISON
+  - EXTERNAL_NOTIFICATION
+  - EXTERNAL_STORAGE_OR_PUBLIC_SHARE
+

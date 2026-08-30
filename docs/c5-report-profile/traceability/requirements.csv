@@ -1,0 +1,8 @@
+requirement_id,operation_ids,entity_ids,screen_ids,acceptance_ids,task_ids
+FR-23,"listMyTasteReports|getMyTasteReport|createMyTasteReportRevision","TASTE_REPORT_REVISION|TASTE_REPORT_PERIOD_ITEM","SCR-C5-001|SCR-C5-002","AC-C5-001|AC-C5-002|AC-C5-003|AC-C5-004","TASK-C5-002|TASK-C5-007"
+FR-23-EXPORT,"createMyTasteReportExport|getMyTasteReportExport|downloadMyTasteReportExport","REPORT_EXPORT_JOB|REPORT_EXPORT_ARTIFACT","SCR-C5-003","AC-C5-005|AC-C5-006","TASK-C5-004|TASK-C5-007"
+FR-25-PRIVACY,"getMyPrivacySettings|replaceMyPrivacySettings|getPublicUserProfile|listPublicUserFilmFrames|listPublicUserPopcorns","USER_PRIVACY_SETTING","SCR-C5-004|SCR-C5-005","AC-C5-007|AC-C5-008|AC-C5-009|AC-C5-017","TASK-C5-003|TASK-C5-007"
+FR-24-SHARE,"createMyTasteReportShare|revokeMyTasteReportShare|exchangeTasteReportShare|getSharedTasteReport","REPORT_SHARE_GRANT|REPORT_SHARE_VIEWER_SESSION","SCR-C5-006|SCR-C5-007","AC-C5-010|AC-C5-011|AC-C5-012|AC-C5-017","TASK-C5-005|TASK-C5-007"
+FR-25-NOTIFICATION,"getMyNotificationSettings|replaceMyNotificationSettings|listMyNotifications|updateMyNotificationState","USER_NOTIFICATION_SETTING|IN_APP_NOTIFICATION","SCR-C5-008","AC-C5-013|AC-C5-014","TASK-C5-006|TASK-C5-007"
+SAFE-C5-LOCAL,"","C5_IDEMPOTENCY_RESULT","","AC-C5-015|AC-C5-016|AC-C5-018|AC-C5-019|AC-C5-020","TASK-C5-008"
+

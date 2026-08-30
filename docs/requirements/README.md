@@ -43,4 +43,17 @@ Notion의 `요구사항 정의서`를 읽기 전용으로 전사하고, API 설�
 - 사용자 랭킹은 `FR-28`로 확장 범위에 이동하고 기준 문구가 `팝콘 수` 중심으로 변경됐다.
 - Party 관련 표현과 NFR-06의 `그룹` 표현 일부가 정리됐다.
 
-이 단계에서는 API 경로와 스키마를 확정하지 않았다. 1차 MVP와 2차 MVP를 대상으로 [04-open-questions.md](./04-open-questions.md)의 P0 질문을 먼저 합의한 뒤 `openapi.yaml`을 작성하는 것이 다음 단계다.
+## 독립 프로젝트 계약과의 관계
+
+이 디렉터리는 원문 전사와 분석 이력을 보존하는 참고 자료다. 독립 프로젝트의 C0 Catalog
+수직 기능은 2026-08-29에 별도 승인 계약으로 정규화되었다. 충돌할 때는 다음 순서를 따른다.
+
+1. 저장소 루트 `AGENTS.md`
+2. `docs/spec`, `docs/decisions`, `docs/ui`의 `APPROVED` 계약
+3. `docs/api/openapi.yaml`과 `docs/data`
+4. 이 디렉터리의 원문·분석 자료
+
+C0의 확정 API는 [OpenAPI 계약](../api/openapi.yaml), 데이터 구조는
+[논리 ERD](../data/logical-erd.md), 구현 순서는
+[작업 백로그](../tasks/implementation-backlog.yaml)를 기준으로 한다. Catalog 밖의 범위는 기존
+원문 상태를 유지하며 별도 수직 기능 계약이 승인되기 전까지 구현 의미를 추측하지 않는다.

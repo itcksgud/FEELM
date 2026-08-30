@@ -1,0 +1,186 @@
+schema_version: 1
+project: FEELM-standalone
+contract_slice: C1-RATING-FILM-APPROVED
+status: APPROVED
+rules:
+  implementation_forbidden_until_contract_approved: false
+  one_task_per_change: true
+  preserve_c0_contract: true
+  update_traceability_and_tests_together: true
+  status_semantics:
+    DONE: completed contract decision task
+    READY: only next task with all dependencies satisfied
+    BLOCKED: unmet task dependency only; not a P0 product-decision block
+
+tasks:
+  - id: TASK-C1-001
+    title: C1 P0 제품 결정과 계약 승인
+    status: DONE
+    depends_on: []
+    decision_record_ids: [DN-C1-001, DN-C1-002, DN-C1-003]
+    outputs:
+      - approved decision records
+      - P0 product-decision operation gates resolved
+      - concrete boundary and delete acceptance tests
+    verify:
+      - contract review by product owner
+
+  - id: TASK-C1-002
+    title: C1 OpenAPI 병합과 required auth 골격
+    status: DONE
+    depends_on: [TASK-C1-001]
+    requirement_ids: [FR-17, FR-18, FR-19, NFR-07]
+    input_docs:
+      - docs/c1-draft/api/openapi.fragment.yaml
+      - docs/c1-draft/01-glossary-and-policies.md
+    outputs:
+      - merged docs/api/openapi.yaml
+      - backend required-auth test adapter
+      - regenerated frontend API types
+    acceptance_ids: [AC-C1-042, AC-C1-043, AC-C1-044]
+    verify:
+      - npm run openapi:lint
+      - ./gradlew.bat -p backend test
+      - npm run build --prefix frontend
+
+  - id: TASK-C1-003
+    title: C1 migration·idempotency·outbox 기반
+    status: DONE
+    depends_on: [TASK-C1-002]
+    requirement_ids: [NFR-06]
+    input_docs:
+      - docs/c1-draft/data/logical-erd.md
+      - docs/c1-draft/data/data-dictionary.md
+    outputs:
+      - Flyway migration
+      - idempotency transaction component
+      - domain outbox and behavior event allowlist
+      - flavor v1 reference seed and Catalog quality Gate
+      - invariant queries
+    acceptance_ids: [AC-C1-003, AC-C1-004, AC-C1-018, AC-C1-028, AC-C1-041, AC-C1-058, AC-C1-059]
+    verify:
+      - ./gradlew.bat -p backend test
+
+  - id: TASK-C1-004
+    title: WatchIntent·pending·confirmation·expiry
+    status: DONE
+    depends_on: [TASK-C1-003]
+    requirement_ids: [FR-17, FR-18]
+    input_docs:
+      - docs/c1-draft/02-business-rules.md
+      - docs/c1-draft/03-state-machines.md
+    outputs:
+      - createWatchIntent
+      - listPendingWatchConfirmations
+      - confirmWatchIntent
+      - expiry scheduler
+    acceptance_ids: [AC-C1-001, AC-C1-002, AC-C1-005, AC-C1-006, AC-C1-007, AC-C1-008, AC-C1-009, AC-C1-010, AC-C1-011, AC-C1-012, AC-C1-013, AC-C1-014, AC-C1-015, AC-C1-016, AC-C1-017, AC-C1-018, AC-C1-056, AC-C1-057]
+    verify:
+      - ./gradlew.bat -p backend test
+
+  - id: TASK-C1-005
+    title: Rating create·update·delete 원자 transaction
+    status: DONE
+    depends_on: [TASK-C1-003, TASK-C1-004]
+    requirement_ids: [FR-07, FR-09, FR-19, NFR-06]
+    input_docs:
+      - docs/c1-draft/02-business-rules.md
+      - docs/c1-draft/data/logical-erd.md
+    outputs:
+      - putMyRating
+      - deleteMyRating
+      - Frame and Popcorn projection
+      - contribution and aggregate delta
+    acceptance_ids: [AC-C1-019, AC-C1-020, AC-C1-021, AC-C1-022, AC-C1-023, AC-C1-024, AC-C1-025, AC-C1-026, AC-C1-027, AC-C1-028, AC-C1-030, AC-C1-031, AC-C1-041]
+    verify:
+      - ./gradlew.bat -p backend test
+
+  - id: TASK-C1-006
+    title: Rating·Unrated·Film·Frame·Popcorn·Taste 조회
+    status: DONE
+    depends_on: [TASK-C1-005]
+    requirement_ids: [FR-04, FR-06, FR-07, FR-08, FR-09, FR-19]
+    outputs:
+      - listMyRatings
+      - listUnratedViewingRecords
+      - getMyFilm
+      - getMyFrame
+      - getMyPopcornBucket
+      - getMyTasteProfile
+    acceptance_ids: [AC-C1-032, AC-C1-033, AC-C1-034, AC-C1-035, AC-C1-036, AC-C1-037, AC-C1-038, AC-C1-039, AC-C1-040, AC-C1-050]
+    verify:
+      - ./gradlew.bat -p backend test
+
+  - id: TASK-C1-007
+    title: 행동 event·outbox consumer 장애 격리
+    status: DONE
+    depends_on: [TASK-C1-003, TASK-C1-005]
+    requirement_ids: [REQ-C1-BEHAVIOR, NFR-05]
+    outputs:
+      - allowlisted UserBehaviorEvent writes
+      - outbox retry and deduplication
+      - safe log tests
+    acceptance_ids: [AC-C1-029, AC-C1-046, AC-C1-047, AC-C1-048, AC-C1-049]
+    verify:
+      - ./gradlew.bat -p backend test
+
+  - id: TASK-C1-008
+    title: React 감상 확인·Rating·평가 목록 화면
+    status: DONE
+    depends_on: [TASK-C1-004, TASK-C1-005, TASK-C1-006]
+    requirement_ids: [FR-18, FR-19]
+    input_docs:
+      - docs/c1-draft/ui/screen-contracts.md
+      - docs/c1-draft/ui/navigation-map.md
+    outputs:
+      - SCR-C1-001 through SCR-C1-004
+      - SCR-C1-007
+      - idempotent mutation client
+    acceptance_ids: [AC-C1-051, AC-C1-052, AC-C1-053, AC-C1-054]
+    verify:
+      - npm run test --prefix frontend
+      - npm run build --prefix frontend
+
+  - id: TASK-C1-009
+    title: React Film·Frame·Popcorn 화면
+    status: DONE
+    depends_on: [TASK-C1-006]
+    requirement_ids: [FR-06, FR-07, FR-08, FR-09]
+    outputs:
+      - SCR-C1-005
+      - SCR-C1-006
+      - SCR-C1-008
+    acceptance_ids: [AC-C1-032, AC-C1-034, AC-C1-036, AC-C1-037, AC-C1-038, AC-C1-055]
+    verify:
+      - npm run test --prefix frontend
+      - npm run build --prefix frontend
+
+  - id: TASK-C1-010
+    title: C1 failure·security·invariant Gate
+    status: DONE
+    depends_on: [TASK-C1-004, TASK-C1-005, TASK-C1-006, TASK-C1-007, TASK-C1-008, TASK-C1-009]
+    requirement_ids: [NFR-05, NFR-06, NFR-07]
+    outputs:
+      - rollback integration suite
+      - cross-owner authorization suite
+      - secret log scan
+      - invariant query report
+    acceptance_ids: [AC-C1-027, AC-C1-028, AC-C1-041, AC-C1-042, AC-C1-043, AC-C1-044, AC-C1-045, AC-C1-046]
+    verify:
+      - ./gradlew.bat -p backend test
+      - npm run test --prefix frontend
+
+  - id: TASK-C1-011
+    title: C1 blind handoff와 계약 승격 검증
+    status: READY
+    depends_on: [TASK-C1-010]
+    requirement_ids: [FR-04, FR-06, FR-07, FR-08, FR-09, FR-17, FR-18, FR-19, NFR-05, NFR-06, NFR-07]
+    outputs:
+      - blind handoff score
+      - documentation gap report
+      - approved common-contract updates
+    acceptance_ids: [AC-C1-001, AC-C1-055]
+    verify:
+      - npm run contracts:check
+      - ./gradlew.bat -p backend test
+      - npm run test --prefix frontend

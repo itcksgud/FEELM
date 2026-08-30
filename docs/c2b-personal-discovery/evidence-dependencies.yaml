@@ -1,0 +1,70 @@
+schema_version: 1
+contract_status: APPROVED_LOCAL_BASELINE_WITH_BLOCKED_EXTENSIONS
+dependencies:
+  - id: REC-EV-006
+    status: COMPLETED_REASON_EVIDENCE_UI_BLOCKED
+    evidence: docs/recommendation/evidence/REC-EV-006-reason-faithfulness.md
+    manifest: docs/recommendation/evidence/manifests/rec-ev-006.json
+    fixed_result:
+      evaluated_positions: 40000
+      popularity_emittable_coverage: 0.999825
+      reason_ui_approved: false
+
+  - id: REC-EV-007
+    status: COMPLETED_LOCAL_PROVISIONAL
+    evidence: docs/recommendation/evidence/REC-EV-007-fold-in-benchmark.md
+    manifest: docs/recommendation/evidence/manifests/rec-ev-007.json
+    fixed_result:
+      spring_outbound_timeout_candidate_ms: 750
+      active_rating_snapshot_freshness_candidate_ms: 3000
+      production_validation_required: true
+      stale_success_fallback: DISABLED
+
+  - id: REC-EV-011
+    status: COMPLETED_OFFLINE_CANDIDATE
+    evidence: docs/recommendation/evidence/REC-EV-011-cold-foldin-full-catalog.md
+    manifest: docs/recommendation/evidence/manifests/rec-ev-011.json
+    allowed_claims:
+      - K10 is the minimum practical offline personalization candidate
+      - selected alpha for K10 is 0.2
+    forbidden_claims:
+      - public champion
+      - online satisfaction improvement
+
+  - id: REC-EV-004B
+    status: COMPLETED_REJECT_EXPLORE05
+    evidence: docs/recommendation/evidence/REC-EV-004B-full-catalog-pareto.md
+    manifest: docs/recommendation/evidence/manifests/rec-ev-004b.json
+    fixed_result:
+      explore05_relative_ndcg_loss: 0.455
+      decision: REJECT
+
+  - id: REC-EV-003C
+    status: COMPLETED_FAIL_CLOSED
+    evidence: docs/recommendation/evidence/REC-EV-003C-rating-scale-alignment.md
+    manifest: docs/recommendation/evidence/manifests/rec-ev-003c.json
+    fixed_result:
+      expected_star_status: NOT_COMPUTED
+      display_eligible: false
+
+  - id: REC-EV-013
+    status: COMPLETED_EVIDENCE_AVAILABLE
+    expected_files:
+      evidence: docs/recommendation/evidence/REC-EV-013-constrained-two-plus-one.md
+      manifest: docs/recommendation/evidence/manifests/rec-ev-013.json
+      protocol_lock: docs/recommendation/evidence/results/rec-ev-013-lock.json
+      selection_result: docs/recommendation/evidence/results/rec-ev-013-selection.json
+      evaluation_result: docs/recommendation/evidence/results/rec-ev-013-evaluation.json
+    required_when_complete:
+      evidence_id: REC-EV-013
+      base_k: 10
+      base_alpha: 0.2
+      positive_injection: false
+      product_approved: false
+      checksums_verified: true
+      selected: null
+      minimum_selection_relative_loss: 0.285714
+    contract_effect:
+      evidence_only: true
+      decision_required: DN-C2B-002
+      public_two_plus_one_remains_blocked: true

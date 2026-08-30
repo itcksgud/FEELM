@@ -1,0 +1,587 @@
+openapi: 3.1.0
+info:
+  title: FEELM C3 Local Party and KR OTT Catalog Comparison
+  version: 0.2.0-local
+  description: >-
+    APPROVED LOCAL_MVP_ONLY fragment. Loopback allowlist fake actors, Party 최대 4명,
+    deterministic catalog baseline, KR FLATRATE 실제 영화 전체 비교만 정의한다.
+    Main OpenAPI와 production authentication에는 아직 병합하지 않는다.
+servers:
+  - url: http://127.0.0.1:8080
+    description: Loopback-only local development server
+tags:
+  - name: OttCatalogComparison
+    description: KR FLATRATE provider별 실제 영화 전체 비교
+  - name: Party
+    description: owner 포함 최대 4명의 local-only Party
+  - name: PartyInvitation
+    description: allowlist fake actor 초대와 수락
+  - name: PartyBaseline
+    description: 개인화·만족도 추정 없는 결정적 catalog baseline
+x-contract-status: APPROVED_LOCAL_MVP_ONLY
+x-main-openapi-merged: true
+x-approved-decisions: [DN-C3-001, DN-C3-002, DN-C3-003, DN-C3-004]
+x-deferred-decisions: [DN-C3-005]
+x-local-only-invariants:
+  - LOOPBACK_BIND_REQUIRED
+  - ALLOWLIST_FAKE_ACTOR_ONLY
+  - NO_RATING_BEHAVIOR_OR_SATISFACTION_INPUT
+  - ONE_COMPLETE_KR_FLATRATE_MATERIALIZATION
+x-blocked-production-capabilities:
+  - OAUTH_OR_JWT_ACTOR
+  - REAL_NICKNAME_EMAIL_INVITATION
+  - PARTY_MEMBER_REMOVAL_OR_CLOSURE
+  - PARTY_TASTE_ANALYSIS
+  - PERSONALIZED_OR_UTILITY_RECOMMENDATION
+  - LIVE_AVAILABILITY_FRESHNESS_POLICY
+security:
+  - localActor: []
+paths:
+  /api/v1/me/ott-catalog-comparisons:
+    post:
+      tags: [OttCatalogComparison]
+      operationId: createOttCatalogComparison
+      x-implementation-status: READY_LOCAL_MVP
+      summary: KR 정액제 OTT catalog 비교 생성
+      parameters:
+        - $ref: '#/components/parameters/IdempotencyKey'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: '#/components/schemas/CreateOttCatalogComparisonRequest' }
+      responses:
+        '201':
+          description: immutable READY catalog comparison
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/OttCatalogComparison' }
+        '400': { $ref: '#/components/responses/BadRequest' }
+        '401': { $ref: '#/components/responses/Unauthorized' }
+        '409': { $ref: '#/components/responses/Conflict' }
+        '503': { $ref: '#/components/responses/Unavailable' }
+  /api/v1/me/ott-catalog-comparisons/{comparisonId}:
+    get:
+      tags: [OttCatalogComparison]
+      operationId: getOttCatalogComparison
+      x-implementation-status: READY_LOCAL_MVP
+      summary: owner의 immutable catalog comparison 조회
+      parameters:
+        - $ref: '#/components/parameters/ComparisonId'
+      responses:
+        '200':
+          description: provider별 실제 영화 count와 전체 목록 link
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/OttCatalogComparison' }
+        '401': { $ref: '#/components/responses/Unauthorized' }
+        '404': { $ref: '#/components/responses/NotFound' }
+        '503': { $ref: '#/components/responses/Unavailable' }
+  /api/v1/me/ott-catalog-comparisons/{comparisonId}/movies:
+    get:
+      tags: [OttCatalogComparison]
+      operationId: listOttCatalogComparisonMovies
+      x-implementation-status: READY_LOCAL_MVP
+      summary: provider에 포함된 실제 영화 전체 cursor page
+      parameters:
+        - $ref: '#/components/parameters/ComparisonId'
+        - $ref: '#/components/parameters/ProviderIdQuery'
+        - $ref: '#/components/parameters/Cursor'
+        - $ref: '#/components/parameters/Limit'
+      responses:
+        '200':
+          description: 대표 subset이 아닌 전체 traversal page
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/CatalogMoviePage' }
+        '400': { $ref: '#/components/responses/BadRequest' }
+        '401': { $ref: '#/components/responses/Unauthorized' }
+        '404': { $ref: '#/components/responses/NotFound' }
+        '503': { $ref: '#/components/responses/Unavailable' }
+  /api/v1/me/parties:
+    get:
+      tags: [Party]
+      operationId: listMyParties
+      x-implementation-status: READY_LOCAL_MVP
+      summary: local actor가 owner/accepted member인 Party 목록
+      parameters:
+        - $ref: '#/components/parameters/Cursor'
+        - $ref: '#/components/parameters/Limit'
+      responses:
+        '200':
+          description: Party cursor page
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/PartyPage' }
+        '401': { $ref: '#/components/responses/Unauthorized' }
+    post:
+      tags: [Party]
+      operationId: createParty
+      x-implementation-status: READY_LOCAL_MVP
+      summary: owner 1명과 provider 2~4개로 Party 생성
+      parameters:
+        - $ref: '#/components/parameters/IdempotencyKey'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: '#/components/schemas/CreatePartyRequest' }
+      responses:
+        '201':
+          description: owner-only DRAFT Party
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/Party' }
+        '400': { $ref: '#/components/responses/BadRequest' }
+        '401': { $ref: '#/components/responses/Unauthorized' }
+        '409': { $ref: '#/components/responses/Conflict' }
+        '503': { $ref: '#/components/responses/Unavailable' }
+  /api/v1/me/party-invitations:
+    get:
+      tags: [PartyInvitation]
+      operationId: listMyPartyInvitations
+      x-implementation-status: READY_LOCAL_MVP
+      summary: local recipient의 PENDING/ACCEPTED invitation 목록
+      parameters:
+        - $ref: '#/components/parameters/Cursor'
+        - $ref: '#/components/parameters/Limit'
+      responses:
+        '200':
+          description: recipient-scoped invitation page
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/PartyInvitationPage' }
+        '401': { $ref: '#/components/responses/Unauthorized' }
+  /api/v1/me/party-invitations/{invitationId}/accept:
+    post:
+      tags: [PartyInvitation]
+      operationId: acceptPartyInvitation
+      x-implementation-status: READY_LOCAL_MVP
+      summary: recipient가 PENDING invitation 수락
+      parameters:
+        - $ref: '#/components/parameters/InvitationId'
+        - $ref: '#/components/parameters/IdempotencyKey'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: '#/components/schemas/AcceptPartyInvitationRequest' }
+      responses:
+        '200':
+          description: ACCEPTED invitation과 joined Party
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/AcceptPartyInvitationResponse' }
+        '400': { $ref: '#/components/responses/BadRequest' }
+        '401': { $ref: '#/components/responses/Unauthorized' }
+        '404': { $ref: '#/components/responses/NotFound' }
+        '409': { $ref: '#/components/responses/Conflict' }
+  /api/v1/parties/{partyId}:
+    get:
+      tags: [Party]
+      operationId: getParty
+      x-implementation-status: READY_LOCAL_MVP
+      summary: owner/accepted member Party 상세
+      parameters:
+        - $ref: '#/components/parameters/PartyId'
+      responses:
+        '200':
+          description: Party 상세
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/Party' }
+        '401': { $ref: '#/components/responses/Unauthorized' }
+        '404': { $ref: '#/components/responses/NotFound' }
+  /api/v1/parties/{partyId}/invitations:
+    get:
+      tags: [PartyInvitation]
+      operationId: listPartyInvitations
+      x-implementation-status: READY_LOCAL_MVP
+      summary: owner의 Party invitation 목록
+      parameters:
+        - $ref: '#/components/parameters/PartyId'
+        - $ref: '#/components/parameters/Cursor'
+        - $ref: '#/components/parameters/Limit'
+      responses:
+        '200':
+          description: owner-scoped invitation page
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/PartyInvitationPage' }
+        '401': { $ref: '#/components/responses/Unauthorized' }
+        '404': { $ref: '#/components/responses/NotFound' }
+    post:
+      tags: [PartyInvitation]
+      operationId: createPartyInvitation
+      x-implementation-status: READY_LOCAL_MVP
+      summary: owner가 allowlist fake actor 초대
+      parameters:
+        - $ref: '#/components/parameters/PartyId'
+        - $ref: '#/components/parameters/IdempotencyKey'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: '#/components/schemas/CreatePartyInvitationRequest' }
+      responses:
+        '201':
+          description: PENDING invitation
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/PartyInvitation' }
+        '400': { $ref: '#/components/responses/BadRequest' }
+        '401': { $ref: '#/components/responses/Unauthorized' }
+        '404': { $ref: '#/components/responses/NotFound' }
+        '409': { $ref: '#/components/responses/Conflict' }
+  /api/v1/parties/{partyId}/baseline-recommendations:
+    get:
+      tags: [PartyBaseline]
+      operationId: listPartyBaselineRecommendations
+      x-implementation-status: READY_LOCAL_MVP
+      summary: 개인화 없는 설명 가능한 실제 영화 baseline
+      description: >-
+        Party provider coverage와 고정 C0 catalog popularity만 사용한다.
+        Rating, 행동, utility, 만족도, 예상 별점을 사용하지 않는다.
+      parameters:
+        - $ref: '#/components/parameters/PartyId'
+        - $ref: '#/components/parameters/Cursor'
+        - $ref: '#/components/parameters/Limit'
+      responses:
+        '200':
+          description: deterministic baseline page
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/PartyBaselinePage' }
+        '400': { $ref: '#/components/responses/BadRequest' }
+        '401': { $ref: '#/components/responses/Unauthorized' }
+        '404': { $ref: '#/components/responses/NotFound' }
+        '503': { $ref: '#/components/responses/Unavailable' }
+components:
+  securitySchemes:
+    localActor:
+      type: apiKey
+      in: header
+      name: X-Local-Actor-Id
+      description: Loopback local fixture allowlist UUID only. Production authentication이 아니다.
+  parameters:
+    IdempotencyKey:
+      name: Idempotency-Key
+      in: header
+      required: true
+      schema:
+        type: string
+        minLength: 8
+        maxLength: 128
+        pattern: '^[!-~]+$'
+    ComparisonId:
+      name: comparisonId
+      in: path
+      required: true
+      schema: { type: string, format: uuid }
+    PartyId:
+      name: partyId
+      in: path
+      required: true
+      schema: { type: string, format: uuid }
+    InvitationId:
+      name: invitationId
+      in: path
+      required: true
+      schema: { type: string, format: uuid }
+    ProviderIdQuery:
+      name: providerId
+      in: query
+      required: true
+      schema: { type: string, format: uuid }
+    Cursor:
+      name: cursor
+      in: query
+      required: false
+      schema: { type: string, minLength: 1, maxLength: 2048 }
+    Limit:
+      name: limit
+      in: query
+      required: false
+      schema: { type: integer, minimum: 1, maximum: 100, default: 20 }
+  responses:
+    BadRequest:
+      description: invalid request or cursor
+      content:
+        application/json:
+          schema: { $ref: '#/components/schemas/C3Error' }
+    Unauthorized:
+      description: missing or unknown local actor
+      content:
+        application/json:
+          schema: { $ref: '#/components/schemas/C3Error' }
+    NotFound:
+      description: private resource hidden or reference unavailable
+      content:
+        application/json:
+          schema: { $ref: '#/components/schemas/C3Error' }
+    Conflict:
+      description: revision, capacity, state, duplicate, or idempotency conflict
+      content:
+        application/json:
+          schema: { $ref: '#/components/schemas/C3Error' }
+    Unavailable:
+      description: local COMPLETE catalog materialization unavailable
+      content:
+        application/json:
+          schema: { $ref: '#/components/schemas/C3Error' }
+  schemas:
+    ProviderIdSet:
+      type: array
+      minItems: 2
+      maxItems: 4
+      uniqueItems: true
+      items: { type: string, format: uuid }
+    CreateOttCatalogComparisonRequest:
+      type: object
+      additionalProperties: false
+      required: [providerIds]
+      properties:
+        providerIds: { $ref: '#/components/schemas/ProviderIdSet' }
+    OttCatalogComparison:
+      type: object
+      additionalProperties: false
+      required: [comparisonId, status, region, monetizationType, catalogVersion, providers]
+      properties:
+        comparisonId: { type: string, format: uuid }
+        status: { type: string, const: READY }
+        region: { type: string, const: KR }
+        monetizationType: { type: string, const: FLATRATE }
+        catalogVersion: { type: string, minLength: 1 }
+        providers:
+          type: array
+          minItems: 2
+          maxItems: 4
+          items: { $ref: '#/components/schemas/ProviderCatalogSummary' }
+    ProviderCatalogSummary:
+      type: object
+      additionalProperties: false
+      required: [provider, movieCount, moviesHref]
+      properties:
+        provider: { $ref: '#/components/schemas/ProviderSummary' }
+        movieCount: { type: integer, minimum: 0 }
+        moviesHref: { type: string, format: uri-reference }
+    ProviderSummary:
+      type: object
+      additionalProperties: false
+      required: [providerId, name]
+      properties:
+        providerId: { type: string, format: uuid }
+        name: { type: string, minLength: 1 }
+    MovieSummary:
+      type: object
+      additionalProperties: false
+      required: [movieId, displayTitle, posterUrl, releaseYear]
+      properties:
+        movieId: { type: string, format: uuid }
+        displayTitle: { type: string, minLength: 1 }
+        posterUrl: { type: [string, 'null'], format: uri }
+        releaseYear: { type: [integer, 'null'], minimum: 1870, maximum: 2100 }
+    CatalogMovie:
+      type: object
+      additionalProperties: false
+      required: [movie, availableProviderIds]
+      properties:
+        movie: { $ref: '#/components/schemas/MovieSummary' }
+        availableProviderIds:
+          type: array
+          minItems: 1
+          maxItems: 4
+          uniqueItems: true
+          items: { type: string, format: uuid }
+    CatalogMoviePage:
+      type: object
+      additionalProperties: false
+      required: [comparisonId, providerId, totalCount, hasNext, nextCursor, items]
+      properties:
+        comparisonId: { type: string, format: uuid }
+        providerId: { type: string, format: uuid }
+        totalCount: { type: integer, minimum: 0 }
+        hasNext: { type: boolean }
+        nextCursor: { type: [string, 'null'] }
+        items:
+          type: array
+          maxItems: 100
+          items: { $ref: '#/components/schemas/CatalogMovie' }
+      allOf:
+        - if:
+            properties: { hasNext: { const: true } }
+            required: [hasNext]
+          then:
+            properties: { nextCursor: { type: string, minLength: 1 } }
+        - if:
+            properties: { hasNext: { const: false } }
+            required: [hasNext]
+          then:
+            properties: { nextCursor: { type: 'null' } }
+    CreatePartyRequest:
+      type: object
+      additionalProperties: false
+      required: [name, providerIds]
+      properties:
+        name: { type: string, minLength: 1, maxLength: 60 }
+        providerIds: { $ref: '#/components/schemas/ProviderIdSet' }
+    LocalActorSummary:
+      type: object
+      additionalProperties: false
+      required: [actorId, nickname]
+      properties:
+        actorId: { type: string, format: uuid }
+        nickname: { type: string, minLength: 1 }
+    PartyMemberSummary:
+      type: object
+      additionalProperties: false
+      required: [memberId, actor, role, joinedAt]
+      properties:
+        memberId: { type: string, format: uuid }
+        actor: { $ref: '#/components/schemas/LocalActorSummary' }
+        role: { type: string, enum: [OWNER, MEMBER] }
+        joinedAt: { type: string, format: date-time }
+    Party:
+      type: object
+      additionalProperties: false
+      required: [partyId, name, status, myRole, memberCount, maximumMemberCount, revision, providerIds, members, baselineHref]
+      properties:
+        partyId: { type: string, format: uuid }
+        name: { type: string, minLength: 1 }
+        status: { type: string, enum: [DRAFT, ACTIVE] }
+        myRole: { type: string, enum: [OWNER, MEMBER] }
+        memberCount: { type: integer, minimum: 1, maximum: 4 }
+        maximumMemberCount: { type: integer, const: 4 }
+        revision: { type: integer, minimum: 1 }
+        providerIds: { $ref: '#/components/schemas/ProviderIdSet' }
+        members:
+          type: array
+          minItems: 1
+          maxItems: 4
+          items: { $ref: '#/components/schemas/PartyMemberSummary' }
+        baselineHref: { type: string, format: uri-reference }
+    PartyPage:
+      type: object
+      additionalProperties: false
+      required: [totalCount, hasNext, nextCursor, items]
+      properties:
+        totalCount: { type: integer, minimum: 0 }
+        hasNext: { type: boolean }
+        nextCursor: { type: [string, 'null'] }
+        items:
+          type: array
+          maxItems: 100
+          items: { $ref: '#/components/schemas/Party' }
+    CreatePartyInvitationRequest:
+      type: object
+      additionalProperties: false
+      required: [recipientActorId, expectedPartyRevision]
+      properties:
+        recipientActorId: { type: string, format: uuid }
+        expectedPartyRevision: { type: integer, minimum: 1 }
+    PartyInvitation:
+      type: object
+      additionalProperties: false
+      required: [invitationId, partyId, partyName, inviter, recipient, status, revision, partyRevision]
+      properties:
+        invitationId: { type: string, format: uuid }
+        partyId: { type: string, format: uuid }
+        partyName: { type: string }
+        inviter: { $ref: '#/components/schemas/LocalActorSummary' }
+        recipient: { $ref: '#/components/schemas/LocalActorSummary' }
+        status: { type: string, enum: [PENDING, ACCEPTED] }
+        revision: { type: integer, minimum: 1 }
+        partyRevision: { type: integer, minimum: 1 }
+    PartyInvitationPage:
+      type: object
+      additionalProperties: false
+      required: [totalCount, hasNext, nextCursor, items]
+      properties:
+        totalCount: { type: integer, minimum: 0 }
+        hasNext: { type: boolean }
+        nextCursor: { type: [string, 'null'] }
+        items:
+          type: array
+          maxItems: 100
+          items: { $ref: '#/components/schemas/PartyInvitation' }
+    AcceptPartyInvitationRequest:
+      type: object
+      additionalProperties: false
+      required: [expectedPartyRevision, expectedInvitationRevision]
+      properties:
+        expectedPartyRevision: { type: integer, minimum: 1 }
+        expectedInvitationRevision: { type: integer, minimum: 1 }
+    AcceptPartyInvitationResponse:
+      type: object
+      additionalProperties: false
+      required: [invitation, party]
+      properties:
+        invitation: { $ref: '#/components/schemas/PartyInvitation' }
+        party: { $ref: '#/components/schemas/Party' }
+    PartyBaselineExplanation:
+      type: object
+      additionalProperties: false
+      required: [availableProviderCount, selectedProviderCount, catalogPopularityRank, policyVersion]
+      properties:
+        availableProviderCount: { type: integer, minimum: 1, maximum: 4 }
+        selectedProviderCount: { type: integer, minimum: 2, maximum: 4 }
+        catalogPopularityRank: { type: integer, minimum: 1 }
+        policyVersion: { type: string, const: CATALOG_POPULARITY_KR_FLATRATE_V1 }
+    PartyBaselineItem:
+      type: object
+      additionalProperties: false
+      required: [movie, availableProviderIds, explanation]
+      properties:
+        movie: { $ref: '#/components/schemas/MovieSummary' }
+        availableProviderIds:
+          type: array
+          minItems: 1
+          maxItems: 4
+          uniqueItems: true
+          items: { type: string, format: uuid }
+        explanation: { $ref: '#/components/schemas/PartyBaselineExplanation' }
+    PartyBaselinePage:
+      type: object
+      additionalProperties: false
+      required: [partyId, policyVersion, catalogVersion, totalCount, hasNext, nextCursor, items]
+      properties:
+        partyId: { type: string, format: uuid }
+        policyVersion: { type: string, const: CATALOG_POPULARITY_KR_FLATRATE_V1 }
+        catalogVersion: { type: string, minLength: 1 }
+        totalCount: { type: integer, minimum: 0 }
+        hasNext: { type: boolean }
+        nextCursor: { type: [string, 'null'] }
+        items:
+          type: array
+          maxItems: 100
+          items: { $ref: '#/components/schemas/PartyBaselineItem' }
+    C3Error:
+      type: object
+      additionalProperties: false
+      required: [code, message, traceId, fieldErrors]
+      properties:
+        code:
+          type: string
+          enum:
+            - VALIDATION_ERROR
+            - INVALID_CURSOR
+            - LOCAL_ACTOR_UNAUTHORIZED
+            - RESOURCE_NOT_FOUND
+            - LOCAL_ACTOR_UNAVAILABLE
+            - REVISION_CONFLICT
+            - PARTY_CAPACITY_REACHED
+            - DUPLICATE_INVITATION
+            - IDEMPOTENCY_KEY_REUSED
+            - INVALID_STATE_TRANSITION
+            - CATALOG_MATERIALIZATION_UNAVAILABLE
+        message: { type: string }
+        traceId: { type: string }
+        fieldErrors:
+          type: array
+          items:
+            type: object
+            additionalProperties: false
+            required: [field, reason]
+            properties:
+              field: { type: string }
+              reason: { type: string }

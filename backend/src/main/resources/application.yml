@@ -1,0 +1,51 @@
+spring:
+  application:
+    name: feelm-catalog-backend
+  profiles:
+    default: fixture
+  jackson:
+    default-property-inclusion: always
+    deserialization:
+      accept-float-as-int: false
+      fail-on-unknown-properties: true
+  mvc:
+    problemdetails:
+      enabled: false
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info
+
+catalog:
+  cursor-signing-key: ${CURSOR_SIGNING_KEY:local-fixture-cursor-key}
+  fixed-clock: ${FIXED_CLOCK_INSTANT:}
+  auth-mode: ${AUTH_MODE:fake}
+  c4:
+    enabled: ${C4_ENABLED:false}
+    local-profile: ${C4_LOCAL_PROFILE:false}
+    allowed-origin: ${C4_ALLOWED_ORIGIN:}
+    delivery-key-base64: ${C4_DELIVERY_KEY_BASE64:}
+    delivery-key-version: ${C4_DELIVERY_KEY_VERSION:local-v1}
+    mail:
+      enabled: ${C4_MAIL_ENABLED:false}
+      host: ${C4_MAIL_HOST:}
+      port: ${C4_MAIL_PORT:1025}
+      from: ${C4_MAIL_FROM:no-reply@feelm.test}
+  c1:
+    outbox-worker:
+      enabled: ${OUTBOX_WORKER_ENABLED:false}
+      batch-size: 25
+      max-attempts: 8
+      poll-delay-ms: 1000
+      initial-delay-ms: 5000
+  c2:
+    recommender:
+      candidate-store-path: ${C2_CANDIDATE_STORE_PATH:}
+      base-url: ${C2_RECOMMENDER_BASE_URL:}
+      auth-mode: ${C2_CLIENT_AUTH_MODE:}
+      service-token: ${C2_SERVICE_TOKEN:}
+      # REC-EV-007 local-loopback candidate only; production topology has not approved an SLA.
+      timeout-ms: ${C2_RECOMMENDER_TIMEOUT_MS:0}
+      local-fake-enabled: false

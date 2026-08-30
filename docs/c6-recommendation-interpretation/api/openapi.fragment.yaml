@@ -1,0 +1,135 @@
+openapi: 3.1.0
+info:
+  title: FEELM C6 Local Recommendation Interpretation Experiment
+  version: 0.1.0-local-experiment
+  description: Local-only evidence collection for predicted rating, personal relative utility, and taste observations.
+servers:
+  - url: http://127.0.0.1:8080
+x-contract-status: APPROVED_LOCAL_EXPERIMENT
+x-production-activation: false
+x-product-display-approved: false
+security:
+  - bearerAuth: []
+paths:
+  /api/v1/me/recommendation-interpretation-experiment:
+    get:
+      tags: [RecommendationInterpretationExperiment]
+      operationId: getMyRecommendationInterpretationExperiment
+      summary: Read local-only recommendation interpretation evidence
+      description: Expected relative utility is a personal ECDF estimate, not self-reported satisfaction.
+      x-implementation-status: READY_LOCAL_EXPERIMENT
+      x-production-activation: false
+      security: [{ bearerAuth: [] }]
+      responses:
+        '200':
+          description: Local experiment snapshot
+          headers:
+            Cache-Control:
+              schema: { type: string, const: 'no-store, private' }
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/C6InterpretationExperiment' }
+        '401': { $ref: '#/components/responses/Unauthorized' }
+        '404': { $ref: '#/components/responses/NotFound' }
+        '503': { $ref: '#/components/responses/Unavailable' }
+components:
+  securitySchemes:
+    bearerAuth: { type: http, scheme: bearer }
+  responses:
+    Unauthorized:
+      description: Authentication required
+      content: { application/json: { schema: { $ref: '#/components/schemas/C6Error' } } }
+    NotFound:
+      description: Local experiment is disabled or unavailable
+      content: { application/json: { schema: { $ref: '#/components/schemas/C6Error' } } }
+    Unavailable:
+      description: Recommendation artifacts are unavailable
+      content: { application/json: { schema: { $ref: '#/components/schemas/C6Error' } } }
+  schemas:
+    C6Confidence:
+      type: string
+      enum: [INSUFFICIENT_DATA, LOW, MEDIUM, HIGH]
+    C6ModelContext:
+      type: object
+      additionalProperties: false
+      required: [artifactSetVersion, policyVersion, kSelectionPolicyVersion, utilityPolicyVersion, availableRatingCount, usedRatingCount]
+      properties:
+        artifactSetVersion: { type: string, minLength: 1 }
+        policyVersion: { type: string, minLength: 1 }
+        kSelectionPolicyVersion: { type: string, const: C6_MOST_RECENT_VALIDATED_K_FLOOR_V1 }
+        utilityPolicyVersion: { type: string, const: C6_DISCRETE_QUANTIZED_MIDRANK_ECDF_V2 }
+        availableRatingCount: { type: integer, minimum: 0 }
+        usedRatingCount: { type: integer, enum: [0, 1, 3, 5, 10, 20] }
+    C6RatingProfile:
+      type: object
+      additionalProperties: false
+      required: [activeRatingCount, mean, median, confidence]
+      properties:
+        activeRatingCount: { type: integer, minimum: 0 }
+        mean: { type: [number, 'null'], minimum: 1, maximum: 5 }
+        median: { type: [number, 'null'], minimum: 1, maximum: 5 }
+        confidence: { $ref: '#/components/schemas/C6Confidence' }
+    C6MovieCard:
+      type: object
+      additionalProperties: false
+      required: [movieId, title, posterUrl, releaseYear, genres]
+      properties:
+        movieId: { type: string, format: uuid }
+        title: { type: string, minLength: 1 }
+        posterUrl: { type: [string, 'null'], format: uri }
+        releaseYear: { type: [integer, 'null'], minimum: 1870, maximum: 2100 }
+        genres: { type: array, items: { type: string, minLength: 1 } }
+    C6Prediction:
+      type: object
+      additionalProperties: false
+      required: [movie, predictedRating, expectedRelativeUtility, directFoldIn, confidence, displayEligible]
+      properties:
+        movie: { $ref: '#/components/schemas/C6MovieCard' }
+        predictedRating: { type: number, minimum: 0.5, maximum: 5 }
+        expectedRelativeUtility:
+          type: [number, 'null']
+          minimum: 0
+          maximum: 1
+          description: Quantized-midrank personal ECDF estimate; not self-reported satisfaction.
+        directFoldIn: { type: boolean }
+        confidence: { $ref: '#/components/schemas/C6Confidence' }
+        displayEligible: { type: boolean, const: false }
+    C6TasteEvidence:
+      type: object
+      additionalProperties: false
+      required: [dimensionType, dimensionKey, displayName, ratingCount, averageRating, liftFromUserMean, confidence]
+      properties:
+        dimensionType: { type: string, enum: [GENRE, COUNTRY, DIRECTOR] }
+        dimensionKey: { type: string, minLength: 1 }
+        displayName: { type: string, minLength: 1 }
+        ratingCount: { type: integer, minimum: 1 }
+        averageRating: { type: number, minimum: 1, maximum: 5 }
+        liftFromUserMean: { type: [number, 'null'], minimum: -4, maximum: 4 }
+        confidence: { $ref: '#/components/schemas/C6Confidence' }
+    C6InterpretationExperiment:
+      type: object
+      additionalProperties: false
+      required: [experimentVersion, inputVersion, modelContext, ratingProfile, predictions, tasteEvidence, limitations]
+      properties:
+        experimentVersion: { type: string, const: c6-recommendation-interpretation-v2 }
+        inputVersion: { type: string, minLength: 1 }
+        modelContext: { $ref: '#/components/schemas/C6ModelContext' }
+        ratingProfile: { $ref: '#/components/schemas/C6RatingProfile' }
+        predictions: { type: array, maxItems: 500, items: { $ref: '#/components/schemas/C6Prediction' } }
+        tasteEvidence: { type: array, maxItems: 100, items: { $ref: '#/components/schemas/C6TasteEvidence' } }
+        limitations:
+          type: array
+          minItems: 4
+          uniqueItems: true
+          items:
+            type: string
+            enum: [LOCAL_EXPERIMENT_ONLY, NOT_SELF_REPORTED_SATISFACTION, NOT_PRODUCT_DISPLAY_APPROVED, K_BUCKETED_MOST_RECENT]
+    C6Error:
+      type: object
+      additionalProperties: false
+      required: [code, message, traceId, fieldErrors]
+      properties:
+        code: { type: string }
+        message: { type: string }
+        traceId: { type: string }
+        fieldErrors: { type: array, items: { type: object } }

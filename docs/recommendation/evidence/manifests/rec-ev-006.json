@@ -1,0 +1,204 @@
+{
+  "artifacts": {
+    "failure_fixtures": {
+      "bytes": 2685,
+      "path": "docs\\recommendation\\evidence\\manifests\\rec-ev-006-failure-fixtures.json",
+      "sha256": "8a80405c0140fb9033125fae1c986731b4b686c69e75e6a51d5375639c20ce69"
+    },
+    "large_output_copy": {
+      "path": "outputs\\recommendation-evidence\\rec-ev-006\\reason-faithfulness-results.json",
+      "tracked": false
+    },
+    "results": {
+      "bytes": 4572,
+      "path": "docs\\recommendation\\evidence\\results\\rec-ev-006-aggregate.json",
+      "sha256": "b130107835ccb30c3ff0ec83b85d3b53eef13211c06fdcd9ab53051ee78267c9"
+    },
+    "typed_contract": {
+      "bytes": 1734,
+      "path": "docs\\recommendation\\evidence\\manifests\\rec-ev-006-reason-contract.json",
+      "sha256": "ed330a5159607aa081f77494c47792b8b93b18d4aae294ea5f6d2cf1f6a9b856"
+    }
+  },
+  "conclusion": {
+    "display_count": null,
+    "ranking_champion": null,
+    "reason_ui_decision": "WAITING_FOR_REC_EV_008",
+    "ui_copy": null
+  },
+  "evidence_id": "REC-EV-006",
+  "metrics": {
+    "ablation": {
+      "BASE_ONLY": {
+        "delta_diversity_vs_full": -0.040917,
+        "delta_ndcg_vs_full": 0.006001,
+        "delta_novelty_vs_full": -0.212122,
+        "intra_list_diversity": 0.709684,
+        "ndcg_at_10": 0.377911,
+        "novelty_bits": 14.976216,
+        "recall_at_10": 0.623
+      },
+      "FULL": {
+        "delta_diversity_vs_full": 0.0,
+        "delta_ndcg_vs_full": 0.0,
+        "delta_novelty_vs_full": 0.0,
+        "intra_list_diversity": 0.750601,
+        "ndcg_at_10": 0.37191,
+        "novelty_bits": 15.188338,
+        "recall_at_10": 0.61825
+      },
+      "WITHOUT_DIVERSITY": {
+        "delta_diversity_vs_full": -0.038859,
+        "delta_ndcg_vs_full": 0.002872,
+        "delta_novelty_vs_full": -0.119485,
+        "intra_list_diversity": 0.711742,
+        "ndcg_at_10": 0.374782,
+        "novelty_bits": 15.068853,
+        "recall_at_10": 0.6165
+      },
+      "WITHOUT_NOVELTY": {
+        "delta_diversity_vs_full": -0.007819,
+        "delta_ndcg_vs_full": 0.005473,
+        "delta_novelty_vs_full": -0.15651,
+        "intra_list_diversity": 0.742782,
+        "ndcg_at_10": 0.377383,
+        "novelty_bits": 15.031828,
+        "recall_at_10": 0.62525
+      },
+      "WITHOUT_POPULARITY": {
+        "delta_diversity_vs_full": 0.249388,
+        "delta_ndcg_vs_full": -0.371455,
+        "delta_novelty_vs_full": 8.416789,
+        "intra_list_diversity": 0.999989,
+        "ndcg_at_10": 0.000455,
+        "novelty_bits": 23.605127,
+        "recall_at_10": 0.00125
+      }
+    },
+    "by_position": {
+      "1": {
+        "diversity_rank_effect": 0,
+        "novelty_rank_effect": 38,
+        "popularity_rank_effect": 4000,
+        "recommendations": 4000
+      },
+      "10": {
+        "diversity_rank_effect": 2876,
+        "novelty_rank_effect": 1670,
+        "popularity_rank_effect": 3997,
+        "recommendations": 4000
+      },
+      "2": {
+        "diversity_rank_effect": 1471,
+        "novelty_rank_effect": 213,
+        "popularity_rank_effect": 4000,
+        "recommendations": 4000
+      },
+      "3": {
+        "diversity_rank_effect": 2472,
+        "novelty_rank_effect": 545,
+        "popularity_rank_effect": 4000,
+        "recommendations": 4000
+      },
+      "4": {
+        "diversity_rank_effect": 2821,
+        "novelty_rank_effect": 812,
+        "popularity_rank_effect": 4000,
+        "recommendations": 4000
+      },
+      "5": {
+        "diversity_rank_effect": 2852,
+        "novelty_rank_effect": 985,
+        "popularity_rank_effect": 4000,
+        "recommendations": 4000
+      },
+      "6": {
+        "diversity_rank_effect": 2816,
+        "novelty_rank_effect": 1153,
+        "popularity_rank_effect": 4000,
+        "recommendations": 4000
+      },
+      "7": {
+        "diversity_rank_effect": 2847,
+        "novelty_rank_effect": 1293,
+        "popularity_rank_effect": 4000,
+        "recommendations": 4000
+      },
+      "8": {
+        "diversity_rank_effect": 2910,
+        "novelty_rank_effect": 1443,
+        "popularity_rank_effect": 3999,
+        "recommendations": 4000
+      },
+      "9": {
+        "diversity_rank_effect": 2926,
+        "novelty_rank_effect": 1573,
+        "popularity_rank_effect": 3997,
+        "recommendations": 4000
+      }
+    },
+    "coverage": {
+      "GENRE_AFFINITY": {
+        "blocked_feature_inactive": 40000,
+        "blocked_no_rank_effect": 0,
+        "emittable_candidate_coverage": 0.0,
+        "evaluated_recommendations": 40000,
+        "faithful_rank_effect": 0,
+        "positive_contribution": 0,
+        "positive_contribution_coverage": 0.0
+      },
+      "LESS_POPULAR_DISCOVERY": {
+        "blocked_feature_inactive": 0,
+        "blocked_no_rank_effect": 30275,
+        "emittable_candidate_coverage": 0.243125,
+        "evaluated_recommendations": 40000,
+        "faithful_rank_effect": 9725,
+        "positive_contribution": 40000,
+        "positive_contribution_coverage": 1.0
+      },
+      "LIST_DIVERSITY": {
+        "blocked_feature_inactive": 0,
+        "blocked_no_rank_effect": 7554,
+        "emittable_candidate_coverage": 0.599775,
+        "evaluated_recommendations": 40000,
+        "faithful_rank_effect": 23991,
+        "positive_contribution": 31545,
+        "positive_contribution_coverage": 0.788625
+      },
+      "POPULARITY_BASELINE": {
+        "blocked_feature_inactive": 0,
+        "blocked_no_rank_effect": 7,
+        "emittable_candidate_coverage": 0.999825,
+        "evaluated_recommendations": 40000,
+        "faithful_rank_effect": 39993,
+        "positive_contribution": 40000,
+        "positive_contribution_coverage": 1.0
+      }
+    },
+    "evidence_id": "REC-EV-006",
+    "policy": "EXPLORE_05",
+    "recommendations": 40000,
+    "schema_version": 1
+  },
+  "protocol": {
+    "emission_requires_rank_effect": true,
+    "faithfulness_contract": "REC_REASON_FAITHFULNESS_V1",
+    "version": "rec-ev-006-score-contribution-ablation-v1"
+  },
+  "run_at_utc": "2026-08-29T15:17:43.361481+00:00",
+  "schema_version": 1,
+  "source": {
+    "candidate_scope": "SAMPLED_1_POSITIVE_PLUS_199_DETERMINISTIC_NEGATIVES",
+    "rec_ev_004_manifest": "docs\\recommendation\\evidence\\manifests\\rec-ev-004.json",
+    "rec_ev_004_manifest_sha256": "2307bd2231ce4bfd63d04a99ee749407b2e4bfbd5d2661170e6495014dd015c6",
+    "test_used": true
+  },
+  "validation": {
+    "actual_rec_ev_004_contributions_used": true,
+    "failure_fixtures_pass": true,
+    "raw_ids_tracked": false,
+    "reason_ui_approved": false,
+    "single_feature_ablations_present": true,
+    "status": "PASS"
+  }
+}

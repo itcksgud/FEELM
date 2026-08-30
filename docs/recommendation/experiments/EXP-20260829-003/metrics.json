@@ -1,0 +1,12 @@
+{
+  "schema_version": 1,
+  "run_id": "EXP-20260829-003",
+  "selected_curve": {
+    "1": {"star_alpha": 0.1, "macro_mae": 0.74261, "relative_improvement": 0.01661, "rank_alpha": 0.0},
+    "3": {"star_alpha": 0.1, "macro_mae": 0.737934, "relative_improvement": 0.022804, "rank_alpha": 0.0},
+    "5": {"star_alpha": 0.1, "macro_mae": 0.735469, "relative_improvement": 0.026068, "rank_alpha": 0.0},
+    "10": {"star_alpha": 0.3, "macro_mae": 0.725313, "relative_improvement": 0.039513, "rank_alpha": 0.0},
+    "20": {"star_alpha": 0.4, "macro_mae": 0.714474, "relative_improvement": 0.053868, "rank_alpha": 0.0}
+  },
+  "ranking_eval_ndcg_at_10": 0.45708
+}

@@ -1,0 +1,15 @@
+{
+  "schema_version": 1,
+  "run_id": "EXP-20260829-001",
+  "tracked": {
+    "manifest": "docs/recommendation/evidence/manifests/rec-ev-002.json",
+    "evidence": "docs/recommendation/evidence/REC-EV-002-prediction-calibration.md"
+  },
+  "ignored": {
+    "bias_parameters": {"path": "outputs/recommendation-evidence/rec-ev-002/bias_parameters.npz", "sha256": "816381cfb3f7c24cc2b0c80af02b1d86b915d5397df226e47edf9cb3b526af42"},
+    "als_factors": {"path": "outputs/recommendation-evidence/rec-ev-002/als_factors.npz", "sha256": "908ba9f99bcb55813cf25577e264893239b81025b0f36e70a715dc493b81c46d"},
+    "validation_predictions": {"path": "outputs/recommendation-evidence/rec-ev-002/validation_predictions.parquet", "sha256": "219c90c17d778835403b43268a22a869d32e438b08c419ed6cfb223a872b80c0"},
+    "sampled_ranking_scored": {"path": "outputs/recommendation-evidence/rec-ev-002/sampled_ranking_scored.parquet", "sha256": "020efbafcbd9484555c3b777136a9e3a83e3de40df03d3abc9a78f515ff17a5d"},
+    "isotonic_calibrators": {"path": "outputs/recommendation-evidence/rec-ev-002/isotonic_calibrators.json", "sha256": "57ab506495306073f80d0ffa7db5ce5590915e895104c7655bddd460fa3cb0aa"}
+  }
+}

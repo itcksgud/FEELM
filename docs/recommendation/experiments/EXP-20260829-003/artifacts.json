@@ -1,0 +1,12 @@
+{
+  "schema_version": 1,
+  "run_id": "EXP-20260829-003",
+  "tracked": {
+    "manifest": "docs/recommendation/evidence/manifests/rec-ev-003b.json",
+    "evidence": "docs/recommendation/evidence/REC-EV-003B-cold-start-blend.md"
+  },
+  "ignored": {
+    "star_predictions": {"path": "outputs/recommendation-evidence/rec-ev-003b/selected_star_predictions.parquet", "sha256": "bb3181d9d859c316c2da0421d339fa9205e3b5a2eac6109c91035b172a860727"},
+    "ranking_scores": {"path": "outputs/recommendation-evidence/rec-ev-003b/selected_ranking_scores.parquet", "sha256": "e747047dbd246f707a6022b10a38a1ed68740083e66fbe96510072f181b7f4ab"}
+  }
+}

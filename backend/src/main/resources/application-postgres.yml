@@ -1,0 +1,12 @@
+spring:
+  datasource:
+    url: ${DATABASE_URL:jdbc:postgresql://localhost:5432/feelm}
+    username: ${DATABASE_USERNAME:feelm}
+    password: ${DATABASE_PASSWORD:feelm_local}
+  flyway:
+    enabled: true
+    locations: classpath:db/migration
+
+catalog:
+  fixed-clock: ""
+  import-path: ${CATALOG_ARTIFACT_PATH:}

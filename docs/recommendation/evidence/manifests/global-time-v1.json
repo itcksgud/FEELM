@@ -1,0 +1,238 @@
+{
+  "schema_version": 1,
+  "evidence_id": "REC-EV-001",
+  "run_at_utc": "2026-08-29T10:07:29.718061+00:00",
+  "source": {
+    "archive": "C:\\higher\\projects\\MM\\data\\raw\\ml-32m.zip",
+    "archive_sha256": "e4a68655d7386b8f95f2f2424b2ff975dfdd15ffd59e0d864a14dca43e99d6ee",
+    "rating_rows": 32000204,
+    "users": 200948,
+    "movies": 84432
+  },
+  "protocol": {
+    "version": "global-time-v1",
+    "train_fraction_target": 0.8,
+    "validation_fraction_target": 0.1,
+    "test_fraction_target": 0.1,
+    "boundary_quantile_method": "higher",
+    "same_timestamp_policy": "entire boundary timestamp goes to later split",
+    "train_boundary": 1538551305,
+    "train_boundary_utc": "2018-10-03T07:21:45+00:00",
+    "validation_boundary": 1604605535,
+    "validation_boundary_utc": "2020-11-05T19:45:35+00:00",
+    "user_profile_source": "train only"
+  },
+  "splits": {
+    "train": {
+      "rows": 25600163,
+      "users": 170491,
+      "movies": 50977,
+      "earliest_utc": "1995-01-09T11:46:44+00:00",
+      "latest_utc": "2018-10-03T07:21:40+00:00",
+      "rating_value_counts": {
+        "0.5": 387894,
+        "1.0": 808968,
+        "1.5": 400703,
+        "2.0": 1709467,
+        "2.5": 1266158,
+        "3.0": 5108453,
+        "3.5": 3159737,
+        "4.0": 6855089,
+        "4.5": 2190235,
+        "5.0": 3713459
+      }
+    },
+    "validation": {
+      "rows": 3200020,
+      "users": 22919,
+      "movies": 54803,
+      "earliest_utc": "2018-10-03T07:21:45+00:00",
+      "latest_utc": "2020-11-05T19:45:33+00:00",
+      "rating_value_counts": {
+        "0.5": 69514,
+        "1.0": 69716,
+        "1.5": 63915,
+        "2.0": 156379,
+        "2.5": 201882,
+        "3.0": 465111,
+        "3.5": 556015,
+        "4.0": 763179,
+        "4.5": 396987,
+        "5.0": 457322
+      },
+      "identity_vs_train": {
+        "known_user_known_movie": 480907,
+        "new_user_known_movie": 2522073,
+        "known_user_new_movie": 90703,
+        "new_user_new_movie": 106337,
+        "known_users": 6723,
+        "new_users": 16196,
+        "known_movies": 40057,
+        "new_movies": 14746,
+        "row_coverage_known_user_known_movie": 0.150282
+      }
+    },
+    "test": {
+      "rows": 3200021,
+      "users": 22252,
+      "movies": 63300,
+      "earliest_utc": "2020-11-05T19:45:35+00:00",
+      "latest_utc": "2023-10-13T02:29:07+00:00",
+      "rating_value_counts": {
+        "0.5": 67724,
+        "1.0": 67991,
+        "1.5": 66445,
+        "2.0": 162776,
+        "2.5": 217346,
+        "3.0": 481426,
+        "3.5": 574353,
+        "4.0": 749386,
+        "4.5": 386778,
+        "5.0": 425796
+      },
+      "identity_vs_train": {
+        "known_user_known_movie": 312952,
+        "new_user_known_movie": 2445284,
+        "known_user_new_movie": 145629,
+        "new_user_new_movie": 296156,
+        "known_users": 4691,
+        "new_users": 17561,
+        "known_movies": 36555,
+        "new_movies": 26745,
+        "row_coverage_known_user_known_movie": 0.097797
+      }
+    }
+  },
+  "rating_style": {
+    "train_users": 170491,
+    "rating_count_per_user": {
+      "min": 1.0,
+      "p10": 24.0,
+      "p25": 35.0,
+      "median": 70.0,
+      "p75": 159.0,
+      "p90": 347.0,
+      "max": 22912.0
+    },
+    "rating_mean_per_user": {
+      "min": 0.5,
+      "p10": 3.092308,
+      "p25": 3.391988,
+      "median": 3.692308,
+      "p75": 3.980769,
+      "p90": 4.238095,
+      "max": 5.0
+    },
+    "rating_std_per_user": {
+      "min": 0.0,
+      "p10": 0.62751,
+      "p25": 0.758535,
+      "median": 0.911807,
+      "p75": 1.08742,
+      "p90": 1.267335,
+      "max": 2.308451
+    },
+    "rating_span_per_user": {
+      "min": 0.0,
+      "p10": 2.5,
+      "p25": 3.0,
+      "median": 4.0,
+      "p75": 4.5,
+      "p90": 4.5,
+      "max": 4.5
+    },
+    "raw_4plus_rate_per_user": {
+      "min": 0.0,
+      "p10": 0.298387,
+      "p25": 0.428571,
+      "median": 0.572464,
+      "p75": 0.709677,
+      "p90": 0.821429,
+      "max": 1.0
+    },
+    "mean_quartile_boundaries": {
+      "q25": 3.391988,
+      "q50": 3.692308,
+      "q75": 3.980769
+    },
+    "by_rating_mean_quartile": [
+      {
+        "quartile": "Q1_LOWER_MEAN",
+        "users": 42623,
+        "mean_rating": 3.0631,
+        "median_raw_4plus_rate": 0.3333,
+        "p10_raw_4plus_rate": 0.1662,
+        "p90_raw_4plus_rate": 0.4675
+      },
+      {
+        "quartile": "Q2",
+        "users": 42720,
+        "mean_rating": 3.5503,
+        "median_raw_4plus_rate": 0.5,
+        "p10_raw_4plus_rate": 0.3935,
+        "p90_raw_4plus_rate": 0.6
+      },
+      {
+        "quartile": "Q3",
+        "users": 42535,
+        "mean_rating": 3.8322,
+        "median_raw_4plus_rate": 0.637,
+        "p10_raw_4plus_rate": 0.5455,
+        "p90_raw_4plus_rate": 0.7215
+      },
+      {
+        "quartile": "Q4_HIGHER_MEAN",
+        "users": 42613,
+        "mean_rating": 4.2338,
+        "median_raw_4plus_rate": 0.7982,
+        "p10_raw_4plus_rate": 0.697,
+        "p90_raw_4plus_rate": 0.9236
+      }
+    ],
+    "by_train_history_bucket": {
+      "K1-2": 49,
+      "K3-4": 25,
+      "K5-9": 72,
+      "K10-19": 223,
+      "K20-49": 63501,
+      "K50-99": 40417,
+      "K100+": 66204
+    },
+    "users_with_no_raw_4plus": 230,
+    "users_with_only_raw_4plus": 1015
+  },
+  "artifacts": {
+    "train": {
+      "path": "outputs\\recommendation-evidence\\global-time-v1\\train.parquet",
+      "sha256": "9cb778df1fcba0f8bdca3cdf1637130eeeac4c7455c41e225c6b1fa864021db6",
+      "bytes": 130863549
+    },
+    "validation": {
+      "path": "outputs\\recommendation-evidence\\global-time-v1\\validation.parquet",
+      "sha256": "b8668c0b7dffaafc90b0ce8e19ef22598c335e6e2e313c704eaf557da6265adf",
+      "bytes": 16216012
+    },
+    "test": {
+      "path": "outputs\\recommendation-evidence\\global-time-v1\\test.parquet",
+      "sha256": "94549b971623fc45ed8b2da442214eff076eac096ee829298749074619ea3961",
+      "bytes": 16776312
+    },
+    "user_rating_profiles": {
+      "path": "outputs\\recommendation-evidence\\global-time-v1\\user_rating_profiles.parquet",
+      "sha256": "85ca372a772b501491438bc238b93c8f3cd629b1963273dcc8e392fe2107351a",
+      "bytes": 4349961
+    }
+  },
+  "validation": {
+    "status": "PASS",
+    "row_count_preserved": true,
+    "strict_time_order": true,
+    "same_timestamp_not_split_across_boundaries": true
+  },
+  "runtime": {
+    "python": "3.12.5",
+    "numpy": "1.26.4",
+    "pandas": "2.2.3",
+    "pyarrow": "20.0.0"
+  }
+}

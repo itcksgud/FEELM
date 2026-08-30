@@ -1,0 +1,25 @@
+schema_version: 1
+run_id: EXP-20260829-002
+status: COMPLETED_REJECTED_FOR_RANKING
+hypothesis: 최초 K개 평점 Fold-in은 K0 대비 예상 별점과 sampled ranking을 함께 개선한다.
+code_commit: working-tree-uncommitted
+dataset:
+  name: ml-32m
+  checksum: e4a68655d7386b8f95f2f2424b2ff975dfdd15ffd59e0d864a14dca43e99d6ee
+protocol:
+  split_version: global-time-v1
+  cohort_version: cold-start-cohort-v1
+  cohort_users: 3014
+  cohort_excluded_from_training: true
+  k_values: [0, 1, 3, 5, 10, 20]
+  test_used: false
+model:
+  name: explicit-als-foldin
+  rank: 32
+  reg_param: 0.1
+  max_iter: 10
+  seed: 42
+conclusion:
+  decision: REJECT_AS_STANDALONE_RANK_SCORE
+  reason: K10/K20 star MAE improved but all K sampled ranking lost to K0 Popularity.
+  next_experiment: EXP-20260829-003

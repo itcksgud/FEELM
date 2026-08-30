@@ -1,0 +1,625 @@
+openapi: 3.1.0
+info:
+  title: FEELM C2B Local Baseline Discovery API
+  version: 0.2.0-c2b-local
+  summary: 개인·발견 누적 collection, 3편 append, 명시적 관심 없음, 실제 exposure·attribution 초안
+  description: |
+    조회·append·dismiss 세 operation만 로컬 baseline 구현이 승인되어 main OpenAPI에 병합됐다.
+    production activation, 개인화, XAI, 예상 별점, exposure/action은 계속 BLOCKED다.
+servers:
+  - url: http://localhost:8080
+security:
+  - bearerAuth: []
+tags:
+  - name: PersonalDiscovery
+    description: 로컬 구현만 승인된 비개인화 인기 baseline delivery
+  - name: RecommendationExposure
+    description: 실제 render된 item만 C2A exposure snapshot으로 commit
+  - name: RecommendationAttribution
+    description: owner item에서 상세·OTT·WatchIntent 체인을 exact attribution
+x-contract-status: APPROVED_LOCAL_BASELINE_WITH_BLOCKED_EXTENSIONS
+x-main-openapi-merged: true
+x-public-implementation-status: AUTHORIZED_LOCAL_BASELINE_ONLY
+x-production-activation-status: BLOCKED
+x-rec-ev-013-status: COMPLETED_NO_FEASIBLE_POLICY
+x-c1-click-contract-status: BLOCKED_REQUIRES_EVENT_ID
+x-catalog-activation-contract-status: BLOCKED_REQUIRES_SHARED_VERSION_LOCK
+x-additional-page-status: APPROVED_CUMULATIVE_THREE_WITH_SIGNED_CURSOR
+x-item-exit-policy: RATING_COMPLETED_OR_EXPLICIT_NOT_INTERESTED
+x-cumulative-collection-boundary:
+  initialCount: 3
+  appendPageSize: 3
+  activeItemMaximum: 500
+  appendDoesNotReplaceExisting: true
+  reentryRestoresServerActiveItems: true
+  cursorBinding: actor deliveryId expectedRevision typedVersions scanOffset expiry
+  staleBehavior: HTTP_409_COLLECTION_UNCHANGED
+x-internal-ranking-boundary:
+  request: ACTIVE_CANDIDATE_STORE_FIRST_MIN_500_TOTAL_EXACT_SET
+  response: SAME_UUID_SET_EXACTLY_ONCE_SOURCE_RANK_1_TO_N
+  contractDrift: PUBLIC_503
+x-delivery-snapshot-boundary:
+  mappingVersionColumn: RECOMMENDATION_DELIVERY_BATCH.mapping_version
+  mappingVersionType: non-empty versioned identifier
+  reuseKeyIncludes: [mappingVersion]
+  staleWhen: current active C2A mapping version differs from stored mapping_version
+  publicExposure: forbidden
+x-catalog-linearization-boundary:
+  versionRow: CATALOG_DISCOVERY_ELIGIBILITY_VERSION singleton
+  lockOrder: catalog FOR SHARE then actor eligibility FOR SHARE
+  c0Mutation: catalog activation/UI_READY mutation uses FOR UPDATE and increments version in the same transaction
+  c2bFinalCheck: double-read both versions and hold both shared locks through delivery or exposure commit
+  commitOrder: C0-first observes new Catalog; C2B-first commits current result and later C0 increment makes next GET/exposure stale
+  unavailableBehavior: public 503; stale success forbidden
+x-idempotent-wire-replay-boundary:
+  storedResult: canonical domain payload only; excludes HTTP status and replayed transport flag
+  original: HTTP 201 with replayed=false
+  replay: HTTP 200 with replayed=true and all stored domain fields byte-equivalent after canonical JSON serialization
+  conflict: same key or body event ID with canonical body drift returns 409 without mutation
+x-projector-late-action-boundary:
+  inbox: every C1 source event is first claimed in one immutable inbox; it may retain PENDING_ACTION before a recommendation action exists
+  trigger: CREATED OTT action commit enqueues exact behaviorEvent/watch chain reconciliation
+  ordering: stage rank ascending, source revision ascending nulls first, server occurredAt ascending, sourceEventId ascending
+  replay: same event ID and payload is noop; payload drift is dead-letter; reconciliation is repeatable to the same projection
+  pendingRetention: event server time plus 90d candidate, then terminal EXPIRED_UNATTRIBUTED with no later backfill
+  noGuessing: ACTIVE_REUSED/ALREADY_WATCHED and unrelated historical WatchIntent chains are never backfilled
+
+paths:
+  /api/v1/me/recommendations/personal-discovery:
+    get:
+      tags: [PersonalDiscovery]
+      operationId: getMyPersonalDiscoveryRecommendations
+      summary: 최초 생성 또는 기존 active 추천 collection 전체 조회
+      x-implementation-status: AUTHORIZED_LOCAL_CONTRACT
+      x-prepared-replay-revalidation: CATALOG_AND_C1_SHARED_LOCK_DOUBLE_CHECK_THROUGH_COMMIT
+      x-production-decision-required: [DN-C2B-001, DN-C2B-003, DN-C2B-004, DN-C2B-006]
+      responses:
+        '200':
+          description: 최초에는 최대 3편, 재진입에는 누적 active item 전체. 현재 label/composition은 baseline뿐이다.
+          headers:
+            Cache-Control:
+              description: active collection과 cursor는 브라우저·공유 cache에 저장하지 않으며 directive 순서는 의미 없다.
+              schema: {type: string}
+              example: 'no-store, private'
+          content:
+            application/json:
+              schema: {$ref: '#/components/schemas/RecommendationDelivery'}
+        '401': {$ref: '#/components/responses/Unauthorized'}
+        '503': {$ref: '#/components/responses/ServiceUnavailable'}
+
+  /api/v1/me/recommendation-deliveries/{deliveryId}/append:
+    post:
+      tags: [PersonalDiscovery]
+      operationId: appendMyPersonalDiscoveryRecommendations
+      summary: 기존 collection 뒤에 최대 3편을 누적
+      x-implementation-status: AUTHORIZED_LOCAL_CONTRACT
+      x-idempotency-semantics: SORTED_HEADER_BODY_ADVISORY_LOCK_ONE_TX_SAFE_RESULT
+      x-wire-result: ORIGINAL_201_REPLAY_200_DOMAIN_PAYLOAD_IDENTICAL_REPLAY_FLAG_TRANSPORT_DERIVED
+      x-existing-items: PRESERVED_STABLE_SEQUENCE
+      x-production-decision-required: [DN-C2B-001, DN-C2B-004, DN-C2B-006]
+      parameters:
+        - $ref: '#/components/parameters/DeliveryId'
+        - $ref: '#/components/parameters/IdempotencyKey'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: {$ref: '#/components/schemas/AppendRecommendationsRequest'}
+      responses:
+        '201':
+          description: 새 append page commit
+          content:
+            application/json:
+              schema: {$ref: '#/components/schemas/RecommendationAppendCreated'}
+        '200':
+          description: same canonical append result replay
+          content:
+            application/json:
+              schema: {$ref: '#/components/schemas/RecommendationAppendReplay'}
+        '400': {$ref: '#/components/responses/ValidationError'}
+        '401': {$ref: '#/components/responses/Unauthorized'}
+        '404': {$ref: '#/components/responses/NotFound'}
+        '409': {$ref: '#/components/responses/Conflict'}
+        '503': {$ref: '#/components/responses/ServiceUnavailable'}
+
+  /api/v1/me/recommendation-delivery-items/{deliveryItemId}/dismissals:
+    post:
+      tags: [PersonalDiscovery]
+      operationId: dismissMyRecommendationAsNotInterested
+      summary: 명시적 관심 없음으로 한 추천 item 종료
+      description: Rating·무반응·감상 완료를 대신 기록하지 않으며 reason은 NOT_INTERESTED 고정이다.
+      x-implementation-status: AUTHORIZED_LOCAL_CONTRACT
+      x-idempotency-semantics: SORTED_HEADER_BODY_ADVISORY_LOCK_ONE_TX_SAFE_RESULT
+      x-wire-result: ORIGINAL_201_REPLAY_200_DOMAIN_PAYLOAD_IDENTICAL_REPLAY_FLAG_TRANSPORT_DERIVED
+      x-production-decision-required: [DN-C2B-006]
+      parameters:
+        - $ref: '#/components/parameters/DeliveryItemId'
+        - $ref: '#/components/parameters/IdempotencyKey'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: {$ref: '#/components/schemas/DismissRecommendationRequest'}
+      responses:
+        '201':
+          description: 새 관심 없음 event와 item 종료 commit
+          content:
+            application/json:
+              schema: {$ref: '#/components/schemas/RecommendationDismissalCreated'}
+        '200':
+          description: same canonical dismissal replay
+          content:
+            application/json:
+              schema: {$ref: '#/components/schemas/RecommendationDismissalReplay'}
+        '400': {$ref: '#/components/responses/ValidationError'}
+        '401': {$ref: '#/components/responses/Unauthorized'}
+        '404': {$ref: '#/components/responses/NotFound'}
+        '409': {$ref: '#/components/responses/Conflict'}
+        '503': {$ref: '#/components/responses/ServiceUnavailable'}
+
+  /api/v1/me/recommendation-deliveries/{deliveryId}/exposures:
+    post:
+      tags: [RecommendationExposure]
+      operationId: commitMyRecommendationExposure
+      summary: 실제 render된 delivery item만 exposure로 원자 commit
+      x-implementation-status: BLOCKED
+      x-idempotency-semantics: SORTED_HEADER_BODY_ADVISORY_LOCK_ONE_TX_SAFE_RESULT
+      x-wire-result: ORIGINAL_201_REPLAY_200_DOMAIN_PAYLOAD_IDENTICAL_REPLAY_FLAG_TRANSPORT_DERIVED
+      x-decision-required: [DN-C2B-001, DN-C2B-002, DN-C2B-006]
+      parameters:
+        - $ref: '#/components/parameters/DeliveryId'
+        - $ref: '#/components/parameters/IdempotencyKey'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: {$ref: '#/components/schemas/CommitExposureRequest'}
+      responses:
+        '201':
+          description: 새 exposure batch/item commit
+          content:
+            application/json:
+              schema: {$ref: '#/components/schemas/ExposureCommitCreated'}
+        '200':
+          description: 같은 key 또는 다른 key+같은 exposureBatchId의 same canonical domain result replay
+          content:
+            application/json:
+              schema: {$ref: '#/components/schemas/ExposureCommitReplay'}
+        '400': {$ref: '#/components/responses/ValidationError'}
+        '401': {$ref: '#/components/responses/Unauthorized'}
+        '404': {$ref: '#/components/responses/NotFound'}
+        '409': {$ref: '#/components/responses/Conflict'}
+        '503': {$ref: '#/components/responses/ServiceUnavailable'}
+
+  /api/v1/me/recommendation-items/{recommendationItemId}/actions:
+    post:
+      tags: [RecommendationAttribution]
+      operationId: recordMyRecommendationAction
+      summary: 상세·OTT action을 owner recommendation item에 직접 연결
+      description: OTT action은 C1 current click behaviorEventId 계약이 추가되기 전 BLOCKED다.
+      x-implementation-status: BLOCKED
+      x-transaction-boundary: C1_CLICK_COMMITTED_FIRST_C2B_ACTION_SEPARATE
+      x-idempotency-semantics: SORTED_HEADER_BODY_ADVISORY_LOCK_ONE_TX_SAFE_RESULT
+      x-wire-result: ORIGINAL_201_REPLAY_200_DOMAIN_PAYLOAD_IDENTICAL_REPLAY_FLAG_TRANSPORT_DERIVED
+      x-action-cardinality: RECOMMENDATION_ITEM_ZERO_TO_MANY_ACTIONS
+      x-projection-winner: STAGE_DESC_SERVER_OCCURRED_AT_ASC_ACTION_EVENT_ID_ASC
+      x-decision-required: [DN-C2B-005, DN-C2B-006]
+      parameters:
+        - $ref: '#/components/parameters/RecommendationItemId'
+        - $ref: '#/components/parameters/IdempotencyKey'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: {$ref: '#/components/schemas/RecordRecommendationActionRequest'}
+      responses:
+        '201':
+          description: 새 action record
+          content:
+            application/json:
+              schema: {$ref: '#/components/schemas/RecommendationActionCreated'}
+        '200':
+          description: 같은 key 또는 다른 key+같은 actionEventId의 exact canonical domain result replay
+          content:
+            application/json:
+              schema: {$ref: '#/components/schemas/RecommendationActionReplay'}
+        '400': {$ref: '#/components/responses/ValidationError'}
+        '401': {$ref: '#/components/responses/Unauthorized'}
+        '404': {$ref: '#/components/responses/NotFound'}
+        '409': {$ref: '#/components/responses/Conflict'}
+        '503': {$ref: '#/components/responses/ServiceUnavailable'}
+
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+
+  parameters:
+    DeliveryId:
+      name: deliveryId
+      in: path
+      required: true
+      schema: {type: string, format: uuid}
+    RecommendationItemId:
+      name: recommendationItemId
+      in: path
+      required: true
+      schema: {type: string, format: uuid}
+    DeliveryItemId:
+      name: deliveryItemId
+      in: path
+      required: true
+      schema: {type: string, format: uuid}
+    IdempotencyKey:
+      name: Idempotency-Key
+      in: header
+      required: true
+      schema: {type: string, format: uuid}
+
+  schemas:
+    RecommendationDelivery:
+      type: object
+      additionalProperties: false
+      required: [deliveryId, deliveryRevision, label, composition, items, pageInfo]
+      properties:
+        deliveryId: {type: string, format: uuid}
+        deliveryRevision: {type: integer, minimum: 1}
+        label:
+          type: string
+          enum: [POPULARITY_BASELINE]
+          description: 표시 문구는 `인기 기준 추천`. 개인화 label은 승인 전 schema에 없다.
+        composition:
+          type: string
+          enum: [BASELINE_THREE]
+          description: REC-EV-013 v1 selected:null. TWO_PERSONAL_ONE_DISCOVERY는 새 evidence 전 차단.
+        items:
+          type: array
+          minItems: 0
+          maxItems: 500
+          description: ACTIVE item만 immutable sequencePosition 오름차순. 평가 완료·관심 없음·Catalog 퇴역 item은 제외.
+          items: {$ref: '#/components/schemas/DeliveryItem'}
+        pageInfo: {$ref: '#/components/schemas/RecommendationPageInfo'}
+
+    RecommendationPageInfo:
+      type: object
+      additionalProperties: false
+      required: [activeItemCount, hasMore, nextCursor, cursorExpiresAt]
+      properties:
+        activeItemCount: {type: integer, minimum: 0, maximum: 500}
+        hasMore: {type: boolean}
+        nextCursor:
+          type: [string, 'null']
+          description: actor/delivery/revision/typed versions/scan offset/expiry에 바인딩된 opaque signed cursor
+        cursorExpiresAt: {type: [string, 'null'], format: date-time}
+      allOf:
+        - if:
+            properties: {hasMore: {const: true}}
+            required: [hasMore]
+          then:
+            required: [nextCursor, cursorExpiresAt]
+            properties:
+              nextCursor: {type: string, minLength: 32}
+              cursorExpiresAt: {type: string, format: date-time}
+        - if:
+            properties: {hasMore: {const: false}}
+            required: [hasMore]
+          then:
+            properties:
+              nextCursor: {type: 'null'}
+              cursorExpiresAt: {type: 'null'}
+
+    SelectionSummary:
+      type: object
+      additionalProperties: false
+      description: page scoped. scannedCount=selectedCount+excludedCount, selectedCount=appendedItems.length, excludedCount=sum(issues.count).
+      required: [scannedCount, selectedCount, excludedCount]
+      properties:
+        scannedCount: {type: integer, minimum: 0, maximum: 500}
+        selectedCount: {type: integer, minimum: 0, maximum: 3}
+        excludedCount: {type: integer, minimum: 0, maximum: 500}
+
+    DeliveryItem:
+      type: object
+      additionalProperties: false
+      required: [deliveryItemId, position, sourceRank, recommendationType, movie]
+      properties:
+        deliveryItemId: {type: string, format: uuid}
+        position: {type: integer, minimum: 1, maximum: 500, description: append 당시 고정된 collection sequence position}
+        sourceRank: {type: integer, minimum: 1, maximum: 500}
+        recommendationType: {type: string, enum: [POPULARITY_BASELINE]}
+        movie: {$ref: '#/components/schemas/MovieCard'}
+
+    MovieCard:
+      type: object
+      additionalProperties: false
+      required: [movieId, title, posterUrl, releaseYear, genres]
+      properties:
+        movieId: {type: string, format: uuid}
+        title: {type: string, minLength: 1}
+        posterUrl: {type: [string, 'null'], format: uri}
+        releaseYear: {type: [integer, 'null'], minimum: 1870, maximum: 2100}
+        genres:
+          type: array
+          items: {type: string, minLength: 1}
+
+    SafeIssue:
+      type: object
+      additionalProperties: false
+      required: [code, count, retriable]
+      x-code-contract:
+        CANDIDATE_NOT_UI_READY: {retriable: false, countMinimum: 1}
+        CANDIDATE_ALREADY_RATED: {retriable: false, countMinimum: 1}
+        CANDIDATE_ALREADY_SEEN: {retriable: false, countMinimum: 1}
+      properties:
+        code:
+          type: string
+          enum:
+            - CANDIDATE_NOT_UI_READY
+            - CANDIDATE_ALREADY_RATED
+            - CANDIDATE_ALREADY_SEEN
+          description: candidate당 exact one. precedence는 나열 순서이며 upstream set/rank drift는 503이다.
+        count: {type: integer, minimum: 1}
+        retriable: {type: boolean, const: false}
+
+    AppendRecommendationsRequest:
+      type: object
+      additionalProperties: false
+      required: [appendEventId, expectedRevision, cursor]
+      properties:
+        appendEventId: {type: string, format: uuid}
+        expectedRevision: {type: integer, minimum: 1}
+        cursor:
+          type: string
+          minLength: 32
+          description: opaque signed cursor. URL/query/log/analytics에 넣지 않는다.
+
+    RecommendationAppend:
+      type: object
+      additionalProperties: false
+      required: [appendEventId, deliveryId, deliveryRevision, outcome, selectionSummary, appendedItems, issues, pageInfo, replayed]
+      x-arithmetic-invariants:
+        - selectionSummary.scannedCount = selectionSummary.selectedCount + selectionSummary.excludedCount
+        - selectionSummary.selectedCount = count(appendedItems)
+        - selectionSummary.excludedCount = sum(issues[*].count)
+      properties:
+        appendEventId: {type: string, format: uuid}
+        deliveryId: {type: string, format: uuid}
+        deliveryRevision: {type: integer, minimum: 1}
+        outcome: {type: string, enum: [COMPLETE, PARTIAL, EMPTY]}
+        selectionSummary: {$ref: '#/components/schemas/SelectionSummary'}
+        appendedItems:
+          type: array
+          minItems: 0
+          maxItems: 3
+          items: {$ref: '#/components/schemas/DeliveryItem'}
+        issues:
+          type: array
+          maxItems: 3
+          uniqueItems: true
+          x-unique-by: code
+          items: {$ref: '#/components/schemas/SafeIssue'}
+        pageInfo: {$ref: '#/components/schemas/RecommendationPageInfo'}
+        replayed: {type: boolean}
+      allOf:
+        - if:
+            properties: {outcome: {const: COMPLETE}}
+            required: [outcome]
+          then:
+            properties: {appendedItems: {type: array, minItems: 3, maxItems: 3}}
+        - if:
+            properties: {outcome: {const: PARTIAL}}
+            required: [outcome]
+          then:
+            properties: {appendedItems: {type: array, minItems: 1, maxItems: 2}}
+        - if:
+            properties: {outcome: {const: EMPTY}}
+            required: [outcome]
+          then:
+            properties: {appendedItems: {type: array, maxItems: 0}}
+
+    RecommendationAppendCreated:
+      allOf:
+        - $ref: '#/components/schemas/RecommendationAppend'
+        - type: object
+          properties: {replayed: {const: false}}
+
+    RecommendationAppendReplay:
+      allOf:
+        - $ref: '#/components/schemas/RecommendationAppend'
+        - type: object
+          properties: {replayed: {const: true}}
+
+    DismissRecommendationRequest:
+      type: object
+      additionalProperties: false
+      required: [dismissalEventId, expectedRevision, reason]
+      properties:
+        dismissalEventId: {type: string, format: uuid}
+        expectedRevision: {type: integer, minimum: 1}
+        reason: {type: string, const: NOT_INTERESTED}
+
+    RecommendationDismissal:
+      type: object
+      additionalProperties: false
+      required: [dismissalEventId, deliveryItemId, deliveryRevision, status, occurredAt, replayed]
+      properties:
+        dismissalEventId: {type: string, format: uuid}
+        deliveryItemId: {type: string, format: uuid}
+        deliveryRevision: {type: integer, minimum: 1}
+        status: {type: string, const: DISMISSED_NOT_INTERESTED}
+        occurredAt: {type: string, format: date-time}
+        replayed: {type: boolean}
+
+    RecommendationDismissalCreated:
+      allOf:
+        - $ref: '#/components/schemas/RecommendationDismissal'
+        - type: object
+          properties: {replayed: {const: false}}
+
+    RecommendationDismissalReplay:
+      allOf:
+        - $ref: '#/components/schemas/RecommendationDismissal'
+        - type: object
+          properties: {replayed: {const: true}}
+
+    CommitExposureRequest:
+      type: object
+      additionalProperties: false
+      required: [exposureBatchId, items]
+      properties:
+        exposureBatchId: {type: string, format: uuid}
+        items:
+          type: array
+          minItems: 1
+          maxItems: 3
+          x-unique-by: deliveryItemId
+          x-unique-position-by: position
+          x-contiguous-position-sequence: {start: 1, arrayOrderEqualsPosition: true, gaps: forbidden}
+          items:
+            type: object
+            additionalProperties: false
+            required: [deliveryItemId, position]
+            properties:
+              deliveryItemId: {type: string, format: uuid}
+              position: {type: integer, minimum: 1, maximum: 3}
+
+    ExposureCommit:
+      type: object
+      additionalProperties: false
+      required: [exposureBatchId, exposedAt, replayed, items]
+      properties:
+        exposureBatchId: {type: string, format: uuid}
+        exposedAt: {type: string, format: date-time, description: DB clock으로 기록된 실제 노출 시각}
+        replayed: {type: boolean}
+        items:
+          type: array
+          minItems: 1
+          maxItems: 3
+          x-unique-by: recommendationItemId
+          x-unique-position-by: position
+          x-contiguous-position-sequence: {start: 1, arrayOrderEqualsPosition: true, gaps: forbidden}
+          items:
+            type: object
+            additionalProperties: false
+            required: [recommendationItemId, movieId, position]
+            properties:
+              recommendationItemId: {type: string, format: uuid}
+              movieId: {type: string, format: uuid}
+              position: {type: integer, minimum: 1, maximum: 3}
+
+    ExposureCommitCreated:
+      allOf:
+        - $ref: '#/components/schemas/ExposureCommit'
+        - type: object
+          properties: {replayed: {const: false}}
+
+    ExposureCommitReplay:
+      allOf:
+        - $ref: '#/components/schemas/ExposureCommit'
+        - type: object
+          properties: {replayed: {const: true}}
+
+    RecordRecommendationActionRequest:
+      type: object
+      additionalProperties: false
+      required: [actionEventId, actionType]
+      properties:
+        actionEventId: {type: string, format: uuid}
+        actionType: {type: string, enum: [DETAIL_OPENED, OTT_OPTION_OPENED]}
+        c1ClickEventId:
+          type: string
+          format: uuid
+          description: C1 계약 보완 뒤 이번 click에 발급되는 behaviorEventId. client timestamp는 받지 않는다.
+      allOf:
+        - if:
+            properties:
+              actionType: {const: OTT_OPTION_OPENED}
+            required: [actionType]
+          then:
+            properties:
+              c1ClickEventId: {type: string, format: uuid}
+            required: [c1ClickEventId]
+        - if:
+            properties:
+              actionType: {const: DETAIL_OPENED}
+            required: [actionType]
+          then:
+            properties:
+              c1ClickEventId: false
+
+    RecommendationAction:
+      type: object
+      additionalProperties: false
+      required: [actionEventId, recommendationItemId, actionType, occurredAt, attributionStatus, replayed]
+      properties:
+        actionEventId: {type: string, format: uuid}
+        recommendationItemId: {type: string, format: uuid}
+        actionType: {type: string, enum: [DETAIL_OPENED, OTT_OPTION_OPENED]}
+        occurredAt: {type: string, format: date-time}
+        attributionStatus:
+          type: string
+          enum: [DIRECT_DETAIL, DIRECT_CLICK_CREATED_INTENT, DIRECT_CLICK_REUSED_INTENT, DIRECT_CLICK_ALREADY_WATCHED]
+        replayed: {type: boolean}
+
+    RecommendationActionCreated:
+      allOf:
+        - $ref: '#/components/schemas/RecommendationAction'
+        - type: object
+          properties: {replayed: {const: false}}
+
+    RecommendationActionReplay:
+      allOf:
+        - $ref: '#/components/schemas/RecommendationAction'
+        - type: object
+          properties: {replayed: {const: true}}
+
+    ErrorResponse:
+      type: object
+      additionalProperties: false
+      required: [timestamp, status, code, message, path, traceId, retriable]
+      properties:
+        timestamp: {type: string, format: date-time}
+        status: {type: integer}
+        code: {type: string}
+        message: {type: string}
+        path:
+          type: string
+          description: raw UUID/query를 포함하지 않는 route template만 반환한다.
+          enum:
+            - /api/v1/me/recommendations/personal-discovery
+            - /api/v1/me/recommendation-deliveries/{deliveryId}/append
+            - /api/v1/me/recommendation-deliveries/{deliveryId}/exposures
+            - /api/v1/me/recommendation-delivery-items/{deliveryItemId}/dismissals
+            - /api/v1/me/recommendation-items/{recommendationItemId}/actions
+            - UNMATCHED_ROUTE_TEMPLATE
+        traceId: {type: string}
+        retriable: {type: boolean}
+
+  responses:
+    ValidationError:
+      description: invalid body, UUID, signed cursor shape, timestamp, non-contiguous exposure position
+      content:
+        application/json:
+          schema: {$ref: '#/components/schemas/ErrorResponse'}
+    Unauthorized:
+      description: required bearer missing or invalid
+      content:
+        application/json:
+          schema: {$ref: '#/components/schemas/ErrorResponse'}
+    NotFound:
+      description: missing or cross-owner resource; existence hidden
+      content:
+        application/json:
+          schema: {$ref: '#/components/schemas/ErrorResponse'}
+    Conflict:
+      description: stale cursor/revision without collection deletion, idempotency reuse, action/resource mismatch
+      content:
+        application/json:
+          schema: {$ref: '#/components/schemas/ErrorResponse'}
+    ServiceUnavailable:
+      description: recommender, artifact, candidate, database unavailable; stale success disabled
+      content:
+        application/json:
+          schema: {$ref: '#/components/schemas/ErrorResponse'}

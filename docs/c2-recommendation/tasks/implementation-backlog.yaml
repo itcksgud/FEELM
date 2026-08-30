@@ -1,0 +1,141 @@
+schema_version: 1
+status: APPROVED_C2A_INTERNAL_POPULARITY_ONLY
+scope: C2_RECOMMENDATION_SERVING
+merge_gate: APPROVAL_AND_MAIN_OPENAPI_MERGE_REQUIRED
+tasks:
+  - id: TASK-C2-001
+    title: Approve C2 internal contract baseline
+    status: DONE
+    depends_on: []
+    owns:
+      - docs/c2-recommendation/**
+    acceptance: [AC-C2-001, AC-C2-027, AC-C2-030]
+    tests: [TEST-API-C2-CONTRACT, TEST-SEC-C2]
+
+  - id: TASK-C2-002
+    title: Export and validate a complete serving artifact set
+    status: DONE
+    depends_on: [TASK-C2-001]
+    owns:
+      - recommender artifact export only
+    acceptance: [AC-C2-006, AC-C2-007, AC-C2-008, AC-C2-009]
+    tests: [TEST-REC-C2-CORE]
+
+  - id: TASK-C2-003
+    title: Implement FastAPI lifecycle and atomic artifact readiness
+    status: DONE
+    depends_on: [TASK-C2-002]
+    owns:
+      - recommender FastAPI lifecycle
+    acceptance: [AC-C2-006, AC-C2-007, AC-C2-009, AC-C2-010]
+    tests: [TEST-API-C2-CONTRACT, TEST-REC-C2-CORE]
+
+  - id: TASK-C2-004
+    title: Implement service-UUID rank endpoint and partial issues
+    status: DONE
+    depends_on: [TASK-C2-003]
+    owns:
+      - recommender internal API
+    acceptance: [AC-C2-001, AC-C2-002, AC-C2-003, AC-C2-004, AC-C2-005, AC-C2-011, AC-C2-018, AC-C2-019]
+    tests: [TEST-API-C2-CONTRACT, TEST-REC-C2-CORE]
+
+  - id: TASK-C2-005
+    title: Add explicitly gated expected-star response
+    status: BLOCKED_BY_DN_C2_008_PAIRED_ARTIFACT
+    depends_on: [TASK-C2-004]
+    decision_gates: [DN-C2-001, DN-C2-002, DN-C2-008]
+    evidence:
+      - docs/recommendation/evidence/REC-EV-003C-rating-scale-alignment.md
+    required_exporter: feelm-recommender export-product-scale-validation
+    owns:
+      - recommender star serving adapter
+    acceptance: [AC-C2-012, AC-C2-013, AC-C2-014, AC-C2-015, AC-C2-020, AC-C2-032]
+    tests: [TEST-API-C2-CONTRACT, TEST-REC-C2-CORE]
+
+  - id: TASK-C2-006
+    title: Define batch candidate producer artifact and serving-store retention
+    status: DONE
+    depends_on: [TASK-C2-001]
+    owns:
+      - recommender candidate artifact exporter
+      - recommender local candidate serving store
+    acceptance: [AC-C2-002, AC-C2-018, AC-C2-019, AC-C2-033, AC-C2-034, AC-C2-035, AC-C2-036, AC-C2-037]
+    tests: [TEST-REC-C2-CORE]
+
+  - id: TASK-C2-007
+    title: Implement Spring recommender client and Catalog revalidation
+    status: DONE
+    depends_on: [TASK-C2-004, TASK-C2-006]
+    owns:
+      - backend recommendation adapter
+    acceptance: [AC-C2-021, AC-C2-027, AC-C2-030]
+    tests: [TEST-BE-C2-ADAPTER, TEST-SEC-C2]
+
+  - id: TASK-C2-008
+    title: Implement C1 outbox input snapshot projection
+    status: DONE
+    depends_on: [TASK-C2-001]
+    owns:
+      - backend C1 outbox consumer
+    acceptance: [AC-C2-022, AC-C2-023, AC-C2-024, AC-C2-025, AC-C2-026]
+    tests: [TEST-BE-C2-OUTBOX]
+
+  - id: TASK-C2-009
+    title: Persist recommendation exposure and version snapshots
+    status: DONE
+    depends_on: [TASK-C2-007, TASK-C2-008]
+    owns:
+      - backend recommendation snapshots
+    acceptance: [AC-C2-027, AC-C2-028, AC-C2-029]
+    tests: [TEST-BE-C2-SNAPSHOT]
+    evidence:
+      - backend/src/main/resources/db/migration/V5__c2_recommendation_exposure_snapshot.sql
+      - backend/src/test/java/com/feelm/catalog/c2/recommendation/RecommendationExposurePostgresIntegrationTest.java
+      - docs/c2-recommendation/data/recommendation-exposure-schema.md
+
+  - id: TASK-C2-010
+    title: Implement structured reason code without UI count decision
+    status: BLOCKED_BY_DECISION
+    depends_on: [TASK-C2-004]
+    decision_gates: [DN-C2-003]
+    owns:
+      - recommender reason adapter
+      - backend reason localization adapter
+    acceptance: [AC-C2-016, AC-C2-017]
+    tests: [TEST-API-C2-CONTRACT]
+
+  - id: TASK-C2-011
+    title: Benchmark Fold-in and select timeout/freshness values
+    status: DONE_LOCAL_PROVISIONAL
+    depends_on: [TASK-C2-004, TASK-C2-008]
+    decision_gates: [DN-C2-005]
+    owns:
+      - performance/results
+      - docs/recommendation/evidence/REC-EV-007-fold-in-benchmark.md
+    acceptance: [AC-C2-021, AC-C2-022]
+    tests: [TEST-PERF-C2]
+    evidence:
+      - docs/recommendation/evidence/REC-EV-007-fold-in-benchmark.md
+    selected_local_values:
+      spring_outbound_timeout_ms: 750
+      active_rating_snapshot_healthy_path_target_ms: 3000
+      production_validation_required: true
+
+  - id: TASK-C2-012
+    title: Merge approved C2 fragment and implement public vertical slice
+    status: BLOCKED_BY_APPROVAL
+    depends_on: [TASK-C2-005, TASK-C2-007, TASK-C2-009, TASK-C2-010, TASK-C2-011]
+    decision_gates: [DN-C2-001, DN-C2-002, DN-C2-003, DN-C2-004, DN-C2-005, DN-C2-008]
+    owns:
+      - docs/api/openapi.yaml
+      - backend public recommendation API
+    acceptance: [AC-C2-001, AC-C2-011, AC-C2-021, AC-C2-027, AC-C2-030, AC-C2-031]
+    tests: [TEST-API-C2-CONTRACT, TEST-BE-C2-ADAPTER, TEST-BE-C2-SNAPSHOT, TEST-SEC-C2]
+
+deferred:
+  - id: TASK-C2-EXPLORE
+    gate: DN-C2-006
+    reason: Exploration loss budget and 2+1 product composition are not approved.
+  - id: TASK-C2-PARTY
+    gate: DN-C2-007
+    reason: Party fairness aggregation is not approved.

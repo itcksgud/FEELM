@@ -1,0 +1,26 @@
+{
+  "name": "feelm-catalog-e2e",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "install:browsers": "playwright install chromium",
+    "test": "playwright test",
+    "test:c0": "playwright test tests/catalog.spec.ts",
+    "test:c1": "playwright test tests/c1-rating-film.spec.ts",
+    "test:c2b": "playwright test --config playwright.c2b.config.ts",
+    "test:local-mvp": "playwright test --config local-mvp/playwright.config.ts",
+    "test:evidence:rec-ev-008": "playwright test --config playwright.evidence.config.ts",
+    "test:list": "playwright test --list",
+    "test:headed": "playwright test --headed",
+    "test:ui": "playwright test --ui",
+    "report": "playwright show-report"
+  },
+  "devDependencies": {
+    "@playwright/test": "1.62.1"
+  },
+  "engines": {
+    "node": ">=22 <23",
+    "npm": ">=10.9.2 <12"
+  }
+}

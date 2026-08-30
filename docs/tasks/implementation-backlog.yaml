@@ -1,0 +1,229 @@
+schema_version: 1
+project: FEELM-standalone
+contract_slice: C0-CATALOG
+status: APPROVED
+rules:
+  one_task_per_change: true
+  pick_only_when_dependencies_done: true
+  update_traceability_and_docs: true
+tasks:
+  - id: TASK-CAT-001
+    title: Catalog 계약 도구와 추적성 검증
+    status: DONE
+    depends_on: []
+    requirement_ids: [FR-08, FR-11, FR-14, FR-15, FR-16]
+    input_docs:
+      - docs/planning/llm-autonomous-development-readiness.md
+    outputs:
+      - docs/api/openapi.yaml
+      - docs/traceability/requirements.csv
+      - scripts/validate_contracts.py
+      - package.json
+    acceptance_ids: []
+    verify:
+      - npm run contracts:check
+      - npm run openapi:lint
+
+  - id: TASK-CAT-002
+    title: Spring Catalog backend와 local PostgreSQL 실행 골격
+    status: DONE
+    depends_on: [TASK-CAT-001]
+    requirement_ids: [NFR-05, NFR-07]
+    input_docs:
+      - docs/architecture/system-design.md
+      - docs/data/logical-erd.md
+      - docs/runbook/local-development.md
+    outputs:
+      - backend Spring project
+      - PostgreSQL Docker Compose
+      - health check
+      - fake auth profile
+    acceptance_ids: [AC-CAT-038, AC-CAT-043]
+    verify:
+      - docker compose config
+      - ./gradlew.bat -p backend test
+
+  - id: TASK-CAT-003
+    title: Catalog migration과 고정 fixture import
+    status: DONE
+    depends_on: [TASK-CAT-002]
+    requirement_ids: [DATA-CAT-001]
+    input_docs:
+      - docs/data/logical-erd.md
+      - docs/data/data-dictionary.md
+      - docs/testing/fixtures.md
+    outputs:
+      - versioned DB migration
+      - test fixture loader
+      - active catalog version
+    acceptance_ids: [AC-CAT-011, AC-CAT-012, AC-CAT-016, AC-CAT-039, AC-CAT-040]
+    verify:
+      - ./gradlew.bat -p backend test
+
+  - id: TASK-CAT-004
+    title: 영화 검색·filter·facet API
+    status: DONE
+    depends_on: [TASK-CAT-003]
+    requirement_ids: [FR-14, FR-15]
+    input_docs:
+      - docs/api/openapi.yaml
+      - docs/spec/02-business-rules.md
+    outputs:
+      - searchMovies
+      - listGenres
+      - listCountries
+      - listOttProviders
+      - stable cursor
+    acceptance_ids: [AC-CAT-001, AC-CAT-002, AC-CAT-003, AC-CAT-004, AC-CAT-005, AC-CAT-006, AC-CAT-007, AC-CAT-008, AC-CAT-009, AC-CAT-010, AC-CAT-033, AC-CAT-034, AC-CAT-035, AC-CAT-036]
+    verify:
+      - ./gradlew.bat -p backend test
+      - npm run openapi:lint
+
+  - id: TASK-CAT-005
+    title: 영화 상세·현지화 fallback API
+    status: DONE
+    depends_on: [TASK-CAT-003]
+    requirement_ids: [FR-08]
+    input_docs:
+      - docs/api/openapi.yaml
+      - docs/spec/01-glossary-and-policies.md
+    outputs:
+      - getMovie
+      - localization projection
+      - credit projection
+    acceptance_ids: [AC-CAT-011, AC-CAT-012, AC-CAT-013, AC-CAT-014, AC-CAT-015, AC-CAT-016, AC-CAT-017]
+    verify:
+      - ./gradlew.bat -p backend test
+
+  - id: TASK-CAT-006
+    title: KR OTT availability·구독 우선 정렬 API
+    status: DONE
+    depends_on: [TASK-CAT-003]
+    requirement_ids: [FR-16]
+    input_docs:
+      - docs/data/catalog-ingestion-contract.md
+      - docs/spec/03-state-machines.md
+    outputs:
+      - getMovieOttOffers
+      - availability state projection
+      - fake subscription adapter
+    acceptance_ids: [AC-CAT-018, AC-CAT-019, AC-CAT-020, AC-CAT-021, AC-CAT-022, AC-CAT-023, AC-CAT-024, AC-CAT-025, AC-CAT-026, AC-CAT-027]
+    verify:
+      - ./gradlew.bat -p backend test
+
+  - id: TASK-CAT-007
+    title: Versioned 유사 영화 API
+    status: DONE
+    depends_on: [TASK-CAT-003, TASK-CAT-005]
+    requirement_ids: [FR-11]
+    input_docs:
+      - docs/api/openapi.yaml
+      - docs/research/movielens-recommendation-evaluation-design.md
+    outputs:
+      - similarity fixture import
+      - getSimilarMovies
+      - structured reasons
+    acceptance_ids: [AC-CAT-028, AC-CAT-029, AC-CAT-030, AC-CAT-031, AC-CAT-032]
+    verify:
+      - ./gradlew.bat -p backend test
+
+  - id: TASK-CAT-008
+    title: Catalog 성능·장애·보안 Gate
+    status: DONE
+    depends_on: [TASK-CAT-004, TASK-CAT-005, TASK-CAT-006, TASK-CAT-007]
+    requirement_ids: [NFR-01, NFR-05, NFR-07]
+    input_docs:
+      - docs/testing/acceptance-tests.md
+      - docs/architecture/system-design.md
+    outputs:
+      - performance test
+      - failure integration test
+      - log secret scan
+    acceptance_ids: [AC-CAT-037, AC-CAT-038, AC-CAT-039, AC-CAT-040, AC-CAT-041, AC-CAT-042, AC-CAT-043, AC-CAT-044]
+    verify:
+      - ./gradlew.bat -p backend test
+
+  - id: TASK-CAT-009
+    title: React Catalog 검색·filter 화면
+    status: DONE
+    depends_on: [TASK-CAT-001]
+    requirement_ids: [FR-14, FR-15]
+    input_docs:
+      - docs/ui/screen-contracts.md
+      - docs/ui/navigation-map.md
+      - docs/api/openapi.yaml
+    outputs:
+      - React search home
+      - search results
+      - filter sheet
+      - generated OpenAPI types
+    acceptance_ids: [AC-CAT-045, AC-CAT-046, AC-CAT-047, AC-CAT-049]
+    verify:
+      - npm run test --prefix frontend
+      - npm run build --prefix frontend
+
+  - id: TASK-CAT-010
+    title: React 영화 상세·OTT·유사 영화 화면
+    status: DONE
+    depends_on: [TASK-CAT-009]
+    requirement_ids: [FR-08, FR-11, FR-16]
+    input_docs:
+      - docs/ui/screen-contracts.md
+      - docs/api/openapi.yaml
+    outputs:
+      - movie detail
+      - availability states
+      - similar movie section
+    acceptance_ids: [AC-CAT-047, AC-CAT-048, AC-CAT-049, AC-CAT-050]
+    verify:
+      - npm run test --prefix frontend
+      - npm run build --prefix frontend
+
+  - id: TASK-CAT-011
+    title: Python Catalog normalize artifact 생성
+    status: DONE
+    depends_on: [TASK-CAT-003]
+    requirement_ids: [DATA-CAT-001]
+    input_docs:
+      - docs/data/catalog-ingestion-contract.md
+      - docs/research/movielens-tmdb-data-audit.md
+    outputs:
+      - versioned artifact schema
+      - identity recovery
+      - quality report
+    acceptance_ids: [AC-CAT-016, AC-CAT-039, AC-CAT-043]
+    verify:
+      - py -3.12 -m unittest discover -s data-pipeline/tests
+
+  - id: TASK-CAT-012
+    title: Spring staging import·quality Gate·atomic publish
+    status: DONE
+    depends_on: [TASK-CAT-003, TASK-CAT-011]
+    requirement_ids: [DATA-CAT-001, NFR-05]
+    input_docs:
+      - docs/data/catalog-ingestion-contract.md
+      - docs/data/logical-erd.md
+    outputs:
+      - artifact importer
+      - quality Gate report
+      - version publisher
+    acceptance_ids: [AC-CAT-037, AC-CAT-039, AC-CAT-040]
+    verify:
+      - ./gradlew.bat -p backend test
+
+  - id: TASK-CAT-013
+    title: C0 Catalog blind handoff 채점
+    status: READY
+    depends_on: [TASK-CAT-008, TASK-CAT-010, TASK-CAT-012]
+    requirement_ids: [FR-08, FR-11, FR-14, FR-15, FR-16, NFR-01, NFR-05, NFR-07]
+    input_docs:
+      - docs/planning/llm-autonomous-development-readiness.md
+    outputs:
+      - blind handoff score report
+      - documentation gap report
+      - readiness score update
+    acceptance_ids: [AC-CAT-001, AC-CAT-050]
+    verify:
+      - npm run contracts:check
+      - ./gradlew.bat -p backend test
+      - npm run test --prefix frontend
