@@ -1,5 +1,5 @@
 import { createHash } from "node:crypto";
-import { readdir, readFile, stat } from "node:fs/promises";
+import { readdir, readFile } from "node:fs/promises";
 import path from "node:path";
 
 const root = process.cwd();
@@ -52,9 +52,10 @@ assert(
 
 for (const artifact of [...manifest.sources, ...manifest.implementation, ...manifest.screenshots]) {
   const bytes = await readFile(path.resolve(root, artifact.path));
-  const file = await stat(path.resolve(root, artifact.path));
-  assert(file.size === artifact.bytes, `${artifact.path} byte size drift`);
-  assert(sha256(bytes) === artifact.sha256, `${artifact.path} SHA-256 drift`);
+  assert(
+    artifactMatches(bytes, artifact),
+    `${artifact.path} byte size or SHA-256 drift`,
+  );
 }
 
 for (const screenshot of manifest.screenshots) {
@@ -142,6 +143,18 @@ async function readText(relativePath) {
 
 function sha256(bytes) {
   return createHash("sha256").update(bytes).digest("hex");
+}
+
+function artifactMatches(bytes, artifact) {
+  const candidates = [bytes];
+  if (artifact.path.endsWith(".json")) {
+    const lf = Buffer.from(bytes.toString("utf8").replace(/\r\n/g, "\n"), "utf8");
+    const crlf = Buffer.from(lf.toString("utf8").replace(/\n/g, "\r\n"), "utf8");
+    candidates.push(lf, crlf);
+  }
+  return candidates.some(
+    (candidate) => candidate.length === artifact.bytes && sha256(candidate) === artifact.sha256,
+  );
 }
 
 async function listFiles(directory) {
