@@ -67,8 +67,13 @@
 - Operations: `listOnboardingMovies`, `replaceOnboardingPreferences`, `completeOnboarding`
 - `restartOnboarding`과 재수행 CTA는 local profile에서 `BLOCKED`다.
 - 실제 영화 poster/title 목록을 표시하고 각 영화에 명시적 `좋아요`, `싫어요`, `미선택` 상태를 제공한다.
-- LIKE/DISLIKE 버튼은 keyboard와 touch 모두 동등하게 사용 가능하다. drag gesture는 거리 threshold·중립
-  구간이 승인되기 전 필수 입력 방식으로 구현하지 않는다.
+- 목업의 원형 취향 공간을 canonical 시각 입력으로 사용한다. 포스터 중심과 취향 공간 중심 사이의 거리가
+  원의 반지름 이하이면 `LIKE`, 반지름보다 크면 `DISLIKE`다. 고정 pixel 수치가 아니라 실제 렌더링된
+  원의 중심·반지름으로 판정하므로 responsive 크기에서도 의미가 같다.
+- 아직 배치하지 않았거나 ⊖로 공간에서 뺀 영화는 `미선택`이며 preference row를 만들지 않는다.
+  원 경계 위는 `LIKE`로 판정한다. API에는 거리나 좌표를 보내지 않고 최종 `LIKE/DISLIKE`만 보낸다.
+- drag는 touch/pointer 입력을 지원하며, 같은 영화를 `좋아요`, `싫어요`, `미선택`으로 배치하는 명시 버튼을
+  keyboard·screen reader 대안으로 함께 제공한다. 색만으로 상태를 구분하지 않는다.
 - progress는 `현재 선택 수 / 10`으로 표시한다. K5/K10은 local에서도
   “성능이 보장되는 수”라고 설명하지 않는다.
 - skip은 항상 별도 버튼과 확인 문구로 제공하며 미선택을 DISLIKE로 제출하지 않는다.

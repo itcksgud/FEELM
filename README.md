@@ -127,6 +127,14 @@ champion은 아니다. 제품 C2B 카드의 예상 별점은 paired C1 규모 �
 표본 수가 드러난 취향 관측 근거를 비교한다. 이는 자기보고 만족도가 아니다. Explore05와 constrained
 2+1 v1은 relevance 손실 Gate를 실패해 비활성이다.
 
+집계값이 실제 추천 목록을 어떻게 바꾸는지는
+[MovieLens 사용자 A 추천 변화 사례](./docs/recommendation/evidence/REC-EV-016-user-case-a.md)에서 확인할 수 있다.
+동일한 비식별 사용자의 실제 영화 Top-10을 알고리즘별로 비교하지만, 이 한 사례로 모델을 채택하지는 않는다.
+
+후속 [영화·장르 관계와 자유 태그 ablation](./docs/recommendation/evidence/REC-EV-017-relational-tag-ablation.md)은
+개인 평균을 보정한 영화 공동 선호와 태그 의미까지 사용한다. 전체 Test NDCG는 상승했지만 인기도
+P2 구간 회귀와 long-tail 무효과 때문에 fallback은 계속 Popularity다.
+
 C5 account lifecycle, 제품 expected-star·satisfaction·taste diagnosis/compare, C3 Party public champion과
 production email/OAuth/storage/notification provider는 local-MVP 제품 범위에서 명시적으로 제외한다.
 

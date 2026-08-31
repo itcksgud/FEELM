@@ -2,6 +2,7 @@ schema_version: 1
 project: FEELM-standalone
 workstream: RECOMMENDATION-EVIDENCE
 status: LOCAL_PRODUCT_BOUNDARIES_APPROVED
+vnext_status: VNEXT_OFFLINE_IMPLEMENTATION_GO
 tasks:
   - id: TASK-REC-EV-001
     title: 고정 time split과 사용자 rating-style profile
@@ -172,3 +173,240 @@ tasks:
       - each decision includes product impact, screenshot, same-condition metrics, recommendation, counterfactual loss, uncertainty, and rollback cost
       - REC-PD-003 explicitly shares one approval boundary with DN-C4A-004
       - all four conservative local decisions match the recorded standalone approval
+
+  - id: TASK-REC-EV-014
+    title: 추천 결과 해석 local lab
+    status: DONE
+    depends_on: [TASK-REC-EV-003B, TASK-REC-EV-006]
+    outputs:
+      - docs/recommendation/evidence/REC-EV-014-local-interpretation-lab.md
+    verify:
+      - local-only scope and no public expected-star approval
+
+  - id: TASK-REC-EV-015
+    title: 사용자별 discrete relative utility 검증
+    status: DONE
+    depends_on: [TASK-REC-EV-003B]
+    outputs:
+      - docs/recommendation/evidence/REC-EV-015-relative-utility.md
+      - docs/recommendation/evidence/manifests/rec-ev-015.json
+    verify:
+      - py -3 scripts/verify_recommendation_relative_utility.py --manifest docs/recommendation/evidence/manifests/rec-ev-015.json
+
+  - id: TASK-REC-EV-016
+    title: 결과 확인 전 고정한 사용자 A 실제 추천 사례
+    status: DONE
+    depends_on: [TASK-REC-EV-011, TASK-REC-EV-013]
+    outputs:
+      - docs/recommendation/evidence/REC-EV-016-user-case-a.md
+      - docs/recommendation/evidence/manifests/rec-ev-016.json
+    verify:
+      - py -3 scripts/verify_recommendation_user_case_study.py --manifest docs/recommendation/evidence/manifests/rec-ev-016.json
+
+  - id: TASK-REC-EV-017
+    title: 영화·장르 관계와 자유 태그 진단
+    status: DONE
+    depends_on: [TASK-REC-EV-016]
+    outputs:
+      - docs/recommendation/evidence/REC-EV-017-relational-tag-ablation.md
+      - docs/recommendation/evidence/manifests/rec-ev-017.json
+    verify:
+      - py -3 scripts/verify_recommendation_relational_ablation.py --manifest docs/recommendation/evidence/manifests/rec-ev-017.json
+
+  - id: TASK-REC-EV-018
+    title: 사용자별 효과 percentile·Benefit/Tie/Harm 감사
+    status: DONE
+    depends_on: [TASK-REC-EV-017]
+    outputs:
+      - docs/recommendation/evidence/REC-EV-018-user-percentile-audit.md
+      - docs/recommendation/evidence/manifests/rec-ev-018.json
+    verify:
+      - py -3 scripts/verify_recommendation_user_percentile_audit.py --manifest docs/recommendation/evidence/manifests/rec-ev-018.json
+
+  - id: TASK-REC-EV-019P
+    title: Binary onboarding user-disjoint cohort preflight
+    status: DONE
+    depends_on: [TASK-REC-EV-018]
+    input_docs:
+      - docs/recommendation/00-input-signal-contract-vnext.md
+      - docs/recommendation/01-offline-evaluation-protocol-vnext.md
+      - docs/recommendation/protocols/rec-eval-vnext.json
+    outputs:
+      - scripts/recommendation_binary_onboarding_preflight.py
+      - docs/recommendation/evidence/REC-EV-019P-binary-onboarding-preflight.md
+      - docs/recommendation/evidence/manifests/rec-ev-019p.json
+    verify:
+      - py -3 scripts/verify_recommendation_binary_onboarding_preflight.py
+
+  - id: TASK-REC-EV-019A
+    title: Binary onboarding cohort artifact 생성
+    status: READY
+    depends_on: [TASK-REC-EV-019P]
+    artifact_contract: docs/recommendation/contracts/rec-ev-019a-artifacts.json
+    input_docs:
+      - docs/recommendation/00-input-signal-contract-vnext.md
+      - docs/recommendation/01-offline-evaluation-protocol-vnext.md
+      - docs/recommendation/protocols/rec-eval-vnext.json
+      - docs/recommendation/contracts/rec-ev-019a-artifacts.json
+    implementation_files:
+      - scripts/build_rec_ev_019a_cohorts.py
+      - scripts/tests/test_build_rec_ev_019a_cohorts.py
+      - scripts/verify_rec_ev_019a_cohorts.py
+    outputs:
+      - outputs/recommendation-evidence/rec-ev-019a/base-train-ratings.parquet
+      - outputs/recommendation-evidence/rec-ev-019a/candidate-core-provisional.parquet
+      - outputs/recommendation-evidence/rec-ev-019a/binary-prefixes.parquet
+      - outputs/recommendation-evidence/rec-ev-019a/evaluation-windows.parquet
+      - outputs/recommendation-evidence/rec-ev-019a/cohort-summary.json
+      - outputs/recommendation-evidence/rec-ev-019a/protocol-lock.json
+      - docs/recommendation/evidence/manifests/rec-ev-019a.json
+    commands:
+      build: "py -3 scripts/build_rec_ev_019a_cohorts.py --contract docs/recommendation/contracts/rec-ev-019a-artifacts.json"
+      unit: "py -3 -m unittest scripts/tests/test_build_rec_ev_019a_cohorts.py"
+      verify: "py -3 scripts/verify_rec_ev_019a_cohorts.py --manifest docs/recommendation/evidence/manifests/rec-ev-019a.json"
+    verify:
+      - strict K10 Locked Test eligible users are at least 5000
+      - K5 prefix is nested in K10 and every eligible window has exactly 10 rows
+      - raw user_id column is absent and user_key follows the approved contract
+      - unrated and neutral rows never become DISLIKE
+      - manifest checksums match every output and failure artifacts are retained
+    forbidden_changes:
+      - product API and database schema
+      - APPROVED_C2A_INTERNAL_POPULARITY_ONLY
+      - binary thresholds or positive injection
+
+  - id: TASK-REC-EV-019B
+    title: Train-known 전체 TMDB structured/text feature artifact
+    status: READY
+    depends_on: [TASK-REC-EV-019P]
+    artifact_contract: docs/recommendation/contracts/rec-ev-019b-artifacts.json
+    input_docs:
+      - docs/research/movielens-tmdb-data-audit.md
+      - docs/data/catalog-ingestion-contract.md
+      - docs/recommendation/protocols/rec-eval-vnext.json
+      - docs/recommendation/contracts/rec-ev-019b-artifacts.json
+    implementation_files:
+      - scripts/build_rec_ev_019b_features.py
+      - scripts/tests/test_build_rec_ev_019b_features.py
+      - scripts/verify_rec_ev_019b_features.py
+    outputs:
+      - outputs/recommendation-evidence/rec-ev-019b/movie-identity.parquet
+      - outputs/recommendation-evidence/rec-ev-019b/structured-features.parquet
+      - outputs/recommendation-evidence/rec-ev-019b/text-embeddings.parquet
+      - outputs/recommendation-evidence/rec-ev-019b/quarantine.parquet
+      - outputs/recommendation-evidence/rec-ev-019b/coverage-summary.json
+      - docs/recommendation/evidence/manifests/rec-ev-019b.json
+    commands:
+      build: "py -3 scripts/build_rec_ev_019b_features.py --contract docs/recommendation/contracts/rec-ev-019b-artifacts.json --resume"
+      unit: "py -3 -m unittest scripts/tests/test_build_rec_ev_019b_features.py"
+      verify: "py -3 scripts/verify_rec_ev_019b_features.py --manifest docs/recommendation/evidence/manifests/rec-ev-019b.json"
+    verify:
+      - source token remains outside tracked files
+      - linked identity coverage is at least 98 percent and structured/text coverage is at least 95 percent
+      - identity quarantine and missing-feature fallback are reported separately
+      - embedding model, revision, 384 dimensions and L2 normalization match the contract
+      - TMDB popularity, vote average, vote count, watch providers are absent from preference features
+      - cache, retry, resume and artifact checksum validation pass
+    forbidden_changes:
+      - product API and database schema
+      - APPROVED_C2A_INTERNAL_POPULARITY_ONLY
+      - preference labels or TMDB popularity truth
+
+  - id: TASK-REC-EV-019C
+    title: Binary baseline suite와 full-catalog evaluator
+    status: PENDING
+    depends_on: [TASK-REC-EV-019A, TASK-REC-EV-019B]
+    input_docs:
+      - docs/recommendation/protocols/rec-eval-vnext.json
+      - docs/recommendation/contracts/rec-ev-019a-artifacts.json
+      - docs/recommendation/contracts/rec-ev-019b-artifacts.json
+    outputs:
+      - Popularity, binary ItemKNN, BPR, TMDB Content, LightFM, RRF predictions
+      - Validation-selected parameters
+      - user-level full-catalog result parquet
+    verify:
+      - final identity allowlist is joined before scoring and K10 Test strict eligible remains at least 5000
+      - identical candidate universe and no positive injection
+      - missing per-model feature invokes B0 fallback without removing a candidate
+      - maximum 30 trials per model
+      - Validation locks all parameters before Test
+
+  - id: TASK-REC-EV-019
+    title: Binary onboarding K5·K10 제품 후보 판정
+    status: PENDING
+    depends_on: [TASK-REC-EV-019C]
+    outputs:
+      - docs/recommendation/evidence/REC-EV-019-binary-onboarding.md
+      - docs/recommendation/evidence/manifests/rec-ev-019.json
+      - K5/K10 segment and Benefit/Tie/Harm report
+    verify:
+      - minimum 5000 K10 Test users
+      - absolute NDCG@10 SESOI 0.002 and relative 5 percent
+      - Holm-corrected hierarchical bootstrap CI lower bound above zero
+      - current product policy remains popularity-only unless a separate C2 vNext approval is made
+
+  - id: TASK-REC-EV-020
+    title: Explicit Rating K0~K50 maturity와 예상 별점 분리 평가
+    status: PENDING
+    depends_on: [TASK-REC-EV-019]
+    outputs:
+      - rating ranking curves
+      - Bias and ALS predicted-rating calibration
+      - docs/recommendation/evidence/REC-EV-020-explicit-rating-maturity.md
+    verify:
+      - ranking and predicted-rating champions are independent
+      - binary-only expected rating remains null
+
+  - id: TASK-REC-EV-021
+    title: TMDB item cold-start
+    status: PENDING
+    depends_on: [TASK-REC-EV-019B]
+    outputs:
+      - first-observed-interaction and masked-cold reports
+      - CURRENT_METADATA_RETROSPECTIVE disclosure
+
+  - id: TASK-REC-EV-022
+    title: RRF와 K-aware Router
+    status: PENDING
+    depends_on: [TASK-REC-EV-019, TASK-REC-EV-020]
+    outputs:
+      - single-best, RRF, rule-router, learned-router locked comparison
+    verify:
+      - out-of-fold router labels and locked Test
+
+  - id: TASK-REC-EV-023
+    title: 독립 유사 영화 평가
+    status: PENDING
+    depends_on: [TASK-REC-EV-019B]
+    outputs:
+      - feature-removed relation ablation
+      - blind human pair evaluation packet
+
+  - id: TASK-REC-EV-024
+    title: Constrained discovery frontier
+    status: PENDING
+    depends_on: [TASK-REC-EV-019]
+    outputs:
+      - MMR, calibrated, novelty-constrained comparison
+    verify:
+      - REC-EV-013 null baseline remains visible
+      - relevance non-inferiority before novelty gain
+
+  - id: TASK-REC-EV-025
+    title: Party policy stress test
+    status: PENDING
+    depends_on: [TASK-REC-EV-019]
+    outputs:
+      - fixed Average, Least Misery, Balanced group-level results
+    verify:
+      - synthetic results do not claim real group satisfaction
+
+  - id: TASK-REC-EV-026
+    title: OTT·XAI·fallback contract verification
+    status: PENDING
+    depends_on: [TASK-REC-EV-019, TASK-REC-EV-021]
+    outputs:
+      - rank-invariance, reason-fidelity, availability failure results
+    verify:
+      - no-provider-filter rank invariance is 100 percent
+      - missing availability does not lower preference

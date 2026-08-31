@@ -504,3 +504,96 @@
 @media (prefers-reduced-motion: reduce) {
   .page * { scroll-behavior: auto !important; transition-duration: 0.01ms !important; }
 }
+
+/* Unified FEELM film palette. Functional state selectors above remain authoritative. */
+.page {
+  background:
+    radial-gradient(circle at 8% 3%, rgba(201, 111, 95, 0.14), transparent 25rem),
+    radial-gradient(circle at 94% 10%, rgba(210, 163, 77, 0.14), transparent 23rem),
+    var(--canvas);
+}
+
+.myNav {
+  gap: 7px;
+  padding: 12px;
+  margin-top: 14px;
+  background: rgba(255, 255, 255, 0.78);
+  border: 1px solid var(--line);
+  border-radius: 16px;
+}
+
+.myNav a[aria-current="page"] {
+  color: var(--surface);
+  background: var(--accent);
+  box-shadow: 0 7px 18px rgba(116, 31, 50, 0.18);
+}
+
+.pageHeader {
+  position: relative;
+  overflow: hidden;
+  max-width: none;
+  padding: clamp(34px, 6vw, 68px) clamp(22px, 5vw, 54px);
+  margin: 18px 0 28px;
+  color: var(--surface);
+  background:
+    radial-gradient(circle at 88% 18%, rgba(210, 163, 77, 0.68), transparent 11rem),
+    linear-gradient(125deg, #421318, var(--accent) 55%, #a5504d);
+  border-radius: var(--radius-xl);
+  box-shadow: var(--shadow-md);
+}
+
+.pageHeader::after {
+  position: absolute;
+  right: -38px;
+  bottom: -82px;
+  width: 220px;
+  height: 220px;
+  content: "";
+  border: 30px solid rgba(255, 255, 255, 0.09);
+  border-radius: 50%;
+}
+
+.pageHeader .eyebrow { color: rgba(255, 255, 255, 0.62); }
+.pageHeader > p:last-child:not(.eyebrow) { position: relative; z-index: 1; color: rgba(255, 255, 255, 0.75); }
+.pageHeader h1 { position: relative; z-index: 1; }
+
+.primaryButton { background: var(--accent); border-color: var(--accent); }
+.primaryButton:hover:not(:disabled) { background: var(--accent-hover); border-color: var(--accent-hover); }
+.secondaryButton,
+.loadMore { color: var(--accent); border-color: color-mix(in srgb, var(--accent) 32%, var(--line)); }
+
+.recordCard,
+.confirmCard,
+.ratingEditor,
+.frameDetail,
+.completeCard,
+.tasteGroups section {
+  border-color: color-mix(in srgb, var(--accent) 10%, var(--line));
+  box-shadow: 0 10px 28px rgba(74, 13, 13, 0.06);
+}
+
+.recordBody strong,
+.externalRating,
+.ratingPicker button[data-filled="true"] { color: var(--gold); }
+
+.bucketSummary {
+  padding: 24px;
+  margin-bottom: 18px;
+  background: linear-gradient(135deg, var(--gold-soft), var(--surface-warm));
+  border: 1px solid color-mix(in srgb, var(--gold) 28%, var(--line));
+  border-radius: var(--radius-lg);
+}
+
+.bucketSummary strong { color: var(--accent-strong); }
+.flavorCard:nth-child(4n + 1) { background: var(--surface-rose); border-top-color: var(--coral); }
+.flavorCard:nth-child(4n + 2) { background: var(--gold-soft); border-top-color: var(--gold); }
+.flavorCard:nth-child(4n + 3) { background: var(--surface-sage); border-top-color: var(--sage); }
+.flavorCard:nth-child(4n + 4) { background: var(--sky-soft); border-top-color: var(--sky); }
+
+@media (max-width: 699px) {
+  .pageInner { width: min(100% - 28px, var(--content)); padding-bottom: 118px; }
+  .myNav { padding: 7px; margin-top: 6px; }
+  .myNav a { padding: 8px 11px; font-size: 11px; }
+  .pageHeader { padding: 32px 20px; margin-top: 10px; border-radius: 22px; }
+  .pageHeader h1 { font-family: inherit; font-size: 31px; }
+}

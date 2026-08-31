@@ -22,9 +22,13 @@
 | `REC-EV-008` React UI comparison | `COMPLETED_UI_COMPARISON_EVIDENCE` | 네 local 제품 경계 선택 근거; production UI/champion 승인이 아님 |
 | `REC-EV-014` local interpretation lab | `LOCAL_INTEGRATION_PASS_PRODUCT_DECISION_PENDING` | 예상 별점·개인 ECDF·취향 관측 근거를 local-only로 연결; 제품 채택 `NO` |
 | `REC-EV-015` discrete relative utility | `COMPLETED_OFFLINE_EVIDENCE` | quantized-midrank ECDF v2를 C6 local experiment에 채택; 만족도·제품 노출 `NO` |
+| `REC-EV-016` deterministic user A case | `COMPLETED_REPRODUCIBLE_CASE_DIAGNOSTIC` | 같은 사용자의 실제 Top-10 변화·취향 근거·개인 회귀를 설명; champion 선택 권한 `NO` |
+| `REC-EV-017` relational + free-tag ablation | `COMPLETED_MOVIELENS_RELATIONAL_EVIDENCE_TMDB_BLOCKED` | 영화·장르 공동 선호와 tag 의미를 추가; 전체 향상에도 P2 회귀로 채택 `NO`, TMDB 전수 특징 대기 |
+| `REC-EV-018` user percentile audit | `COMPLETED_USER_DISTRIBUTION_DIAGNOSTIC` | 평균 외 B/T/H·효과 percentile·사용자/인기도 segment를 공개; Router 필요성 가설만 유지, champion `null` |
+| `REC-EV-019P` binary onboarding preflight | `COMPLETED_REPRODUCIBLE_FEASIBILITY_PASS` | strict eligibility로 40/10/10/40 split을 잠금; K10 5,476명으로 019A/019B 구현 `GO`, 019C는 최종 identity Gate 대기, champion 권한 `NO` |
 
 실험을 실행하지 않은 상태에서 빈 결과 문서를 만들어 수치가 있는 것처럼 보이게 하지 않는다.
-`TASK-REC-EV-009`까지와 REC-EV-015가 완료됐다. 현 개인 프로젝트 범위에서 실사용자 수집은 하지
+`TASK-REC-EV-001~018`과 `REC-EV-019P`가 완료됐다. 현 개인 프로젝트 범위에서 실사용자 수집은 하지
 않으며, MovieLens offline 실험으로 개선 기록을 계속 남긴다. 따라서 현재 선택을 실사용자 성능·만족도
 주장으로 확대하지 않고 제품 노출 Gate는 닫힌 상태로 둔다. 실제 결과는
 [REC-EV-001 보고서](./REC-EV-001-rating-style.md),
@@ -42,6 +46,10 @@
 [REC-EV-013 보고서](./REC-EV-013-constrained-two-plus-one.md),
 [REC-EV-014 로컬 실험실](./REC-EV-014-local-interpretation-lab.md),
 [REC-EV-015 상대 효용 정책](./REC-EV-015-relative-utility.md),
+[REC-EV-016 사용자 A 추천 변화](./REC-EV-016-user-case-a.md),
+[REC-EV-017 영화·장르 관계와 자유 태그](./REC-EV-017-relational-tag-ablation.md),
+[REC-EV-018 사용자별 성능 감사](./REC-EV-018-user-percentile-audit.md),
+[REC-EV-019P binary onboarding preflight](./REC-EV-019P-binary-onboarding-preflight.md),
 [고정 split manifest](./manifests/global-time-v1.json),
 [REC-EV-002 manifest](./manifests/rec-ev-002.json),
 [REC-EV-004 manifest](./manifests/rec-ev-004.json),
@@ -49,6 +57,13 @@
 [REC-EV-005 manifest](./manifests/rec-ev-005.json),
 [REC-EV-006 manifest](./manifests/rec-ev-006.json),
 [REC-EV-008 manifest](./manifests/rec-ev-008.json)에 있다.
+[REC-EV-016 manifest](./manifests/rec-ev-016.json)에는 비식별 고정 사례의 입력 checksum과 결과 문서가 묶여 있다.
+[REC-EV-017 manifest](./manifests/rec-ev-017.json)은 평가 사용자 태그 기여 제외, Validation alpha 선택,
+Test paired CI와 인기도 구간 회귀를 함께 잠근다.
+[REC-EV-018 manifest](./manifests/rec-ev-018.json)는 같은 Test 사용자별 결과의 B/T/H·효과 percentile과
+segment 회귀를 잠그며 자체로 제품 Router나 ranking champion을 승인하지 않는다.
+[REC-EV-019P manifest](./manifests/rec-ev-019p.json)는 strict K10 Test 5,476명 feasibility와 user split을
+잠그며 REC-EV-019 구현 착수만 승인한다.
 
 Cold-start 평가에서는 K1부터 별점 MAE가 통계적으로 줄었지만, K0 대비 3% 실질 개선 Gate는
 K10부터 통과했다. 초기 sampled ranking에서는 모든 K의 최적 Fold-in 가중치가 0이었으나,

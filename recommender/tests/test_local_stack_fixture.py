@@ -10,6 +10,7 @@ from feelm_recommender.local_stack_fixture import (
     LOCAL_CATALOG_VERSION,
     LOCAL_MOVIES,
     export_local_stack_fixture,
+    local_catalog_bytes,
     validate_v100_fixture_sql,
 )
 
@@ -57,6 +58,19 @@ class LocalStackFixtureTest(unittest.TestCase):
             expected = sorted(movie_id for movie_id, _, visibility in LOCAL_MOVIES if visibility == "UI_READY")
             self.assertEqual(active["movieIds"], expected)
             self.assertNotIn("movielens", str(active).lower())
+
+    def test_imported_catalog_rebinds_mapping_and_candidates_to_exact_version(self) -> None:
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            source = root / "imported.jsonl"
+            source.write_bytes(local_catalog_bytes())
+
+            result = export_local_stack_fixture(root / "artifacts", catalog_source=source)
+
+            self.assertEqual(result["catalogVersion"], LOCAL_CATALOG_VERSION)
+            self.assertEqual(result["scope"], "LOCAL_IMPORTED_CATALOG_ONLY_NOT_PRODUCTION_COVERAGE")
+            active = LocalCandidateStore(root / "artifacts/candidates/store").load_active()
+            self.assertEqual(active["catalogVersion"], LOCAL_CATALOG_VERSION)
 
 
 if __name__ == "__main__":

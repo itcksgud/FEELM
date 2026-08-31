@@ -1,0 +1,118 @@
+{
+  "schema_version": 1,
+  "protocol_version": "rec-eval-vnext-2",
+  "status": "APPROVED_FOR_OFFLINE_IMPLEMENTATION_NOT_PRODUCT_APPROVED",
+  "source": {
+    "movielens_archive": "ml-32m.zip",
+    "movielens_archive_sha256": "e4a68655d7386b8f95f2f2424b2ff975dfdd15ffd59e0d864a14dca43e99d6ee",
+    "global_time_manifest": "docs/recommendation/evidence/manifests/global-time-v1.json",
+    "tmdb_snapshot_policy": "CURRENT_METADATA_RETROSPECTIVE_UNTIL_POINT_IN_TIME_SNAPSHOT_EXISTS"
+  },
+  "user_split": {
+    "algorithm": "uint64_be(SHA256('feelm-rec-vnext-user-split-v1|' + userId)[0:8]) mod 100",
+    "base_train_buckets": [0, 39],
+    "router_train_buckets": [40, 49],
+    "validation_buckets": [50, 59],
+    "test_buckets": [60, 99],
+    "raw_user_id_in_results": false
+  },
+  "primary_time_split": {
+    "train_boundary_epoch": 1538551305,
+    "validation_boundary_epoch": 1604605535,
+    "same_timestamp_policy": "ENTIRE_TIMESTAMP_TO_LATER_SPLIT"
+  },
+  "robustness_cutoffs": {
+    "cumulative_rating_quantiles": [0.6, 0.7, 0.8],
+    "quantile_method": "higher",
+    "must_lock_before_model_run": true
+  },
+  "seeds": [17, 42, 73, 101, 211],
+  "inputs": {
+    "binary_k_primary": [0, 5, 10],
+    "binary_k_diagnostic": [1, 3],
+    "rating_k": [0, 1, 3, 5, 10, 20, 30, 50],
+    "binary_relative_like_min": 0.15,
+    "binary_relative_dislike_max": -0.15,
+    "binary_shrinkage_lambda": 10.0,
+    "binary_to_numeric_rating_forbidden": true,
+    "unrated_as_negative_forbidden": true
+  },
+  "candidate": {
+    "evaluation": "FULL_CATALOG",
+    "base_identity_universe": "BASE_TRAIN_MOVIE_INTERSECT_MOVIELENS_LINKS_TMDB_ID_PRESENT",
+    "provisional_identity_basis": "MOVIELENS_LINKS_TMDB_ID_PRESENT",
+    "final_identity_status_allowlist": ["ML_TMDB_VERIFIED", "RECOVERED_BY_IMDB"],
+    "identity_quarantine_excluded_before_scoring": true,
+    "missing_model_artifact_policy": "KEEP_WITH_DECLARED_FALLBACK",
+    "content_fallback": "B0_BAYESIAN_POPULARITY",
+    "positive_injection": false,
+    "exclude_user_seen": true,
+    "same_universe_across_models": true,
+    "top_candidates": 500,
+    "top_k": 10
+  },
+  "relevance": {
+    "future_window_ratings": 10,
+    "minimum_future_ratings": 10,
+    "minimum_future_positives": 3,
+    "minimum_candidate_positives": 1,
+    "future_positive_definition": "MIDRANK_WITHIN_FIRST_10_POST_PREFIX_RATINGS",
+    "positive_midrank_utility_min": 0.65,
+    "negative_midrank_utility_max": 0.35,
+    "raw_rating_sensitivity_thresholds": [4.0, 4.5]
+  },
+  "models": [
+    "B0_MOVIELENS_BAYESIAN_RATING",
+    "B1_GLOBAL_USER_ITEM_BIAS",
+    "B2_ITEM_KNN",
+    "B3_EXPLICIT_ALS_FOLD_IN",
+    "B4_BPR_MF",
+    "B5_EASE",
+    "B6_TMDB_STRUCTURED_CONTENT",
+    "B7_TMDB_TEXT_CONTENT",
+    "B8_LIGHTFM",
+    "B9_RRF",
+    "B10_K_AWARE_ROUTER"
+  ],
+  "selection": {
+    "primary_metric": "USER_MACRO_NDCG_AT_10",
+    "maximum_trials_per_model": 30,
+    "fusion_first_baseline": "RRF",
+    "raw_score_sum_forbidden": true,
+    "router_requires_out_of_fold_labels": true,
+    "test_retuning_forbidden": true
+  },
+  "statistics": {
+    "minimum_test_users": 5000,
+    "bootstrap_repeats": 2000,
+    "bootstrap_unit": "USER_WITH_NESTED_CUTOFF",
+    "confidence_level": 0.95,
+    "multiple_testing": "HOLM",
+    "alpha": 0.05,
+    "ranking_sesoi_absolute_ndcg_at_10": 0.002,
+    "ranking_sesoi_relative": 0.05,
+    "segment_non_inferiority_ndcg_at_10": -0.002,
+    "maximum_coverage_drop": 0.01,
+    "predicted_rating_mae_sesoi": 0.03,
+    "ndcg_user_tie_band": 0.001,
+    "rank_percentile_user_tie_band": 0.01
+  },
+  "experiments": {
+    "REC-EV-019": "BINARY_ONBOARDING_BRIDGE",
+    "REC-EV-020": "EXPLICIT_RATING_MATURITY",
+    "REC-EV-021": "TMDB_ITEM_COLD_START",
+    "REC-EV-022": "FUSION_AND_K_AWARE_ROUTER",
+    "REC-EV-023": "INDEPENDENT_SIMILAR_MOVIE_EVALUATION",
+    "REC-EV-024": "CONSTRAINED_DISCOVERY_FRONTIER",
+    "REC-EV-025": "PARTY_POLICY_STRESS_TEST",
+    "REC-EV-026": "OTT_XAI_FALLBACK_CONTRACT"
+  },
+  "adoption": {
+    "current_policy": "APPROVED_C2A_INTERNAL_POPULARITY_ONLY",
+    "personal_champion": null,
+    "predicted_rating_champion": null,
+    "discovery_champion": null,
+    "party_satisfaction_champion": null,
+    "requires_c2_vnext_approval": true
+  }
+}

@@ -1,8 +1,20 @@
 services:
   backend:
     environment:
-      SPRING_PROFILES_ACTIVE: postgres
       CATALOG_ARTIFACT_PATH: /catalog-input/catalog.jsonl
+    volumes:
+      - type: bind
+        source: ${CATALOG_ARTIFACT_HOST_PATH:?Set CATALOG_ARTIFACT_HOST_PATH to an absolute JSONL artifact path}
+        target: /catalog-input/catalog.jsonl
+        read_only: true
+  recommender-artifact-init:
+    command:
+      - >-
+        python -m feelm_recommender.local_stack_fixture
+        --output-dir /artifacts
+        --catalog /catalog-input/catalog.jsonl
+        && find /artifacts -type d -exec chmod 0755 {} \;
+        && find /artifacts -type f -exec chmod 0644 {} \;
     volumes:
       - type: bind
         source: ${CATALOG_ARTIFACT_HOST_PATH:?Set CATALOG_ARTIFACT_HOST_PATH to an absolute JSONL artifact path}

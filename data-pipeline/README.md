@@ -18,6 +18,8 @@ py -3.12 -m feelm_catalog_pipeline build `
 ```
 
 실제 `TMDB_READ_ACCESS_TOKEN`은 저장소 루트의 `.env.local` 또는 프로세스 환경에서만 읽는다.
+TMDB v4 Read Access Token을 우선 사용하며, 로컬 데이터 작업 호환을 위해 v3 API key도 같은 변수로
+주입할 수 있다. 어느 형식도 artifact·cache·로그에 기록하지 않는다.
 토큰, Authorization header, 원본 HTTP header는 artifact와 로그에 기록하지 않는다.
 
 `identity-map.json`은 MovieLens/TMDB/IMDb 외부 ID를 공개 `movieId` UUID에 연결한다. 기존 map을

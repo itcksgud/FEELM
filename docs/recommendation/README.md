@@ -35,7 +35,14 @@
 | 실험 정의·결과 | `experiments/<run_id>/` | 완료한 run은 덮어쓰지 않고 새 run 생성 |
 | 통찰 | `insight-log.md` | 관찰·해석·한계·후속 실험을 분리 |
 | 채택 모델 | `model-registry.yaml` | Gate 근거와 rollback 대상 필수 |
-| 평가 프로토콜 | `../research/movielens-recommendation-evaluation-design.md` | split·candidate 변경 시 별도 protocol version |
+| 입력 신호 계약 | `00-input-signal-contract-vnext.md` | binary 온보딩과 활성 Rating을 분리 |
+| 평가 프로토콜 | `01-offline-evaluation-protocol-vnext.md` | split·candidate·SESOI 변경 시 별도 protocol version |
+| protocol 초깃값 | `protocols/rec-eval-vnext.json` | LLM·runner가 동일 상수를 읽도록 고정 |
+| 구현 준비도 | `vnext-implementation-readiness.md` | 다음 READY task와 downstream Gate를 구분 |
+| 019A artifact 계약 | `contracts/rec-ev-019a-artifacts.json` | cohort 경로·column schema·명령·Gate 고정 |
+| 019B artifact 계약 | `contracts/rec-ev-019b-artifacts.json` | TMDB feature·embedding·cache·coverage 계약 고정 |
+| 제품 서빙 경계 | `serving-contract.md` | 현재 승인 정책과 vNext 후보를 구분 |
+| 연구 보고서 | `personalized-hybrid-design-report.md` | 네 추천 Head의 가설·결과·한계를 연결 |
 
 ## 3. 실험 디렉터리 계약
 
@@ -71,7 +78,7 @@ docs/recommendation/experiments/<run_id>/
 
 - 같은 split·candidate·seed에서 강한 기준선과 비교한다.
 - 대표 지표 차이와 95% paired 신뢰구간을 기록한다.
-- 적어도 K0/K3/K5/K10, 사용자 활동량, 영화 인기도 구간을 확인한다.
+- binary 온보딩 `K_b=0/5/10`과 활성 Rating `K_r=0/1/3/5/10/20/30/50`을 구분한다.
 - 예상 별점 개선과 추천 순위 개선을 한 숫자로 합치지 않는다.
 - 탐험 추천은 소유자가 승인한 관련성 손실 예산 안에서만 채택한다.
 - 파티 추천은 평균뿐 아니라 최저 구성원·불만 비율·coverage를 함께 본다.
@@ -89,3 +96,13 @@ Rating을 같은 노출과 연결한다. 노출되지 않은 영화의 미평가
 `estimatedRecommendationUtility`를 version별로 비교하고 다음 실험 가설로 되돌린다. raw `4~5점
 비율`을 추천 만족도 KPI로 사용하지 않는다. 자동 추론 결과는 직접 관측한 감정이 아니므로
 `추천 만족도`가 아니라 `추천 결과 효용 추정치`로 명명한다.
+
+집계 지표만으로 알고리즘 행동을 숨기지 않도록
+[REC-EV-016 사용자 A 사례](./evidence/REC-EV-016-user-case-a.md)는 결과를 보기 전 고정 해시로 선택한
+동일 MovieLens 사용자의 Popularity·Content·Hybrid·ALS·Explore·K10 Fold-in 실제 영화 Top-10과
+들어온/빠진 제목을 기록한다. 단일 사례는 실패 설명과 회귀 진단에만 쓰며 champion 선택 권한은 없다.
+
+[REC-EV-017](./evidence/REC-EV-017-relational-tag-ablation.md)은 이를 영화→영화 공동 선호,
+장르→장르 조건부 lift, Train 시점 자유 태그 의미로 확장했다. Tag alpha 0.1은 전체 NDCG를
+높였지만 P2 인기도 구간을 명확히 악화시키고 long-tail을 개선하지 못해 일반 ranking 후보로
+채택하지 않았다. TMDB 구조·텍스트 ablation은 50,977편 전수 feature artifact 전까지 차단한다.

@@ -6,6 +6,7 @@
 - C0 화면 5개와 내비게이션: `docs/ui/screen-contracts.md`, `docs/ui/navigation-map.md`
 - C1 화면 8개와 내비게이션: `docs/c1-draft/ui/screen-contracts.md`,
   `docs/c1-draft/ui/navigation-map.md`
+- 전체 React 화면의 색상·모바일 구조·시각 완료 Gate: `docs/ui/visual-system.md`
 
 두 세트가 현재 공개 승인 화면 권위다. C0 상세의 OTT 영역이 C1 WatchIntent를 호출하는 연결은 C1
 화면·API 규칙을 따르며, C0의 익명 Catalog 조회 의미는 바꾸지 않는다. C2A 내부 계약은 공개 화면

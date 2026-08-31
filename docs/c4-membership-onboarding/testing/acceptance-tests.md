@@ -84,7 +84,7 @@
 | `AC-C4A-051` | UI | Given verification fragment/expired/resend/error, When SCR-C4A-002, Then 첫 network 전에 fragment를 memory로 읽고 history에서 제거하며 masked email·retry timing을 접근 가능하게 표시하고 raw secret을 query/storage/trace에 남기지 않는다. |
 | `AC-C4A-052` | UI | Given invalid/pending/login success, When SCR-C4A-003, Then generic credential error·승인 next action·protected navigation이 일치한다. |
 | `AC-C4A-053` | UI | Given movie onboarding, When keyboard/touch, Then LIKE/DISLIKE/misselected 상태와 skip을 색·drag에만 의존하지 않고 조작한다. |
-| `AC-C4A-054` | UI | Given drag threshold 미승인, When SCR-C4A-004, Then 명시 버튼이 canonical input이고 gesture가 필수 경로가 아니다. |
+| `AC-C4A-054` | UI | Given 원형 취향 공간, When 포스터 중심을 drag로 배치, Then 중심 거리가 반지름 이하이면 LIKE, 초과이면 DISLIKE이고 경계·화면 크기와 무관하게 실제 DOM geometry로 판정한다. ⊖ 또는 미선택은 row를 만들지 않으며 keyboard·screen reader용 명시 버튼도 같은 최종 enum을 만든다. |
 | `AC-C4A-055` | UI | Given OTT states, When SCR-C4A-005, Then explicit empty, skipped, not configured를 다른 control/copy로 표시한다. |
 | `AC-C4A-056` | UI | Given projection PENDING/FAILED, When SCR-C4A-006, Then 저장 완료와 추천 후속 상태를 분리하고 Catalog 진입을 막지 않는다. |
 | `AC-C4A-057` | UI | Given profile conflict/logout, When SCR-C4A-007, Then stale overwrite 금지, Origin+CSRF current-session logout, access memory·protected query clear를 수행한다. |

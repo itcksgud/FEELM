@@ -1,5 +1,5 @@
 import { useEffect, useState, type FormEvent, type ReactNode } from "react";
-import { Link, useLocation } from "react-router-dom";
+import { Link, NavLink, useLocation } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 import type { MovieCardData, SearchMoviesParams } from "../api/catalog";
 import { useCatalogApi } from "../api/CatalogApiContext";
@@ -7,20 +7,41 @@ import styles from "../styles/catalog.module.css";
 import { localFeaturesEnabled } from "../config/localFeatures";
 
 export function AppHeader({ compact = false }: { compact?: boolean }) {
+  const navigation = [
+    { to: "/search", label: "검색", icon: "⌕" },
+    { to: "/me/recommendations", label: "영화 추천", icon: "✦" },
+    { to: "/me/film", label: "내 필름", icon: "▥" },
+    { to: "/me/reports", label: "리포트", icon: "◒" },
+    { to: "/me/profile", label: "내 계정", icon: "○" },
+  ];
   return (
     <header className={styles.appHeader}>
       <Link className={styles.brand} to="/search" aria-label="FEELM 검색 홈">
-        <span className={styles.brandMark} aria-hidden="true">F</span>
-        <span>FEELM</span>
+        <span className={styles.brandWord}>feelm</span><span className={styles.brandDot}>.</span>
       </Link>
       <div className={styles.headerActions}>
-        {!compact && <p className={styles.tagline}>영화를 발견하는 새로운 감각</p>}
+        {!compact && <p className={styles.tagline}>본 영화가 다음 영화를 고릅니다</p>}
         <nav className={styles.headerNav} aria-label="주요 메뉴">
-          <Link className={styles.headerNavLink} to="/me/recommendations">영화 추천</Link>
-          <Link className={styles.headerNavLink} to="/me/profile">내 계정</Link>
-          <Link className={styles.headerNavLink} to="/me/reports">리포트</Link>
-          <Link className={styles.headerNavLink} to="/me/notifications">알림</Link>
-          {localFeaturesEnabled && <Link className={styles.headerNavLink} to="/me/parties">Party</Link>}
+          {navigation.map((item) => (
+            <NavLink
+              key={item.to}
+              className={({ isActive }) => `${styles.headerNavLink} ${isActive ? styles.headerNavLinkActive : ""}`}
+              to={item.to}
+              aria-label={item.label}
+            >
+              <span className={styles.navIcon} aria-hidden="true">{item.icon}</span>
+              <span>{item.label}</span>
+            </NavLink>
+          ))}
+          {localFeaturesEnabled && (
+            <NavLink
+              className={({ isActive }) => `${styles.headerNavLink} ${isActive ? styles.headerNavLinkActive : ""}`}
+              to="/me/parties"
+              aria-label="Party"
+            >
+              <span className={styles.navIcon} aria-hidden="true">◎</span><span>Party</span>
+            </NavLink>
+          )}
         </nav>
       </div>
     </header>

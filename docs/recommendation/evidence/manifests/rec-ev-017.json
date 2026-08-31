@@ -1,0 +1,68 @@
+{
+  "artifacts": {
+    "evidence": {
+      "bytes": 13625,
+      "path": "docs/recommendation/evidence/REC-EV-017-relational-tag-ablation.md",
+      "sha256": "fd67174a5f04425cc5de414b9f5fe2afd44059868126485921b463322c4f8e6b"
+    },
+    "result": {
+      "bytes": 33624,
+      "path": "docs/recommendation/evidence/results/rec-ev-017-relational-tag.json",
+      "sha256": "19a43ec38cad44a6ecb48aac25395ed8ef7aa5511af69c52ccd6f33a644f6532"
+    }
+  },
+  "conclusion": {
+    "fallback": "POPULARITY",
+    "genre_association_product_reason_approved": false,
+    "movie_association_product_reason_approved": false,
+    "personal_ranking_champion": null,
+    "positive_popularity_segment_non_regression": false,
+    "tag_hybrid_adopted": false,
+    "tag_hybrid_aggregate_signal": "POSITIVE_OVERALL_BUT_SEGMENT_REGRESSION",
+    "tag_hybrid_offline_candidate": false,
+    "tmdb_content_ablation_completed": false
+  },
+  "evidence_id": "REC-EV-017",
+  "protocol": {
+    "genre_association": {
+      "minimum_exposure_per_genre": 3,
+      "prior": 100.0
+    },
+    "movie_association": {
+      "interpretation": "conditional association, not causality or watch sequence",
+      "minimum_support": 50,
+      "positive": "rating above each user's Train mean",
+      "prior": 100.0
+    },
+    "positive_injection": false,
+    "raw_user_id_tracked": false,
+    "tag_content": {
+      "alpha_grid": [0.0, 0.1, 0.25, 0.5, 0.75, 1.0],
+      "evaluation_user_tag_contributions_excluded": true,
+      "max_features": 5000,
+      "min_df": 5,
+      "train_boundary_only": true,
+      "user_contribution_cap": 500
+    },
+    "version": "rec-ev-017-relational-tag-ablation-v1"
+  },
+  "schema_version": 1,
+  "sources": {
+    "archive_sha256": "e4a68655d7386b8f95f2f2424b2ff975dfdd15ffd59e0d864a14dca43e99d6ee",
+    "baseline_manifest_sha256": "184d50699daa66a769b124c65e3d17788b9324a6e287328b6dbd66dde7aab05d",
+    "cold_start_manifest_sha256": "84d44098534d1538a46af0a768b7ddc3f29eb0ddb99c43197ba451f2b1e416d3",
+    "dual_head_manifest_sha256": "2be1a98b20de9733ae5d58b354d37c65c6166e8dea448d3eeeb35deb0bf83e5",
+    "rec_ev_004_manifest_sha256": "2307bd2231ce4bfd63d04a99ee749407b2e4bfbd5d2661170e6495014dd015c6",
+    "split_manifest_sha256": "fa55e29328f0aa8ea5822c32ae964ee9a6ae5817479834a017cf2325bf39ab0a",
+    "tmdb_audit_sha256": "65ece80d13a9231df5ca3c02705607249dd519deb10d7dad8d2f755c46774a91",
+    "tmdb_preview_sha256": "9fbb841922914e35c94a0c885708eeb69889f183cd9b68702d9e2ee3536d6715"
+  },
+  "validation": {
+    "case_selection_uses_model_outcome": false,
+    "raw_user_id_tracked": false,
+    "same_test_cohort_as_rec_ev_004b": true,
+    "status": "PASS",
+    "tmdb_biased_sample_excluded": true,
+    "validation_selects_alpha_before_test": true
+  }
+}

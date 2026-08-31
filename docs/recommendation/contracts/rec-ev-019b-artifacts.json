@@ -1,0 +1,158 @@
+{
+  "schema_version": 1,
+  "contract_id": "rec-ev-019b-artifacts-v1",
+  "status": "APPROVED",
+  "task_id": "TASK-REC-EV-019B",
+  "protocol_version": "rec-eval-vnext-2",
+  "purpose": "Build versioned TMDB identity, structured feature, and text embedding artifacts without using TMDB popularity as preference evidence.",
+  "inputs": {
+    "movielens_archive": "resolved from docs/recommendation/evidence/manifests/global-time-v1.json source.archive",
+    "candidate_core": "outputs/recommendation-evidence/rec-ev-019a/candidate-core-provisional.parquet when available; otherwise all Base-Train movie IDs derived with the 019A contract",
+    "tmdb_auth_env": "TMDB_READ_ACCESS_TOKEN",
+    "tmdb_language_requests": ["ko-KR", "en-US"],
+    "metadata_time_semantics": "CURRENT_METADATA_RETROSPECTIVE"
+  },
+  "implementation": {
+    "runner_to_create": "scripts/build_rec_ev_019b_features.py",
+    "unit_test_to_create": "scripts/tests/test_build_rec_ev_019b_features.py",
+    "verifier_to_create": "scripts/verify_rec_ev_019b_features.py",
+    "build_command": "py -3 scripts/build_rec_ev_019b_features.py --contract docs/recommendation/contracts/rec-ev-019b-artifacts.json --resume",
+    "unit_command": "py -3 -m unittest scripts/tests/test_build_rec_ev_019b_features.py",
+    "verify_command": "py -3 scripts/verify_rec_ev_019b_features.py --manifest docs/recommendation/evidence/manifests/rec-ev-019b.json"
+  },
+  "embedding": {
+    "model_id": "intfloat/multilingual-e5-small",
+    "model_revision": "614241f622f53c4eeff9890bdc4f31cfecc418b3",
+    "dimension": 384,
+    "input_prefix": "passage: ",
+    "input_template": "{display_title} [SEP] {overview_fallback} [SEP] genres: {genre_names} [SEP] directors: {director_names} [SEP] cast: {top5_cast_names} [SEP] keywords: {keyword_names}",
+    "maximum_tokens": 512,
+    "pooling": "attention-mask mean pooling",
+    "normalization": "L2",
+    "dtype": "float32"
+  },
+  "transport": {
+    "raw_cache": "outputs/recommendation-evidence/rec-ev-019b/tmdb-cache",
+    "cache_key": "tmdb_id + endpoint + language",
+    "success_cache_policy": "reuse 2xx unless --refresh",
+    "terminal_statuses": [404, 410],
+    "retry_statuses": [429, 500, 502, 503, 504],
+    "retry_schedule_seconds": [1, 2, 4, 8, 16],
+    "respect_retry_after": true,
+    "maximum_attempts": 5,
+    "maximum_concurrency": 8,
+    "checkpoint_every_movies": 100,
+    "resume_required": true,
+    "token_in_log_or_artifact_forbidden": true
+  },
+  "output_root": "outputs/recommendation-evidence/rec-ev-019b",
+  "artifacts": [
+    {
+      "path": "outputs/recommendation-evidence/rec-ev-019b/movie-identity.parquet",
+      "format": "parquet",
+      "row_unit": "MovieLens movie",
+      "sort_order": ["movie_id"],
+      "columns": [
+        ["movie_id", "int32", false],
+        ["imdb_id", "string", false],
+        ["tmdb_id", "int32", true],
+        ["identity_status", "enum:ML_TMDB_VERIFIED|RECOVERED_BY_IMDB|TYPE_MISMATCH_TV|TMDB_NOT_FOUND|IDENTITY_REVIEW_REQUIRED", false],
+        ["media_type", "enum:movie|tv|unknown", false],
+        ["source_updated_at", "timestamp_utc", true],
+        ["fetched_at", "timestamp_utc", false],
+        ["response_sha256", "string[64]", true]
+      ]
+    },
+    {
+      "path": "outputs/recommendation-evidence/rec-ev-019b/structured-features.parquet",
+      "format": "parquet",
+      "row_unit": "identity-eligible movie",
+      "sort_order": ["movie_id"],
+      "columns": [
+        ["movie_id", "int32", false],
+        ["tmdb_id", "int32", false],
+        ["original_language", "string", true],
+        ["release_year", "int16", true],
+        ["runtime_minutes", "int16", true],
+        ["genre_ids", "list<int32>", false],
+        ["director_ids", "list<int32>", false],
+        ["top5_cast_ids", "list<int32>", false],
+        ["keyword_ids", "list<int32>", false],
+        ["missing_mask", "uint16", false],
+        ["feature_eligible", "bool", false]
+      ]
+    },
+    {
+      "path": "outputs/recommendation-evidence/rec-ev-019b/text-embeddings.parquet",
+      "format": "parquet",
+      "row_unit": "identity-eligible movie",
+      "sort_order": ["movie_id"],
+      "columns": [
+        ["movie_id", "int32", false],
+        ["model_id", "string", false],
+        ["model_revision", "string[40]", false],
+        ["input_text_sha256", "string[64]", false],
+        ["embedding", "fixed_size_list<float32,384>", false],
+        ["l2_norm", "float32", false],
+        ["feature_eligible", "bool", false]
+      ]
+    },
+    {
+      "path": "outputs/recommendation-evidence/rec-ev-019b/quarantine.parquet",
+      "format": "parquet",
+      "row_unit": "identity-ineligible movie",
+      "columns": [
+        ["movie_id", "int32", false],
+        ["attempted_tmdb_id", "int32", true],
+        ["identity_status", "string", false],
+        ["reason_code", "string", false],
+        ["last_http_status", "int16", true]
+      ]
+    },
+    {
+      "path": "outputs/recommendation-evidence/rec-ev-019b/coverage-summary.json",
+      "format": "json",
+      "required_keys": ["schema_version", "source_checksums", "identity_coverage", "structured_coverage", "text_coverage", "quarantine_counts", "forbidden_feature_audit"]
+    },
+    {
+      "path": "docs/recommendation/evidence/manifests/rec-ev-019b.json",
+      "format": "json",
+      "required_keys": ["schema_version", "evidence_id", "status", "model_revision", "source_checksums", "artifacts", "validation"]
+    }
+  ],
+  "gates": {
+    "movielens_tmdb_link_present_rate_min": 0.998,
+    "verified_or_recovered_identity_rate_of_linked_min": 0.98,
+    "structured_feature_eligible_rate_of_identity_eligible_min": 0.95,
+    "text_feature_eligible_rate_of_identity_eligible_min": 0.95,
+    "embedding_l2_norm_tolerance": 0.0001,
+    "duplicate_movie_rows": 0,
+    "quarantine_status_required": true
+  },
+  "preference_feature_forbidden_fields": [
+    "popularity",
+    "vote_average",
+    "vote_count",
+    "watch_providers",
+    "revenue",
+    "budget"
+  ],
+  "missing_feature_behavior": {
+    "remove_from_core_candidate_universe": false,
+    "fallback_model": "B0_MOVIELENS_BAYESIAN_RATING",
+    "record_fallback_reason": true
+  },
+  "failure_behavior": {
+    "gate_failure_status": "BLOCKED_OR_INCONCLUSIVE",
+    "write_failure_summary": true,
+    "delete_failed_artifacts": false,
+    "select_champion": false
+  },
+  "forbidden_changes": [
+    "product API",
+    "database schema",
+    "APPROVED_C2A_INTERNAL_POPULARITY_ONLY",
+    "preference labels",
+    "TMDB popularity as recommendation truth"
+  ]
+}

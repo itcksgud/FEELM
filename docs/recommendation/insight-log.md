@@ -311,3 +311,49 @@
   `displayEligible=false`와 C2B `NOT_COMPUTED`를 유지한다.
 - 후속 실험: C1 운영 데이터를 수집하지 않는 현 범위에서는 추가 제품 채택 주장을 하지 않는다.
 - 관련 model version: `c6-discrete-quantized-midrank-ecdf-v2`.
+
+### INSIGHT-20260830-019 — 전체 평균 개선은 동일 사용자의 개선을 보장하지 않는다
+
+- 상태: `OBSERVED`
+- 관련 run: `REC-EV-016 / rec-ev-016-user-case-a-v1`
+- 비교 기준선: 동일한 비식별 MovieLens 사용자 A의 full-catalog Popularity
+- 관찰: 결과를 보기 전에 고정 해시로 선택한 사용자 A에서 장르 Content·ALS·Explore Top-10은
+  Popularity와 0/10, Hybrid는 1/10만 겹쳤다. Content는 같은 4개 장르 조합 10편으로 수렴했고,
+  raw ALS는 평균 novelty 23.554 bits인 희귀·메타데이터 미상 영화와 5점 범위를 넘는 내적 점수로
+  상단을 채웠다. K10 Fold-in은 2편을 교체했으나 cold held-out 순위는 3,979→5,363위로 악화됐다.
+- 영향 구간: warm Test와 leakage-safe cold-start evaluation 교집합 1,011명 중 사전 고정 1명,
+  Train-known 50,977편 positive 비주입 후보.
+- 해석: 작은 weight도 Top-10 구성은 크게 바꿀 수 있고, aggregate의 작은 양의 평균 효과 안에는
+  개인별 악화가 존재한다. 개인 사례는 알고리즘 행동과 실패 형태를 설명하지만 채택 통계는 아니다.
+- 악화된 지표·비용: 이 사례의 모든 warm 정책은 자연 발생 held-out Top-10을 놓쳤다. K10 Fold-in도
+  해당 개인의 정답 순위를 1,384계단 악화시켰다.
+- 반례·한계: 한 명의 결과이며, 선택 편향을 막았어도 모집단 효과를 추정하지 않는다. 미평가 영화는
+  부정 정답이 아니고 held-out 한 편은 전체 만족도가 아니다.
+- 결정: Popularity fallback과 champion null을 유지한다. 사례 결과로 정책을 채택하지 않고,
+  REC-EV-004B/011 aggregate·paired CI와 함께만 해석한다.
+- 후속 실험: 다음 모델 후보도 aggregate 평가와 별도로 동일 고정 사용자 A의 제목 단위 diff를 자동 생성한다.
+- 관련 model version: REC-EV-002 warm ALS, REC-EV-004B 정책, REC-EV-011 K10 candidate; 모두 champion 아님.
+
+### INSIGHT-20260830-020 — 자유 태그 Hybrid의 전체 개선은 head 구간이 만들었다
+
+- 상태: `OBSERVED`
+- 관련 run: `REC-EV-017 / rec-ev-017-relational-tag-ablation-v1`
+- 비교 기준선: Bayesian Popularity, Train-known 50,977편 full-catalog
+- 관찰: Validation에서 선택한 Tag alpha 0.1은 Test 4,000명에서 NDCG@10 0.009382→0.016769,
+  candidate recall@500 0.3080→0.3275였고 paired 차이 +0.007386의 95% CI는
+  `[0.003948,0.010696]`였다. 그러나 P2 영화 인기도 구간 차이는 -0.011484,
+  CI `[-0.017592,-0.006182]`로 명확히 회귀했고 P1 long-tail NDCG는 두 정책 모두 0이었다.
+  P4 head 차이 +0.033664가 전체 향상을 주도했다.
+- 영향 구간: global-time-v1 warm Test 4,000명. 평가 사용자 결과로 tag feature가 오염되지 않도록
+  Validation·Test에 등장한 38,272명의 태그 기여를 모두 제외했다.
+- 해석: 자유 태그는 장르보다 풍부한 의미 신호를 주지만, tag coverage와 기여가 인기작에 집중돼
+  전체 평균 향상이 새로운 영화 발견이나 전 구간 개인화 개선을 뜻하지 않는다.
+- 악화된 지표·비용: P2 회귀, P1 무효과. Train-known 50,977편 중 tag vector가 있는 영화는
+  9,857편뿐이다.
+- 반례·한계: 자유 태그는 Tag Genome이 아니며 contributor bias가 남는다. 미평가는 부정 label이
+  아니고 MovieLens Test는 실제 FEELM 노출 로그가 아니다.
+- 결정: alpha 0.1을 일반 ranking 후보·champion으로 채택하지 않고 Popularity fallback을 유지한다.
+  영화·장르 관계도 설명 후보일 뿐 공개 reason으로 승인하지 않는다.
+- 후속 실험: 전수 Train-known TMDB 감독·배우·키워드·overview feature artifact를 만든 뒤
+  동일 split에서 `genre → structured TMDB → text embedding → tags` ablation을 수행한다.
+- 관련 model version: `rec-ev-017-tag-alpha-010`, rejected for generic ranking.

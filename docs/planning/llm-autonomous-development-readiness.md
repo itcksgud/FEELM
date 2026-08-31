@@ -3,7 +3,7 @@
 > 상태: `APPROVED` — 문서 작성 순서와 평가 방법의 기준  
 > 최초 평가일: 2026-08-29  
 > 최초 기준선: **NOT_READY (12/40, 30%)**  
-> 현재 판정: **전체 프로젝트 NOT_READY / C0 Catalog 기능 PASS·blind handoff 84점 NO-GO**
+> 현재 판정: **전체 프로젝트는 범위별 판정 / C0 blind handoff revision 대기 / Recommendation vNext 오프라인 구현 GO**
 
 ## 1. 목표
 
@@ -120,6 +120,30 @@ G4·G5를 통과했다고 선언하지 않는다.
 상세 점수와 조치는 [C0 blind handoff 결과](./c0-blind-handoff-20260829.md)를 기준으로 한다.
 Testcontainers 보완 뒤 backend 21/21, skip 0을 재검증했다. 사용자 승인으로 revision이 생긴 뒤
 새 worktree blind 재검증을 통과해야 `TASK-CAT-013=DONE`과 C0 slice GO로 바꾼다.
+
+### 3.4 Recommendation vNext 오프라인 구현 GO
+
+> 재평가일: 2026-08-30
+>
+> 판정: **GO — `TASK-REC-EV-019A`, `TASK-REC-EV-019B` 독립 구현 가능**
+>
+> 비포함: 현재 C2 popularity-only 교체, 개인화 champion, 예상 별점 public 노출
+
+추천 입력의 핵심 충돌을 `K_b` binary 온보딩과 `K_r` 활성 Rating으로 분리했고, user split·candidate·
+기준 모델·통계 Gate·fallback·task graph를 실행 계약으로 승인했다. 실제 MovieLens Test 3,200,021행을
+사용한 `REC-EV-019P v2`는 약한 30% Test false-GO를 폐기하고 K10·미래 10개·positive 3개·
+candidate-positive를 모두 적용했다. split을 `40/10/10/40`으로 교정해 strict K10 eligible
+5,476명으로 최소 5,000명 Gate를 통과했으며, 019C는 최종 TMDB identity 적용 뒤 Gate를 재확인한다.
+
+단일 기준은 [Recommendation vNext 구현 준비도](../recommendation/vnext-implementation-readiness.md)다.
+다음 명령이 PASS와 `decision=GO`를 반환해야 한다.
+
+```powershell
+npm run recommendation:vnext:readiness:check
+```
+
+이 GO는 LLM이 실험 구현을 시작하기 위한 계약 완결성 판정이다. 모델 채택은 REC-EV-019 이후 실제
+full-catalog 결과가 SESOI·segment non-inferiority·Holm 보정 Gate를 통과할 때만 별도로 승인한다.
 
 ## 4. 필요한 계약 문서 세트
 
@@ -264,7 +288,7 @@ API부터 작성하면 미정인 업무 규칙을 Schema에 숨기게 된다. �
 1. 요구사항 원문이 `검토 중`이고 P0 의미 결정이 남아 있다.
 2. 최종 20MB 목업이 저장소 밖에 있으며 화면별 계약으로 정규화되지 않았다.
 3. OpenAPI와 ERD가 없다.
-4. 추천 연구 문서는 있지만 Spring↔FastAPI 서빙 계약은 없다.
+4. 추천 vNext 서빙 경계는 작성됐으며 제품 API 승격은 REC-EV Gate 이후 별도 승인한다.
 5. acceptance criteria, fixture, 실행 명령, task graph가 없다.
 
 다음 작업은 **Catalog 수직 기능 계약 세트**다.

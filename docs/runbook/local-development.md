@@ -80,9 +80,12 @@ $env:CATALOG_ARTIFACT_HOST_PATH = (Resolve-Path outputs\catalog\catalog.jsonl).P
 docker compose -f docker-compose.yml -f docker-compose.catalog-import.yml up -d --build --wait
 ```
 
-backend는 `postgres` profile로 시작해 artifact를 검증·staging한 뒤 quality Gate를 통과한 version만
-ACTIVE로 바꾼다. 같은 파일 재시작은 멱등이며, 실패하면 기존 ACTIVE version을 유지한다. 이 override는
+backend는 기본 로컬 `postgres,local,compose` profile을 유지한 채 artifact를 검증·staging하고 quality
+Gate를 통과한 version만 ACTIVE로 바꾼다. 같은 파일 재시작은 멱등이며, 실패하면 기존 ACTIVE version을 유지한다. 이 override는
 현재 로컬 catalog를 실제 artifact로 교체하는 명시적 작업이므로 일반 fixture 개발에는 사용하지 않는다.
+같은 override의 `recommender-artifact-init`은 입력 Catalog bytes에서 mapping과 popularity candidate를
+다시 만들어 Spring·FastAPI와 동일한 `catalogVersion`을 사용한다. 따라서 실제 Catalog 게시 뒤 기존
+fixture 추천이 버전 불일치 503으로 남지 않는다.
 
 ### 2.1 추천 판단 자료 REC-EV-001
 
@@ -241,8 +244,14 @@ dependency가 준비된 환경에서 빠른 회귀만 실행할 때는 `npm run 
 
 ```powershell
 npm run recommendation:evidence:check
+npm run recommendation:vnext:readiness:check
 npm run security:secrets:check
 ```
+
+`recommendation:vnext:readiness:check`는 REC-EV-019~026 오프라인 구현 계약, task graph,
+`40/10/10/40` user split, K10·미래 10개·positive 3개·candidate-positive Gate, 019A/019B artifact
+schema·실행 명령, 현재 popularity-only 보호 경계와 REC-EV-019P artifact checksum을 함께 검증한다.
+출력 `decision=GO`는 019A/019B 구현 착수 승인이고 제품 champion이나 019C 모델 실행 승인이 아니다.
 
 ### 3.0 Spark ALS 1→2 worker local scale-out
 
@@ -460,6 +469,39 @@ py -3.12 scripts/recommendation_relative_utility_evaluation.py `
 Remove-Item Env:PYTHONPATH
 ```
 
+같은 비식별 MovieLens 사용자 A에서 알고리즘별 실제 영화 Top-10, 취향 벡터, held-out 순위와
+들어온/빠진 제목을 다시 생성하려면 REC-EV-001~004B/011 대용량 artifact가 있는 환경에서 실행한다.
+
+```powershell
+$env:PYTHONPATH='scripts'
+py -3.12 scripts/recommendation_user_case_study.py
+py -3.12 scripts/verify_recommendation_user_case_study.py `
+  --manifest docs/recommendation/evidence/manifests/rec-ev-016.json
+Remove-Item Env:PYTHONPATH
+```
+
+MovieLens 영화·장르 공동 선호, Train 시점 자유 태그 TF-IDF, Validation→Test alpha ablation을
+재생성하려면 다음을 실행한다. TMDB 120편 preview와 843편 감사 표본은 coverage gate 확인에만
+사용하며 추천 성능 입력에는 넣지 않는다.
+
+```powershell
+$env:PYTHONPATH='scripts'
+py -3.12 scripts/recommendation_relational_ablation.py
+py -3.12 scripts/verify_recommendation_relational_ablation.py `
+  --manifest docs/recommendation/evidence/manifests/rec-ev-017.json
+Remove-Item Env:PYTHONPATH
+```
+
+binary onboarding K10 cohort가 최소 5,000명인지 재검증하려면 `global-time-v1` Train/Test Parquet이 있는
+환경에서 다음을 실행한다. 결과는 추천 성능이 아니라 REC-EV-019 실행 feasibility다.
+
+```powershell
+$env:PYTHONPATH='scripts'
+py -3 scripts/recommendation_binary_onboarding_preflight.py
+py -3 scripts/verify_recommendation_binary_onboarding_preflight.py
+Remove-Item Env:PYTHONPATH
+```
+
 ## 4. local profile
 
 - PostgreSQL 17.6-alpine
@@ -479,7 +521,7 @@ Remove-Item Env:PYTHONPATH
 
 | 변수 | 필수 profile | 비밀 | 목적 |
 | --- | --- | --- | --- |
-| `TMDB_READ_ACCESS_TOKEN` | data job | 예 | TMDB 수집·감사 |
+| `TMDB_READ_ACCESS_TOKEN` | data job | 예 | TMDB 수집·감사. v4 Read Access Token 우선, 로컬 job은 v3 API key도 허용 |
 | `POSTGRES_DB` | Compose | 로컬 기본값 가능 | 로컬 DB 이름 |
 | `POSTGRES_USER` | Compose/backend | 로컬 기본값 가능 | 로컬 DB 사용자 |
 | `POSTGRES_PASSWORD` | Compose/backend | 예 | 로컬 DB 비밀번호 |

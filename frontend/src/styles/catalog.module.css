@@ -13,6 +13,10 @@
 .page,
 .detailPage {
   min-height: 100vh;
+  background:
+    radial-gradient(circle at 8% 0%, rgba(201, 111, 95, 0.1), transparent 25rem),
+    radial-gradient(circle at 94% 12%, rgba(210, 163, 77, 0.1), transparent 22rem),
+    transparent;
 }
 
 .detailPage {
@@ -29,7 +33,9 @@
 }
 
 .appHeader {
-  min-height: 82px;
+  position: relative;
+  z-index: 20;
+  min-height: 76px;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -39,30 +45,33 @@
 
 .brand {
   display: inline-flex;
+  flex: none;
   align-items: center;
-  gap: 10px;
-  font-size: 17px;
-  font-weight: 800;
-  letter-spacing: 0.14em;
+  gap: 1px;
+  color: var(--ink-strong);
 }
 
-.brandMark {
-  width: 34px;
-  height: 34px;
-  display: grid;
-  place-items: center;
-  color: var(--surface);
-  background: var(--ink);
-  border-radius: 50%;
+.brandWord {
   font-family: Georgia, serif;
-  font-size: 18px;
-  letter-spacing: 0;
+  font-size: 30px;
+  font-style: italic;
+  font-weight: 700;
+  line-height: 1;
+  letter-spacing: -0.06em;
+}
+
+.brandDot {
+  color: var(--accent);
+  font-family: Georgia, serif;
+  font-size: 32px;
+  font-weight: 800;
+  line-height: 0.8;
 }
 
 .tagline {
   margin: 0;
-  color: var(--ink-muted);
-  font-size: 13px;
+  color: var(--ink-subtle);
+  font-size: 12px;
 }
 
 .headerActions {
@@ -74,7 +83,7 @@
 .headerNav {
   display: flex;
   align-items: center;
-  gap: 6px;
+  gap: 4px;
 }
 
 .headerNavLink {
@@ -82,22 +91,52 @@
   min-height: 38px;
   align-items: center;
   justify-content: center;
-  padding: 0 14px;
-  border: 1px solid var(--line);
+  gap: 6px;
+  padding: 0 12px;
+  color: var(--ink-muted);
+  border: 1px solid transparent;
   border-radius: 999px;
   font-size: 12px;
   font-weight: 800;
   white-space: nowrap;
 }
 
-.headerNavLink:hover {
-  border-color: var(--line-strong);
-  background: var(--surface-soft);
+.headerNavLink:hover,
+.headerNavLinkActive {
+  color: var(--accent);
+  border-color: color-mix(in srgb, var(--accent) 20%, var(--line));
+  background: var(--accent-soft);
+}
+
+.navIcon {
+  display: grid;
+  min-width: 16px;
+  place-items: center;
+  font-size: 15px;
 }
 
 .searchHero {
-  max-width: 720px;
-  padding: clamp(56px, 10vw, 120px) 0 48px;
+  position: relative;
+  max-width: none;
+  overflow: hidden;
+  padding: clamp(48px, 8vw, 92px) clamp(24px, 6vw, 72px);
+  margin: 28px 0 24px;
+  background:
+    radial-gradient(circle at 92% 12%, rgba(210, 163, 77, 0.75), transparent 11rem),
+    linear-gradient(125deg, var(--accent-strong), var(--accent) 54%, #a24a4e);
+  border-radius: var(--radius-xl);
+  box-shadow: var(--shadow-md);
+}
+
+.searchHero::after {
+  position: absolute;
+  right: -70px;
+  bottom: -110px;
+  width: 300px;
+  height: 300px;
+  content: "";
+  border: 42px solid rgba(255, 255, 255, 0.1);
+  border-radius: 50%;
 }
 
 .eyebrow {
@@ -108,8 +147,16 @@
   letter-spacing: 0.18em;
 }
 
+.searchHero .eyebrow {
+  color: rgba(255, 255, 255, 0.68);
+}
+
 .searchHero h1 {
-  margin: 0 0 36px;
+  position: relative;
+  z-index: 1;
+  max-width: 720px;
+  margin: 0 0 32px;
+  color: var(--surface);
   font-family: Georgia, "Times New Roman", serif;
   font-size: clamp(38px, 7vw, 70px);
   line-height: 1.08;
@@ -117,6 +164,8 @@
 }
 
 .searchBox {
+  position: relative;
+  z-index: 2;
   width: 100%;
   min-height: 58px;
   display: flex;
@@ -124,7 +173,7 @@
   gap: 10px;
   padding: 0 16px;
   background: var(--surface);
-  border: 1px solid var(--line-strong);
+  border: 1px solid rgba(74, 13, 13, 0.16);
   border-radius: 999px;
   box-shadow: var(--shadow-sm);
 }
@@ -246,11 +295,23 @@
 
 .movieCard {
   min-width: 0;
+  overflow: hidden;
+  background: color-mix(in srgb, var(--surface) 94%, var(--surface-warm));
+  border: 1px solid color-mix(in srgb, var(--accent) 9%, var(--line));
+  border-radius: var(--radius-md);
+  box-shadow: 0 8px 24px rgba(74, 13, 13, 0.055);
+  transition: transform 160ms ease, box-shadow 160ms ease;
+}
+
+.movieCard:hover {
+  transform: translateY(-3px);
+  box-shadow: var(--shadow-sm);
 }
 
 .movieCardLink {
   display: block;
-  border-radius: var(--radius-md);
+  height: 100%;
+  border-radius: inherit;
 }
 
 .movieCardLink:hover .posterFrame img {
@@ -261,7 +322,7 @@
   position: relative;
   aspect-ratio: 2 / 3;
   overflow: hidden;
-  background: var(--surface-soft);
+  background: linear-gradient(145deg, var(--surface-warm), var(--accent-soft));
   border: 1px solid var(--line);
   border-radius: var(--radius-md);
 }
@@ -275,7 +336,7 @@
 }
 
 .movieCardBody {
-  padding: 12px 2px 0;
+  padding: 13px 13px 15px;
 }
 
 .movieCardBody h3 {
@@ -329,7 +390,7 @@
 
 .subscribedBadge {
   color: var(--surface);
-  background: var(--ink);
+  background: var(--accent);
 }
 
 .movieSkeleton {
@@ -414,7 +475,7 @@
   display: grid;
   place-items: center;
   color: var(--surface);
-  background: var(--ink);
+  background: var(--accent);
   border-radius: 50%;
   font-family: Georgia, serif;
   font-weight: 700;
@@ -434,8 +495,13 @@
 
 .primaryButton {
   color: var(--surface);
-  background: var(--ink);
-  border: 1px solid var(--ink);
+  background: var(--accent);
+  border: 1px solid var(--accent);
+}
+
+.primaryButton:hover:not(:disabled) {
+  background: var(--accent-hover);
+  border-color: var(--accent-hover);
 }
 
 .primaryButton:disabled {
@@ -958,13 +1024,67 @@ section.offerGroup > h3,
   .resultsSection .movieGrid { grid-template-columns: repeat(5, minmax(0, 1fr)); }
 }
 
-@media (max-width: 599px) {
-  .pageInner { width: min(100% - 28px, var(--content)); padding-bottom: 50px; }
-  .appHeader { min-height: 68px; }
+@media (max-width: 699px) {
+  .pageInner { width: min(100% - 28px, var(--content)); padding-bottom: 112px; }
+  .appHeader { min-height: 64px; border-bottom: 0; }
+  .brandWord { font-size: 27px; }
+  .brandDot { font-size: 29px; }
+  .headerActions { min-width: 0; }
   .tagline { display: none; }
-  .searchHero { padding-top: 52px; }
-  .searchHero h1 { font-size: 42px; }
+  .headerNav {
+    position: fixed;
+    z-index: 100;
+    right: 10px;
+    bottom: max(10px, env(safe-area-inset-bottom));
+    left: 10px;
+    display: flex;
+    gap: 2px;
+    padding: 7px;
+    background: rgba(255, 255, 255, 0.94);
+    border: 1px solid color-mix(in srgb, var(--accent) 14%, var(--line));
+    border-radius: 20px;
+    box-shadow: 0 16px 44px rgba(74, 13, 13, 0.2);
+    backdrop-filter: blur(18px);
+  }
+  .headerNavLink {
+    min-width: 0;
+    min-height: 50px;
+    flex: 1;
+    flex-direction: column;
+    gap: 1px;
+    padding: 6px 2px;
+    border: 0;
+    border-radius: 14px;
+    font-size: 9.5px;
+  }
+  .headerNavLinkActive { background: var(--accent-soft); }
+  .navIcon { min-height: 21px; color: var(--accent); font-size: 18px; }
+  .searchHero {
+    padding: 34px 20px 24px;
+    margin: 4px 0 8px;
+    border-radius: 22px;
+  }
+  .searchHero::after { right: -96px; bottom: -140px; }
+  .searchHero h1 { margin-bottom: 24px; font-family: inherit; font-size: 31px; line-height: 1.18; }
+  .searchBox { min-height: 50px; border-radius: 13px; box-shadow: none; }
+  .searchBox input { font-size: 14px; }
   .homeSection { padding: 28px 0; }
+  .homeSection .movieGrid { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 14px 8px; }
+  .homeSection .movieCard { border-radius: 10px; box-shadow: none; }
+  .homeSection .posterFrame { border: 0; border-bottom: 1px solid var(--line); border-radius: 0; }
+  .homeSection .movieCardBody { padding: 9px 8px 10px; }
+  .homeSection .movieCardBody h3 { font-size: 11.5px; }
+  .homeSection .movieMeta { font-size: 10px; }
+  .homeSection .externalRating,
+  .homeSection .providerBadges { display: none; }
+  .resultsToolbar { top: 0; margin-inline: -2px; }
+  .resultsSection .movieGrid { grid-template-columns: 1fr; gap: 10px; }
+  .resultsSection .movieCard { border-radius: 14px; box-shadow: none; }
+  .resultsSection .movieCardLink { display: grid; grid-template-columns: 82px minmax(0, 1fr); align-items: stretch; }
+  .resultsSection .posterFrame { height: 116px; border: 0; border-right: 1px solid var(--line); border-radius: 0; }
+  .resultsSection .movieCardBody { align-self: center; padding: 12px 14px; }
+  .resultsSection .movieCardBody h3 { font-size: 15px; }
+  .resultsSection .providerBadges { margin-top: 7px; }
   .detailHero { grid-template-columns: 112px 1fr; min-height: 250px; gap: 18px; padding-bottom: 34px; }
   .detailIntro h1 { font-family: inherit; font-size: 28px; }
   .detailIntro .eyebrow { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }

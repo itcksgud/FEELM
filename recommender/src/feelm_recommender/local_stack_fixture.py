@@ -142,7 +142,11 @@ def local_catalog_bytes() -> bytes:
     return b"".join(_canonical_line(record) for record in records)
 
 
-def export_local_stack_fixture(output_dir: str | Path) -> dict[str, Any]:
+def export_local_stack_fixture(
+    output_dir: str | Path,
+    *,
+    catalog_source: str | Path | None = None,
+) -> dict[str, Any]:
     root = Path(output_dir)
     catalog_dir = root / "catalog"
     mapping_dir = root / "mapping"
@@ -153,7 +157,15 @@ def export_local_stack_fixture(output_dir: str | Path) -> dict[str, Any]:
     candidate_dir.mkdir(parents=True, exist_ok=True)
 
     catalog_path = catalog_dir / "catalog.jsonl"
-    catalog_path.write_bytes(local_catalog_bytes())
+    if catalog_source is None:
+        catalog_path.write_bytes(local_catalog_bytes())
+        scope = "LOCAL_CONTRACT_FIXTURE_ONLY_NOT_PRODUCTION_COVERAGE"
+    else:
+        source_path = Path(catalog_source)
+        if not source_path.is_file():
+            raise ValueError("LOCAL_IMPORTED_CATALOG_NOT_FOUND")
+        catalog_path.write_bytes(source_path.read_bytes())
+        scope = "LOCAL_IMPORTED_CATALOG_ONLY_NOT_PRODUCTION_COVERAGE"
     mapping_path = mapping_dir / "mapping.json"
     mapping_metadata_path = mapping_dir / "mapping.metadata.json"
     export_catalog_mapping(
@@ -180,8 +192,8 @@ def export_local_stack_fixture(output_dir: str | Path) -> dict[str, Any]:
     active = LocalCandidateStore(candidate_dir / "store").load_active()
     return {
         "status": "PASS",
-        "scope": "LOCAL_CONTRACT_FIXTURE_ONLY_NOT_PRODUCTION_COVERAGE",
-        "catalogVersion": LOCAL_CATALOG_VERSION,
+        "scope": scope,
+        "catalogVersion": active["catalogVersion"],
         "artifactSetManifest": "serving/artifact-set.json",
         "candidateStore": "candidates/store",
         "candidateSetVersion": active["candidateSetVersion"],
@@ -193,8 +205,13 @@ def export_local_stack_fixture(output_dir: str | Path) -> dict[str, Any]:
 def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(description="Export the isolated local-stack C2 fixture")
     parser.add_argument("--output-dir", type=Path, required=True)
+    parser.add_argument(
+        "--catalog",
+        type=Path,
+        help="Optional imported Catalog JSONL. Mapping and candidates bind to that exact artifact.",
+    )
     args = parser.parse_args(argv)
-    print(json.dumps(export_local_stack_fixture(args.output_dir), sort_keys=True))
+    print(json.dumps(export_local_stack_fixture(args.output_dir, catalog_source=args.catalog), sort_keys=True))
     return 0
 
 

@@ -1,0 +1,142 @@
+{
+  "schema_version": 1,
+  "contract_id": "rec-ev-019a-artifacts-v1",
+  "status": "APPROVED",
+  "task_id": "TASK-REC-EV-019A",
+  "protocol_version": "rec-eval-vnext-2",
+  "purpose": "Build leakage-safe binary onboarding cohorts before any recommender is evaluated.",
+  "inputs": {
+    "protocol": "docs/recommendation/protocols/rec-eval-vnext.json",
+    "global_time_manifest": "docs/recommendation/evidence/manifests/global-time-v1.json",
+    "train_parquet": "outputs/recommendation-evidence/global-time-v1/train.parquet",
+    "validation_parquet": "outputs/recommendation-evidence/global-time-v1/validation.parquet",
+    "test_parquet": "outputs/recommendation-evidence/global-time-v1/test.parquet",
+    "movielens_archive": "resolved from global_time_manifest.source.archive"
+  },
+  "implementation": {
+    "runner_to_create": "scripts/build_rec_ev_019a_cohorts.py",
+    "unit_test_to_create": "scripts/tests/test_build_rec_ev_019a_cohorts.py",
+    "verifier_to_create": "scripts/verify_rec_ev_019a_cohorts.py",
+    "build_command": "py -3 scripts/build_rec_ev_019a_cohorts.py --contract docs/recommendation/contracts/rec-ev-019a-artifacts.json",
+    "unit_command": "py -3 -m unittest scripts/tests/test_build_rec_ev_019a_cohorts.py",
+    "verify_command": "py -3 scripts/verify_rec_ev_019a_cohorts.py --manifest docs/recommendation/evidence/manifests/rec-ev-019a.json"
+  },
+  "privacy": {
+    "user_key": "lowercase_hex(SHA256('feelm-ml32m-user-v1|' + decimal_userId))",
+    "raw_user_id_in_outputs": false,
+    "pseudonym_is_not_an_anonymity_claim": true
+  },
+  "output_root": "outputs/recommendation-evidence/rec-ev-019a",
+  "artifacts": [
+    {
+      "path": "outputs/recommendation-evidence/rec-ev-019a/base-train-ratings.parquet",
+      "format": "parquet",
+      "row_unit": "base-train user rating",
+      "sort_order": ["user_key", "timestamp", "movie_id"],
+      "columns": [
+        ["user_key", "string[64]", false],
+        ["movie_id", "int32", false],
+        ["rating", "float32", false],
+        ["timestamp", "int64", false],
+        ["user_bucket", "uint8", false]
+      ]
+    },
+    {
+      "path": "outputs/recommendation-evidence/rec-ev-019a/candidate-core-provisional.parquet",
+      "format": "parquet",
+      "row_unit": "provisional candidate movie",
+      "sort_order": ["movie_id"],
+      "columns": [
+        ["movie_id", "int32", false],
+        ["tmdb_id", "int32", false],
+        ["base_train_interaction_count", "int64", false],
+        ["first_base_train_timestamp", "int64", false],
+        ["identity_status", "enum:LINK_PRESENT", false]
+      ]
+    },
+    {
+      "path": "outputs/recommendation-evidence/rec-ev-019a/binary-prefixes.parquet",
+      "format": "parquet",
+      "row_unit": "selected binary input",
+      "sort_order": ["role", "user_key", "k", "input_rank"],
+      "columns": [
+        ["role", "enum:ROUTER_TRAIN|VALIDATION|LOCKED_TEST", false],
+        ["user_key", "string[64]", false],
+        ["k", "int8:5|10", false],
+        ["input_rank", "int8", false],
+        ["movie_id", "int32", false],
+        ["binary_label", "int8:-1|1", false],
+        ["relative_utility", "float32", false],
+        ["source_position", "int32", false],
+        ["timestamp", "int64", false]
+      ]
+    },
+    {
+      "path": "outputs/recommendation-evidence/rec-ev-019a/evaluation-windows.parquet",
+      "format": "parquet",
+      "row_unit": "post-prefix evaluation rating",
+      "sort_order": ["role", "user_key", "k", "window_rank"],
+      "columns": [
+        ["role", "enum:ROUTER_TRAIN|VALIDATION|LOCKED_TEST", false],
+        ["user_key", "string[64]", false],
+        ["k", "int8:0|5|10", false],
+        ["window_rank", "int8:1..10", false],
+        ["movie_id", "int32", false],
+        ["rating", "float32", false],
+        ["midrank_utility", "float32", false],
+        ["is_positive", "bool", false],
+        ["is_negative", "bool", false],
+        ["provisional_candidate_present", "bool", false],
+        ["timestamp", "int64", false]
+      ]
+    },
+    {
+      "path": "outputs/recommendation-evidence/rec-ev-019a/cohort-summary.json",
+      "format": "json",
+      "required_keys": [
+        "schema_version",
+        "protocol_version",
+        "source_checksums",
+        "role_counts",
+        "eligibility_by_role_and_k",
+        "drop_reasons",
+        "class_balance",
+        "candidate_positive_rate",
+        "raw_user_ids_stored"
+      ]
+    },
+    {
+      "path": "outputs/recommendation-evidence/rec-ev-019a/protocol-lock.json",
+      "format": "json",
+      "required_keys": ["protocol_sha256", "contract_sha256", "source_checksums", "created_before_model_test"]
+    },
+    {
+      "path": "docs/recommendation/evidence/manifests/rec-ev-019a.json",
+      "format": "json",
+      "required_keys": ["schema_version", "evidence_id", "status", "protocol_lock", "artifacts", "validation"]
+    }
+  ],
+  "gates": {
+    "locked_test_k10_strict_eligible_min": 5000,
+    "strict_eligibility": "K10 input + first 10 post-prefix ratings + at least 3 positives + at least 1 provisional candidate positive",
+    "prefix_nested_k5_in_k10": true,
+    "evaluation_window_rows_per_eligible_user_k": 10,
+    "neutral_never_dislike": true,
+    "unrated_never_dislike": true,
+    "raw_user_id_column_forbidden": true,
+    "duplicate_primary_key_rows": 0
+  },
+  "failure_behavior": {
+    "gate_failure_status": "BLOCKED_OR_INCONCLUSIVE",
+    "write_failure_summary": true,
+    "delete_failed_artifacts": false,
+    "select_champion": false
+  },
+  "forbidden_changes": [
+    "product API",
+    "database schema",
+    "APPROVED_C2A_INTERNAL_POPULARITY_ONLY",
+    "binary thresholds after Test inspection",
+    "positive injection"
+  ]
+}

@@ -35,21 +35,29 @@ class JsonTransport(Protocol):
 
 class UrlLibRawJsonTransport:
     def __init__(self, token: str, base_url: str = "https://api.themoviedb.org/3") -> None:
-        self._token = token
+        self._credential = token.strip()
+        if not self._credential:
+            raise ValueError("TMDB credential must not be empty")
+        self._uses_bearer = self._credential.count(".") == 2
         self._base_url = base_url.rstrip("/")
 
     def get(self, path: str, params: Mapping[str, str]) -> dict[str, Any]:
-        query = urllib.parse.urlencode(sorted(params.items()))
+        safe_params = dict(params)
+        if not self._uses_bearer:
+            safe_params["api_key"] = self._credential
+        query = urllib.parse.urlencode(sorted(safe_params.items()))
         url = f"{self._base_url}/{path.lstrip('/')}"
         if query:
             url += "?" + query
+        headers = {
+            "Accept": "application/json",
+            "User-Agent": "FEELM-Catalog-Pipeline/1.0",
+        }
+        if self._uses_bearer:
+            headers["Authorization"] = f"Bearer {self._credential}"
         request = urllib.request.Request(
             url,
-            headers={
-                "Authorization": f"Bearer {self._token}",
-                "Accept": "application/json",
-                "User-Agent": "FEELM-Catalog-Pipeline/1.0",
-            },
+            headers=headers,
         )
         try:
             with urllib.request.urlopen(request, timeout=30) as response:

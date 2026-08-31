@@ -20,6 +20,11 @@ const commands = [
   [python, [...pythonPrefix, 'scripts/verify_recommendation_cold_start_full_catalog.py', '--manifest', 'docs/recommendation/evidence/manifests/rec-ev-011.json']],
   [python, [...pythonPrefix, 'scripts/verify_recommendation_constrained_two_plus_one.py', '--manifest', 'docs/recommendation/evidence/manifests/rec-ev-013.json']],
   [python, [...pythonPrefix, 'scripts/verify_recommendation_relative_utility.py', '--manifest', 'docs/recommendation/evidence/manifests/rec-ev-015.json']],
+  [python, [...pythonPrefix, 'scripts/verify_recommendation_user_case_study.py', '--manifest', 'docs/recommendation/evidence/manifests/rec-ev-016.json']],
+  [python, [...pythonPrefix, 'scripts/verify_recommendation_relational_ablation.py', '--manifest', 'docs/recommendation/evidence/manifests/rec-ev-017.json']],
+  [python, [...pythonPrefix, 'scripts/verify_recommendation_user_percentile_audit.py', '--manifest', 'docs/recommendation/evidence/manifests/rec-ev-018.json']],
+  [python, [...pythonPrefix, 'scripts/verify_recommendation_binary_onboarding_preflight.py', '--manifest', 'docs/recommendation/evidence/manifests/rec-ev-019p.json']],
+  [python, [...pythonPrefix, 'scripts/validate_recommendation_vnext_readiness.py']],
   [python, [...pythonPrefix, 'scripts/verify_spark_als_scaling_evidence.py', '--result', 'performance/results/spark-als-scaling/latest.json']],
   [process.execPath, ['scripts/verify-recommendation-ui-comparison.mjs']],
   [process.execPath, ['scripts/verify-recommendation-product-decision-packet.mjs']],
@@ -36,4 +41,4 @@ for (const [command, args] of commands) {
   }
 }
 
-console.log('Recommendation evidence verification passed: unit protocols, REC-EV-004/004B/006/007/008/011/013/015, decision packet, and Spark scaling evidence.')
+console.log('Recommendation evidence verification passed: unit protocols, REC-EV-004/004B/006/007/008/011/013/015/016/017/018/019P, decision packet, and Spark scaling evidence.')

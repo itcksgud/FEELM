@@ -1,14 +1,14 @@
-import { useEffect, useMemo, useState, type FormEvent, type ReactNode } from "react";
+import { useEffect, useMemo, useRef, useState, type FormEvent, type PointerEvent as ReactPointerEvent, type ReactNode } from "react";
 import { Link, Navigate, useLocation, useNavigate, useSearchParams } from "react-router-dom";
-import { AppHeader } from "../components/CatalogUi";
+import { AppHeader, Poster } from "../components/CatalogUi";
 import { useCatalogApi } from "../api/CatalogApiContext";
 import { useC4 } from "../api/C4ApiContext";
-import type { MyMembership, OnboardingPreferenceInput, OnboardingState, PendingEmailSignup } from "../api/c4";
+import type { MyMembership, OnboardingMoviePage, OnboardingPreferenceInput, OnboardingState, PendingEmailSignup } from "../api/c4";
 import styles from "../styles/c4.module.css";
 import { localFeaturesEnabled } from "../config/localFeatures";
 
-function Shell({ title, lead, children }: { title: string; lead?: string; children: ReactNode }) {
-  return <main className={styles.page}><div className={styles.inner}><AppHeader compact /><section className={styles.panel}><p className={styles.eyebrow}>FEELM MEMBERSHIP</p><h1>{title}</h1>{lead && <p className={styles.lead}>{lead}</p>}{children}</section></div></main>;
+function Shell({ title, lead, children, auth = false }: { title: string; lead?: string; children: ReactNode; auth?: boolean }) {
+  return <main className={`${styles.page} ${auth ? styles.authPage : ""}`}><div className={styles.inner}>{!auth && <AppHeader compact />}<section className={`${styles.panel} ${auth ? styles.authPanel : ""}`}>{auth && <Link className={styles.authBrand} to="/search" aria-label="FEELM 검색 홈">feelm<span>.</span></Link>}<p className={styles.eyebrow}>FEELM MEMBERSHIP</p><h1>{title}</h1>{lead && <p className={styles.lead}>{lead}</p>}{children}</section></div></main>;
 }
 
 function ErrorNotice({ error }: { error: unknown }) {
@@ -44,7 +44,7 @@ export function SignUpPage() {
       navigate(`/verify-email?signupId=${encodeURIComponent(pending.signupId)}`, { state: { pending } });
     } catch (reason) { setError(reason); } finally { setBusy(false); }
   }
-  return <Shell title="이메일로 시작하기" lead={localFeaturesEnabled ? "로컬 프로필에서는 Mailpit으로 인증 메일을 확인합니다." : "인증 메일로 이메일 소유를 확인합니다."}><form className={styles.form} onSubmit={submit}>
+  return <Shell auth title="이메일로 시작하기" lead={localFeaturesEnabled ? "로컬 프로필에서는 Mailpit으로 인증 메일을 확인합니다." : "인증 메일로 이메일 소유를 확인합니다."}><form className={styles.form} onSubmit={submit}>
     <label>이메일<input name="email" type="email" required autoComplete="email" /></label>
     <label>닉네임<input name="nickname" minLength={2} maxLength={20} required autoComplete="nickname" /></label>
     <label>비밀번호<input name="password" type="password" minLength={15} maxLength={128} required autoComplete="new-password" /></label>
@@ -82,7 +82,7 @@ export function VerifyEmailPage() {
     try { await api.resend(signupId); setMessage(localFeaturesEnabled ? "새 인증 메일을 요청했습니다. Mailpit에서 확인해 주세요." : "새 인증 메일을 요청했습니다."); }
     catch (reason) { setError(reason); } finally { setBusy(false); }
   }
-  return <Shell title="이메일 인증" lead={pending ? `${pending.emailMasked} 주소로 인증 메일을 보냈어요.` : message}>
+  return <Shell auth title="이메일 인증" lead={pending ? `${pending.emailMasked} 주소로 인증 메일을 보냈어요.` : message}>
     {localFeaturesEnabled && <a className={styles.mailpit} href="http://localhost:8025" target="_blank" rel="noreferrer">Mailpit 받은편지함 열기</a>}
     <p className={styles.note}>{message} 인증 비밀값은 주소에서 즉시 제거되며 서버 POST body로만 전송됩니다.</p>
     <ErrorNotice error={error} /><div className={styles.actions}><button className={styles.primary} disabled={busy || !secret} onClick={verify}>인증 완료</button><button className={styles.secondary} disabled={busy} onClick={resend}>메일 다시 받기</button></div>
@@ -105,7 +105,7 @@ export function LoginPage() {
       navigate(from ?? "/me/profile", { replace: true });
     } catch (reason) { setError(reason); } finally { setBusy(false); }
   }
-  return <Shell title="로그인" lead={(location.state as { verified?: boolean } | null)?.verified ? "이메일 인증이 완료됐어요. 로그인해 주세요." : "FEELM 기록을 이어가세요."}><form className={styles.form} onSubmit={submit}>
+  return <Shell auth title="로그인" lead={(location.state as { verified?: boolean } | null)?.verified ? "이메일 인증이 완료됐어요. 로그인해 주세요." : "FEELM 기록을 이어가세요."}><form className={styles.form} onSubmit={submit}>
     <label>이메일<input name="email" type="email" required autoComplete="email" /></label><label>비밀번호<input name="password" type="password" required autoComplete="current-password" /></label>
     <ErrorNotice error={error} /><button className={styles.primary} disabled={busy}>{busy ? "로그인 중…" : "로그인"}</button>
   </form><p className={styles.foot}>처음인가요? <Link to="/sign-up">회원가입</Link></p></Shell>;
@@ -128,14 +128,209 @@ export function MembershipPage() {
 
 type OnboardingRouteState = { onboarding: OnboardingState; completionMode: "SUBMITTED" | "SKIPPED" };
 
+type OnboardingPreference = "LIKE" | "DISLIKE";
+type BoardPoint = { x: number; y: number };
+type DragState = {
+  movieId: string;
+  pointerId: number;
+  startX: number;
+  startY: number;
+  offsetX: number;
+  offsetY: number;
+  moved: boolean;
+};
+
+const likeButtonPoints: BoardPoint[] = [
+  { x: 34, y: 23 }, { x: 66, y: 23 }, { x: 30, y: 40 }, { x: 70, y: 40 }, { x: 40, y: 54 },
+  { x: 60, y: 54 }, { x: 50, y: 17 }, { x: 23, y: 31 }, { x: 77, y: 31 }, { x: 50, y: 48 },
+];
+const dislikeButtonPoints: BoardPoint[] = [
+  { x: 8, y: 12 }, { x: 92, y: 12 }, { x: 8, y: 35 }, { x: 92, y: 35 }, { x: 10, y: 58 },
+  { x: 90, y: 58 }, { x: 20, y: 67 }, { x: 80, y: 67 }, { x: 50, y: 66 }, { x: 50, y: 7 },
+];
+
+export function classifyPreferenceDistance(distance: number, radius: number): OnboardingPreference {
+  return distance <= radius ? "LIKE" : "DISLIKE";
+}
+
+function waitingPoint(index: number, count: number): BoardPoint {
+  const columns = Math.min(5, Math.max(1, count));
+  const row = Math.floor(index / columns);
+  const rowStart = row * columns;
+  const itemsInRow = Math.min(columns, count - rowStart);
+  const column = index - rowStart;
+  const rows = Math.ceil(count / columns);
+  return {
+    x: ((column + 0.5) / itemsInRow) * 100,
+    y: rows === 1 ? 85 : 75 + row * 15,
+  };
+}
+
+function PreferenceDistanceBoard({
+  items,
+  choices,
+  onChoice,
+}: {
+  items: OnboardingMoviePage["items"];
+  choices: Record<string, OnboardingPreference>;
+  onChoice: (movieId: string, preference: OnboardingPreference | null) => void;
+}) {
+  const boardRef = useRef<HTMLDivElement>(null);
+  const circleRef = useRef<HTMLDivElement>(null);
+  const trayRef = useRef<HTMLDivElement>(null);
+  const dragRef = useRef<DragState | null>(null);
+  const [placements, setPlacements] = useState<Record<string, BoardPoint>>({});
+  const [activeMovieId, setActiveMovieId] = useState(items[0]?.movieId ?? "");
+  const activeMovie = items.find((movie) => movie.movieId === activeMovieId) ?? items[0];
+  const selectedCount = Object.keys(choices).length;
+
+  function movePlacement(movieId: string, point: BoardPoint) {
+    setPlacements((current) => ({ ...current, [movieId]: point }));
+  }
+
+  function clearPlacement(movieId: string) {
+    setPlacements((current) => {
+      const next = { ...current };
+      delete next[movieId];
+      return next;
+    });
+    onChoice(movieId, null);
+  }
+
+  function chooseWithButton(movieId: string, preference: OnboardingPreference) {
+    const index = Math.max(0, items.findIndex((movie) => movie.movieId === movieId));
+    movePlacement(movieId, (preference === "LIKE" ? likeButtonPoints : dislikeButtonPoints)[index % 10]);
+    onChoice(movieId, preference);
+  }
+
+  function pointerPoint(event: ReactPointerEvent<HTMLButtonElement>, drag: DragState): BoardPoint | null {
+    const board = boardRef.current;
+    if (!board) return null;
+    const rect = board.getBoundingClientRect();
+    const centerX = event.clientX - drag.offsetX;
+    const centerY = event.clientY - drag.offsetY;
+    return {
+      x: Math.min(94, Math.max(6, ((centerX - rect.left) / rect.width) * 100)),
+      y: Math.min(94, Math.max(6, ((centerY - rect.top) / rect.height) * 100)),
+    };
+  }
+
+  function beginDrag(movieId: string, event: ReactPointerEvent<HTMLButtonElement>) {
+    if (event.button !== 0) return;
+    const rect = event.currentTarget.getBoundingClientRect();
+    setActiveMovieId(movieId);
+    event.currentTarget.setPointerCapture(event.pointerId);
+    dragRef.current = {
+      movieId,
+      pointerId: event.pointerId,
+      startX: event.clientX,
+      startY: event.clientY,
+      offsetX: event.clientX - (rect.left + rect.width / 2),
+      offsetY: event.clientY - (rect.top + rect.height / 2),
+      moved: false,
+    };
+  }
+
+  function dragMovie(event: ReactPointerEvent<HTMLButtonElement>) {
+    const drag = dragRef.current;
+    if (!drag || drag.pointerId !== event.pointerId) return;
+    if (Math.hypot(event.clientX - drag.startX, event.clientY - drag.startY) >= 6) drag.moved = true;
+    if (!drag.moved) return;
+    const point = pointerPoint(event, drag);
+    if (point) movePlacement(drag.movieId, point);
+  }
+
+  function finishDrag(event: ReactPointerEvent<HTMLButtonElement>) {
+    const drag = dragRef.current;
+    if (!drag || drag.pointerId !== event.pointerId) return;
+    if (event.currentTarget.hasPointerCapture(event.pointerId)) event.currentTarget.releasePointerCapture(event.pointerId);
+    dragRef.current = null;
+    if (!drag.moved) return;
+
+    const cardCenterX = event.clientX - drag.offsetX;
+    const cardCenterY = event.clientY - drag.offsetY;
+    const trayRect = trayRef.current?.getBoundingClientRect();
+    if (trayRect && cardCenterY >= trayRect.top) {
+      clearPlacement(drag.movieId);
+      return;
+    }
+
+    const circleRect = circleRef.current?.getBoundingClientRect();
+    if (!circleRect) return;
+    const distance = Math.hypot(cardCenterX - (circleRect.left + circleRect.width / 2), cardCenterY - (circleRect.top + circleRect.height / 2));
+    onChoice(drag.movieId, classifyPreferenceDistance(distance, circleRect.width / 2));
+  }
+
+  return <section className={styles.preferenceSection} aria-labelledby="distance-board-title">
+    <div className={styles.preferenceHeading}>
+      <div><p className={styles.preferenceKicker}>DISTANCE MAP</p><h2 id="distance-board-title">포스터를 취향 거리로 놓아 보세요</h2></div>
+      <p className={styles.preferenceProgress} role="status"><strong>{selectedCount}</strong> / 10 선택</p>
+    </div>
+    <p className={styles.distanceHelp} id="distance-help">중앙의 나와 가까운 원 안은 좋아요, 원 밖은 싫어요예요. 아래 대기 공간으로 돌려놓으면 미선택입니다.</p>
+    <div className={styles.preferenceBoard} ref={boardRef}>
+      <div className={styles.preferenceCircle} ref={circleRef} aria-hidden="true">
+        <span className={styles.insideLabel}>가까운 취향 · 좋아요</span>
+        <div className={styles.preferenceUser}><span>나</span></div>
+      </div>
+      <span className={styles.outsideLabel} aria-hidden="true">먼 취향 · 싫어요</span>
+      <div className={styles.waitingTray} ref={trayRef} aria-hidden="true"><span>아직 고르지 않은 영화</span></div>
+      {items.map((movie, index) => {
+        const point = placements[movie.movieId] ?? waitingPoint(index, items.length);
+        const preference = choices[movie.movieId];
+        const stateLabel = preference === "LIKE" ? "좋아요" : preference === "DISLIKE" ? "싫어요" : "미선택";
+        return <div
+          className={styles.preferenceCardSlot}
+          data-preference={preference ?? "UNSELECTED"}
+          data-active={movie.movieId === activeMovie?.movieId}
+          key={movie.movieId}
+          style={{ left: `${point.x}%`, top: `${point.y}%` }}
+        >
+          <button
+            className={styles.preferenceCard}
+            type="button"
+            aria-label={`${movie.title}, 현재 ${stateLabel}. 취향 공간에서 드래그하기`}
+            aria-describedby="distance-help"
+            onFocus={() => setActiveMovieId(movie.movieId)}
+            onPointerDown={(event) => beginDrag(movie.movieId, event)}
+            onPointerMove={dragMovie}
+            onPointerUp={finishDrag}
+            onPointerCancel={() => { dragRef.current = null; }}
+            onDragStart={(event) => event.preventDefault()}
+          >
+            <Poster src={movie.posterUrl} title={movie.title} />
+            <span className={styles.preferenceTitle}>{movie.title}</span>
+            <span className={styles.preferenceState}>{stateLabel}</span>
+          </button>
+          {preference && <button className={styles.removePreference} type="button" aria-label={`${movie.title} 미선택으로 되돌리기`} onClick={() => clearPlacement(movie.movieId)}>⊖</button>}
+        </div>;
+      })}
+    </div>
+    {activeMovie && <div className={styles.preferenceControls} aria-label={`${activeMovie.title} 선택`}>
+      <div><span>선택한 영화</span><strong>{activeMovie.title}</strong></div>
+      <div className={styles.preferenceButtons}>
+        <button type="button" aria-pressed={choices[activeMovie.movieId] === "DISLIKE"} onClick={() => chooseWithButton(activeMovie.movieId, "DISLIKE")}>싫어요</button>
+        <button type="button" aria-pressed={!choices[activeMovie.movieId]} onClick={() => clearPlacement(activeMovie.movieId)}>미선택</button>
+        <button type="button" aria-pressed={choices[activeMovie.movieId] === "LIKE"} onClick={() => chooseWithButton(activeMovie.movieId, "LIKE")}>좋아요</button>
+      </div>
+    </div>}
+  </section>;
+}
+
 export function OnboardingMoviesPage() {
   const { api } = useC4(); const navigate = useNavigate();
   const [page, setPage] = useState<Awaited<ReturnType<typeof api.listOnboardingMovies>> | null>(null);
   const [membership, setMembership] = useState<MyMembership | null>(null);
-  const [choices, setChoices] = useState<Record<string, "LIKE" | "DISLIKE">>({});
+  const [choices, setChoices] = useState<Record<string, OnboardingPreference>>({});
   const [error, setError] = useState<unknown>();
   useEffect(() => { let active = true; void Promise.all([api.listOnboardingMovies(), api.getMembership()]).then(([movies, member]) => { if (active) { setPage(movies); setMembership(member); } }).catch(setError); return () => { active = false; }; }, [api]);
-  function choose(movieId: string, preference: "LIKE" | "DISLIKE") { setChoices((current) => ({ ...current, [movieId]: preference })); }
+  function choose(movieId: string, preference: OnboardingPreference | null) {
+    setChoices((current) => {
+      const next = { ...current };
+      if (preference) next[movieId] = preference;
+      else delete next[movieId];
+      return next;
+    });
+  }
   async function next(mode: "SUBMITTED" | "SKIPPED") {
     if (!membership) return;
     try {
@@ -148,7 +343,7 @@ export function OnboardingMoviesPage() {
       navigate("/onboarding/ott", { state: { onboarding, completionMode: mode } satisfies OnboardingRouteState });
     } catch (reason) { setError(reason); }
   }
-  return <Shell title="첫 취향 남기기" lead="별점과 분리된 LIKE/DISLIKE입니다. 0개로 건너뛰거나 1~10개를 선택할 수 있어요."><ErrorNotice error={error} />{!page ? <p>영화 목록을 불러오는 중…</p> : <div className={styles.movieGrid}>{page.items.map((movie) => <article className={styles.movie} key={movie.movieId}>{movie.posterUrl ? <img src={movie.posterUrl} alt="" /> : <div className={styles.posterBlank}>NO POSTER</div>}<h2>{movie.title}</h2><div className={styles.choice}><button aria-pressed={choices[movie.movieId] === "LIKE"} onClick={() => choose(movie.movieId, "LIKE")}>좋아요</button><button aria-pressed={choices[movie.movieId] === "DISLIKE"} onClick={() => choose(movie.movieId, "DISLIKE")}>관심 없음</button></div></article>)}</div>}
+  return <Shell title="취향 초기 설정" lead="영화를 나와의 거리로 배치해 첫 취향을 알려 주세요. 이 입력은 일반 별점과 분리해 저장합니다."><ErrorNotice error={error} />{!page ? <p>영화 목록을 불러오는 중…</p> : page.items.length === 0 ? <p className={styles.emptyPreference}>배치할 수 있는 영화를 찾지 못했어요. 잠시 후 다시 시도하거나 건너뛸 수 있어요.</p> : <PreferenceDistanceBoard items={page.items} choices={choices} onChoice={choose} />}
     <div className={styles.actions}><button className={styles.primary} onClick={() => next("SUBMITTED")}>선택 저장 ({Object.keys(choices).length})</button><button className={styles.secondary} onClick={() => next("SKIPPED")}>건너뛰기</button></div></Shell>;
 }
 

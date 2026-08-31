@@ -6,6 +6,7 @@ import { App } from "../App";
 import { renderCatalog } from "./renderCatalog";
 import { server } from "./server";
 import { providers } from "./fixtures";
+import { classifyPreferenceDistance } from "../pages/C4Pages";
 
 const signupId = "018f6826-4da1-7c38-a846-8f794cd8b0cf";
 const movieId = "018f6826-4da1-7c38-a846-8f794cd8b0d0";
@@ -17,6 +18,14 @@ const membership = {
   onboarding: { status: "NOT_STARTED" as const, preferenceCount: 0, revision: 2 },
 };
 const authentication = { tokenType: "Bearer" as const, accessToken: "memory-only-access", expiresInSeconds: 600, membership };
+
+describe("C4 onboarding distance rule", () => {
+  it("원의 경계까지 LIKE이고 경계를 넘으면 DISLIKE다", () => {
+    expect(classifyPreferenceDistance(0, 146)).toBe("LIKE");
+    expect(classifyPreferenceDistance(146, 146)).toBe("LIKE");
+    expect(classifyPreferenceDistance(146.01, 146)).toBe("DISLIKE");
+  });
+});
 
 afterEach(() => {
   window.history.replaceState({}, "", "/");

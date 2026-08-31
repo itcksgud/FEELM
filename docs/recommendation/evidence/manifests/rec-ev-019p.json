@@ -1,0 +1,78 @@
+{
+  "schema_version": 1,
+  "evidence_id": "REC-EV-019P",
+  "status": "COMPLETED_REPRODUCIBLE_FEASIBILITY_PASS",
+  "protocol": {
+    "version": "rec-ev-019p-binary-onboarding-preflight-v2",
+    "claim_boundary": "FEASIBILITY_ONLY_NOT_RECOMMENDATION_PERFORMANCE",
+    "user_split": {
+      "base_train_buckets": [0, 39],
+      "router_train_buckets": [40, 49],
+      "validation_buckets": [50, 59],
+      "test_buckets": [60, 99]
+    },
+    "binary_k": [5, 10],
+    "future_window_ratings": 10,
+    "minimum_future_positives": 3,
+    "minimum_candidate_positives": 1,
+    "candidate_identity_basis": "MOVIELENS_LINKS_TMDB_ID_PRESENT",
+    "minimum_test_users": 5000,
+    "raw_user_ids_stored": false
+  },
+  "sources": {
+    "movielens_archive_sha256": "e4a68655d7386b8f95f2f2424b2ff975dfdd15ffd59e0d864a14dca43e99d6ee",
+    "train_parquet_sha256": "9cb778df1fcba0f8bdca3cdf1637130eeeac4c7455c41e225c6b1fa864021db6",
+    "test_parquet_sha256": "94549b971623fc45ed8b2da442214eff076eac096ee829298749074619ea3961",
+    "vnext_protocol_sha256": "7356c6006897c259aa402c53c326d81b53bd7ceb11d5a9ace077176b7c3692db"
+  },
+  "artifacts": {
+    "script": {
+      "path": "scripts/recommendation_binary_onboarding_preflight.py",
+      "sha256": "42809913f4a055ab56589261f646f7d5edfe81c10b512cc63720bc05eaa7bfd6"
+    },
+    "test": {
+      "path": "scripts/tests/test_recommendation_binary_onboarding_preflight.py",
+      "sha256": "12e9f17cd0a97848f25890f95807c1ac80af833c31cf79c99155ec62ae828a3f"
+    },
+    "result": {
+      "path": "docs/recommendation/evidence/results/rec-ev-019p-binary-onboarding-preflight.json",
+      "bytes": 2328,
+      "sha256": "96d365f5e8e81ee4be5e86c302593e6676f3b286dd25e54864d7ce4d55f12070"
+    },
+    "evidence": {
+      "path": "docs/recommendation/evidence/REC-EV-019P-binary-onboarding-preflight.md",
+      "bytes": 4395,
+      "sha256": "43137e455f6b838f5bb454e818bcc69d241a793e22eee9857145264f39615c12"
+    },
+    "rec_ev_019a_contract": {
+      "path": "docs/recommendation/contracts/rec-ev-019a-artifacts.json",
+      "bytes": 5692,
+      "sha256": "433db6018413da6c802ff33f52b7e5e650cd4ca9e66ffdb21479b86eac01d3e2"
+    },
+    "rec_ev_019b_contract": {
+      "path": "docs/recommendation/contracts/rec-ev-019b-artifacts.json",
+      "bytes": 6521,
+      "sha256": "e8c1fdc1e324a772e5726730dc9d38a6aeee53d9c8692a84c40c1d63ebdd87a5"
+    }
+  },
+  "result": {
+    "locked_test_40pct_users": 8795,
+    "candidate_movies": 42123,
+    "k5_input_and_future": 7632,
+    "k5_minimum_positive": 6040,
+    "k5_strict_eligible": 5923,
+    "k10_input_and_future": 6990,
+    "k10_minimum_positive": 5577,
+    "k10_strict_eligible": 5476,
+    "k10_both_classes": 5030,
+    "bucket_70_99_k10_strict_eligible": 4112,
+    "gate_pass": true
+  },
+  "decision": {
+    "rec_ev_019a_019b_implementation": "GO",
+    "rec_ev_019c_model_run": "PENDING_FINAL_IDENTITY_GATE",
+    "binary_personalization_champion": null,
+    "expected_rating_approved": false,
+    "current_product_policy": "APPROVED_C2A_INTERNAL_POPULARITY_ONLY"
+  }
+}
