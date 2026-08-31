@@ -1,0 +1,43 @@
+{
+  "schema_version": 1,
+  "contract_id": "rec-ev-020p-artifacts-v1",
+  "status": "APPROVED",
+  "task_ids": ["TASK-REC-EV-020P-A", "TASK-REC-EV-020P-B"],
+  "protocol_version": "rec-eval-top2-v4",
+  "purpose": "Validate user cohorts, label opportunities, locked random slates, privacy, and the inputs required for paired power before opening Locked Test.",
+  "inputs": {
+    "protocol": "docs/recommendation/protocols/rec-eval-top2-v4.json",
+    "movielens_archive_sha256": "e4a68655d7386b8f95f2f2424b2ff975dfdd15ffd59e0d864a14dca43e99d6ee",
+    "role": "VALIDATION_ONLY"
+  },
+  "implementation": {
+    "runner": "scripts/recommendation_top2_v4_preflight.py",
+    "unit_test": "scripts/tests/test_recommendation_top2_v4_preflight.py",
+    "verifier": "scripts/validate_recommendation_top2_v4_preflight.py",
+    "build_command": "py -3 scripts/recommendation_top2_v4_preflight.py --protocol docs/recommendation/protocols/rec-eval-top2-v4.json --role validation",
+    "unit_command": "py -3 -m unittest scripts/tests/test_recommendation_top2_v4_preflight.py",
+    "verify_command": "py -3 scripts/validate_recommendation_top2_v4_preflight.py --manifest docs/recommendation/evidence/manifests/rec-ev-020p.json"
+  },
+  "artifacts": [
+    "outputs/recommendation-evidence/rec-ev-020p/validation-cohort-summary.json",
+    "outputs/recommendation-evidence/rec-ev-020p/slate-size-seed-sensitivity.parquet",
+    "outputs/recommendation-evidence/rec-ev-020p/base-train-item-counts.parquet",
+    "outputs/recommendation-evidence/rec-ev-020p/paired-power-analysis.json",
+    "outputs/recommendation-evidence/rec-ev-020p/protocol-lock.json",
+    "docs/recommendation/evidence/manifests/rec-ev-020p.json"
+  ],
+  "gates": {
+    "role_is_validation": true,
+    "locked_test_opened": false,
+    "raw_user_id_in_outputs": false,
+    "duplicate_user_movie_rows": 0,
+    "locked_seed_count": 20,
+    "slate_size_sensitivity": [10, 20, 30],
+    "paired_power_requires_pre_endpoint_locked_baseline_and_challenger": true
+  },
+  "failure_behavior": {
+    "missing_comparison_artifact": "BLOCK_020P_B_WITHOUT_FABRICATING_POWER",
+    "select_champion": false,
+    "change_product_policy": false
+  }
+}

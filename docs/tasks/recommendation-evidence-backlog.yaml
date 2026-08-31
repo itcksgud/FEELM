@@ -345,24 +345,112 @@ tasks:
       - Holm-corrected hierarchical bootstrap CI lower bound above zero
       - current product policy remains popularity-only unless a separate C2 vNext approval is made
 
-  - id: TASK-REC-EV-020
-    title: Explicit Rating K0~K50 maturity와 예상 별점 분리 평가
-    status: PENDING
-    depends_on: [TASK-REC-EV-019]
+  - id: TASK-REC-EV-020P-A
+    title: Top-2 v4 cohort·label·slate·seed Validation preflight
+    status: DONE
+    depends_on: []
     outputs:
-      - rating ranking curves
+      - docs/recommendation/contracts/rec-ev-020p-artifacts.json
+      - docs/recommendation/protocols/schema/rec-eval-top2-v4.schema.json
+      - scripts/recommendation_top2_v4_preflight.py
+      - scripts/validate_recommendation_top2_v4_preflight.py
+      - scripts/tests/test_recommendation_top2_v4_preflight.py
+      - outputs/recommendation-evidence/rec-ev-020p/validation-cohort-summary.json
+      - outputs/recommendation-evidence/rec-ev-020p/slate-size-seed-sensitivity.parquet
+      - docs/recommendation/evidence/manifests/rec-ev-020p.json
+    commands:
+      - py -3 scripts/recommendation_top2_v4_preflight.py --protocol docs/recommendation/protocols/rec-eval-top2-v4.json --role validation
+      - py -3 scripts/validate_recommendation_top2_v4_preflight.py --manifest docs/recommendation/evidence/manifests/rec-ev-020p.json
+    verify:
+      - NATURAL_ALL primary excludes users only by structural history eligibility
+      - mid-rank hash shuffle opportunity denominators and common cohorts match rec-eval-top2-v4
+      - canonical UTF-8 decimal serialization and golden hash fixtures pass
+      - conditional metrics use per-user eligible-seed macro aggregation and exact binary NDCG
+      - full-catalog known GOOD denominator and zero-denominator counts match the protocol
+      - JSON preflight slate-size sensitivity 10 20 30 and 20 locked seeds are audited without opening Locked Test
+
+  - id: TASK-REC-EV-020P-B
+    title: Top-2 v4 baseline·challenger paired power Validation preflight
+    status: BLOCKED
+    depends_on: [TASK-REC-EV-020P-A, TASK-REC-EV-019B]
+    blocked_reason: pre-endpoint locked baseline and challenger prediction artifacts are missing
+    outputs:
+      - outputs/recommendation-evidence/rec-ev-020p/paired-power-analysis.json
+      - outputs/recommendation-evidence/rec-ev-020p/comparison-input-lock.json
+      - outputs/recommendation-evidence/rec-ev-020p/core-segment-power.json
+      - outputs/recommendation-evidence/rec-ev-020p/protocol-lock.json
+    verify:
+      - baseline is APPROVED_C2A_INTERNAL_POPULARITY_ONLY and exactly one pre-endpoint-locked challenger has URI and SHA-256
+      - primary Harm delta is challenger minus baseline with H0 delta at least 0.005
+      - primary Miss delta is challenger minus baseline with H0 delta at least 0 and target alternative -0.010
+      - z quantile is z one minus alpha and user-level seed-mean paired variance is used
+      - structural Test n is max of 5000 n-power-Harm and Miss total required from the Wilson-lower non-null rate
+      - Miss non-null Validation rate Wilson lower bound converts analysis n-power to structural total required n
+      - Locked Test count gate separately checks Harm non-null and Miss non-null analysis users before prediction results
+      - every model-independent core segment records variance n-power and expected Test n
+      - comparison input lock expands exact deployment-state safety and secondary hypothesis IDs without wildcard
+      - deterministic hash Poisson bootstrap golden weights nearest-rank quantiles and invalid attempts match the protocol
+      - CVaR tail membership is recomputed inside every paired bootstrap replicate
+      - insufficient power ends INCONCLUSIVE without widening margins
+
+  - id: TASK-REC-EV-020
+    title: Explicit Rating Top-2 v4 K·ALL maturity와 예상 별점 분리 평가
+    status: PENDING
+    depends_on: [TASK-REC-EV-020P-B]
+    outputs:
+      - NATURAL_ALL opportunity-denominator Top-2 curves
+      - PAIR_K_ALL and ALL_HISTORY_BIN report
+      - label-rich and EXTREME diagnostics
       - Bias and ALS predicted-rating calibration
       - docs/recommendation/evidence/REC-EV-020-explicit-rating-maturity.md
     verify:
       - ranking and predicted-rating champions are independent
       - binary-only expected rating remains null
+      - Locked Test compares one baseline and one Validation-selected challenger under protocol lock
+
+  - id: TASK-REC-EV-021P
+    title: cold-item v2 item firewall·density panel·계산량 preflight
+    status: BLOCKED
+    depends_on: [TASK-REC-EV-019B]
+    blocked_reason: firewall passed after the nested-split fix, but the REC-EV-019B TMDB feature manifest is missing
+    outputs:
+      - docs/recommendation/contracts/rec-ev-021p-artifacts.json
+      - docs/recommendation/protocols/schema/rec-eval-content-cold-v2.schema.json
+      - scripts/recommendation_content_cold_v2_preflight.py
+      - scripts/validate_recommendation_content_cold_v2_preflight.py
+      - scripts/tests/test_recommendation_content_cold_v2_preflight.py
+      - outputs/recommendation-evidence/rec-ev-021p/item-firewall-audit.json
+      - outputs/recommendation-evidence/rec-ev-021p/panel-sample-summary.parquet
+      - outputs/recommendation-evidence/rec-ev-021p/compute-plan.json
+      - docs/recommendation/evidence/manifests/rec-ev-021p.json
+    commands:
+      - py -3 scripts/recommendation_content_cold_v2_preflight.py --protocol docs/recommendation/protocols/rec-eval-content-cold-v2.json --role validation
+      - py -3 scripts/validate_recommendation_content_cold_v2_preflight.py --manifest docs/recommendation/evidence/manifests/rec-ev-021p.json
+    blocker:
+      - REC-EV-019B TMDB identity structured text feature manifest is missing
+      - protected density Validation collision was fixed from 6964 to 0 by nesting density roles inside ITEM_TRAIN
+    verify:
+      - item Train Validation Locked Test firewall matches rec-eval-content-cold-v2
+      - item-role by user-role allowed-use matrix has no Validation or Locked Test interaction leak
+      - PANEL_5P PANEL_20P PANEL_100P are reported separately
+      - strict Q0 and tuning-exposed Q0 are not mixed
+      - mixed NATURAL q attribution and target-fold q attribution are not mixed
+      - target Good Hit and conditional Target Bad Exposure masks match the protocol
+      - request-level equal-share multi-membership user-item bootstrap and additive product weights pass golden fixtures
+      - effectiveness control drift margins and max-T family match the protocol
+      - human coincidence-weighted CUSTOM_SQUARED_RANK alpha golden fixture is audited
+      - human linear-gain log2-discount NDCG-at-5 golden fixture passes within 1e-12
+      - human Hybrid-Structured and Hybrid-Text Holm family uses the same family-valid query set and query-rater split
+      - no Locked Test rating value is used for target selection
 
   - id: TASK-REC-EV-021
-    title: TMDB item cold-start
+    title: TMDB item cold-start v2
     status: PENDING
-    depends_on: [TASK-REC-EV-019B]
+    depends_on: [TASK-REC-EV-021P]
     outputs:
-      - first-observed-interaction and masked-cold reports
+      - strict and tuning-exposed natural sparse reports
+      - panelized 5-fold masked-density and non-target control drift reports
+      - relation redaction and human similarity pilot packet
       - CURRENT_METADATA_RETROSPECTIVE disclosure
 
   - id: TASK-REC-EV-022

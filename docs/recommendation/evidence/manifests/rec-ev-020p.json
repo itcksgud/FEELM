@@ -1,0 +1,39 @@
+{
+  "artifacts": [
+    {
+      "bytes": 282316,
+      "path": "outputs/recommendation-evidence/rec-ev-020p/base-train-item-counts.parquet",
+      "sha256": "b99f3efb54f60e17f72ec95a38018289afe34224a3954ab53ff056f9b9de1c11"
+    },
+    {
+      "bytes": 530,
+      "path": "outputs/recommendation-evidence/rec-ev-020p/paired-power-analysis.json",
+      "sha256": "6e3e63e8a3ede222f8ba5f09718de5cef18abf8ff17a3485bc7b13976c6cf11d"
+    },
+    {
+      "bytes": 442,
+      "path": "outputs/recommendation-evidence/rec-ev-020p/protocol-lock.json",
+      "sha256": "2f0f3c1d8fcd7b0e40aa4fc37c7b8aa33614a83a08a3bc42eda9d645b660deb0"
+    },
+    {
+      "bytes": 3462378,
+      "path": "outputs/recommendation-evidence/rec-ev-020p/slate-size-seed-sensitivity.parquet",
+      "sha256": "e46620e2faffd07f28f1ba04af356dbba8d6a751d692754497e937b2ad5e392e"
+    },
+    {
+      "bytes": 6484,
+      "path": "outputs/recommendation-evidence/rec-ev-020p/validation-cohort-summary.json",
+      "sha256": "c25301b0da5f1fe71aad6d726f121126825914ed2f15d5e4902d355cf1999e10"
+    }
+  ],
+  "evidence_id": "REC-EV-020P",
+  "locked_test_opened": false,
+  "protocol": "docs/recommendation/protocols/rec-eval-top2-v4.json",
+  "protocol_sha256": "c1e38c00b493b42317827f0109ac66ccf8de60e93482334b7105a215b75f26fa",
+  "schema_version": 1,
+  "status": "PARTIAL_PASS_020P_A_020P_B_BLOCKED",
+  "validation": {
+    "cohort_preflight": "PASS",
+    "paired_power_preflight": "BLOCKED_MISSING_LOCKED_BASELINE_CHALLENGER_ARTIFACTS"
+  }
+}

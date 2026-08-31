@@ -70,3 +70,104 @@
 - 영향: K1은 통계적 관찰로 보존하고, 최초 실질적 데이터 후보는 K10으로 기록한다.
 - 잠금: 3% 값은 Test를 열기 전에 고정하며 Test 결과에 맞춰 변경하지 않는다.
 - 남은 제품 결정: K10 입력 비용·완료 흐름을 React K5/K10 화면으로 비교한다.
+
+## DR-REC-005 — Top-2와 cold-item protocol을 preflight 전 승인하지 않는다
+
+- 일자: 2026-08-31
+- 상태: `ACCEPTED_PROTOCOL_REVISION_REQUIRED`
+- 계기: 독립 검증에서 Top-2 v3와 cold-item v1이 `CONDITIONAL GO/NO-GO` 판정을 받았다.
+- 확인된 문제:
+  - NATURAL-20이 GOOD/BAD 수 조건으로 사용자를 제외해 label-conditioned cohort가 됐다.
+  - mid-rank, shuffle, EXTREME tie, ALL_AVAILABLE 공통 분모가 재현 가능하게 고정되지 않았다.
+  - 5,000명과 Harm 0.5%p margin의 paired power 근거가 없었다.
+  - Base Train q=0만으로는 Router/Validation item 노출을 막지 못했다.
+  - q=100 가능한 head item을 하나의 density 곡선으로 연결하고 전역 재학습 간섭을 숨길 위험이 있었다.
+- 결론:
+  - Top-2 primary를 label 수로 제외하지 않는 `NATURAL_ALL`로 바꾸고 opportunity별 분모를 공개한다.
+  - GOOD/BAD label-rich와 EXTREME-20은 diagnostic으로만 유지한다.
+  - mid-rank·hash shuffle·common cohort·CVaR·full-catalog 분모를 v4에 고정한다.
+  - provisional margin은 Validation paired power를 통과하기 전 승인값이 아니다.
+  - 영화도 item Train/Validation/Locked Test로 분리하고 strict Q0 firewall을 둔다.
+  - density masking은 `PANEL_5P/20P/100P`와 5-fold item cross-fit으로 나누고 control drift를 측정한다.
+  - Top-2 v4와 cold-item v2 상태를 `PROPOSED_PROTOCOL_VALIDATION_PREFLIGHT_REQUIRED`로 둔다.
+- 후속 Gate:
+  - `REC-EV-020P-A/B` artifact contract·runner·unit·verifier·Validation power
+  - `REC-EV-021P` item firewall·panel 표본·계산량 preflight
+  - 위 Gate 전에는 Locked Test와 champion 교체 금지
+
+## DR-REC-006 — preflight 구현 전에 endpoint·분모·방화벽을 기계적으로 닫는다
+
+- 일자: 2026-08-31
+- 상태: `ACCEPTED_CONTRACT_IMPLEMENTATION_REQUIRED`
+- 계기: v4/v2 재검증에서 방향은 conditional GO였지만 서로 다른 구현자가 같은 통계량을 만들 수 없는
+  정의가 남았다.
+- 반영:
+  - hash 정수·UTF-8 직렬화와 EXTREME score percentile을 수식으로 고정했다.
+  - 조건부 지표는 사용자별 eligible-seed macro로 집계하고 zero-opportunity를 `NULL`로 고정했다.
+  - binary NDCG gain·IDCG와 full-catalog known GOOD의 입력 제외 전후 집합을 고정했다.
+  - `020P-B` baseline을 현재 승인 popularity policy, challenger를 사전 잠금 단일 artifact로 정했다.
+  - Harm NI와 Miss superiority의 delta 방향·H0/HA·power target alternative를 분리했다.
+  - model-dependent fallback segment를 core Gate에서 제거하고 CVaR CI를 bootstrap 안에서 재계산한다.
+  - Item Validation까지 포함한 item role × user role allowed-use matrix를 추가했다.
+  - cold q 결과는 mixed NATURAL slate 귀속과 target-fold 귀속을 구분하고 가중 Utility를 폐기했다.
+  - transition은 target GoodHit simultaneous CI, Harm NI, non-target control equivalence를 모두 요구한다.
+  - 사람 pilot의 평가 단위·distance·UNKNOWN coverage와 Validation/Test query·rater 분리를 고정했다.
+- 실행 경계:
+  - 설계 수정만으로 Locked Test를 열지 않는다.
+  - v4/v2 Schema·artifact contract·runner·golden fixture·verifier·checksum을 구현한 뒤 Validation-only
+    `REC-EV-020P-A/B`, `REC-EV-021P`를 통과해야 한다.
+
+## DR-REC-007 — 결측 alpha와 비선형 request bootstrap을 명시적으로 정의한다
+
+- 일자: 2026-09-01
+- 상태: `ACCEPTED_CONTRACT_READY`
+- 계기: 세 번째 독립 감사에서 BLOCKER는 없었지만, 결측 평가자가 섞인 사람 alpha와 여러 영화가
+  관여하는 Top-2 OR event의 item bootstrap이 구현자마다 달라질 수 있음이 확인됐다.
+- 교정:
+  - 사람 alpha의 observed disagreement를 unit별 `2/(n_u-1)` coincidence weighting으로 수정하고,
+    `n_u<2` unit은 `Do`, category count, `N` 모두에서 제외한다.
+  - 일반 ordinal mode와 구분하여 distance를 `CUSTOM_SQUARED_RANK`로 명명하고 golden fixture를 요구한다.
+  - request-level endpoint는 label-free membership item에 event를 같은 몫으로 전개한
+    `user_weight × mean(item_weight)` multiplier bootstrap을 사용한다.
+  - Target Bad Exposure는 TargetBadOpportunity 조건부 지표로 고정한다.
+  - Miss power는 분석 가능 사용자 n과 구조적 Test n을 분리하고 Validation Wilson lower rate로 환산한다.
+  - bootstrap hash weight, inverse Poisson, valid attempt, nearest-rank quantile을 공통 canonical contract로
+    고정한다.
+  - core segment Feature 수식·missing·tertile 경계와 실제 배포 state별 hypothesis ID registry를 고정한다.
+  - 사람 모델 Gate는 Hybrid-Structured와 Hybrid-Text query-macro NDCG@5 Holm family로 고정한다.
+- 경계: v4/v2를 입력으로 Schema·artifact contract·runner 구현을 시작할 수 있지만, 실제 Validation
+  preflight·Locked Test·champion 승격은 여전히 별도 Gate다.
+
+## DR-REC-008 — human NDCG gain·discount를 구현자 선택으로 남기지 않는다
+
+- 일자: 2026-09-01
+- 상태: `ACCEPTED_DESIGN_REVIEW_CLOSED`
+- 계기: 최종 감사에서 human NDCG@5의 relevance와 common IDCG는 있었지만 graded gain 함수가 빠진
+  HIGH 1건이 발견됐다.
+- 결론:
+  - relevance가 이미 `mean(0/1/2)/2`의 0~1 척도이므로 `G(rel)=rel` 선형 gain을 사용한다.
+  - discount는 `1/log2(rank+1)`, common IDCG도 같은 gain·discount를 사용한다.
+  - query macro는 두 Gate contrast가 모두 non-NULL인 동일 family-valid query의 산술평균이다.
+  - 지수 gain은 금지하고 binary64·`1e-12` golden fixture를 v2 계약에 둔다.
+- 경계: 추천 평가 설계 재검토를 종료하고 v4/v2 Schema·artifact contract·runner 구현으로 넘어간다.
+  Validation 실행·Locked Test·champion 교체는 구현 및 기존 Gate 전까지 계속 금지한다.
+
+## DR-REC-009 — density 역할은 strict ITEM_TRAIN 안에서만 나눈다
+
+- 일자: 2026-09-01
+- 상태: `ACCEPTED_AFTER_VALIDATION_PREFLIGHT`
+- 계기: REC-EV-021P 최초 실행에서 독립 strict item split과 density split의 교차표를 계산했다.
+- 발견:
+  - Density Validation 17,416편 중 6,964편이 strict ITEM_VALIDATION 또는 ITEM_LOCKED_TEST였다.
+  - density q를 만들기 위해 이 영화의 Base Train interaction을 읽으면 strict cold firewall을 우회한다.
+- 교정:
+  - density 역할은 strict `ITEM_TRAIN` 영화에만 부여한다.
+  - strict Validation/Test 영화는 `DENSITY_OUT_OF_SCOPE`로 고정한다.
+  - 별도 density salt는 ITEM_TRAIN 내부 Train/Validation/Locked Test 분리에만 사용한다.
+- 재검증:
+  - protected Density Validation collision `6,964 → 0`.
+  - q≥5/20/100 안전 panel은 각각 3,662/1,963/994편이다.
+  - 5-fold 최소 영화 수는 PANEL_100P에서도 191편이다.
+- 남은 경계:
+  - REC-EV-019B TMDB feature manifest가 없으므로 content/cold 모델 실행은 BLOCKED다.
+  - REC-EV-020P-B 비교 예측 artifact가 없으므로 개인화 champion은 선택하지 않는다.

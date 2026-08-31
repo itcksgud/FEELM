@@ -1,0 +1,320 @@
+{
+  "schema_version": 1,
+  "protocol_version": "rec-eval-top2-v4",
+  "status": "VALIDATION_COHORT_PREFLIGHT_PASS_PAIRED_POWER_BLOCKED",
+  "supersedes": "rec-eval-top2-v3",
+  "implementation_readiness": "NO_GO_PENDING_020P_B_LOCKED_COMPARISON_ARTIFACTS",
+  "contract_implementation_readiness": "COMPLETED_020P_CONTRACT_RUNNER_UNIT_VERIFIER",
+  "source": {
+    "movielens_archive": "ml-32m.zip",
+    "movielens_archive_sha256": "e4a68655d7386b8f95f2f2424b2ff975dfdd15ffd59e0d864a14dca43e99d6ee",
+    "tmdb_snapshot_policy": "CURRENT_METADATA_RETROSPECTIVE_UNTIL_POINT_IN_TIME_SNAPSHOT_EXISTS"
+  },
+  "user_split": {
+    "algorithm": "uint64_be(SHA256('feelm-rec-vnext-user-split-v1|' + userId)[0:8]) mod 100",
+    "base_train_buckets": [0, 39],
+    "router_train_buckets": [40, 49],
+    "validation_buckets": [50, 59],
+    "test_buckets": [60, 99],
+    "raw_user_id_in_results": false
+  },
+  "labels": {
+    "utility_formula": "(1 + count_user_rating_less + 0.5 * count_user_rating_equal_including_target) / (user_rating_count + 2)",
+    "calculation_scope": "IMMUTABLE_FULL_USER_SNAPSHOT_EVALUATION_ONLY",
+    "good_midrank_utility_min": 0.65,
+    "bad_midrank_utility_max": 0.35,
+    "raw_good_rating_sensitivity_thresholds": [4.0, 4.5],
+    "raw_bad_rating_sensitivity_thresholds": [2.0, 1.5],
+    "unrated_label": "UNKNOWN",
+    "label_as_model_feature_forbidden": true
+  },
+  "randomization": {
+    "algorithm": "UNSIGNED_LEXICOGRAPHIC_SHA256",
+    "key": "SHA256('feelm-top2-v4|' + seed + '|' + userId + '|' + movieId)",
+    "canonical_integer": "ASCII_BASE10_NONNEGATIVE_NO_SIGN_NO_WHITESPACE_NO_LEADING_ZERO_EXCEPT_ZERO",
+    "hash_input_encoding": "UTF_8",
+    "digest_comparison": "RAW_32_BYTES_UNSIGNED_LEXICOGRAPHIC",
+    "tie_breaker": "movieId_INTEGER_ASC",
+    "duplicate_user_movie_policy": "FAIL_PREFLIGHT",
+    "seeds": [17, 42, 73, 101, 211, 307, 401, 503, 601, 701, 809, 907, 1009, 1103, 1201, 1301, 1409, 1511, 1601, 1709]
+  },
+  "natural_all": {
+    "slate_size": 20,
+    "preflight_slate_size_sensitivity": [10, 20, 30],
+    "preflight_sensitivity_slate_selection": "SAME_LOCKED_HASH_PREFIX_OF_SIZE_10_20_30",
+    "preflight_sensitivity_structural_eligibility": "USER_HISTORY_COUNT_GE_SENSITIVITY_SLATE_SIZE_PLUS_K",
+    "preflight_sensitivity_champion_selection_forbidden": true,
+    "slate_selection": "FIRST_20_BY_LOCKED_HASH_WITHOUT_LABEL_FILTER",
+    "primary_exclusion_by_good_bad_count_forbidden": true,
+    "fixed_k": [0, 1, 3, 5, 10, 20, 30, 50],
+    "all_available_name": "LEAVE_20_OUT_ALL_AVAILABLE",
+    "all_available_uses_entire_reservoir": true,
+    "model_history_cap_must_be_reported": true,
+    "structural_eligibility": "user_history_count >= slate_size + K"
+  },
+  "common_cohorts": {
+    "COLD_COMMON": {
+      "minimum_history": 30,
+      "k": [0, 1, 3, 5, 10]
+    },
+    "MATURE_COMMON": {
+      "minimum_history": 70,
+      "k": [20, 30, 50]
+    },
+    "PAIR_K_ALL": "PAIR_EACH_K_WITH_LEAVE_20_OUT_ALL_ON_SAME_STRUCTURALLY_ELIGIBLE_USERS",
+    "ALL_HISTORY_BIN_RESERVOIR_COUNTS": [[0, 9], [10, 29], [30, 99], [100, 299], [300, null]]
+  },
+  "opportunities": {
+    "bad": "slate_bad_count >= 1",
+    "good": "slate_good_count >= 1",
+    "two_good": "slate_good_count >= 2"
+  },
+  "request_states": [
+    "D_HARM",
+    "A_BOTH_GOOD",
+    "B_ONE_GOOD_SAFE",
+    "C_MISS_WITH_GOOD_OPPORTUNITY",
+    "E_NO_GOOD_OPPORTUNITY"
+  ],
+  "primary_metrics": [
+    {
+      "name": "OBSERVED_DISLIKE_HARM_AT_2_UNCONDITIONAL",
+      "opportunity_mask": "TRUE",
+      "user_seed_value": "INDICATOR(TOP2_BAD_COUNT_GE_1)"
+    },
+    {
+      "name": "OBSERVED_DISLIKE_HARM_AT_2_GIVEN_BAD_OPPORTUNITY",
+      "opportunity_mask": "SLATE_BAD_COUNT_GE_1",
+      "user_seed_value": "INDICATOR(TOP2_BAD_COUNT_GE_1)"
+    },
+    {
+      "name": "MISS_AT_2_GIVEN_GOOD_OPPORTUNITY",
+      "opportunity_mask": "SLATE_GOOD_COUNT_GE_1",
+      "user_seed_value": "INDICATOR(TOP2_GOOD_COUNT_EQ_0)"
+    },
+    {
+      "name": "BOTH_GOOD_AT_2_GIVEN_TWO_GOOD_OPPORTUNITY",
+      "opportunity_mask": "SLATE_GOOD_COUNT_GE_2",
+      "user_seed_value": "INDICATOR(TOP2_GOOD_COUNT_EQ_2)"
+    },
+    {
+      "name": "SAFE_HIT_AT_2_GIVEN_GOOD_OPPORTUNITY",
+      "opportunity_mask": "SLATE_GOOD_COUNT_GE_1",
+      "user_seed_value": "INDICATOR(TOP2_BAD_COUNT_EQ_0_AND_TOP2_GOOD_COUNT_GE_1)"
+    },
+    {
+      "name": "USER_MACRO_NDCG_AT_2_GIVEN_GOOD_OPPORTUNITY",
+      "opportunity_mask": "SLATE_GOOD_COUNT_GE_1",
+      "relevance": "GOOD_1_OTHER_0",
+      "dcg": "REL1_DIV_LOG2_2_PLUS_REL2_DIV_LOG2_3",
+      "idcg": "TOP_MIN_2_SLATE_GOOD_BINARY_DCG"
+    },
+    {
+      "name": "OBSERVED_DISLIKE_HARM_AT_1_GIVEN_BAD_OPPORTUNITY",
+      "opportunity_mask": "SLATE_BAD_COUNT_GE_1",
+      "user_seed_value": "INDICATOR(RANK1_IS_BAD)"
+    }
+  ],
+  "conditional_metric_aggregation": {
+    "user_value": "SUM_SEED_MASK_TIMES_VALUE_DIV_SUM_SEED_MASK",
+    "all_seed_mask_zero": "NULL_AND_EXCLUDE_USER_FOR_THIS_METRIC",
+    "opportunity_mask_model_independent": true,
+    "baseline_challenger_same_seed_denominator_required": true,
+    "unconditional_user_value": "MEAN_ALL_20_SEEDS",
+    "seed_macro_and_pooled_user_seed_reported_separately": true
+  },
+  "diagnostics": {
+    "NATURAL_LABEL_RICH": {
+      "minimum_good": 2,
+      "minimum_bad": 2,
+      "actual_prevalence_interpretation_forbidden": true,
+      "selection_bias_audit_required": true
+    },
+    "EXTREME_20": {
+      "top_items": 10,
+      "bottom_items": 10,
+      "minimum_utility_gap": 0.30,
+      "boundary_tie_breaker": "LOCKED_HASH_ORDER",
+      "top_bottom_overlap_policy": "EXCLUDE_DIAGNOSTIC_AND_REPORT",
+      "actual_prevalence_interpretation_forbidden": true,
+      "score_percentile": "(1 + COUNT_SCORE_LESS + 0.5 * COUNT_SCORE_EQUAL_INCLUDING_TARGET) / 22",
+      "invalid_score_policy": "FAIL_MODEL_USER_ARTIFACT_NO_SILENT_DENOMINATOR_REMOVAL",
+      "score_margin": "MEAN_TOP_SCORE_PERCENTILE_MINUS_MEAN_BOTTOM_SCORE_PERCENTILE",
+      "metrics": ["PAIRWISE_AUC", "EXTREME_BAD_AT_2", "NDCG_AT_2", "PERCENTILE_SCORE_MARGIN"]
+    }
+  },
+  "full_catalog": {
+    "evaluation": "POSITIVE_UNLABELED_RETRIEVAL_PROXY",
+    "universe": "FINAL_TMDB_IDENTITY_ALLOWLIST_CATALOG",
+    "exclude_only_k_shot_input": true,
+    "positive_injection": false,
+    "same_universe_across_models": true,
+    "all_known_good_after_input": "ALL_IMMUTABLE_SNAPSHOT_GOOD_MINUS_K_INPUT_ITEMS",
+    "natural_slate_good_included": true,
+    "reservoir_good_not_in_k_included": true,
+    "all_available_positive_scope": "NATURAL_SLATE_GOOD_ONLY",
+    "universe_known_good": "ALL_KNOWN_GOOD_AFTER_INPUT_INTERSECT_IDENTITY_UNIVERSE",
+    "catalog_coverage_formula": "COUNT_UNIVERSE_KNOWN_GOOD_DIV_COUNT_ALL_KNOWN_GOOD_AFTER_INPUT",
+    "conditional_recall_formula": "COUNT_TOPN_INTERSECT_UNIVERSE_KNOWN_GOOD_DIV_COUNT_UNIVERSE_KNOWN_GOOD",
+    "end_to_end_recall_formula": "COUNT_TOPN_INTERSECT_ALL_KNOWN_GOOD_AFTER_INPUT_DIV_COUNT_ALL_KNOWN_GOOD_AFTER_INPUT",
+    "zero_denominator_policy": "NULL_USER_SEED_AND_REPORT_COUNT",
+    "candidate_recall_depths": [50, 100, 200, 500, 1000, 2000],
+    "required_metrics": ["CATALOG_COVERAGE", "CONDITIONAL_RECALL", "END_TO_END_RECALL", "MRR", "RANK_PERCENTILE"],
+    "unknown_as_negative_forbidden": true,
+    "precision_at_2_forbidden": true,
+    "harm_at_2_forbidden": true
+  },
+  "models": [
+    "B0_MOVIELENS_BAYESIAN_RATING",
+    "B1_GLOBAL_USER_ITEM_BIAS",
+    "B2_ITEM_KNN",
+    "B3_EXPLICIT_ALS_FOLD_IN",
+    "B4_BPR_MF",
+    "B5_EASE",
+    "B6_TMDB_STRUCTURED_CONTENT",
+    "B7_TMDB_TEXT_CONTENT",
+    "B8_LIGHTFM",
+    "B9_RRF",
+    "B10_K_AND_ITEM_DENSITY_AWARE_ROUTER",
+    "B11_RISK_AWARE_RERANKER"
+  ],
+  "statistics": {
+    "bootstrap_repeats": 2000,
+    "bootstrap_canonicalization": {
+      "salt": "feelm-bootstrap-v1",
+      "key": "SHA256('feelm-bootstrap-v1|' + protocolVersion + '|' + attempt + '|user|' + userId)",
+      "protocol_version_serialization": "EXACT_ASCII_PROTOCOL_VERSION_VALUE",
+      "cluster_integer_serialization": "ASCII_BASE10_NONNEGATIVE_NO_SIGN_NO_WHITESPACE_NO_LEADING_ZERO_EXCEPT_ZERO",
+      "encoding": "UTF_8",
+      "uniform": "EXACT_RATIONAL_(2*UINT64_BE_FIRST_8_BYTES+1)/2^65",
+      "weight": "POISSON_1_INVERSE_CDF_SMALLEST_K_WITH_CDF_GE_UNIFORM",
+      "poisson_cdf_precision_decimal_digits_min": 80,
+      "attempt_range": [0, 9999],
+      "valid_replicates": 2000,
+      "valid_replicate_rule": "ALL_REQUIRED_ENDPOINT_DENOMINATORS_NONZERO",
+      "selection": "FIRST_2000_VALID_ATTEMPTS",
+      "insufficient_valid_policy": "FAIL_PREFLIGHT",
+      "invalid_attempt_manifest_required": true,
+      "quantile": "EMPIRICAL_NEAREST_RANK_1_INDEXED_X_CEIL_P_TIMES_B_NO_INTERPOLATION",
+      "two_sided_percentile_probabilities": [0.025, 0.975],
+      "one_sided_and_max_t_probability": 0.95,
+      "golden_weight_fixture_required": true
+    },
+    "aggregation_before_bootstrap": "MEAN_FIXED_SEEDS_WITHIN_USER",
+    "bootstrap_unit": "PAIRED_USER_CLUSTER",
+    "seed_results_reported_separately": true,
+    "seed_monte_carlo_se_formula": "SD_20_SEED_MACRO_ESTIMATES_DIV_SQRT_20",
+    "maximum_seed_monte_carlo_se": 0.001,
+    "confidence": "ONE_SIDED_95_FOR_NONINFERIORITY_TWO_SIDED_95_FOR_REPORTING",
+    "one_sided_alpha": 0.05,
+    "target_power": 0.80,
+    "comparison_inputs": {
+      "baseline_policy_id": "APPROVED_C2A_INTERNAL_POPULARITY_ONLY",
+      "baseline_artifact_uri_sha256_required": true,
+      "challenger_count": 1,
+      "challenger_id_and_selection_rule_locked_before_primary_endpoint_computation": true,
+      "validation_selection_metrics_and_candidate_count_recorded_if_used": true,
+      "challenger_artifact_uri_sha256_required": true,
+      "evaluation_artifact": "REC_EV_020P_A_URI_AND_SHA256"
+    },
+    "primary_safety_endpoint": "OBSERVED_DISLIKE_HARM_AT_2_UNCONDITIONAL_OVERALL",
+    "primary_benefit_endpoint": "MISS_AT_2_GIVEN_GOOD_OPPORTUNITY_OVERALL",
+    "power_and_nonnull_counts_computed_per_locked_deployment_state": true,
+    "delta_direction": "CHALLENGER_MINUS_BASELINE",
+    "harm_h0": "DELTA_HARM_GE_0.005",
+    "harm_ha": "DELTA_HARM_LT_0.005",
+    "harm_power_target_alternative": 0.0,
+    "miss_h0": "DELTA_MISS_GE_0.0",
+    "miss_ha": "DELTA_MISS_LT_0.0",
+    "miss_power_target_alternative": -0.01,
+    "miss_test_gate": "ONE_SIDED_UPPER_CI_LT_0_AND_POINT_ESTIMATE_LE_NEGATIVE_0.01",
+    "analysis_required_harm_nonnull": "n_power_harm",
+    "analysis_required_miss_nonnull": "n_power_miss",
+    "miss_nonnull_user": "SUM_20_SEEDS_GOOD_OPPORTUNITY_GT_0",
+    "miss_nonnull_rate_validation": "COUNT_MISS_NONNULL_USERS_DIV_COUNT_STRUCTURAL_ELIGIBLE_USERS",
+    "miss_nonnull_rate_lower_bound": "(P + Z^2/(2N) - Z*SQRT(P*(1-P)/N + Z^2/(4N^2))) / (1 + Z^2/N); Z=1.6448536269514722",
+    "total_required_miss_formula": "ceil(n_power_miss / p_miss_nonnull_L95)",
+    "minimum_test_structural_users_formula": "FOR_EACH_LOCKED_STATE max(5000, n_power_harm_state, total_required_miss_state)",
+    "locked_test_count_gate_before_prediction_result_view": ["FOR_EACH_LOCKED_STATE_n_test_harm_nonnull_ge_n_power_harm", "FOR_EACH_LOCKED_STATE_n_test_miss_nonnull_ge_n_power_miss"],
+    "zero_miss_nonnull_lower_bound_policy": "FAIL_PREFLIGHT",
+    "power_variance_unit": "USER_LEVEL_MEAN_SEED_PAIRED_DELTA",
+    "power_variance_estimator": "UNBIASED_SAMPLE_VARIANCE_DDOF_1_OVER_ANALYZABLE_VALIDATION_USERS",
+    "power_formula": "ceil(var_delta * (z_(1-alpha) + z_(power))^2 / detectable_gap^2)",
+    "z_one_minus_alpha": 1.6448536269514722,
+    "z_power": 0.8416212335729143,
+    "harm_detectable_gap": 0.005,
+    "miss_detectable_gap": 0.01,
+    "provisional_harm_noninferiority_margin": 0.005,
+    "provisional_miss_improvement_sesoi_signed_delta": -0.01,
+    "test_margin_change_forbidden": true,
+    "margin_requires_separate_product_loss_approval": true,
+    "safety_hypothesis_family": ["DEPLOYMENT_K_OVERALL_HARM_NI", "MODEL_INDEPENDENT_CORE_SEGMENT_HARM_NI", "CVAR90_NONINCREASE"],
+    "safety_testing": "INTERSECTION_UNION_ALL_MUST_PASS_NO_HOLM",
+    "secondary_hypothesis_family": ["MISS", "BOTH_GOOD", "SAFE_HIT", "NDCG"],
+    "secondary_multiple_testing": "HOLM_AFTER_SAFETY_PASS",
+    "locked_test_challengers": 1,
+    "locked_test_baselines": 1
+  },
+  "core_segments": {
+    "families": ["HISTORY_COUNT_LOW_MID_HIGH", "INPUT_RATING_VARIANCE_NO_INPUT_SINGLE_INPUT_LOW_MID_HIGH", "INPUT_POPULARITY_NO_INPUT_TAIL_MID_HEAD", "INPUT_TMDB_FEATURE_NO_INPUT_COMPLETE_INCOMPLETE"],
+    "threshold_source": "VALIDATION_TERTILES_LOCKED_BEFORE_TEST",
+    "membership": "MODEL_INDEPENDENT_NO_EVALUATION_SLATE_LABEL_NO_MODEL_OUTPUT",
+    "history_feature": "IMMUTABLE_SNAPSHOT_OBSERVED_RATING_COUNT_VALUES_NOT_USED",
+    "input_rating_variance": "POPULATION_VARIANCE_SUM_SQUARED_DEVIATION_DIV_K; K0_NO_INPUT; K1_SINGLE_INPUT",
+    "input_popularity": "MEDIAN_LOG1P_BASE_TRAIN_INTERACTION_COUNT_AVERAGE_TWO_CENTER_VALUES_IF_EVEN; K0_NO_INPUT; MISSING_ITEM_COUNT_ZERO",
+    "input_tmdb_complete": "ALL_INPUT_ITEMS_HAVE_IDENTITY_AND_NONEMPTY_GENRE_AND_RELEASE_YEAR_AND_ORIGINAL_LANGUAGE_AND_NONBLANK_OVERVIEW; K0_NO_INPUT; ANY_MISSING_INCOMPLETE",
+    "continuous_thresholds": "DEPLOYMENT_STATE_VALIDATION_NEAREST_RANK_Q_ONE_THIRD_AND_Q_TWO_THIRDS",
+    "continuous_boundary": "LOW_X_LE_Q1; MID_Q1_LT_X_LE_Q2; HIGH_X_GT_Q2",
+    "equal_threshold_policy": "SEGMENT_NOT_IDENTIFIABLE_DIAGNOSTIC_NOT_SAFETY_GATE",
+    "threshold_distribution_checksum_required": true,
+    "k0_input_feature_segment": "NO_INPUT",
+    "deployment_k_or_all_reported_separately": true,
+    "minimum_users_per_gate_segment": "max(500, validation_derived_n_power_harm_segment)",
+    "minimum_bad_opportunities_per_gate_segment": 50,
+    "bad_opportunity_minimum_applies_to": "CONDITIONAL_HARM_DIAGNOSTIC_NOT_OVERALL_POWER",
+    "undersized_segment_policy": "SEGMENT_INCONCLUSIVE_BLOCK_PROMOTION_KEEP_BASELINE_FALLBACK",
+    "korean_origin_policy": "CORE_ONLY_IF_SAME_POWER_MINIMUMS_PASS_OTHERWISE_DIAGNOSTIC",
+    "model_fallback_used_segment": "DIAGNOSTIC_ONLY"
+  },
+  "cvar90": {
+    "user_value": "MEAN_SEED_OBSERVED_DISLIKE_HARM_AT_2_UNCONDITIONAL",
+    "definition": "EMPIRICAL_EXPECTED_SHORTFALL_WORST_10_PERCENT",
+    "boundary_tie_policy": "FRACTIONAL_MASS",
+    "bootstrap_recompute_tail_membership_each_model_each_replicate": true,
+    "delta_direction": "CHALLENGER_MINUS_BASELINE",
+    "gate": "ONE_SIDED_95_UPPER_CI_LE_0"
+  },
+  "experiments": {
+    "REC-EV-020P-A": "COHORT_LABEL_SLATE_SEED_PREFLIGHT",
+    "REC-EV-020P-B": "VALIDATION_PAIRED_POWER_PREFLIGHT",
+    "REC-EV-020A": "TOP2_NATURAL_ALL_K_SHOT",
+    "REC-EV-020B": "FULL_CATALOG_POSITIVE_UNLABELED_RETRIEVAL",
+    "REC-EV-020C": "NEXT_RATING_SESSION_ROBUSTNESS_ONLY",
+    "REC-EV-020D": "PAIR_K_WITH_LEAVE_20_OUT_ALL",
+    "REC-EV-020E": "LABEL_RICH_AND_EXTREME_DIAGNOSTICS"
+  },
+  "locked_hypothesis_registry": {
+    "artifact": "comparison-input-lock.json",
+    "allowed_deployment_input_states": ["K0", "K1", "K3", "K5", "K10", "K20", "K30", "K50", "ALL"],
+    "wildcard_forbidden": true,
+    "safety_id_templates": ["{STATE}/HARM_NI/OVERALL", "{STATE}/HARM_NI/SEGMENT/{FAMILY}/{LEVEL}", "{STATE}/CVAR90_NONINCREASE"],
+    "secondary_id_templates": ["{STATE}/MISS", "{STATE}/BOTH_GOOD", "{STATE}/SAFE_HIT", "{STATE}/NDCG"],
+    "exact_expanded_ids_and_checksum_required_before_test": true,
+    "safety_decision": "INTERSECTION_UNION_ALL_EXPANDED_IDS_PASS",
+    "secondary_adjustment": "HOLM_OVER_ALL_EXPANDED_SECONDARY_IDS_AFTER_SAFETY_PASS"
+  },
+  "locked_test_prerequisites": [
+    "V4_JSON_SCHEMA",
+    "REC_EV_020P_ARTIFACT_CONTRACT",
+    "REC_EV_020P_RUNNER_UNIT_TEST_VERIFIER",
+    "VALIDATION_COHORT_PREFLIGHT_PASS",
+    "VALIDATION_PAIRED_POWER_PASS",
+    "PROTOCOL_LOCK_CHECKSUM"
+  ],
+  "adoption": {
+    "current_policy": "APPROVED_C2A_INTERNAL_POPULARITY_ONLY",
+    "personal_champion": null,
+    "offline_result_is_actual_satisfaction": false,
+    "requires_product_approval": true
+  }
+}

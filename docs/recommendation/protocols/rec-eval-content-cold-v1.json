@@ -1,0 +1,132 @@
+{
+  "schema_version": 1,
+  "protocol_version": "rec-eval-content-cold-v1",
+  "status": "SUPERSEDED",
+  "superseded_by": "rec-eval-content-cold-v2",
+  "source": {
+    "movielens_archive": "ml-32m.zip",
+    "movielens_archive_sha256": "e4a68655d7386b8f95f2f2424b2ff975dfdd15ffd59e0d864a14dca43e99d6ee",
+    "tmdb_snapshot_policy": "CURRENT_METADATA_RETROSPECTIVE"
+  },
+  "user_split_reference": "rec-eval-top2-v3",
+  "time_claim": "STATIC_PREFERENCE_RECONSTRUCTION_NOT_WATCH_SEQUENCE",
+  "natural_sparse_bins": {
+    "Q0": [0, 0],
+    "Q1_4": [1, 4],
+    "Q5_19": [5, 19],
+    "Q20_99": [20, 99],
+    "Q100P": [100, null]
+  },
+  "controlled_density": {
+    "train_interactions_per_item": [0, 1, 5, 20, 100, "ALL"],
+    "sampling": "DETERMINISTIC_PER_ITEM_AND_SEED",
+    "retrain_collaborative_models_at_every_density": true,
+    "fixed_across_density": [
+      "TARGET_MOVIES",
+      "TEST_USERS",
+      "TEST_LABELS",
+      "TMDB_FEATURES",
+      "CANDIDATE_UNIVERSE",
+      "SEEDS"
+    ],
+    "removed_interaction_reuse_forbidden": true
+  },
+  "ground_truth": {
+    "primary": "G1_USER_RELATIVE",
+    "definitions": {
+      "G1_USER_RELATIVE": {
+        "good_midrank_utility_min": 0.65,
+        "bad_midrank_utility_max": 0.35
+      },
+      "G2_ABSOLUTE": {
+        "good_rating_thresholds": [4.0, 4.5],
+        "bad_rating_thresholds": [2.0, 1.5]
+      },
+      "G3_RELATION": "INDEPENDENT_TMDB_RELATION_WITH_MATCHING_FEATURE_ABLATED",
+      "G4_HUMAN_SIMILARITY": "BLIND_0_1_2_JUDGMENT"
+    },
+    "train_density_and_label_definition_changed_in_same_primary_run": false,
+    "unrated_label": "UNKNOWN"
+  },
+  "tmdb_preference_features": {
+    "allowed": [
+      "GENRES",
+      "DIRECTOR",
+      "CAST",
+      "KEYWORDS",
+      "OVERVIEW",
+      "COLLECTION",
+      "ORIGIN_COUNTRY",
+      "ORIGINAL_LANGUAGE",
+      "RELEASE_DECADE",
+      "RUNTIME",
+      "MISSINGNESS_MASK"
+    ],
+    "forbidden": [
+      "POPULARITY",
+      "VOTE_AVERAGE",
+      "VOTE_COUNT",
+      "WATCH_PROVIDERS",
+      "MOVIELENS_GENRES",
+      "MOVIELENS_FREE_TAGS"
+    ]
+  },
+  "models": [
+    "B0_BAYESIAN_PRIOR",
+    "TMDB_STRUCTURED_CONTENT",
+    "TMDB_TEXT_CONTENT",
+    "TMDB_STRUCTURED_TEXT_HYBRID",
+    "ITEM_KNN_WHEN_AVAILABLE",
+    "ALS_WHEN_AVAILABLE",
+    "EASE_WHEN_AVAILABLE",
+    "CONTENT_CF_RANK_FUSION"
+  ],
+  "preference_metrics": [
+    "GOOD_RECALL_AT_50_100_200_500_1000_2000",
+    "GOOD_BAD_PAIRWISE_AUC",
+    "GOOD_BAD_MEAN_RANK_PERCENTILE",
+    "LABELED_SLATE_OBSERVED_DISLIKE_HARM_AT_2",
+    "LABELED_SLATE_MISS_AT_2",
+    "LABELED_SLATE_NDCG_AT_2",
+    "COVERAGE",
+    "FALLBACK_RATE"
+  ],
+  "similarity_metrics": [
+    "QUERY_MACRO_NDCG_AT_5",
+    "MRR_AT_5",
+    "RECALL_AT_5",
+    "RELATION_ABLATION_DELTA",
+    "HUMAN_AGREEMENT",
+    "UNKNOWN_RATE",
+    "COVERAGE"
+  ],
+  "human_similarity_gate": {
+    "minimum_queries": 100,
+    "minimum_candidates_per_query": 5,
+    "minimum_raters": 3,
+    "scale": [0, 1, 2],
+    "unknown_allowed": true
+  },
+  "statistics": {
+    "seeds": [17, 42, 73, 101, 211],
+    "bootstrap_repeats": 2000,
+    "bootstrap_unit": "ITEM_THEN_USER",
+    "confidence_level": 0.95,
+    "multiple_testing": "HOLM",
+    "test_retuning_forbidden": true
+  },
+  "experiments": {
+    "REC-EV-021P": "COLD_ITEM_COHORT_PREFLIGHT",
+    "REC-EV-021A": "NATURAL_SPARSE_ITEM_SLICES",
+    "REC-EV-021B": "CONTROLLED_INTERACTION_DENSITY",
+    "REC-EV-021C": "GROUND_TRUTH_SENSITIVITY",
+    "REC-EV-021D": "TMDB_ONLY_RELATION_ABLATION",
+    "REC-EV-021E": "BLIND_HUMAN_SIMILARITY_GATE"
+  },
+  "adoption": {
+    "current_personal_champion": null,
+    "current_similar_movie_champion": null,
+    "tmdb_only_similarity_cannot_replace_personal_champion": true,
+    "requires_product_approval": true
+  }
+}

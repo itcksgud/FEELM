@@ -146,7 +146,7 @@ def validate_task_states(path: str, task_prefix: str, errors: list[str]) -> set[
     """Check that READY/BLOCKED task states agree with their dependency states."""
     text = read(path)
     task_pattern = re.compile(
-        rf"^  - id:\s*({re.escape(task_prefix)}-\d{{3}}[A-Z]?)\s*$"
+        rf"^  - id:\s*({re.escape(task_prefix)}-\d{{3}}(?:[A-Z](?:-[A-Z])?)?)\s*$"
         rf"(?P<body>.*?)(?=^  - id:|\Z)",
         flags=re.MULTILINE | re.DOTALL,
     )

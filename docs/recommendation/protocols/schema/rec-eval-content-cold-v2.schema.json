@@ -1,0 +1,36 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://feelm.local/schema/rec-eval-content-cold-v2.schema.json",
+  "title": "FEELM content and item-cold evaluation protocol v2",
+  "type": "object",
+  "required": [
+    "schema_version",
+    "protocol_version",
+    "source",
+    "item_split",
+    "density_item_split",
+    "density_panels",
+    "item_cross_fit",
+    "two_way_uncertainty",
+    "human_similarity_pilot",
+    "locked_test_prerequisites",
+    "adoption"
+  ],
+  "properties": {
+    "protocol_version": {"const": "rec-eval-content-cold-v2"},
+    "density_panels": {
+      "type": "object",
+      "required": ["PANEL_5P", "PANEL_20P", "PANEL_100P", "cross_panel_curve_forbidden"]
+    },
+    "item_cross_fit": {
+      "type": "object",
+      "required": ["folds", "fold_key", "removed_interaction_reuse_forbidden"],
+      "properties": {"folds": {"const": 5}}
+    },
+    "human_similarity_pilot": {
+      "type": "object",
+      "required": ["golden_fixture", "human_model_comparison"]
+    }
+  },
+  "additionalProperties": true
+}

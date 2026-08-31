@@ -1,0 +1,37 @@
+{
+  "artifacts": [
+    {
+      "bytes": 1746,
+      "path": "outputs/recommendation-evidence/rec-ev-021p/compute-plan.json",
+      "sha256": "869a68c4bcd08b48a82ed3ada465dd8a7b81de4146d2d094c941c0545e52c203"
+    },
+    {
+      "bytes": 1965,
+      "path": "outputs/recommendation-evidence/rec-ev-021p/item-firewall-audit.json",
+      "sha256": "80435fd87b3b8ae9cfa9b5e64a90d3393bc7a1a0d9b16d9d11ade3aa19c6988d"
+    },
+    {
+      "bytes": 35288,
+      "path": "outputs/recommendation-evidence/rec-ev-021p/panel-sample-summary.parquet",
+      "sha256": "301d7cb4dd8b19f15a87041cf4067eb06049cb2effe7fddc2727507bedda2be2"
+    },
+    {
+      "bytes": 514,
+      "path": "outputs/recommendation-evidence/rec-ev-021p/protocol-lock.json",
+      "sha256": "32f906613f0aa03131c407a764b73f6067e0054a10fbd8706f7da602d2df227e"
+    }
+  ],
+  "evidence_id": "REC-EV-021P",
+  "locked_test_opened": false,
+  "protocol": "docs/recommendation/protocols/rec-eval-content-cold-v2.json",
+  "protocol_sha256": "0b5f75c340d8ba30a63baa3d6491046255572df06673c6a2f7e559e999b66b76",
+  "schema_version": 1,
+  "status": "BLOCKED",
+  "validation": {
+    "blocker_reasons": [
+      "REC_EV_019B_TMDB_FEATURE_MANIFEST_MISSING"
+    ],
+    "firewall": "PASS",
+    "model_run": "BLOCKED_MISSING_REC_EV_019B"
+  }
+}

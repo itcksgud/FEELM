@@ -5,6 +5,11 @@
 > 제품 영향: 없음. 이 문서만으로 현재 C2 기본 정책을 교체하지 않는다.
 > 입력 기준: [추천 입력 신호 계약 vNext](./00-input-signal-contract-vnext.md)
 
+> 후속 판정: 이 v2 문서는 REC-EV-019A/019B 실행 계약으로 보존한다. 개인 추천 champion의 차기 판정은
+> [Top-2 위험 회피 추천 설계](./02-top2-risk-aware-evaluation-design.md)와
+> [`rec-eval-top2-v4.json`](./protocols/rec-eval-top2-v4.json)을 preflight한 뒤 적용한다. 현재 v4는
+> `PROPOSED_PROTOCOL_VALIDATION_PREFLIGHT_REQUIRED`이며 Locked Test 실행 계약이 아니다.
+
 기계 판독 가능한 초깃값은
 [`protocols/rec-eval-vnext.json`](./protocols/rec-eval-vnext.json)에 고정한다. 두 파일이 다르면 사람이
 읽는 이 문서를 기준으로 JSON을 수정하고 새 protocol version을 부여한다.

@@ -1,7 +1,7 @@
 # FEELM Zero-data Launch 추천 시스템 설계 보고서
 
 > 문서 상태: `DRAFT` — 연구 로드맵이며 현재 C2 구현 계약이 아니다.
-> 개정일: 2026-08-30
+> 개정일: 2026-08-31
 > 전제: FEELM 자체 사용자는 거의 없고, 지속적인 사용자 행동 수집도 기대하지 않는다.
 > 목표: MovieLens 사용자 행동과 TMDB 영화 정보를 분리하고, 실제 binary 온보딩과 1~5점 평가를
 > 구분해 개인화 가능성을 검증한다.
@@ -377,21 +377,31 @@ ranking 비교에는 B0~B3, B5~B7, B9를 사용한다. 예상 별점은 B1 Bias�
 
 ### 4.4 공통 정답·평가
 
-각 사용자·cutoff 이후 최초 10개 rating에서 사용자 상대 효용 상위 항목을 positive로 삼는다. raw
-`4.0/4.5` threshold는 민감도 표로만 사용한다. 후보는 동일 full catalog에서 계산하고 positive를
-강제로 삽입하지 않는다.
+주 평가는 timestamp를 쓰지 않는 정적 선호 복원이다. 각 사용자·seed에서 label을 보지 않고 20편
+NATURAL slate를 먼저 고정하고 나머지 평점에서 중첩 K-shot 입력을 만든다. GOOD/BAD 수로 primary
+사용자를 제외하지 않는다. 사용자 상대 효용과 keyed-hash 순서는 Top-2 v4 공식으로 계산하며 raw GOOD
+`4.0/4.5`, BAD `2.0/1.5`는 민감도 표로 낸다. 미평가는 UNKNOWN이다.
+
+조건부 지표는 opportunity가 있는 seed만 사용자 내부에서 macro 평균하고 모든 seed에서 opportunity가
+없는 사용자는 해당 지표에서 `NULL`로 둔다. 정확한 numerator·binary NDCG·zero-denominator 계약은
+Top-2 v4를 따른다.
 
 | 지표 | 답하는 질문 |
 | --- | --- |
-| 사용자 macro NDCG@10 | 미래 관측 선호를 상단에 놓았는가? |
-| Recall/MRR@10 | positive를 찾고 얼마나 빨리 노출했는가? |
+| Observed-Dislike Harm@2 | 전체와 BAD opportunity 사용자에서 관측 BAD가 포함됐는가? |
+| Miss@2 / BothGood@2 | 해당 GOOD opportunity가 있을 때 놓치거나 두 편을 골랐는가? |
+| 사용자 macro NDCG@2 | 두 자리의 순서가 좋은가? |
+| Full-catalog Recall curve | known GOOD가 후보 생성 단계에서 살아남는가? |
 | Full-catalog Rank Percentile | Top-10 밖 순위도 개선됐는가? |
 | 사용자 macro MAE | 활성 Rating 예상 오차가 줄었는가? |
 | Coverage/Fallback | 실제로 점수를 계산하지 못한 구간은 어디인가? |
 | Benefit/Tie/Harm | 실질 tie band 밖에서 좋아지거나 나빠진 사용자는 몇 %인가? |
 
-상세 split, label, candidate, hyperparameter budget, SESOI는
-[오프라인 평가 프로토콜](./01-offline-evaluation-protocol-vnext.md)에서 고정한다.
+REC-EV-019A/019B의 기존 실행 계약은 [v2 오프라인 프로토콜](./01-offline-evaluation-protocol-vnext.md)에
+보존한다. 개인 추천 champion의 상세 split, label, candidate, hyperparameter budget, SESOI는
+[Top-2 위험 회피 설계](./02-top2-risk-aware-evaluation-design.md)와
+[`rec-eval-top2-v4.json`](./protocols/rec-eval-top2-v4.json)에 제안했다. 현재 상태는 preflight
+required이며 REC-EV-020P 전에는 Locked Test 계약이 아니다.
 
 ---
 
@@ -401,35 +411,35 @@ ranking 비교에는 B0~B3, B5~B7, B9를 사용한다. 예상 별점은 B1 Bias�
 
 > MovieLens 평가와 태그가 하나도 없는 영화를 TMDB 정보만으로 기존 사용자에게 추천할 수 있는가?
 
-### 5.2 두 종류의 cold-item cohort
+### 5.2 세 증거 수준
 
-#### first-observed-interaction cold 영화
+| 수준 | 영화 상태 | 정답 | 주장 |
+| --- | --- | --- | --- |
+| L1 자연 희소 | Base Train 상호작용 `0/1~4/5~19/20~99/100+` | Test 사용자 관측 평점 | user·item 분리 선호 복원 |
+| L2 통제 희소 | `PANEL_5P/20P/100P` 안에서 Train q 변경 | 동일한 고정 Test 평점 | 해당 warm-item panel의 masking 강건성 |
+| L3 TMDB-only | MovieLens 전체에 없음 | 독립 관계·사람 유사성 판단 | 콘텐츠 유사도; 개인 만족 아님 |
 
-전역 cutoff 이후 처음 등장한 영화를 사용한다.
+MovieLens timestamp는 rating 기록 시각이지 관람 시각이 아니므로 first-observed-interaction은 보조 session
+proxy로만 남긴다. 주 평가는 snapshot에서 사용자를 분리한 정적 선호 복원이다.
 
-```text
-T 이전 상호작용 0개
-T 시점에 사용 가능한 TMDB 정적 메타데이터만 제공
-T 이후 평가를 정답으로 사용
-```
+### 5.3 Train과 정답을 독립적으로 바꾼다
 
-#### 가상 masked 신규 영화
+strict Q0는 영화도 Train/Validation/Locked Test로 hash 분리한다. Item Validation은 Validation label
+외의 모든 interaction-derived 학습을, Item Locked Test는 protocol lock 전 모든 interaction을 격리한다.
+L2는 original q에 따라 `PANEL_5P/20P/100P`로 나누고 각 panel 안에서만
+Train q를 비교한다. 제거된 interaction은 ALS factor, ItemKNN, EASE, LightFM, popularity 어디에도
+사용하지 않고 5개 item fold별로 다시 학습한다. non-target control drift를 함께 측정한다.
 
-평가가 충분한 기존 영화를 인기도 구간별로 선택하고 모든 상호작용을 학습에서 제거한다.
+정답 민감도는 Train을 고정한 별도 실험으로 낸다.
 
-```text
-대상 영화의 ratings → 전부 제거
-대상 영화의 MovieLens tags → 전부 제거
-ALS item factor → 생성 금지
-ItemKNN 이웃 → 생성 금지
-TMDB 정적 Feature → 제공
-```
+- `G1_USER_RELATIVE`: GOOD `>=0.65`, BAD `<=0.35`
+- `G2_ABSOLUTE`: GOOD `>=4.0/4.5`, BAD `<=2.0/1.5`
+- `G3_RELATION`: 정답 관계와 동일한 Feature를 제거한 TMDB 관계 label
+- `G4_HUMAN_SIMILARITY`: 모델명을 숨긴 후보의 사람 0/1/2 판단
 
-MovieLens timestamp는 rating 기록 시각이지 출시·카탈로그 등록·관람 시각이 아니다. 따라서 이 cohort를
-“실제 신규 출시 영화”라고 부르지 않는다. masked 영화는 평가 정답과 head/long-tail 비교를 안정적으로
-확보한다. 두 결과를 섞지 않고 따로 보고한다.
+Train 밀도와 정답 정의를 동시에 바꾸고 가장 좋은 조합만 선택하지 않는다.
 
-### 5.3 누수 방지
+### 5.4 누수 방지
 
 cold-item Feature에는 다음만 허용한다.
 
@@ -448,7 +458,7 @@ cold-item Feature에는 다음만 허용한다.
 결과에는 `CURRENT_METADATA_RETROSPECTIVE`를 표시하고, “당시 알 수 있던 정보만 사용했다”는 주장을
 금지한다.
 
-### 5.4 평가 과정
+### 5.5 평가 과정
 
 ```text
 사용자 A의 다른 영화 평가
@@ -457,14 +467,17 @@ cold-item Feature에는 다음만 허용한다.
 cold 영화 B의 TMDB Vector
 → ContentScore(A, B)
 
-A가 이후 B에 남긴 관측 평점
+A가 B에 남긴 Test 관측 평점
 → held-out 정답
 ```
 
 전체 후보 카탈로그에 cold 영화를 포함하고 순위를 계산한다. 평가 대상 영화를 후보에 강제로 주입해
 Top-N만 계산하지 않는다.
 
-### 5.5 Ablation
+MovieLens에 전혀 없는 TMDB-only 영화에는 마지막 정답이 없다. 이 경우 관계 ablation과 사람 유사성
+평가만 수행하고 개인 추천 정확도로 표현하지 않는다.
+
+### 5.6 Ablation
 
 ```text
 TMDB 장르
@@ -477,14 +490,22 @@ TMDB 장르
 
 각 단계는 같은 사용자·영화·후보·seed를 사용한다.
 
-### 5.6 평가
+### 5.7 평가
 
-- Cold-item NDCG@10 / Recall@10 / Rank Percentile
+- cold-item GOOD Recall curve / pairwise AUC / Rank Percentile
+- 모든 후보가 관측 label인 cold-item slate의 Harm@2 / Miss@2 / NDCG@2
+- mixed NATURAL slate의 q-attributed 노출과 target-fold `TargetGoodHit@2`를 분리
+- panel 내부 `TRAIN_Q`의 Content/Hybrid/CF paired contrast와 `ALL_CONTROL` non-target control drift
 - 추천 가능 영화 Coverage
 - TMDB Feature 누락률별 성능
-- first-observed-interaction cold vs masked cold
+- 자연 희소 vs 통제 희소 결과 방향
 - head/mid/long-tail 영화별 성능
 - Structured/Text Feature별 기여
+
+세부 cohort, label, 누수 방지와 사람 평가 Gate는
+[콘텐츠 기반 cold-item 평가 설계](./03-content-cold-item-evaluation-design.md)와
+[`rec-eval-content-cold-v2.json`](./protocols/rec-eval-content-cold-v2.json)에 제안했다. 현재 상태는
+preflight required이며 REC-EV-021P 전에는 Locked Test 계약이 아니다.
 
 ---
 
@@ -663,12 +684,12 @@ clipping하지 않는다. K가 작거나 사용자 평점 분산이 너무 낮�
 | Gate | 통과 조건 |
 | --- | --- |
 | G0 데이터 역할 | MovieLens 사용자 행동 / TMDB 영화 정보 분리 |
-| G1 누수 방지 | 사용자 disjoint + 전역 rolling time + Test 미튜닝 |
+| G1 누수 방지 | 사용자 disjoint + 고정 labeled slate + Test 미튜닝; 시간은 보조 session proxy |
 | G2 재현성 | split·candidate·seed·checksum·환경 version 고정 |
-| G3 전체 품질 | Test 5,000명 이상, `ΔNDCG@10 >= 0.002`·상대 5%·보정 CI 하한 `> 0` |
-| G4 사용자 안전 | 핵심 segment CI 하한 `>= -0.002`, practical B/T/H와 p10~p90 공개 |
+| G3 Top-2 preflight | NATURAL_ALL·공통 cohort·seed 안정성, Harm 분석 n과 Miss non-null rate로 환산한 구조적 필요 n 확인 |
+| G4 Top-2 안전·효용 | overall·core Harm NI와 CVaR CI 통과 후 Miss·BothGood·SafeHit·NDCG; margin은 Validation에서 power 검증 |
 | G5 입력 대응 | `K_b=0/5/10`과 `K_r=0..50`을 분리하고 coverage 공개 |
-| G6 cold-item | TMDB-only 신규 영화가 prior보다 개선 |
+| G6 cold-item | item firewall, density panel, two-way uncertainty, control drift 통과 |
 | G7 Router | 잠긴 Test에서 Single Best Model보다 개선 |
 | G8 경계 표현 | 미평가 만족도·FEELM 실제 만족을 주장하지 않음 |
 | G9 운영 | 모델 version, fallback, p95 latency, 설명 provenance 기록 |
@@ -681,9 +702,9 @@ clipping하지 않는다. K가 작거나 사용자 평점 분산이 너무 낮�
 특정 사용자 구간에서만 유효하면 전체 배포가 아니라 해당 구간에서만 모델을 사용한다. 신뢰 근거가
 없으면 K0 prior 또는 TMDB Content로 fallback한다.
 
-모든 숫자는 [오프라인 평가 프로토콜](./01-offline-evaluation-protocol-vnext.md)의 최초 vNext SESOI다.
-Test를 확인한 뒤 낮출 수 없다. K×모델×segment 비교에는 primary endpoint를 고정하고 Holm 보정을
-사용한다.
+v4 margin은 Validation power 검증 전 provisional이다. REC-EV-020P/021P에서 protocol version을 잠근
+뒤 Test를 확인하고 바꿀 수 없다. Safety는 overall·core segment intersection–union Gate, secondary
+superiority family만 Holm 보정을 사용한다.
 
 ---
 
@@ -696,19 +717,22 @@ Test를 확인한 뒤 낮출 수 없다. K×모델×segment 비교에는 primary
 - proxy별 eligible 탈락률·coverage·NDCG·Benefit/Harm 공개
 - Explicit ALS와 predicted rating은 binary 결과에서 제외
 
-### REC-EV-020 — Explicit rating maturity
+### REC-EV-020 — Explicit rating maturity와 Top-2 안전
 
-- `K_r=0/1/3/5/10/20/30/50`
+- `K_r=0/1/3/5/10/20/30/50/LEAVE_20_OUT_ALL_AVAILABLE`
 - Bias·ItemKNN·ALS·EASE·TMDB Content·RRF 비교
-- ranking과 predicted rating 결과 분리
-- K별 사용자 결과 Parquet·곡선·segment heatmap
+- NATURAL_ALL의 opportunity별 Harm@2→Miss@2→BothGood/NDCG@2 lexicographic 판정
+- EXTREME-20의 상위 10편·하위 10편 분리 stress test를 제품 위험률과 분리
+- ranking과 predicted rating 결과 분리, K별 사용자 결과 Parquet·곡선·segment heatmap
 
 ### REC-EV-021 — TMDB item cold-start
 
 - Train-known 전체 TMDB Feature artifact 선행
-- first-observed-interaction cold와 masked cold 분리
+- strict/exposed Q0와 자연 희소 q, `PANEL_5P/20P/100P` 통제 masking 분리
+- Train 밀도 실험은 Test 정답을 고정하고, 정답 민감도는 Train을 고정한 별도 run으로 실행
+- MovieLens 전체 미등장 TMDB 영화는 관계 ablation·사람 유사성만 평가하고 개인 만족을 주장하지 않음
 - 현재 metadata 사용 시 `CURRENT_METADATA_RETROSPECTIVE` 표기
-- Structured→Text→LightFM ablation과 cold-item coverage
+- Structured→Text→Hybrid→CF 전환점과 cold-item coverage
 
 ### REC-EV-022 — Fusion과 K-aware Router
 

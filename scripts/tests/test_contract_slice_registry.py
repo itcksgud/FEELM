@@ -59,5 +59,32 @@ class ApprovedSliceRegistryValidatorTest(unittest.TestCase):
         self.assertTrue(any("C1_RATING_FILM status/mode/root conflict" in error for error in errors))
 
 
+class RecommendationTaskIdValidatorTest(unittest.TestCase):
+    def test_preflight_subtask_suffix_is_a_known_dependency(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            path = root / "backlog.yaml"
+            path.write_text(
+                "tasks:\n"
+                "  - id: TASK-REC-EV-020P-A\n"
+                "    status: DONE\n"
+                "    depends_on: []\n"
+                "  - id: TASK-REC-EV-020P-B\n"
+                "    status: READY\n"
+                "    depends_on: [TASK-REC-EV-020P-A]\n",
+                encoding="utf-8",
+            )
+            errors: list[str] = []
+            with patch.object(validate_contracts, "ROOT", root):
+                tasks = validate_contracts.validate_task_states(
+                    "backlog.yaml", "TASK-REC-EV", errors
+                )
+
+            self.assertEqual(
+                {"TASK-REC-EV-020P-A", "TASK-REC-EV-020P-B"}, tasks
+            )
+            self.assertEqual([], errors)
+
+
 if __name__ == "__main__":
     unittest.main()

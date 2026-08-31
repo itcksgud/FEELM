@@ -1,6 +1,6 @@
 # 추천·예상 별점 개선 기록 체계
 
-> 상태: `APPROVED` — 모든 추천 실험과 모델 채택에 적용  
+> 상태: `APPROVED` — 모든 추천 실험과 모델 채택에 적용
 > 적용 범위: 예상 별점, 개인 추천, 탐험 추천, 유사 추천, 파티 추천
 
 ## 1. 목적
@@ -37,7 +37,19 @@
 | 채택 모델 | `model-registry.yaml` | Gate 근거와 rollback 대상 필수 |
 | 입력 신호 계약 | `00-input-signal-contract-vnext.md` | binary 온보딩과 활성 Rating을 분리 |
 | 평가 프로토콜 | `01-offline-evaluation-protocol-vnext.md` | split·candidate·SESOI 변경 시 별도 protocol version |
+| Top-2 위험 회피 설계 | `02-top2-risk-aware-evaluation-design.md` | 2편 노출의 Harm→Miss→상위 품질 lexicographic Gate |
 | protocol 초깃값 | `protocols/rec-eval-vnext.json` | LLM·runner가 동일 상수를 읽도록 고정 |
+| Top-2 v4 protocol | `protocols/rec-eval-top2-v4.json` | NATURAL_ALL·검정력 preflight가 필요한 차기 판정 초안 |
+| 콘텐츠 cold-item 설계 | `03-content-cold-item-evaluation-design.md` | Train 밀도와 정답 민감도를 분리한 희소·미등장 영화 평가 |
+| cold-item v2 protocol | `protocols/rec-eval-content-cold-v2.json` | item firewall·density panel preflight가 필요한 초안 |
+| Top-2 v4 실행 계약 | `contracts/rec-ev-020p-artifacts.json` | Validation cohort·slate·paired power 입력 계약 |
+| cold-item v2 실행 계약 | `contracts/rec-ev-021p-artifacts.json` | firewall·panel·통계 fixture 계약 |
+| Top-2 Validation 결과 | `evidence/REC-EV-020P-top2-v4-validation-preflight.md` | K별 평가 가능 사용자와 남은 paired-power blocker |
+| cold-item Validation 결과 | `evidence/REC-EV-021P-content-cold-v2-preflight.md` | 역할 충돌 수정과 panel 표본·TMDB blocker |
+| 최종 쉬운 보고서 | `FEELM-recommendation-evaluation-final-report.md` | 설계·실행 결과·허용 주장·다음 순서 |
+| 문제 해결·AI 활용 정리 | `portfolio-problem-solving-and-ai.md` | 포트폴리오·면접용 경험 서술 |
+| 데이터 인사이트 | `data-insights-summary.md` | K·예상 별점·한국 영화·cold 표본 요약 |
+| Jira 기록 원고 | `jira-recommendation-evaluation-summary.md` | Epic·하위 이슈·최종 댓글 복사본 |
 | 구현 준비도 | `vnext-implementation-readiness.md` | 다음 READY task와 downstream Gate를 구분 |
 | 019A artifact 계약 | `contracts/rec-ev-019a-artifacts.json` | cohort 경로·column schema·명령·Gate 고정 |
 | 019B artifact 계약 | `contracts/rec-ev-019b-artifacts.json` | TMDB feature·embedding·cache·coverage 계약 고정 |

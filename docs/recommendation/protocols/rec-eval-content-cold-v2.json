@@ -1,0 +1,373 @@
+{
+  "schema_version": 1,
+  "protocol_version": "rec-eval-content-cold-v2",
+  "status": "VALIDATION_FIREWALL_PASS_MODEL_RUN_BLOCKED",
+  "supersedes": "rec-eval-content-cold-v1",
+  "implementation_readiness": "NO_GO_PENDING_REC_EV_019B_TMDB_FEATURE_MANIFEST",
+  "contract_implementation_readiness": "COMPLETED_021P_CONTRACT_RUNNER_UNIT_VERIFIER",
+  "source": {
+    "movielens_archive": "ml-32m.zip",
+    "movielens_archive_sha256": "e4a68655d7386b8f95f2f2424b2ff975dfdd15ffd59e0d864a14dca43e99d6ee",
+    "tmdb_snapshot_policy": "CURRENT_METADATA_RETROSPECTIVE"
+  },
+  "user_split_reference": "rec-eval-top2-v4",
+  "item_split": {
+    "algorithm": "uint64_be(SHA256('feelm-cold-item-v2|' + movieId)[0:8]) mod 100",
+    "canonical_integer": "ASCII_BASE10_NONNEGATIVE_NO_SIGN_NO_WHITESPACE_NO_LEADING_ZERO_EXCEPT_ZERO",
+    "hash_input_encoding": "UTF_8",
+    "uint64": "FIRST_8_DIGEST_BYTES_UNSIGNED_BIG_ENDIAN",
+    "item_train_buckets": [0, 59],
+    "item_validation_buckets": [60, 79],
+    "item_locked_test_buckets": [80, 99],
+    "locked_test_interaction_firewall": [
+      "BASE_MODEL_TRAIN",
+      "ROUTER_TRAIN",
+      "VALIDATION_TUNING",
+      "GOOD_BAD_CALIBRATION",
+      "TARGET_SELECTION",
+      "MOVIELENS_TAG_FACTOR_POPULARITY"
+    ],
+    "strict_allowed_use_matrix": {
+      "ITEM_TRAIN": {
+        "BASE_TRAIN_USER_INTERACTION": "BASE_MODEL_TRAIN_ALLOWED",
+        "ROUTER_TRAIN_USER_INTERACTION": "ROUTER_TRAIN_ALLOWED",
+        "VALIDATION_USER_INTERACTION": "VALIDATION_LABEL_AND_TUNING_ONLY_NO_FEATURE",
+        "LOCKED_TEST_USER_INTERACTION": "LABEL_ONLY_AFTER_PROTOCOL_LOCK",
+        "ITEM_DERIVED_MOVIELENS_FIELDS": "ALLOWED_FROM_ITEM_TRAIN_INTERACTIONS_ONLY"
+      },
+      "ITEM_VALIDATION": {
+        "BASE_TRAIN_USER_INTERACTION": "FORBIDDEN",
+        "ROUTER_TRAIN_USER_INTERACTION": "FORBIDDEN",
+        "VALIDATION_USER_INTERACTION": "STRICT_COLD_LABEL_ONLY_AFTER_PREDICTION_ARTIFACT",
+        "LOCKED_TEST_USER_INTERACTION": "FORBIDDEN",
+        "ITEM_DERIVED_MOVIELENS_FIELDS": "FORBIDDEN"
+      },
+      "ITEM_LOCKED_TEST": {
+        "BASE_TRAIN_USER_INTERACTION": "FORBIDDEN",
+        "ROUTER_TRAIN_USER_INTERACTION": "FORBIDDEN",
+        "VALIDATION_USER_INTERACTION": "FORBIDDEN",
+        "LOCKED_TEST_USER_INTERACTION": "LABEL_ONLY_AFTER_PROTOCOL_LOCK",
+        "ITEM_DERIVED_MOVIELENS_FIELDS": "FORBIDDEN"
+      }
+    },
+    "strict_model_and_router_supervised_item_scope": "ITEM_TRAIN_ONLY",
+    "item_validation_selection_features": "HASH_AND_TMDB_PREOUTCOME_ONLY"
+  },
+  "time_claim": "STATIC_PREFERENCE_RECONSTRUCTION_NOT_WATCH_SEQUENCE",
+  "q0_types": {
+    "STRICT_ITEM_LOCKED_COLD": "ITEM_LOCKED_TEST_WITH_NO_INTERACTION_DERIVED_TUNING_EXPOSURE",
+    "BASE_TRAIN_ZERO_TUNING_EXPOSED_DIAGNOSTIC": "BASE_TRAIN_Q0_BUT_ROUTER_OR_VALIDATION_EXPOSURE_ALLOWED"
+  },
+  "density_item_split": {
+    "algorithm": "WITHIN_ITEM_TRAIN_ONLY_uint64_be(SHA256('feelm-density-item-v2|' + movieId)[0:8]) mod 100",
+    "preflight_revision": "The first REC-EV-021P run found 6964 cross-role collisions because density roles were assigned to all items. Density roles are now defined only inside strict ITEM_TRAIN before any model execution or Locked Test access.",
+    "parent_item_scope": "ITEM_TRAIN_ONLY",
+    "non_parent_role": "DENSITY_OUT_OF_SCOPE",
+    "train_buckets": [0, 59],
+    "validation_buckets": [60, 79],
+    "locked_test_buckets": [80, 99],
+    "validation_role": "LOCK_PANEL_MASK_MODEL_AND_TRANSITION_RULES",
+    "locked_test_base_interactions_use": "Q_MASK_SOURCE_ONLY",
+    "validation_base_interactions_use": "Q_MASK_SOURCE_THEN_RETAINED_Q_TRAIN_ONLY",
+    "validation_router_interactions_use": "SAME_MASK_RETAINED_Q_ROUTER_TRAIN_ONLY",
+    "validation_user_interactions_use": "LABEL_ONLY",
+    "locked_test_router_interactions_use": "Q_MASK_SOURCE_THEN_RETAINED_Q_ROUTER_TRAIN_ONLY_AFTER_LOCK",
+    "removed_rows_and_derived_features_use": "FORBIDDEN",
+    "locked_test_rating_value_and_performance_before_lock_forbidden": true,
+    "must_not_be_interpreted_as_strict_cold_split": true
+  },
+  "tmdb_only_query_split": {
+    "algorithm": "uint64_be(SHA256('feelm-tmdb-query-v2|' + tmdbId)[0:8]) mod 100",
+    "train_buckets": [0, 59],
+    "validation_buckets": [60, 79],
+    "locked_test_buckets": [80, 99]
+  },
+  "natural_sparse_bins": {
+    "Q0": [0, 0],
+    "Q1_4": [1, 4],
+    "Q5_19": [5, 19],
+    "Q20_99": [20, 99],
+    "Q100P": [100, null]
+  },
+  "natural_sparse_top2_attribution": {
+    "selection_slate": "FULL_NATURAL_20_WITHOUT_Q_FILTER",
+    "q_bad_opportunity": "SLATE_HAS_Q_BIN_BAD_ITEM",
+    "q_good_opportunity": "SLATE_HAS_Q_BIN_GOOD_ITEM",
+    "q_bad_exposure_at_2": "TOP2_HAS_Q_BIN_BAD_ITEM",
+    "q_good_hit_at_2": "TOP2_HAS_Q_BIN_GOOD_ITEM",
+    "q_specific_top2_rerun_forbidden": true,
+    "overlapping_q_request_attribution_allowed": true,
+    "sum_q_metrics_as_overall_forbidden": true,
+    "primary_safety": "FULL_SLATE_OBSERVED_DISLIKE_HARM_AT_2_UNCONDITIONAL",
+    "conditional_seed_aggregation_reference": "rec-eval-top2-v4"
+  },
+  "user_input": {
+    "primary": "LEAVE_20_OUT_ALL_AVAILABLE",
+    "sensitivity": "K10",
+    "target_rating_in_input_forbidden": true,
+    "slate_and_labels_reference": "rec-eval-top2-v4"
+  },
+  "density_panels": {
+    "PANEL_5P": {
+      "minimum_original_base_train_q": 5,
+      "train_q": [0, 1, 5],
+      "control_q": "ALL_CONTROL_NOT_TRANSITION_POINT"
+    },
+    "PANEL_20P": {
+      "minimum_original_base_train_q": 20,
+      "train_q": [0, 1, 5, 20],
+      "control_q": "ALL_CONTROL_NOT_TRANSITION_POINT"
+    },
+    "PANEL_100P": {
+      "minimum_original_base_train_q": 100,
+      "train_q": [0, 1, 5, 20, 100, "ALL"],
+      "control_q": "ALL_CONTROL_SAME_AS_ALL_POINT"
+    },
+    "cross_panel_curve_forbidden": true,
+    "universal_transition_claim_forbidden": true,
+    "target_selection_uses_locked_test_rating_value": false,
+    "test_label_availability_reported_as_coverage": true
+  },
+  "item_cross_fit": {
+    "folds": 5,
+    "fold_key": "uint64_be(SHA256('feelm-cold-fold-v2|' + movieId)[0:8]) mod 5",
+    "one_target_fold_per_run": true,
+    "non_target_control_items_required": true,
+    "mask_row_key": "SHA256('feelm-cold-mask-v2|' + seed + '|' + movieId + '|' + userId)",
+    "removed_interaction_reuse_forbidden": true,
+    "retrain_collaborative_models_at_every_density_and_fold": true,
+    "fold_aggregation": "UNION_ITEM_OUT_OF_FOLD_PREDICTIONS_EACH_TARGET_ITEM_EXACTLY_ONCE_NO_UNWEIGHTED_FOLD_MEAN",
+    "training_mask_seeds_locked_by_preflight": true
+  },
+  "fixed_across_density_within_panel_fold": [
+    "TARGET_ITEMS",
+    "TEST_USERS",
+    "TEST_LABELS",
+    "USER_INPUT",
+    "TMDB_FEATURES",
+    "CANDIDATE_UNIVERSE",
+    "ITEM_FOLD"
+  ],
+  "transition_candidate": {
+    "target_endpoints": {
+      "target_good_opportunity": "SLATE_TARGET_FOLD_GOOD_COUNT_GE_1",
+      "target_bad_opportunity": "SLATE_TARGET_FOLD_BAD_COUNT_GE_1",
+      "target_good_hit_at_2": "TOP2_TARGET_FOLD_GOOD_COUNT_GE_1",
+      "target_bad_exposure_at_2_given_target_bad_opportunity": "TOP2_TARGET_FOLD_BAD_COUNT_GE_1",
+      "overall_harm_at_2": "TOP2_BAD_COUNT_GE_1_ANY_ITEM"
+    },
+    "target_good_hit_opportunity_mask": "SLATE_TARGET_FOLD_GOOD_COUNT_GE_1",
+    "target_bad_exposure_opportunity_mask": "SLATE_TARGET_FOLD_BAD_COUNT_GE_1",
+    "target_conditional_seed_aggregation": "REC_EVAL_TOP2_V4_PER_USER_ELIGIBLE_SEED_MACRO_NULL_IF_ALL_MASK_ZERO",
+    "empty_target_slate_policy": "TARGET_ENDPOINT_NULL_OVERALL_HARM_INCLUDED",
+    "effectiveness_endpoint": "TARGET_GOOD_HIT_AT_2_GIVEN_TARGET_GOOD_OPPORTUNITY",
+    "contrasts": ["HYBRID_MINUS_CONTENT", "CF_MINUS_HYBRID"],
+    "scalar_weighted_utility_forbidden": true,
+    "model_applicability_matrix_locked_by_021p": true,
+    "inapplicable_q_fallback_imputation_forbidden": true,
+    "overall_harm_noninferiority_margin": 0.005,
+    "target_bad_exposure_noninferiority_margin": 0.005,
+    "simultaneous_ci": "MAX_T_ONE_SIDED_95_OVER_ALL_PREDECLARED_PANEL_Q_CONTRAST",
+    "max_t_formula": "SE_J=SD_BOOTSTRAP_DELTA_J; T_B=MAX_J((DELTA_J-DELTA_J_B)/SE_J); C95=Q0.95(T_B); LOWER_J=DELTA_J-C95*SE_J",
+    "zero_se_policy": "FAIL_021P_NO_AUTOMATIC_PASS",
+    "requires_simultaneous_ci_lower_above_zero": true,
+    "requires_control_drift_gate": true,
+    "required_inference_views": ["PAIRED_USER_REQUEST_BOOTSTRAP", "EQUAL_SHARE_MULTI_MEMBERSHIP_USER_ITEM_BOOTSTRAP"],
+    "all_inference_views_must_pass": true,
+    "control_reference_q": "ALL",
+    "control_drift": {
+      "non_target_harm_upper_95_ci_max": 0.005,
+      "non_target_ndcg_90_ci_equivalence_interval": [-0.01, 0.01],
+      "non_target_mean_rank_percentile_90_ci_equivalence_interval": [-0.01, 0.01],
+      "margins_provisional_validation_approval_and_protocol_lock_required": true,
+      "widen_after_locked_test_forbidden": true
+    },
+    "non_monotonic_policy": "NO_SINGLE_TRANSITION_CLAIM",
+    "scope": "WITHIN_PANEL_ONLY"
+  },
+  "ground_truth": {
+    "primary": "G1_USER_RELATIVE",
+    "definitions": {
+      "G1_USER_RELATIVE": "REC_EVAL_TOP2_V4_MIDRANK_GOOD_BAD",
+      "G2_ABSOLUTE": {
+        "good_rating_thresholds": [4.0, 4.5],
+        "bad_rating_thresholds": [2.0, 1.5]
+      },
+      "G3_RELATION": "TMDB_RELATION_WITH_STRUCTURED_AND_TEXT_REDACTION",
+      "G4_HUMAN_SIMILARITY": "BLIND_ORDINAL_0_1_2_WITH_UNKNOWN"
+    },
+    "train_density_and_label_definition_changed_in_same_primary_run": false,
+    "unrated_label": "UNKNOWN"
+  },
+  "relation_redaction": {
+    "matrix_required": true,
+    "structured_only_run_required": true,
+    "text_redacted_run_required": true,
+    "collection": ["COLLECTION_ID", "FRANCHISE_TITLE_TOKEN", "SEQUEL_ORDINAL", "SEQUEL_AND_CHARACTER_TEXT_NAMES"],
+    "director": ["DIRECTOR_ID", "DIRECTOR_NAME_IN_TEXT"],
+    "cast": ["CAST_IDS", "ACTOR_AND_CHARACTER_NAMES_IN_TEXT"],
+    "direct_field_relation": ["GROUND_TRUTH_STRUCTURED_FIELD", "DIRECT_TEXT_TOKEN"],
+    "redaction_dictionary_checksum_required": true
+  },
+  "tmdb_preference_features": {
+    "allowed": ["GENRES", "DIRECTOR", "CAST", "KEYWORDS", "OVERVIEW", "COLLECTION", "ORIGIN_COUNTRY", "ORIGINAL_LANGUAGE", "RELEASE_DECADE", "RUNTIME", "MISSINGNESS_MASK"],
+    "forbidden": ["POPULARITY", "VOTE_AVERAGE", "VOTE_COUNT", "WATCH_PROVIDERS", "MOVIELENS_GENRES", "MOVIELENS_FREE_TAGS"]
+  },
+  "models": [
+    "B0_BAYESIAN_PRIOR",
+    "TMDB_STRUCTURED_CONTENT",
+    "TMDB_TEXT_CONTENT",
+    "TMDB_STRUCTURED_TEXT_HYBRID",
+    "ITEM_KNN_WHEN_AVAILABLE",
+    "ALS_WHEN_AVAILABLE",
+    "EASE_WHEN_AVAILABLE",
+    "BPR_WHEN_AVAILABLE",
+    "LIGHTFM_WHEN_AVAILABLE",
+    "CONTENT_CF_RRF",
+    "ITEM_DENSITY_AWARE_ROUTER"
+  ],
+  "preference_metrics": [
+    "CATALOG_COVERAGE",
+    "CONDITIONAL_GOOD_RECALL_AT_50_100_200_500_1000_2000",
+    "END_TO_END_GOOD_RECALL_AT_50_100_200_500_1000_2000",
+    "GOOD_BAD_PAIRWISE_AUC",
+    "GOOD_BAD_MEAN_RANK_PERCENTILE",
+    "LABELED_SLATE_TOP2_V4_METRICS",
+    "MIXED_NATURAL_Q_ATTRIBUTED_BAD_EXPOSURE_AND_GOOD_HIT",
+    "TARGET_FOLD_GOOD_HIT_BAD_EXPOSURE_AND_OVERALL_HARM",
+    "TARGET_CONTROL_DRIFT",
+    "FEATURE_COVERAGE",
+    "FALLBACK_RATE",
+    "LATENCY"
+  ],
+  "two_way_uncertainty": {
+    "method": "PAIRED_TWO_WAY_POISSON_PIGEONHOLE_BOOTSTRAP",
+    "user_weight": "POISSON_1",
+    "item_weight": "POISSON_1",
+    "observation_weight": "USER_WEIGHT_TIMES_ITEM_WEIGHT",
+    "request_level_multi_membership": {
+      "weight": "USER_WEIGHT_TIMES_MEAN_ITEM_WEIGHT_OVER_ENDPOINT_MEMBERSHIP_SET",
+      "overall_top2_membership": "ALL_NATURAL_20_ITEMS",
+      "l1_q_attributed_membership": "SLATE_ITEMS_IN_Q_BIN",
+      "l2_target_membership": "SLATE_TARGET_FOLD_ITEMS",
+      "non_target_control_membership": "SLATE_NON_TARGET_ITEMS",
+      "membership_is_label_free": true,
+      "empty_membership_policy": "NULL_ENDPOINT",
+      "conditional_event": "FIXED_EVENT_AND_OPPORTUNITY_MASK_WEIGHTED_BY_REQUEST_WEIGHT",
+      "rerank_remove_duplicate_by_bootstrap_weight_forbidden": true,
+      "interpretation": "EQUAL_SHARE_EXPANSION_OF_REQUEST_EVENT_OVER_MEMBERSHIP_ITEMS"
+    },
+    "same_weights_across_models_and_q": true,
+    "repeats": 2000,
+    "sensitivities": ["USER_ONLY_CLUSTER", "ITEM_ONLY_CLUSTER"],
+    "bootstrap_canonicalization": {
+      "salt": "feelm-bootstrap-v1",
+      "user_key": "SHA256('feelm-bootstrap-v1|' + protocolVersion + '|' + attempt + '|user|' + userId)",
+      "item_key": "SHA256('feelm-bootstrap-v1|' + protocolVersion + '|' + attempt + '|item|' + movieId)",
+      "query_key": "SHA256('feelm-bootstrap-v1|' + protocolVersion + '|' + attempt + '|query|' + tmdbId)",
+      "rater_key": "SHA256('feelm-bootstrap-v1|' + protocolVersion + '|' + attempt + '|rater|' + raterPseudoId)",
+      "query_cluster_id": "TMDB_ID_ASCII_BASE10_NONNEGATIVE",
+      "rater_cluster_id": "LOWERCASE_SHA256_HEX_64_PSEUDONYM",
+      "protocol_version_serialization": "EXACT_ASCII_PROTOCOL_VERSION_VALUE",
+      "uniform": "EXACT_RATIONAL_(2*UINT64_BE_FIRST_8_BYTES+1)/2^65",
+      "weight": "POISSON_1_INVERSE_CDF_DECIMAL_PRECISION_AT_LEAST_80",
+      "attempt_range": [0, 9999],
+      "selection": "FIRST_2000_VALID_ATTEMPTS",
+      "invalid_policy": "MANIFEST_AND_FAIL_IF_FEWER_THAN_2000_VALID",
+      "quantile": "EMPIRICAL_NEAREST_RANK_NO_INTERPOLATION",
+      "golden_weight_and_request_fixture_required": true
+    }
+  },
+  "human_similarity_pilot": {
+    "minimum_queries_start": 100,
+    "minimum_candidates_per_query_start": 5,
+    "minimum_raters_start": 3,
+    "scale": [0, 1, 2],
+    "unknown_allowed": true,
+    "reliability_unit": "QUERY_ID_X_CANDIDATE_ID",
+    "category_order": "0_LT_1_LT_2",
+    "disagreement_distance_id": "CUSTOM_SQUARED_RANK",
+    "disagreement_distance": "(A_MINUS_B)^2",
+    "observed_disagreement": "SUM_UNIT_[2_DIV_(N_U_MINUS_1)_TIMES_SUM_UNORDERED_VALID_RATER_PAIR_DISTANCE]_DIV_SUM_UNIT_N_U",
+    "expected_disagreement": "SUM_A_SUM_B_N_A_TIMES_(N_B_MINUS_INDICATOR_A_EQ_B)_TIMES_DISTANCE_DIV_N_TIMES_(N_MINUS_1)",
+    "units_with_fewer_than_2_valid_ratings_excluded_from": ["OBSERVED_DISAGREEMENT", "CATEGORY_COUNTS_N_C", "TOTAL_N"],
+    "alpha_formula": "1_MINUS_OBSERVED_DISAGREEMENT_DIV_EXPECTED_DISAGREEMENT",
+    "golden_fixture": "UNITS_[0,0]_AND_[0,1,2]_EXPECT_DO_1.2_DE_1.6_ALPHA_0.25",
+    "alpha_ci": "QUERY_CLUSTER_BOOTSTRAP_2000_RECOMPUTE_DO_DE_ALPHA_EACH_REPLICATE",
+    "alpha_query_bootstrap": "REPLICATE_ALL_QUERY_UNITS_BY_INTEGER_QUERY_WEIGHT_THEN_RECOMPUTE_COINCIDENCE",
+    "alpha_query_rater_sensitivity": "REPLICATE_EACH_RATING_BY_QUERY_WEIGHT_TIMES_RATER_WEIGHT_THEN_RECOMPUTE_COINCIDENCE_DIAGNOSTIC_ONLY",
+    "alpha_undefined_policy": "NULL_AND_FAIL_GATE_IF_VALID_N_LT_2_OR_EXPECTED_DISAGREEMENT_EQ_0",
+    "unknown_treatment": "MISSING",
+    "alpha_unit_minimum_valid_ratings": 2,
+    "implementation_golden_fixture_required": true,
+    "implementation_package_and_version_recorded": true,
+    "valid_pair_coverage_denominator": "ALL_ASSIGNED_QUERY_X_CANDIDATE_UNITS",
+    "valid_pair_coverage_numerator": "UNITS_WITH_AT_LEAST_2_NON_UNKNOWN_RATINGS",
+    "pilot_query_role": "TMDB_QUERY_VALIDATION",
+    "locked_human_test_query_role": "TMDB_QUERY_LOCKED_TEST_AFTER_NEW_PROTOCOL_VERSION",
+    "pilot_and_test_query_overlap_forbidden": true,
+    "pilot_and_test_rater_id_overlap_forbidden": true,
+    "overlap_failure_policy": "RESEARCH_ONLY",
+    "display_order": "CANONICAL_QUERY_CANDIDATE_RATER_HASH",
+    "sample_size_reestimated_from_pilot": true,
+    "provisional_valid_pair_coverage_min": 0.80,
+    "provisional_custom_squared_rank_krippendorff_alpha_point_min": 0.67,
+    "provisional_alpha_ci_lower_min": 0.60,
+    "query_cluster_model_delta_ci_lower_min": 0.0,
+    "human_model_comparison": {
+      "primary_endpoint": "QUERY_MACRO_HUMAN_NDCG_AT_5",
+      "candidate_relevance": "MEAN_AT_LEAST_2_VALID_ORDINAL_RATINGS_DIV_2",
+      "gain": "LINEAR_GAIN_EQUALS_RELEVANCE",
+      "exponential_gain_forbidden": true,
+      "dcg_at_5": "SUM_R_1_TO_5_RELEVANCE_R_DIV_LOG2(R_PLUS_1)",
+      "valid_contrast_query": "ALL_CANDIDATES_IN_DEDUPLICATED_UNION_OF_BOTH_MODEL_TOP5_HAVE_AT_LEAST_2_VALID_RATINGS",
+      "common_idcg": "SAME_LINEAR_GAIN_AND_LOG2_DISCOUNT_ON_TOP5_RELEVANCE_FROM_DEDUPLICATED_CONTRAST_UNION",
+      "ndcg_at_5": "DCG_AT_5_DIV_COMMON_IDCG_AT_5",
+      "query_macro": "ARITHMETIC_MEAN_OVER_FAMILY_VALID_NONNULL_QUERY_NDCG_AT_5",
+      "same_family_valid_query_set_for_both_gate_contrasts": true,
+      "model_list_requirement": "EXACTLY_5_UNIQUE_CANDIDATES_PER_MODEL",
+      "zero_common_idcg_policy": "NULL_QUERY_CONTRAST",
+      "valid_contrast_query_coverage": "COUNT_QUERIES_WITH_BOTH_GATE_CONTRASTS_NONNULL_DIV_ALL_ASSIGNED_QUERIES",
+      "gate_contrasts": ["TMDB_STRUCTURED_TEXT_HYBRID_MINUS_TMDB_STRUCTURED_CONTENT", "TMDB_STRUCTURED_TEXT_HYBRID_MINUS_TMDB_TEXT_CONTENT"],
+      "delta_direction": "FIRST_MODEL_MINUS_SECOND_MODEL",
+      "adjustment": "HOLM_ONE_SIDED_ALPHA_0.05",
+      "gate": "BOTH_ADJUSTED_LOWER_CI_GT_0",
+      "provisional_valid_contrast_query_coverage_min": 0.80,
+      "diagnostic_contrast": "TMDB_TEXT_CONTENT_MINUS_TMDB_STRUCTURED_CONTENT",
+      "model_ranking_artifact_uri_sha256_required": true,
+      "valid_contrast_query_coverage_reported": true,
+      "numeric_type": "IEEE_754_BINARY64",
+      "golden_tolerance": 1e-12,
+      "ndcg_golden_fixture": {
+        "union_relevance": [1.0, 0.5, 0.0, 0.0, 0.0],
+        "model_relevance_order": [0.5, 1.0, 0.0, 0.0, 0.0],
+        "dcg_at_5": 1.1309297535714575,
+        "idcg_at_5": 1.3154648767857289,
+        "ndcg_at_5": 0.8597186998521972
+      }
+    },
+    "required_sensitivities": ["RATER_CLUSTER", "UNKNOWN_RATE", "POSITION_ORDER", "FAMILIARITY", "KOREAN_ORIGIN_VALID_QUERIES"]
+  },
+  "experiments": {
+    "REC-EV-021P": "ITEM_FIREWALL_PANEL_SAMPLE_COMPUTE_PREFLIGHT",
+    "REC-EV-021A": "NATURAL_SPARSE_STRICT_AND_EXPOSED_Q_SLICES",
+    "REC-EV-021B": "PANELIZED_CONTROLLED_DENSITY_WITH_ITEM_CROSS_FIT",
+    "REC-EV-021C": "FIXED_PREDICTION_GROUND_TRUTH_SENSITIVITY",
+    "REC-EV-021D": "TMDB_ONLY_RELATION_REDACTION",
+    "REC-EV-021E": "BLIND_HUMAN_SIMILARITY_PILOT_AND_GATE"
+  },
+  "locked_test_prerequisites": [
+    "V2_JSON_SCHEMA",
+    "REC_EV_021P_ARTIFACT_CONTRACT",
+    "REC_EV_021P_RUNNER_UNIT_TEST_VERIFIER",
+    "ITEM_FIREWALL_PREFLIGHT_PASS",
+    "PANEL_SAMPLE_AND_COMPUTE_PREFLIGHT_PASS",
+    "PROTOCOL_LOCK_CHECKSUM"
+  ],
+  "adoption": {
+    "current_personal_champion": null,
+    "current_similar_movie_champion": null,
+    "tmdb_only_similarity_cannot_replace_personal_champion": true,
+    "requires_product_approval": true
+  }
+}

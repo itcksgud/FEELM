@@ -1,9 +1,12 @@
 # FEELM 추천 vNext 구현 준비도
 
 > 상태: `APPROVED` — 오프라인 추천 evidence 구현 착수 기준
-> 판정일: 2026-08-30
+> 판정일: 2026-08-31
 > 최종 판정: **GO — REC-EV-019A/019B부터 LLM이 독립 구현 가능**
 > 제품 경계: 현재 C2 popularity-only 교체와 개인화 champion 승인은 이 GO에 포함하지 않는다.
+> 후속 경계: Top-2 v4와 cold-item v2는 `PROPOSED_PROTOCOL_VALIDATION_PREFLIGHT_REQUIRED`다. 별도
+> Schema·artifact contract·runner 구현은 시작할 수 있지만 기존 readiness validator의 019A/019B GO나
+> Locked Test 실행 GO에 포함되지 않는다.
 
 ## 1. GO의 정확한 의미
 
@@ -22,6 +25,10 @@
 | 추천 vNext 오프라인 구현 착수 | **GO** |
 | REC-EV-019A/019B 구현 feasibility | **PASS — strict K10 Test 5,476명** |
 | REC-EV-019C 모델 실행 | `PENDING`, 019B 최종 identity 적용 뒤 5,000명 Gate 재확인 |
+| REC-EV-020P-A/B 설계→계약 구현 | `GO`, v4 Schema·artifact contract·runner 구현 가능 |
+| REC-EV-020P-A/B 실행 완료 판정 | `NO-GO`, runner·verifier·Validation power 결과 필요 |
+| REC-EV-021P 설계→계약 구현 | `GO`, firewall·panel preflight contract·runner 구현 가능 |
+| REC-EV-021P 실행 완료 판정 | `NO-GO`, runner·verifier·Validation preflight 결과 필요 |
 | binary 개인화 champion | `null`, 실험 결과 대기 |
 | 예상 별점 public 노출 | `NO` |
 | C2 기본 정책 교체 | `NO`, 별도 vNext 승인 필요 |
@@ -59,8 +66,12 @@
 7. [구현 backlog](../tasks/recommendation-evidence-backlog.yaml)
 8. 선택한 task가 직접 참조한 문서와 기존 evidence
 
-연구 설명이 위 계약과 다르면 위 순서의 계약을 따른다. 현재 `APPROVED` C2 제품 계약은 vNext가 별도
+연구 설명이 위 계약과 다르면 위 순서의 계약을 따른다. Top-2 v4와 cold-item v2는 다음 protocol
+후보이지만 현재 019A/019B 구현 계약을 바꾸지 않는다. 현재 `APPROVED` C2 제품 계약은 vNext가 별도
 승격되기 전까지 계속 더 높은 구현 권위를 가진다.
+
+- [Top-2 v4 proposed protocol](./02-top2-risk-aware-evaluation-design.md)
+- [cold-item v2 proposed protocol](./03-content-cold-item-evaluation-design.md)
 
 ## 4. 첫 두 작업
 

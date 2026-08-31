@@ -144,13 +144,22 @@ head/TMDB에 818편을 보수적으로 연결했다. 원개봉일이 2004년 이
 ## 기존 프로토콜에 미치는 영향
 
 `rec-eval-vnext-2`와 REC-EV-019P의 다음 10개 Rating은 실행 가능성 proxy로는 유지할 수 있다.
-다만 이를 미래 관람 성능으로 해석하지 않는다. 다음 구현 전에 아래 amendment를 잠근다.
+다만 이를 미래 관람 성능으로 해석하지 않는다. 2026-08-31의
+[Top-2 위험 회피 추천 설계](../02-top2-risk-aware-evaluation-design.md)와 `rec-eval-top2-v4`에서 Track A를
+timestamp 없는 고정 20편 labeled slate 주 평가로 승격하고, 기존 시간 평가는
+`NEXT_RATING_SESSION_PROXY` 보조 트랙으로 내렸다.
 
 1. `candidate.top_candidates=500` 단일값 앞에 Validation N curve를 추가한다.
 2. K25를 diagnostic에 추가하되 K5/K10 결과와 온보딩 비용을 함께 본다.
 3. 동일 timestamp뿐 아니라 동일 UTC 날짜 제외 결과를 별도 보조 트랙으로 낸다.
 4. 기존 단일 held-out positive와 신규 다중-positive 결과를 섞어 비교하지 않는다.
 5. 한국-origin, `EXPANDED_MODERATE`, post-2023 결과를 전체 NDCG와 별도의 coverage/slice 표로 낸다.
+6. label 수로 사용자를 제외하지 않는 `NATURAL_ALL`에서 opportunity별 분모를 공개하고
+   `Harm@2 → Miss@2 → BothGood/NDCG@2` 순서로 모델을 고른다.
+7. full catalog의 미평가 항목은 UNKNOWN으로 유지하고 candidate Recall 곡선만 채택 보조 근거로 쓴다.
+8. 희소·미등장 영화는 [cold-item 평가 설계](../03-content-cold-item-evaluation-design.md)에 따라 user와
+   item을 함께 분리하고 Train 밀도 panel과 정답 민감도를 분리한다. MovieLens 전체 미등장 영화는
+   유사성만 평가한다.
 
 ## 근거 파일
 

@@ -1,0 +1,42 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://feelm.local/schema/rec-eval-top2-v4.schema.json",
+  "title": "FEELM Top-2 risk-aware evaluation protocol v4",
+  "type": "object",
+  "required": [
+    "schema_version",
+    "protocol_version",
+    "source",
+    "user_split",
+    "labels",
+    "randomization",
+    "natural_all",
+    "primary_metrics",
+    "statistics",
+    "locked_test_prerequisites",
+    "adoption"
+  ],
+  "properties": {
+    "protocol_version": {"const": "rec-eval-top2-v4"},
+    "randomization": {
+      "type": "object",
+      "required": ["algorithm", "key", "seeds"],
+      "properties": {
+        "seeds": {"type": "array", "minItems": 20, "maxItems": 20, "uniqueItems": true}
+      }
+    },
+    "natural_all": {
+      "type": "object",
+      "required": ["slate_size", "preflight_slate_size_sensitivity", "fixed_k"],
+      "properties": {
+        "slate_size": {"const": 20},
+        "preflight_slate_size_sensitivity": {"const": [10, 20, 30]}
+      }
+    },
+    "adoption": {
+      "type": "object",
+      "required": ["current_policy", "personal_champion", "requires_product_approval"]
+    }
+  },
+  "additionalProperties": true
+}

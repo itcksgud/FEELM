@@ -1,0 +1,50 @@
+{
+  "schema_version": 1,
+  "contract_id": "rec-ev-021p-artifacts-v1",
+  "status": "APPROVED",
+  "task_id": "TASK-REC-EV-021P",
+  "protocol_version": "rec-eval-content-cold-v2",
+  "purpose": "Audit strict item firewalls, panel sample sizes, cross-role collisions, statistical fixtures, and compute cost before any cold-item model run.",
+  "inputs": {
+    "protocol": "docs/recommendation/protocols/rec-eval-content-cold-v2.json",
+    "movielens_archive_sha256": "e4a68655d7386b8f95f2f2424b2ff975dfdd15ffd59e0d864a14dca43e99d6ee",
+    "role": "VALIDATION_ONLY",
+    "mask_seeds": [1701, 2903, 4001]
+  },
+  "implementation": {
+    "runner": "scripts/recommendation_content_cold_v2_preflight.py",
+    "unit_test": "scripts/tests/test_recommendation_content_cold_v2_preflight.py",
+    "verifier": "scripts/validate_recommendation_content_cold_v2_preflight.py",
+    "build_command": "py -3 scripts/recommendation_content_cold_v2_preflight.py --protocol docs/recommendation/protocols/rec-eval-content-cold-v2.json --role validation",
+    "unit_command": "py -3 -m unittest scripts/tests/test_recommendation_content_cold_v2_preflight.py",
+    "verify_command": "py -3 scripts/validate_recommendation_content_cold_v2_preflight.py --manifest docs/recommendation/evidence/manifests/rec-ev-021p.json"
+  },
+  "artifacts": [
+    "outputs/recommendation-evidence/rec-ev-021p/item-firewall-audit.json",
+    "outputs/recommendation-evidence/rec-ev-021p/panel-sample-summary.parquet",
+    "outputs/recommendation-evidence/rec-ev-021p/compute-plan.json",
+    "outputs/recommendation-evidence/rec-ev-021p/protocol-lock.json",
+    "docs/recommendation/evidence/manifests/rec-ev-021p.json"
+  ],
+  "gates": {
+    "locked_test_interactions_read": false,
+    "locked_test_outcome_used_for_selection": false,
+    "density_parent_scope_item_train_only": true,
+    "tmdb_feature_manifest_required": true,
+    "panels": ["PANEL_5P", "PANEL_20P", "PANEL_100P"],
+    "folds": 5,
+    "custom_alpha_golden": {"do": 1.2, "de": 1.6, "alpha": 0.25},
+    "linear_ndcg_golden": {
+      "dcg": 1.1309297535714575,
+      "idcg": 1.3154648767857289,
+      "ndcg": 0.8597186998521972,
+      "tolerance": 1e-12
+    }
+  },
+  "failure_behavior": {
+    "firewall_ambiguity": "BLOCK_WITH_COUNTS_AND_REQUIRED_RESOLUTION",
+    "missing_tmdb_feature_manifest": "BLOCK_MODEL_RUN",
+    "select_champion": false,
+    "change_product_policy": false
+  }
+}

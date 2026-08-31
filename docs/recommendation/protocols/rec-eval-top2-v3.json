@@ -1,0 +1,156 @@
+{
+  "schema_version": 1,
+  "protocol_version": "rec-eval-top2-v3",
+  "status": "SUPERSEDED",
+  "superseded_by": "rec-eval-top2-v4",
+  "supersedes_for_personal_champion_selection": "rec-eval-vnext-2",
+  "source": {
+    "movielens_archive": "ml-32m.zip",
+    "movielens_archive_sha256": "e4a68655d7386b8f95f2f2424b2ff975dfdd15ffd59e0d864a14dca43e99d6ee",
+    "tmdb_snapshot_policy": "CURRENT_METADATA_RETROSPECTIVE_UNTIL_POINT_IN_TIME_SNAPSHOT_EXISTS"
+  },
+  "user_split": {
+    "algorithm": "uint64_be(SHA256('feelm-rec-vnext-user-split-v1|' + userId)[0:8]) mod 100",
+    "base_train_buckets": [0, 39],
+    "router_train_buckets": [40, 49],
+    "validation_buckets": [50, 59],
+    "test_buckets": [60, 99],
+    "raw_user_id_in_results": false
+  },
+  "primary_evaluation": {
+    "name": "PREFERENCE_RECONSTRUCTION_LABELED_SLATE",
+    "uses_rating_timestamp": false,
+    "labeled_slate_size": 20,
+    "minimum_slate_good": 2,
+    "minimum_slate_bad": 2,
+    "input_order": "DETERMINISTIC_SEEDED_SHUFFLE",
+    "same_slate_across_k_within_seed": true,
+    "cold_cohort_max_k": 10,
+    "maturity_cohort_min_k": 20,
+    "all_available_uses_entire_non_slate_reservoir": true,
+    "model_history_cap_must_be_reported": true
+  },
+  "secondary_session_proxy": {
+    "name": "NEXT_RATING_SESSION_PROXY",
+    "global_time_manifest": "docs/recommendation/evidence/manifests/global-time-v1.json",
+    "train_boundary_epoch": 1538551305,
+    "validation_boundary_epoch": 1604605535,
+    "same_timestamp_policy": "EXCLUDE_SAME_TIMESTAMP",
+    "same_utc_date_policy": "EXCLUDE_SAME_UTC_DATE",
+    "champion_selection_authority": false
+  },
+  "seeds": [17, 42, 73, 101, 211],
+  "inputs": {
+    "binary_k_primary": [0, 5, 10],
+    "binary_k_diagnostic": [1, 3],
+    "rating_k": [0, 1, 3, 5, 10, 20, 30, 50],
+    "rating_modes": ["FIXED_K", "ALL_AVAILABLE"],
+    "binary_to_numeric_rating_forbidden": true,
+    "unrated_as_negative_forbidden": true
+  },
+  "labels": {
+    "primary_definition": "USER_RELATIVE_MIDRANK_UTILITY",
+    "good_midrank_utility_min": 0.65,
+    "bad_midrank_utility_max": 0.35,
+    "raw_good_rating_sensitivity_thresholds": [4.0, 4.5],
+    "raw_bad_rating_sensitivity_thresholds": [2.0, 1.5],
+    "unrated_label": "UNKNOWN",
+    "missing_evidence_label": "EVIDENCE_POOR"
+  },
+  "labeled_slate": {
+    "size": 20,
+    "rank_all_slate_items": true,
+    "product_batch_size": 2,
+    "cumulative_product_depths": [2, 4, 6],
+    "request_states": [
+      "A_BOTH_GOOD",
+      "B_ONE_GOOD_SAFE",
+      "C_MISS",
+      "D_HARM"
+    ]
+  },
+  "diagnostic_slate": {
+    "name": "EXTREME_20",
+    "top_relative_items": 10,
+    "bottom_relative_items": 10,
+    "separate_run_and_cohort_from_natural_20": true,
+    "actual_product_harm_interpretation_forbidden": true,
+    "metrics": ["PAIRWISE_AUC", "EXTREME_BAD_AT_2", "NDCG_AT_2", "SCORE_MARGIN"]
+  },
+  "full_catalog": {
+    "evaluation": "POSITIVE_UNLABELED_RETRIEVAL_PROXY",
+    "base_identity_universe": "BASE_TRAIN_MOVIE_INTERSECT_FINAL_TMDB_IDENTITY_ALLOWLIST",
+    "final_identity_status_allowlist": ["ML_TMDB_VERIFIED", "RECOVERED_BY_IMDB"],
+    "exclude_only_k_shot_input": true,
+    "positive_injection": false,
+    "same_universe_across_models": true,
+    "candidate_recall_depths": [50, 100, 200, 500, 1000, 2000],
+    "candidate_depth_selected_on_validation": true,
+    "unknown_as_negative_forbidden": true,
+    "full_catalog_precision_at_2_forbidden": true,
+    "full_catalog_harm_at_2_forbidden": true
+  },
+  "models": [
+    "B0_MOVIELENS_BAYESIAN_RATING",
+    "B1_GLOBAL_USER_ITEM_BIAS",
+    "B2_ITEM_KNN",
+    "B3_EXPLICIT_ALS_FOLD_IN",
+    "B4_BPR_MF",
+    "B5_EASE",
+    "B6_TMDB_STRUCTURED_CONTENT",
+    "B7_TMDB_TEXT_CONTENT",
+    "B8_LIGHTFM",
+    "B9_RRF",
+    "B10_K_AWARE_ROUTER",
+    "B11_RISK_AWARE_RERANKER"
+  ],
+  "selection": {
+    "policy": "LEXICOGRAPHIC_SAFETY_FIRST",
+    "primary_metric": "OBSERVED_DISLIKE_HARM_AT_2",
+    "ordered_metrics": [
+      "OBSERVED_DISLIKE_HARM_AT_2",
+      "MISS_AT_2",
+      "BOTH_GOOD_AT_2",
+      "SAFE_HIT_AT_2",
+      "USER_MACRO_NDCG_AT_2",
+      "OBSERVED_DISLIKE_HARM_AT_1"
+    ],
+    "maximum_trials_per_model": 30,
+    "raw_score_sum_forbidden": true,
+    "router_requires_out_of_fold_labels": true,
+    "test_retuning_forbidden": true,
+    "weighted_utility_for_adoption_forbidden": true
+  },
+  "statistics": {
+    "minimum_test_users": 5000,
+    "bootstrap_repeats": 2000,
+    "bootstrap_unit": "USER_WITH_NESTED_SEED",
+    "confidence_level": 0.95,
+    "multiple_testing": "HOLM",
+    "alpha": 0.05,
+    "harm_at_2_point_delta_max": 0.0,
+    "harm_at_2_ci_upper_noninferiority_margin": 0.005,
+    "segment_harm_at_2_ci_upper_margin": 0.01,
+    "miss_at_2_improvement_sesoi": 0.01,
+    "miss_at_2_ci_upper_max": 0.0,
+    "worst_user_tail_metric": "CVAR90_HARM_RATE",
+    "maximum_coverage_drop": 0.01,
+    "predicted_rating_mae_sesoi": 0.03
+  },
+  "experiments": {
+    "REC-EV-020P": "TOP2_STATIC_COHORT_PREFLIGHT",
+    "REC-EV-020A": "TOP2_LABELED_SLATE_K_SHOT",
+    "REC-EV-020B": "FULL_CATALOG_POSITIVE_UNLABELED_RETRIEVAL",
+    "REC-EV-020C": "NEXT_RATING_SESSION_ROBUSTNESS_ONLY",
+    "REC-EV-020D": "ALL_AVAILABLE_HISTORY",
+    "REC-EV-020E": "EXTREME_20_DISCRIMINATION_STRESS_TEST",
+    "REC-EV-022A": "GOOD_BAD_PROBABILITY_CALIBRATION",
+    "REC-EV-022B": "RISK_AWARE_RERANKER"
+  },
+  "adoption": {
+    "current_policy": "APPROVED_C2A_INTERNAL_POPULARITY_ONLY",
+    "personal_champion": null,
+    "requires_c2_vnext_approval": true,
+    "offline_result_is_actual_satisfaction": false
+  }
+}
