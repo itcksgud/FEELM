@@ -1,0 +1,3883 @@
+{
+  "schema_version": 1,
+  "audit_id": "MOVIELENS_TEMPORAL_FEASIBILITY_V1",
+  "generated_at_utc": "2026-08-31T05:23:31.006645+00:00",
+  "source": {
+    "ratings": {
+      "path": "C:\\Users\\SSAFY\\cksgud\\higher\\projects\\MM\\data\\raw\\ml-32m\\ratings.csv",
+      "bytes": 877076222
+    },
+    "movies": {
+      "path": "C:\\Users\\SSAFY\\cksgud\\higher\\projects\\MM\\data\\raw\\ml-32m\\movies.csv",
+      "bytes": 4242926,
+      "sha256": "b37ca1abc7798de741138ed252b62f69f7e37c84b8a8fab1b82d409b4c6c5cc2"
+    },
+    "links": {
+      "path": "C:\\Users\\SSAFY\\cksgud\\higher\\projects\\MM\\data\\raw\\ml-32m\\links.csv",
+      "bytes": 1950748,
+      "sha256": "ef17da7710be76f7d510d5768d1b61826e3af4bf57812b9ca377e4c912123b22"
+    },
+    "dataset_end_iso": "2023-10-13T02:29:07+00:00"
+  },
+  "protocol": {
+    "analysis_role": "FULL_DATASET_DESCRIPTIVE_FEASIBILITY_ONLY_NOT_FINAL_TEST",
+    "k_values": [
+      5,
+      10,
+      25,
+      50
+    ],
+    "time_horizon_days": [
+      7,
+      30,
+      90,
+      180,
+      365
+    ],
+    "event_horizons": [
+      5,
+      10,
+      20,
+      50
+    ],
+    "candidate_n_grid_for_followup": [
+      50,
+      100,
+      200,
+      500,
+      1000,
+      2000
+    ],
+    "strict_future": "timestamp > Kth rating timestamp; equal timestamp rows excluded",
+    "conservative_future": "rating UTC day > Kth rating UTC day; profile-boundary day excluded",
+    "positive_primary": "past-K midrank utility >= 0.7",
+    "positive_sensitivity": "raw rating >= 4.0",
+    "unrated_semantics": "UNKNOWN_NOT_NEGATIVE",
+    "selection_rule": "Choose K/horizon/N on train-validation only; reserve a later untouched test"
+  },
+  "movies": {
+    "movies": 87585,
+    "release_year_known": 86968,
+    "release_year_missing": 617,
+    "genre_missing": 7080,
+    "release_year_range": [
+      1874,
+      2023
+    ],
+    "release_year_histogram": {
+      "1874": 1,
+      "1878": 2,
+      "1880": 1,
+      "1882": 1,
+      "1883": 1,
+      "1885": 1,
+      "1887": 4,
+      "1888": 4,
+      "1889": 1,
+      "1890": 5,
+      "1891": 6,
+      "1892": 3,
+      "1894": 27,
+      "1895": 19,
+      "1896": 58,
+      "1897": 34,
+      "1898": 19,
+      "1899": 30,
+      "1900": 53,
+      "1901": 45,
+      "1902": 20,
+      "1903": 32,
+      "1904": 17,
+      "1905": 19,
+      "1906": 28,
+      "1907": 34,
+      "1908": 27,
+      "1909": 24,
+      "1910": 19,
+      "1911": 19,
+      "1912": 39,
+      "1913": 46,
+      "1914": 60,
+      "1915": 43,
+      "1916": 48,
+      "1917": 35,
+      "1918": 31,
+      "1919": 48,
+      "1920": 46,
+      "1921": 56,
+      "1922": 56,
+      "1923": 40,
+      "1924": 52,
+      "1925": 65,
+      "1926": 79,
+      "1927": 79,
+      "1928": 102,
+      "1929": 155,
+      "1930": 172,
+      "1931": 228,
+      "1932": 269,
+      "1933": 266,
+      "1934": 257,
+      "1935": 286,
+      "1936": 310,
+      "1937": 292,
+      "1938": 254,
+      "1939": 258,
+      "1940": 264,
+      "1941": 276,
+      "1942": 300,
+      "1943": 257,
+      "1944": 253,
+      "1945": 247,
+      "1946": 252,
+      "1947": 280,
+      "1948": 301,
+      "1949": 330,
+      "1950": 339,
+      "1951": 326,
+      "1952": 348,
+      "1953": 364,
+      "1954": 360,
+      "1955": 377,
+      "1956": 364,
+      "1957": 392,
+      "1958": 380,
+      "1959": 366,
+      "1960": 327,
+      "1961": 365,
+      "1962": 354,
+      "1963": 391,
+      "1964": 447,
+      "1965": 438,
+      "1966": 486,
+      "1967": 465,
+      "1968": 542,
+      "1969": 537,
+      "1970": 585,
+      "1971": 629,
+      "1972": 648,
+      "1973": 607,
+      "1974": 625,
+      "1975": 544,
+      "1976": 603,
+      "1977": 584,
+      "1978": 570,
+      "1979": 595,
+      "1980": 571,
+      "1981": 554,
+      "1982": 570,
+      "1983": 567,
+      "1984": 556,
+      "1985": 618,
+      "1986": 667,
+      "1987": 729,
+      "1988": 748,
+      "1989": 782,
+      "1990": 692,
+      "1991": 695,
+      "1992": 705,
+      "1993": 710,
+      "1994": 786,
+      "1995": 861,
+      "1996": 868,
+      "1997": 947,
+      "1998": 954,
+      "1999": 997,
+      "2000": 1127,
+      "2001": 1169,
+      "2002": 1240,
+      "2003": 1246,
+      "2004": 1439,
+      "2005": 1562,
+      "2006": 1778,
+      "2007": 1868,
+      "2008": 1980,
+      "2009": 2080,
+      "2010": 2066,
+      "2011": 2196,
+      "2012": 2407,
+      "2013": 2629,
+      "2014": 2894,
+      "2015": 3080,
+      "2016": 3167,
+      "2017": 3269,
+      "2018": 3180,
+      "2019": 3084,
+      "2020": 2629,
+      "2021": 2314,
+      "2022": 2091,
+      "2023": 952
+    }
+  },
+  "links": {
+    "rows": 87585,
+    "tmdb_id_present": 87461,
+    "imdb_id_present": 87585
+  },
+  "ratings": {
+    "rating_rows": 32000204,
+    "users": 200948,
+    "rating_time": {
+      "earliest_utc": "1995-01-09T11:46:44+00:00",
+      "latest_utc": "2023-10-13T02:29:07+00:00"
+    },
+    "rating_release_lag_years": {
+      "scope": "all ratings with a release year parsed from MovieLens title",
+      "counts": {
+        "two_to_five_years": 6629577,
+        "over_twenty_years": 7189306,
+        "six_to_ten_years": 5877057,
+        "eleven_to_twenty_years": 8472803,
+        "one_year": 2716651,
+        "same_calendar_year": 1078630,
+        "negative_or_title_year_issue": 1014
+      },
+      "shares": {
+        "two_to_five_years": 0.207401,
+        "over_twenty_years": 0.224912,
+        "six_to_ten_years": 0.183859,
+        "eleven_to_twenty_years": 0.265065,
+        "one_year": 0.084988,
+        "same_calendar_year": 0.033744,
+        "negative_or_title_year_issue": 3.2e-05
+      }
+    },
+    "first_rating_release_lag_years": {
+      "scope": "first observed MovieLens rating per movie; release year is approximate",
+      "counts": {
+        "one_year": 10092,
+        "eleven_to_twenty_years": 9721,
+        "two_to_five_years": 13646,
+        "same_calendar_year": 14822,
+        "over_twenty_years": 27376,
+        "six_to_ten_years": 8096,
+        "negative_or_title_year_issue": 100
+      },
+      "shares": {
+        "one_year": 0.120353,
+        "eleven_to_twenty_years": 0.115929,
+        "two_to_five_years": 0.162737,
+        "same_calendar_year": 0.176762,
+        "over_twenty_years": 0.326476,
+        "six_to_ten_years": 0.09655,
+        "negative_or_title_year_issue": 0.001193
+      }
+    },
+    "user_activity": {
+      "rating_count_quantiles": {
+        "p10": 25,
+        "p25": 36,
+        "p50": 73,
+        "p75": 167,
+        "p90": 364,
+        "p99": 1290
+      },
+      "rating_span_days_quantiles": {
+        "p10": 0,
+        "p25": 0,
+        "p50": 0,
+        "p75": 53,
+        "p90": 708
+      },
+      "max_ratings_same_exact_timestamp_quantiles": {
+        "p50": 1,
+        "p75": 5,
+        "p90": 7,
+        "p99": 26
+      },
+      "max_ratings_same_utc_day_quantiles": {
+        "p50": 59,
+        "p75": 118,
+        "p90": 219,
+        "p99": 626
+      },
+      "users_with_max_same_day_at_least": {
+        "10": 200698,
+        "25": 174456,
+        "50": 116104,
+        "100": 62606
+      }
+    },
+    "k_feasibility": {
+      "5": {
+        "users_with_k": 200948,
+        "boundary_timestamp_collision_users": 36144,
+        "boundary_collision_share": 0.179867,
+        "boundary_same_utc_day_collision_users": 199273,
+        "boundary_same_utc_day_collision_share": 0.991665,
+        "time_horizons_days": {
+          "7": {
+            "fully_observable_users": 200889,
+            "future_events": {
+              "threshold_users": {
+                "at_least_1": 200156,
+                "at_least_5": 198744,
+                "at_least_10": 196826,
+                "at_least_20": 171119
+              },
+              "quantiles": {
+                "p10": 17,
+                "p25": 26,
+                "p50": 54,
+                "p75": 120,
+                "p90": 244
+              },
+              "mean": 106.4614
+            },
+            "personal_relative_positive": {
+              "definition": "past-K midrank utility >= 0.7",
+              "threshold_users": {
+                "at_least_1": 181077,
+                "at_least_3": 173270,
+                "at_least_5": 163086,
+                "at_least_10": 134177
+              },
+              "quantiles": {
+                "p10": 1,
+                "p25": 7,
+                "p50": 17,
+                "p75": 41,
+                "p90": 88
+              }
+            },
+            "raw_rating_positive": {
+              "definition": "future rating >= 4.0",
+              "threshold_users": {
+                "at_least_1": 199393,
+                "at_least_3": 196895,
+                "at_least_5": 193070,
+                "at_least_10": 176766
+              },
+              "quantiles": {
+                "p10": 8,
+                "p25": 15,
+                "p50": 31,
+                "p75": 68,
+                "p90": 128
+              }
+            },
+            "personal_relative_negative": {
+              "definition": "past-K midrank utility <= 0.3",
+              "threshold_users": {
+                "at_least_1": 193168,
+                "at_least_3": 176941,
+                "at_least_5": 160776,
+                "at_least_10": 126023
+              }
+            }
+          },
+          "30": {
+            "fully_observable_users": 200590,
+            "future_events": {
+              "threshold_users": {
+                "at_least_1": 200103,
+                "at_least_5": 199179,
+                "at_least_10": 197876,
+                "at_least_20": 173680
+              },
+              "quantiles": {
+                "p10": 18,
+                "p25": 28,
+                "p50": 58,
+                "p75": 128,
+                "p90": 264
+              },
+              "mean": 114.416
+            },
+            "personal_relative_positive": {
+              "definition": "past-K midrank utility >= 0.7",
+              "threshold_users": {
+                "at_least_1": 181386,
+                "at_least_3": 174303,
+                "at_least_5": 164698,
+                "at_least_10": 136667
+              },
+              "quantiles": {
+                "p10": 1,
+                "p25": 7,
+                "p50": 18,
+                "p75": 43,
+                "p90": 94
+              }
+            },
+            "raw_rating_positive": {
+              "definition": "future rating >= 4.0",
+              "threshold_users": {
+                "at_least_1": 199481,
+                "at_least_3": 197468,
+                "at_least_5": 194201,
+                "at_least_10": 179001
+              },
+              "quantiles": {
+                "p10": 9,
+                "p25": 16,
+                "p50": 33,
+                "p75": 72,
+                "p90": 137
+              }
+            },
+            "personal_relative_negative": {
+              "definition": "past-K midrank utility <= 0.3",
+              "threshold_users": {
+                "at_least_1": 193656,
+                "at_least_3": 178380,
+                "at_least_5": 162892,
+                "at_least_10": 128925
+              }
+            }
+          },
+          "90": {
+            "fully_observable_users": 199759,
+            "future_events": {
+              "threshold_users": {
+                "at_least_1": 199432,
+                "at_least_5": 198824,
+                "at_least_10": 197906,
+                "at_least_20": 174723
+              },
+              "quantiles": {
+                "p10": 18,
+                "p25": 29,
+                "p50": 60,
+                "p75": 135,
+                "p90": 278
+              },
+              "mean": 119.8272
+            },
+            "personal_relative_positive": {
+              "definition": "past-K midrank utility >= 0.7",
+              "threshold_users": {
+                "at_least_1": 181110,
+                "at_least_3": 174526,
+                "at_least_5": 165375,
+                "at_least_10": 137944
+              },
+              "quantiles": {
+                "p10": 1,
+                "p25": 7,
+                "p50": 18,
+                "p75": 45,
+                "p90": 98
+              }
+            },
+            "raw_rating_positive": {
+              "definition": "future rating >= 4.0",
+              "threshold_users": {
+                "at_least_1": 198895,
+                "at_least_3": 197219,
+                "at_least_5": 194250,
+                "at_least_10": 179748
+              },
+              "quantiles": {
+                "p10": 9,
+                "p25": 17,
+                "p50": 35,
+                "p75": 75,
+                "p90": 143
+              }
+            },
+            "personal_relative_negative": {
+              "definition": "past-K midrank utility <= 0.3",
+              "threshold_users": {
+                "at_least_1": 193347,
+                "at_least_3": 178706,
+                "at_least_5": 163667,
+                "at_least_10": 130366
+              }
+            }
+          },
+          "180": {
+            "fully_observable_users": 198831,
+            "future_events": {
+              "threshold_users": {
+                "at_least_1": 198575,
+                "at_least_5": 198114,
+                "at_least_10": 197460,
+                "at_least_20": 174947
+              },
+              "quantiles": {
+                "p10": 18,
+                "p25": 29,
+                "p50": 62,
+                "p75": 140,
+                "p90": 290
+              },
+              "mean": 123.9938
+            },
+            "personal_relative_positive": {
+              "definition": "past-K midrank utility >= 0.7",
+              "threshold_users": {
+                "at_least_1": 180588,
+                "at_least_3": 174344,
+                "at_least_5": 165484,
+                "at_least_10": 138598
+              },
+              "quantiles": {
+                "p10": 1,
+                "p25": 8,
+                "p50": 19,
+                "p75": 47,
+                "p90": 102
+              }
+            },
+            "raw_rating_positive": {
+              "definition": "future rating >= 4.0",
+              "threshold_users": {
+                "at_least_1": 198094,
+                "at_least_3": 196588,
+                "at_least_5": 193861,
+                "at_least_10": 179823
+              },
+              "quantiles": {
+                "p10": 10,
+                "p25": 17,
+                "p50": 36,
+                "p75": 78,
+                "p90": 148
+              }
+            },
+            "personal_relative_negative": {
+              "definition": "past-K midrank utility <= 0.3",
+              "threshold_users": {
+                "at_least_1": 192708,
+                "at_least_3": 178465,
+                "at_least_5": 163747,
+                "at_least_10": 130966
+              }
+            }
+          },
+          "365": {
+            "fully_observable_users": 196656,
+            "future_events": {
+              "threshold_users": {
+                "at_least_1": 196469,
+                "at_least_5": 196153,
+                "at_least_10": 195710,
+                "at_least_20": 173963
+              },
+              "quantiles": {
+                "p10": 19,
+                "p25": 30,
+                "p50": 64,
+                "p75": 146,
+                "p90": 303
+              },
+              "mean": 129.4057
+            },
+            "personal_relative_positive": {
+              "definition": "past-K midrank utility >= 0.7",
+              "threshold_users": {
+                "at_least_1": 179140,
+                "at_least_3": 173279,
+                "at_least_5": 164750,
+                "at_least_10": 138569
+              },
+              "quantiles": {
+                "p10": 1,
+                "p25": 8,
+                "p50": 19,
+                "p75": 49,
+                "p90": 107
+              }
+            },
+            "raw_rating_positive": {
+              "definition": "future rating >= 4.0",
+              "threshold_users": {
+                "at_least_1": 196033,
+                "at_least_3": 194706,
+                "at_least_5": 192172,
+                "at_least_10": 178605
+              },
+              "quantiles": {
+                "p10": 10,
+                "p25": 17,
+                "p50": 37,
+                "p75": 81,
+                "p90": 155
+              }
+            },
+            "personal_relative_negative": {
+              "definition": "past-K midrank utility <= 0.3",
+              "threshold_users": {
+                "at_least_1": 190827,
+                "at_least_3": 177006,
+                "at_least_5": 162649,
+                "at_least_10": 130546
+              }
+            }
+          }
+        },
+        "time_horizons_excluding_profile_boundary_utc_day": {
+          "7": {
+            "fully_observable_users": 200889,
+            "future_events": {
+              "threshold_users": {
+                "at_least_1": 60765,
+                "at_least_5": 49559,
+                "at_least_10": 42962,
+                "at_least_20": 34764
+              },
+              "quantiles": {
+                "p10": 0,
+                "p25": 0,
+                "p50": 0,
+                "p75": 4,
+                "p90": 57
+              },
+              "mean": 21.7752
+            },
+            "personal_relative_positive": {
+              "definition": "past-K midrank utility >= 0.7",
+              "threshold_users": {
+                "at_least_1": 47279,
+                "at_least_3": 37459,
+                "at_least_5": 32253,
+                "at_least_10": 24607
+              },
+              "quantiles": {
+                "p10": 0,
+                "p25": 0,
+                "p50": 0,
+                "p75": 0,
+                "p90": 14
+              }
+            },
+            "raw_rating_positive": {
+              "definition": "future rating >= 4.0",
+              "threshold_users": {
+                "at_least_1": 57726,
+                "at_least_3": 48731,
+                "at_least_5": 43725,
+                "at_least_10": 35259
+              },
+              "quantiles": {
+                "p10": 0,
+                "p25": 0,
+                "p50": 0,
+                "p75": 2,
+                "p90": 28
+              }
+            },
+            "personal_relative_negative": {
+              "definition": "past-K midrank utility <= 0.3",
+              "threshold_users": {
+                "at_least_1": 51120,
+                "at_least_3": 40440,
+                "at_least_5": 34975,
+                "at_least_10": 26855
+              }
+            }
+          },
+          "30": {
+            "fully_observable_users": 200590,
+            "future_events": {
+              "threshold_users": {
+                "at_least_1": 73712,
+                "at_least_5": 61836,
+                "at_least_10": 54240,
+                "at_least_20": 44347
+              },
+              "quantiles": {
+                "p10": 0,
+                "p25": 0,
+                "p50": 0,
+                "p75": 13,
+                "p90": 81
+              },
+              "mean": 29.7933
+            },
+            "personal_relative_positive": {
+              "definition": "past-K midrank utility >= 0.7",
+              "threshold_users": {
+                "at_least_1": 58701,
+                "at_least_3": 47447,
+                "at_least_5": 41240,
+                "at_least_10": 31799
+              },
+              "quantiles": {
+                "p10": 0,
+                "p25": 0,
+                "p50": 0,
+                "p75": 2,
+                "p90": 22
+              }
+            },
+            "raw_rating_positive": {
+              "definition": "future rating >= 4.0",
+              "threshold_users": {
+                "at_least_1": 70701,
+                "at_least_3": 60987,
+                "at_least_5": 55239,
+                "at_least_10": 45347
+              },
+              "quantiles": {
+                "p10": 0,
+                "p25": 0,
+                "p50": 0,
+                "p75": 7,
+                "p90": 40
+              }
+            },
+            "personal_relative_negative": {
+              "definition": "past-K midrank utility <= 0.3",
+              "threshold_users": {
+                "at_least_1": 62975,
+                "at_least_3": 50870,
+                "at_least_5": 44391,
+                "at_least_10": 34330
+              }
+            }
+          },
+          "90": {
+            "fully_observable_users": 199759,
+            "future_events": {
+              "threshold_users": {
+                "at_least_1": 79518,
+                "at_least_5": 68252,
+                "at_least_10": 60622,
+                "at_least_20": 50363
+              },
+              "quantiles": {
+                "p10": 0,
+                "p25": 0,
+                "p50": 0,
+                "p75": 20,
+                "p90": 99
+              },
+              "mean": 35.366
+            },
+            "personal_relative_positive": {
+              "definition": "past-K midrank utility >= 0.7",
+              "threshold_users": {
+                "at_least_1": 64540,
+                "at_least_3": 53225,
+                "at_least_5": 46681,
+                "at_least_10": 36459
+              },
+              "quantiles": {
+                "p10": 0,
+                "p25": 0,
+                "p50": 0,
+                "p75": 3,
+                "p90": 27
+              }
+            },
+            "raw_rating_positive": {
+              "definition": "future rating >= 4.0",
+              "threshold_users": {
+                "at_least_1": 76739,
+                "at_least_3": 67506,
+                "at_least_5": 61789,
+                "at_least_10": 51568
+              },
+              "quantiles": {
+                "p10": 0,
+                "p25": 0,
+                "p50": 0,
+                "p75": 10,
+                "p90": 48
+              }
+            },
+            "personal_relative_negative": {
+              "definition": "past-K midrank utility <= 0.3",
+              "threshold_users": {
+                "at_least_1": 68755,
+                "at_least_3": 56537,
+                "at_least_5": 49766,
+                "at_least_10": 39155
+              }
+            }
+          },
+          "180": {
+            "fully_observable_users": 198831,
+            "future_events": {
+              "threshold_users": {
+                "at_least_1": 82245,
+                "at_least_5": 71434,
+                "at_least_10": 64200,
+                "at_least_20": 54012
+              },
+              "quantiles": {
+                "p10": 0,
+                "p25": 0,
+                "p50": 0,
+                "p75": 25,
+                "p90": 113
+              },
+              "mean": 39.6929
+            },
+            "personal_relative_positive": {
+              "definition": "past-K midrank utility >= 0.7",
+              "threshold_users": {
+                "at_least_1": 67536,
+                "at_least_3": 56547,
+                "at_least_5": 50078,
+                "at_least_10": 39622
+              },
+              "quantiles": {
+                "p10": 0,
+                "p25": 0,
+                "p50": 0,
+                "p75": 5,
+                "p90": 32
+              }
+            },
+            "raw_rating_positive": {
+              "definition": "future rating >= 4.0",
+              "threshold_users": {
+                "at_least_1": 79617,
+                "at_least_3": 70839,
+                "at_least_5": 65396,
+                "at_least_10": 55446
+              },
+              "quantiles": {
+                "p10": 0,
+                "p25": 0,
+                "p50": 0,
+                "p75": 13,
+                "p90": 55
+              }
+            },
+            "personal_relative_negative": {
+              "definition": "past-K midrank utility <= 0.3",
+              "threshold_users": {
+                "at_least_1": 71626,
+                "at_least_3": 59628,
+                "at_least_5": 52881,
+                "at_least_10": 42147
+              }
+            }
+          },
+          "365": {
+            "fully_observable_users": 196656,
+            "future_events": {
+              "threshold_users": {
+                "at_least_1": 83950,
+                "at_least_5": 73488,
+                "at_least_10": 66686,
+                "at_least_20": 56906
+              },
+              "quantiles": {
+                "p10": 0,
+                "p25": 0,
+                "p50": 0,
+                "p75": 31,
+                "p90": 132
+              },
+              "mean": 45.3327
+            },
+            "personal_relative_positive": {
+              "definition": "past-K midrank utility >= 0.7",
+              "threshold_users": {
+                "at_least_1": 69728,
+                "at_least_3": 59176,
+                "at_least_5": 52910,
+                "at_least_10": 42505
+              },
+              "quantiles": {
+                "p10": 0,
+                "p25": 0,
+                "p50": 0,
+                "p75": 6,
+                "p90": 38
+              }
+            },
+            "raw_rating_positive": {
+              "definition": "future rating >= 4.0",
+              "threshold_users": {
+                "at_least_1": 81419,
+                "at_least_3": 73039,
+                "at_least_5": 67928,
+                "at_least_10": 58477
+              },
+              "quantiles": {
+                "p10": 0,
+                "p25": 0,
+                "p50": 0,
+                "p75": 16,
+                "p90": 64
+              }
+            },
+            "personal_relative_negative": {
+              "definition": "past-K midrank utility <= 0.3",
+              "threshold_users": {
+                "at_least_1": 73481,
+                "at_least_3": 61820,
+                "at_least_5": 55235,
+                "at_least_10": 44743
+              }
+            }
+          }
+        },
+        "event_horizons": {
+          "5": {
+            "users_with_required_strict_future_events": 200808,
+            "time_to_event_count_days": {
+              "p10": 0,
+              "p25": 0,
+              "p50": 0,
+              "p75": 0,
+              "p90": 0
+            },
+            "users_with_personal_positive": 150717,
+            "personal_positive_count_quantiles": {
+              "p10": 0,
+              "p25": 1,
+              "p50": 2,
+              "p75": 3,
+              "p90": 4
+            },
+            "users_with_raw_4plus": 186294
+          },
+          "10": {
+            "users_with_required_strict_future_events": 200719,
+            "time_to_event_count_days": {
+              "p10": 0,
+              "p25": 0,
+              "p50": 0,
+              "p75": 0,
+              "p90": 0
+            },
+            "users_with_personal_positive": 170863,
+            "personal_positive_count_quantiles": {
+              "p10": 0,
+              "p25": 1,
+              "p50": 3,
+              "p75": 6,
+              "p90": 7
+            },
+            "users_with_raw_4plus": 196530
+          },
+          "20": {
+            "users_with_required_strict_future_events": 179640,
+            "time_to_event_count_days": {
+              "p10": 0,
+              "p25": 0,
+              "p50": 0,
+              "p75": 0,
+              "p90": 0
+            },
+            "users_with_personal_positive": 160880,
+            "personal_positive_count_quantiles": {
+              "p10": 0,
+              "p25": 4,
+              "p50": 8,
+              "p75": 12,
+              "p90": 15
+            },
+            "users_with_raw_4plus": 179112
+          },
+          "50": {
+            "users_with_required_strict_future_events": 120219,
+            "time_to_event_count_days": {
+              "p10": 0,
+              "p25": 0,
+              "p50": 0,
+              "p75": 0,
+              "p90": 9
+            },
+            "users_with_personal_positive": 109299,
+            "personal_positive_count_quantiles": {
+              "p10": 1,
+              "p25": 9,
+              "p50": 19,
+              "p75": 30,
+              "p90": 39
+            },
+            "users_with_raw_4plus": 120090
+          }
+        },
+        "event_horizons_excluding_profile_boundary_utc_day": {
+          "5": {
+            "users_with_required_strict_future_events": 79928,
+            "time_to_event_count_days": {
+              "p10": 0,
+              "p25": 0,
+              "p50": 3,
+              "p75": 22,
+              "p90": 167
+            },
+            "users_with_personal_positive": 56829,
+            "personal_positive_count_quantiles": {
+              "p10": 0,
+              "p25": 0,
+              "p50": 2,
+              "p75": 3,
+              "p90": 5
+            },
+            "users_with_raw_4plus": 74520
+          },
+          "10": {
+            "users_with_required_strict_future_events": 73085,
+            "time_to_event_count_days": {
+              "p10": 0,
+              "p25": 0,
+              "p50": 3,
+              "p75": 32,
+              "p90": 213
+            },
+            "users_with_personal_positive": 57678,
+            "personal_positive_count_quantiles": {
+              "p10": 0,
+              "p25": 1,
+              "p50": 3,
+              "p75": 6,
+              "p90": 9
+            },
+            "users_with_raw_4plus": 71048
+          },
+          "20": {
+            "users_with_required_strict_future_events": 63432,
+            "time_to_event_count_days": {
+              "p10": 0,
+              "p25": 1,
+              "p50": 4,
+              "p75": 52,
+              "p90": 290
+            },
+            "users_with_personal_positive": 53416,
+            "personal_positive_count_quantiles": {
+              "p10": 0,
+              "p25": 2,
+              "p50": 7,
+              "p75": 12,
+              "p90": 17
+            },
+            "users_with_raw_4plus": 62650
+          },
+          "50": {
+            "users_with_required_strict_future_events": 46652,
+            "time_to_event_count_days": {
+              "p10": 0,
+              "p25": 1,
+              "p50": 8,
+              "p75": 123,
+              "p90": 474
+            },
+            "users_with_personal_positive": 41078,
+            "personal_positive_count_quantiles": {
+              "p10": 0,
+              "p25": 5,
+              "p50": 16,
+              "p75": 29,
+              "p90": 39
+            },
+            "users_with_raw_4plus": 46422
+          }
+        }
+      },
+      "10": {
+        "users_with_k": 200948,
+        "boundary_timestamp_collision_users": 39417,
+        "boundary_collision_share": 0.196155,
+        "boundary_same_utc_day_collision_users": 199220,
+        "boundary_same_utc_day_collision_share": 0.991401,
+        "time_horizons_days": {
+          "7": {
+            "fully_observable_users": 200888,
+            "future_events": {
+              "threshold_users": {
+                "at_least_1": 200053,
+                "at_least_5": 198383,
+                "at_least_10": 193141,
+                "at_least_20": 156779
+              },
+              "quantiles": {
+                "p10": 12,
+                "p25": 22,
+                "p50": 50,
+                "p75": 115,
+                "p90": 240
+              },
+              "mean": 101.9999
+            },
+            "personal_relative_positive": {
+              "definition": "past-K midrank utility >= 0.7",
+              "threshold_users": {
+                "at_least_1": 183588,
+                "at_least_3": 171939,
+                "at_least_5": 157650,
+                "at_least_10": 124312
+              },
+              "quantiles": {
+                "p10": 1,
+                "p25": 5,
+                "p50": 15,
+                "p75": 37,
+                "p90": 78
+              }
+            },
+            "raw_rating_positive": {
+              "definition": "future rating >= 4.0",
+              "threshold_users": {
+                "at_least_1": 198956,
+                "at_least_3": 194931,
+                "at_least_5": 188712,
+                "at_least_10": 165515
+              },
+              "quantiles": {
+                "p10": 6,
+                "p25": 13,
+                "p50": 29,
+                "p75": 65,
+                "p90": 126
+              }
+            },
+            "personal_relative_negative": {
+              "definition": "past-K midrank utility <= 0.3",
+              "threshold_users": {
+                "at_least_1": 190749,
+                "at_least_3": 168580,
+                "at_least_5": 147708,
+                "at_least_10": 111866
+              }
+            }
+          },
+          "30": {
+            "fully_observable_users": 200586,
+            "future_events": {
+              "threshold_users": {
+                "at_least_1": 200030,
+                "at_least_5": 198941,
+                "at_least_10": 194879,
+                "at_least_20": 159398
+              },
+              "quantiles": {
+                "p10": 13,
+                "p25": 23,
+                "p50": 53,
+                "p75": 124,
+                "p90": 260
+              },
+              "mean": 109.7965
+            },
+            "personal_relative_positive": {
+              "definition": "past-K midrank utility >= 0.7",
+              "threshold_users": {
+                "at_least_1": 184031,
+                "at_least_3": 173277,
+                "at_least_5": 159564,
+                "at_least_10": 126862
+              },
+              "quantiles": {
+                "p10": 1,
+                "p25": 6,
+                "p50": 15,
+                "p75": 39,
+                "p90": 84
+              }
+            },
+            "raw_rating_positive": {
+              "definition": "future rating >= 4.0",
+              "threshold_users": {
+                "at_least_1": 199113,
+                "at_least_3": 195737,
+                "at_least_5": 190102,
+                "at_least_10": 167837
+              },
+              "quantiles": {
+                "p10": 7,
+                "p25": 13,
+                "p50": 31,
+                "p75": 69,
+                "p90": 134
+              }
+            },
+            "personal_relative_negative": {
+              "definition": "past-K midrank utility <= 0.3",
+              "threshold_users": {
+                "at_least_1": 191387,
+                "at_least_3": 170341,
+                "at_least_5": 150171,
+                "at_least_10": 114972
+              }
+            }
+          },
+          "90": {
+            "fully_observable_users": 199752,
+            "future_events": {
+              "threshold_users": {
+                "at_least_1": 199367,
+                "at_least_5": 198621,
+                "at_least_10": 195268,
+                "at_least_20": 160507
+              },
+              "quantiles": {
+                "p10": 13,
+                "p25": 24,
+                "p50": 55,
+                "p75": 130,
+                "p90": 274
+              },
+              "mean": 115.0926
+            },
+            "personal_relative_positive": {
+              "definition": "past-K midrank utility >= 0.7",
+              "threshold_users": {
+                "at_least_1": 183841,
+                "at_least_3": 173690,
+                "at_least_5": 160443,
+                "at_least_10": 128260
+              },
+              "quantiles": {
+                "p10": 1,
+                "p25": 6,
+                "p50": 16,
+                "p75": 41,
+                "p90": 88
+              }
+            },
+            "raw_rating_positive": {
+              "definition": "future rating >= 4.0",
+              "threshold_users": {
+                "at_least_1": 198570,
+                "at_least_3": 195587,
+                "at_least_5": 190295,
+                "at_least_10": 168720
+              },
+              "quantiles": {
+                "p10": 7,
+                "p25": 14,
+                "p50": 32,
+                "p75": 72,
+                "p90": 140
+              }
+            },
+            "personal_relative_negative": {
+              "definition": "past-K midrank utility <= 0.3",
+              "threshold_users": {
+                "at_least_1": 191156,
+                "at_least_3": 170873,
+                "at_least_5": 151226,
+                "at_least_10": 116520
+              }
+            }
+          },
+          "180": {
+            "fully_observable_users": 198813,
+            "future_events": {
+              "threshold_users": {
+                "at_least_1": 198515,
+                "at_least_5": 197971,
+                "at_least_10": 195105,
+                "at_least_20": 160795
+              },
+              "quantiles": {
+                "p10": 13,
+                "p25": 24,
+                "p50": 57,
+                "p75": 135,
+                "p90": 285
+              },
+              "mean": 119.2144
+            },
+            "personal_relative_positive": {
+              "definition": "past-K midrank utility >= 0.7",
+              "threshold_users": {
+                "at_least_1": 183321,
+                "at_least_3": 173634,
+                "at_least_5": 160689,
+                "at_least_10": 129031
+              },
+              "quantiles": {
+                "p10": 2,
+                "p25": 6,
+                "p50": 16,
+                "p75": 42,
+                "p90": 91
+              }
+            },
+            "raw_rating_positive": {
+              "definition": "future rating >= 4.0",
+              "threshold_users": {
+                "at_least_1": 197800,
+                "at_least_3": 195052,
+                "at_least_5": 190013,
+                "at_least_10": 168861
+              },
+              "quantiles": {
+                "p10": 7,
+                "p25": 14,
+                "p50": 33,
+                "p75": 75,
+                "p90": 145
+              }
+            },
+            "personal_relative_negative": {
+              "definition": "past-K midrank utility <= 0.3",
+              "threshold_users": {
+                "at_least_1": 190591,
+                "at_least_3": 170842,
+                "at_least_5": 151519,
+                "at_least_10": 117258
+              }
+            }
+          },
+          "365": {
+            "fully_observable_users": 196626,
+            "future_events": {
+              "threshold_users": {
+                "at_least_1": 196383,
+                "at_least_5": 196018,
+                "at_least_10": 193586,
+                "at_least_20": 159958
+              },
+              "quantiles": {
+                "p10": 14,
+                "p25": 25,
+                "p50": 59,
+                "p75": 141,
+                "p90": 298
+              },
+              "mean": 124.5627
+            },
+            "personal_relative_positive": {
+              "definition": "past-K midrank utility >= 0.7",
+              "threshold_users": {
+                "at_least_1": 181823,
+                "at_least_3": 172587,
+                "at_least_5": 160080,
+                "at_least_10": 129163
+              },
+              "quantiles": {
+                "p10": 2,
+                "p25": 6,
+                "p50": 17,
+                "p75": 44,
+                "p90": 95
+              }
+            },
+            "raw_rating_positive": {
+              "definition": "future rating >= 4.0",
+              "threshold_users": {
+                "at_least_1": 195731,
+                "at_least_3": 193198,
+                "at_least_5": 188389,
+                "at_least_10": 167779
+              },
+              "quantiles": {
+                "p10": 7,
+                "p25": 14,
+                "p50": 34,
+                "p75": 78,
+                "p90": 152
+              }
+            },
+            "personal_relative_negative": {
+              "definition": "past-K midrank utility <= 0.3",
+              "threshold_users": {
+                "at_least_1": 188760,
+                "at_least_3": 169518,
+                "at_least_5": 150687,
+                "at_least_10": 117052
+              }
+            }
+          }
+        },
+        "time_horizons_excluding_profile_boundary_utc_day": {
+          "7": {
+            "fully_observable_users": 200888,
+            "future_events": {
+              "threshold_users": {
+                "at_least_1": 59768,
+                "at_least_5": 48380,
+                "at_least_10": 41729,
+                "at_least_20": 33739
+              },
+              "quantiles": {
+                "p10": 0,
+                "p25": 0,
+                "p50": 0,
+                "p75": 3,
+                "p90": 54
+              },
+              "mean": 21.2616
+            },
+            "personal_relative_positive": {
+              "definition": "past-K midrank utility >= 0.7",
+              "threshold_users": {
+                "at_least_1": 47288,
+                "at_least_3": 36813,
+                "at_least_5": 31335,
+                "at_least_10": 23285
+              },
+              "quantiles": {
+                "p10": 0,
+                "p25": 0,
+                "p50": 0,
+                "p75": 0,
+                "p90": 13
+              }
+            },
+            "raw_rating_positive": {
+              "definition": "future rating >= 4.0",
+              "threshold_users": {
+                "at_least_1": 56691,
+                "at_least_3": 47559,
+                "at_least_5": 42502,
+                "at_least_10": 34103
+              },
+              "quantiles": {
+                "p10": 0,
+                "p25": 0,
+                "p50": 0,
+                "p75": 2,
+                "p90": 26
+              }
+            },
+            "personal_relative_negative": {
+              "definition": "past-K midrank utility <= 0.3",
+              "threshold_users": {
+                "at_least_1": 49800,
+                "at_least_3": 38906,
+                "at_least_5": 33336,
+                "at_least_10": 25329
+              }
+            }
+          },
+          "30": {
+            "fully_observable_users": 200586,
+            "future_events": {
+              "threshold_users": {
+                "at_least_1": 72658,
+                "at_least_5": 60535,
+                "at_least_10": 52817,
+                "at_least_20": 43108
+              },
+              "quantiles": {
+                "p10": 0,
+                "p25": 0,
+                "p50": 0,
+                "p75": 12,
+                "p90": 79
+              },
+              "mean": 29.1198
+            },
+            "personal_relative_positive": {
+              "definition": "past-K midrank utility >= 0.7",
+              "threshold_users": {
+                "at_least_1": 58847,
+                "at_least_3": 46897,
+                "at_least_5": 40249,
+                "at_least_10": 30283
+              },
+              "quantiles": {
+                "p10": 0,
+                "p25": 0,
+                "p50": 0,
+                "p75": 2,
+                "p90": 19
+              }
+            },
+            "raw_rating_positive": {
+              "definition": "future rating >= 4.0",
+              "threshold_users": {
+                "at_least_1": 69607,
+                "at_least_3": 59682,
+                "at_least_5": 53870,
+                "at_least_10": 43957
+              },
+              "quantiles": {
+                "p10": 0,
+                "p25": 0,
+                "p50": 0,
+                "p75": 6,
+                "p90": 38
+              }
+            },
+            "personal_relative_negative": {
+              "definition": "past-K midrank utility <= 0.3",
+              "threshold_users": {
+                "at_least_1": 61523,
+                "at_least_3": 49072,
+                "at_least_5": 42391,
+                "at_least_10": 32543
+              }
+            }
+          },
+          "90": {
+            "fully_observable_users": 199752,
+            "future_events": {
+              "threshold_users": {
+                "at_least_1": 78414,
+                "at_least_5": 66878,
+                "at_least_10": 59079,
+                "at_least_20": 49003
+              },
+              "quantiles": {
+                "p10": 0,
+                "p25": 0,
+                "p50": 0,
+                "p75": 18,
+                "p90": 97
+              },
+              "mean": 34.5761
+            },
+            "personal_relative_positive": {
+              "definition": "past-K midrank utility >= 0.7",
+              "threshold_users": {
+                "at_least_1": 64836,
+                "at_least_3": 52742,
+                "at_least_5": 45678,
+                "at_least_10": 34900
+              },
+              "quantiles": {
+                "p10": 0,
+                "p25": 0,
+                "p50": 0,
+                "p75": 3,
+                "p90": 24
+              }
+            },
+            "raw_rating_positive": {
+              "definition": "future rating >= 4.0",
+              "threshold_users": {
+                "at_least_1": 75609,
+                "at_least_3": 66148,
+                "at_least_5": 60320,
+                "at_least_10": 50059
+              },
+              "quantiles": {
+                "p10": 0,
+                "p25": 0,
+                "p50": 0,
+                "p75": 10,
+                "p90": 47
+              }
+            },
+            "personal_relative_negative": {
+              "definition": "past-K midrank utility <= 0.3",
+              "threshold_users": {
+                "at_least_1": 67243,
+                "at_least_3": 54660,
+                "at_least_5": 47694,
+                "at_least_10": 37096
+              }
+            }
+          },
+          "180": {
+            "fully_observable_users": 198813,
+            "future_events": {
+              "threshold_users": {
+                "at_least_1": 81106,
+                "at_least_5": 70029,
+                "at_least_10": 62614,
+                "at_least_20": 52598
+              },
+              "quantiles": {
+                "p10": 0,
+                "p25": 0,
+                "p50": 0,
+                "p75": 23,
+                "p90": 111
+              },
+              "mean": 38.854
+            },
+            "personal_relative_positive": {
+              "definition": "past-K midrank utility >= 0.7",
+              "threshold_users": {
+                "at_least_1": 67835,
+                "at_least_3": 56168,
+                "at_least_5": 49105,
+                "at_least_10": 38013
+              },
+              "quantiles": {
+                "p10": 0,
+                "p25": 0,
+                "p50": 0,
+                "p75": 4,
+                "p90": 28
+              }
+            },
+            "raw_rating_positive": {
+              "definition": "future rating >= 4.0",
+              "threshold_users": {
+                "at_least_1": 78448,
+                "at_least_3": 69441,
+                "at_least_5": 63875,
+                "at_least_10": 53895
+              },
+              "quantiles": {
+                "p10": 0,
+                "p25": 0,
+                "p50": 0,
+                "p75": 12,
+                "p90": 54
+              }
+            },
+            "personal_relative_negative": {
+              "definition": "past-K midrank utility <= 0.3",
+              "threshold_users": {
+                "at_least_1": 70118,
+                "at_least_3": 57766,
+                "at_least_5": 50758,
+                "at_least_10": 40074
+              }
+            }
+          },
+          "365": {
+            "fully_observable_users": 196626,
+            "future_events": {
+              "threshold_users": {
+                "at_least_1": 82755,
+                "at_least_5": 72052,
+                "at_least_10": 65075,
+                "at_least_20": 55456
+              },
+              "quantiles": {
+                "p10": 0,
+                "p25": 0,
+                "p50": 0,
+                "p75": 29,
+                "p90": 129
+              },
+              "mean": 44.4304
+            },
+            "personal_relative_positive": {
+              "definition": "past-K midrank utility >= 0.7",
+              "threshold_users": {
+                "at_least_1": 70027,
+                "at_least_3": 58815,
+                "at_least_5": 52038,
+                "at_least_10": 41003
+              },
+              "quantiles": {
+                "p10": 0,
+                "p25": 0,
+                "p50": 0,
+                "p75": 6,
+                "p90": 33
+              }
+            },
+            "raw_rating_positive": {
+              "definition": "future rating >= 4.0",
+              "threshold_users": {
+                "at_least_1": 80193,
+                "at_least_3": 71611,
+                "at_least_5": 66384,
+                "at_least_10": 56898
+              },
+              "quantiles": {
+                "p10": 0,
+                "p25": 0,
+                "p50": 0,
+                "p75": 15,
+                "p90": 62
+              }
+            },
+            "personal_relative_negative": {
+              "definition": "past-K midrank utility <= 0.3",
+              "threshold_users": {
+                "at_least_1": 71955,
+                "at_least_3": 59987,
+                "at_least_5": 53173,
+                "at_least_10": 42668
+              }
+            }
+          }
+        },
+        "event_horizons": {
+          "5": {
+            "users_with_required_strict_future_events": 200692,
+            "time_to_event_count_days": {
+              "p10": 0,
+              "p25": 0,
+              "p50": 0,
+              "p75": 0,
+              "p90": 0
+            },
+            "users_with_personal_positive": 150732,
+            "personal_positive_count_quantiles": {
+              "p10": 0,
+              "p25": 1,
+              "p50": 2,
+              "p75": 3,
+              "p90": 4
+            },
+            "users_with_raw_4plus": 186394
+          },
+          "10": {
+            "users_with_required_strict_future_events": 199037,
+            "time_to_event_count_days": {
+              "p10": 0,
+              "p25": 0,
+              "p50": 0,
+              "p75": 0,
+              "p90": 0
+            },
+            "users_with_personal_positive": 173782,
+            "personal_positive_count_quantiles": {
+              "p10": 0,
+              "p25": 2,
+              "p50": 4,
+              "p75": 6,
+              "p90": 7
+            },
+            "users_with_raw_4plus": 196306
+          },
+          "20": {
+            "users_with_required_strict_future_events": 165300,
+            "time_to_event_count_days": {
+              "p10": 0,
+              "p25": 0,
+              "p50": 0,
+              "p75": 0,
+              "p90": 0
+            },
+            "users_with_personal_positive": 150988,
+            "personal_positive_count_quantiles": {
+              "p10": 1,
+              "p25": 4,
+              "p50": 7,
+              "p75": 11,
+              "p90": 15
+            },
+            "users_with_raw_4plus": 164747
+          },
+          "50": {
+            "users_with_required_strict_future_events": 113678,
+            "time_to_event_count_days": {
+              "p10": 0,
+              "p25": 0,
+              "p50": 0,
+              "p75": 0,
+              "p90": 12
+            },
+            "users_with_personal_positive": 105565,
+            "personal_positive_count_quantiles": {
+              "p10": 3,
+              "p25": 9,
+              "p50": 18,
+              "p75": 27,
+              "p90": 36
+            },
+            "users_with_raw_4plus": 113554
+          }
+        },
+        "event_horizons_excluding_profile_boundary_utc_day": {
+          "5": {
+            "users_with_required_strict_future_events": 78261,
+            "time_to_event_count_days": {
+              "p10": 0,
+              "p25": 0,
+              "p50": 3,
+              "p75": 22,
+              "p90": 163
+            },
+            "users_with_personal_positive": 55797,
+            "personal_positive_count_quantiles": {
+              "p10": 0,
+              "p25": 0,
+              "p50": 2,
+              "p75": 3,
+              "p90": 4
+            },
+            "users_with_raw_4plus": 72889
+          },
+          "10": {
+            "users_with_required_strict_future_events": 71218,
+            "time_to_event_count_days": {
+              "p10": 0,
+              "p25": 0,
+              "p50": 3,
+              "p75": 32,
+              "p90": 210
+            },
+            "users_with_personal_positive": 57104,
+            "personal_positive_count_quantiles": {
+              "p10": 0,
+              "p25": 1,
+              "p50": 3,
+              "p75": 6,
+              "p90": 8
+            },
+            "users_with_raw_4plus": 69179
+          },
+          "20": {
+            "users_with_required_strict_future_events": 61753,
+            "time_to_event_count_days": {
+              "p10": 0,
+              "p25": 1,
+              "p50": 4,
+              "p75": 52,
+              "p90": 288
+            },
+            "users_with_personal_positive": 53066,
+            "personal_positive_count_quantiles": {
+              "p10": 0,
+              "p25": 2,
+              "p50": 6,
+              "p75": 11,
+              "p90": 15
+            },
+            "users_with_raw_4plus": 60970
+          },
+          "50": {
+            "users_with_required_strict_future_events": 45583,
+            "time_to_event_count_days": {
+              "p10": 0,
+              "p25": 1,
+              "p50": 9,
+              "p75": 125,
+              "p90": 475
+            },
+            "users_with_personal_positive": 41082,
+            "personal_positive_count_quantiles": {
+              "p10": 1,
+              "p25": 5,
+              "p50": 14,
+              "p75": 26,
+              "p90": 36
+            },
+            "users_with_raw_4plus": 45355
+          }
+        }
+      },
+      "25": {
+        "users_with_k": 181154,
+        "boundary_timestamp_collision_users": 34948,
+        "boundary_collision_share": 0.192919,
+        "boundary_same_utc_day_collision_users": 174073,
+        "boundary_same_utc_day_collision_share": 0.960912,
+        "time_horizons_days": {
+          "7": {
+            "fully_observable_users": 181098,
+            "future_events": {
+              "threshold_users": {
+                "at_least_1": 175271,
+                "at_least_5": 162190,
+                "at_least_10": 148374,
+                "at_least_20": 127046
+              },
+              "quantiles": {
+                "p10": 4,
+                "p25": 15,
+                "p50": 45,
+                "p75": 114,
+                "p90": 243
+              },
+              "mean": 99.0766
+            },
+            "personal_relative_positive": {
+              "definition": "past-K midrank utility >= 0.7",
+              "threshold_users": {
+                "at_least_1": 157483,
+                "at_least_3": 137987,
+                "at_least_5": 122975,
+                "at_least_10": 95605
+              },
+              "quantiles": {
+                "p10": 0,
+                "p25": 3,
+                "p50": 11,
+                "p75": 29,
+                "p90": 62
+              }
+            },
+            "raw_rating_positive": {
+              "definition": "future rating >= 4.0",
+              "threshold_users": {
+                "at_least_1": 172287,
+                "at_least_3": 160978,
+                "at_least_5": 151078,
+                "at_least_10": 131290
+              },
+              "quantiles": {
+                "p10": 2,
+                "p25": 8,
+                "p50": 25,
+                "p75": 62,
+                "p90": 124
+              }
+            },
+            "personal_relative_negative": {
+              "definition": "past-K midrank utility <= 0.3",
+              "threshold_users": {
+                "at_least_1": 159468,
+                "at_least_3": 136908,
+                "at_least_5": 121229,
+                "at_least_10": 95655
+              }
+            }
+          },
+          "30": {
+            "fully_observable_users": 180812,
+            "future_events": {
+              "threshold_users": {
+                "at_least_1": 175465,
+                "at_least_5": 163297,
+                "at_least_10": 150099,
+                "at_least_20": 129541
+              },
+              "quantiles": {
+                "p10": 5,
+                "p25": 16,
+                "p50": 49,
+                "p75": 123,
+                "p90": 265
+              },
+              "mean": 107.2215
+            },
+            "personal_relative_positive": {
+              "definition": "past-K midrank utility >= 0.7",
+              "threshold_users": {
+                "at_least_1": 158352,
+                "at_least_3": 139665,
+                "at_least_5": 125063,
+                "at_least_10": 98298
+              },
+              "quantiles": {
+                "p10": 0,
+                "p25": 3,
+                "p50": 11,
+                "p75": 31,
+                "p90": 66
+              }
+            },
+            "raw_rating_positive": {
+              "definition": "future rating >= 4.0",
+              "threshold_users": {
+                "at_least_1": 172704,
+                "at_least_3": 162101,
+                "at_least_5": 152627,
+                "at_least_10": 133570
+              },
+              "quantiles": {
+                "p10": 2,
+                "p25": 9,
+                "p50": 27,
+                "p75": 67,
+                "p90": 134
+              }
+            },
+            "personal_relative_negative": {
+              "definition": "past-K midrank utility <= 0.3",
+              "threshold_users": {
+                "at_least_1": 160496,
+                "at_least_3": 138918,
+                "at_least_5": 123691,
+                "at_least_10": 98619
+              }
+            }
+          },
+          "90": {
+            "fully_observable_users": 180028,
+            "future_events": {
+              "threshold_users": {
+                "at_least_1": 174951,
+                "at_least_5": 163402,
+                "at_least_10": 150715,
+                "at_least_20": 130790
+              },
+              "quantiles": {
+                "p10": 5,
+                "p25": 17,
+                "p50": 51,
+                "p75": 130,
+                "p90": 278
+              },
+              "mean": 112.818
+            },
+            "personal_relative_positive": {
+              "definition": "past-K midrank utility >= 0.7",
+              "threshold_users": {
+                "at_least_1": 158447,
+                "at_least_3": 140421,
+                "at_least_5": 126212,
+                "at_least_10": 99964
+              },
+              "quantiles": {
+                "p10": 0,
+                "p25": 3,
+                "p50": 12,
+                "p75": 32,
+                "p90": 69
+              }
+            },
+            "raw_rating_positive": {
+              "definition": "future rating >= 4.0",
+              "threshold_users": {
+                "at_least_1": 172336,
+                "at_least_3": 162222,
+                "at_least_5": 153165,
+                "at_least_10": 134671
+              },
+              "quantiles": {
+                "p10": 3,
+                "p25": 9,
+                "p50": 28,
+                "p75": 70,
+                "p90": 140
+              }
+            },
+            "personal_relative_negative": {
+              "definition": "past-K midrank utility <= 0.3",
+              "threshold_users": {
+                "at_least_1": 160564,
+                "at_least_3": 139681,
+                "at_least_5": 124956,
+                "at_least_10": 100273
+              }
+            }
+          },
+          "180": {
+            "fully_observable_users": 179135,
+            "future_events": {
+              "threshold_users": {
+                "at_least_1": 174205,
+                "at_least_5": 162968,
+                "at_least_10": 150661,
+                "at_least_20": 131275
+              },
+              "quantiles": {
+                "p10": 5,
+                "p25": 18,
+                "p50": 53,
+                "p75": 136,
+                "p90": 290
+              },
+              "mean": 117.2126
+            },
+            "personal_relative_positive": {
+              "definition": "past-K midrank utility >= 0.7",
+              "threshold_users": {
+                "at_least_1": 158090,
+                "at_least_3": 140628,
+                "at_least_5": 126764,
+                "at_least_10": 101034
+              },
+              "quantiles": {
+                "p10": 0,
+                "p25": 3,
+                "p50": 12,
+                "p75": 33,
+                "p90": 71
+              }
+            },
+            "raw_rating_positive": {
+              "definition": "future rating >= 4.0",
+              "threshold_users": {
+                "at_least_1": 171653,
+                "at_least_3": 161822,
+                "at_least_5": 153050,
+                "at_least_10": 135077
+              },
+              "quantiles": {
+                "p10": 3,
+                "p25": 10,
+                "p50": 29,
+                "p75": 73,
+                "p90": 145
+              }
+            },
+            "personal_relative_negative": {
+              "definition": "past-K midrank utility <= 0.3",
+              "threshold_users": {
+                "at_least_1": 160159,
+                "at_least_3": 139757,
+                "at_least_5": 125362,
+                "at_least_10": 101160
+              }
+            }
+          },
+          "365": {
+            "fully_observable_users": 177098,
+            "future_events": {
+              "threshold_users": {
+                "at_least_1": 172328,
+                "at_least_5": 161439,
+                "at_least_10": 149475,
+                "at_least_20": 130708
+              },
+              "quantiles": {
+                "p10": 5,
+                "p25": 18,
+                "p50": 55,
+                "p75": 142,
+                "p90": 304
+              },
+              "mean": 122.9539
+            },
+            "personal_relative_positive": {
+              "definition": "past-K midrank utility >= 0.7",
+              "threshold_users": {
+                "at_least_1": 156753,
+                "at_least_3": 139870,
+                "at_least_5": 126444,
+                "at_least_10": 101463
+              },
+              "quantiles": {
+                "p10": 0,
+                "p25": 3,
+                "p50": 13,
+                "p75": 35,
+                "p90": 74
+              }
+            },
+            "raw_rating_positive": {
+              "definition": "future rating >= 4.0",
+              "threshold_users": {
+                "at_least_1": 169852,
+                "at_least_3": 160314,
+                "at_least_5": 151798,
+                "at_least_10": 134410
+              },
+              "quantiles": {
+                "p10": 3,
+                "p25": 10,
+                "p50": 31,
+                "p75": 76,
+                "p90": 152
+              }
+            },
+            "personal_relative_negative": {
+              "definition": "past-K midrank utility <= 0.3",
+              "threshold_users": {
+                "at_least_1": 158647,
+                "at_least_3": 138805,
+                "at_least_5": 124833,
+                "at_least_10": 101286
+              }
+            }
+          }
+        },
+        "time_horizons_excluding_profile_boundary_utc_day": {
+          "7": {
+            "fully_observable_users": 181098,
+            "future_events": {
+              "threshold_users": {
+                "at_least_1": 54433,
+                "at_least_5": 43306,
+                "at_least_10": 37395,
+                "at_least_20": 30393
+              },
+              "quantiles": {
+                "p10": 0,
+                "p25": 0,
+                "p50": 0,
+                "p75": 3,
+                "p90": 55
+              },
+              "mean": 21.6544
+            },
+            "personal_relative_positive": {
+              "definition": "past-K midrank utility >= 0.7",
+              "threshold_users": {
+                "at_least_1": 42636,
+                "at_least_3": 31709,
+                "at_least_5": 26172,
+                "at_least_10": 18337
+              },
+              "quantiles": {
+                "p10": 0,
+                "p25": 0,
+                "p50": 0,
+                "p75": 0,
+                "p90": 10
+              }
+            },
+            "raw_rating_positive": {
+              "definition": "future rating >= 4.0",
+              "threshold_users": {
+                "at_least_1": 51351,
+                "at_least_3": 42402,
+                "at_least_5": 37775,
+                "at_least_10": 30325
+              },
+              "quantiles": {
+                "p10": 0,
+                "p25": 0,
+                "p50": 0,
+                "p75": 2,
+                "p90": 26
+              }
+            },
+            "personal_relative_negative": {
+              "definition": "past-K midrank utility <= 0.3",
+              "threshold_users": {
+                "at_least_1": 45682,
+                "at_least_3": 35946,
+                "at_least_5": 31017,
+                "at_least_10": 24007
+              }
+            }
+          },
+          "30": {
+            "fully_observable_users": 180812,
+            "future_events": {
+              "threshold_users": {
+                "at_least_1": 66515,
+                "at_least_5": 54601,
+                "at_least_10": 47644,
+                "at_least_20": 39030
+              },
+              "quantiles": {
+                "p10": 0,
+                "p25": 0,
+                "p50": 0,
+                "p75": 12,
+                "p90": 81
+              },
+              "mean": 29.8602
+            },
+            "personal_relative_positive": {
+              "definition": "past-K midrank utility >= 0.7",
+              "threshold_users": {
+                "at_least_1": 53654,
+                "at_least_3": 40963,
+                "at_least_5": 34096,
+                "at_least_10": 24329
+              },
+              "quantiles": {
+                "p10": 0,
+                "p25": 0,
+                "p50": 0,
+                "p75": 2,
+                "p90": 15
+              }
+            },
+            "raw_rating_positive": {
+              "definition": "future rating >= 4.0",
+              "threshold_users": {
+                "at_least_1": 63434,
+                "at_least_3": 53676,
+                "at_least_5": 48238,
+                "at_least_10": 39379
+              },
+              "quantiles": {
+                "p10": 0,
+                "p25": 0,
+                "p50": 0,
+                "p75": 6,
+                "p90": 38
+              }
+            },
+            "personal_relative_negative": {
+              "definition": "past-K midrank utility <= 0.3",
+              "threshold_users": {
+                "at_least_1": 56854,
+                "at_least_3": 45563,
+                "at_least_5": 39577,
+                "at_least_10": 30831
+              }
+            }
+          },
+          "90": {
+            "fully_observable_users": 180028,
+            "future_events": {
+              "threshold_users": {
+                "at_least_1": 71801,
+                "at_least_5": 60546,
+                "at_least_10": 53537,
+                "at_least_20": 44590
+              },
+              "quantiles": {
+                "p10": 0,
+                "p25": 0,
+                "p50": 0,
+                "p75": 19,
+                "p90": 100
+              },
+              "mean": 35.6169
+            },
+            "personal_relative_positive": {
+              "definition": "past-K midrank utility >= 0.7",
+              "threshold_users": {
+                "at_least_1": 59430,
+                "at_least_3": 46576,
+                "at_least_5": 39316,
+                "at_least_10": 28631
+              },
+              "quantiles": {
+                "p10": 0,
+                "p25": 0,
+                "p50": 0,
+                "p75": 3,
+                "p90": 19
+              }
+            },
+            "raw_rating_positive": {
+              "definition": "future rating >= 4.0",
+              "threshold_users": {
+                "at_least_1": 69040,
+                "at_least_3": 59786,
+                "at_least_5": 54360,
+                "at_least_10": 45123
+              },
+              "quantiles": {
+                "p10": 0,
+                "p25": 0,
+                "p50": 0,
+                "p75": 10,
+                "p90": 47
+              }
+            },
+            "personal_relative_negative": {
+              "definition": "past-K midrank utility <= 0.3",
+              "threshold_users": {
+                "at_least_1": 62240,
+                "at_least_3": 50981,
+                "at_least_5": 44809,
+                "at_least_10": 35302
+              }
+            }
+          },
+          "180": {
+            "fully_observable_users": 179135,
+            "future_events": {
+              "threshold_users": {
+                "at_least_1": 74136,
+                "at_least_5": 63398,
+                "at_least_10": 56822,
+                "at_least_20": 48039
+              },
+              "quantiles": {
+                "p10": 0,
+                "p25": 0,
+                "p50": 0,
+                "p75": 24,
+                "p90": 115
+              },
+              "mean": 40.161
+            },
+            "personal_relative_positive": {
+              "definition": "past-K midrank utility >= 0.7",
+              "threshold_users": {
+                "at_least_1": 62295,
+                "at_least_3": 49967,
+                "at_least_5": 42730,
+                "at_least_10": 31704
+              },
+              "quantiles": {
+                "p10": 0,
+                "p25": 0,
+                "p50": 0,
+                "p75": 4,
+                "p90": 22
+              }
+            },
+            "raw_rating_positive": {
+              "definition": "future rating >= 4.0",
+              "threshold_users": {
+                "at_least_1": 71530,
+                "at_least_3": 62795,
+                "at_least_5": 57663,
+                "at_least_10": 48795
+              },
+              "quantiles": {
+                "p10": 0,
+                "p25": 0,
+                "p50": 0,
+                "p75": 12,
+                "p90": 54
+              }
+            },
+            "personal_relative_negative": {
+              "definition": "past-K midrank utility <= 0.3",
+              "threshold_users": {
+                "at_least_1": 64825,
+                "at_least_3": 53921,
+                "at_least_5": 47824,
+                "at_least_10": 38297
+              }
+            }
+          },
+          "365": {
+            "fully_observable_users": 177098,
+            "future_events": {
+              "threshold_users": {
+                "at_least_1": 75487,
+                "at_least_5": 65164,
+                "at_least_10": 59074,
+                "at_least_20": 50781
+              },
+              "quantiles": {
+                "p10": 0,
+                "p25": 0,
+                "p50": 0,
+                "p75": 30,
+                "p90": 135
+              },
+              "mean": 46.1233
+            },
+            "personal_relative_positive": {
+              "definition": "past-K midrank utility >= 0.7",
+              "threshold_users": {
+                "at_least_1": 64204,
+                "at_least_3": 52631,
+                "at_least_5": 45681,
+                "at_least_10": 34689
+              },
+              "quantiles": {
+                "p10": 0,
+                "p25": 0,
+                "p50": 0,
+                "p75": 5,
+                "p90": 26
+              }
+            },
+            "raw_rating_positive": {
+              "definition": "future rating >= 4.0",
+              "threshold_users": {
+                "at_least_1": 72995,
+                "at_least_3": 64746,
+                "at_least_5": 59964,
+                "at_least_10": 51666
+              },
+              "quantiles": {
+                "p10": 0,
+                "p25": 0,
+                "p50": 0,
+                "p75": 15,
+                "p90": 63
+              }
+            },
+            "personal_relative_negative": {
+              "definition": "past-K midrank utility <= 0.3",
+              "threshold_users": {
+                "at_least_1": 66414,
+                "at_least_3": 55987,
+                "at_least_5": 50153,
+                "at_least_10": 40916
+              }
+            }
+          }
+        },
+        "event_horizons": {
+          "5": {
+            "users_with_required_strict_future_events": 165612,
+            "time_to_event_count_days": {
+              "p10": 0,
+              "p25": 0,
+              "p50": 0,
+              "p75": 0,
+              "p90": 0
+            },
+            "users_with_personal_positive": 123001,
+            "personal_positive_count_quantiles": {
+              "p10": 0,
+              "p25": 0,
+              "p50": 1,
+              "p75": 3,
+              "p90": 4
+            },
+            "users_with_raw_4plus": 156538
+          },
+          "10": {
+            "users_with_required_strict_future_events": 153734,
+            "time_to_event_count_days": {
+              "p10": 0,
+              "p25": 0,
+              "p50": 0,
+              "p75": 0,
+              "p90": 0
+            },
+            "users_with_personal_positive": 132441,
+            "personal_positive_count_quantiles": {
+              "p10": 0,
+              "p25": 1,
+              "p50": 3,
+              "p75": 5,
+              "p90": 7
+            },
+            "users_with_raw_4plus": 151169
+          },
+          "20": {
+            "users_with_required_strict_future_events": 135138,
+            "time_to_event_count_days": {
+              "p10": 0,
+              "p25": 0,
+              "p50": 0,
+              "p75": 0,
+              "p90": 0
+            },
+            "users_with_personal_positive": 124273,
+            "personal_positive_count_quantiles": {
+              "p10": 1,
+              "p25": 3,
+              "p50": 6,
+              "p75": 9,
+              "p90": 12
+            },
+            "users_with_raw_4plus": 134342
+          },
+          "50": {
+            "users_with_required_strict_future_events": 98226,
+            "time_to_event_count_days": {
+              "p10": 0,
+              "p25": 0,
+              "p50": 0,
+              "p75": 0,
+              "p90": 18
+            },
+            "users_with_personal_positive": 92858,
+            "personal_positive_count_quantiles": {
+              "p10": 3,
+              "p25": 8,
+              "p50": 14,
+              "p75": 21,
+              "p90": 29
+            },
+            "users_with_raw_4plus": 98058
+          }
+        },
+        "event_horizons_excluding_profile_boundary_utc_day": {
+          "5": {
+            "users_with_required_strict_future_events": 70322,
+            "time_to_event_count_days": {
+              "p10": 0,
+              "p25": 0,
+              "p50": 3,
+              "p75": 22,
+              "p90": 145
+            },
+            "users_with_personal_positive": 47374,
+            "personal_positive_count_quantiles": {
+              "p10": 0,
+              "p25": 0,
+              "p50": 1,
+              "p75": 2,
+              "p90": 4
+            },
+            "users_with_raw_4plus": 65103
+          },
+          "10": {
+            "users_with_required_strict_future_events": 64312,
+            "time_to_event_count_days": {
+              "p10": 0,
+              "p25": 0,
+              "p50": 3,
+              "p75": 33,
+              "p90": 195
+            },
+            "users_with_personal_positive": 50572,
+            "personal_positive_count_quantiles": {
+              "p10": 0,
+              "p25": 1,
+              "p50": 2,
+              "p75": 5,
+              "p90": 7
+            },
+            "users_with_raw_4plus": 62304
+          },
+          "20": {
+            "users_with_required_strict_future_events": 56339,
+            "time_to_event_count_days": {
+              "p10": 0,
+              "p25": 1,
+              "p50": 5,
+              "p75": 55,
+              "p90": 276
+            },
+            "users_with_personal_positive": 48466,
+            "personal_positive_count_quantiles": {
+              "p10": 0,
+              "p25": 2,
+              "p50": 5,
+              "p75": 8,
+              "p90": 12
+            },
+            "users_with_raw_4plus": 55564
+          },
+          "50": {
+            "users_with_required_strict_future_events": 42302,
+            "time_to_event_count_days": {
+              "p10": 0,
+              "p25": 1,
+              "p50": 10,
+              "p75": 130,
+              "p90": 468
+            },
+            "users_with_personal_positive": 38709,
+            "personal_positive_count_quantiles": {
+              "p10": 1,
+              "p25": 4,
+              "p50": 11,
+              "p75": 19,
+              "p90": 27
+            },
+            "users_with_raw_4plus": 42068
+          }
+        }
+      },
+      "50": {
+        "users_with_k": 128344,
+        "boundary_timestamp_collision_users": 22511,
+        "boundary_collision_share": 0.175396,
+        "boundary_same_utc_day_collision_users": 123462,
+        "boundary_same_utc_day_collision_share": 0.961962,
+        "time_horizons_days": {
+          "7": {
+            "fully_observable_users": 128304,
+            "future_events": {
+              "threshold_users": {
+                "at_least_1": 124688,
+                "at_least_5": 116553,
+                "at_least_10": 108064,
+                "at_least_20": 94893
+              },
+              "quantiles": {
+                "p10": 5,
+                "p25": 18,
+                "p50": 55,
+                "p75": 136,
+                "p90": 278
+              },
+              "mean": 114.6699
+            },
+            "personal_relative_positive": {
+              "definition": "past-K midrank utility >= 0.7",
+              "threshold_users": {
+                "at_least_1": 112529,
+                "at_least_3": 98854,
+                "at_least_5": 88398,
+                "at_least_10": 69470
+              },
+              "quantiles": {
+                "p10": 0,
+                "p25": 3,
+                "p50": 11,
+                "p75": 30,
+                "p90": 62
+              }
+            },
+            "raw_rating_positive": {
+              "definition": "future rating >= 4.0",
+              "threshold_users": {
+                "at_least_1": 122311,
+                "at_least_3": 114830,
+                "at_least_5": 108555,
+                "at_least_10": 95715
+              },
+              "quantiles": {
+                "p10": 2,
+                "p25": 9,
+                "p50": 29,
+                "p75": 69,
+                "p90": 136
+              }
+            },
+            "personal_relative_negative": {
+              "definition": "past-K midrank utility <= 0.3",
+              "threshold_users": {
+                "at_least_1": 116229,
+                "at_least_3": 102929,
+                "at_least_5": 93329,
+                "at_least_10": 76435
+              }
+            }
+          },
+          "30": {
+            "fully_observable_users": 128077,
+            "future_events": {
+              "threshold_users": {
+                "at_least_1": 125051,
+                "at_least_5": 117899,
+                "at_least_10": 109930,
+                "at_least_20": 97281
+              },
+              "quantiles": {
+                "p10": 6,
+                "p25": 21,
+                "p50": 60,
+                "p75": 150,
+                "p90": 304
+              },
+              "mean": 125.2373
+            },
+            "personal_relative_positive": {
+              "definition": "past-K midrank utility >= 0.7",
+              "threshold_users": {
+                "at_least_1": 113748,
+                "at_least_3": 100899,
+                "at_least_5": 90777,
+                "at_least_10": 72115
+              },
+              "quantiles": {
+                "p10": 0,
+                "p25": 3,
+                "p50": 12,
+                "p75": 32,
+                "p90": 67
+              }
+            },
+            "raw_rating_positive": {
+              "definition": "future rating >= 4.0",
+              "threshold_users": {
+                "at_least_1": 123008,
+                "at_least_3": 116247,
+                "at_least_5": 110365,
+                "at_least_10": 98166
+              },
+              "quantiles": {
+                "p10": 3,
+                "p25": 10,
+                "p50": 31,
+                "p75": 75,
+                "p90": 147
+              }
+            },
+            "personal_relative_negative": {
+              "definition": "past-K midrank utility <= 0.3",
+              "threshold_users": {
+                "at_least_1": 117331,
+                "at_least_3": 104872,
+                "at_least_5": 95646,
+                "at_least_10": 79187
+              }
+            }
+          },
+          "90": {
+            "fully_observable_users": 127481,
+            "future_events": {
+              "threshold_users": {
+                "at_least_1": 124769,
+                "at_least_5": 118304,
+                "at_least_10": 110884,
+                "at_least_20": 98782
+              },
+              "quantiles": {
+                "p10": 7,
+                "p25": 22,
+                "p50": 64,
+                "p75": 158,
+                "p90": 321
+              },
+              "mean": 132.6038
+            },
+            "personal_relative_positive": {
+              "definition": "past-K midrank utility >= 0.7",
+              "threshold_users": {
+                "at_least_1": 114151,
+                "at_least_3": 102098,
+                "at_least_5": 92325,
+                "at_least_10": 73928
+              },
+              "quantiles": {
+                "p10": 0,
+                "p25": 4,
+                "p50": 13,
+                "p75": 34,
+                "p90": 70
+              }
+            },
+            "raw_rating_positive": {
+              "definition": "future rating >= 4.0",
+              "threshold_users": {
+                "at_least_1": 122943,
+                "at_least_3": 116813,
+                "at_least_5": 111294,
+                "at_least_10": 99659
+              },
+              "quantiles": {
+                "p10": 3,
+                "p25": 11,
+                "p50": 34,
+                "p75": 79,
+                "p90": 153
+              }
+            },
+            "personal_relative_negative": {
+              "definition": "past-K midrank utility <= 0.3",
+              "threshold_users": {
+                "at_least_1": 117600,
+                "at_least_3": 105893,
+                "at_least_5": 96992,
+                "at_least_10": 80822
+              }
+            }
+          },
+          "180": {
+            "fully_observable_users": 126802,
+            "future_events": {
+              "threshold_users": {
+                "at_least_1": 124245,
+                "at_least_5": 118173,
+                "at_least_10": 111132,
+                "at_least_20": 99516
+              },
+              "quantiles": {
+                "p10": 7,
+                "p25": 24,
+                "p50": 67,
+                "p75": 165,
+                "p90": 336
+              },
+              "mean": 138.3969
+            },
+            "personal_relative_positive": {
+              "definition": "past-K midrank utility >= 0.7",
+              "threshold_users": {
+                "at_least_1": 114088,
+                "at_least_3": 102638,
+                "at_least_5": 93214,
+                "at_least_10": 75201
+              },
+              "quantiles": {
+                "p10": 0,
+                "p25": 4,
+                "p50": 14,
+                "p75": 35,
+                "p90": 73
+              }
+            },
+            "raw_rating_positive": {
+              "definition": "future rating >= 4.0",
+              "threshold_users": {
+                "at_least_1": 122544,
+                "at_least_3": 116763,
+                "at_least_5": 111545,
+                "at_least_10": 100466
+              },
+              "quantiles": {
+                "p10": 3,
+                "p25": 12,
+                "p50": 35,
+                "p75": 83,
+                "p90": 160
+              }
+            },
+            "personal_relative_negative": {
+              "definition": "past-K midrank utility <= 0.3",
+              "threshold_users": {
+                "at_least_1": 117395,
+                "at_least_3": 106202,
+                "at_least_5": 97580,
+                "at_least_10": 81800
+              }
+            }
+          },
+          "365": {
+            "fully_observable_users": 125260,
+            "future_events": {
+              "threshold_users": {
+                "at_least_1": 122815,
+                "at_least_5": 117093,
+                "at_least_10": 110443,
+                "at_least_20": 99376
+              },
+              "quantiles": {
+                "p10": 8,
+                "p25": 25,
+                "p50": 71,
+                "p75": 175,
+                "p90": 355
+              },
+              "mean": 146.1473
+            },
+            "personal_relative_positive": {
+              "definition": "past-K midrank utility >= 0.7",
+              "threshold_users": {
+                "at_least_1": 113130,
+                "at_least_3": 102360,
+                "at_least_5": 93399,
+                "at_least_10": 76026
+              },
+              "quantiles": {
+                "p10": 1,
+                "p25": 4,
+                "p50": 15,
+                "p75": 37,
+                "p90": 77
+              }
+            },
+            "raw_rating_positive": {
+              "definition": "future rating >= 4.0",
+              "threshold_users": {
+                "at_least_1": 121201,
+                "at_least_3": 115771,
+                "at_least_5": 110844,
+                "at_least_10": 100337
+              },
+              "quantiles": {
+                "p10": 4,
+                "p25": 13,
+                "p50": 37,
+                "p75": 87,
+                "p90": 168
+              }
+            },
+            "personal_relative_negative": {
+              "definition": "past-K midrank utility <= 0.3",
+              "threshold_users": {
+                "at_least_1": 116285,
+                "at_least_3": 105611,
+                "at_least_5": 97386,
+                "at_least_10": 82179
+              }
+            }
+          }
+        },
+        "time_horizons_excluding_profile_boundary_utc_day": {
+          "7": {
+            "fully_observable_users": 128304,
+            "future_events": {
+              "threshold_users": {
+                "at_least_1": 46356,
+                "at_least_5": 37084,
+                "at_least_10": 32197,
+                "at_least_20": 26490
+              },
+              "quantiles": {
+                "p10": 0,
+                "p25": 0,
+                "p50": 0,
+                "p75": 10,
+                "p90": 76
+              },
+              "mean": 27.4925
+            },
+            "personal_relative_positive": {
+              "definition": "past-K midrank utility >= 0.7",
+              "threshold_users": {
+                "at_least_1": 36691,
+                "at_least_3": 27064,
+                "at_least_5": 22264,
+                "at_least_10": 15313
+              },
+              "quantiles": {
+                "p10": 0,
+                "p25": 0,
+                "p50": 0,
+                "p75": 1,
+                "p90": 12
+              }
+            },
+            "raw_rating_positive": {
+              "definition": "future rating >= 4.0",
+              "threshold_users": {
+                "at_least_1": 43592,
+                "at_least_3": 35986,
+                "at_least_5": 32105,
+                "at_least_10": 25897
+              },
+              "quantiles": {
+                "p10": 0,
+                "p25": 0,
+                "p50": 0,
+                "p75": 5,
+                "p90": 34
+              }
+            },
+            "personal_relative_negative": {
+              "definition": "past-K midrank utility <= 0.3",
+              "threshold_users": {
+                "at_least_1": 39594,
+                "at_least_3": 31611,
+                "at_least_5": 27592,
+                "at_least_10": 21833
+              }
+            }
+          },
+          "30": {
+            "fully_observable_users": 128077,
+            "future_events": {
+              "threshold_users": {
+                "at_least_1": 56892,
+                "at_least_5": 47075,
+                "at_least_10": 41261,
+                "at_least_20": 34150
+              },
+              "quantiles": {
+                "p10": 0,
+                "p25": 0,
+                "p50": 0,
+                "p75": 24,
+                "p90": 107
+              },
+              "mean": 38.1247
+            },
+            "personal_relative_positive": {
+              "definition": "past-K midrank utility >= 0.7",
+              "threshold_users": {
+                "at_least_1": 46564,
+                "at_least_3": 35357,
+                "at_least_5": 29275,
+                "at_least_10": 20524
+              },
+              "quantiles": {
+                "p10": 0,
+                "p25": 0,
+                "p50": 0,
+                "p75": 3,
+                "p90": 18
+              }
+            },
+            "raw_rating_positive": {
+              "definition": "future rating >= 4.0",
+              "threshold_users": {
+                "at_least_1": 54199,
+                "at_least_3": 45984,
+                "at_least_5": 41342,
+                "at_least_10": 33882
+              },
+              "quantiles": {
+                "p10": 0,
+                "p25": 0,
+                "p50": 0,
+                "p75": 11,
+                "p90": 48
+              }
+            },
+            "personal_relative_negative": {
+              "definition": "past-K midrank utility <= 0.3",
+              "threshold_users": {
+                "at_least_1": 49454,
+                "at_least_3": 40313,
+                "at_least_5": 35378,
+                "at_least_10": 28118
+              }
+            }
+          },
+          "90": {
+            "fully_observable_users": 127481,
+            "future_events": {
+              "threshold_users": {
+                "at_least_1": 61451,
+                "at_least_5": 52467,
+                "at_least_10": 46710,
+                "at_least_20": 39284
+              },
+              "quantiles": {
+                "p10": 0,
+                "p25": 0,
+                "p50": 0,
+                "p75": 34,
+                "p90": 131
+              },
+              "mean": 45.6806
+            },
+            "personal_relative_positive": {
+              "definition": "past-K midrank utility >= 0.7",
+              "threshold_users": {
+                "at_least_1": 51816,
+                "at_least_3": 40690,
+                "at_least_5": 34079,
+                "at_least_10": 24372
+              },
+              "quantiles": {
+                "p10": 0,
+                "p25": 0,
+                "p50": 0,
+                "p75": 5,
+                "p90": 23
+              }
+            },
+            "raw_rating_positive": {
+              "definition": "future rating >= 4.0",
+              "threshold_users": {
+                "at_least_1": 59130,
+                "at_least_3": 51601,
+                "at_least_5": 46981,
+                "at_least_10": 39166
+              },
+              "quantiles": {
+                "p10": 0,
+                "p25": 0,
+                "p50": 0,
+                "p75": 16,
+                "p90": 58
+              }
+            },
+            "personal_relative_negative": {
+              "definition": "past-K midrank utility <= 0.3",
+              "threshold_users": {
+                "at_least_1": 54332,
+                "at_least_3": 45398,
+                "at_least_5": 40163,
+                "at_least_10": 32208
+              }
+            }
+          },
+          "180": {
+            "fully_observable_users": 126802,
+            "future_events": {
+              "threshold_users": {
+                "at_least_1": 63418,
+                "at_least_5": 55016,
+                "at_least_10": 49659,
+                "at_least_20": 42432
+              },
+              "quantiles": {
+                "p10": 0,
+                "p25": 0,
+                "p50": 1,
+                "p75": 43,
+                "p90": 149
+              },
+              "mean": 51.6496
+            },
+            "personal_relative_positive": {
+              "definition": "past-K midrank utility >= 0.7",
+              "threshold_users": {
+                "at_least_1": 54347,
+                "at_least_3": 43786,
+                "at_least_5": 37347,
+                "at_least_10": 27243
+              },
+              "quantiles": {
+                "p10": 0,
+                "p25": 0,
+                "p50": 0,
+                "p75": 7,
+                "p90": 26
+              }
+            },
+            "raw_rating_positive": {
+              "definition": "future rating >= 4.0",
+              "threshold_users": {
+                "at_least_1": 61313,
+                "at_least_3": 54292,
+                "at_least_5": 50007,
+                "at_least_10": 42511
+              },
+              "quantiles": {
+                "p10": 0,
+                "p25": 0,
+                "p50": 0,
+                "p75": 20,
+                "p90": 66
+              }
+            },
+            "personal_relative_negative": {
+              "definition": "past-K midrank utility <= 0.3",
+              "threshold_users": {
+                "at_least_1": 56561,
+                "at_least_3": 48065,
+                "at_least_5": 42960,
+                "at_least_10": 34919
+              }
+            }
+          },
+          "365": {
+            "fully_observable_users": 125260,
+            "future_events": {
+              "threshold_users": {
+                "at_least_1": 64447,
+                "at_least_5": 56536,
+                "at_least_10": 51684,
+                "at_least_20": 44957
+              },
+              "quantiles": {
+                "p10": 0,
+                "p25": 0,
+                "p50": 1,
+                "p75": 53,
+                "p90": 174
+              },
+              "mean": 59.6474
+            },
+            "personal_relative_positive": {
+              "definition": "past-K midrank utility >= 0.7",
+              "threshold_users": {
+                "at_least_1": 55978,
+                "at_least_3": 46206,
+                "at_least_5": 40143,
+                "at_least_10": 30121
+              },
+              "quantiles": {
+                "p10": 0,
+                "p25": 0,
+                "p50": 0,
+                "p75": 9,
+                "p90": 31
+              }
+            },
+            "raw_rating_positive": {
+              "definition": "future rating >= 4.0",
+              "threshold_users": {
+                "at_least_1": 62491,
+                "at_least_3": 56030,
+                "at_least_5": 52078,
+                "at_least_10": 45183
+              },
+              "quantiles": {
+                "p10": 0,
+                "p25": 0,
+                "p50": 0,
+                "p75": 25,
+                "p90": 78
+              }
+            },
+            "personal_relative_negative": {
+              "definition": "past-K midrank utility <= 0.3",
+              "threshold_users": {
+                "at_least_1": 57875,
+                "at_least_3": 49905,
+                "at_least_5": 45155,
+                "at_least_10": 37407
+              }
+            }
+          }
+        },
+        "event_horizons": {
+          "5": {
+            "users_with_required_strict_future_events": 120298,
+            "time_to_event_count_days": {
+              "p10": 0,
+              "p25": 0,
+              "p50": 0,
+              "p75": 0,
+              "p90": 0
+            },
+            "users_with_personal_positive": 83360,
+            "personal_positive_count_quantiles": {
+              "p10": 0,
+              "p25": 0,
+              "p50": 1,
+              "p75": 2,
+              "p90": 3
+            },
+            "users_with_raw_4plus": 111138
+          },
+          "10": {
+            "users_with_required_strict_future_events": 113822,
+            "time_to_event_count_days": {
+              "p10": 0,
+              "p25": 0,
+              "p50": 0,
+              "p75": 0,
+              "p90": 0
+            },
+            "users_with_personal_positive": 95149,
+            "personal_positive_count_quantiles": {
+              "p10": 0,
+              "p25": 1,
+              "p50": 3,
+              "p75": 4,
+              "p90": 6
+            },
+            "users_with_raw_4plus": 110717
+          },
+          "20": {
+            "users_with_required_strict_future_events": 103057,
+            "time_to_event_count_days": {
+              "p10": 0,
+              "p25": 0,
+              "p50": 0,
+              "p75": 0,
+              "p90": 2
+            },
+            "users_with_personal_positive": 94109,
+            "personal_positive_count_quantiles": {
+              "p10": 1,
+              "p25": 3,
+              "p50": 5,
+              "p75": 8,
+              "p90": 11
+            },
+            "users_with_raw_4plus": 102041
+          },
+          "50": {
+            "users_with_required_strict_future_events": 80296,
+            "time_to_event_count_days": {
+              "p10": 0,
+              "p25": 0,
+              "p50": 0,
+              "p75": 0,
+              "p90": 35
+            },
+            "users_with_personal_positive": 76441,
+            "personal_positive_count_quantiles": {
+              "p10": 3,
+              "p25": 7,
+              "p50": 12,
+              "p75": 19,
+              "p90": 25
+            },
+            "users_with_raw_4plus": 80061
+          }
+        },
+        "event_horizons_excluding_profile_boundary_utc_day": {
+          "5": {
+            "users_with_required_strict_future_events": 60777,
+            "time_to_event_count_days": {
+              "p10": 0,
+              "p25": 0,
+              "p50": 3,
+              "p75": 23,
+              "p90": 137
+            },
+            "users_with_personal_positive": 40255,
+            "personal_positive_count_quantiles": {
+              "p10": 0,
+              "p25": 0,
+              "p50": 1,
+              "p75": 2,
+              "p90": 3
+            },
+            "users_with_raw_4plus": 55797
+          },
+          "10": {
+            "users_with_required_strict_future_events": 56096,
+            "time_to_event_count_days": {
+              "p10": 0,
+              "p25": 0,
+              "p50": 4,
+              "p75": 34,
+              "p90": 190
+            },
+            "users_with_personal_positive": 43960,
+            "personal_positive_count_quantiles": {
+              "p10": 0,
+              "p25": 1,
+              "p50": 2,
+              "p75": 4,
+              "p90": 6
+            },
+            "users_with_raw_4plus": 54108
+          },
+          "20": {
+            "users_with_required_strict_future_events": 49791,
+            "time_to_event_count_days": {
+              "p10": 0,
+              "p25": 1,
+              "p50": 5,
+              "p75": 58,
+              "p90": 274
+            },
+            "users_with_personal_positive": 43134,
+            "personal_positive_count_quantiles": {
+              "p10": 0,
+              "p25": 2,
+              "p50": 4,
+              "p75": 8,
+              "p90": 11
+            },
+            "users_with_raw_4plus": 49015
+          },
+          "50": {
+            "users_with_required_strict_future_events": 38201,
+            "time_to_event_count_days": {
+              "p10": 0,
+              "p25": 1,
+              "p50": 11,
+              "p75": 138,
+              "p90": 477
+            },
+            "users_with_personal_positive": 35456,
+            "personal_positive_count_quantiles": {
+              "p10": 1,
+              "p25": 4,
+              "p50": 10,
+              "p75": 17,
+              "p90": 25
+            },
+            "users_with_raw_4plus": 37962
+          }
+        }
+      }
+    },
+    "movie_interactions": {
+      "rating_count_tiers": {
+        "zero": 3153,
+        "one_to_nine": 52471,
+        "ten_to_ninety_nine": 19770,
+        "one_hundred_to_999": 7794,
+        "one_thousand_to_9999": 3625,
+        "ten_thousand_plus": 772
+      },
+      "rated_movies": 84432
+    },
+    "runtime_seconds": 130.9
+  },
+  "catalog_snapshots": {
+    "1995": {
+      "released_catalog_proxy": 31755,
+      "als_scorable_at_least_one_rating": 4,
+      "als_scorable_share": 0.000126,
+      "content_only_or_unrated_proxy": 31751,
+      "released_in_current_or_previous_year": 1647,
+      "recent_als_scorable": 2,
+      "recent_als_scorable_share": 0.001214,
+      "candidate_n_share_of_released_pool": {
+        "50": 0.001575,
+        "100": 0.003149,
+        "200": 0.006298,
+        "500": 0.015746,
+        "1000": 0.031491,
+        "2000": 0.062982
+      }
+    },
+    "1996": {
+      "released_catalog_proxy": 32623,
+      "als_scorable_at_least_one_rating": 1376,
+      "als_scorable_share": 0.042179,
+      "content_only_or_unrated_proxy": 31247,
+      "released_in_current_or_previous_year": 1729,
+      "recent_als_scorable": 586,
+      "recent_als_scorable_share": 0.338924,
+      "candidate_n_share_of_released_pool": {
+        "50": 0.001533,
+        "100": 0.003065,
+        "200": 0.006131,
+        "500": 0.015327,
+        "1000": 0.030653,
+        "2000": 0.061306
+      }
+    },
+    "1997": {
+      "released_catalog_proxy": 33570,
+      "als_scorable_at_least_one_rating": 1661,
+      "als_scorable_share": 0.049479,
+      "content_only_or_unrated_proxy": 31909,
+      "released_in_current_or_previous_year": 1815,
+      "recent_als_scorable": 532,
+      "recent_als_scorable_share": 0.293113,
+      "candidate_n_share_of_released_pool": {
+        "50": 0.001489,
+        "100": 0.002979,
+        "200": 0.005958,
+        "500": 0.014894,
+        "1000": 0.029789,
+        "2000": 0.059577
+      }
+    },
+    "1998": {
+      "released_catalog_proxy": 34524,
+      "als_scorable_at_least_one_rating": 2335,
+      "als_scorable_share": 0.067634,
+      "content_only_or_unrated_proxy": 32189,
+      "released_in_current_or_previous_year": 1901,
+      "recent_als_scorable": 511,
+      "recent_als_scorable_share": 0.268806,
+      "candidate_n_share_of_released_pool": {
+        "50": 0.001448,
+        "100": 0.002897,
+        "200": 0.005793,
+        "500": 0.014483,
+        "1000": 0.028965,
+        "2000": 0.057931
+      }
+    },
+    "1999": {
+      "released_catalog_proxy": 35521,
+      "als_scorable_at_least_one_rating": 3094,
+      "als_scorable_share": 0.087103,
+      "content_only_or_unrated_proxy": 32427,
+      "released_in_current_or_previous_year": 1951,
+      "recent_als_scorable": 531,
+      "recent_als_scorable_share": 0.272168,
+      "candidate_n_share_of_released_pool": {
+        "50": 0.001408,
+        "100": 0.002815,
+        "200": 0.00563,
+        "500": 0.014076,
+        "1000": 0.028152,
+        "2000": 0.056305
+      }
+    },
+    "2000": {
+      "released_catalog_proxy": 36648,
+      "als_scorable_at_least_one_rating": 3931,
+      "als_scorable_share": 0.107264,
+      "content_only_or_unrated_proxy": 32717,
+      "released_in_current_or_previous_year": 2124,
+      "recent_als_scorable": 484,
+      "recent_als_scorable_share": 0.227872,
+      "candidate_n_share_of_released_pool": {
+        "50": 0.001364,
+        "100": 0.002729,
+        "200": 0.005457,
+        "500": 0.013643,
+        "1000": 0.027287,
+        "2000": 0.054573
+      }
+    },
+    "2001": {
+      "released_catalog_proxy": 37817,
+      "als_scorable_at_least_one_rating": 4903,
+      "als_scorable_share": 0.129651,
+      "content_only_or_unrated_proxy": 32914,
+      "released_in_current_or_previous_year": 2296,
+      "recent_als_scorable": 503,
+      "recent_als_scorable_share": 0.219077,
+      "candidate_n_share_of_released_pool": {
+        "50": 0.001322,
+        "100": 0.002644,
+        "200": 0.005289,
+        "500": 0.013222,
+        "1000": 0.026443,
+        "2000": 0.052886
+      }
+    },
+    "2002": {
+      "released_catalog_proxy": 39057,
+      "als_scorable_at_least_one_rating": 5850,
+      "als_scorable_share": 0.149781,
+      "content_only_or_unrated_proxy": 33207,
+      "released_in_current_or_previous_year": 2409,
+      "recent_als_scorable": 520,
+      "recent_als_scorable_share": 0.215857,
+      "candidate_n_share_of_released_pool": {
+        "50": 0.00128,
+        "100": 0.00256,
+        "200": 0.005121,
+        "500": 0.012802,
+        "1000": 0.025604,
+        "2000": 0.051207
+      }
+    },
+    "2003": {
+      "released_catalog_proxy": 40303,
+      "als_scorable_at_least_one_rating": 6993,
+      "als_scorable_share": 0.173511,
+      "content_only_or_unrated_proxy": 33310,
+      "released_in_current_or_previous_year": 2486,
+      "recent_als_scorable": 551,
+      "recent_als_scorable_share": 0.221641,
+      "candidate_n_share_of_released_pool": {
+        "50": 0.001241,
+        "100": 0.002481,
+        "200": 0.004962,
+        "500": 0.012406,
+        "1000": 0.024812,
+        "2000": 0.049624
+      }
+    },
+    "2004": {
+      "released_catalog_proxy": 41742,
+      "als_scorable_at_least_one_rating": 8297,
+      "als_scorable_share": 0.198769,
+      "content_only_or_unrated_proxy": 33445,
+      "released_in_current_or_previous_year": 2685,
+      "recent_als_scorable": 480,
+      "recent_als_scorable_share": 0.178771,
+      "candidate_n_share_of_released_pool": {
+        "50": 0.001198,
+        "100": 0.002396,
+        "200": 0.004791,
+        "500": 0.011978,
+        "1000": 0.023957,
+        "2000": 0.047913
+      }
+    },
+    "2005": {
+      "released_catalog_proxy": 43304,
+      "als_scorable_at_least_one_rating": 8878,
+      "als_scorable_share": 0.205016,
+      "content_only_or_unrated_proxy": 34426,
+      "released_in_current_or_previous_year": 3001,
+      "recent_als_scorable": 494,
+      "recent_als_scorable_share": 0.164612,
+      "candidate_n_share_of_released_pool": {
+        "50": 0.001155,
+        "100": 0.002309,
+        "200": 0.004619,
+        "500": 0.011546,
+        "1000": 0.023093,
+        "2000": 0.046185
+      }
+    },
+    "2006": {
+      "released_catalog_proxy": 45082,
+      "als_scorable_at_least_one_rating": 9249,
+      "als_scorable_share": 0.205159,
+      "content_only_or_unrated_proxy": 35833,
+      "released_in_current_or_previous_year": 3340,
+      "recent_als_scorable": 458,
+      "recent_als_scorable_share": 0.137126,
+      "candidate_n_share_of_released_pool": {
+        "50": 0.001109,
+        "100": 0.002218,
+        "200": 0.004436,
+        "500": 0.011091,
+        "1000": 0.022182,
+        "2000": 0.044364
+      }
+    },
+    "2007": {
+      "released_catalog_proxy": 46950,
+      "als_scorable_at_least_one_rating": 9675,
+      "als_scorable_share": 0.20607,
+      "content_only_or_unrated_proxy": 37275,
+      "released_in_current_or_previous_year": 3646,
+      "recent_als_scorable": 432,
+      "recent_als_scorable_share": 0.118486,
+      "candidate_n_share_of_released_pool": {
+        "50": 0.001065,
+        "100": 0.00213,
+        "200": 0.00426,
+        "500": 0.01065,
+        "1000": 0.021299,
+        "2000": 0.042599
+      }
+    },
+    "2008": {
+      "released_catalog_proxy": 48930,
+      "als_scorable_at_least_one_rating": 10602,
+      "als_scorable_share": 0.216677,
+      "content_only_or_unrated_proxy": 38328,
+      "released_in_current_or_previous_year": 3848,
+      "recent_als_scorable": 598,
+      "recent_als_scorable_share": 0.155405,
+      "candidate_n_share_of_released_pool": {
+        "50": 0.001022,
+        "100": 0.002044,
+        "200": 0.004087,
+        "500": 0.010219,
+        "1000": 0.020437,
+        "2000": 0.040875
+      }
+    },
+    "2009": {
+      "released_catalog_proxy": 51010,
+      "als_scorable_at_least_one_rating": 12514,
+      "als_scorable_share": 0.245324,
+      "content_only_or_unrated_proxy": 38496,
+      "released_in_current_or_previous_year": 4060,
+      "recent_als_scorable": 679,
+      "recent_als_scorable_share": 0.167241,
+      "candidate_n_share_of_released_pool": {
+        "50": 0.00098,
+        "100": 0.00196,
+        "200": 0.003921,
+        "500": 0.009802,
+        "1000": 0.019604,
+        "2000": 0.039208
+      }
+    },
+    "2010": {
+      "released_catalog_proxy": 53076,
+      "als_scorable_at_least_one_rating": 14683,
+      "als_scorable_share": 0.276641,
+      "content_only_or_unrated_proxy": 38393,
+      "released_in_current_or_previous_year": 4146,
+      "recent_als_scorable": 767,
+      "recent_als_scorable_share": 0.184998,
+      "candidate_n_share_of_released_pool": {
+        "50": 0.000942,
+        "100": 0.001884,
+        "200": 0.003768,
+        "500": 0.00942,
+        "1000": 0.018841,
+        "2000": 0.037682
+      }
+    },
+    "2011": {
+      "released_catalog_proxy": 55272,
+      "als_scorable_at_least_one_rating": 16696,
+      "als_scorable_share": 0.30207,
+      "content_only_or_unrated_proxy": 38576,
+      "released_in_current_or_previous_year": 4262,
+      "recent_als_scorable": 755,
+      "recent_als_scorable_share": 0.177147,
+      "candidate_n_share_of_released_pool": {
+        "50": 0.000905,
+        "100": 0.001809,
+        "200": 0.003618,
+        "500": 0.009046,
+        "1000": 0.018092,
+        "2000": 0.036185
+      }
+    },
+    "2012": {
+      "released_catalog_proxy": 57679,
+      "als_scorable_at_least_one_rating": 18386,
+      "als_scorable_share": 0.318764,
+      "content_only_or_unrated_proxy": 39293,
+      "released_in_current_or_previous_year": 4603,
+      "recent_als_scorable": 827,
+      "recent_als_scorable_share": 0.179665,
+      "candidate_n_share_of_released_pool": {
+        "50": 0.000867,
+        "100": 0.001734,
+        "200": 0.003467,
+        "500": 0.008669,
+        "1000": 0.017337,
+        "2000": 0.034675
+      }
+    },
+    "2013": {
+      "released_catalog_proxy": 60308,
+      "als_scorable_at_least_one_rating": 20196,
+      "als_scorable_share": 0.334881,
+      "content_only_or_unrated_proxy": 40112,
+      "released_in_current_or_previous_year": 5036,
+      "recent_als_scorable": 927,
+      "recent_als_scorable_share": 0.184075,
+      "candidate_n_share_of_released_pool": {
+        "50": 0.000829,
+        "100": 0.001658,
+        "200": 0.003316,
+        "500": 0.008291,
+        "1000": 0.016582,
+        "2000": 0.033163
+      }
+    },
+    "2014": {
+      "released_catalog_proxy": 63202,
+      "als_scorable_at_least_one_rating": 22439,
+      "als_scorable_share": 0.355036,
+      "content_only_or_unrated_proxy": 40763,
+      "released_in_current_or_previous_year": 5523,
+      "recent_als_scorable": 1110,
+      "recent_als_scorable_share": 0.200978,
+      "candidate_n_share_of_released_pool": {
+        "50": 0.000791,
+        "100": 0.001582,
+        "200": 0.003164,
+        "500": 0.007911,
+        "1000": 0.015822,
+        "2000": 0.031645
+      }
+    },
+    "2015": {
+      "released_catalog_proxy": 66282,
+      "als_scorable_at_least_one_rating": 30156,
+      "als_scorable_share": 0.454965,
+      "content_only_or_unrated_proxy": 36126,
+      "released_in_current_or_previous_year": 5974,
+      "recent_als_scorable": 2190,
+      "recent_als_scorable_share": 0.366589,
+      "candidate_n_share_of_released_pool": {
+        "50": 0.000754,
+        "100": 0.001509,
+        "200": 0.003017,
+        "500": 0.007544,
+        "1000": 0.015087,
+        "2000": 0.030174
+      }
+    },
+    "2016": {
+      "released_catalog_proxy": 69449,
+      "als_scorable_at_least_one_rating": 37699,
+      "als_scorable_share": 0.54283,
+      "content_only_or_unrated_proxy": 31750,
+      "released_in_current_or_previous_year": 6247,
+      "recent_als_scorable": 2611,
+      "recent_als_scorable_share": 0.417961,
+      "candidate_n_share_of_released_pool": {
+        "50": 0.00072,
+        "100": 0.00144,
+        "200": 0.00288,
+        "500": 0.0072,
+        "1000": 0.014399,
+        "2000": 0.028798
+      }
+    },
+    "2017": {
+      "released_catalog_proxy": 72718,
+      "als_scorable_at_least_one_rating": 45331,
+      "als_scorable_share": 0.623381,
+      "content_only_or_unrated_proxy": 27387,
+      "released_in_current_or_previous_year": 6436,
+      "recent_als_scorable": 2877,
+      "recent_als_scorable_share": 0.447017,
+      "candidate_n_share_of_released_pool": {
+        "50": 0.000688,
+        "100": 0.001375,
+        "200": 0.00275,
+        "500": 0.006876,
+        "1000": 0.013752,
+        "2000": 0.027504
+      }
+    },
+    "2018": {
+      "released_catalog_proxy": 75898,
+      "als_scorable_at_least_one_rating": 52290,
+      "als_scorable_share": 0.688951,
+      "content_only_or_unrated_proxy": 23608,
+      "released_in_current_or_previous_year": 6449,
+      "recent_als_scorable": 3183,
+      "recent_als_scorable_share": 0.493565,
+      "candidate_n_share_of_released_pool": {
+        "50": 0.000659,
+        "100": 0.001318,
+        "200": 0.002635,
+        "500": 0.006588,
+        "1000": 0.013176,
+        "2000": 0.026351
+      }
+    },
+    "2019": {
+      "released_catalog_proxy": 78982,
+      "als_scorable_at_least_one_rating": 59558,
+      "als_scorable_share": 0.754071,
+      "content_only_or_unrated_proxy": 19424,
+      "released_in_current_or_previous_year": 6264,
+      "recent_als_scorable": 3242,
+      "recent_als_scorable_share": 0.517561,
+      "candidate_n_share_of_released_pool": {
+        "50": 0.000633,
+        "100": 0.001266,
+        "200": 0.002532,
+        "500": 0.006331,
+        "1000": 0.012661,
+        "2000": 0.025322
+      }
+    },
+    "2020": {
+      "released_catalog_proxy": 81611,
+      "als_scorable_at_least_one_rating": 66297,
+      "als_scorable_share": 0.812354,
+      "content_only_or_unrated_proxy": 15314,
+      "released_in_current_or_previous_year": 5713,
+      "recent_als_scorable": 3320,
+      "recent_als_scorable_share": 0.581131,
+      "candidate_n_share_of_released_pool": {
+        "50": 0.000613,
+        "100": 0.001225,
+        "200": 0.002451,
+        "500": 0.006127,
+        "1000": 0.012253,
+        "2000": 0.024507
+      }
+    },
+    "2021": {
+      "released_catalog_proxy": 83925,
+      "als_scorable_at_least_one_rating": 72985,
+      "als_scorable_share": 0.869646,
+      "content_only_or_unrated_proxy": 10940,
+      "released_in_current_or_previous_year": 4943,
+      "recent_als_scorable": 3352,
+      "recent_als_scorable_share": 0.678131,
+      "candidate_n_share_of_released_pool": {
+        "50": 0.000596,
+        "100": 0.001192,
+        "200": 0.002383,
+        "500": 0.005958,
+        "1000": 0.011915,
+        "2000": 0.023831
+      }
+    },
+    "2022": {
+      "released_catalog_proxy": 86016,
+      "als_scorable_at_least_one_rating": 79141,
+      "als_scorable_share": 0.920073,
+      "content_only_or_unrated_proxy": 6875,
+      "released_in_current_or_previous_year": 4405,
+      "recent_als_scorable": 3428,
+      "recent_als_scorable_share": 0.778207,
+      "candidate_n_share_of_released_pool": {
+        "50": 0.000581,
+        "100": 0.001163,
+        "200": 0.002325,
+        "500": 0.005813,
+        "1000": 0.011626,
+        "2000": 0.023251
+      }
+    },
+    "2023": {
+      "released_catalog_proxy": 86968,
+      "als_scorable_at_least_one_rating": 83853,
+      "als_scorable_share": 0.964182,
+      "content_only_or_unrated_proxy": 3115,
+      "released_in_current_or_previous_year": 3043,
+      "recent_als_scorable": 3035,
+      "recent_als_scorable_share": 0.997371,
+      "candidate_n_share_of_released_pool": {
+        "50": 0.000575,
+        "100": 0.00115,
+        "200": 0.0023,
+        "500": 0.005749,
+        "1000": 0.011498,
+        "2000": 0.022997
+      }
+    }
+  },
+  "korean_target_status": {
+    "status": "NOT_EVALUATED_NO_FULL_TMDB_PRODUCTION_COUNTRY_CACHE",
+    "reason": "MovieLens has no user country/age; links.csv provides TMDB IDs but not production country"
+  }
+}

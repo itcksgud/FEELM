@@ -1,0 +1,812 @@
+{
+  "schema_version": 1,
+  "audit_id": "REC_DATA_007_CATALOG_RECOMMENDATION_CAPABILITY_V1",
+  "generated_at_utc": "2026-08-31T07:20:33.880462+00:00",
+  "protocol": {
+    "audit_grain": "unique TMDB-linked MovieLens catalog row, TMDB-unmapped MovieLens item, or MovieLens-unlinked Korean-origin TMDB proxy",
+    "unknown_policy": "UNOBSERVED_OR_UNCOLLECTED_IS_NEVER_COERCED_TO_FALSE",
+    "rating_count_aggregation": "SUM_ACROSS_DUPLICATE_MOVIELENS_IDS_PER_TMDB_ID",
+    "factor_policy": "RATING_COUNT_ESTABLISHES_ELIGIBILITY_NOT_FACTOR_EXISTENCE",
+    "content_policy": "MOVIELENS_GENRE_ONLY_IS_NOT_RICH_CONTENT_OR_EMBEDDING_EVIDENCE",
+    "korean_origin": {
+      "audit_id": "TMDB_KOREAN_ORIGIN_MOVIELENS_V1",
+      "generated_at_utc": "2026-08-31T05:31:34.080512+00:00",
+      "filter": "with_origin_country=KR",
+      "date_range": [
+        "1870-01-01",
+        "2023-10-13"
+      ],
+      "unique_tmdb_movies": 11680
+    }
+  },
+  "sources": {
+    "movies": {
+      "path": "..\\MM\\data\\raw\\ml-32m\\movies.csv",
+      "sha256": "b37ca1abc7798de741138ed252b62f69f7e37c84b8a8fab1b82d409b4c6c5cc2"
+    },
+    "links": {
+      "path": "..\\MM\\data\\raw\\ml-32m\\links.csv",
+      "sha256": "ef17da7710be76f7d510d5768d1b61826e3af4bf57812b9ca377e4c912123b22"
+    },
+    "movie_stats": {
+      "path": "..\\MM\\artifacts\\movielens\\all-movie-stats.csv",
+      "sha256": "98cf4aa5b3330aa55fdcb0076e9b914bdbbbe89059a10a64cb21c626dd0376ac"
+    },
+    "korean_origin_json": {
+      "path": "docs\\recommendation\\evidence\\results\\tmdb-korean-origin-movielens-v1.json",
+      "sha256": "9f6b921d403cd387b82c2e9e9f5a556710987389e9d34c4e0992000b31858c6d"
+    },
+    "market_cache": {
+      "path": "outputs\\recommendation-evidence\\tmdb-korean-market-cache-v1",
+      "json_files": 12181,
+      "combined_sha256": "41c74f7f9b4e98837bfd0dd7666fec010f58152a92d3909f9e462b659edb0205"
+    },
+    "factor_item_ids": null
+  },
+  "artifacts": {
+    "full_catalog_csv": "outputs\\recommendation-evidence\\catalog-recommendation-capability-v1.csv"
+  },
+  "totals": {
+    "catalog_rows": 98173,
+    "movielens_source_items": 87585,
+    "unique_tmdb_ids": 98049,
+    "movielens_linked_catalog_rows": 87549,
+    "movielens_unmapped_catalog_rows": 124,
+    "duplicate_movielens_links_collapsed": 36,
+    "korean_origin_proxy_ids": 11680,
+    "korean_catalog_rows": 11702,
+    "korean_proxy_only_rows": 10624,
+    "als_eligible_catalog_rows": 84397,
+    "rating_rows_represented": 32000204,
+    "rich_content_supported_rows": 0
+  },
+  "new_old_definition": {
+    "cutoff_year": 2015,
+    "old": "release_year < 2015",
+    "new": "release_year >= 2015",
+    "warning": "분석용 고정 구간이며 제품 정책이나 최신성 선호를 뜻하지 않는다."
+  },
+  "counts": {
+    "universe_source": {
+      "KOREAN_PROXY_ONLY": 10624,
+      "MOVIELENS": 86471,
+      "MOVIELENS_AND_KOREAN_PROXY": 1078
+    },
+    "origin_group": {
+      "FOREIGN_OBSERVED": 11960,
+      "KOREAN_OBSERVED": 22,
+      "KOREAN_PROXY": 11680,
+      "UNKNOWN_ORIGIN": 74511
+    },
+    "origin_segment": {
+      "FOREIGN": 11960,
+      "KOREAN": 11702,
+      "UNKNOWN": 74511
+    },
+    "popularity_band": {
+      "NO_MOVIELENS_LINK": 10624,
+      "R10000_PLUS": 772,
+      "R1000_9999": 3627,
+      "R100_999": 7790,
+      "R10_99": 19756,
+      "R1_9": 52452,
+      "ZERO": 3152
+    },
+    "popularity_segment": {
+      "NO_MOVIELENS_LINK": 10624,
+      "POPULAR_R1000_PLUS": 4399,
+      "TAIL_R1_999": 79998,
+      "ZERO": 3152
+    },
+    "era_band": {
+      "NEW_2015_PLUS": 23753,
+      "OLD_PRE_2015": 63179,
+      "UNKNOWN_YEAR": 11241
+    },
+    "als_factor_eligibility": {
+      "ELIGIBLE_HAS_RATINGS": 84397,
+      "INELIGIBLE_NO_MOVIELENS_LINK": 10624,
+      "INELIGIBLE_ZERO_RATINGS": 3152
+    },
+    "als_factor_artifact_status": {
+      "NOT_APPLICABLE": 13776,
+      "NOT_AUDITED_NO_FACTOR_ARTIFACT": 84397
+    },
+    "content_only_status": {
+      "LIMITED_GENRE_ONLY": 80470,
+      "NOT_SUPPORTED_BY_CURRENT_EVIDENCE": 1,
+      "UNVERIFIED_METADATA_NOT_COLLECTED": 17702
+    },
+    "embedding_input_status": {
+      "NOT_SUPPORTED_NO_TEXT_SOURCE": 124,
+      "UNVERIFIED_TEXT_METADATA_NOT_COLLECTED": 98049
+    },
+    "current_kr_provider_status": {
+      "AVAILABLE": 6047,
+      "OBSERVED_EMPTY": 6029,
+      "UNKNOWN_FETCH_FAILED": 105,
+      "UNKNOWN_NOT_AUDITED": 85992
+    },
+    "capability_zone": {
+      "ALS_ELIGIBLE_CONTENT_UNRESOLVED": 6553,
+      "ALS_ELIGIBLE_GENRE_ONLY": 77843,
+      "ALS_ELIGIBLE_NO_CONTENT": 1,
+      "CONTENT_GENRE_ONLY_NO_ALS": 2627,
+      "FALLBACK_REQUIRED_CONTENT_UNRESOLVED": 11149
+    },
+    "market_cache_fetch_status": {
+      "NOT_FOUND": 105,
+      "OK": 12076
+    }
+  },
+  "field_observation": {
+    "genres_presence": {
+      "NOT_OBSERVED": 1,
+      "OBSERVED_MOVIELENS": 80470,
+      "UNKNOWN_NOT_AUDITED": 17702
+    },
+    "overview_ko_presence": {
+      "NOT_APPLICABLE_NO_TMDB": 124,
+      "UNKNOWN_NOT_AUDITED": 98049
+    },
+    "overview_en_presence": {
+      "NOT_APPLICABLE_NO_TMDB": 124,
+      "UNKNOWN_NOT_AUDITED": 98049
+    },
+    "keywords_presence": {
+      "NOT_APPLICABLE_NO_TMDB": 124,
+      "UNKNOWN_NOT_AUDITED": 98049
+    },
+    "director_presence": {
+      "NOT_APPLICABLE_NO_TMDB": 124,
+      "UNKNOWN_NOT_AUDITED": 98049
+    },
+    "cast_presence": {
+      "NOT_APPLICABLE_NO_TMDB": 124,
+      "UNKNOWN_NOT_AUDITED": 98049
+    }
+  },
+  "strata": [
+    {
+      "origin_group": "FOREIGN_OBSERVED",
+      "popularity_band": "R10000_PLUS",
+      "era_band": "NEW_2015_PLUS",
+      "capability_zone": "ALS_ELIGIBLE_GENRE_ONLY",
+      "catalog_rows": 27,
+      "rating_count": 400973
+    },
+    {
+      "origin_group": "FOREIGN_OBSERVED",
+      "popularity_band": "R10000_PLUS",
+      "era_band": "OLD_PRE_2015",
+      "capability_zone": "ALS_ELIGIBLE_GENRE_ONLY",
+      "catalog_rows": 743,
+      "rating_count": 16429128
+    },
+    {
+      "origin_group": "FOREIGN_OBSERVED",
+      "popularity_band": "R1000_9999",
+      "era_band": "NEW_2015_PLUS",
+      "capability_zone": "ALS_ELIGIBLE_CONTENT_UNRESOLVED",
+      "catalog_rows": 5,
+      "rating_count": 13676
+    },
+    {
+      "origin_group": "FOREIGN_OBSERVED",
+      "popularity_band": "R1000_9999",
+      "era_band": "NEW_2015_PLUS",
+      "capability_zone": "ALS_ELIGIBLE_GENRE_ONLY",
+      "catalog_rows": 335,
+      "rating_count": 887609
+    },
+    {
+      "origin_group": "FOREIGN_OBSERVED",
+      "popularity_band": "R1000_9999",
+      "era_band": "OLD_PRE_2015",
+      "capability_zone": "ALS_ELIGIBLE_CONTENT_UNRESOLVED",
+      "catalog_rows": 1,
+      "rating_count": 3080
+    },
+    {
+      "origin_group": "FOREIGN_OBSERVED",
+      "popularity_band": "R1000_9999",
+      "era_band": "OLD_PRE_2015",
+      "capability_zone": "ALS_ELIGIBLE_GENRE_ONLY",
+      "catalog_rows": 3240,
+      "rating_count": 10657258
+    },
+    {
+      "origin_group": "FOREIGN_OBSERVED",
+      "popularity_band": "R1000_9999",
+      "era_band": "UNKNOWN_YEAR",
+      "capability_zone": "ALS_ELIGIBLE_CONTENT_UNRESOLVED",
+      "catalog_rows": 2,
+      "rating_count": 2175
+    },
+    {
+      "origin_group": "FOREIGN_OBSERVED",
+      "popularity_band": "R1000_9999",
+      "era_band": "UNKNOWN_YEAR",
+      "capability_zone": "ALS_ELIGIBLE_GENRE_ONLY",
+      "catalog_rows": 7,
+      "rating_count": 20171
+    },
+    {
+      "origin_group": "FOREIGN_OBSERVED",
+      "popularity_band": "R100_999",
+      "era_band": "NEW_2015_PLUS",
+      "capability_zone": "ALS_ELIGIBLE_CONTENT_UNRESOLVED",
+      "catalog_rows": 29,
+      "rating_count": 6161
+    },
+    {
+      "origin_group": "FOREIGN_OBSERVED",
+      "popularity_band": "R100_999",
+      "era_band": "NEW_2015_PLUS",
+      "capability_zone": "ALS_ELIGIBLE_GENRE_ONLY",
+      "catalog_rows": 1364,
+      "rating_count": 438056
+    },
+    {
+      "origin_group": "FOREIGN_OBSERVED",
+      "popularity_band": "R100_999",
+      "era_band": "OLD_PRE_2015",
+      "capability_zone": "ALS_ELIGIBLE_GENRE_ONLY",
+      "catalog_rows": 6186,
+      "rating_count": 2193373
+    },
+    {
+      "origin_group": "FOREIGN_OBSERVED",
+      "popularity_band": "R100_999",
+      "era_band": "UNKNOWN_YEAR",
+      "capability_zone": "ALS_ELIGIBLE_CONTENT_UNRESOLVED",
+      "catalog_rows": 2,
+      "rating_count": 516
+    },
+    {
+      "origin_group": "FOREIGN_OBSERVED",
+      "popularity_band": "R100_999",
+      "era_band": "UNKNOWN_YEAR",
+      "capability_zone": "ALS_ELIGIBLE_GENRE_ONLY",
+      "catalog_rows": 19,
+      "rating_count": 6665
+    },
+    {
+      "origin_group": "KOREAN_OBSERVED",
+      "popularity_band": "R1000_9999",
+      "era_band": "NEW_2015_PLUS",
+      "capability_zone": "ALS_ELIGIBLE_GENRE_ONLY",
+      "catalog_rows": 1,
+      "rating_count": 1551
+    },
+    {
+      "origin_group": "KOREAN_OBSERVED",
+      "popularity_band": "R1000_9999",
+      "era_band": "OLD_PRE_2015",
+      "capability_zone": "ALS_ELIGIBLE_GENRE_ONLY",
+      "catalog_rows": 3,
+      "rating_count": 8205
+    },
+    {
+      "origin_group": "KOREAN_OBSERVED",
+      "popularity_band": "R100_999",
+      "era_band": "NEW_2015_PLUS",
+      "capability_zone": "ALS_ELIGIBLE_GENRE_ONLY",
+      "catalog_rows": 8,
+      "rating_count": 2021
+    },
+    {
+      "origin_group": "KOREAN_OBSERVED",
+      "popularity_band": "R100_999",
+      "era_band": "OLD_PRE_2015",
+      "capability_zone": "ALS_ELIGIBLE_GENRE_ONLY",
+      "catalog_rows": 10,
+      "rating_count": 3793
+    },
+    {
+      "origin_group": "KOREAN_PROXY",
+      "popularity_band": "NO_MOVIELENS_LINK",
+      "era_band": "UNKNOWN_YEAR",
+      "capability_zone": "FALLBACK_REQUIRED_CONTENT_UNRESOLVED",
+      "catalog_rows": 10624,
+      "rating_count": 0
+    },
+    {
+      "origin_group": "KOREAN_PROXY",
+      "popularity_band": "R10000_PLUS",
+      "era_band": "NEW_2015_PLUS",
+      "capability_zone": "ALS_ELIGIBLE_GENRE_ONLY",
+      "catalog_rows": 1,
+      "rating_count": 11670
+    },
+    {
+      "origin_group": "KOREAN_PROXY",
+      "popularity_band": "R10000_PLUS",
+      "era_band": "OLD_PRE_2015",
+      "capability_zone": "ALS_ELIGIBLE_GENRE_ONLY",
+      "catalog_rows": 1,
+      "rating_count": 17331
+    },
+    {
+      "origin_group": "KOREAN_PROXY",
+      "popularity_band": "R1000_9999",
+      "era_band": "NEW_2015_PLUS",
+      "capability_zone": "ALS_ELIGIBLE_GENRE_ONLY",
+      "catalog_rows": 3,
+      "rating_count": 7043
+    },
+    {
+      "origin_group": "KOREAN_PROXY",
+      "popularity_band": "R1000_9999",
+      "era_band": "OLD_PRE_2015",
+      "capability_zone": "ALS_ELIGIBLE_GENRE_ONLY",
+      "catalog_rows": 11,
+      "rating_count": 27098
+    },
+    {
+      "origin_group": "KOREAN_PROXY",
+      "popularity_band": "R100_999",
+      "era_band": "NEW_2015_PLUS",
+      "capability_zone": "ALS_ELIGIBLE_GENRE_ONLY",
+      "catalog_rows": 10,
+      "rating_count": 3110
+    },
+    {
+      "origin_group": "KOREAN_PROXY",
+      "popularity_band": "R100_999",
+      "era_band": "OLD_PRE_2015",
+      "capability_zone": "ALS_ELIGIBLE_GENRE_ONLY",
+      "catalog_rows": 39,
+      "rating_count": 12097
+    },
+    {
+      "origin_group": "KOREAN_PROXY",
+      "popularity_band": "R10_99",
+      "era_band": "NEW_2015_PLUS",
+      "capability_zone": "ALS_ELIGIBLE_CONTENT_UNRESOLVED",
+      "catalog_rows": 2,
+      "rating_count": 31
+    },
+    {
+      "origin_group": "KOREAN_PROXY",
+      "popularity_band": "R10_99",
+      "era_band": "NEW_2015_PLUS",
+      "capability_zone": "ALS_ELIGIBLE_GENRE_ONLY",
+      "catalog_rows": 140,
+      "rating_count": 3789
+    },
+    {
+      "origin_group": "KOREAN_PROXY",
+      "popularity_band": "R10_99",
+      "era_band": "OLD_PRE_2015",
+      "capability_zone": "ALS_ELIGIBLE_CONTENT_UNRESOLVED",
+      "catalog_rows": 6,
+      "rating_count": 93
+    },
+    {
+      "origin_group": "KOREAN_PROXY",
+      "popularity_band": "R10_99",
+      "era_band": "OLD_PRE_2015",
+      "capability_zone": "ALS_ELIGIBLE_GENRE_ONLY",
+      "catalog_rows": 229,
+      "rating_count": 6585
+    },
+    {
+      "origin_group": "KOREAN_PROXY",
+      "popularity_band": "R1_9",
+      "era_band": "NEW_2015_PLUS",
+      "capability_zone": "ALS_ELIGIBLE_CONTENT_UNRESOLVED",
+      "catalog_rows": 4,
+      "rating_count": 11
+    },
+    {
+      "origin_group": "KOREAN_PROXY",
+      "popularity_band": "R1_9",
+      "era_band": "NEW_2015_PLUS",
+      "capability_zone": "ALS_ELIGIBLE_GENRE_ONLY",
+      "catalog_rows": 256,
+      "rating_count": 801
+    },
+    {
+      "origin_group": "KOREAN_PROXY",
+      "popularity_band": "R1_9",
+      "era_band": "OLD_PRE_2015",
+      "capability_zone": "ALS_ELIGIBLE_CONTENT_UNRESOLVED",
+      "catalog_rows": 25,
+      "rating_count": 68
+    },
+    {
+      "origin_group": "KOREAN_PROXY",
+      "popularity_band": "R1_9",
+      "era_band": "OLD_PRE_2015",
+      "capability_zone": "ALS_ELIGIBLE_GENRE_ONLY",
+      "catalog_rows": 321,
+      "rating_count": 1158
+    },
+    {
+      "origin_group": "KOREAN_PROXY",
+      "popularity_band": "ZERO",
+      "era_band": "NEW_2015_PLUS",
+      "capability_zone": "CONTENT_GENRE_ONLY_NO_ALS",
+      "catalog_rows": 3,
+      "rating_count": 0
+    },
+    {
+      "origin_group": "KOREAN_PROXY",
+      "popularity_band": "ZERO",
+      "era_band": "NEW_2015_PLUS",
+      "capability_zone": "FALLBACK_REQUIRED_CONTENT_UNRESOLVED",
+      "catalog_rows": 1,
+      "rating_count": 0
+    },
+    {
+      "origin_group": "KOREAN_PROXY",
+      "popularity_band": "ZERO",
+      "era_band": "OLD_PRE_2015",
+      "capability_zone": "CONTENT_GENRE_ONLY_NO_ALS",
+      "catalog_rows": 4,
+      "rating_count": 0
+    },
+    {
+      "origin_group": "UNKNOWN_ORIGIN",
+      "popularity_band": "R1000_9999",
+      "era_band": "NEW_2015_PLUS",
+      "capability_zone": "ALS_ELIGIBLE_GENRE_ONLY",
+      "catalog_rows": 5,
+      "rating_count": 14569
+    },
+    {
+      "origin_group": "UNKNOWN_ORIGIN",
+      "popularity_band": "R1000_9999",
+      "era_band": "OLD_PRE_2015",
+      "capability_zone": "ALS_ELIGIBLE_GENRE_ONLY",
+      "catalog_rows": 14,
+      "rating_count": 29493
+    },
+    {
+      "origin_group": "UNKNOWN_ORIGIN",
+      "popularity_band": "R100_999",
+      "era_band": "NEW_2015_PLUS",
+      "capability_zone": "ALS_ELIGIBLE_GENRE_ONLY",
+      "catalog_rows": 19,
+      "rating_count": 5077
+    },
+    {
+      "origin_group": "UNKNOWN_ORIGIN",
+      "popularity_band": "R100_999",
+      "era_band": "OLD_PRE_2015",
+      "capability_zone": "ALS_ELIGIBLE_CONTENT_UNRESOLVED",
+      "catalog_rows": 2,
+      "rating_count": 233
+    },
+    {
+      "origin_group": "UNKNOWN_ORIGIN",
+      "popularity_band": "R100_999",
+      "era_band": "OLD_PRE_2015",
+      "capability_zone": "ALS_ELIGIBLE_GENRE_ONLY",
+      "catalog_rows": 96,
+      "rating_count": 24788
+    },
+    {
+      "origin_group": "UNKNOWN_ORIGIN",
+      "popularity_band": "R100_999",
+      "era_band": "UNKNOWN_YEAR",
+      "capability_zone": "ALS_ELIGIBLE_CONTENT_UNRESOLVED",
+      "catalog_rows": 6,
+      "rating_count": 2598
+    },
+    {
+      "origin_group": "UNKNOWN_ORIGIN",
+      "popularity_band": "R10_99",
+      "era_band": "NEW_2015_PLUS",
+      "capability_zone": "ALS_ELIGIBLE_CONTENT_UNRESOLVED",
+      "catalog_rows": 208,
+      "rating_count": 5367
+    },
+    {
+      "origin_group": "UNKNOWN_ORIGIN",
+      "popularity_band": "R10_99",
+      "era_band": "NEW_2015_PLUS",
+      "capability_zone": "ALS_ELIGIBLE_GENRE_ONLY",
+      "catalog_rows": 5206,
+      "rating_count": 156177
+    },
+    {
+      "origin_group": "UNKNOWN_ORIGIN",
+      "popularity_band": "R10_99",
+      "era_band": "OLD_PRE_2015",
+      "capability_zone": "ALS_ELIGIBLE_CONTENT_UNRESOLVED",
+      "catalog_rows": 332,
+      "rating_count": 6094
+    },
+    {
+      "origin_group": "UNKNOWN_ORIGIN",
+      "popularity_band": "R10_99",
+      "era_band": "OLD_PRE_2015",
+      "capability_zone": "ALS_ELIGIBLE_GENRE_ONLY",
+      "catalog_rows": 13556,
+      "rating_count": 433083
+    },
+    {
+      "origin_group": "UNKNOWN_ORIGIN",
+      "popularity_band": "R10_99",
+      "era_band": "UNKNOWN_YEAR",
+      "capability_zone": "ALS_ELIGIBLE_CONTENT_UNRESOLVED",
+      "catalog_rows": 39,
+      "rating_count": 953
+    },
+    {
+      "origin_group": "UNKNOWN_ORIGIN",
+      "popularity_band": "R10_99",
+      "era_band": "UNKNOWN_YEAR",
+      "capability_zone": "ALS_ELIGIBLE_GENRE_ONLY",
+      "catalog_rows": 38,
+      "rating_count": 1067
+    },
+    {
+      "origin_group": "UNKNOWN_ORIGIN",
+      "popularity_band": "R1_9",
+      "era_band": "NEW_2015_PLUS",
+      "capability_zone": "ALS_ELIGIBLE_CONTENT_UNRESOLVED",
+      "catalog_rows": 1068,
+      "rating_count": 2872
+    },
+    {
+      "origin_group": "UNKNOWN_ORIGIN",
+      "popularity_band": "R1_9",
+      "era_band": "NEW_2015_PLUS",
+      "capability_zone": "ALS_ELIGIBLE_GENRE_ONLY",
+      "catalog_rows": 14822,
+      "rating_count": 43294
+    },
+    {
+      "origin_group": "UNKNOWN_ORIGIN",
+      "popularity_band": "R1_9",
+      "era_band": "OLD_PRE_2015",
+      "capability_zone": "ALS_ELIGIBLE_CONTENT_UNRESOLVED",
+      "catalog_rows": 4522,
+      "rating_count": 10884
+    },
+    {
+      "origin_group": "UNKNOWN_ORIGIN",
+      "popularity_band": "R1_9",
+      "era_band": "OLD_PRE_2015",
+      "capability_zone": "ALS_ELIGIBLE_GENRE_ONLY",
+      "catalog_rows": 30967,
+      "rating_count": 97336
+    },
+    {
+      "origin_group": "UNKNOWN_ORIGIN",
+      "popularity_band": "R1_9",
+      "era_band": "OLD_PRE_2015",
+      "capability_zone": "ALS_ELIGIBLE_NO_CONTENT",
+      "catalog_rows": 1,
+      "rating_count": 2
+    },
+    {
+      "origin_group": "UNKNOWN_ORIGIN",
+      "popularity_band": "R1_9",
+      "era_band": "UNKNOWN_YEAR",
+      "capability_zone": "ALS_ELIGIBLE_CONTENT_UNRESOLVED",
+      "catalog_rows": 300,
+      "rating_count": 613
+    },
+    {
+      "origin_group": "UNKNOWN_ORIGIN",
+      "popularity_band": "R1_9",
+      "era_band": "UNKNOWN_YEAR",
+      "capability_zone": "ALS_ELIGIBLE_GENRE_ONLY",
+      "catalog_rows": 166,
+      "rating_count": 408
+    },
+    {
+      "origin_group": "UNKNOWN_ORIGIN",
+      "popularity_band": "ZERO",
+      "era_band": "NEW_2015_PLUS",
+      "capability_zone": "CONTENT_GENRE_ONLY_NO_ALS",
+      "catalog_rows": 214,
+      "rating_count": 0
+    },
+    {
+      "origin_group": "UNKNOWN_ORIGIN",
+      "popularity_band": "ZERO",
+      "era_band": "NEW_2015_PLUS",
+      "capability_zone": "FALLBACK_REQUIRED_CONTENT_UNRESOLVED",
+      "catalog_rows": 22,
+      "rating_count": 0
+    },
+    {
+      "origin_group": "UNKNOWN_ORIGIN",
+      "popularity_band": "ZERO",
+      "era_band": "OLD_PRE_2015",
+      "capability_zone": "CONTENT_GENRE_ONLY_NO_ALS",
+      "catalog_rows": 2392,
+      "rating_count": 0
+    },
+    {
+      "origin_group": "UNKNOWN_ORIGIN",
+      "popularity_band": "ZERO",
+      "era_band": "OLD_PRE_2015",
+      "capability_zone": "FALLBACK_REQUIRED_CONTENT_UNRESOLVED",
+      "catalog_rows": 478,
+      "rating_count": 0
+    },
+    {
+      "origin_group": "UNKNOWN_ORIGIN",
+      "popularity_band": "ZERO",
+      "era_band": "UNKNOWN_YEAR",
+      "capability_zone": "CONTENT_GENRE_ONLY_NO_ALS",
+      "catalog_rows": 14,
+      "rating_count": 0
+    },
+    {
+      "origin_group": "UNKNOWN_ORIGIN",
+      "popularity_band": "ZERO",
+      "era_band": "UNKNOWN_YEAR",
+      "capability_zone": "FALLBACK_REQUIRED_CONTENT_UNRESOLVED",
+      "catalog_rows": 24,
+      "rating_count": 0
+    }
+  ],
+  "decision_strata": {
+    "origin_by_popularity_segment": [
+      {
+        "origin_segment": "FOREIGN",
+        "popularity_segment": "POPULAR_R1000_PLUS",
+        "catalog_rows": 4360
+      },
+      {
+        "origin_segment": "FOREIGN",
+        "popularity_segment": "TAIL_R1_999",
+        "catalog_rows": 7600
+      },
+      {
+        "origin_segment": "KOREAN",
+        "popularity_segment": "NO_MOVIELENS_LINK",
+        "catalog_rows": 10624
+      },
+      {
+        "origin_segment": "KOREAN",
+        "popularity_segment": "POPULAR_R1000_PLUS",
+        "catalog_rows": 20
+      },
+      {
+        "origin_segment": "KOREAN",
+        "popularity_segment": "TAIL_R1_999",
+        "catalog_rows": 1050
+      },
+      {
+        "origin_segment": "KOREAN",
+        "popularity_segment": "ZERO",
+        "catalog_rows": 8
+      },
+      {
+        "origin_segment": "UNKNOWN",
+        "popularity_segment": "POPULAR_R1000_PLUS",
+        "catalog_rows": 19
+      },
+      {
+        "origin_segment": "UNKNOWN",
+        "popularity_segment": "TAIL_R1_999",
+        "catalog_rows": 71348
+      },
+      {
+        "origin_segment": "UNKNOWN",
+        "popularity_segment": "ZERO",
+        "catalog_rows": 3144
+      }
+    ],
+    "origin_by_era": [
+      {
+        "origin_segment": "FOREIGN",
+        "era_band": "NEW_2015_PLUS",
+        "catalog_rows": 1760
+      },
+      {
+        "origin_segment": "FOREIGN",
+        "era_band": "OLD_PRE_2015",
+        "catalog_rows": 10170
+      },
+      {
+        "origin_segment": "FOREIGN",
+        "era_band": "UNKNOWN_YEAR",
+        "catalog_rows": 30
+      },
+      {
+        "origin_segment": "KOREAN",
+        "era_band": "NEW_2015_PLUS",
+        "catalog_rows": 429
+      },
+      {
+        "origin_segment": "KOREAN",
+        "era_band": "OLD_PRE_2015",
+        "catalog_rows": 649
+      },
+      {
+        "origin_segment": "KOREAN",
+        "era_band": "UNKNOWN_YEAR",
+        "catalog_rows": 10624
+      },
+      {
+        "origin_segment": "UNKNOWN",
+        "era_band": "NEW_2015_PLUS",
+        "catalog_rows": 21564
+      },
+      {
+        "origin_segment": "UNKNOWN",
+        "era_band": "OLD_PRE_2015",
+        "catalog_rows": 52360
+      },
+      {
+        "origin_segment": "UNKNOWN",
+        "era_band": "UNKNOWN_YEAR",
+        "catalog_rows": 587
+      }
+    ],
+    "origin_by_capability_zone": [
+      {
+        "origin_segment": "FOREIGN",
+        "capability_zone": "ALS_ELIGIBLE_CONTENT_UNRESOLVED",
+        "catalog_rows": 39
+      },
+      {
+        "origin_segment": "FOREIGN",
+        "capability_zone": "ALS_ELIGIBLE_GENRE_ONLY",
+        "catalog_rows": 11921
+      },
+      {
+        "origin_segment": "KOREAN",
+        "capability_zone": "ALS_ELIGIBLE_CONTENT_UNRESOLVED",
+        "catalog_rows": 37
+      },
+      {
+        "origin_segment": "KOREAN",
+        "capability_zone": "ALS_ELIGIBLE_GENRE_ONLY",
+        "catalog_rows": 1033
+      },
+      {
+        "origin_segment": "KOREAN",
+        "capability_zone": "CONTENT_GENRE_ONLY_NO_ALS",
+        "catalog_rows": 7
+      },
+      {
+        "origin_segment": "KOREAN",
+        "capability_zone": "FALLBACK_REQUIRED_CONTENT_UNRESOLVED",
+        "catalog_rows": 10625
+      },
+      {
+        "origin_segment": "UNKNOWN",
+        "capability_zone": "ALS_ELIGIBLE_CONTENT_UNRESOLVED",
+        "catalog_rows": 6477
+      },
+      {
+        "origin_segment": "UNKNOWN",
+        "capability_zone": "ALS_ELIGIBLE_GENRE_ONLY",
+        "catalog_rows": 64889
+      },
+      {
+        "origin_segment": "UNKNOWN",
+        "capability_zone": "ALS_ELIGIBLE_NO_CONTENT",
+        "catalog_rows": 1
+      },
+      {
+        "origin_segment": "UNKNOWN",
+        "capability_zone": "CONTENT_GENRE_ONLY_NO_ALS",
+        "catalog_rows": 2620
+      },
+      {
+        "origin_segment": "UNKNOWN",
+        "capability_zone": "FALLBACK_REQUIRED_CONTENT_UNRESOLVED",
+        "catalog_rows": 524
+      }
+    ]
+  },
+  "decision": {
+    "status": "COMPLETED_FAIL_CLOSED_METADATA_GAP",
+    "als_backbone_for_entire_catalog": "NOT_SUPPORTED_BY_CURRENT_INVENTORY",
+    "reason": "ALS eligibility exists only for MovieLens-linked items with ratings; Korean-origin-only items have no collaborative signal.",
+    "content_only_for_korean_gap": "NOT_YET_VERIFIABLE because overview, keyword, director, and cast presence were not collected for the audit universe.",
+    "factor_artifact_verified": false,
+    "quality_claim": "NO_RECOMMENDATION_QUALITY_CLAIM"
+  }
+}

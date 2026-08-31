@@ -1,0 +1,1037 @@
+{
+  "schema_version": 1,
+  "audit_id": "REC_DATA_008_KMRD_FEASIBILITY_V1",
+  "generated_at_utc": "2026-08-31T08:56:18.968887+00:00",
+  "source": {
+    "repository": "https://github.com/lovit/kmrd",
+    "commit": "8ca98b12bbd46a53f8ee89c678e7a0c050e190cf",
+    "commit_date": "2020-01-29T15:54:57+09:00",
+    "license_file_observed": false,
+    "readme_published_statistics": {
+      "rating_rows": 4941301,
+      "users": 86457,
+      "rated_items": 48840
+    },
+    "archive_actual_statistics": {
+      "rating_rows": 5031052,
+      "users": 86457,
+      "rated_items": 48891
+    },
+    "readme_archive_consistent": false,
+    "readme_user_selection": "KMRD-2M and KMRD-5M users rated at least 20 times",
+    "readme_archive_differences": {
+      "rating_rows": 89751,
+      "users": 0,
+      "rated_items": 51
+    },
+    "meta_zip": {
+      "path": "outputs\\external\\kmrd\\kmr_dataset\\datafile\\kmrd\\meta.zip",
+      "sha256": "ade094d00f848a73a3a612ca9cbcecfc8e3050e65cde720191f2d5e1017aee12"
+    },
+    "rates_zip": {
+      "path": "outputs\\external\\kmrd\\kmr_dataset\\datafile\\kmrd\\rates-5m.zip",
+      "sha256": "7b5081ad63a66963dc8789c113b5a137708630b0666b76d35c10bcf617ceb6d2"
+    }
+  },
+  "claim_boundary": {
+    "allowed": "pipeline, deduplication, split, and algorithm diagnostic benchmark only",
+    "forbidden": [
+      "FEELM target-user proxy champion claim",
+      "FEELM user satisfaction claim",
+      "Korean twenties representativeness claim",
+      "current Korean market claim",
+      "production or redistribution approval"
+    ]
+  },
+  "ratings": {
+    "raw": {
+      "rating_rows": 5031052,
+      "users": 86457,
+      "rated_items": 48891,
+      "unknown_metadata_rows": 37,
+      "korean_rating_rows": 1885826,
+      "korean_rating_share": 0.374837
+    },
+    "deduplicated_latest": {
+      "user_item_pairs": 4943613,
+      "removed_duplicate_rows": 87439,
+      "rated_items": 48891,
+      "korean_rated_items": 11114,
+      "korean_user_item_pairs": 1847885,
+      "korean_pair_share": 0.373792
+    },
+    "duplicates": {
+      "duplicate_user_item_pairs": 87145,
+      "duplicate_extra_rows": 87439,
+      "conflicting_rating_pairs": 28324,
+      "multiple_timestamp_pairs": 69254,
+      "duplicate_row_share": 0.01738,
+      "dedupe_rule": "latest timestamp; final row wins on timestamp tie"
+    },
+    "timestamps": {
+      "earliest_utc": "2003-11-20T15:00:00+00:00",
+      "latest_utc": "2020-01-08T15:00:00+00:00",
+      "raw_rows_by_year": {
+        "2003": 1510,
+        "2004": 55314,
+        "2005": 153213,
+        "2006": 293616,
+        "2007": 358356,
+        "2008": 290557,
+        "2009": 309037,
+        "2010": 310203,
+        "2011": 285069,
+        "2012": 325556,
+        "2013": 402479,
+        "2014": 364928,
+        "2015": 338995,
+        "2016": 357763,
+        "2017": 414324,
+        "2018": 399549,
+        "2019": 370345,
+        "2020": 238
+      },
+      "deduplicated_pairs_by_latest_year": {
+        "2003": 1508,
+        "2004": 55255,
+        "2005": 150200,
+        "2006": 287249,
+        "2007": 352314,
+        "2008": 287917,
+        "2009": 303969,
+        "2010": 304816,
+        "2011": 280115,
+        "2012": 319436,
+        "2013": 392280,
+        "2014": 357771,
+        "2015": 332627,
+        "2016": 350500,
+        "2017": 406384,
+        "2018": 394626,
+        "2019": 366408,
+        "2020": 238
+      },
+      "users_with_tied_latest_timestamp": 7074,
+      "users_with_tied_latest_timestamp_share": 0.081821
+    },
+    "rating_distribution": {
+      "raw": {
+        "0": 2313,
+        "1": 499857,
+        "2": 109117,
+        "3": 104667,
+        "4": 136500,
+        "5": 224122,
+        "6": 342619,
+        "7": 473820,
+        "8": 649597,
+        "9": 560823,
+        "10": 1927617
+      },
+      "deduplicated_latest": {
+        "0": 1574,
+        "1": 486906,
+        "2": 108081,
+        "3": 103749,
+        "4": 135534,
+        "5": 221970,
+        "6": 340568,
+        "7": 471002,
+        "8": 645580,
+        "9": 556187,
+        "10": 1872462
+      },
+      "deduplicated_mean": 7.464514,
+      "deduplicated_rate_8_to_10_share": 0.621859,
+      "deduplicated_rate_1_to_4_share": 0.168757
+    },
+    "users": {
+      "raw_rows_per_user_quantiles": {
+        "p00": 20,
+        "p25": 24,
+        "p50": 32,
+        "p75": 52,
+        "p90": 97,
+        "p95": 156,
+        "p99": 448,
+        "p100": 9990
+      },
+      "unique_items_per_user_quantiles": {
+        "p00": 12,
+        "p25": 24,
+        "p50": 32,
+        "p75": 51,
+        "p90": 95,
+        "p95": 153,
+        "p99": 443,
+        "p100": 9918
+      },
+      "users_with_korean_item": 85856,
+      "users_with_korean_item_share": 0.993049,
+      "korean_item_share_per_user_mean": 0.424843,
+      "korean_item_share_per_user_quantiles": {
+        "p00": 0.0,
+        "p25": 0.26087,
+        "p50": 0.410377,
+        "p75": 0.571429,
+        "p90": 0.72,
+        "p95": 0.8,
+        "p99": 0.92,
+        "p100": 1.0
+      }
+    },
+    "items": {
+      "all_item_unique_user_bands": {
+        "U10000_PLUS": 2,
+        "U1000_9999": 1236,
+        "U100_999": 4863,
+        "U10_99": 13326,
+        "U1_9": 29464
+      },
+      "korean_item_unique_user_bands": {
+        "U10000_PLUS": 2,
+        "U1000_9999": 550,
+        "U100_999": 1097,
+        "U10_99": 2663,
+        "U1_9": 6802
+      },
+      "all_item_gini": 0.897003,
+      "korean_item_gini": 0.909258,
+      "all_concentration": {
+        "top_1pct_items_interaction_share": 0.361126,
+        "top_5pct_items_interaction_share": 0.739218,
+        "top_10pct_items_interaction_share": 0.864237
+      },
+      "korean_concentration": {
+        "top_1pct_items_interaction_share": 0.320485,
+        "top_5pct_items_interaction_share": 0.732528,
+        "top_10pct_items_interaction_share": 0.89777
+      },
+      "top_items": [
+        {
+          "movie_id": 101901,
+          "title_ko": "변호인",
+          "original_year": 2013,
+          "countries": [
+            "한국"
+          ],
+          "unique_user_item_pairs": 12094
+        },
+        {
+          "movie_id": 39569,
+          "title_ko": "디 워",
+          "original_year": 2007,
+          "countries": [
+            "한국"
+          ],
+          "unique_user_item_pairs": 10031
+        },
+        {
+          "movie_id": 45290,
+          "title_ko": "인터스텔라",
+          "original_year": 2014,
+          "countries": [
+            "미국",
+            "영국"
+          ],
+          "unique_user_item_pairs": 9920
+        },
+        {
+          "movie_id": 62266,
+          "title_ko": "아바타",
+          "original_year": 2009,
+          "countries": [
+            "미국"
+          ],
+          "unique_user_item_pairs": 9775
+        },
+        {
+          "movie_id": 130966,
+          "title_ko": "부산행",
+          "original_year": 2016,
+          "countries": [
+            "한국"
+          ],
+          "unique_user_item_pairs": 9693
+        },
+        {
+          "movie_id": 62328,
+          "title_ko": "설국열차",
+          "original_year": 2013,
+          "countries": [
+            "한국"
+          ],
+          "unique_user_item_pairs": 9640
+        },
+        {
+          "movie_id": 85579,
+          "title_ko": "신과함께-죄와 벌",
+          "original_year": 2017,
+          "countries": [
+            "한국"
+          ],
+          "unique_user_item_pairs": 9610
+        },
+        {
+          "movie_id": 93756,
+          "title_ko": "명량",
+          "original_year": 2014,
+          "countries": [
+            "한국"
+          ],
+          "unique_user_item_pairs": 9534
+        },
+        {
+          "movie_id": 62586,
+          "title_ko": "다크 나이트",
+          "original_year": 2008,
+          "countries": [
+            "미국"
+          ],
+          "unique_user_item_pairs": 9164
+        },
+        {
+          "movie_id": 121051,
+          "title_ko": "곡성(哭聲)",
+          "original_year": 2016,
+          "countries": [
+            "한국"
+          ],
+          "unique_user_item_pairs": 9150
+        },
+        {
+          "movie_id": 136900,
+          "title_ko": "어벤져스: 엔드게임",
+          "original_year": 2019,
+          "countries": [
+            "미국"
+          ],
+          "unique_user_item_pairs": 8903
+        },
+        {
+          "movie_id": 39841,
+          "title_ko": "괴물",
+          "original_year": 2006,
+          "countries": [
+            "한국"
+          ],
+          "unique_user_item_pairs": 8745
+        },
+        {
+          "movie_id": 146469,
+          "title_ko": "택시운전사",
+          "original_year": 2017,
+          "countries": [
+            "한국"
+          ],
+          "unique_user_item_pairs": 8458
+        },
+        {
+          "movie_id": 146506,
+          "title_ko": "군함도",
+          "original_year": 2017,
+          "countries": [
+            "한국"
+          ],
+          "unique_user_item_pairs": 8377
+        },
+        {
+          "movie_id": 52515,
+          "title_ko": "인셉션",
+          "original_year": 2010,
+          "countries": [
+            "미국",
+            "영국"
+          ],
+          "unique_user_item_pairs": 8278
+        },
+        {
+          "movie_id": 71509,
+          "title_ko": "아저씨",
+          "original_year": 2010,
+          "countries": [
+            "한국"
+          ],
+          "unique_user_item_pairs": 8050
+        },
+        {
+          "movie_id": 161967,
+          "title_ko": "기생충",
+          "original_year": 2019,
+          "countries": [
+            "한국"
+          ],
+          "unique_user_item_pairs": 7850
+        },
+        {
+          "movie_id": 136315,
+          "title_ko": "어벤져스: 인피니티 워",
+          "original_year": 2018,
+          "countries": [
+            "미국"
+          ],
+          "unique_user_item_pairs": 7689
+        },
+        {
+          "movie_id": 72054,
+          "title_ko": "다크 나이트 라이즈",
+          "original_year": 2012,
+          "countries": [
+            "미국",
+            "영국"
+          ],
+          "unique_user_item_pairs": 7688
+        },
+        {
+          "movie_id": 61521,
+          "title_ko": "트랜스포머",
+          "original_year": 2007,
+          "countries": [
+            "미국"
+          ],
+          "unique_user_item_pairs": 7671
+        }
+      ],
+      "top_korean_items": [
+        {
+          "movie_id": 101901,
+          "title_ko": "변호인",
+          "original_year": 2013,
+          "unique_user_item_pairs": 12094
+        },
+        {
+          "movie_id": 39569,
+          "title_ko": "디 워",
+          "original_year": 2007,
+          "unique_user_item_pairs": 10031
+        },
+        {
+          "movie_id": 130966,
+          "title_ko": "부산행",
+          "original_year": 2016,
+          "unique_user_item_pairs": 9693
+        },
+        {
+          "movie_id": 62328,
+          "title_ko": "설국열차",
+          "original_year": 2013,
+          "unique_user_item_pairs": 9640
+        },
+        {
+          "movie_id": 85579,
+          "title_ko": "신과함께-죄와 벌",
+          "original_year": 2017,
+          "unique_user_item_pairs": 9610
+        },
+        {
+          "movie_id": 93756,
+          "title_ko": "명량",
+          "original_year": 2014,
+          "unique_user_item_pairs": 9534
+        },
+        {
+          "movie_id": 121051,
+          "title_ko": "곡성(哭聲)",
+          "original_year": 2016,
+          "unique_user_item_pairs": 9150
+        },
+        {
+          "movie_id": 39841,
+          "title_ko": "괴물",
+          "original_year": 2006,
+          "unique_user_item_pairs": 8745
+        },
+        {
+          "movie_id": 146469,
+          "title_ko": "택시운전사",
+          "original_year": 2017,
+          "unique_user_item_pairs": 8458
+        },
+        {
+          "movie_id": 146506,
+          "title_ko": "군함도",
+          "original_year": 2017,
+          "unique_user_item_pairs": 8377
+        },
+        {
+          "movie_id": 71509,
+          "title_ko": "아저씨",
+          "original_year": 2010,
+          "unique_user_item_pairs": 8050
+        },
+        {
+          "movie_id": 161967,
+          "title_ko": "기생충",
+          "original_year": 2019,
+          "unique_user_item_pairs": 7850
+        },
+        {
+          "movie_id": 167651,
+          "title_ko": "극한직업",
+          "original_year": 2018,
+          "unique_user_item_pairs": 7663
+        },
+        {
+          "movie_id": 47385,
+          "title_ko": "국가대표",
+          "original_year": 2009,
+          "unique_user_item_pairs": 7333
+        },
+        {
+          "movie_id": 83893,
+          "title_ko": "광해, 왕이 된 남자",
+          "original_year": 2012,
+          "unique_user_item_pairs": 7303
+        },
+        {
+          "movie_id": 94775,
+          "title_ko": "7번방의 선물",
+          "original_year": 2012,
+          "unique_user_item_pairs": 7221
+        },
+        {
+          "movie_id": 158191,
+          "title_ko": "1987",
+          "original_year": 2017,
+          "unique_user_item_pairs": 7101
+        },
+        {
+          "movie_id": 115977,
+          "title_ko": "베테랑",
+          "original_year": 2015,
+          "unique_user_item_pairs": 7078
+        },
+        {
+          "movie_id": 121048,
+          "title_ko": "암살",
+          "original_year": 2015,
+          "unique_user_item_pairs": 6920
+        },
+        {
+          "movie_id": 91031,
+          "title_ko": "신세계",
+          "original_year": 2012,
+          "unique_user_item_pairs": 6782
+        }
+      ]
+    },
+    "onboarding_simulation_capacity": {
+      "K0": {
+        "users_with_at_least_k_plus_one_unique_items": 86457,
+        "share": 1.0,
+        "latest_item_korean_target_users": 42680,
+        "strict_unique_latest_time_korean_target_users": 39192
+      },
+      "K1": {
+        "users_with_at_least_k_plus_one_unique_items": 86457,
+        "share": 1.0,
+        "latest_item_korean_target_users": 42680,
+        "strict_unique_latest_time_korean_target_users": 39192
+      },
+      "K3": {
+        "users_with_at_least_k_plus_one_unique_items": 86457,
+        "share": 1.0,
+        "latest_item_korean_target_users": 42680,
+        "strict_unique_latest_time_korean_target_users": 39192
+      },
+      "K5": {
+        "users_with_at_least_k_plus_one_unique_items": 86457,
+        "share": 1.0,
+        "latest_item_korean_target_users": 42680,
+        "strict_unique_latest_time_korean_target_users": 39192
+      },
+      "K10": {
+        "users_with_at_least_k_plus_one_unique_items": 86457,
+        "share": 1.0,
+        "latest_item_korean_target_users": 42680,
+        "strict_unique_latest_time_korean_target_users": 39192
+      },
+      "K20": {
+        "users_with_at_least_k_plus_one_unique_items": 78912,
+        "share": 0.912731,
+        "latest_item_korean_target_users": 38794,
+        "strict_unique_latest_time_korean_target_users": 35592
+      }
+    }
+  },
+  "metadata_coverage": {
+    "source": {
+      "movie_rows": 180982,
+      "casting_rows": 819743,
+      "country_values": 208,
+      "genre_values": 26,
+      "top_countries": [
+        [
+          "미국",
+          51705
+        ],
+        [
+          "한국",
+          29414
+        ],
+        [
+          "일본",
+          15094
+        ],
+        [
+          "프랑스",
+          11990
+        ],
+        [
+          "영국",
+          10394
+        ],
+        [
+          "캐나다",
+          7101
+        ],
+        [
+          "독일",
+          6365
+        ],
+        [
+          "이탈리아",
+          4583
+        ],
+        [
+          "홍콩",
+          4304
+        ],
+        [
+          "중국",
+          4247
+        ],
+        [
+          "스페인",
+          3732
+        ],
+        [
+          "오스트레일리아",
+          2971
+        ],
+        [
+          "인도",
+          2295
+        ],
+        [
+          "네덜란드",
+          2004
+        ],
+        [
+          "스웨덴",
+          1954
+        ]
+      ],
+      "top_genres": [
+        [
+          "드라마",
+          56442
+        ],
+        [
+          "코미디",
+          22427
+        ],
+        [
+          "다큐멘터리",
+          20969
+        ],
+        [
+          "애니메이션",
+          17261
+        ],
+        [
+          "멜로/로맨스",
+          11589
+        ],
+        [
+          "스릴러",
+          11507
+        ],
+        [
+          "액션",
+          10885
+        ],
+        [
+          "공포",
+          7805
+        ],
+        [
+          "범죄",
+          6290
+        ],
+        [
+          "모험",
+          5364
+        ],
+        [
+          "가족",
+          5286
+        ],
+        [
+          "판타지",
+          5005
+        ],
+        [
+          "SF",
+          4663
+        ],
+        [
+          "미스터리",
+          3916
+        ],
+        [
+          "전쟁",
+          2033
+        ],
+        [
+          "에로",
+          1430
+        ],
+        [
+          "실험",
+          1424
+        ],
+        [
+          "뮤지컬",
+          1392
+        ],
+        [
+          "서부",
+          810
+        ],
+        [
+          "공연실황",
+          419
+        ],
+        [
+          "서스펜스",
+          256
+        ],
+        [
+          "느와르",
+          170
+        ],
+        [
+          "무협",
+          121
+        ],
+        [
+          "서사",
+          97
+        ],
+        [
+          "블랙코미디",
+          39
+        ],
+        [
+          "컬트",
+          24
+        ]
+      ],
+      "unknown_movie_references": {}
+    },
+    "all_catalog": {
+      "items": 180982,
+      "counts": {
+        "metadata_row": 180982,
+        "korean_title": 172728,
+        "english_title": 172031,
+        "original_year_parsed": 170767,
+        "korean_release_year": 24098,
+        "country": 171166,
+        "genre": 129090,
+        "cast": 108816,
+        "leading_cast": 107618,
+        "grade": 58610
+      },
+      "shares": {
+        "metadata_row": 1.0,
+        "korean_title": 0.954393,
+        "english_title": 0.950542,
+        "original_year_parsed": 0.943558,
+        "korean_release_year": 0.133151,
+        "country": 0.945763,
+        "genre": 0.713275,
+        "cast": 0.601253,
+        "leading_cast": 0.594634,
+        "grade": 0.323844
+      },
+      "not_in_metadata": 0,
+      "unsupported_fields": [
+        "overview",
+        "keywords",
+        "director",
+        "tmdb_id",
+        "provider"
+      ]
+    },
+    "korean_catalog": {
+      "items": 29414,
+      "counts": {
+        "metadata_row": 29414,
+        "korean_title": 29414,
+        "english_title": 29035,
+        "original_year_parsed": 28932,
+        "korean_release_year": 11022,
+        "country": 29414,
+        "genre": 16694,
+        "cast": 18331,
+        "leading_cast": 18237,
+        "grade": 11841
+      },
+      "shares": {
+        "metadata_row": 1.0,
+        "korean_title": 1.0,
+        "english_title": 0.987115,
+        "original_year_parsed": 0.983613,
+        "korean_release_year": 0.37472,
+        "country": 1.0,
+        "genre": 0.567553,
+        "cast": 0.623207,
+        "leading_cast": 0.620011,
+        "grade": 0.402563
+      },
+      "not_in_metadata": 0,
+      "unsupported_fields": [
+        "overview",
+        "keywords",
+        "director",
+        "tmdb_id",
+        "provider"
+      ]
+    },
+    "rated_items": {
+      "items": 48891,
+      "counts": {
+        "metadata_row": 48884,
+        "korean_title": 48169,
+        "english_title": 48063,
+        "original_year_parsed": 47846,
+        "korean_release_year": 18036,
+        "country": 47979,
+        "genre": 39945,
+        "cast": 43875,
+        "leading_cast": 43664,
+        "grade": 32995
+      },
+      "shares": {
+        "metadata_row": 0.999857,
+        "korean_title": 0.985232,
+        "english_title": 0.983064,
+        "original_year_parsed": 0.978626,
+        "korean_release_year": 0.368902,
+        "country": 0.981346,
+        "genre": 0.817022,
+        "cast": 0.897404,
+        "leading_cast": 0.893089,
+        "grade": 0.674869
+      },
+      "not_in_metadata": 7,
+      "unsupported_fields": [
+        "overview",
+        "keywords",
+        "director",
+        "tmdb_id",
+        "provider"
+      ]
+    },
+    "korean_rated_items": {
+      "items": 11114,
+      "counts": {
+        "metadata_row": 11114,
+        "korean_title": 11114,
+        "english_title": 11069,
+        "original_year_parsed": 11057,
+        "korean_release_year": 6730,
+        "country": 11114,
+        "genre": 8121,
+        "cast": 9581,
+        "leading_cast": 9567,
+        "grade": 6998
+      },
+      "shares": {
+        "metadata_row": 1.0,
+        "korean_title": 1.0,
+        "english_title": 0.995951,
+        "original_year_parsed": 0.994871,
+        "korean_release_year": 0.605543,
+        "country": 1.0,
+        "genre": 0.7307,
+        "cast": 0.862066,
+        "leading_cast": 0.860806,
+        "grade": 0.629656
+      },
+      "not_in_metadata": 0,
+      "unsupported_fields": [
+        "overview",
+        "keywords",
+        "director",
+        "tmdb_id",
+        "provider"
+      ]
+    }
+  },
+  "tmdb_bridge_feasibility": {
+    "method": "conservative exact normalized English title + original year through MovieLens links.csv",
+    "warning": "This is a lower-bound bridge feasibility estimate, not a completed TMDB identity map.",
+    "rated_item_status": {
+      "AMBIGUOUS_EXACT_TITLE_YEAR": 173,
+      "NO_EXACT_BRIDGE": 28212,
+      "UNIQUE_EXACT_TITLE_YEAR": 20506
+    },
+    "rated_item_status_share": {
+      "AMBIGUOUS_EXACT_TITLE_YEAR": 0.003538,
+      "NO_EXACT_BRIDGE": 0.577039,
+      "UNIQUE_EXACT_TITLE_YEAR": 0.419423
+    },
+    "korean_rated_item_status": {
+      "AMBIGUOUS_EXACT_TITLE_YEAR": 13,
+      "NO_EXACT_BRIDGE": 10434,
+      "UNIQUE_EXACT_TITLE_YEAR": 667
+    },
+    "korean_rated_item_status_share": {
+      "AMBIGUOUS_EXACT_TITLE_YEAR": 0.00117,
+      "NO_EXACT_BRIDGE": 0.938816,
+      "UNIQUE_EXACT_TITLE_YEAR": 0.060014
+    },
+    "deduplicated_pair_status": {
+      "AMBIGUOUS_EXACT_TITLE_YEAR": 55274,
+      "NO_EXACT_BRIDGE": 1388233,
+      "UNIQUE_EXACT_TITLE_YEAR": 3500106
+    },
+    "deduplicated_pair_status_share": {
+      "AMBIGUOUS_EXACT_TITLE_YEAR": 0.011181,
+      "NO_EXACT_BRIDGE": 0.280813,
+      "UNIQUE_EXACT_TITLE_YEAR": 0.708006
+    },
+    "unique_match_samples": [
+      {
+        "kmrd_movie_id": 10002,
+        "title_ko": "빽 투 더 퓨쳐",
+        "title_eng": "Back To The Future , 1985",
+        "tmdb_id": 105
+      },
+      {
+        "kmrd_movie_id": 10004,
+        "title_ko": "빽 투 더 퓨쳐 3",
+        "title_eng": "Back To The Future Part III , 1990",
+        "tmdb_id": 196
+      },
+      {
+        "kmrd_movie_id": 10006,
+        "title_ko": "스타워즈 에피소드 5 - 제국의 역습",
+        "title_eng": "Star Wars Episode V: The Empire Strikes Back , 1980",
+        "tmdb_id": 1891
+      },
+      {
+        "kmrd_movie_id": 10007,
+        "title_ko": "스타워즈 에피소드 6 - 제다이의 귀환",
+        "title_eng": "Star Wars: Episode VI: Return Of The Jedi , 1983",
+        "tmdb_id": 1892
+      },
+      {
+        "kmrd_movie_id": 10008,
+        "title_ko": "슈퍼맨",
+        "title_eng": "Superman , 1978",
+        "tmdb_id": 1924
+      },
+      {
+        "kmrd_movie_id": 10009,
+        "title_ko": "슈퍼맨 2",
+        "title_eng": "Superman II , 1980",
+        "tmdb_id": 8536
+      },
+      {
+        "kmrd_movie_id": 10010,
+        "title_ko": "슈퍼맨 3",
+        "title_eng": "Superman III , 1983",
+        "tmdb_id": 9531
+      },
+      {
+        "kmrd_movie_id": 10011,
+        "title_ko": "슈퍼맨 4 - 최강의 적",
+        "title_eng": "Superman IV: The Quest For Peace , 1987",
+        "tmdb_id": 11411
+      },
+      {
+        "kmrd_movie_id": 10012,
+        "title_ko": "다이 하드",
+        "title_eng": "Die Hard , 1988",
+        "tmdb_id": 562
+      },
+      {
+        "kmrd_movie_id": 10013,
+        "title_ko": "킹콩",
+        "title_eng": "King Kong , 1976",
+        "tmdb_id": 10730
+      },
+      {
+        "kmrd_movie_id": 10014,
+        "title_ko": "금지된 장난",
+        "title_eng": "Jeux Interdits , Forbidden Games , 1952",
+        "tmdb_id": 5000
+      },
+      {
+        "kmrd_movie_id": 10015,
+        "title_ko": "타워링",
+        "title_eng": "The Towering Inferno , 1974",
+        "tmdb_id": 5919
+      },
+      {
+        "kmrd_movie_id": 10016,
+        "title_ko": "나 홀로 집에",
+        "title_eng": "Home Alone , 1990",
+        "tmdb_id": 771
+      },
+      {
+        "kmrd_movie_id": 10017,
+        "title_ko": "셰인",
+        "title_eng": "Shane , 1953",
+        "tmdb_id": 3110
+      },
+      {
+        "kmrd_movie_id": 10019,
+        "title_ko": "내일을 향해 쏴라",
+        "title_eng": "Butch Cassidy And The Sundance Kid , 1969",
+        "tmdb_id": 642
+      },
+      {
+        "kmrd_movie_id": 10020,
+        "title_ko": "바람과 함께 사라지다",
+        "title_eng": "Gone With The Wind , 1939",
+        "tmdb_id": 770
+      },
+      {
+        "kmrd_movie_id": 10021,
+        "title_ko": "록키",
+        "title_eng": "Rocky , 1976",
+        "tmdb_id": 1366
+      },
+      {
+        "kmrd_movie_id": 10022,
+        "title_ko": "록키 2",
+        "title_eng": "Rocky II , 1979",
+        "tmdb_id": 1367
+      },
+      {
+        "kmrd_movie_id": 10023,
+        "title_ko": "록키 3",
+        "title_eng": "Rocky III , 1982",
+        "tmdb_id": 1371
+      },
+      {
+        "kmrd_movie_id": 10024,
+        "title_ko": "록키 4",
+        "title_eng": "Rocky IV , 1985",
+        "tmdb_id": 1374
+      }
+    ]
+  },
+  "decision": {
+    "target_user_proxy": "NO_SELECTION_AND_TARGET_MISMATCH",
+    "research_proxy": "NO_TARGET_PROXY_DIAGNOSTIC_ONLY",
+    "production_training_data": "NO_LICENSE_AND_DOMAIN_GATE",
+    "als_backbone": "NO_TARGET_PROXY_REJECTED",
+    "recommended_next_experiment": "EXPLICIT_PREFERENCE_CONTENT_BASELINE_AND_LOGGING_CONTRACT"
+  }
+}

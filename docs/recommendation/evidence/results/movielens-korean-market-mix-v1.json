@@ -1,0 +1,163 @@
+{
+  "schema_version": 1,
+  "audit_id": "MOVIELENS_KOREAN_MARKET_THREE_WAY_PARTITION_V1",
+  "generated_at_utc": "2026-08-31T06:21:17.323329+00:00",
+  "claim_boundary": "DESCRIPTIVE_PROXY_NOT_KOREAN_USER_PERFORMANCE",
+  "dataset": {
+    "movies": 87585,
+    "users": 200948,
+    "rating_rows": 32000204
+  },
+  "definition": {
+    "priority": [
+      "KOREAN_ORIGIN",
+      "FAMOUS_FOREIGN_PROXY",
+      "REMAINDER"
+    ],
+    "korean_origin": "TMDB KR origin/production proxy",
+    "famous_foreign_proxy": "foreign AND MovieLens ratings>=strict threshold AND Korean title AND (KR theatrical release OR current KR provider)",
+    "remainder": "all MovieLens items outside the two prior disjoint sets"
+  },
+  "partition": {
+    "KOREAN_ORIGIN": {
+      "movies": 1078,
+      "movie_share": 0.012308,
+      "rating_rows": 106455,
+      "rating_share": 0.003327
+    },
+    "FAMOUS_FOREIGN_PROXY": {
+      "movies": 3298,
+      "movie_share": 0.037655,
+      "rating_rows": 25192283,
+      "rating_share": 0.787254
+    },
+    "REMAINDER": {
+      "movies": 83209,
+      "movie_share": 0.950037,
+      "rating_rows": 6701466,
+      "rating_share": 0.209419
+    }
+  },
+  "validation": {
+    "kobis_cohort": "COMPARABLE_2004_PLUS_AUDIENCE_1M_PLUS",
+    "kobis_1m_movies": 337,
+    "kobis_1m_movie_recall": 0.869436,
+    "kobis_1m_audience_weighted_recall": 0.904519
+  },
+  "sensitivity": {
+    "foreign_strict_rating_share": 0.787254,
+    "foreign_moderate_rating_share": 0.838876
+  },
+  "user_analysis": {
+    "users": 200948,
+    "rating_rows": 32000204,
+    "rating_counts": {
+      "FAMOUS_FOREIGN_PROXY": 25192283,
+      "REMAINDER": 6701466,
+      "KOREAN_ORIGIN": 106455
+    },
+    "user_macro": {
+      "KOREAN_ORIGIN": {
+        "users_with_any": 37038,
+        "user_share_with_any": 0.184316,
+        "macro_mean_history_share": 0.002415,
+        "history_share_quantiles": {
+          "p10": 0.0,
+          "p25": 0.0,
+          "p50": 0.0,
+          "p75": 0.0,
+          "p90": 0.007503
+        }
+      },
+      "FAMOUS_FOREIGN_PROXY": {
+        "users_with_any": 200945,
+        "user_share_with_any": 0.999985,
+        "macro_mean_history_share": 0.854183,
+        "history_share_quantiles": {
+          "p10": 0.7,
+          "p25": 0.789474,
+          "p50": 0.877005,
+          "p75": 0.944444,
+          "p90": 0.980769
+        }
+      },
+      "REMAINDER": {
+        "users_with_any": 184793,
+        "user_share_with_any": 0.919606,
+        "macro_mean_history_share": 0.143402,
+        "history_share_quantiles": {
+          "p10": 0.016129,
+          "p25": 0.051948,
+          "p50": 0.12,
+          "p75": 0.208333,
+          "p90": 0.299852
+        }
+      }
+    },
+    "dominant_category": {
+      "KOREAN_ORIGIN": {
+        "users": 7,
+        "user_share": 3.5e-05
+      },
+      "FAMOUS_FOREIGN_PROXY": {
+        "users": 198819,
+        "user_share": 0.989405
+      },
+      "REMAINDER": {
+        "users": 1954,
+        "user_share": 0.009724
+      },
+      "TIE": {
+        "users": 168,
+        "user_share": 0.000836
+      }
+    },
+    "history_bins": {
+      "20_49": {
+        "users": 72604,
+        "user_share": 0.361307,
+        "macro_mean_history_share": {
+          "KOREAN_ORIGIN": 0.001831,
+          "FAMOUS_FOREIGN_PROXY": 0.87376,
+          "REMAINDER": 0.124409
+        }
+      },
+      "50_99": {
+        "users": 47669,
+        "user_share": 0.237221,
+        "macro_mean_history_share": {
+          "KOREAN_ORIGIN": 0.002371,
+          "FAMOUS_FOREIGN_PROXY": 0.870556,
+          "REMAINDER": 0.127073
+        }
+      },
+      "100_499": {
+        "users": 68072,
+        "user_share": 0.338754,
+        "macro_mean_history_share": {
+          "KOREAN_ORIGIN": 0.002792,
+          "FAMOUS_FOREIGN_PROXY": 0.844297,
+          "REMAINDER": 0.152911
+        }
+      },
+      "500_PLUS": {
+        "users": 12603,
+        "user_share": 0.062718,
+        "macro_mean_history_share": {
+          "KOREAN_ORIGIN": 0.003909,
+          "FAMOUS_FOREIGN_PROXY": 0.732872,
+          "REMAINDER": 0.263219
+        }
+      }
+    }
+  },
+  "decision": {
+    "als_training": "KEEP_FULL_MOVIELENS",
+    "als_base_strength": "FAMOUS_FOREIGN_PROXY",
+    "korean_origin": "CONTENT_AND_EXPLICIT_PREFERENCE_AUGMENTATION_REQUIRED",
+    "remainder": "KEEP_FOR_CONTENT_COLD_ITEM_AND_DISCOVERY",
+    "fixed_product_quota": "NOT_APPROVED",
+    "evaluation": "REPORT_ALL_THREE_SLICES_SEPARATELY"
+  },
+  "runtime_seconds": 22.09
+}

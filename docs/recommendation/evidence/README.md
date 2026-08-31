@@ -26,6 +26,15 @@
 | `REC-EV-017` relational + free-tag ablation | `COMPLETED_MOVIELENS_RELATIONAL_EVIDENCE_TMDB_BLOCKED` | 영화·장르 공동 선호와 tag 의미를 추가; 전체 향상에도 P2 회귀로 채택 `NO`, TMDB 전수 특징 대기 |
 | `REC-EV-018` user percentile audit | `COMPLETED_USER_DISTRIBUTION_DIAGNOSTIC` | 평균 외 B/T/H·효과 percentile·사용자/인기도 segment를 공개; Router 필요성 가설만 유지, champion `null` |
 | `REC-EV-019P` binary onboarding preflight | `COMPLETED_REPRODUCIBLE_FEASIBILITY_PASS` | strict eligibility로 40/10/10/40 split을 잠금; K10 5,476명으로 019A/019B 구현 `GO`, 019C는 최종 identity Gate 대기, champion 권한 `NO` |
+| `REC-DATA-001` temporal feasibility | `COMPLETED_DESCRIPTIVE_AUDIT` | 동일 날짜 Rating 몰아넣기 확인; K25·90일·N500 고정 근거 `NO` |
+| `REC-DATA-002` Korean-origin coverage | `COMPLETED_PROXY_AUDIT` | KR item slice 가능; 한국 20대 또는 독립 KR 사용자 cohort 승인 `NO` |
+| `REC-DATA-003` evaluation redesign | `PROTOCOL_AMENDMENT_PROPOSED` | preference reconstruction 주 평가 + next-rating-session 보조 평가 제안 |
+| `REC-DATA-004` Korean-market awareness proxy | `COMPLETED_PROXY_AUDIT` | 한국-origin 0.33%; 외국 인기작 포함 MODERATE Rating coverage 84.22%, 실제 한국 20대 인지도 승인 `NO` |
+| `REC-DATA-005` KOBIS box-office validation | `COMPLETED_OFFICIAL_BOXOFFICE_VALIDATION` | 2004+ 흥행 양성 근거 검증; pre-2004 고전은 별도 검색·설문 후보, KOBIS 부재를 음성으로 해석 금지 |
+| `REC-DATA-006` MovieLens market mix | `COMPLETED_DESCRIPTIVE_PARTITION` | 한국 제작 0.33%, 유명 외국 STRICT proxy 78.73%, 나머지 20.94% Rating; 사용자 동일가중도 별도 보고 |
+| `REC-DATA-007` catalog recommendation capability | `COMPLETED_FAIL_CLOSED_METADATA_GAP` | 한국-origin-only 10,624편은 ALS 신호 없음; 전수 rich-content 필드 미수집으로 content-only 가능성은 아직 검증 불가 |
+| `REC-DATA-008` KMRD feasibility | `COMPLETED_TARGET_PROXY_REJECTED` | 한국 제작 pair 37.38%지만 20회 이상 평가 사용자 선별·최신성·인구통계·라이선스 Gate 실패; 진단 benchmark 외 사용 `NO` |
+| `REC-DATA-009` zero-data strategy | `DRAFT_DECISION_PROPOSAL` | 초기 ALS weight 0, 명시적 선호+knowledge/content 기본, target 로그와 baseline 승리 전 ALS 제품 채택 `NO` |
 
 실험을 실행하지 않은 상태에서 빈 결과 문서를 만들어 수치가 있는 것처럼 보이게 하지 않는다.
 `TASK-REC-EV-001~018`과 `REC-EV-019P`가 완료됐다. 현 개인 프로젝트 범위에서 실사용자 수집은 하지
@@ -50,6 +59,15 @@
 [REC-EV-017 영화·장르 관계와 자유 태그](./REC-EV-017-relational-tag-ablation.md),
 [REC-EV-018 사용자별 성능 감사](./REC-EV-018-user-percentile-audit.md),
 [REC-EV-019P binary onboarding preflight](./REC-EV-019P-binary-onboarding-preflight.md),
+[REC-DATA-001 시간·후보 감사](./REC-DATA-001-temporal-feasibility.md),
+[REC-DATA-002 한국-origin 감사](./REC-DATA-002-korean-origin-coverage.md),
+[REC-DATA-003 평가 설계 재판단](./REC-DATA-003-evaluation-design-decision.md),
+[REC-DATA-004 한국 시장 인지 가능 외국 영화 proxy](./REC-DATA-004-korean-market-awareness-proxy.md),
+[REC-DATA-005 KOBIS 외국 영화 흥행 검증](./REC-DATA-005-kobis-boxoffice-validation.md),
+[REC-DATA-006 MovieLens 한국 시장 기준 3분할](./REC-DATA-006-movielens-market-mix.md),
+[REC-DATA-007 카탈로그 추천 가능성 전수 감사](./REC-DATA-007-catalog-recommendation-capability.md),
+[REC-DATA-008 KMRD-5M 적용 가능성 감사](./REC-DATA-008-kmrd-feasibility.md),
+[REC-DATA-009 목표 도메인 데이터 부재 대응 전략](./REC-DATA-009-zero-data-recommendation-strategy.md),
 [고정 split manifest](./manifests/global-time-v1.json),
 [REC-EV-002 manifest](./manifests/rec-ev-002.json),
 [REC-EV-004 manifest](./manifests/rec-ev-004.json),

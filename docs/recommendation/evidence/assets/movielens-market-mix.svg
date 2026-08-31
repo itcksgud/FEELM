@@ -1,0 +1,66 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="760" viewBox="0 0 1200 760" role="img" aria-labelledby="title desc">
+  <title id="title">MovieLens 32M 한국 시장 기준 3분할</title>
+  <desc id="desc">한국 제작, 유명 외국 영화 프록시, 나머지의 영화 수, 평점 수, 사용자 동일 가중 평균 비율을 비교한다.</desc>
+
+  <rect width="1200" height="760" fill="#F8FAFC"/>
+  <defs>
+    <clipPath id="movie-bar"><rect x="220" y="220" width="900" height="54" rx="8"/></clipPath>
+    <clipPath id="rating-bar"><rect x="220" y="365" width="900" height="54" rx="8"/></clipPath>
+    <clipPath id="user-bar"><rect x="220" y="510" width="900" height="54" rx="8"/></clipPath>
+  </defs>
+
+  <text x="60" y="72" fill="#0F172A" font-family="Segoe UI, Noto Sans KR, sans-serif" font-size="34" font-weight="700">MovieLens 32M 한국 시장 기준 3분할</text>
+  <text x="60" y="112" fill="#475569" font-family="Segoe UI, Noto Sans KR, sans-serif" font-size="22">영화 수와 ALS가 실제로 학습하는 Rating 신호의 구성은 완전히 다르다</text>
+
+  <g font-family="Segoe UI, Noto Sans KR, sans-serif" font-size="18" fill="#334155">
+    <rect x="60" y="145" width="18" height="18" rx="3" fill="#3B82F6"/>
+    <text x="88" y="161">한국 제작</text>
+    <rect x="220" y="145" width="18" height="18" rx="3" fill="#F59E0B"/>
+    <text x="248" y="161">유명 외국 영화 proxy</text>
+    <rect x="478" y="145" width="18" height="18" rx="3" fill="#22C55E"/>
+    <text x="506" y="161">나머지</text>
+  </g>
+
+  <g font-family="Segoe UI, Noto Sans KR, sans-serif">
+    <text x="60" y="235" fill="#0F172A" font-size="22" font-weight="700">영화 수</text>
+    <text x="60" y="264" fill="#64748B" font-size="17">87,585편</text>
+    <rect x="220" y="220" width="900" height="54" rx="8" fill="#E2E8F0"/>
+    <g clip-path="url(#movie-bar)">
+      <rect x="220" y="220" width="11.08" height="54" fill="#3B82F6"/>
+      <rect x="231.08" y="220" width="33.89" height="54" fill="#F59E0B"/>
+      <rect x="264.97" y="220" width="855.03" height="54" fill="#22C55E"/>
+    </g>
+    <text x="220" y="302" fill="#3B82F6" font-size="17" font-weight="700">한국 1.23%</text>
+    <text x="370" y="302" fill="#B45309" font-size="17" font-weight="700">유명 외국 3.77%</text>
+    <text x="1018" y="302" fill="#15803D" font-size="17" font-weight="700" text-anchor="end">나머지 95.00%</text>
+
+    <text x="60" y="380" fill="#0F172A" font-size="22" font-weight="700">Rating 수</text>
+    <text x="60" y="409" fill="#64748B" font-size="17">32,000,204개</text>
+    <rect x="220" y="365" width="900" height="54" rx="8" fill="#E2E8F0"/>
+    <g clip-path="url(#rating-bar)">
+      <rect x="220" y="365" width="2.99" height="54" fill="#3B82F6"/>
+      <rect x="222.99" y="365" width="708.53" height="54" fill="#F59E0B"/>
+      <rect x="931.52" y="365" width="188.48" height="54" fill="#22C55E"/>
+    </g>
+    <text x="220" y="447" fill="#3B82F6" font-size="17" font-weight="700">한국 0.33%</text>
+    <text x="548" y="400" fill="#422006" font-size="19" font-weight="700" text-anchor="middle">유명 외국 78.73%</text>
+    <text x="1018" y="400" fill="#052E16" font-size="19" font-weight="700" text-anchor="middle">나머지 20.94%</text>
+
+    <text x="60" y="525" fill="#0F172A" font-size="22" font-weight="700">사용자 동일 가중</text>
+    <text x="60" y="554" fill="#64748B" font-size="17">200,948명 평균</text>
+    <rect x="220" y="510" width="900" height="54" rx="8" fill="#E2E8F0"/>
+    <g clip-path="url(#user-bar)">
+      <rect x="220" y="510" width="2.17" height="54" fill="#3B82F6"/>
+      <rect x="222.17" y="510" width="768.76" height="54" fill="#F59E0B"/>
+      <rect x="990.93" y="510" width="129.07" height="54" fill="#22C55E"/>
+    </g>
+    <text x="220" y="592" fill="#3B82F6" font-size="17" font-weight="700">한국 0.24%</text>
+    <text x="607" y="545" fill="#422006" font-size="19" font-weight="700" text-anchor="middle">유명 외국 85.42%</text>
+    <text x="1055" y="545" fill="#052E16" font-size="18" font-weight="700" text-anchor="middle">나머지 14.34%</text>
+  </g>
+
+  <rect x="60" y="635" width="1080" height="70" rx="12" fill="#E2E8F0"/>
+  <text x="84" y="670" fill="#0F172A" font-family="Segoe UI, Noto Sans KR, sans-serif" font-size="21" font-weight="700">해석</text>
+  <text x="150" y="670" fill="#334155" font-family="Segoe UI, Noto Sans KR, sans-serif" font-size="20">ALS의 주 학습축은 유명 외국 영화이고, 한국 영화는 콘텐츠·온보딩·재랭킹 보완이 필요하다.</text>
+  <text x="84" y="692" fill="#64748B" font-family="Segoe UI, Noto Sans KR, sans-serif" font-size="14">유명 외국 영화 proxy: ML Rating 1,000+ · 한국어 제목 · 한국 극장 개봉 또는 현재 국내 provider</text>
+</svg>
