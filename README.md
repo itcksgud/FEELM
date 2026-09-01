@@ -84,6 +84,7 @@ npm run test --prefix frontend
 npm run build --prefix frontend
 py -3.12 -m pip install --require-hashes -r scripts\requirements-build-tools.lock
 py -3.12 -m pip install --no-build-isolation --require-hashes -r requirements-data.lock
+py -3.12 -m pip install --require-hashes -r requirements-ml.lock
 py -3.12 -m unittest discover -s data-pipeline\tests -p 'test_*.py'
 py -3.12 -m pip install --require-hashes -r recommender\requirements-test.lock
 py -3.12 -m pip install --no-deps --no-build-isolation -e recommender
@@ -114,7 +115,7 @@ volume 보존 결과는 `docs/testing/local-mvp-compose-e2e-20260830.md`에 기�
 artifact 볼륨만 삭제하고 다시 만든 뒤 Playwright와 C2A Compose probe를 실행한다. 해당 local volume을
 보존해야 하면 실행하지 말고 `npm run verify:e2e`와 `scripts/verify-c2-compose.ps1`을 각각 실행한다.
 
-Python 실행 의존성은 `requirements-data.lock`, `recommender/requirements.lock`,
+Python 실행 의존성은 `requirements-data.lock`, `requirements-ml.lock`, `recommender/requirements.lock`,
 `recommender/requirements-test.lock`의 버전과 artifact SHA-256을 사용한다. 의도적으로 갱신할 때만
 `scripts/refresh-python-locks.ps1`을 실행하고 lock diff와 `npm run supply-chain:check`를 검토한다.
 컨테이너 base image, PostgreSQL image, GitHub Actions와 Gradle 배포 ZIP도 digest 또는 checksum으로

@@ -104,11 +104,11 @@ OTT Snapshot은 개인 취향을 만드는 Feature가 아니다. 추천된 영�
 | --- | --- | --- |
 | MovieLens Popularity | `OFFLINE BASELINE` | 과거 MovieLens 집단의 보정 평균이며 현재 FEELM 인기도가 아님 |
 | MovieLens Tag Content | `REJECT FOR PRODUCT` | 소수 사용자의 자유 태그를 영화 정보로 사용함 |
-| REC-EV-019 cohort | `019A/019B IMPLEMENTATION GO` | strict K10 Test 5,476명; 019C는 최종 identity Gate 대기 |
+| REC-EV-019 cohort | `019B DONE / 019A READY` | 019B 전체 Gate PASS; 019C는 019A와 최종 identity Gate 대기 |
 | Binary onboarding model | `PROTOCOL READY, NOT EVALUATED` | 실제 입력과 맞춘 REC-EV-019가 아직 없음 |
 | ALS / ItemKNN | `PRETRAIN CANDIDATE` | 사용자 공동 선호 사전 지식으로 검증할 가치가 있음 |
 | Bias / BPR / EASE / LightFM | `REQUIRED BASELINES` | 별점·implicit·강한 선형·metadata hybrid 기준선 |
-| TMDB Content | `REQUIRED, NOT YET EVALUATED` | 전체 50,977편 Feature artifact가 아직 없음 |
+| TMDB Content | `FEATURE READY, NOT YET EVALUATED` | Base-Train 69,603편 feature Gate PASS; Validation 성능은 아직 없음 |
 | Personalized Router | `HYPOTHESIS ONLY` | 사용자별 최적 모델 차이는 확인했지만 사전 선택 능력은 미검증 |
 | 개인 추천 champion | `null` | 채택 Gate를 통과한 모델 없음 |
 | 유사 영화 | `CONTRACT EXISTS, EVAL MISSING` | C0 구현 계약은 있으나 TMDB-only 검색 품질 evidence가 없음 |

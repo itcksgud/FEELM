@@ -1,13 +1,14 @@
 # FEELM 콘텐츠 기반 cold-item 평가 설계 v2
 
-> 문서 상태: `PROPOSED_PROTOCOL_VALIDATION_PREFLIGHT_REQUIRED`
+> 문서 상태: `APPROVED_FOR_VALIDATION_PILOT_NOT_LOCKED_TEST`
 > 개정일: 2026-08-31
 > 적용 범위: MovieLens에 상호작용이 없거나 적은 영화를 TMDB 콘텐츠로 추천·검색하는 능력
 > 선행 계약: [Top-2 위험 회피 추천 설계 v4](./02-top2-risk-aware-evaluation-design.md)
 
 기계 판독 값은
 [`protocols/rec-eval-content-cold-v2.json`](./protocols/rec-eval-content-cold-v2.json)에 고정한다. 이
-문서와 JSON은 REC-EV-021P preflight 전까지 구현 승인 계약이 아니다.
+REC-EV-021P preflight는 firewall·표본·TMDB manifest Gate를 통과했다. 문서와 JSON은 소규모 Validation
+파일럿의 기준이며 Item Locked Test나 제품 채택 계약은 아니다.
 
 ## 1. 실험 질문과 주장 경계
 
@@ -428,11 +429,11 @@ two-way 결과를 사용한다. transition Gate는 user-only와 two-way가 모�
 
 ## 11. 구현 준비도와 중단 조건
 
-v2 설계를 입력으로 Schema·artifact contract·runner를 구현하는 것은
-`GO_FOR_021P_CONTRACT_IMPLEMENTATION`이다. 다만 preflight 실행 준비도는
-`NO_GO_PENDING_021P_CONTRACT_AND_RUNNER`다. v2 JSON Schema, artifact contract, REC-EV-021P
-runner·unit test·verifier, Validation preflight와 protocol lock 전에는 Item Locked Test와 사람 평가 Test를
-열지 않는다.
+v2 JSON Schema, artifact contract, runner·unit test·verifier와 Validation preflight가 준비됐고,
+REC-EV-019B 전체 TMDB feature manifest까지 확인됐다. 현재 상태는
+`GO_FOR_SMALL_VALIDATION_PILOT_NOT_FULL_GRID`다. 먼저 panel 하나·mask seed 하나·ALS와 content baseline으로
+시간·메모리·결측 fallback을 측정한다. 이 결과와 model-applicability matrix를 잠그기 전에는 Item Locked
+Test와 사람 평가 Test를 열지 않는다.
 
 다음이면 결과를 `INCONCLUSIVE`로 종료한다.
 

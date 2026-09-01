@@ -3,7 +3,7 @@
 > 문서 상태: `FINAL_RESEARCH_REPORT`
 > 작성 기준: 2026-09-01
 > 제품 추천 정책: `APPROVED_C2A_INTERNAL_POPULARITY_ONLY` 유지
-> 핵심 결론: 평가 방법과 표본은 준비됐지만 새 개인화 모델의 승인은 아직 아니다.
+> 핵심 결론: 평가 방법·표본·TMDB 전체 특징은 준비됐지만 새 개인화 모델의 승인은 아직 아니다.
 
 ## 1. 가장 먼저 볼 결론
 
@@ -26,7 +26,7 @@
 | 기존 ALS 실험이 추천 순위를 개선했는가? | **NO** | 예상 별점은 개선됐지만 순위는 인기도보다 낫지 않았음 |
 | 한국 영화 데이터가 충분한가? | **NO** | 목록은 많지만 평점이 촘촘한 영화가 매우 적음 |
 | 신작·희소 영화 실험의 데이터 누출은 막았는가? | **YES** | 역할 충돌 6,964편 → 0편 |
-| TMDB 콘텐츠 모델을 지금 실행할 수 있는가? | **NO** | 전체 TMDB 특징 파일이 아직 없음 |
+| TMDB 콘텐츠 모델을 Validation에서 실행할 수 있는가? | **YES** | 전체 69,603편 feature Gate 통과 |
 | 개인화 모델을 서비스에 채택할 수 있는가? | **NO** | 새 Validation 비교와 승격 조건 미통과 |
 
 ## 2. 왜 이전 평가가 부족했나
@@ -158,9 +158,54 @@ TMDB 한국-origin proxy는 11,680편이지만 MovieLens와 연결되는 영화�
 최초 설계에서는 strict cold 분리와 density 분리가 독립적으로 모든 영화에 역할을 줘 6,964편이 충돌했다.
 사전검사로 이를 발견했고, density 역할은 strict Train 영화 안에서만 나누도록 바꿨다. 재검사 충돌은 0편이다.
 
-안전하게 실험할 수 있는 영화는 q≥5가 3,662편, q≥20이 1,963편, q≥100이 994편이다. 표본은 있지만
-TMDB 전체 특징 파일이 없으므로 콘텐츠 모델 성능은 아직 계산하지 않았다. MovieLens 장르로 대신하면
-데이터 역할 분리 원칙을 어기므로 여기서 멈춘 것이 맞다.
+안전하게 실험할 수 있는 영화는 q≥5가 3,662편, q≥20이 1,963편, q≥100이 994편이다. 당시에는 TMDB
+전체 특징 파일이 없어 콘텐츠 모델 성능 계산을 멈췄다. 이제 019B 전체 특징이 만들어져 cold-item
+사전검사를 다시 실행했고 `READY_FOR_VALIDATION_PILOT`가 됐다. 아직 모델 성능을 계산한 것은 아니다.
+
+### 7.1 TMDB 특징 100편 사전검사
+
+![TMDB 특징 생성 흐름](figures/tmdb-feature-build-flow.png)
+
+MovieLens Base-Train 영화 중 TMDB 링크가 있는 100편을 고정 hash로 뽑아 실제 API부터 embedding까지
+연결했다. identity는 99편, 구조 특징과 텍스트 특징은 확인된 99편 모두 사용할 수 있었다. 1편은 IMDb ID가
+달라 자동 결합하지 않고 검토 대상으로 격리했다.
+
+| 항목 | 결과 | 사전 기준 |
+| --- | ---: | ---: |
+| identity 확인 | 99/100 (99.0%) | 98% 이상 |
+| 구조 특징 사용 가능 | 99/99 (100%) | 95% 이상 |
+| 텍스트 특징 사용 가능 | 99/99 (100%) | 95% 이상 |
+| E5 embedding | 384차원, L2 오차 이내 | 고정 revision·SHA-256 |
+
+첫 실행은 인증 형식을 잘못 가정해 100편 모두 401이었고, 당시 verifier도 0% 결과를 통과시키는 문제가
+있었다. JWT/v3 key를 구분하고 사전검사 coverage 하한을 추가한 뒤 다시 실행해 위 결과를 얻었다. 즉 이
+수치는 처음부터 잘 나온 숫자가 아니라 실패를 계약과 코드에 환원해 다시 검증한 결과다.
+
+100편은 실행 안전성만 확인하는 단계였다. 이 검사를 통과한 뒤 전체 실행을 진행했다.
+
+### 7.2 TMDB 특징 69,603편 전체 결과
+
+![TMDB 전체 특징 coverage와 결측](figures/tmdb-feature-coverage.png)
+
+| 항목 | 전체 결과 | Gate | 판정 |
+| --- | ---: | ---: | --- |
+| TMDB 링크 존재 | 69,508/69,603 (99.8635%) | 99.8% 이상 | PASS |
+| identity 확인·복구 | 68,674/69,508 (98.8001%) | 98% 이상 | PASS |
+| 구조 특징 사용 가능 | 68,201/68,674 (99.3112%) | 95% 이상 | PASS |
+| 텍스트 특징 사용 가능 | 68,534/68,674 (99.7961%) | 95% 이상 | PASS |
+| E5 embedding | 384차원, L2 오차 이내 | 고정 revision·SHA-256 | PASS |
+
+확인되지 않은 영화는 TV로 판정된 411편, 찾지 못한 357편, ID가 모호한 161편으로 분리해 자동 결합하지
+않았다. 확인된 영화 중 가장 큰 결측은 키워드 16,772편(24.42%)이고, 배우는 2,336편(3.40%)이었다.
+결측은 부정 선호가 아니므로 해당 영화를 공통 후보에서 제거하지 않고 모델별 B0 fallback 사유로 남긴다.
+
+전체 API 수집에는 약 2시간 6분이 걸렸고 112,580개 응답을 cache했다. embedding 실행이 93.2%에서
+중단되며 재계산 위험을 발견해 batch 단위 checkpoint를 추가했다. 최종 재실행은 network request 0회로
+112,614개 cache hit를 사용했고, 독립 검증기가 manifest·schema·coverage·모델 SHA·비밀값 비저장을 모두
+확인했다.
+
+따라서 “TMDB 특징을 만들 수 있는가”는 PASS다. 그러나 “TMDB 콘텐츠 모델이 좋은 추천을 하는가”는
+다음 Validation 비교의 질문이며 아직 답하지 않았다.
 
 ## 8. 지금 말할 수 있는 것과 없는 것
 
@@ -171,7 +216,8 @@ TMDB 전체 특징 파일이 없으므로 콘텐츠 모델 성능은 아직 계�
 | 기존 ALS 순위는 인기도를 이기지 못했음 | ALS는 언제나 추천에 나쁨 |
 | 한국-origin MovieLens 상호작용이 희소함 | 한국 20대 사용자에게 성능이 낮음 |
 | cold 실험의 역할 충돌을 찾아 0으로 고침 | 신작·한국영화 콘텐츠 추천 성능이 검증됨 |
-| TMDB 특징 준비가 다음 필수 단계임 | TMDB popularity·vote를 취향 정답으로 사용 가능 |
+| TMDB 전체 특징 Gate를 통과하고 결측을 측정함 | TMDB popularity·vote를 취향 정답으로 사용 가능 |
+| cold-item Validation 파일럿의 입력이 준비됨 | 개인화·콘텐츠 champion이 선택됨 |
 
 ## 9. 최종 결정
 
@@ -193,12 +239,13 @@ TMDB 전체 특징 파일이 없으므로 콘텐츠 모델 성능은 아직 계�
 
 ### 다음 실행 순서
 
-1. `REC-EV-019B`: TMDB identity·structured·text 특징 파일 생성과 coverage 검사
-2. Validation에서 기준선과 개인화 후보 하나를 결과 계산 전에 고정
-3. K=10부터 같은 20편·20 seed로 Top-2 Harm/Miss 비교
-4. 차이의 흔들림으로 필요한 Test 사용자 수 계산
-5. 표본과 안전 Gate가 통과할 때만 Locked Test 한 번 실행
-6. 통과 후에도 실제 FEELM 이벤트로 온라인 검증
+1. `REC-EV-019A`: user-disjoint binary cohort artifact 생성
+2. 019B identity allowlist를 적용해 019C의 K10 Test 적격 5,000명 Gate 재확인
+3. Validation에서 기준선과 개인화 후보 하나를 결과 계산 전에 고정
+4. K=10부터 같은 후보 공간에서 ranking·Top-2 Harm/Miss 비교
+5. 차이의 흔들림으로 필요한 Test 사용자 수 계산
+6. 표본과 안전 Gate가 통과할 때만 Locked Test 한 번 실행
+7. 통과 후에도 실제 FEELM 이벤트로 온라인 검증
 
 ## 10. 결과 상태표
 
@@ -206,15 +253,15 @@ TMDB 전체 특징 파일이 없으므로 콘텐츠 모델 성능은 아직 계�
 | --- | --- | --- |
 | REC-EV-020P-A 사용자·평가판 사전검사 | PASS | `rec-ev-020p.json` |
 | REC-EV-020P-B 기준선·후보 paired power | BLOCKED | 비교 예측 artifact 필요 |
-| REC-EV-021P 영화 firewall | PASS AFTER FIX | protected collision 0 |
-| REC-EV-021P TMDB 모델 준비 | BLOCKED | `REC-EV-019B` 필요 |
+| REC-EV-019B TMDB 전체 특징 | PASS | 전체 coverage Gate 통과 |
+| REC-EV-021P 영화 firewall·모델 준비 | PASS | protected collision 0, Validation pilot 가능 |
 | 새 개인화 champion | NOT SELECTED | 현재 인기도 유지 |
 
 ## 11. 재현과 근거
 
-- 실행 계약: `docs/recommendation/contracts/rec-ev-020p-artifacts.json`, `rec-ev-021p-artifacts.json`
+- 실행 계약: `docs/recommendation/contracts/rec-ev-019b-artifacts.json`, `rec-ev-020p-artifacts.json`, `rec-ev-021p-artifacts.json`
 - 프로토콜: `rec-eval-top2-v4.json`, `rec-eval-content-cold-v2.json`
-- 실행 결과: `REC-EV-020P-top2-v4-validation-preflight.md`, `REC-EV-021P-content-cold-v2-preflight.md`
+- 실행 결과: `REC-EV-019B-tmdb-feature-build.md`, `REC-EV-020P-top2-v4-validation-preflight.md`, `REC-EV-021P-content-cold-v2-preflight.md`
 - 한국 영화 감사: `REC-DATA-002-korean-origin-coverage.md`
 - 기존 예상 별점 근거: `docs/recommendation/evidence/manifests/rec-ev-003b.json`
 - 원본 MovieLens SHA-256: `e4a68655d7386b8f95f2f2424b2ff975dfdd15ffd59e0d864a14dca43e99d6ee`

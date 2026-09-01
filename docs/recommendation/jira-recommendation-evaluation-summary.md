@@ -65,10 +65,15 @@
    strict split과 density split이 6,964편에서 충돌했다. density 역할을 strict ITEM_TRAIN 안에서만
    나누도록 수정해 재검사 충돌을 0편으로 만들었다.
 
-8. **현재 판정**
-   cohort·slate preflight는 PASS. 기준선·후보 paired power는 예측 artifact 부재로 BLOCKED. cold-item
-   firewall은 PASS AFTER FIX지만 REC-EV-019B TMDB feature manifest가 없어 모델 실행은 BLOCKED.
-   현재 제품 추천은 popularity-only를 유지한다.
+8. **TMDB 전체 특징 실행**
+   100편 사전검사 후 Base-Train 영화 69,603편 전체를 실행했다. 링크 99.86%, identity 98.80%, 구조 특징
+   99.31%, 텍스트 특징 99.80%로 Gate를 통과했다. 키워드 결측 24.42%는 missing mask와 fallback으로
+   보존했다.
+
+9. **현재 판정**
+   cohort·slate preflight와 TMDB feature build는 PASS. cold-item preflight도 재실행해 Validation pilot
+   READY가 됐다. 기준선·후보 paired power는 prediction artifact 부재로 계속 BLOCKED다. 현재 제품 추천은
+   popularity-only를 유지한다.
 
 ### 핵심 숫자
 
@@ -81,6 +86,10 @@
 - 한국-origin 평점: 90,885개 / 전체 0.28%
 - density panel: q≥5 3,662편 / q≥20 1,963편 / q≥100 994편
 - 발견한 protected role 충돌: 6,964편 → 0편
+- TMDB 전체 후보: 69,603편 / 링크 69,508편(99.86%)
+- identity 확인·복구: 68,674편(98.80%)
+- 구조 특징: 68,201편(99.31%) / 텍스트 특징: 68,534편(99.80%)
+- 가장 큰 필드 결측: 키워드 16,772편(24.42%)
 
 ### 결정
 
@@ -88,7 +97,7 @@
 - 예상 별점 공개 미승인
 - 현재 popularity-only 유지
 - Locked Test 성능 미실행
-- 다음 선행 작업은 REC-EV-019B TMDB feature build
+- REC-EV-019B DONE, 다음 선행 작업은 REC-EV-019A cohort artifact
 
 ### 근거 문서
 
@@ -159,7 +168,7 @@
 - 불충분 시 margin을 넓히지 않고 INCONCLUSIVE
 
 **상태:** BLOCKED
-**막힘:** 비교 prediction artifact 없음, REC-EV-019B 선행 필요
+**막힘:** 비교 prediction artifact 없음. REC-EV-019A와 019C Validation prediction 선행 필요
 
 ### 5. cold-item firewall·density panel preflight
 
@@ -173,7 +182,7 @@
 - 3개 panel·5 fold 표본 수
 - compute plan과 golden fixture
 
-**상태:** DONE / FIREWALL PASS / MODEL BLOCKED
+**상태:** DONE / PASS / VALIDATION PILOT READY
 
 ### 6. TMDB feature artifact
 
@@ -188,7 +197,25 @@
 - TMDB popularity·vote·provider를 취향 feature에서 제외
 - cache·resume·checksum·quarantine
 
-**상태:** TODO / NEXT
+**상태:** DONE / PASS_FULL_GATES
+
+**사전검사 결과**
+
+- identity 99/100 (99.0%)
+- structured 99/99 (100%)
+- text embedding 99/99 (100%)
+- IMDb 불일치 1편은 자동 격리
+- cache resume, credential 비노출, 고정 ONNX SHA-256 검증 PASS
+
+**전체 결과**
+
+- 후보 69,603편 / TMDB 링크 69,508편(99.8635%)
+- identity 확인·복구 68,674편(98.8001%)
+- structured 68,201편(99.3112%)
+- text embedding 68,534편(99.7961%)
+- 키워드 결측 16,772편(24.42%), 배우 결측 2,336편(3.40%)
+- 전체 TMDB 수집 약 2시간 6분, cache 112,580개
+- embedding checkpoint·resume, artifact checksum, secret scan PASS
 
 ## Jira 최종 댓글 템플릿
 
@@ -198,18 +225,22 @@
 - K10 structural users: 16,795
 - K10 Miss non-null users: 16,516 (98.34%)
 - cold protected role collision: 6,964 → 0
+- REC-EV-019B full feature gates: PASS (69,603 movies)
+- identity/structured/text: 98.80% / 99.31% / 99.80%
+- REC-EV-021P: PASS / READY_FOR_VALIDATION_PILOT
 - personal champion: NOT SELECTED
 - product policy: popularity-only 유지
 
 [막힘]
-- REC-EV-019B TMDB feature manifest 없음
 - pre-endpoint locked baseline/challenger prediction artifact 없음
+- REC-EV-019A cohort artifact와 REC-EV-019C Validation prediction 미생성
 
 [다음]
-1) REC-EV-019B build/verify
-2) K10 Validation baseline vs one challenger prediction lock
-3) paired power 계산
-4) Gate 통과 시에만 Locked Test 1회
+1) REC-EV-019A cohort build/verify
+2) 최종 identity allowlist 적용 후 K10 Test 구조 적격 5,000명 재확인
+3) REC-EV-019C Validation baseline vs one challenger prediction lock
+4) paired power 계산
+5) Gate 통과 시에만 Locked Test 1회
 
 [근거]
 docs/recommendation/FEELM-recommendation-evaluation-final-report.md

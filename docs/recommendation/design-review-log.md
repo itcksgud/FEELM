@@ -169,5 +169,9 @@
   - q≥5/20/100 안전 panel은 각각 3,662/1,963/994편이다.
   - 5-fold 최소 영화 수는 PANEL_100P에서도 191편이다.
 - 남은 경계:
-  - REC-EV-019B TMDB feature manifest가 없으므로 content/cold 모델 실행은 BLOCKED다.
+  - 당시에는 REC-EV-019B TMDB feature manifest가 없어 content/cold 모델 실행을 BLOCKED했다.
   - REC-EV-020P-B 비교 예측 artifact가 없으므로 개인화 champion은 선택하지 않는다.
+- 후속 해소(2026-09-01):
+  - REC-EV-019B 전체 69,603편 feature Gate가 PASS했다.
+  - REC-EV-021P를 재실행해 blocker 0개와 `READY_FOR_VALIDATION_PILOT`를 확인했다.
+  - 이는 Validation 파일럿만 열며 Locked Test와 제품 champion은 계속 닫아 둔다.

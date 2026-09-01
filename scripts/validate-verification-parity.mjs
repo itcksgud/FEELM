@@ -88,6 +88,7 @@ for (const marker of [
   "Invoke-Checked npm @('ci', '--prefix', 'e2e')",
   'scripts\\requirements-build-tools.lock',
   'requirements-data.lock',
+  'requirements-ml.lock',
   'recommender\\requirements-test.lock',
   "Invoke-Checked npm @('run', 'verify')",
   "Invoke-Checked npm @('run', 'verify:e2e:fresh')",

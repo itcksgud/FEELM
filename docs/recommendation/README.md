@@ -45,7 +45,7 @@
 | Top-2 v4 실행 계약 | `contracts/rec-ev-020p-artifacts.json` | Validation cohort·slate·paired power 입력 계약 |
 | cold-item v2 실행 계약 | `contracts/rec-ev-021p-artifacts.json` | firewall·panel·통계 fixture 계약 |
 | Top-2 Validation 결과 | `evidence/REC-EV-020P-top2-v4-validation-preflight.md` | K별 평가 가능 사용자와 남은 paired-power blocker |
-| cold-item Validation 결과 | `evidence/REC-EV-021P-content-cold-v2-preflight.md` | 역할 충돌 수정과 panel 표본·TMDB blocker |
+| cold-item Validation 결과 | `evidence/REC-EV-021P-content-cold-v2-preflight.md` | 역할 충돌 수정·panel 표본·Validation pilot 준비 완료 |
 | 최종 쉬운 보고서 | `FEELM-recommendation-evaluation-final-report.md` | 설계·실행 결과·허용 주장·다음 순서 |
 | 문제 해결·AI 활용 정리 | `portfolio-problem-solving-and-ai.md` | 포트폴리오·면접용 경험 서술 |
 | 데이터 인사이트 | `data-insights-summary.md` | K·예상 별점·한국 영화·cold 표본 요약 |
@@ -53,6 +53,8 @@
 | 구현 준비도 | `vnext-implementation-readiness.md` | 다음 READY task와 downstream Gate를 구분 |
 | 019A artifact 계약 | `contracts/rec-ev-019a-artifacts.json` | cohort 경로·column schema·명령·Gate 고정 |
 | 019B artifact 계약 | `contracts/rec-ev-019b-artifacts.json` | TMDB feature·embedding·cache·coverage 계약 고정 |
+| 019B 100편 사전검사 | `evidence/REC-EV-019B-tmdb-feature-preflight.md` | 실제 TMDB·cache·identity·384차원 embedding 실행 검증 |
+| 019B 전체 실행 결과 | `evidence/REC-EV-019B-tmdb-feature-build.md` | 69,603편 identity·structured·text coverage와 실행 실패·복구 기록 |
 | 제품 서빙 경계 | `serving-contract.md` | 현재 승인 정책과 vNext 후보를 구분 |
 | 연구 보고서 | `personalized-hybrid-design-report.md` | 네 추천 Head의 가설·결과·한계를 연결 |
 

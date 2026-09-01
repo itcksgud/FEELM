@@ -18,7 +18,11 @@
 ```powershell
 py -3.12 -m pip install --require-hashes -r scripts\requirements-build-tools.lock
 py -3.12 -m pip install --no-build-isolation --require-hashes -r requirements-data.lock
+py -3.12 -m pip install --require-hashes -r requirements-ml.lock
 ```
+
+`requirements-ml.lock`은 REC-EV-019B의 고정 ONNX E5 embedding 실행에만 필요하다. 모델 파일은
+계약에 기록된 Hugging Face revision에서 내려받고 SHA-256을 확인하며 저장소에는 commit하지 않는다.
 
 ```powershell
 cd C:\higher\projects\FEELM-standalone

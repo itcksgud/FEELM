@@ -13,6 +13,7 @@ const environment = {
 const commands = [
   [python, [...pythonPrefix, '-m', 'unittest', 'discover', '-s', 'scripts/tests', '-p', 'test_recommendation_*.py']],
   [python, [...pythonPrefix, '-m', 'unittest', 'discover', '-s', 'scripts/tests', '-p', 'test_spark_*.py']],
+  [python, [...pythonPrefix, '-m', 'unittest', 'scripts/tests/test_build_rec_ev_019b_features.py']],
   [python, [...pythonPrefix, 'scripts/verify_recommendation_exploration_pareto.py', '--manifest', 'docs/recommendation/evidence/manifests/rec-ev-004.json']],
   [python, [...pythonPrefix, 'scripts/verify_recommendation_exploration_full_catalog.py', '--manifest', 'docs/recommendation/evidence/manifests/rec-ev-004b.json']],
   [python, [...pythonPrefix, 'scripts/verify_recommendation_reason_faithfulness.py', '--manifest', 'docs/recommendation/evidence/manifests/rec-ev-006.json']],

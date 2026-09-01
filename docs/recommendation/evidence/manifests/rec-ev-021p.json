@@ -1,14 +1,14 @@
 {
   "artifacts": [
     {
-      "bytes": 1746,
+      "bytes": 1723,
       "path": "outputs/recommendation-evidence/rec-ev-021p/compute-plan.json",
-      "sha256": "869a68c4bcd08b48a82ed3ada465dd8a7b81de4146d2d094c941c0545e52c203"
+      "sha256": "cb2eef927ded1941e16774a7f6e24f20d5c65c9f339625cf50b6fac4f1bf1ee6"
     },
     {
-      "bytes": 1965,
+      "bytes": 1908,
       "path": "outputs/recommendation-evidence/rec-ev-021p/item-firewall-audit.json",
-      "sha256": "80435fd87b3b8ae9cfa9b5e64a90d3393bc7a1a0d9b16d9d11ade3aa19c6988d"
+      "sha256": "c69074ed8854cd76025d7e90378f6e3fb6e71a71f8ab31b62521e02c2bcfb698"
     },
     {
       "bytes": 35288,
@@ -16,9 +16,9 @@
       "sha256": "301d7cb4dd8b19f15a87041cf4067eb06049cb2effe7fddc2727507bedda2be2"
     },
     {
-      "bytes": 514,
+      "bytes": 511,
       "path": "outputs/recommendation-evidence/rec-ev-021p/protocol-lock.json",
-      "sha256": "32f906613f0aa03131c407a764b73f6067e0054a10fbd8706f7da602d2df227e"
+      "sha256": "484a2df8d5c4c11ccb284998dc6b3143e391ac694ff5a3d71c443459a1400b26"
     }
   ],
   "evidence_id": "REC-EV-021P",
@@ -26,12 +26,10 @@
   "protocol": "docs/recommendation/protocols/rec-eval-content-cold-v2.json",
   "protocol_sha256": "0b5f75c340d8ba30a63baa3d6491046255572df06673c6a2f7e559e999b66b76",
   "schema_version": 1,
-  "status": "BLOCKED",
+  "status": "PASS",
   "validation": {
-    "blocker_reasons": [
-      "REC_EV_019B_TMDB_FEATURE_MANIFEST_MISSING"
-    ],
+    "blocker_reasons": [],
     "firewall": "PASS",
-    "model_run": "BLOCKED_MISSING_REC_EV_019B"
+    "model_run": "READY_FOR_VALIDATION_PILOT"
   }
 }

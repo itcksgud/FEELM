@@ -139,17 +139,21 @@ def main() -> int:
     runtime_packages = locked_packages("recommender/requirements.lock", errors)
     test_packages = locked_packages("recommender/requirements-test.lock", errors)
     data_packages = locked_packages("requirements-data.lock", errors)
+    ml_packages = locked_packages("requirements-ml.lock", errors)
     locked_packages("scripts/requirements-lock-tools.lock", errors)
     locked_packages("scripts/requirements-audit-tools.lock", errors)
     locked_packages("scripts/requirements-build-tools.lock", errors)
     runtime_direct, test_direct = direct_pyproject_dependencies()
     data_direct = direct_requirement_dependencies("requirements-data.txt")
+    ml_direct = direct_requirement_dependencies("requirements-ml.txt")
     if missing := runtime_direct - runtime_packages:
         errors.append(f"runtime lock misses direct dependencies: {sorted(missing)}")
     if missing := (runtime_direct | test_direct) - test_packages:
         errors.append(f"test lock misses direct dependencies: {sorted(missing)}")
     if missing := data_direct - data_packages:
         errors.append(f"data lock misses direct dependencies: {sorted(missing)}")
+    if missing := ml_direct - ml_packages:
+        errors.append(f"ML lock misses direct dependencies: {sorted(missing)}")
 
     dockerfile = read("recommender/Dockerfile")
     for required_fragment in (
@@ -185,11 +189,13 @@ def main() -> int:
     for required_fragment in (
         "pip install --require-hashes -r recommender/requirements-test.lock",
         "pip install --no-build-isolation --require-hashes -r requirements-data.lock",
+        "pip install --require-hashes -r requirements-ml.lock",
         "pip install --require-hashes -r scripts/requirements-audit-tools.lock",
         "pip install --require-hashes -r scripts/requirements-build-tools.lock",
         "pip_audit -r recommender/requirements.lock",
         "pip_audit -r recommender/requirements-test.lock",
         "pip_audit -r requirements-data.lock",
+        "pip_audit -r requirements-ml.lock",
         "pip_audit -r scripts/requirements-audit-tools.lock",
         "pip_audit -r scripts/requirements-build-tools.lock",
         "pip_audit -r scripts/requirements-lock-tools.lock",

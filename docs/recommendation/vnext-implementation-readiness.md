@@ -2,10 +2,10 @@
 
 > 상태: `APPROVED` — 오프라인 추천 evidence 구현 착수 기준
 > 판정일: 2026-08-31
-> 최종 판정: **GO — REC-EV-019A/019B부터 LLM이 독립 구현 가능**
+> 최종 판정: **GO — REC-EV-019B 완료, REC-EV-019A가 다음 독립 실행 작업**
 > 제품 경계: 현재 C2 popularity-only 교체와 개인화 champion 승인은 이 GO에 포함하지 않는다.
 > 후속 경계: Top-2 v4와 cold-item v2는 `PROPOSED_PROTOCOL_VALIDATION_PREFLIGHT_REQUIRED`다. 별도
-> Schema·artifact contract·runner 구현은 시작할 수 있지만 기존 readiness validator의 019A/019B GO나
+> Schema·artifact contract·runner 구현은 시작할 수 있지만 readiness validator의 019A GO나
 > Locked Test 실행 GO에 포함되지 않는다.
 
 ## 1. GO의 정확한 의미
@@ -13,8 +13,8 @@
 이 판정은 새 LLM 세션이 이전 대화 없이 저장소만 읽고 다음 작업을 선택·구현·검증할 수 있다는 뜻이다.
 
 - binary 온보딩 cohort artifact
-- 전체 TMDB feature artifact
-- 강한 기준 모델과 full-catalog evaluator는 019A/019B 완료 뒤 시작
+- 전체 TMDB feature artifact는 `PASS_FULL_GATES`로 완료
+- 강한 기준 모델과 full-catalog evaluator는 019A 완료 뒤 시작
 - REC-EV-019~026 evidence는 backlog dependency Gate를 순서대로 통과
 
 모델이 아직 실험 Gate를 통과하지 않았다는 이유로 구현 자체를 막지 않는다. 반대로 구현 준비가 됐다는
@@ -23,12 +23,13 @@
 | 판정 대상 | 상태 |
 | --- | --- |
 | 추천 vNext 오프라인 구현 착수 | **GO** |
-| REC-EV-019A/019B 구현 feasibility | **PASS — strict K10 Test 5,476명** |
-| REC-EV-019C 모델 실행 | `PENDING`, 019B 최종 identity 적용 뒤 5,000명 Gate 재확인 |
+| REC-EV-019A 구현 feasibility | **PASS — strict K10 Test 5,476명** |
+| REC-EV-019B 전체 특징 | **DONE — 69,603편 전체 coverage Gate PASS** |
+| REC-EV-019C 모델 실행 | `PENDING`, 019A 생성 뒤 최종 identity 적용 5,000명 Gate 재확인 |
 | REC-EV-020P-A/B 설계→계약 구현 | `GO`, v4 Schema·artifact contract·runner 구현 가능 |
 | REC-EV-020P-A/B 실행 완료 판정 | `NO-GO`, runner·verifier·Validation power 결과 필요 |
-| REC-EV-021P 설계→계약 구현 | `GO`, firewall·panel preflight contract·runner 구현 가능 |
-| REC-EV-021P 실행 완료 판정 | `NO-GO`, runner·verifier·Validation preflight 결과 필요 |
+| REC-EV-021P 사전검사 | **DONE — firewall PASS, Validation pilot READY** |
+| REC-EV-021 전체 grid·Locked Test | `NO-GO`, 소규모 Validation 실행 시간·적용 모델 Gate 필요 |
 | binary 개인화 champion | `null`, 실험 결과 대기 |
 | 예상 별점 public 노출 | `NO` |
 | C2 기본 정책 교체 | `NO`, 별도 vNext 승인 필요 |
@@ -101,7 +102,7 @@
 구현 파일·Parquet column schema·정렬 순서·출력 경로·실패 보존 정책·세 검증 명령은 artifact 계약에
 고정돼 있다. 새 세션은 이 계약에 없는 column이나 의미를 임의로 추가하지 않는다.
 
-### 4.2 `TASK-REC-EV-019B` — 019A와 독립 진행 가능
+### 4.2 `TASK-REC-EV-019B` — 완료
 
 목적은 MovieLens `links.csv`로 연결된 Train-known 전체 영화의 TMDB structured/text feature를 만드는
 것이다. API token은 `.env.local`에서만 읽고 문서·로그·artifact에 기록하지 않는다.
@@ -115,8 +116,10 @@
   제거하지 않고 B0 fallback을 기록한다.
 - 캐시·429/5xx retry·100편 checkpoint·resume·coverage Gate는 artifact 계약 값을 따른다.
 
-현재 `outputs/catalog-design-preview` 약 8,050편과 TMDB audit 843편은 전수 성능 입력이 아니다.
-전체 artifact가 없으면 019C는 시작하지 않는다.
+전체 69,603편 실행에서 링크 99.8635%, identity 98.8001%, 구조 특징 99.3112%, 텍스트 특징
+99.7961%로 Gate를 통과했다. 결과와 실패·복구 과정은
+[`REC-EV-019B 전체 결과`](./evidence/REC-EV-019B-tmdb-feature-build.md)에 기록했다. 019C는 019A까지
+완료한 뒤 두 artifact의 교집합과 K10 5,000명 Gate를 다시 확인하고 시작한다.
 
 ## 5. 완료 명령
 
@@ -124,6 +127,7 @@
 
 ```powershell
 py -3 -m pip install -r requirements-data.txt
+py -3 -m pip install --require-hashes -r requirements-ml.lock
 npm ci
 ```
 
@@ -143,8 +147,9 @@ py -3 scripts/verify_recommendation_binary_onboarding_preflight.py
 Remove-Item Env:PYTHONPATH
 ```
 
-모든 명령은 실제 secret 없이 preflight와 계약 검증까지 동작한다. TMDB 전수 수집만 실제 token과
-네트워크가 필요하며 캐시 재개·rate limit·quarantine을 사용한다.
+준비도 검증은 실제 secret 없이 추적된 019B manifest와 contract checksum을 검사한다. 로컬 artifact
+checksum·schema·coverage는 019B verifier가 검사한다. TMDB 전수 재수집만 실제 token과 네트워크가
+필요하며, 기존 cache가 있으면 network request 없이 재검증할 수 있다.
 
 ## 6. LLM이 임의로 결정하면 안 되는 것
 

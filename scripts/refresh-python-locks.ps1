@@ -53,6 +53,11 @@ try {
         '--quiet', '--generate-hashes', '--allow-unsafe', '--strip-extras',
         '--output-file', 'requirements-data.lock', 'requirements-data.txt'
     )
+    Invoke-Checked $pipCompile @(
+        '--quiet', '--generate-hashes', '--strip-extras',
+        '--constraint', 'requirements-data.txt',
+        '--output-file', 'requirements-ml.lock', 'requirements-ml.txt'
+    )
 
     Write-Host 'Python lock refresh complete. Review the lock diff and run npm run supply-chain:check.'
 }

@@ -1,6 +1,6 @@
 # REC-EV-021P — 신작·희소 영화 실험 사전검사
 
-> 상태: `FIREWALL FIXED / MODEL RUN BLOCKED`
+> 상태: `PASS / READY_FOR_VALIDATION_PILOT`
 > 범위: MovieLens Validation 역할과 사전 정의한 영화 분리
 > 제품 반영: 없음
 > Locked Test 성능 확인: 하지 않음
@@ -8,8 +8,8 @@
 ## 한 줄 결론
 
 영화를 숨기는 실험과 평점 수를 줄이는 실험 사이에서 6,964편이 충돌하는 문제를 실제 실행으로 발견했고,
-밀도 실험을 strict Train 영화 안으로 제한해 충돌을 0편으로 만들었다. 실험할 영화 수는 충분하지만,
-TMDB 전체 특징 파일이 없어 콘텐츠 모델 학습은 아직 시작하면 안 된다.
+밀도 실험을 strict Train 영화 안으로 제한해 충돌을 0편으로 만들었다. REC-EV-019B 전체 TMDB 특징
+manifest까지 확인돼, Locked Test를 열지 않는 소규모 Validation 파일럿을 시작할 수 있다.
 
 ## 발견하고 고친 문제
 
@@ -48,16 +48,20 @@ strict ITEM_VALIDATION / ITEM_LOCKED_TEST
 한꺼번에 돌리면 예시상 1,125회가 되므로, 먼저 `PANEL_5P × seed 1개 × ALS 1개`로 시간과 메모리를 재는
 것이 안전하다.
 
-## 남은 막힘
+## TMDB 선행 조건 해소
 
-`REC-EV-019B`가 만들도록 정한 아래 파일이 아직 없다.
+`REC-EV-019B` 전체 실행에서 아래 파일과 checksum을 만들고 검증했다.
 
 - MovieLens↔TMDB 영화 ID 검증 파일
 - 장르·감독·배우·키워드·언어·연도 등 구조화 특징
 - 줄거리 등을 담은 텍스트 embedding
 
-MovieLens 제목·장르만 대신 쓰면 사용자가 지적한 “MovieLens를 영화 정보로 쓰지 말자”는 원칙을 다시
-어기게 된다. 따라서 이 상태에서 콘텐츠 모델 점수를 만들지 않았다.
+MovieLens 제목·장르로 대체하지 않고 실제 TMDB identity 68,674편, 구조 특징 68,201편, 텍스트 특징
+68,534편을 사용한다. 사전검사 재실행 결과 blocker는 0개, `model_run_status`는
+`READY_FOR_VALIDATION_PILOT`다.
+
+이는 콘텐츠 모델 채택이나 전체 grid 실행 승인과 다르다. compute plan에 적힌 대로 먼저 panel 하나,
+mask seed 하나, ALS와 content baseline만 실행해 시간·메모리·결측 fallback을 측정해야 한다.
 
 ## 재현 명령
 

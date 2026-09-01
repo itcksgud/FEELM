@@ -1,6 +1,6 @@
 {
-  "schema_version": 1,
-  "contract_id": "rec-ev-019b-artifacts-v1",
+  "schema_version": 2,
+  "contract_id": "rec-ev-019b-artifacts-v2",
   "status": "APPROVED",
   "task_id": "TASK-REC-EV-019B",
   "protocol_version": "rec-eval-vnext-2",
@@ -9,8 +9,58 @@
     "movielens_archive": "resolved from docs/recommendation/evidence/manifests/global-time-v1.json source.archive",
     "candidate_core": "outputs/recommendation-evidence/rec-ev-019a/candidate-core-provisional.parquet when available; otherwise all Base-Train movie IDs derived with the 019A contract",
     "tmdb_auth_env": "TMDB_READ_ACCESS_TOKEN",
+    "tmdb_auth_accepted_shapes": "JWT Read Access Token uses Authorization Bearer; 32-character v3 API key uses api_key query transport only; neither is serialized",
     "tmdb_language_requests": ["ko-KR", "en-US"],
     "metadata_time_semantics": "CURRENT_METADATA_RETROSPECTIVE"
+  },
+  "candidate_derivation": {
+    "user_bucket_algorithm": "uint64_be(SHA256('feelm-rec-vnext-user-split-v1|' + userId)[0:8]) mod 100",
+    "base_train_buckets_inclusive": [0, 39],
+    "movie_rule": "distinct movieId observed for at least one Base-Train user",
+    "linked_definition": "links.csv tmdbId parses as a positive integer",
+    "preflight_sample_algorithm": "sort linked movies by SHA256('feelm-rec-019b-sample-v1|' + canonical movieId), then take N",
+    "preflight_default_n": 100,
+    "preflight_is_not_full_gate_evidence": true
+  },
+  "tmdb_extraction": {
+    "details_endpoint": "/3/movie/{tmdb_id}",
+    "details_query": {
+      "append_to_response": "credits,keywords",
+      "language": "ko-KR"
+    },
+    "english_fallback_request": "repeat details request with language=en-US only when the ko-KR title or overview is blank",
+    "imdb_recovery_endpoint": "/3/find/{imdb_id}?external_source=imdb_id&language=en-US",
+    "imdb_recovery_rule": "only after a linked tmdbId returns 404 or 410; accept exactly one movie_result and then fetch its movie details",
+    "identity_rules": {
+      "ML_TMDB_VERIFIED": "details response id equals linked tmdbId and any nonblank returned imdb_id equals links.csv imdbId",
+      "RECOVERED_BY_IMDB": "find-by-imdb returns exactly one movie and recovered details id matches that movie id",
+      "TYPE_MISMATCH_TV": "find-by-imdb returns no movie result and at least one tv result",
+      "TMDB_NOT_FOUND": "terminal details response and find-by-imdb returns no movie or tv result",
+      "IDENTITY_REVIEW_REQUIRED": "ambiguous movie results, response id mismatch, or nonblank imdb mismatch"
+    },
+    "language_merge": {
+      "display_title": "first nonblank of ko-KR title, en-US title, original_title",
+      "overview_fallback": "first nonblank of ko-KR overview, en-US overview",
+      "structured_lists": "use the verified/recovered primary details response; language labels are for embedding text only",
+      "director_rule": "crew job exactly Director, preserve credit order, unique person id",
+      "cast_rule": "sort by order then person id, unique person id, take first five",
+      "keyword_rule": "accept keywords.keywords or keywords.results, preserve response order, unique keyword id"
+    },
+    "missing_mask_bits": {
+      "original_language": 1,
+      "release_year": 2,
+      "runtime_minutes": 4,
+      "genre_ids": 8,
+      "director_ids": 16,
+      "top5_cast_ids": 32,
+      "keyword_ids": 64,
+      "overview_fallback": 128,
+      "display_title": 256
+    },
+    "structured_feature_eligible": "identity eligible and original_language, release_year, and at least one genre id are present",
+    "text_feature_eligible": "identity eligible and display_title and overview_fallback are nonblank",
+    "source_updated_at": "null because TMDB movie details does not expose a source update timestamp",
+    "forbidden_field_boundary": "raw transport responses may contain TMDB response fields, but no forbidden field may be copied into structured features, embedding input text, or preference artifacts"
   },
   "implementation": {
     "runner_to_create": "scripts/build_rec_ev_019b_features.py",
@@ -23,10 +73,14 @@
   "embedding": {
     "model_id": "intfloat/multilingual-e5-small",
     "model_revision": "614241f622f53c4eeff9890bdc4f31cfecc418b3",
+    "runtime": "onnxruntime CPUExecutionProvider",
+    "model_artifact": "onnx/model.onnx",
+    "model_artifact_sha256": "ca456c06b3a9505ddfd9131408916dd79290368331e7d76bb621f1cba6bc8665",
     "dimension": 384,
     "input_prefix": "passage: ",
     "input_template": "{display_title} [SEP] {overview_fallback} [SEP] genres: {genre_names} [SEP] directors: {director_names} [SEP] cast: {top5_cast_names} [SEP] keywords: {keyword_names}",
     "maximum_tokens": 512,
+    "batching": "stable sort by input character length, encode, then restore movie_id order; batching must not change tokenization or vectors beyond floating point tolerance",
     "pooling": "attention-mask mean pooling",
     "normalization": "L2",
     "dtype": "float32"
@@ -42,8 +96,24 @@
     "maximum_attempts": 5,
     "maximum_concurrency": 8,
     "checkpoint_every_movies": 100,
+    "embedding_checkpoint": "memory-mapped float32 array plus model/input/batch signature after every embedding batch",
     "resume_required": true,
     "token_in_log_or_artifact_forbidden": true
+  },
+  "preflight": {
+    "output_root": "outputs/recommendation-evidence/rec-ev-019b-preflight",
+    "manifest": "docs/recommendation/evidence/manifests/rec-ev-019b-preflight.json",
+    "command": "py -3 scripts/build_rec_ev_019b_features.py --contract docs/recommendation/contracts/rec-ev-019b-artifacts.json --preflight --limit 100 --resume",
+    "verify_command": "py -3 scripts/verify_rec_ev_019b_features.py --manifest docs/recommendation/evidence/manifests/rec-ev-019b-preflight.json --preflight",
+    "pass_conditions": [
+      "100 deterministic linked movies selected",
+      "sample identity, structured, and text coverage each meet the corresponding full-run health threshold without claiming statistical full-gate evidence",
+      "no duplicate output movie rows",
+      "resume reuses successful cache without a network request",
+      "retry and terminal response behavior covered by unit tests",
+      "every eligible embedding has dimension 384 and L2 norm within tolerance",
+      "token and forbidden preference fields absent from generated feature artifacts"
+    ]
   },
   "output_root": "outputs/recommendation-evidence/rec-ev-019b",
   "artifacts": [

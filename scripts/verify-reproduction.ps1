@@ -66,6 +66,10 @@ try {
         '--require-hashes', '-r', 'requirements-data.lock'
     )
     Invoke-Checked $dataPython @(
+        '-m', 'pip', 'install', '--disable-pip-version-check', '--require-hashes',
+        '-r', 'requirements-ml.lock'
+    )
+    Invoke-Checked $dataPython @(
         '-m', 'pip', 'install', '--disable-pip-version-check', '--no-deps',
         '--no-build-isolation', '-e', 'data-pipeline'
     )

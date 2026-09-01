@@ -1,0 +1,48 @@
+{
+  "artifacts": [
+    {
+      "bytes": 1959,
+      "path": "outputs/recommendation-evidence/rec-ev-019b/coverage-summary.json",
+      "sha256": "ebe47662380f6a4b61b54dda6b406be7c99067793e2ff807c9b287e754739ffb"
+    },
+    {
+      "bytes": 3850956,
+      "path": "outputs/recommendation-evidence/rec-ev-019b/movie-identity.parquet",
+      "sha256": "56042bc89b5745d46ad1ebae3e80494c4aa2abe69dde8eb84560eaaffaae27bd"
+    },
+    {
+      "bytes": 10362,
+      "path": "outputs/recommendation-evidence/rec-ev-019b/quarantine.parquet",
+      "sha256": "f38bd6cd6bd71c678a13027bd3f7ae96fad6ca2e65081e151db30b7b9c170c77"
+    },
+    {
+      "bytes": 3008444,
+      "path": "outputs/recommendation-evidence/rec-ev-019b/structured-features.parquet",
+      "sha256": "d68b93496c003c2a51e5defe0c9ee9af24e7b0d99eb68a0536d2e0a305460c62"
+    },
+    {
+      "bytes": 99988968,
+      "path": "outputs/recommendation-evidence/rec-ev-019b/text-embeddings.parquet",
+      "sha256": "ff35381f231e6d2a1fe35b79b8b55f64744c16188f9b92ce74c1466930967bda"
+    }
+  ],
+  "contract": "docs/recommendation/contracts/rec-ev-019b-artifacts.json",
+  "contract_sha256": "f22bc18095e1fc7b2a15b13b90ca76f80518019c48b30563d98b2fbb0f223d17",
+  "evidence_id": "REC-EV-019B",
+  "model_revision": "614241f622f53c4eeff9890bdc4f31cfecc418b3",
+  "preflight": false,
+  "schema_version": 2,
+  "source_checksums": {
+    "contract_sha256": "f22bc18095e1fc7b2a15b13b90ca76f80518019c48b30563d98b2fbb0f223d17",
+    "movielens_archive_sha256": "e4a68655d7386b8f95f2f2424b2ff975dfdd15ffd59e0d864a14dca43e99d6ee"
+  },
+  "status": "PASS_FULL_GATES",
+  "validation": {
+    "identity_rate": 0.9880013811359843,
+    "locked_test_opened": false,
+    "product_policy_changed": false,
+    "selected_movies": 69603,
+    "structured_rate": 0.9931123860558582,
+    "text_rate": 0.9979613827649474
+  }
+}

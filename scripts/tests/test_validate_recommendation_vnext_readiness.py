@@ -6,6 +6,7 @@ import unittest
 from validate_recommendation_vnext_readiness import (
     read_json,
     read_yaml,
+    validate_019b_completion_manifest,
     validate_artifact_contracts,
     validate_backlog,
     validate_protocol,
@@ -25,6 +26,8 @@ class RecommendationVnextReadinessValidatorTest(unittest.TestCase):
         validate_protocol(self.protocol)
         validate_artifact_contracts()
         validate_backlog(self.backlog)
+        manifest = validate_019b_completion_manifest()
+        self.assertEqual("PASS_FULL_GATES", manifest["status"])
 
     def test_rejects_smaller_test_split(self) -> None:
         mutated = copy.deepcopy(self.protocol)

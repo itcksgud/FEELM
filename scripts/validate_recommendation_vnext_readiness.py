@@ -213,7 +213,7 @@ def validate_backlog(backlog: dict[str, Any]) -> None:
     required = {
         "TASK-REC-EV-019P": "DONE",
         "TASK-REC-EV-019A": "READY",
-        "TASK-REC-EV-019B": "READY",
+        "TASK-REC-EV-019B": "DONE",
         "TASK-REC-EV-019C": "PENDING",
         "TASK-REC-EV-019": "PENDING",
         "TASK-REC-EV-020": "PENDING",
@@ -278,6 +278,39 @@ def validate_current_product_boundary() -> None:
             raise RuntimeError(f"current C2 protection is missing: {required}")
 
 
+def validate_019b_completion_manifest() -> dict[str, Any]:
+    manifest = read_json("docs/recommendation/evidence/manifests/rec-ev-019b.json")
+    contract = read_json("docs/recommendation/contracts/rec-ev-019b-artifacts.json")
+    if manifest.get("status") != "PASS_FULL_GATES" or manifest.get("preflight") is not False:
+        raise RuntimeError("REC-EV-019B full feature manifest is not complete")
+    if manifest.get("contract_sha256") != manifest.get("source_checksums", {}).get("contract_sha256"):
+        raise RuntimeError("REC-EV-019B manifest contract checksums disagree")
+    from recommendation_protocol_v4 import sha256_file
+
+    contract_path = ROOT / "docs/recommendation/contracts/rec-ev-019b-artifacts.json"
+    if manifest.get("contract_sha256") != sha256_file(contract_path):
+        raise RuntimeError("REC-EV-019B manifest points to a stale contract")
+    validation = manifest.get("validation", {})
+    if validation.get("selected_movies") != 69603:
+        raise RuntimeError("REC-EV-019B full candidate count changed")
+    if validation.get("identity_rate", 0) < contract["gates"]["verified_or_recovered_identity_rate_of_linked_min"]:
+        raise RuntimeError("REC-EV-019B identity Gate is not recorded as passed")
+    if validation.get("structured_rate", 0) < contract["gates"]["structured_feature_eligible_rate_of_identity_eligible_min"]:
+        raise RuntimeError("REC-EV-019B structured Gate is not recorded as passed")
+    if validation.get("text_rate", 0) < contract["gates"]["text_feature_eligible_rate_of_identity_eligible_min"]:
+        raise RuntimeError("REC-EV-019B text Gate is not recorded as passed")
+    if validation.get("locked_test_opened") is not False or validation.get("product_policy_changed") is not False:
+        raise RuntimeError("REC-EV-019B completion crossed its safety boundary")
+    expected_artifacts = {
+        item["path"]
+        for item in contract["artifacts"]
+        if item["path"] != "docs/recommendation/evidence/manifests/rec-ev-019b.json"
+    }
+    if {item.get("path") for item in manifest.get("artifacts", [])} != expected_artifacts:
+        raise RuntimeError("REC-EV-019B tracked artifact inventory changed")
+    return manifest
+
+
 def validate() -> dict[str, Any]:
     documents = (
         "docs/recommendation/00-input-signal-contract-vnext.md",
@@ -299,12 +332,15 @@ def validate() -> dict[str, Any]:
     )
     if preflight["implementation"] != "GO":
         raise RuntimeError("REC-EV-019 preflight did not produce implementation GO")
+    feature_build = validate_019b_completion_manifest()
 
     return {
         "status": "PASS",
         "decision": "GO",
-        "scope": "REC-EV-019A_019B_READY_DOWNSTREAM_GATED",
-        "next_ready_tasks": ["TASK-REC-EV-019A", "TASK-REC-EV-019B"],
+        "scope": "REC-EV-019A_READY_019B_DONE_DOWNSTREAM_GATED",
+        "next_ready_tasks": ["TASK-REC-EV-019A"],
+        "rec_ev_019b_status": feature_build["status"],
+        "rec_ev_019b_selected_movies": feature_build["validation"]["selected_movies"],
         "eligible_k10_test_users": preflight["eligible_test_users"],
         "current_product_policy": "APPROVED_C2A_INTERNAL_POPULARITY_ONLY",
         "product_champion": None,

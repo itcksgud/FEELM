@@ -108,6 +108,7 @@ jobs:
       - run: npm run build --prefix frontend
       - run: python -m pip install --require-hashes -r scripts/requirements-build-tools.lock
       - run: python -m pip install --no-build-isolation --require-hashes -r requirements-data.lock
+      - run: python -m pip install --require-hashes -r requirements-ml.lock
       - run: npm run recommendation:evidence:check
 
   dependency-audit:
@@ -150,6 +151,7 @@ jobs:
       - run: npm audit --prefix e2e --json
       - run: python -m pip install --require-hashes -r scripts/requirements-audit-tools.lock
       - run: python -m pip_audit -r requirements-data.lock --progress-spinner off
+      - run: python -m pip_audit -r requirements-ml.lock --progress-spinner off
       - run: python -m pip_audit -r recommender/requirements.lock --progress-spinner off
       - run: python -m pip_audit -r recommender/requirements-test.lock --progress-spinner off
       - run: python -m pip_audit -r scripts/requirements-audit-tools.lock --progress-spinner off

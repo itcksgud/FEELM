@@ -17,6 +17,7 @@ const requiredPaths = [
   'package.json',
   'recommender/pyproject.toml',
   'requirements-data.lock',
+  'requirements-ml.lock',
   'scripts/verify-reproduction.ps1',
 ]
 
