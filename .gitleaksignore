@@ -1,0 +1,2 @@
+# Fixed 32-character dummy used to test TMDB v3-key parsing; never a credential.
+c206973a1931f03b8c693ef4bc300660b5e267ea:scripts/tests/test_tmdb_korean_origin_audit.py:generic-api-key:41
