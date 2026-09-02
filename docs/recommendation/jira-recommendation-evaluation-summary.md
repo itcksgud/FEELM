@@ -266,7 +266,7 @@
 - checkpoint·resume·실패 보존·선택 lock schema 고정
 - 실제 Validation·Locked Test·제품 champion은 승인하지 않음
 
-**상태:** SYNTHETIC_AND_DEPENDENCY_PREFLIGHT_PASS / REAL_RUNNER_IMPLEMENTATION_ONLY
+**상태:** PREFLIGHT_PASS / RESOURCE_CONTRACT_AMENDMENT_REQUIRED
 
 **결과**
 
@@ -275,7 +275,8 @@
 - 계약 validator와 9개 공격 변이 테스트 PASS
 - runner 합성 15개 검사와 Linux dependency 9개 검사 PASS
 - LightFM BPR/WARP 계약 충돌을 발견해 B8을 관측 ±1 logistic+frozen-item fold-in으로 교정
-- 실제 Validation 실행은 실제 runner 구현·검토 전까지 BLOCKED
+- metadata-only 계산량 점검: full-catalog score 약 75.5억 회, B8 update 상한 약 61.5억 회
+- B4 pair 수·trial/seed 단계·score/update 예산이 고정될 때까지 실제 Validation BLOCKED
 
 ## Jira 최종 댓글 템플릿
 
@@ -290,19 +291,22 @@
 - identity/structured/text: 98.80% / 99.31% / 99.80%
 - REC-EV-021P: PASS / READY_FOR_VALIDATION_PILOT
 - REC-EV-019C preflight: PASS (synthetic 15 / Linux dependency 9)
+- REC-EV-019C resource dry-run: PASS audit / BLOCKED execution (4 blockers)
 - personal champion: NOT SELECTED
 - product policy: popularity-only 유지
 
 [막힘]
 - pre-endpoint locked baseline/challenger prediction artifact 없음
+- REC-EV-019C B4 pair·seed 반복·score/update 예산 미확정
 - REC-EV-019C 실제 runner와 Validation prediction 미생성
 
 [다음]
-1) REC-EV-019C 실제 입력 adapter·모델·block scorer·checkpoint·verifier 구현
-2) 실제 데이터 dry-run과 코드 검토 후 Validation 실행 승인 재판단
-3) Validation baseline vs one challenger prediction lock
-4) 동일한 최종 후보 41,625편에서 paired power 계산
-5) Gate 통과 시에만 Locked Test 1회
+1) REC-EV-019C pair·seed·자원 예산 계약 수정 및 사전검증 재실행
+2) 실제 입력 adapter·모델·block scorer·checkpoint·verifier 구현
+3) 코드 검토 후 Validation 실행 승인 재판단
+4) Validation baseline vs one challenger prediction lock
+5) 동일한 최종 후보 41,625편에서 paired power 계산
+6) Gate 통과 시에만 Locked Test 1회
 
 [근거]
 docs/recommendation/FEELM-recommendation-evaluation-final-report.md

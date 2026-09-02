@@ -287,7 +287,7 @@ def validate_backlog(backlog: dict[str, Any]) -> None:
     if task_019c.get("artifact_contract") != contract_019c_path:
         raise RuntimeError("019C artifact contract is missing from backlog")
     contract_019c = read_json(contract_019c_path)
-    if task_019c.get("current_authorization") != "IMPLEMENTATION_AND_SYNTHETIC_PREFLIGHT_ONLY":
+    if task_019c.get("current_authorization") != "IMPLEMENTATION_SYNTHETIC_PREFLIGHT_AND_METADATA_DRY_RUN_ONLY":
         raise RuntimeError("019C backlog authorization is too broad")
     expected_019c_outputs = {item["path"] for item in contract_019c["future_artifacts"]}
     if set(task_019c.get("outputs", [])) != expected_019c_outputs:
@@ -301,6 +301,8 @@ def validate_backlog(backlog: dict[str, Any]) -> None:
         "synthetic_preflight_verify": implementation_019c["synthetic_preflight_verify_command"],
         "dependency_smoke_run": implementation_019c["dependency_smoke_run_command"],
         "dependency_smoke_verify": implementation_019c["dependency_smoke_verify_command"],
+        "resource_dry_run": implementation_019c["resource_dry_run_command"],
+        "resource_dry_run_verify": implementation_019c["resource_dry_run_verify_command"],
         "future_validation": implementation_019c["future_validation_command"],
         "future_verify": implementation_019c["future_verify_command"],
     }
@@ -426,6 +428,15 @@ def validate_019c_dependency_smoke() -> dict[str, Any]:
     )
 
 
+def validate_019c_resource_dry_run() -> dict[str, Any]:
+    from verify_rec_ev_019c_resource_dry_run import verify_manifest
+
+    return verify_manifest(
+        ROOT / "docs/recommendation/evidence/manifests/rec-ev-019c-resource-dry-run.json",
+        root=ROOT,
+    )
+
+
 def validate() -> dict[str, Any]:
     documents = (
         "docs/recommendation/00-input-signal-contract-vnext.md",
@@ -452,13 +463,14 @@ def validate() -> dict[str, Any]:
     contract_019c = validate_019c_contract_readiness()
     synthetic_019c = validate_019c_synthetic_preflight()
     dependency_019c = validate_019c_dependency_smoke()
+    resource_019c = validate_019c_resource_dry_run()
 
     return {
         "status": "PASS",
-        "decision": "GO_FOR_019C_REAL_VALIDATION_RUNNER_IMPLEMENTATION_AND_APPROVAL_REVIEW",
-        "scope": "REC-EV-019A_019B_DONE_019C_SYNTHETIC_AND_DEPENDENCY_PASS_REAL_VALIDATION_BLOCKED",
+        "decision": "NO_GO_FOR_REAL_VALIDATION_UNTIL_RESOURCE_CONTRACT_AMENDED",
+        "scope": "REC-EV-019A_019B_DONE_019C_SYNTHETIC_DEPENDENCY_AND_METADATA_AUDIT_PASS_RESOURCE_BLOCKERS_OPEN",
         "next_ready_tasks": ["TASK-REC-EV-019C"],
-        "next_phase": "REAL_VALIDATION_RUNNER_IMPLEMENTATION_AND_APPROVAL_REVIEW",
+        "next_phase": "AMEND_B4_PAIR_SAMPLING_SEED_REPEATS_AND_SCORE_BUDGET",
         "rec_ev_019a_status": cohort_build["status"],
         "rec_ev_019a_final_identity_k10_users": cohort_build["validation"]["locked_test_k10_final_identity_eligible"],
         "rec_ev_019b_status": feature_build["status"],
@@ -466,6 +478,10 @@ def validate() -> dict[str, Any]:
         "rec_ev_019c_contract_status": contract_019c["status"],
         "rec_ev_019c_synthetic_preflight_status": synthetic_019c["status"],
         "rec_ev_019c_dependency_smoke_status": dependency_019c["status"],
+        "rec_ev_019c_resource_dry_run_status": resource_019c["status"],
+        "rec_ev_019c_resource_blockers": resource_019c["blockers"],
+        "rec_ev_019c_full_catalog_user_item_scores": resource_019c["full_catalog_user_item_scores"],
+        "rec_ev_019c_b8_base_update_upper_bound": resource_019c["b8_base_update_upper_bound"],
         "real_validation_authorized": False,
         "eligible_k10_test_users": preflight["eligible_test_users"],
         "current_product_policy": "APPROVED_C2A_INTERNAL_POPULARITY_ONLY",

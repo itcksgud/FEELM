@@ -263,6 +263,176 @@ def run_real_validation(contract: Mapping[str, Any]) -> None:
     raise NotImplementedError("real Validation implementation requires a later approved phase")
 
 
+def run_resource_dry_run(contract: Mapping[str, Any], *, root: Path = ROOT) -> dict[str, Any]:
+    """Read Parquet footer metadata only and estimate the contracted workload."""
+    if not contract["current_authorization"].get("validation_metadata_dry_run", False):
+        raise AuthorizationError("Validation metadata dry-run is not authorized")
+    import pyarrow.parquet as pq
+
+    firewall = InputFirewall.from_contract(contract, root=root)
+    expected_columns = {
+        "base_train_ratings": ["user_key", "movie_id", "rating", "timestamp", "user_bucket"],
+        "candidate_core_provisional": [
+            "movie_id", "tmdb_id", "base_train_interaction_count", "first_base_train_timestamp", "identity_status"
+        ],
+        "validation_prefixes": [
+            "role", "user_key", "k", "input_rank", "movie_id", "binary_label", "relative_utility",
+            "source_position", "timestamp"
+        ],
+        "validation_windows": [
+            "role", "user_key", "k", "window_rank", "movie_id", "rating", "midrank_utility", "is_positive",
+            "is_negative", "provisional_candidate_present", "timestamp"
+        ],
+        "movie_identity": [
+            "movie_id", "imdb_id", "tmdb_id", "identity_status", "media_type", "source_updated_at", "fetched_at",
+            "response_sha256"
+        ],
+        "structured_features": [
+            "movie_id", "tmdb_id", "original_language", "release_year", "runtime_minutes", "genre_ids",
+            "director_ids", "top5_cast_ids", "keyword_ids", "missing_mask", "feature_eligible"
+        ],
+        "text_embeddings": [
+            "movie_id", "model_id", "model_revision", "input_text_sha256", "embedding", "l2_norm", "feature_eligible"
+        ],
+    }
+    input_metadata: dict[str, Any] = {}
+    for name, relative in contract["allowed_input_artifacts"].items():
+        safe_path = firewall.validate_path(relative)
+        parquet = pq.ParquetFile(safe_path)
+        columns = parquet.schema_arrow.names
+        if columns != expected_columns[name]:
+            raise RuntimeError(f"dry-run schema differs for {name}")
+        input_metadata[name] = {
+            "path_class": name,
+            "rows": int(parquet.metadata.num_rows),
+            "row_groups": int(parquet.metadata.num_row_groups),
+            "columns": len(columns),
+            "file_bytes": safe_path.stat().st_size,
+        }
+
+    candidate_count = int(contract["candidate_and_ranking"]["core_movie_count"])
+    validation_counts = {
+        int(k): int(value) for k, value in contract["source_preconditions"]["validation_strict_users_by_k"].items()
+    }
+    all_k_contexts = sum(validation_counts.values())
+    personalized_contexts = validation_counts[5] + validation_counts[10]
+    trials = expand_trials(contract)
+    repeat_counts = {
+        model_id: len(rows) * max(1, len(contract["models"][model_id].get("stochastic_seeds", [])))
+        for model_id, rows in trials.items()
+    }
+    full_catalog_scores_by_model: dict[str, int] = {}
+    for model_id, repeats in repeat_counts.items():
+        if model_id == "B9_RRF":
+            full_catalog_scores_by_model[model_id] = 0
+            continue
+        contexts = all_k_contexts if model_id == "B0_MOVIELENS_BAYESIAN_RATING" else personalized_contexts
+        full_catalog_scores_by_model[model_id] = repeats * contexts * candidate_count
+    full_catalog_scores = sum(full_catalog_scores_by_model.values())
+    b8 = contract["models"]["B8_LIGHTFM"]
+    b8_upper_updates = (
+        repeat_counts["B8_LIGHTFM"]
+        * int(b8["fixed_parameters"]["epochs"])
+        * int(contract["base_training_semantics"]["base_rating_rows"])
+    )
+    selected_prediction_rows = (
+        validation_counts[0] + len(contract["models"]) * personalized_contexts
+    ) * int(contract["candidate_and_ranking"]["top_candidates"])
+    trial_metric_rows = (
+        repeat_counts["B0_MOVIELENS_BAYESIAN_RATING"] * all_k_contexts
+        + sum(value for key, value in repeat_counts.items() if key != "B0_MOVIELENS_BAYESIAN_RATING")
+        * personalized_contexts
+    )
+    score_buffer_bytes = (
+        int(contract["candidate_and_ranking"]["user_batch_size_max"])
+        * int(contract["candidate_and_ranking"]["candidate_block_size_max"])
+        * 4
+    )
+    blockers = [
+        {
+            "id": "B4_PAIR_SAMPLING_UNDEFINED",
+            "reason": "The contract does not define an exact observed LIKE/DISLIKE pair count per user and epoch.",
+        },
+        {
+            "id": "STOCHASTIC_GRID_REPEATS_ALL_FIVE_SEEDS",
+            "reason": "B4 and B8 repeat every hyperparameter trial across five seeds before selection.",
+        },
+        {
+            "id": "B8_WORST_CASE_UPDATE_BUDGET_UNBOUNDED",
+            "reason": f"The metadata-only upper bound is {b8_upper_updates} signed-logistic updates.",
+        },
+        {
+            "id": "FULL_CATALOG_SCORE_BUDGET_UNAPPROVED",
+            "reason": f"The current grid implies {full_catalog_scores} user-item scores before selection.",
+        },
+    ]
+    return {
+        "schema_version": 1,
+        "evidence_id": "REC-EV-019C-RESOURCE-DRY-RUN",
+        "status": "PASS_METADATA_AUDIT_IMPLEMENTATION_BLOCKED",
+        "contract_sha256": sha256_file(root / "docs/recommendation/contracts/rec-ev-019c-validation-artifacts.json"),
+        "input_metadata": input_metadata,
+        "estimated_work": {
+            "candidate_movies": candidate_count,
+            "validation_contexts_all_k": all_k_contexts,
+            "validation_contexts_personalized_k": personalized_contexts,
+            "trial_seed_repeats": repeat_counts,
+            "full_catalog_user_item_scores_by_model": full_catalog_scores_by_model,
+            "full_catalog_user_item_scores": full_catalog_scores,
+            "b8_base_update_upper_bound": b8_upper_updates,
+            "trial_user_metric_rows": trial_metric_rows,
+            "selected_prediction_rows": selected_prediction_rows,
+            "maximum_score_buffer_bytes": score_buffer_bytes,
+        },
+        "implementation_blockers": blockers,
+        "rating_rows_or_feature_vectors_read": False,
+        "real_validation_ready": False,
+        "real_validation_executed": False,
+        "locked_test_opened": False,
+        "product_policy_changed": False,
+        "product_champion": None,
+        "next_gate": "AMEND_B4_PAIR_AND_STOCHASTIC_RESOURCE_BUDGET",
+    }
+
+
+def write_resource_dry_run_evidence(
+    contract: Mapping[str, Any],
+    result: Mapping[str, Any],
+    *,
+    root: Path = ROOT,
+) -> tuple[Path, Path]:
+    paths = contract["resource_dry_run_artifacts"]
+    result_path = root / paths["result"]
+    manifest_path = root / paths["manifest"]
+    result_bytes = atomic_write_json(result_path, result)
+    manifest = {
+        "schema_version": 1,
+        "evidence_id": result["evidence_id"],
+        "status": result["status"],
+        "contract_sha256": result["contract_sha256"],
+        "artifacts": [{
+            "path": paths["result"],
+            "bytes": len(result_bytes),
+            "sha256": sha256_bytes(result_bytes),
+        }],
+        "validation": {
+            "metadata_only": True,
+            "rating_rows_or_feature_vectors_read": False,
+            "real_validation_ready": False,
+            "real_validation_executed": False,
+            "locked_test_opened": False,
+            "blocker_ids": [item["id"] for item in result["implementation_blockers"]],
+        },
+        "adoption": {
+            "champion": None,
+            "product_policy_changed": False,
+            "real_validation_authorized": False,
+        },
+    }
+    atomic_write_json(manifest_path, manifest)
+    return result_path, manifest_path
+
+
 def run_synthetic_preflight(contract: Mapping[str, Any], *, root: Path = ROOT) -> dict[str, Any]:
     if not contract["current_authorization"].get("synthetic_preflight", False):
         raise AuthorizationError("synthetic preflight is not authorized")
@@ -417,7 +587,7 @@ def run_synthetic_preflight(contract: Mapping[str, Any], *, root: Path = ROOT) -
         "product_policy_changed": False,
         "product_champion": None,
         "current_product_policy": contract["adoption_boundary"]["current_product_policy"],
-        "next_gate": "LINUX_DEPENDENCY_SMOKE_AND_REAL_VALIDATION_APPROVAL_REVIEW",
+        "next_gate": "LINUX_DEPENDENCY_SMOKE_AND_RESOURCE_DRY_RUN",
     }
 
 
@@ -465,7 +635,7 @@ def write_synthetic_evidence(
 def build_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(description="Run REC-EV-019C within its current authorization")
     parser.add_argument("--contract", type=Path, default=DEFAULT_CONTRACT)
-    parser.add_argument("--mode", choices=("synthetic-preflight", "validation"), required=True)
+    parser.add_argument("--mode", choices=("synthetic-preflight", "validation-dry-run", "validation"), required=True)
     parser.add_argument("--role", choices=("validation",), required=True)
     parser.add_argument("--resume", action="store_true")
     return parser
@@ -481,6 +651,25 @@ def main() -> int:
         validate_contract(contract, root=ROOT)
         if args.mode == "validation":
             run_real_validation(contract)
+        if args.mode == "validation-dry-run":
+            result = run_resource_dry_run(contract, root=ROOT)
+            result_path, manifest_path = write_resource_dry_run_evidence(contract, result, root=ROOT)
+            print(
+                json.dumps(
+                    {
+                        "status": result["status"],
+                        "result": _repo_relative(result_path, root=ROOT),
+                        "manifest": _repo_relative(manifest_path, root=ROOT),
+                        "blockers": len(result["implementation_blockers"]),
+                        "real_validation_ready": False,
+                        "locked_test_opened": False,
+                        "next_gate": result["next_gate"],
+                    },
+                    ensure_ascii=False,
+                    sort_keys=True,
+                )
+            )
+            return 0
         result = run_synthetic_preflight(contract, root=ROOT)
         result_path, manifest_path = write_synthetic_evidence(contract, result, root=ROOT)
         output = {

@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
   "contract_id": "rec-ev-019c-validation-artifacts-v1",
-  "status": "APPROVED_FOR_IMPLEMENTATION_AND_SYNTHETIC_PREFLIGHT_ONLY",
+  "status": "APPROVED_FOR_IMPLEMENTATION_SYNTHETIC_PREFLIGHT_AND_METADATA_DRY_RUN_ONLY",
   "task_id": "TASK-REC-EV-019C",
   "protocol_version": "rec-eval-vnext-2",
   "purpose": "Implement the binary-onboarding baseline suite and a streaming full-catalog Validation evaluator without reading Locked Test labels or authorizing a product model.",
@@ -9,11 +9,12 @@
     "contract_validation": true,
     "runner_implementation": true,
     "synthetic_preflight": true,
+    "validation_metadata_dry_run": true,
     "real_validation_fit_or_score": false,
     "locked_test_access": false,
     "champion_selection": false,
     "product_policy_change": false,
-    "next_gate": "RUNNER_UNIT_AND_SYNTHETIC_PREFLIGHT_PASS"
+    "next_gate": "AMEND_B4_PAIR_AND_STOCHASTIC_RESOURCE_BUDGET"
   },
   "source_contracts": {
     "protocol": "docs/recommendation/protocols/rec-eval-vnext.json",
@@ -279,6 +280,16 @@
       "unrated_negative_sampling_absent", "pairwise_losses_not_executed"
     ]
   },
+  "resource_dry_run_artifacts": {
+    "result": "docs/recommendation/evidence/results/rec-ev-019c-resource-dry-run.json",
+    "manifest": "docs/recommendation/evidence/manifests/rec-ev-019c-resource-dry-run.json",
+    "metadata_only": true,
+    "rating_rows_or_feature_vectors_read": false,
+    "required_result_keys": [
+      "schema_version", "evidence_id", "status", "contract_sha256", "input_metadata",
+      "estimated_work", "implementation_blockers", "real_validation_ready", "locked_test_opened"
+    ]
+  },
   "future_artifacts": [
     {
       "path": "outputs/recommendation-evidence/rec-ev-019c/candidate-core-final.parquet",
@@ -360,6 +371,8 @@
     "dependency_smoke_runner": "scripts/smoke_rec_ev_019c_lightfm.py",
     "dependency_smoke_verifier": "scripts/verify_rec_ev_019c_dependency_smoke.py",
     "dependency_smoke_run_command": "powershell -NoProfile -ExecutionPolicy Bypass -File scripts/run-rec-ev-019c-lightfm-smoke.ps1",
+    "resource_dry_run_command": "py -3 scripts/run_rec_ev_019c_validation.py --mode validation-dry-run --role validation",
+    "resource_dry_run_verify_command": "py -3 scripts/verify_rec_ev_019c_resource_dry_run.py --manifest docs/recommendation/evidence/manifests/rec-ev-019c-resource-dry-run.json",
     "contract_check_command": "py -3 scripts/validate_rec_ev_019c_contract.py",
     "contract_unit_command": "py -3 -m unittest scripts/tests/test_validate_rec_ev_019c_contract.py",
     "future_synthetic_preflight_command": "py -3 scripts/run_rec_ev_019c_validation.py --mode synthetic-preflight --role validation",
@@ -375,7 +388,7 @@
     "every grid expands to the declared trial count and no model exceeds 30 trials",
     "checkpoint resume produces byte-equivalent selected outputs for the same signatures",
     "dependency versions and hashes are pinned before real Validation",
-    "real Validation remains unauthorized until the readiness validator records synthetic preflight PASS"
+    "real Validation remains unauthorized until synthetic, dependency, and metadata dry-run checks pass and every resource blocker is removed by a reviewed contract amendment"
   ],
   "failure_behavior": {
     "source_or_candidate_drift": "BLOCK_BEFORE_MODEL_FIT",

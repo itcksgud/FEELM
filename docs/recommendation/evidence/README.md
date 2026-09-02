@@ -94,7 +94,10 @@ percentile 정규화, B0 fallback, checkpoint·resume 계약도 자동 검증한
 preflight 구현만 허용하며 실제 Validation 성능이나 제품 champion을 승인하지 않는다. 후속 합성 runner
 15개 검사와 Linux LightFM dependency 9개 검사도 통과했다. LightFM BPR/WARP가 미관측 영화를 negative로
 샘플링하는 계약 충돌을 실행 전에 발견해 B8을 관측 ±1 logistic과 frozen-item fold-in으로 교정했다. 이제
-실제 runner 구현은 가능하지만 실제 Validation 실행은 여전히 차단한다.
+실제 runner 안전 골격 구현은 가능하지만 실제 Validation 실행은 여전히 차단한다. 이어서 실제 파일 값을
+읽지 않는 metadata 자원 점검을 실행했고, 현 계약이 약 75.5억 full-catalog score와 B8 최대 61.5억
+update를 요구하며 B4 pair 수도 미정임을 확인했다. pair·seed·score/update 예산의 네 차단점을 수정하기
+전에는 모델을 실행하지 않는다. 상세 결과는 [019C 자원 사전점검](./REC-EV-019C-resource-dry-run.md)에 있다.
 
 Cold-start 평가에서는 K1부터 별점 MAE가 통계적으로 줄었지만, K0 대비 3% 실질 개선 Gate는
 K10부터 통과했다. 초기 sampled ranking에서는 모든 K의 최적 Fold-in 가중치가 0이었으나,

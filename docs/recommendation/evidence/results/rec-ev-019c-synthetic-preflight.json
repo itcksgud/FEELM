@@ -16,7 +16,7 @@
     "unknown_path_rejected_before_open": true,
     "validation_mode_blocked": true
   },
-  "contract_sha256": "3eb50a990220ea0c7d3f15b8ea13807a1812abf9167309c352a95037736d12de",
+  "contract_sha256": "56e219674ad85ad46d095859c1ade46389d17da648443266b07e8bc66664cfd8",
   "current_product_policy": "APPROVED_C2A_INTERNAL_POPULARITY_ONLY",
   "evidence_id": "REC-EV-019C-SYNTHETIC-PREFLIGHT",
   "execution_role": "VALIDATION",
@@ -47,7 +47,7 @@
     "visible_after_seen_exclusion": 7
   },
   "locked_test_opened": false,
-  "next_gate": "LINUX_DEPENDENCY_SMOKE_AND_REAL_VALIDATION_APPROVAL_REVIEW",
+  "next_gate": "LINUX_DEPENDENCY_SMOKE_AND_RESOURCE_DRY_RUN",
   "product_champion": null,
   "product_policy_changed": false,
   "real_validation_executed": false,

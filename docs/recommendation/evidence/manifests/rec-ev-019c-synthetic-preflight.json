@@ -7,16 +7,16 @@
   },
   "artifacts": [
     {
-      "bytes": 1836,
+      "bytes": 1821,
       "path": "docs/recommendation/evidence/results/rec-ev-019c-synthetic-preflight.json",
-      "sha256": "f48b5ef89164dd0f7e15557e5c163114b189ab2680019fce262be4e6c90f89a5"
+      "sha256": "319477e7dc9a29c12637746c95d01db4d1540c2805a4c69efa9aeb15b229eca3"
     }
   ],
-  "contract_sha256": "3eb50a990220ea0c7d3f15b8ea13807a1812abf9167309c352a95037736d12de",
+  "contract_sha256": "56e219674ad85ad46d095859c1ade46389d17da648443266b07e8bc66664cfd8",
   "evidence_id": "REC-EV-019C-SYNTHETIC-PREFLIGHT",
   "schema_version": 1,
   "source_checksums": {
-    "contract": "3eb50a990220ea0c7d3f15b8ea13807a1812abf9167309c352a95037736d12de"
+    "contract": "56e219674ad85ad46d095859c1ade46389d17da648443266b07e8bc66664cfd8"
   },
   "status": "PASS_SYNTHETIC_PREFLIGHT",
   "validation": {

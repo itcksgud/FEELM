@@ -326,7 +326,7 @@ tasks:
     title: Binary baseline suite와 full-catalog evaluator
     status: READY
     depends_on: [TASK-REC-EV-019A, TASK-REC-EV-019B]
-    current_authorization: IMPLEMENTATION_AND_SYNTHETIC_PREFLIGHT_ONLY
+    current_authorization: IMPLEMENTATION_SYNTHETIC_PREFLIGHT_AND_METADATA_DRY_RUN_ONLY
     artifact_contract: docs/recommendation/contracts/rec-ev-019c-validation-artifacts.json
     input_docs:
       - docs/recommendation/protocols/rec-eval-vnext.json
@@ -341,6 +341,7 @@ tasks:
       - scripts/verify_rec_ev_019c_validation.py
       - scripts/smoke_rec_ev_019c_lightfm.py
       - scripts/verify_rec_ev_019c_dependency_smoke.py
+      - scripts/verify_rec_ev_019c_resource_dry_run.py
     outputs:
       - outputs/recommendation-evidence/rec-ev-019c/candidate-core-final.parquet
       - outputs/recommendation-evidence/rec-ev-019c/trial-registry.json
@@ -364,6 +365,9 @@ tasks:
       - requirements-rec-ev-019c.lock
       - docs/recommendation/evidence/results/rec-ev-019c-lightfm-linux-smoke.json
       - docs/recommendation/evidence/manifests/rec-ev-019c-lightfm-linux-smoke.json
+    resource_dry_run_outputs:
+      - docs/recommendation/evidence/results/rec-ev-019c-resource-dry-run.json
+      - docs/recommendation/evidence/manifests/rec-ev-019c-resource-dry-run.json
     commands:
       contract: "py -3 scripts/validate_rec_ev_019c_contract.py"
       unit: "py -3 -m unittest scripts/tests/test_validate_rec_ev_019c_contract.py"
@@ -371,6 +375,8 @@ tasks:
       synthetic_preflight_verify: "py -3 scripts/verify_rec_ev_019c_validation.py --manifest docs/recommendation/evidence/manifests/rec-ev-019c-synthetic-preflight.json"
       dependency_smoke_run: "powershell -NoProfile -ExecutionPolicy Bypass -File scripts/run-rec-ev-019c-lightfm-smoke.ps1"
       dependency_smoke_verify: "py -3 scripts/verify_rec_ev_019c_dependency_smoke.py --manifest docs/recommendation/evidence/manifests/rec-ev-019c-lightfm-linux-smoke.json"
+      resource_dry_run: "py -3 scripts/run_rec_ev_019c_validation.py --mode validation-dry-run --role validation"
+      resource_dry_run_verify: "py -3 scripts/verify_rec_ev_019c_resource_dry_run.py --manifest docs/recommendation/evidence/manifests/rec-ev-019c-resource-dry-run.json"
       future_validation: "py -3 scripts/run_rec_ev_019c_validation.py --mode validation --role validation --resume"
       future_verify: "py -3 scripts/verify_rec_ev_019c_validation.py --manifest docs/recommendation/evidence/manifests/rec-ev-019c-validation.json"
     verify:

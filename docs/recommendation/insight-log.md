@@ -391,3 +391,20 @@
   BPR/WARP는 B8에서 금지한다. 고정 Linux 환경에서 9개 dependency 검사를 통과했다.
 - 후속 실험: 실제 runner 구현·dry-run 검토 뒤에만 Validation 실행 승인 여부를 판단한다.
 - 관련 model version: `lightfm-next==1.19.0`, champion 아님.
+
+### INSIGHT-20260902-023 — 합성 검사가 통과해도 전체 실험이 실행 가능하다는 뜻은 아니다
+
+- 상태: `REPRODUCED`
+- 관련 run: `REC-EV-019C-RESOURCE-DRY-RUN`
+- 비교 기준선: 모든 stochastic trial을 seed 5개와 전체 41,625편에서 반복하는 최초 019C 계약
+- 관찰: Parquet footer metadata만 사용한 계산에서 full-catalog 사용자×영화 score 약 75.5억 회,
+  B8 학습 update 상한 약 61.5억 회가 나왔다. B4 epoch의 관측 LIKE/DISLIKE pair 수도 미정이었다.
+- 영향 구간: B0·B2·B4·B6·B7·B8의 Validation grid와 B4/B8 seed 안정성 평가.
+- 해석: 작은 fixture의 의미·안전성 PASS는 실제 데이터 크기의 시간·비용 계약을 대신하지 않는다.
+- 악화된 지표·비용: 그대로 실행하면 결과 없이 장시간 자원을 소비하거나 구현마다 서로 다른 BPR pair 수를
+  사용해 재현성이 깨질 수 있다.
+- 반례·한계: 실제 평점 행과 feature vector를 읽지 않은 보수적 상한이며 실측 wall-clock은 아니다.
+- 결정: 실제 Validation은 계속 막고 pair 상한, tuning panel, selection seed, 선택 trial의 5-seed 안정성,
+  score/update 상한을 계약에 추가한다.
+- 후속 실험: 수정 계약으로 합성·의존성·metadata 점검을 다시 통과한 뒤 bounded pilot을 실행한다.
+- 관련 model version: 없음 — 실행 예산·계약 개선, champion 아님.

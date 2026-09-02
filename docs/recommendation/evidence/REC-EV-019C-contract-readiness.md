@@ -1,14 +1,15 @@
 # REC-EV-019C — 모델 비교 실행 계약 준비 결과
 
-> 상태: `CONTRACT_AND_PREFLIGHT_PASS`
-> 현재 허용: 실제 Validation runner 구현과 실행 승인 검토
+> 상태: `CONTRACT_PREFLIGHT_PASS_RESOURCE_AMENDMENT_REQUIRED`
+> 현재 허용: 실제 Validation runner의 안전 골격 구현과 자원 계약 수정
 > 현재 금지: 실제 Validation 학습·점수 계산, Locked Test 열람, champion·제품 정책 변경
 
 ## 한 줄 결론
 
 모델을 돌리기 전에 “어떤 데이터로 무엇을 몇 번 비교하고, 중단되면 어떻게 이어서 돌릴지”를 JSON 계약과
 자동 검증기로 고정했다. runner helper의 합성 검사 15개와 LightFM Linux 의존성 검사 9개도 통과했다.
-다음 작업은 실제 Validation runner 구현과 실행 승인 검토다.
+그러나 metadata-only 사전점검에서 약 75.5억 번의 점수 계산과 B8 학습 update 최대 61.5억 회가 확인됐다.
+다음 작업은 BPR pair·seed 반복·점수 계산 예산을 줄이고 정확히 고정하는 것이다.
 
 ## 왜 바로 모델을 돌리지 않았나
 
@@ -89,13 +90,15 @@ ALS·BPR·cosine처럼 단위가 다른 원점수를 직접 더하지 않는다.
 | 계약이 기계적으로 검증되는가? | PASS |
 | runner helper 합성 preflight가 통과했는가? | PASS — 15개 검사 |
 | LightFM Linux 의존성 smoke가 통과했는가? | PASS — 9개 검사 |
+| 실제 파일 metadata로 계산량을 확인했는가? | PASS — 값 행은 읽지 않음 |
 | 실제 Validation runner 구현을 시작할 수 있는가? | GO |
-| 실제 Validation 모델을 지금 돌릴 수 있는가? | NO |
+| 실제 Validation 모델을 지금 돌릴 수 있는가? | NO — 자원 계약 차단점 4개 |
 | Locked Test를 열 수 있는가? | NO |
 | 개인화 모델을 서비스에 채택할 수 있는가? | NO |
 
-다음 Gate는 실제 runner가 역할별 Validation 파일만 읽고 41,625편을 block scan하며 trial별 checkpoint를
-남기는지 코드 검토로 확인하는 것이다. 그 뒤에만 실제 Validation 실행 승인 여부를 다시 판단한다.
+다음 Gate는 B4 pair 수, stochastic trial/seed 단계, full-catalog score와 B8 update 상한을 고정하는 것이다.
+자세한 숫자는 [계산량 사전점검](./REC-EV-019C-resource-dry-run.md)에 있다. 네 차단점이 없어지고 실제
+runner가 역할별 Validation 파일만 읽는다는 코드 검토까지 끝난 뒤에만 실제 Validation 실행을 연다.
 
 ## 검증 명령
 
@@ -104,6 +107,7 @@ py -3 scripts/validate_rec_ev_019c_contract.py
 py -3 -m unittest scripts/tests/test_validate_rec_ev_019c_contract.py
 npm run recommendation:019c:synthetic:check
 npm run recommendation:019c:dependency:check
+npm run recommendation:019c:resource:check
 ```
 
 이 명령은 모델을 학습하거나 실제 Validation·Locked Test 평점을 읽지 않는다.

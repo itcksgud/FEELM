@@ -66,14 +66,14 @@ def _artifact_paths(manifest: dict[str, Any]) -> set[str]:
 def validate_contract(contract: dict[str, Any], *, root: Path = ROOT) -> dict[str, Any]:
     require(contract.get("contract_id") == "rec-ev-019c-validation-artifacts-v1", "unexpected 019C contract id")
     require(
-        contract.get("status") == "APPROVED_FOR_IMPLEMENTATION_AND_SYNTHETIC_PREFLIGHT_ONLY",
+        contract.get("status") == "APPROVED_FOR_IMPLEMENTATION_SYNTHETIC_PREFLIGHT_AND_METADATA_DRY_RUN_ONLY",
         "019C authorization status changed",
     )
     require(contract.get("task_id") == "TASK-REC-EV-019C", "019C task id changed")
     require(contract.get("protocol_version") == "rec-eval-vnext-2", "019C protocol version changed")
 
     authorization = contract["current_authorization"]
-    for key in ("contract_validation", "runner_implementation", "synthetic_preflight"):
+    for key in ("contract_validation", "runner_implementation", "synthetic_preflight", "validation_metadata_dry_run"):
         require(authorization.get(key) is True, f"019C safe implementation authorization missing: {key}")
     for key in ("real_validation_fit_or_score", "locked_test_access", "champion_selection", "product_policy_change"):
         require(authorization.get(key) is False, f"019C unsafe authorization opened: {key}")
@@ -283,6 +283,18 @@ def validate_contract(contract: dict[str, Any], *, root: Path = ROOT) -> dict[st
     ):
         require(check in smoke_checks, f"019C dependency safety check missing: {check}")
 
+    resource_dry_run = contract["resource_dry_run_artifacts"]
+    require(resource_dry_run.get("metadata_only") is True, "019C resource dry-run could read data rows")
+    require(
+        resource_dry_run.get("rating_rows_or_feature_vectors_read") is False,
+        "019C resource dry-run could read rating rows or feature vectors",
+    )
+    require(
+        resource_dry_run.get("manifest")
+        == "docs/recommendation/evidence/manifests/rec-ev-019c-resource-dry-run.json",
+        "019C resource dry-run manifest path changed",
+    )
+
     implementation = contract["implementation"]
     for key in (
         "contract_validator",
@@ -293,6 +305,8 @@ def validate_contract(contract: dict[str, Any], *, root: Path = ROOT) -> dict[st
         "dependency_smoke_runner",
         "dependency_smoke_verifier",
         "dependency_smoke_run_command",
+        "resource_dry_run_command",
+        "resource_dry_run_verify_command",
         "contract_check_command",
         "contract_unit_command",
         "future_synthetic_preflight_command",
@@ -307,7 +321,7 @@ def validate_contract(contract: dict[str, Any], *, root: Path = ROOT) -> dict[st
 
     return {
         "status": "PASS",
-        "decision": "GO_FOR_RUNNER_IMPLEMENTATION_AND_SYNTHETIC_PREFLIGHT_ONLY",
+        "decision": "GO_FOR_IMPLEMENTATION_PREFLIGHT_AND_METADATA_DRY_RUN_ONLY",
         "contract_id": contract["contract_id"],
         "candidate_movies": 41625,
         "validation_users_k10": preconditions["validation_strict_users_by_k"]["10"],

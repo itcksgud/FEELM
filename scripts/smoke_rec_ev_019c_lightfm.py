@@ -177,7 +177,7 @@ def run_smoke(contract: dict[str, Any]) -> dict[str, Any]:
         "locked_test_opened": False,
         "product_policy_changed": False,
         "product_champion": None,
-        "next_gate": "REAL_VALIDATION_RUNNER_IMPLEMENTATION_AND_APPROVAL_REVIEW",
+        "next_gate": "RESOURCE_DRY_RUN_AND_CONTRACT_AMENDMENT_REVIEW",
     }
 
 

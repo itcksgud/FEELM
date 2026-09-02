@@ -80,7 +80,7 @@ def verify_manifest(manifest_path: Path, *, root: Path = ROOT) -> dict[str, Any]
         "current product policy changed",
     )
     require(
-        result.get("next_gate") == "LINUX_DEPENDENCY_SMOKE_AND_REAL_VALIDATION_APPROVAL_REVIEW",
+        result.get("next_gate") == "LINUX_DEPENDENCY_SMOKE_AND_RESOURCE_DRY_RUN",
         "next Gate changed",
     )
 

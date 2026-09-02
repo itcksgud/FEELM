@@ -74,7 +74,7 @@ def verify_manifest(manifest_path: Path, *, root: Path = ROOT) -> dict[str, Any]
         require(result.get(key) is False, f"dependency smoke crossed boundary: {key}")
     require(result.get("product_champion") is None, "dependency smoke selected a champion")
     require(
-        result.get("next_gate") == "REAL_VALIDATION_RUNNER_IMPLEMENTATION_AND_APPROVAL_REVIEW",
+        result.get("next_gate") == "RESOURCE_DRY_RUN_AND_CONTRACT_AMENDMENT_REVIEW",
         "dependency smoke next Gate changed",
     )
     adoption = manifest.get("adoption", {})
