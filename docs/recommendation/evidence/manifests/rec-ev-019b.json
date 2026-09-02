@@ -1,14 +1,14 @@
 {
   "artifacts": [
     {
-      "bytes": 1959,
+      "bytes": 2033,
       "path": "outputs/recommendation-evidence/rec-ev-019b/coverage-summary.json",
-      "sha256": "ebe47662380f6a4b61b54dda6b406be7c99067793e2ff807c9b287e754739ffb"
+      "sha256": "49916a60591a5739d01a66ed4cd865f36a3e19e6c6d07ef3af38886143d806cf"
     },
     {
-      "bytes": 3850956,
+      "bytes": 3840867,
       "path": "outputs/recommendation-evidence/rec-ev-019b/movie-identity.parquet",
-      "sha256": "56042bc89b5745d46ad1ebae3e80494c4aa2abe69dde8eb84560eaaffaae27bd"
+      "sha256": "cdf78e31d436a3b83ff8c147816c8ac8b52d4d69ca4488eaeed98bd375f12aa4"
     },
     {
       "bytes": 10362,
@@ -27,22 +27,24 @@
     }
   ],
   "contract": "docs/recommendation/contracts/rec-ev-019b-artifacts.json",
-  "contract_sha256": "f22bc18095e1fc7b2a15b13b90ca76f80518019c48b30563d98b2fbb0f223d17",
+  "contract_sha256": "a6a6240d31b36ac5587bc41fa0047587a88371b80f1bc31417076a055e722e9d",
   "evidence_id": "REC-EV-019B",
   "model_revision": "614241f622f53c4eeff9890bdc4f31cfecc418b3",
   "preflight": false,
   "schema_version": 2,
   "source_checksums": {
-    "contract_sha256": "f22bc18095e1fc7b2a15b13b90ca76f80518019c48b30563d98b2fbb0f223d17",
+    "contract_sha256": "a6a6240d31b36ac5587bc41fa0047587a88371b80f1bc31417076a055e722e9d",
     "movielens_archive_sha256": "e4a68655d7386b8f95f2f2424b2ff975dfdd15ffd59e0d864a14dca43e99d6ee"
   },
   "status": "PASS_FULL_GATES",
   "validation": {
+    "artifact_scope": "FULL_BASE_USER_CATALOG_FEATURE_SUPERSET_NOT_CANDIDATE_CORE",
     "identity_rate": 0.9880013811359843,
     "locked_test_opened": false,
     "product_policy_changed": false,
     "selected_movies": 69603,
     "structured_rate": 0.9931123860558582,
-    "text_rate": 0.9979613827649474
+    "text_rate": 0.9979613827649474,
+    "time_safe_candidate_authority": false
   }
 }

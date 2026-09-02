@@ -1,6 +1,6 @@
 {
-  "schema_version": 1,
-  "contract_id": "rec-ev-019a-artifacts-v1",
+  "schema_version": 2,
+  "contract_id": "rec-ev-019a-artifacts-v2",
   "status": "APPROVED",
   "task_id": "TASK-REC-EV-019A",
   "protocol_version": "rec-eval-vnext-2",
@@ -11,7 +11,25 @@
     "train_parquet": "outputs/recommendation-evidence/global-time-v1/train.parquet",
     "validation_parquet": "outputs/recommendation-evidence/global-time-v1/validation.parquet",
     "test_parquet": "outputs/recommendation-evidence/global-time-v1/test.parquet",
-    "movielens_archive": "resolved from global_time_manifest.source.archive"
+    "movielens_archive": "resolved from global_time_manifest.source.archive",
+    "final_identity_parquet_optional_postcheck": "outputs/recommendation-evidence/rec-ev-019b/movie-identity.parquet"
+  },
+  "role_sources": {
+    "BASE_TRAIN": "train.parquet rows whose user bucket is 0..39",
+    "ROUTER_TRAIN": "validation.parquet rows whose user bucket is 40..49",
+    "VALIDATION": "validation.parquet rows whose user bucket is 50..59",
+    "LOCKED_TEST": "test.parquet rows whose user bucket is 60..99",
+    "temporal_safety": "Router and Validation never read test.parquet; Base Train never reads validation.parquet or test.parquet",
+    "locked_test_boundary": "019A materializes predeclared Test cohort labels for structural eligibility only; no model prediction, metric, threshold selection, or champion decision is allowed"
+  },
+  "row_semantics": {
+    "binary_proxy": "FIRST_OBSERVED_BINARY_PROXY only; curated-pool proxy is a later independent artifact",
+    "source_position": "zero-based index in the role-period user rating sequence sorted by timestamp then movie_id",
+    "input_rank": "one-based order among non-neutral binary selections",
+    "window_rank": "one-based order among the first 10 ratings after the kth selected binary input",
+    "k0_window": "the first 10 role-period ratings; no binary-prefix row exists",
+    "artifact_population": "binary-prefix and evaluation-window rows are emitted only for users passing the strict eligibility contract for that role and K",
+    "midrank_scope": "computed within each 10-rating evaluation window; label information is never copied into model inputs"
   },
   "implementation": {
     "runner_to_create": "scripts/build_rec_ev_019a_cohorts.py",
@@ -102,6 +120,8 @@
         "drop_reasons",
         "class_balance",
         "candidate_positive_rate",
+        "candidate_core",
+        "final_identity_locked_test_k10_gate",
         "raw_user_ids_stored"
       ]
     },
@@ -125,6 +145,13 @@
     "unrated_never_dislike": true,
     "raw_user_id_column_forbidden": true,
     "duplicate_primary_key_rows": 0
+  },
+  "candidate_boundary": {
+    "provisional_core": "distinct movie IDs in base-train-ratings.parquet intersect links.csv rows with a positive parseable TMDB ID",
+    "feature_superset_is_not_candidate_core": "REC-EV-019B may contain metadata for a broader catalog; 019C must intersect this provisional core with the final identity allowlist before scoring",
+    "final_019c_core": "candidate-core-provisional movie_id intersect REC-EV-019B identity status ML_TMDB_VERIFIED or RECOVERED_BY_IMDB",
+    "positive_injection": false,
+    "optional_final_gate": "when the 019B identity parquet exists, record the provisional/final candidate counts and identity status counts, then recompute Locked Test K10 candidate-positive eligibility with the final allowlist without producing model predictions"
   },
   "failure_behavior": {
     "gate_failure_status": "BLOCKED_OR_INCONCLUSIVE",

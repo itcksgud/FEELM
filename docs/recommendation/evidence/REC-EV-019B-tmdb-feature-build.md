@@ -1,21 +1,23 @@
 # REC-EV-019B — TMDB 영화 특징 전체 생성 결과
 
 > 상태: `DONE / PASS_FULL_GATES`
-> 범위: MovieLens Base-Train에 등장한 영화 69,603편
+> 범위: Base 역할 사용자가 전체 기간에 평가한 영화 69,603편의 넓은 콘텐츠 특성 집합
+> 후보 권한: 없음 — 실제 후보는 REC-EV-019A cutoff-safe 집합과 identity allowlist의 교집합
 > 제품 반영: 없음 — `APPROVED_C2A_INTERNAL_POPULARITY_ONLY` 유지
 > Locked Test 사용: 없음
 
 ## 한 줄 결론
 
 MovieLens는 사용자 행동에만 쓰고 TMDB는 영화 정보에만 쓰는 경계를 실제 데이터 파일로 만들었다.
-69,603편 전체 실행에서 링크·identity·구조 특징·텍스트 특징 Gate를 모두 통과했으며, 다음 cohort 생성과
-Validation 모델 비교를 시작할 수 있다. 이 결과 자체는 콘텐츠 추천이 더 좋다는 성능 증거는 아니다.
+69,603편 전체 실행에서 링크·identity·구조 특징·텍스트 특징 Gate를 모두 통과했다. 이 집합은 영화 정보를
+넓게 준비한 범위이지 추천 후보군은 아니다. 실제 Validation 모델 비교 전에는 019A의 시간 안전 후보와
+교집합을 사용해야 한다. 이 결과 자체는 콘텐츠 추천이 더 좋다는 성능 증거가 아니다.
 
 ## 무엇을 만들었나
 
 ![MovieLens 행동과 TMDB 영화 정보의 결합 흐름](../figures/tmdb-feature-build-flow.png)
 
-1. Base-Train 사용자에게 한 번이라도 평가된 영화 69,603편을 고정 규칙으로 추렸다.
+1. Base 역할 사용자에게 전체 기간 중 한 번이라도 평가된 영화 69,603편을 고정 규칙으로 추렸다.
 2. MovieLens `links.csv`의 TMDB ID와 IMDb ID를 실제 TMDB 응답과 다시 대조했다.
 3. 확인된 영화에서 장르·감독·배우·키워드·언어·연도·상영시간을 추출했다.
 4. 제목과 줄거리 등을 고정 E5 모델로 384차원 embedding으로 만들었다.
@@ -23,6 +25,10 @@ Validation 모델 비교를 시작할 수 있다. 이 결과 자체는 콘텐츠
 
 TMDB `popularity`, `vote_average`, `vote_count`, watch provider, 매출, 예산은 취향 특징과 embedding 입력에서
 제외했다. TMDB는 영화의 설명이고 MovieLens 평점은 사람의 행동이라는 역할을 섞지 않기 위해서다.
+
+`69,603`은 시간 cutoff 뒤에 처음 나타난 영화도 포함한다. 따라서 이 숫자를 “Base Train 후보”라고 부른
+기존 표현은 잘못이었다. 실행 코드는 같은 데이터를 유용한 feature superset으로 보존하되, 계약·검증기·보고서는
+후보 권한이 없음을 검사하도록 수정했다.
 
 ## 전체 결과
 
@@ -86,14 +92,15 @@ batching은 영화 순서를 복원하며, 100편 비교에서 기존 방식과 
 
 | 이제 할 수 있는 것 | 아직 할 수 없는 주장 |
 | --- | --- |
-| 019A cohort artifact 생성 | 콘텐츠 추천이 인기도보다 좋음 |
-| 019A 완료 뒤 019C Validation 모델 비교 | 신작·한국영화 추천 성능이 검증됨 |
+| 019A 최종 후보의 영화 특징 조회 | 콘텐츠 추천이 인기도보다 좋음 |
+| 019C 실행 계약 작성 | 신작·한국영화 추천 성능이 검증됨 |
 | cold-item Validation 파일럿 준비 | 실제 FEELM 사용자가 만족함 |
 | 결측 구간별 fallback·성능 비교 | 개인화 champion 승인 |
 
-다음 기본 순서는 `REC-EV-019A → REC-EV-019C Validation`이다. cold-item은 019B manifest가 생겨
-`REC-EV-021P` 사전검사를 다시 통과했으므로 별도 Validation 파일럿을 시작할 수 있다. 두 경로 모두 Locked
-Test와 제품 정책 변경은 아직 금지된다.
+REC-EV-019A 결과와 합치면 `42,123편 cutoff-safe 1차 후보 ∩ 019B identity allowlist = 41,625편`이다.
+다음 단계는 이 동일한 후보를 모든 모델이 사용하도록 REC-EV-019C 실행 계약을 고정하는 것이다. cold-item은
+`REC-EV-021P` 사전검사를 통과해 별도 Validation 파일럿을 준비할 수 있다. 두 경로 모두 Locked Test와 제품
+정책 변경은 아직 금지된다.
 
 ## 재현 명령
 

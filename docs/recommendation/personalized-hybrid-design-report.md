@@ -104,11 +104,11 @@ OTT Snapshot은 개인 취향을 만드는 Feature가 아니다. 추천된 영�
 | --- | --- | --- |
 | MovieLens Popularity | `OFFLINE BASELINE` | 과거 MovieLens 집단의 보정 평균이며 현재 FEELM 인기도가 아님 |
 | MovieLens Tag Content | `REJECT FOR PRODUCT` | 소수 사용자의 자유 태그를 영화 정보로 사용함 |
-| REC-EV-019 cohort | `019B DONE / 019A READY` | 019B 전체 Gate PASS; 019C는 019A와 최종 identity Gate 대기 |
+| REC-EV-019 cohort | `019A·019B DONE` | 최종 후보 41,625편, K10 Test 5,476명; 019C 실행 계약 대기 |
 | Binary onboarding model | `PROTOCOL READY, NOT EVALUATED` | 실제 입력과 맞춘 REC-EV-019가 아직 없음 |
 | ALS / ItemKNN | `PRETRAIN CANDIDATE` | 사용자 공동 선호 사전 지식으로 검증할 가치가 있음 |
 | Bias / BPR / EASE / LightFM | `REQUIRED BASELINES` | 별점·implicit·강한 선형·metadata hybrid 기준선 |
-| TMDB Content | `FEATURE READY, NOT YET EVALUATED` | Base-Train 69,603편 feature Gate PASS; Validation 성능은 아직 없음 |
+| TMDB Content | `FEATURE READY, NOT YET EVALUATED` | 넓은 69,603편 feature 집합 Gate PASS; 실제 후보는 41,625편 |
 | Personalized Router | `HYPOTHESIS ONLY` | 사용자별 최적 모델 차이는 확인했지만 사전 선택 능력은 미검증 |
 | 개인 추천 champion | `null` | 채택 Gate를 통과한 모델 없음 |
 | 유사 영화 | `CONTRACT EXISTS, EVAL MISSING` | C0 구현 계약은 있으나 TMDB-only 검색 품질 evidence가 없음 |
@@ -327,7 +327,8 @@ Locked Test users      40%
 [REC-EV-019P v2](./evidence/REC-EV-019P-binary-onboarding-preflight.md)는 K10·미래 10개만 검사한 기존
 30% Test false-GO를 폐기했다. positive 3개·candidate-positive까지 적용하면 같은 30% bucket subset은
 4,112명뿐이어서, 모델 결과를 보기 전에 40% Test로 교정했다. strict K10 5,476명으로 최소 5,000명
-Gate를 통과했으며 019C는 최종 TMDB identity 적용 뒤 다시 확인한다.
+Gate를 통과했다. REC-EV-019A 전체 생성에서 최종 TMDB identity를 적용해도 5,476명이 유지됨을 확인했다.
+019C는 이 사용자·후보를 바꾸지 않도록 실행 계약을 먼저 고정한다.
 
 Router·Validation·Test 사용자의 rating은 Base ALS, BPR, EASE, ItemKNN 학습에 한 건도 들어가지 않는다.
 split은 모든 K와 cutoff에서 유지한다. 사용자 특성 층은 미래 전체 이력이 아니라 cutoff 이전 데이터만

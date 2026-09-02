@@ -148,7 +148,7 @@ def tmdb_feature_flow() -> None:
     axis.set_ylim(0, 4)
     axis.axis("off")
     steps = [
-        (0.2, "MovieLens\n사용자 행동", "69,603편 후보", "#E8EEFF"),
+        (0.2, "MovieLens\n사용자 행동", "69,603편 특징 범위", "#E8EEFF"),
         (2.65, "TMDB\n영화 정보", "상세·감독·배우·키워드", "#E8F7F1"),
         (5.1, "Identity\n안전 확인", f"{summary['identity_coverage']['eligible']}/100 확인", "#FFF4DF"),
         (7.55, "특징 생성", "구조 특징 + 결측 mask", "#F4ECFF"),
@@ -162,7 +162,7 @@ def tmdb_feature_flow() -> None:
         if index < len(steps) - 1:
             axis.annotate("", xy=(x + 2.35, 2.0), xytext=(x + 1.87, 2.0), arrowprops={"arrowstyle": "->", "color": "#6B7480", "lw": 1.7})
     axis.text(6, 3.55, "MovieLens는 사람을, TMDB는 영화를 설명한다", ha="center", fontsize=16, fontweight="bold")
-    axis.text(6, 0.45, "100편 사전검사: identity 99% · 구조/텍스트 100% · IMDb 불일치 1편 격리 · 제품 추천 정책 변경 없음", ha="center", fontsize=10, color="#5E6673")
+    axis.text(6, 0.45, "69,603편은 넓은 특징 집합이며 후보군이 아님 · 100편 사전검사 identity 99% · 제품 정책 변경 없음", ha="center", fontsize=10, color="#5E6673")
     fig.tight_layout()
     save(fig, "tmdb-feature-build-flow.png")
 
@@ -175,7 +175,7 @@ def tmdb_feature_coverage() -> None:
     )
     gate_labels = ["TMDB 링크", "Identity", "구조 특징", "텍스트 특징"]
     gate_values = [
-        summary["base_train_linked_movies"] / summary["base_train_candidate_movies"],
+        summary["base_user_catalog_linked_movies"] / summary["base_user_catalog_movies"],
         summary["identity_coverage"]["rate"],
         summary["structured_coverage"]["rate"],
         summary["text_coverage"]["rate"],
@@ -187,7 +187,7 @@ def tmdb_feature_coverage() -> None:
     fig, (left, right) = plt.subplots(1, 2, figsize=(12, 5.1), gridspec_kw={"width_ratios": [1, 1.25]})
     bars = left.bar(gate_labels, gate_values, color=["#5B7FFF", "#6D8DFF", "#7793FF", "#91A8FF"])
     left.set_ylim(0.94, 1.003)
-    left.set_title("전체 69,603편 품질 Gate")
+    left.set_title("69,603편 콘텐츠 특성 집합 품질 Gate")
     left.set_ylabel("Coverage")
     left.yaxis.set_major_formatter(PercentFormatter(1.0))
     left.grid(axis="y", alpha=0.2)
@@ -215,6 +215,67 @@ def tmdb_feature_coverage() -> None:
     save(fig, "tmdb-feature-coverage.png")
 
 
+def rec_ev_019a_cohort_funnel() -> None:
+    summary = load_json(REPO_ROOT / "outputs/recommendation-evidence/rec-ev-019a/cohort-summary.json")
+    candidate = pd.read_parquet(
+        REPO_ROOT / "outputs/recommendation-evidence/rec-ev-019a/candidate-core-provisional.parquet",
+        columns=["movie_id"],
+    )
+    identity = pd.read_parquet(
+        REPO_ROOT / "outputs/recommendation-evidence/rec-ev-019b/movie-identity.parquet",
+        columns=["movie_id", "identity_status"],
+    )
+    allowed = set(
+        identity.loc[
+            identity["identity_status"].isin(["ML_TMDB_VERIFIED", "RECOVERED_BY_IMDB"]),
+            "movie_id",
+        ].astype(int)
+    )
+    final_candidates = int(candidate["movie_id"].isin(allowed).sum())
+    k10 = summary["eligibility_by_role_and_k"]["LOCKED_TEST"]["10"]
+
+    fig, (left, right) = plt.subplots(1, 2, figsize=(12, 5.2))
+    movie_labels = ["cutoff 이전\n등장", "TMDB 링크\n존재", "신원 확인\n최종 후보"]
+    movie_values = [
+        summary["candidate_core"]["cutoff_safe_distinct_movies"],
+        summary["candidate_core"]["provisional_linked_movies"],
+        final_candidates,
+    ]
+    bars = left.bar(movie_labels, movie_values, color=["#5B7FFF", "#7793FF", "#A5B7FF"], width=0.62)
+    left.set_title("019C가 실제 점수를 매길 영화 경계")
+    left.set_ylabel("영화 수")
+    left.set_ylim(0, max(movie_values) * 1.18)
+    left.grid(axis="y", alpha=0.18)
+    for bar, value in zip(bars, movie_values):
+        left.text(bar.get_x() + bar.get_width() / 2, value + 650, f"{value:,}편", ha="center", fontweight="bold")
+    left.spines["top"].set_visible(False)
+    left.spines["right"].set_visible(False)
+
+    user_labels = ["역할 전체", "K10+미래 10", "좋은 영화 3+", "후보에 좋은\n영화 1+"]
+    user_values = [
+        k10["total_role_users"],
+        k10["input_and_future_users"],
+        k10["minimum_positive_users"],
+        k10["strict_eligible_users"],
+    ]
+    bars = right.bar(user_labels, user_values, color=["#F3B35A", "#F5C275", "#F7D091", "#6BC7A1"], width=0.62)
+    right.axhline(5000, color="#E05263", linestyle="--", linewidth=1.8, label="최소 5,000명")
+    right.set_title("Locked Test K10 평가 대상")
+    right.set_ylabel("사용자 수")
+    right.set_ylim(0, max(user_values) * 1.18)
+    right.grid(axis="y", alpha=0.18)
+    for bar, value in zip(bars, user_values):
+        right.text(bar.get_x() + bar.get_width() / 2, value + 130, f"{value:,}명", ha="center", fontweight="bold")
+    right.legend(frameon=False, loc="upper right")
+    right.spines["top"].set_visible(False)
+    right.spines["right"].set_visible(False)
+
+    fig.suptitle("넓은 TMDB 특징 집합과 시간 안전 후보군을 분리했다", fontsize=16, fontweight="bold")
+    fig.text(0.5, -0.01, "69,603편 특징 집합은 후보군이 아님 · 모델 예측과 Locked Test 성능은 아직 열지 않음", ha="center", fontsize=9, color="#5E6673")
+    fig.tight_layout()
+    save(fig, "rec-ev-019a-cohort-funnel.png")
+
+
 def main() -> None:
     OUTPUT.mkdir(parents=True, exist_ok=True)
     configure()
@@ -224,6 +285,7 @@ def main() -> None:
     cold_panels()
     tmdb_feature_flow()
     tmdb_feature_coverage()
+    rec_ev_019a_cohort_funnel()
     print(OUTPUT)
 
 

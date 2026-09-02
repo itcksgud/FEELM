@@ -192,6 +192,13 @@ def validate_artifact_contracts() -> None:
         "remove_from_core_candidate_universe"
     ) is not False:
         raise RuntimeError("019B missing features must not shrink the candidate universe")
+    derivation_b = contract_b["candidate_derivation"]
+    if derivation_b.get("time_safe_candidate_authority") is not False:
+        raise RuntimeError("019B broad feature superset must not claim candidate authority")
+    scoring_rule = derivation_b.get("downstream_scoring_rule", "")
+    for required_text in ("019A", "cutoff-safe", "ML_TMDB_VERIFIED", "RECOVERED_BY_IMDB"):
+        if required_text not in scoring_rule:
+            raise RuntimeError(f"019B downstream candidate boundary is incomplete: {required_text}")
     required_forbidden = {
         "popularity",
         "vote_average",
@@ -212,7 +219,7 @@ def validate_backlog(backlog: dict[str, Any]) -> None:
     tasks = {task["id"]: task for task in backlog.get("tasks", [])}
     required = {
         "TASK-REC-EV-019P": "DONE",
-        "TASK-REC-EV-019A": "READY",
+        "TASK-REC-EV-019A": "DONE",
         "TASK-REC-EV-019B": "DONE",
         "TASK-REC-EV-019C": "PENDING",
         "TASK-REC-EV-019": "PENDING",
@@ -292,7 +299,11 @@ def validate_019b_completion_manifest() -> dict[str, Any]:
         raise RuntimeError("REC-EV-019B manifest points to a stale contract")
     validation = manifest.get("validation", {})
     if validation.get("selected_movies") != 69603:
-        raise RuntimeError("REC-EV-019B full candidate count changed")
+        raise RuntimeError("REC-EV-019B full feature-superset count changed")
+    if validation.get("artifact_scope") != "FULL_BASE_USER_CATALOG_FEATURE_SUPERSET_NOT_CANDIDATE_CORE":
+        raise RuntimeError("REC-EV-019B feature-superset scope is missing")
+    if validation.get("time_safe_candidate_authority") is not False:
+        raise RuntimeError("REC-EV-019B must not claim candidate authority")
     if validation.get("identity_rate", 0) < contract["gates"]["verified_or_recovered_identity_rate_of_linked_min"]:
         raise RuntimeError("REC-EV-019B identity Gate is not recorded as passed")
     if validation.get("structured_rate", 0) < contract["gates"]["structured_feature_eligible_rate_of_identity_eligible_min"]:
@@ -308,6 +319,44 @@ def validate_019b_completion_manifest() -> dict[str, Any]:
     }
     if {item.get("path") for item in manifest.get("artifacts", [])} != expected_artifacts:
         raise RuntimeError("REC-EV-019B tracked artifact inventory changed")
+    return manifest
+
+
+def validate_019a_completion_manifest() -> dict[str, Any]:
+    manifest = read_json("docs/recommendation/evidence/manifests/rec-ev-019a.json")
+    contract = read_json("docs/recommendation/contracts/rec-ev-019a-artifacts.json")
+    if manifest.get("status") != "PASS_COHORT_GATES":
+        raise RuntimeError("REC-EV-019A cohort manifest is not complete")
+    if manifest.get("contract_sha256") != manifest.get("source_checksums", {}).get("contract_sha256"):
+        raise RuntimeError("REC-EV-019A manifest contract checksums disagree")
+    from recommendation_protocol_v4 import sha256_file
+
+    contract_path = ROOT / "docs/recommendation/contracts/rec-ev-019a-artifacts.json"
+    if manifest.get("contract_sha256") != sha256_file(contract_path):
+        raise RuntimeError("REC-EV-019A manifest points to a stale contract")
+    validation = manifest.get("validation", {})
+    minimum_users = int(contract["gates"]["locked_test_k10_strict_eligible_min"])
+    if int(validation.get("locked_test_k10_provisional_eligible", 0)) < minimum_users:
+        raise RuntimeError("REC-EV-019A provisional K10 Gate failed")
+    if int(validation.get("locked_test_k10_final_identity_eligible", 0)) < minimum_users:
+        raise RuntimeError("REC-EV-019A final identity K10 Gate failed")
+    if int(validation.get("final_identity_candidate_movies", 0)) != 41625:
+        raise RuntimeError("REC-EV-019A final identity candidate count changed")
+    if validation.get("prefix_nested_k5_in_k10") is not True:
+        raise RuntimeError("REC-EV-019A K5/K10 nesting is not recorded")
+    if validation.get("raw_user_ids_stored") is not False:
+        raise RuntimeError("REC-EV-019A raw user ID boundary changed")
+    if validation.get("locked_test_model_predictions_opened") is not False:
+        raise RuntimeError("REC-EV-019A opened Locked Test model predictions")
+    if validation.get("product_policy_changed") is not False:
+        raise RuntimeError("REC-EV-019A changed the product policy")
+    expected_artifacts = {
+        item["path"]
+        for item in contract["artifacts"]
+        if item["path"] != "docs/recommendation/evidence/manifests/rec-ev-019a.json"
+    }
+    if {item.get("path") for item in manifest.get("artifacts", [])} != expected_artifacts:
+        raise RuntimeError("REC-EV-019A tracked artifact inventory changed")
     return manifest
 
 
@@ -332,13 +381,17 @@ def validate() -> dict[str, Any]:
     )
     if preflight["implementation"] != "GO":
         raise RuntimeError("REC-EV-019 preflight did not produce implementation GO")
+    cohort_build = validate_019a_completion_manifest()
     feature_build = validate_019b_completion_manifest()
 
     return {
         "status": "PASS",
-        "decision": "GO",
-        "scope": "REC-EV-019A_READY_019B_DONE_DOWNSTREAM_GATED",
-        "next_ready_tasks": ["TASK-REC-EV-019A"],
+        "decision": "GO_FOR_019C_CONTRACT_NOT_MODEL_RUN",
+        "scope": "REC-EV-019A_019B_DONE_019C_EXECUTION_PENDING_CONTRACT",
+        "next_ready_tasks": [],
+        "next_contract_task": "TASK-REC-EV-019C",
+        "rec_ev_019a_status": cohort_build["status"],
+        "rec_ev_019a_final_identity_k10_users": cohort_build["validation"]["locked_test_k10_final_identity_eligible"],
         "rec_ev_019b_status": feature_build["status"],
         "rec_ev_019b_selected_movies": feature_build["validation"]["selected_movies"],
         "eligible_k10_test_users": preflight["eligible_test_users"],

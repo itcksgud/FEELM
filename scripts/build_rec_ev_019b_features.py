@@ -117,7 +117,7 @@ def load_env_value(path: Path, key: str) -> str:
     return ""
 
 
-def derive_candidate_movies(archive_path: Path, chunksize: int = 1_000_000) -> tuple[pd.DataFrame, int]:
+def derive_catalog_feature_superset(archive_path: Path, chunksize: int = 1_000_000) -> tuple[pd.DataFrame, int]:
     base_movies: set[int] = set()
     scanned = 0
     bucket_lookup = np.fromiter((user_bucket(user_id) for user_id in range(300_001)), dtype=np.uint8, count=300_001)
@@ -556,9 +556,9 @@ def _quarantine_table(rows: list[dict[str, Any]]) -> pa.Table:
 def build_artifacts(args: argparse.Namespace) -> dict[str, Any]:
     contract = json.loads(args.contract.read_text(encoding="utf-8"))
     token = load_env_value(args.env_file, contract["inputs"]["tmdb_auth_env"])
-    candidates, scanned = derive_candidate_movies(args.archive, args.chunksize)
-    total_candidates = len(candidates)
-    linked_count = int(candidates["tmdb_id"].notna().sum())
+    candidates, scanned = derive_catalog_feature_superset(args.archive, args.chunksize)
+    feature_superset_movies = len(candidates)
+    linked_feature_movies = int(candidates["tmdb_id"].notna().sum())
     if args.preflight:
         candidates = candidates[candidates["tmdb_id"].notna()].copy()
         candidates["sample_digest"] = candidates["movie_id"].map(movie_sample_digest)
@@ -612,12 +612,13 @@ def build_artifacts(args: argparse.Namespace) -> dict[str, Any]:
     summary = {
         "schema_version": 2,
         "evidence_id": "REC-EV-019B-PREFLIGHT" if args.preflight else "REC-EV-019B",
-        "scope": "DETERMINISTIC_LINKED_SAMPLE_NOT_FULL_GATE_EVIDENCE" if args.preflight else "FULL_BASE_TRAIN_CANDIDATE_CORE",
+        "scope": "DETERMINISTIC_LINKED_SAMPLE_NOT_FULL_GATE_EVIDENCE" if args.preflight else "FULL_BASE_USER_CATALOG_FEATURE_SUPERSET_NOT_CANDIDATE_CORE",
+        "time_safe_candidate_authority": False,
         "created_at": datetime.now(timezone.utc).isoformat(),
         "source_checksums": {"movielens_archive_sha256": sha256_file(args.archive), "contract_sha256": sha256_file(args.contract)},
         "source_rating_rows_scanned": scanned,
-        "base_train_candidate_movies": total_candidates,
-        "base_train_linked_movies": linked_count,
+        "base_user_catalog_movies": feature_superset_movies,
+        "base_user_catalog_linked_movies": linked_feature_movies,
         "selected_movies": len(records),
         "identity_coverage": {"eligible": len(eligible), "linked_denominator": selected_linked, "rate": identity_rate, "status_counts": status_counts},
         "structured_coverage": {"eligible": sum(bool(row["feature_eligible"]) for row in structured_rows), "denominator": len(eligible), "rate": structured_rate},
@@ -635,7 +636,7 @@ def build_artifacts(args: argparse.Namespace) -> dict[str, Any]:
         and structured_rate >= float(gates["structured_feature_eligible_rate_of_identity_eligible_min"])
         and text_rate >= float(gates["text_feature_eligible_rate_of_identity_eligible_min"])
     )
-    full_gate_pass = content_health_pass and linked_count / total_candidates >= float(gates["movielens_tmdb_link_present_rate_min"])
+    full_gate_pass = content_health_pass and linked_feature_movies / feature_superset_movies >= float(gates["movielens_tmdb_link_present_rate_min"])
     summary["content_health_pass"] = content_health_pass
     summary["full_gate_pass"] = None if args.preflight else full_gate_pass
     summary["full_gate_claimed"] = bool(not args.preflight and full_gate_pass)
@@ -654,7 +655,16 @@ def build_artifacts(args: argparse.Namespace) -> dict[str, Any]:
         "contract_sha256": sha256_file(args.contract),
         "source_checksums": summary["source_checksums"],
         "artifacts": artifacts,
-        "validation": {"selected_movies": len(records), "identity_rate": identity_rate, "structured_rate": structured_rate, "text_rate": text_rate, "locked_test_opened": False, "product_policy_changed": False},
+        "validation": {
+            "selected_movies": len(records),
+            "artifact_scope": summary["scope"],
+            "time_safe_candidate_authority": False,
+            "identity_rate": identity_rate,
+            "structured_rate": structured_rate,
+            "text_rate": text_rate,
+            "locked_test_opened": False,
+            "product_policy_changed": False,
+        },
     }
     manifest_path = args.manifest or REPO_ROOT / (contract["preflight"]["manifest"] if args.preflight else "docs/recommendation/evidence/manifests/rec-ev-019b.json")
     write_json(manifest_path, manifest)

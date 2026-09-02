@@ -1,20 +1,20 @@
 # FEELM 추천 vNext 구현 준비도
 
 > 상태: `APPROVED` — 오프라인 추천 evidence 구현 착수 기준
-> 판정일: 2026-08-31
-> 최종 판정: **GO — REC-EV-019B 완료, REC-EV-019A가 다음 독립 실행 작업**
+> 판정일: 2026-09-02
+> 최종 판정: **GO — REC-EV-019A·019B 완료, 다음 범위는 REC-EV-019C 실행 계약 작성**
 > 제품 경계: 현재 C2 popularity-only 교체와 개인화 champion 승인은 이 GO에 포함하지 않는다.
 > 후속 경계: Top-2 v4와 cold-item v2는 `PROPOSED_PROTOCOL_VALIDATION_PREFLIGHT_REQUIRED`다. 별도
-> Schema·artifact contract·runner 구현은 시작할 수 있지만 readiness validator의 019A GO나
+> Schema·artifact contract·runner 구현은 시작할 수 있지만 현재 019C 계약 작성 GO나
 > Locked Test 실행 GO에 포함되지 않는다.
 
 ## 1. GO의 정확한 의미
 
 이 판정은 새 LLM 세션이 이전 대화 없이 저장소만 읽고 다음 작업을 선택·구현·검증할 수 있다는 뜻이다.
 
-- binary 온보딩 cohort artifact
+- binary 온보딩 cohort artifact는 `PASS_COHORT_GATES`로 완료
 - 전체 TMDB feature artifact는 `PASS_FULL_GATES`로 완료
-- 강한 기준 모델과 full-catalog evaluator는 019A 완료 뒤 시작
+- 강한 기준 모델과 full-catalog evaluator는 019C 실행 계약을 먼저 고정한 뒤 시작
 - REC-EV-019~026 evidence는 backlog dependency Gate를 순서대로 통과
 
 모델이 아직 실험 Gate를 통과하지 않았다는 이유로 구현 자체를 막지 않는다. 반대로 구현 준비가 됐다는
@@ -23,9 +23,10 @@
 | 판정 대상 | 상태 |
 | --- | --- |
 | 추천 vNext 오프라인 구현 착수 | **GO** |
-| REC-EV-019A 구현 feasibility | **PASS — strict K10 Test 5,476명** |
-| REC-EV-019B 전체 특징 | **DONE — 69,603편 전체 coverage Gate PASS** |
-| REC-EV-019C 모델 실행 | `PENDING`, 019A 생성 뒤 최종 identity 적용 5,000명 Gate 재확인 |
+| REC-EV-019A cohort 전체 생성 | **DONE — 최종 후보 41,625편, strict K10 Test 5,476명** |
+| REC-EV-019B 전체 특징 | **DONE — 69,603편 feature superset coverage Gate PASS** |
+| REC-EV-019C 실행 계약 작성 | **GO** |
+| REC-EV-019C 모델 실행 | `NO-GO`, artifact schema·탐색 순서·checkpoint·복구 계약 필요 |
 | REC-EV-020P-A/B 설계→계약 구현 | `GO`, v4 Schema·artifact contract·runner 구현 가능 |
 | REC-EV-020P-A/B 실행 완료 판정 | `NO-GO`, runner·verifier·Validation power 결과 필요 |
 | REC-EV-021P 사전검사 | **DONE — firewall PASS, Validation pilot READY** |
@@ -76,7 +77,7 @@
 
 ## 4. 첫 두 작업
 
-### 4.1 `TASK-REC-EV-019A` — 바로 시작 가능
+### 4.1 `TASK-REC-EV-019A` — 완료
 
 목적은 full model 실행 전에 user-disjoint binary cohort를 artifact로 고정하는 것이다.
 
@@ -99,13 +100,15 @@
   Test 결과를 본 threshold 변경
 ```
 
-구현 파일·Parquet column schema·정렬 순서·출력 경로·실패 보존 정책·세 검증 명령은 artifact 계약에
-고정돼 있다. 새 세션은 이 계약에 없는 column이나 의미를 임의로 추가하지 않는다.
+전체 실행 결과 Base Train은 68,161명·10,254,572개 평점이고, cutoff-safe 링크 후보는 42,123편이다.
+019B 신원 확인을 적용한 최종 후보는 41,625편, strict K10 Locked Test는 5,476명으로 최소 5,000명 Gate를
+통과했다. 자세한 결과는 [`REC-EV-019A`](./evidence/REC-EV-019A-binary-cohort-build.md)에 있다.
 
 ### 4.2 `TASK-REC-EV-019B` — 완료
 
-목적은 MovieLens `links.csv`로 연결된 Train-known 전체 영화의 TMDB structured/text feature를 만드는
-것이다. API token은 `.env.local`에서만 읽고 문서·로그·artifact에 기록하지 않는다.
+목적은 Base 역할 사용자가 전체 기간에 평가한 넓은 영화 집합의 TMDB structured/text feature를 만드는
+것이다. API token은 `.env.local`에서만 읽고 문서·로그·artifact에 기록하지 않는다. 이 집합은 시간 cutoff
+뒤 영화도 포함하므로 recommender candidate 권한은 없다.
 
 기계 판독 계약: [`contracts/rec-ev-019b-artifacts.json`](./contracts/rec-ev-019b-artifacts.json)
 
@@ -116,10 +119,20 @@
   제거하지 않고 B0 fallback을 기록한다.
 - 캐시·429/5xx retry·100편 checkpoint·resume·coverage Gate는 artifact 계약 값을 따른다.
 
-전체 69,603편 실행에서 링크 99.8635%, identity 98.8001%, 구조 특징 99.3112%, 텍스트 특징
+전체 69,603편 feature superset 실행에서 링크 99.8635%, identity 98.8001%, 구조 특징 99.3112%, 텍스트 특징
 99.7961%로 Gate를 통과했다. 결과와 실패·복구 과정은
-[`REC-EV-019B 전체 결과`](./evidence/REC-EV-019B-tmdb-feature-build.md)에 기록했다. 019C는 019A까지
-완료한 뒤 두 artifact의 교집합과 K10 5,000명 Gate를 다시 확인하고 시작한다.
+[`REC-EV-019B 전체 결과`](./evidence/REC-EV-019B-tmdb-feature-build.md)에 기록했다. 019A와의 교집합과 K10
+5,000명 Gate도 이미 확인했다. 다음은 이를 변경하지 못하도록 019C 실행 계약을 작성하는 단계다.
+
+### 4.3 `TASK-REC-EV-019C` — 계약 작성만 시작 가능
+
+backlog에는 비교할 모델과 큰 Gate가 있지만, 아직 모델별 입력·출력 schema, 최대 30회 탐색의 정확한 순서,
+중간 checkpoint, 실패 후 재개, Validation 선택 결과 lock 형식이 없다. 따라서 현재 준비도는 다음과 같다.
+
+- 계약·runner·test·verifier 골격 작성: `GO`
+- Validation 모델 실행: `NO-GO` until contract validation passes
+- Locked Test 모델 성능: `NO-GO`
+- 제품 champion·기본 정책 변경: `NO-GO`
 
 ## 5. 완료 명령
 
@@ -136,6 +149,13 @@ npm ci
 ```powershell
 npm run recommendation:vnext:readiness:check
 npm run recommendation:evidence:check
+```
+
+REC-EV-019A 로컬 대용량 artifact 검증:
+
+```powershell
+py -3 -m unittest scripts/tests/test_build_rec_ev_019a_cohorts.py
+py -3 scripts/verify_rec_ev_019a_cohorts.py --manifest docs/recommendation/evidence/manifests/rec-ev-019a.json
 ```
 
 REC-EV-019 preflight 재생성:
@@ -187,17 +207,18 @@ checksum·schema·coverage는 019B verifier가 검사한다. TMDB 전수 재수�
 5. 실패·null champion도 삭제하지 않는다.
 6. 현재 제품 fallback을 바꾸지 않는다.
 7. `npm run recommendation:evidence:check`를 통과한다.
-8. 019C 시작 전 019B identity allowlist를 적용한 strict K10 Test가 5,000명 이상인지 다시 확인한다.
+8. 019C verifier는 019B identity allowlist 적용 strict K10 Test 5,476명과 최종 후보 41,625편이 바뀌지 않았는지 확인한다.
 
 ## 8. Blind handoff용 시작 프롬프트
 
 ```text
-C:\higher\projects\FEELM-standalone에서 TASK-REC-EV-019A를 수행해.
+C:\higher\projects\FEELM-standalone에서 TASK-REC-EV-019C의 실행 계약을 작성해.
 AGENTS.md와 docs/recommendation/vnext-implementation-readiness.md를 먼저 전부 읽고,
 docs/tasks/recommendation-evidence-backlog.yaml의 해당 task 범위·산출물·검증을 그대로 따라.
-docs/recommendation/contracts/rec-ev-019a-artifacts.json의 경로·schema·명령·Gate를 그대로 구현해.
-제품 API·DB·현재 popularity-only 정책은 변경하지 말고, 구현·테스트·evidence 검증까지 완료해.
-불확실한 제품 의미를 새로 만들지 말고 protocol JSON에 고정된 값을 사용해.
+REC-EV-019A의 최종 후보 41,625편과 K10 Test 5,476명을 바꾸지 마. 모델별 입력·출력 schema,
+Validation 최대 30회 탐색 순서, checkpoint·resume, 실패 보존, parameter lock과 검증 명령을 JSON 계약에
+고정하고 계약 validator와 단위 테스트까지만 완료해. 실제 모델 학습·Validation 성능·Locked Test는 실행하지 마.
+제품 API·DB·현재 popularity-only 정책은 변경하지 말고 protocol JSON에 고정된 값을 사용해.
 commit과 push는 하지 마.
 ```
 

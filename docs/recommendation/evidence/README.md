@@ -26,6 +26,7 @@
 | `REC-EV-017` relational + free-tag ablation | `COMPLETED_MOVIELENS_RELATIONAL_EVIDENCE_TMDB_BLOCKED` | 영화·장르 공동 선호와 tag 의미를 추가; 전체 향상에도 P2 회귀로 채택 `NO`, TMDB 전수 특징 대기 |
 | `REC-EV-018` user percentile audit | `COMPLETED_USER_DISTRIBUTION_DIAGNOSTIC` | 평균 외 B/T/H·효과 percentile·사용자/인기도 segment를 공개; Router 필요성 가설만 유지, champion `null` |
 | `REC-EV-019P` binary onboarding preflight | `COMPLETED_REPRODUCIBLE_FEASIBILITY_PASS` | strict eligibility로 40/10/10/40 split을 잠금; K10 5,476명으로 019A/019B 구현 `GO`, 019C는 최종 identity Gate 대기, champion 권한 `NO` |
+| `REC-EV-019A` binary cohort build | `PASS_COHORT_GATES` | 최종 후보 41,625편·K10 Test 5,476명; 모델 성능 미사용, 다음은 019C 실행 계약 |
 | `REC-DATA-001` temporal feasibility | `COMPLETED_DESCRIPTIVE_AUDIT` | 동일 날짜 Rating 몰아넣기 확인; K25·90일·N500 고정 근거 `NO` |
 | `REC-DATA-002` Korean-origin coverage | `COMPLETED_PROXY_AUDIT` | KR item slice 가능; 한국 20대 또는 독립 KR 사용자 cohort 승인 `NO` |
 | `REC-DATA-003` evaluation redesign | `PROTOCOL_AMENDMENT_PROPOSED` | preference reconstruction 주 평가 + next-rating-session 보조 평가 제안 |

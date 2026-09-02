@@ -1,14 +1,14 @@
 {
   "artifacts": [
     {
-      "bytes": 1766,
+      "bytes": 1812,
       "path": "outputs/recommendation-evidence/rec-ev-019b-preflight/coverage-summary.json",
-      "sha256": "33a464d3548679e1154018b992da63c98cf2d7923fa567a04104cad5f3df8f95"
+      "sha256": "bae8ac233ef0625225c6ec889c535cef454576f4a9b708316f92f029b88aecb2"
     },
     {
       "bytes": 8204,
       "path": "outputs/recommendation-evidence/rec-ev-019b-preflight/movie-identity.parquet",
-      "sha256": "c769a068d9e6c62d3c55373e35cf1c2a5f5bf56ca8466c7dd11e44a3c4393cae"
+      "sha256": "1a89a3a33f99b93e660e1d2e50f53247f05dfb0d9427f194cc95b5039d4adb2e"
     },
     {
       "bytes": 1807,
@@ -27,22 +27,24 @@
     }
   ],
   "contract": "docs/recommendation/contracts/rec-ev-019b-artifacts.json",
-  "contract_sha256": "f22bc18095e1fc7b2a15b13b90ca76f80518019c48b30563d98b2fbb0f223d17",
+  "contract_sha256": "a6a6240d31b36ac5587bc41fa0047587a88371b80f1bc31417076a055e722e9d",
   "evidence_id": "REC-EV-019B-PREFLIGHT",
   "model_revision": "614241f622f53c4eeff9890bdc4f31cfecc418b3",
   "preflight": true,
   "schema_version": 2,
   "source_checksums": {
-    "contract_sha256": "f22bc18095e1fc7b2a15b13b90ca76f80518019c48b30563d98b2fbb0f223d17",
+    "contract_sha256": "a6a6240d31b36ac5587bc41fa0047587a88371b80f1bc31417076a055e722e9d",
     "movielens_archive_sha256": "e4a68655d7386b8f95f2f2424b2ff975dfdd15ffd59e0d864a14dca43e99d6ee"
   },
   "status": "PASS_PREFLIGHT",
   "validation": {
+    "artifact_scope": "DETERMINISTIC_LINKED_SAMPLE_NOT_FULL_GATE_EVIDENCE",
     "identity_rate": 0.99,
     "locked_test_opened": false,
     "product_policy_changed": false,
     "selected_movies": 100,
     "structured_rate": 1.0,
-    "text_rate": 1.0
+    "text_rate": 1.0,
+    "time_safe_candidate_authority": false
   }
 }

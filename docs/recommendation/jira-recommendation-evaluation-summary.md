@@ -66,14 +66,19 @@
    나누도록 수정해 재검사 충돌을 0편으로 만들었다.
 
 8. **TMDB 전체 특징 실행**
-   100편 사전검사 후 Base-Train 영화 69,603편 전체를 실행했다. 링크 99.86%, identity 98.80%, 구조 특징
+   100편 사전검사 후 Base 역할 사용자의 넓은 특성 집합 69,603편 전체를 실행했다. 링크 99.86%, identity 98.80%, 구조 특징
    99.31%, 텍스트 특징 99.80%로 Gate를 통과했다. 키워드 결측 24.42%는 missing mask와 fallback으로
    보존했다.
 
-9. **현재 판정**
+9. **시간 안전 cohort 전체 생성**
+   cutoff 이전 Base Train 10,254,572개 평점에서 42,123편 1차 후보를 만들고 TMDB 신원 확인과 합쳐
+   최종 후보 41,625편을 고정했다. K10 Locked Test 적격은 5,476명으로 5,000명 Gate를 통과했다.
+   69,603편 feature 집합은 후보가 아니라는 경계도 계약과 검증기에 반영했다.
+
+10. **현재 판정**
    cohort·slate preflight와 TMDB feature build는 PASS. cold-item preflight도 재실행해 Validation pilot
-   READY가 됐다. 기준선·후보 paired power는 prediction artifact 부재로 계속 BLOCKED다. 현재 제품 추천은
-   popularity-only를 유지한다.
+   READY가 됐다. REC-EV-019A도 DONE이다. 기준선·후보 paired power는 prediction artifact 부재로 계속
+   BLOCKED이며, 019C는 실행 계약 작성만 GO다. 현재 제품 추천은 popularity-only를 유지한다.
 
 ### 핵심 숫자
 
@@ -86,7 +91,9 @@
 - 한국-origin 평점: 90,885개 / 전체 0.28%
 - density panel: q≥5 3,662편 / q≥20 1,963편 / q≥100 994편
 - 발견한 protected role 충돌: 6,964편 → 0편
-- TMDB 전체 후보: 69,603편 / 링크 69,508편(99.86%)
+- TMDB 넓은 특성 집합: 69,603편 / 링크 69,508편(99.86%)
+- cutoff-safe 1차 후보: 42,123편 / 신원 확인 최종 후보: 41,625편
+- K10 Locked Test 엄격 적격: 5,476명 / 최소 5,000명 PASS
 - identity 확인·복구: 68,674편(98.80%)
 - 구조 특징: 68,201편(99.31%) / 텍스트 특징: 68,534편(99.80%)
 - 가장 큰 필드 결측: 키워드 16,772편(24.42%)
@@ -97,7 +104,7 @@
 - 예상 별점 공개 미승인
 - 현재 popularity-only 유지
 - Locked Test 성능 미실행
-- REC-EV-019B DONE, 다음 선행 작업은 REC-EV-019A cohort artifact
+- REC-EV-019A·019B DONE, 다음 작업은 REC-EV-019C 실행 계약
 
 ### 근거 문서
 
@@ -168,7 +175,7 @@
 - 불충분 시 margin을 넓히지 않고 INCONCLUSIVE
 
 **상태:** BLOCKED
-**막힘:** 비교 prediction artifact 없음. REC-EV-019A와 019C Validation prediction 선행 필요
+**막힘:** 비교 prediction artifact 없음. REC-EV-019C 실행 계약과 Validation prediction 선행 필요
 
 ### 5. cold-item firewall·density panel preflight
 
@@ -209,13 +216,36 @@
 
 **전체 결과**
 
-- 후보 69,603편 / TMDB 링크 69,508편(99.8635%)
+- 넓은 특성 집합 69,603편 / TMDB 링크 69,508편(99.8635%)
 - identity 확인·복구 68,674편(98.8001%)
 - structured 68,201편(99.3112%)
 - text embedding 68,534편(99.7961%)
 - 키워드 결측 16,772편(24.42%), 배우 결측 2,336편(3.40%)
 - 전체 TMDB 수집 약 2시간 6분, cache 112,580개
 - embedding checkpoint·resume, artifact checksum, secret scan PASS
+
+### 7. Binary onboarding cohort artifact
+
+**제목**
+`[추천] REC-EV-019A 사용자 분리 cohort와 시간 안전 후보 생성`
+
+**완료 조건**
+
+- Base/Router/Validation/Locked Test 사용자 역할이 겹치지 않음
+- K5가 K10에 포함되고 미래 평가 창이 정확히 10개
+- 미평가·중립을 DISLIKE로 변환하지 않음
+- cutoff-safe 후보와 TMDB 신원 확인 후보의 교집합 고정
+- 원본 사용자 ID 비저장, checksum verifier PASS
+
+**상태:** DONE / PASS_COHORT_GATES
+
+**결과**
+
+- Base Train 68,161명 / 평점 10,254,572개
+- cutoff-safe 영화 42,203편 / TMDB 링크 1차 후보 42,123편
+- TMDB 신원 확인 최종 후보 41,625편
+- Locked Test K10 엄격 적격 5,476명 / Gate 5,000명 PASS
+- Locked Test 모델 예측·성능 미사용, 제품 정책 변경 없음
 
 ## Jira 최종 댓글 템플릿
 
@@ -225,7 +255,8 @@
 - K10 structural users: 16,795
 - K10 Miss non-null users: 16,516 (98.34%)
 - cold protected role collision: 6,964 → 0
-- REC-EV-019B full feature gates: PASS (69,603 movies)
+- REC-EV-019A cohort gates: PASS (final candidates 41,625 / K10 users 5,476)
+- REC-EV-019B full feature-superset gates: PASS (69,603 movies)
 - identity/structured/text: 98.80% / 99.31% / 99.80%
 - REC-EV-021P: PASS / READY_FOR_VALIDATION_PILOT
 - personal champion: NOT SELECTED
@@ -233,14 +264,13 @@
 
 [막힘]
 - pre-endpoint locked baseline/challenger prediction artifact 없음
-- REC-EV-019A cohort artifact와 REC-EV-019C Validation prediction 미생성
+- REC-EV-019C 실행 계약과 Validation prediction 미생성
 
 [다음]
-1) REC-EV-019A cohort build/verify
-2) 최종 identity allowlist 적용 후 K10 Test 구조 적격 5,000명 재확인
-3) REC-EV-019C Validation baseline vs one challenger prediction lock
-4) paired power 계산
-5) Gate 통과 시에만 Locked Test 1회
+1) REC-EV-019C 산출물·탐색 상한·checkpoint·실패 복구 계약 작성
+2) Validation baseline vs one challenger prediction lock
+3) 동일한 최종 후보 41,625편에서 paired power 계산
+4) Gate 통과 시에만 Locked Test 1회
 
 [근거]
 docs/recommendation/FEELM-recommendation-evaluation-final-report.md

@@ -97,6 +97,7 @@ def verify(manifest_path: Path, *, preflight: bool, env_file: Path) -> dict[str,
 
     summary = json.loads(artifact_map["coverage-summary.json"].read_text(encoding="utf-8"))
     _require(summary["selected_movies"] == len(identity), "coverage selected count mismatch")
+    _require(summary.get("time_safe_candidate_authority") is False, "019B must not claim time-safe candidate authority")
     _require(summary["identity_coverage"]["eligible"] == len(eligible_ids), "identity coverage count mismatch")
     _require(summary["identity_coverage"]["linked_denominator"] >= len(eligible_ids), "identity linked denominator is invalid")
     _require(summary["structured_coverage"]["denominator"] == len(eligible_ids), "structured denominator mismatch")
@@ -112,7 +113,12 @@ def verify(manifest_path: Path, *, preflight: bool, env_file: Path) -> dict[str,
         _require(summary["text_coverage"]["rate"] >= gates["text_feature_eligible_rate_of_identity_eligible_min"], "preflight text health threshold failed")
     else:
         gates = contract["gates"]
-        _require(summary["base_train_linked_movies"] / summary["base_train_candidate_movies"] >= gates["movielens_tmdb_link_present_rate_min"], "MovieLens-TMDB link gate failed")
+        _require(summary["scope"] == "FULL_BASE_USER_CATALOG_FEATURE_SUPERSET_NOT_CANDIDATE_CORE", "full artifact scope disclosure missing")
+        _require(
+            summary["base_user_catalog_linked_movies"] / summary["base_user_catalog_movies"]
+            >= gates["movielens_tmdb_link_present_rate_min"],
+            "MovieLens-TMDB link gate failed",
+        )
         _require(summary["identity_coverage"]["rate"] >= gates["verified_or_recovered_identity_rate_of_linked_min"], "identity coverage gate failed")
         _require(summary["structured_coverage"]["rate"] >= gates["structured_feature_eligible_rate_of_identity_eligible_min"], "structured coverage gate failed")
         _require(summary["text_coverage"]["rate"] >= gates["text_feature_eligible_rate_of_identity_eligible_min"], "text coverage gate failed")
@@ -134,7 +140,8 @@ def verify(manifest_path: Path, *, preflight: bool, env_file: Path) -> dict[str,
     return {
         "status": "PASS",
         "evidence_id": manifest["evidence_id"],
-        "scope": "PREFLIGHT_NOT_FULL_GATE" if preflight else "FULL_GATE",
+        "scope": "PREFLIGHT_NOT_FULL_GATE" if preflight else "FULL_FEATURE_SUPERSET_GATE",
+        "time_safe_candidate_authority": False,
         "selected_movies": len(identity),
         "identity_eligible": len(eligible_ids),
         "structured_rate": summary["structured_coverage"]["rate"],

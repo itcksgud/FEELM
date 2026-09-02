@@ -1,13 +1,14 @@
 {
   "schema_version": 2,
-  "contract_id": "rec-ev-019b-artifacts-v2",
+  "contract_id": "rec-ev-019b-artifacts-v3",
   "status": "APPROVED",
   "task_id": "TASK-REC-EV-019B",
   "protocol_version": "rec-eval-vnext-2",
-  "purpose": "Build versioned TMDB identity, structured feature, and text embedding artifacts without using TMDB popularity as preference evidence.",
+  "purpose": "Build a versioned broad catalog feature superset for TMDB identity, structured features, and text embeddings without treating the superset as a time-safe recommender candidate universe.",
   "inputs": {
     "movielens_archive": "resolved from docs/recommendation/evidence/manifests/global-time-v1.json source.archive",
-    "candidate_core": "outputs/recommendation-evidence/rec-ev-019a/candidate-core-provisional.parquet when available; otherwise all Base-Train movie IDs derived with the 019A contract",
+    "catalog_feature_superset": "distinct movies rated at any timestamp by users assigned to Base model Train buckets 0..39; this broad metadata inventory is not the 019C candidate core",
+    "downstream_candidate_core": "outputs/recommendation-evidence/rec-ev-019a/candidate-core-provisional.parquet intersect this artifact's final identity allowlist",
     "tmdb_auth_env": "TMDB_READ_ACCESS_TOKEN",
     "tmdb_auth_accepted_shapes": "JWT Read Access Token uses Authorization Bearer; 32-character v3 API key uses api_key query transport only; neither is serialized",
     "tmdb_language_requests": ["ko-KR", "en-US"],
@@ -16,7 +17,9 @@
   "candidate_derivation": {
     "user_bucket_algorithm": "uint64_be(SHA256('feelm-rec-vnext-user-split-v1|' + userId)[0:8]) mod 100",
     "base_train_buckets_inclusive": [0, 39],
-    "movie_rule": "distinct movieId observed for at least one Base-Train user",
+    "movie_rule": "distinct movieId observed at any timestamp for at least one user assigned to Base model Train buckets 0..39",
+    "time_safe_candidate_authority": false,
+    "downstream_scoring_rule": "019C must score only REC-EV-019A cutoff-safe provisional candidates whose 019B identity status is ML_TMDB_VERIFIED or RECOVERED_BY_IMDB",
     "linked_definition": "links.csv tmdbId parses as a positive integer",
     "preflight_sample_algorithm": "sort linked movies by SHA256('feelm-rec-019b-sample-v1|' + canonical movieId), then take N",
     "preflight_default_n": 100,

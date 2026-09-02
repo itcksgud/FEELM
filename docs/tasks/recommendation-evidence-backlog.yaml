@@ -240,7 +240,7 @@ tasks:
 
   - id: TASK-REC-EV-019A
     title: Binary onboarding cohort artifact 생성
-    status: READY
+    status: DONE
     depends_on: [TASK-REC-EV-019P]
     artifact_contract: docs/recommendation/contracts/rec-ev-019a-artifacts.json
     input_docs:
@@ -252,6 +252,8 @@ tasks:
       - scripts/build_rec_ev_019a_cohorts.py
       - scripts/tests/test_build_rec_ev_019a_cohorts.py
       - scripts/verify_rec_ev_019a_cohorts.py
+    evidence_docs:
+      - docs/recommendation/evidence/REC-EV-019A-binary-cohort-build.md
     outputs:
       - outputs/recommendation-evidence/rec-ev-019a/base-train-ratings.parquet
       - outputs/recommendation-evidence/rec-ev-019a/candidate-core-provisional.parquet
@@ -276,7 +278,7 @@ tasks:
       - binary thresholds or positive injection
 
   - id: TASK-REC-EV-019B
-    title: Train-known 전체 TMDB structured/text feature artifact
+    title: Base-user catalog TMDB structured/text feature superset artifact
     status: DONE
     depends_on: [TASK-REC-EV-019P]
     artifact_contract: docs/recommendation/contracts/rec-ev-019b-artifacts.json
@@ -307,6 +309,7 @@ tasks:
       - embedding model, revision, 384 dimensions and L2 normalization match the contract
       - TMDB popularity, vote average, vote count, watch providers are absent from preference features
       - cache, retry, resume and artifact checksum validation pass
+      - this broad all-timestamp feature superset never becomes the time-safe candidate core
     forbidden_changes:
       - product API and database schema
       - APPROVED_C2A_INTERNAL_POPULARITY_ONLY

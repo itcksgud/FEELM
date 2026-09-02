@@ -41,18 +41,18 @@
     },
     "evidence": {
       "path": "docs/recommendation/evidence/REC-EV-019P-binary-onboarding-preflight.md",
-      "bytes": 4395,
-      "sha256": "43137e455f6b838f5bb454e818bcc69d241a793e22eee9857145264f39615c12"
+      "bytes": 4651,
+      "sha256": "31b737684d66f1168ef675a633dd2e46df5ae1972b9ef0b0b6efab878c89881b"
     },
     "rec_ev_019a_contract": {
       "path": "docs/recommendation/contracts/rec-ev-019a-artifacts.json",
-      "bytes": 5692,
-      "sha256": "433db6018413da6c802ff33f52b7e5e650cd4ca9e66ffdb21479b86eac01d3e2"
+      "bytes": 8105,
+      "sha256": "e04ef66d0173710d874f189d20d468b5b870f7d1dadbbf7338c8052b076b49dc"
     },
     "rec_ev_019b_contract": {
       "path": "docs/recommendation/contracts/rec-ev-019b-artifacts.json",
-      "bytes": 11340,
-      "sha256": "f22bc18095e1fc7b2a15b13b90ca76f80518019c48b30563d98b2fbb0f223d17"
+      "bytes": 11823,
+      "sha256": "a6a6240d31b36ac5587bc41fa0047587a88371b80f1bc31417076a055e722e9d"
     }
   },
   "result": {

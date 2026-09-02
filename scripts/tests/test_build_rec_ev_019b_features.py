@@ -69,6 +69,14 @@ def complete_details() -> dict:
 
 
 class RecEv019bFeaturesTest(unittest.TestCase):
+    def test_contract_keeps_feature_superset_outside_candidate_authority(self) -> None:
+        contract_path = SCRIPTS.parent / "docs/recommendation/contracts/rec-ev-019b-artifacts.json"
+        contract = json.loads(contract_path.read_text(encoding="utf-8"))
+        derivation = contract["candidate_derivation"]
+        self.assertFalse(derivation["time_safe_candidate_authority"])
+        self.assertIn("REC-EV-019A", derivation["downstream_scoring_rule"])
+        self.assertIn("cutoff-safe", derivation["downstream_scoring_rule"])
+
     def test_sample_order_is_stable(self) -> None:
         first = sorted([9, 1, 5, 2], key=lambda value: (movie_sample_digest(value), value))
         second = sorted([2, 5, 1, 9], key=lambda value: (movie_sample_digest(value), value))

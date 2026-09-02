@@ -88,6 +88,9 @@ MovieLens rating timestamp는 관람 시각이 아니고, 이 변환은 실제 �
 019C가 공통 candidate에 적용한 뒤 K10 strict eligible을 다시 계산한다. 5,000명 미만이면 019C는
 `INCONCLUSIVE`로 중단하며, Test 비율이나 positive 기준을 다시 낮추지 않는다.
 
+> 후속 결과(2026-09-02): REC-EV-019A 전체 생성에서 identity allowlist를 적용해도 K10 5,476명이
+> 유지됐다. 최종 후보는 41,625편이다. 이 문단의 preflight 조건은 충족됐으며 다음 단계는 019C 실행 계약이다.
+
 ## 6. 재현
 
 ```powershell

@@ -52,9 +52,10 @@
 | Jira 기록 원고 | `jira-recommendation-evaluation-summary.md` | Epic·하위 이슈·최종 댓글 복사본 |
 | 구현 준비도 | `vnext-implementation-readiness.md` | 다음 READY task와 downstream Gate를 구분 |
 | 019A artifact 계약 | `contracts/rec-ev-019a-artifacts.json` | cohort 경로·column schema·명령·Gate 고정 |
+| 019A cohort 전체 결과 | `evidence/REC-EV-019A-binary-cohort-build.md` | cutoff-safe 후보 42,123편·최종 후보 41,625편·K10 5,476명 Gate |
 | 019B artifact 계약 | `contracts/rec-ev-019b-artifacts.json` | TMDB feature·embedding·cache·coverage 계약 고정 |
 | 019B 100편 사전검사 | `evidence/REC-EV-019B-tmdb-feature-preflight.md` | 실제 TMDB·cache·identity·384차원 embedding 실행 검증 |
-| 019B 전체 실행 결과 | `evidence/REC-EV-019B-tmdb-feature-build.md` | 69,603편 identity·structured·text coverage와 실행 실패·복구 기록 |
+| 019B 전체 실행 결과 | `evidence/REC-EV-019B-tmdb-feature-build.md` | 69,603편 콘텐츠 특성 집합의 identity·structured·text coverage와 실행 실패·복구 기록 |
 | 제품 서빙 경계 | `serving-contract.md` | 현재 승인 정책과 vNext 후보를 구분 |
 | 연구 보고서 | `personalized-hybrid-design-report.md` | 네 추천 Head의 가설·결과·한계를 연결 |
 
