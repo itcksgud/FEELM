@@ -22,7 +22,7 @@ class RecEv019CResourceDryRunVerifierTest(unittest.TestCase):
             ROOT / "docs/recommendation/evidence/manifests/rec-ev-019c-resource-dry-run.json"
         )
         self.assertEqual("PASS", result["status"])
-        self.assertFalse(result["real_validation_ready"])
+        self.assertTrue(result["real_validation_ready"])
         self.assertFalse(result["locked_test_opened"])
 
     def _isolated(self) -> tuple[tempfile.TemporaryDirectory, Path, Path, Path]:

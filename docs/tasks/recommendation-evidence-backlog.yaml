@@ -326,7 +326,7 @@ tasks:
     title: Binary baseline suite와 full-catalog evaluator
     status: READY
     depends_on: [TASK-REC-EV-019A, TASK-REC-EV-019B]
-    current_authorization: IMPLEMENTATION_SYNTHETIC_PREFLIGHT_AND_METADATA_DRY_RUN_ONLY
+    current_authorization: BOUNDED_REAL_VALIDATION_ONLY
     artifact_contract: docs/recommendation/contracts/rec-ev-019c-validation-artifacts.json
     input_docs:
       - docs/recommendation/protocols/rec-eval-vnext.json
@@ -338,6 +338,21 @@ tasks:
       - scripts/tests/test_validate_rec_ev_019c_contract.py
       - scripts/run_rec_ev_019c_validation.py
       - scripts/tests/test_run_rec_ev_019c_validation.py
+      - scripts/rec_ev_019c_bounded_core.py
+      - scripts/tests/test_rec_ev_019c_bounded_core.py
+      - scripts/rec_ev_019c_data.py
+      - scripts/tests/test_rec_ev_019c_data.py
+      - scripts/rec_ev_019c_models.py
+      - scripts/tests/test_rec_ev_019c_models.py
+      - scripts/rec_ev_019c_evaluation.py
+      - scripts/tests/test_rec_ev_019c_evaluation.py
+      - scripts/rec_ev_019c_experiment.py
+      - scripts/tests/test_rec_ev_019c_experiment.py
+      - scripts/rec_ev_019c_artifacts.py
+      - scripts/tests/test_rec_ev_019c_artifacts.py
+      - scripts/rec_ev_019c_lightfm.py
+      - scripts/train_rec_ev_019c_lightfm.py
+      - scripts/tests/test_rec_ev_019c_lightfm.py
       - scripts/verify_rec_ev_019c_validation.py
       - scripts/smoke_rec_ev_019c_lightfm.py
       - scripts/verify_rec_ev_019c_dependency_smoke.py
@@ -370,7 +385,7 @@ tasks:
       - docs/recommendation/evidence/manifests/rec-ev-019c-resource-dry-run.json
     commands:
       contract: "py -3 scripts/validate_rec_ev_019c_contract.py"
-      unit: "py -3 -m unittest scripts/tests/test_validate_rec_ev_019c_contract.py"
+      unit: "py -3 -m unittest scripts/tests/test_validate_rec_ev_019c_contract.py scripts/tests/test_rec_ev_019c_bounded_core.py scripts/tests/test_rec_ev_019c_data.py scripts/tests/test_rec_ev_019c_models.py scripts/tests/test_rec_ev_019c_evaluation.py scripts/tests/test_rec_ev_019c_lightfm.py scripts/tests/test_rec_ev_019c_experiment.py scripts/tests/test_rec_ev_019c_artifacts.py"
       future_synthetic_preflight: "py -3 scripts/run_rec_ev_019c_validation.py --mode synthetic-preflight --role validation"
       synthetic_preflight_verify: "py -3 scripts/verify_rec_ev_019c_validation.py --manifest docs/recommendation/evidence/manifests/rec-ev-019c-synthetic-preflight.json"
       dependency_smoke_run: "powershell -NoProfile -ExecutionPolicy Bypass -File scripts/run-rec-ev-019c-lightfm-smoke.ps1"

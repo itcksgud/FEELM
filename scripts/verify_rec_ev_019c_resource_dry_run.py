@@ -204,12 +204,12 @@ def verify_manifest(manifest_path: Path, *, root: Path = ROOT) -> dict[str, Any]
     require(all(budget_checks.values()), "resource budget check failed")
     blockers = result.get("implementation_blockers", [])
     require([item.get("id") for item in blockers] == EXPECTED_BLOCKERS, "resource blocker set changed")
-    require(result.get("real_validation_ready") is False, "resource dry-run authorized real Validation")
+    require(result.get("real_validation_ready") is True, "resource dry-run did not clear real Validation")
     for key in ("real_validation_executed", "locked_test_opened", "product_policy_changed"):
         require(result.get(key) is False, f"resource dry-run crossed boundary: {key}")
     require(result.get("product_champion") is None, "resource dry-run selected a champion")
     require(
-        result.get("next_gate") == "IMPLEMENT_BOUNDED_REAL_VALIDATION_RUNNER",
+        result.get("next_gate") == "RUN_BOUNDED_REAL_VALIDATION",
         "resource next Gate changed",
     )
     serialized = json.dumps(result, ensure_ascii=False).lower()
@@ -219,14 +219,14 @@ def verify_manifest(manifest_path: Path, *, root: Path = ROOT) -> dict[str, Any]
     validation = manifest.get("validation", {})
     require(validation.get("metadata_only") is True, "manifest metadata-only flag changed")
     require(validation.get("rating_rows_or_feature_vectors_read") is False, "manifest says rows were read")
-    require(validation.get("real_validation_ready") is False, "manifest authorized real Validation")
+    require(validation.get("real_validation_ready") is True, "manifest did not clear real Validation")
     require(validation.get("real_validation_executed") is False, "manifest executed real Validation")
     require(validation.get("locked_test_opened") is False, "manifest opened Locked Test")
     require(validation.get("blocker_ids") == EXPECTED_BLOCKERS, "manifest blocker set changed")
     adoption = manifest.get("adoption", {})
     require(adoption.get("champion") is None, "manifest selected a champion")
     require(adoption.get("product_policy_changed") is False, "manifest changed product policy")
-    require(adoption.get("real_validation_authorized") is False, "manifest authorized Validation")
+    require(adoption.get("real_validation_authorized") is True, "manifest did not record Validation authorization")
     return {
         "status": "PASS",
         "evidence_id": result["evidence_id"],
@@ -235,7 +235,7 @@ def verify_manifest(manifest_path: Path, *, root: Path = ROOT) -> dict[str, Any]
         "b8_base_update_upper_bound": result["estimated_work"]["b8_base_update_upper_bound"],
         "b4_pair_update_upper_bound": result["estimated_work"]["b4_pair_update_upper_bound"],
         "blockers": EXPECTED_BLOCKERS,
-        "real_validation_ready": False,
+        "real_validation_ready": True,
         "locked_test_opened": False,
         "product_champion": None,
     }

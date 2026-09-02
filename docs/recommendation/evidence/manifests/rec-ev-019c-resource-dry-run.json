@@ -2,16 +2,16 @@
   "adoption": {
     "champion": null,
     "product_policy_changed": false,
-    "real_validation_authorized": false
+    "real_validation_authorized": true
   },
   "artifacts": [
     {
-      "bytes": 3593,
+      "bytes": 3579,
       "path": "docs/recommendation/evidence/results/rec-ev-019c-resource-dry-run.json",
-      "sha256": "c1ed95b2633163d6425e4b35505e684d7f14dda427477c9a20ca8e2be26c362d"
+      "sha256": "40cc23f877cc50ba020b6145adfa528b729a552f5431d0e87552e6b8ca01e661"
     }
   ],
-  "contract_sha256": "89b1b8939c7730f62af9035af9fab60e6489f5f87355ed8b3082d83dce56549a",
+  "contract_sha256": "480f91704231684abf3e7ec54fd1092d0f120f21682e1d8bb9cb2120bc535069",
   "evidence_id": "REC-EV-019C-RESOURCE-DRY-RUN",
   "schema_version": 1,
   "status": "PASS_RESOURCE_CONTRACT_RUNNER_IMPLEMENTATION_READY",
@@ -21,6 +21,6 @@
     "metadata_only": true,
     "rating_rows_or_feature_vectors_read": false,
     "real_validation_executed": false,
-    "real_validation_ready": false
+    "real_validation_ready": true
   }
 }

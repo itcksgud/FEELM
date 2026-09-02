@@ -287,7 +287,7 @@ def validate_backlog(backlog: dict[str, Any]) -> None:
     if task_019c.get("artifact_contract") != contract_019c_path:
         raise RuntimeError("019C artifact contract is missing from backlog")
     contract_019c = read_json(contract_019c_path)
-    if task_019c.get("current_authorization") != "IMPLEMENTATION_SYNTHETIC_PREFLIGHT_AND_METADATA_DRY_RUN_ONLY":
+    if task_019c.get("current_authorization") != "BOUNDED_REAL_VALIDATION_ONLY":
         raise RuntimeError("019C backlog authorization is too broad")
     expected_019c_outputs = {item["path"] for item in contract_019c["future_artifacts"]}
     if set(task_019c.get("outputs", [])) != expected_019c_outputs:
@@ -467,10 +467,10 @@ def validate() -> dict[str, Any]:
 
     return {
         "status": "PASS",
-        "decision": "GO_FOR_019C_BOUNDED_REAL_VALIDATION_RUNNER_IMPLEMENTATION",
-        "scope": "REC-EV-019A_019B_DONE_019C_SYNTHETIC_DEPENDENCY_AND_BOUNDED_RESOURCE_CONTRACT_PASS_REAL_VALIDATION_BLOCKED",
+        "decision": "GO_FOR_019C_BOUNDED_REAL_VALIDATION_RUN",
+        "scope": "REC-EV-019A_019B_DONE_019C_RUNNER_SYNTHETIC_DEPENDENCY_AND_RESOURCE_GATES_PASS_REAL_VALIDATION_ONLY",
         "next_ready_tasks": ["TASK-REC-EV-019C"],
-        "next_phase": "IMPLEMENT_BOUNDED_REAL_VALIDATION_RUNNER_WITHOUT_EXECUTING_IT",
+        "next_phase": "RUN_BOUNDED_REAL_VALIDATION_WITHOUT_LOCKED_TEST",
         "rec_ev_019a_status": cohort_build["status"],
         "rec_ev_019a_final_identity_k10_users": cohort_build["validation"]["locked_test_k10_final_identity_eligible"],
         "rec_ev_019b_status": feature_build["status"],
@@ -483,7 +483,7 @@ def validate() -> dict[str, Any]:
         "rec_ev_019c_full_catalog_user_item_scores": resource_019c["full_catalog_user_item_scores"],
         "rec_ev_019c_b8_base_update_upper_bound": resource_019c["b8_base_update_upper_bound"],
         "rec_ev_019c_b4_pair_update_upper_bound": resource_019c["b4_pair_update_upper_bound"],
-        "real_validation_authorized": False,
+        "real_validation_authorized": True,
         "eligible_k10_test_users": preflight["eligible_test_users"],
         "current_product_policy": "APPROVED_C2A_INTERNAL_POPULARITY_ONLY",
         "product_champion": None,

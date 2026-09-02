@@ -6,6 +6,7 @@ from __future__ import annotations
 import argparse
 import hashlib
 import json
+import math
 from pathlib import Path
 from typing import Any
 
@@ -42,6 +43,9 @@ def _safe_repo_path(relative: str, *, root: Path) -> Path:
 
 
 def verify_manifest(manifest_path: Path, *, root: Path = ROOT) -> dict[str, Any]:
+    identity = read_json(manifest_path).get("evidence_id")
+    if identity == "REC-EV-019C":
+        return verify_real_manifest(manifest_path, root=root)
     contract = read_json(root / CONTRACT_PATH.relative_to(ROOT))
     manifest = read_json(manifest_path)
     expected_paths = contract["synthetic_preflight_artifacts"]
@@ -103,6 +107,91 @@ def verify_manifest(manifest_path: Path, *, root: Path = ROOT) -> dict[str, Any]
         "real_validation_executed": False,
         "locked_test_opened": False,
         "next_gate": result["next_gate"],
+        "product_champion": None,
+    }
+
+
+def verify_real_manifest(manifest_path: Path, *, root: Path = ROOT) -> dict[str, Any]:
+    import pyarrow.parquet as pq
+
+    contract_path = root / CONTRACT_PATH.relative_to(ROOT)
+    contract = read_json(contract_path)
+    manifest = read_json(manifest_path)
+    contract_sha = sha256_file(contract_path)
+    require(manifest.get("schema_version") == 1, "unexpected real Validation manifest schema")
+    require(manifest.get("evidence_id") == "REC-EV-019C", "unexpected real Validation evidence id")
+    require(manifest.get("status") == "PASS_VALIDATION_SELECTION_LOCKED", "real Validation is not complete")
+    require(manifest.get("contract_sha256") == contract_sha, "real Validation contract hash is stale")
+    require(manifest.get("validation", {}).get("locked_test_opened") is False, "Locked Test was opened")
+    require(manifest.get("adoption", {}).get("champion") is None, "Validation invented a product champion")
+    require(manifest.get("adoption", {}).get("product_policy_changed") is False, "Validation changed product policy")
+
+    expected = {item["path"] for item in contract["future_artifacts"] if not item["path"].startswith("docs/")}
+    artifacts = manifest.get("artifacts", [])
+    by_path = {item["path"]: item for item in artifacts}
+    require(set(by_path) == expected, "real Validation artifact inventory changed")
+    forbidden = set(contract["forbidden_input_artifacts"])
+    require(not forbidden.intersection(by_path), "real Validation manifest contains a forbidden input path")
+    for relative, artifact in by_path.items():
+        path = _safe_repo_path(relative, root=root)
+        require(path.is_file(), f"real Validation artifact missing: {relative}")
+        require(path.stat().st_size == int(artifact.get("bytes", -1)), f"artifact byte count mismatch: {relative}")
+        require(sha256_file(path) == artifact.get("sha256"), f"artifact checksum mismatch: {relative}")
+
+    output = root / "outputs/recommendation-evidence/rec-ev-019c"
+    candidate = pq.ParquetFile(output / "candidate-core-final.parquet")
+    trial_metrics = pq.ParquetFile(output / "trial-user-metrics.parquet")
+    predictions = pq.ParquetFile(output / "validation-predictions.parquet")
+    validation_metrics = pq.ParquetFile(output / "validation-user-metrics.parquet")
+    require(candidate.metadata.num_rows == 41625, "candidate row count drift")
+    require(trial_metrics.metadata.num_rows == 22272, "trial metric row count drift")
+    expected_validation_rows = 1674 + 7 * (1614 + 1479)
+    require(validation_metrics.metadata.num_rows == expected_validation_rows, "Validation metric row count drift")
+    require(predictions.metadata.num_rows == expected_validation_rows * 500, "prediction row count drift")
+
+    contract_columns = {
+        Path(item["path"]).name: [column[0] for column in item.get("columns", [])]
+        for item in contract["future_artifacts"] if item.get("columns")
+    }
+    for name, parquet in (
+        ("candidate-core-final.parquet", candidate),
+        ("trial-user-metrics.parquet", trial_metrics),
+        ("validation-predictions.parquet", predictions),
+        ("validation-user-metrics.parquet", validation_metrics),
+    ):
+        require(parquet.schema_arrow.names == contract_columns[name], f"column contract drift: {name}")
+
+    selection = read_json(output / "validation-selection.json")
+    for key in ("tuning_panel", "per_model_per_k", "stability_panel", "single_best_per_k", "all_trial_metrics", "fallback_rates", "seed_variance", "champion"):
+        require(key in selection, f"selection key missing: {key}")
+    require(selection["champion"] is None, "selection invented a champion")
+    require(set(selection["single_best_per_k"]) == {"0", "5", "10"}, "single-best K coverage changed")
+    lock = read_json(output / "validation-selection-lock.json")
+    require(lock.get("contract_sha256") == contract_sha, "selection lock contract hash mismatch")
+    require(lock.get("candidate_count") == 41625, "selection lock candidate count drift")
+    require(lock.get("created_before_test_read") is True, "selection lock timing invariant failed")
+    require(lock.get("locked_test_opened") is False, "selection lock reports Test access")
+    require(lock.get("validation_user_counts") == {"0": 1674, "5": 1614, "10": 1479}, "selection lock user counts drift")
+
+    resource = read_json(output / "resource-summary.json")
+    limits = contract["resource_execution_plan"]["budgets"]
+    mapping = {
+        "full_catalog_user_item_scores": "maximum_full_catalog_user_item_scores",
+        "b8_base_updates": "maximum_b8_base_updates",
+        "b4_pair_updates": "maximum_b4_pair_updates",
+        "rrf_rank_contributions": "maximum_rrf_rank_contributions",
+    }
+    for counter, limit in mapping.items():
+        require(int(resource.get("budget_counters", {}).get(counter, 0)) <= int(limits[limit]), f"resource budget exceeded: {counter}")
+    require(math.isfinite(float(resource.get("wall_clock_seconds", float("nan")))), "invalid wall-clock metric")
+    return {
+        "status": "PASS",
+        "evidence_id": "REC-EV-019C",
+        "candidate_movies": 41625,
+        "validation_metric_rows": expected_validation_rows,
+        "prediction_rows": expected_validation_rows * 500,
+        "single_best_per_k": selection["single_best_per_k"],
+        "locked_test_opened": False,
         "product_champion": None,
     }
 

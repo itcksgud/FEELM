@@ -66,17 +66,21 @@ def _artifact_paths(manifest: dict[str, Any]) -> set[str]:
 def validate_contract(contract: dict[str, Any], *, root: Path = ROOT) -> dict[str, Any]:
     require(contract.get("contract_id") == "rec-ev-019c-validation-artifacts-v1", "unexpected 019C contract id")
     require(
-        contract.get("status") == "APPROVED_FOR_IMPLEMENTATION_SYNTHETIC_PREFLIGHT_AND_METADATA_DRY_RUN_ONLY",
+        contract.get("status") == "APPROVED_FOR_BOUNDED_REAL_VALIDATION",
         "019C authorization status changed",
     )
     require(contract.get("task_id") == "TASK-REC-EV-019C", "019C task id changed")
     require(contract.get("protocol_version") == "rec-eval-vnext-2", "019C protocol version changed")
 
     authorization = contract["current_authorization"]
-    for key in ("contract_validation", "runner_implementation", "synthetic_preflight", "validation_metadata_dry_run"):
+    for key in ("contract_validation", "runner_implementation", "synthetic_preflight", "validation_metadata_dry_run", "real_validation_fit_or_score"):
         require(authorization.get(key) is True, f"019C safe implementation authorization missing: {key}")
-    for key in ("real_validation_fit_or_score", "locked_test_access", "champion_selection", "product_policy_change"):
+    for key in ("locked_test_access", "champion_selection", "product_policy_change"):
         require(authorization.get(key) is False, f"019C unsafe authorization opened: {key}")
+    require(
+        authorization.get("next_gate") == "RUN_BOUNDED_REAL_VALIDATION_WITHOUT_LOCKED_TEST",
+        "019C next Gate changed",
+    )
 
     sources = contract["source_contracts"]
     source_docs = {name: root / path for name, path in sources.items()}
@@ -260,10 +264,21 @@ def validate_contract(contract: dict[str, Any], *, root: Path = ROOT) -> dict[st
         "019C B4 pair population changed",
     )
     require(pairs.get("maximum_pairs_per_user_per_epoch") == 16, "019C B4 pair cap changed")
+    require(
+        pairs.get("ordering")
+        == "SHA256_SEEDED_SPLITMIX64_INDEX_SAMPLE_V3_OVER_SORTED_OBSERVED_LIKE_CROSS_DISLIKE_WITHOUT_CARTESIAN_MATERIALIZATION",
+        "019C B4 deterministic pair sampler changed",
+    )
     require(pairs.get("without_replacement_within_user_epoch") is True, "019C B4 could repeat pairs within an epoch")
     require(pairs.get("unrated_items_forbidden") is True, "019C B4 could use unrated items")
     require(pairs.get("neutral_items_forbidden") is True, "019C B4 could use neutral items")
     require(models["B4_BPR_MF"]["fixed_parameters"].get("epochs") == 30, "019C B4 epoch budget changed")
+    require(
+        models["B4_BPR_MF"]["fixed_parameters"].get("optimizer")
+        == "DETERMINISTIC_AVERAGED_MINIBATCH_SGD",
+        "019C B4 optimizer semantics changed",
+    )
+    require(models["B4_BPR_MF"]["fixed_parameters"].get("batch_size") == 4096, "019C B4 batch size changed")
     require(models["B8_LIGHTFM"]["fixed_parameters"].get("epochs") == 10, "019C B8 epoch budget changed")
 
     scoring = resource["scoring_phases"]
@@ -366,6 +381,21 @@ def validate_contract(contract: dict[str, Any], *, root: Path = ROOT) -> dict[st
         "contract_unit_test",
         "runner_to_create",
         "runner_unit_test_to_create",
+        "bounded_core",
+        "bounded_core_unit_test",
+        "real_data_adapter",
+        "real_data_adapter_unit_test",
+        "model_primitives",
+        "model_primitives_unit_test",
+        "evaluation_engine",
+        "evaluation_engine_unit_test",
+        "experiment_engine",
+        "experiment_engine_unit_test",
+        "artifact_writer",
+        "artifact_writer_unit_test",
+        "lightfm_host_adapter",
+        "lightfm_container_trainer",
+        "lightfm_adapter_unit_test",
         "result_verifier_to_create",
         "dependency_smoke_runner",
         "dependency_smoke_verifier",
@@ -386,7 +416,7 @@ def validate_contract(contract: dict[str, Any], *, root: Path = ROOT) -> dict[st
 
     return {
         "status": "PASS",
-        "decision": "GO_FOR_BOUNDED_RUNNER_IMPLEMENTATION_AND_PREFLIGHT_ONLY",
+        "decision": "GO_FOR_BOUNDED_REAL_VALIDATION_ONLY",
         "contract_id": contract["contract_id"],
         "candidate_movies": 41625,
         "validation_users_k10": preconditions["validation_strict_users_by_k"]["10"],

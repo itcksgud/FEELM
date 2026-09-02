@@ -27,7 +27,7 @@
 | `REC-EV-018` user percentile audit | `COMPLETED_USER_DISTRIBUTION_DIAGNOSTIC` | 평균 외 B/T/H·효과 percentile·사용자/인기도 segment를 공개; Router 필요성 가설만 유지, champion `null` |
 | `REC-EV-019P` binary onboarding preflight | `COMPLETED_REPRODUCIBLE_FEASIBILITY_PASS` | strict eligibility로 40/10/10/40 split을 잠금; K10 5,476명으로 019A/019B 구현 `GO`, champion 권한 `NO` |
 | `REC-EV-019A` binary cohort build | `PASS_COHORT_GATES` | 최종 후보 41,625편·K10 Test 5,476명; 역할별 파일 firewall 추가, 모델 성능 미사용 |
-| `REC-EV-019C` validation preflight | `SYNTHETIC_AND_DEPENDENCY_PREFLIGHT_PASS` | 계약·runner 안전장치 15개·Linux dependency 9개 PASS; 실제 runner 구현만 `GO`, Validation·Test·champion `NO` |
+| `REC-EV-019C` validation suite | `BOUNDED_REAL_VALIDATION_GO` | 실제 runner·작은 전체 suite·안전장치 15개·Linux dependency 9개·자원 상한 PASS; Validation만 `GO`, Test·champion `NO` |
 | `REC-DATA-001` temporal feasibility | `COMPLETED_DESCRIPTIVE_AUDIT` | 동일 날짜 Rating 몰아넣기 확인; K25·90일·N500 고정 근거 `NO` |
 | `REC-DATA-002` Korean-origin coverage | `COMPLETED_PROXY_AUDIT` | KR item slice 가능; 한국 20대 또는 독립 KR 사용자 cohort 승인 `NO` |
 | `REC-DATA-003` evaluation redesign | `PROTOCOL_AMENDMENT_PROPOSED` | preference reconstruction 주 평가 + next-rating-session 보조 평가 제안 |

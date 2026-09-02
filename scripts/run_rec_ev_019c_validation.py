@@ -16,6 +16,7 @@ import json
 import math
 import os
 import tempfile
+import time
 from dataclasses import dataclass
 from pathlib import Path
 from typing import Any, Callable, Iterable, Mapping, Sequence
@@ -250,17 +251,198 @@ def checkpoint_write_or_resume(
 
 
 def _assert_validation_mode_blocked(contract: Mapping[str, Any]) -> bool:
+    blocked_contract = json.loads(json.dumps(contract))
+    blocked_contract["current_authorization"]["real_validation_fit_or_score"] = False
     try:
-        run_real_validation(contract)
+        run_real_validation(blocked_contract)
     except AuthorizationError:
         return True
     return False
 
 
-def run_real_validation(contract: Mapping[str, Any]) -> None:
+def run_real_validation(
+    contract: Mapping[str, Any],
+    *,
+    resume: bool = False,
+    root: Path = ROOT,
+) -> dict[str, Any]:
     if not contract["current_authorization"].get("real_validation_fit_or_score", False):
         raise AuthorizationError("real Validation is not authorized; no data artifact was opened")
-    raise NotImplementedError("real Validation implementation requires a later approved phase")
+
+    from rec_ev_019c_artifacts import (
+        PredictionParquetSink,
+        RunProgress,
+        artifact_entry,
+        resume_signature,
+        write_candidate_core,
+        write_registry,
+        write_trial_metrics,
+        write_validation_metrics,
+    )
+    from rec_ev_019c_bounded_core import BudgetLedger
+    from rec_ev_019c_data import load_prepared_inputs
+    from rec_ev_019c_evaluation import aggregate_user_metrics, select_trial
+    from rec_ev_019c_experiment import ExperimentEngine
+    from rec_ev_019c_lightfm import fit_lightfm_in_container
+    from verify_rec_ev_019c_dependency_smoke import verify_manifest as verify_dependency
+    from verify_rec_ev_019c_resource_dry_run import verify_manifest as verify_resource
+    from verify_rec_ev_019c_validation import verify_manifest as verify_preflight
+
+    contract_path = root / "docs/recommendation/contracts/rec-ev-019c-validation-artifacts.json"
+    verify_preflight(root / contract["synthetic_preflight_artifacts"]["manifest"], root=root)
+    verify_dependency(root / contract["dependency_smoke_artifacts"]["manifest"], root=root)
+    verify_resource(root / contract["resource_dry_run_artifacts"]["manifest"], root=root)
+    inputs = load_prepared_inputs(contract, root=root)
+    output_root = root / "outputs/recommendation-evidence/rec-ev-019c"
+    output_root.mkdir(parents=True, exist_ok=True)
+    signature = resume_signature(contract_path, inputs.input_checksums)
+    progress_path = output_root / "run-progress.json"
+    if progress_path.exists():
+        previous = read_json(progress_path)
+        if previous.get("resume_signature") != signature:
+            raise ResumeSignatureError("existing real-run progress belongs to a different contract or input set")
+        if not resume:
+            raise ResumeSignatureError("existing real-run progress requires --resume")
+    progress = RunProgress(progress_path, signature)
+    write_registry(
+        output_root / "trial-registry.json",
+        contract,
+        contract_sha256=sha256_file(contract_path),
+        input_checksums=inputs.input_checksums,
+        signature=signature,
+    )
+
+    def lightfm_backend(spec, interactions, item_features, parameters, seed, job_directory):
+        return fit_lightfm_in_container(
+            spec,
+            interactions,
+            item_features,
+            parameters,
+            seed=seed,
+            job_directory=job_directory,
+            root=root,
+        )
+
+    ledger = BudgetLedger(contract["resource_execution_plan"]["budgets"])
+    engine = ExperimentEngine(
+        contract,
+        inputs,
+        ledger,
+        lightfm_fit=lightfm_backend,
+        cache_root=output_root / "cache",
+        progress=progress,
+    )
+    tuning = engine.run_tuning()
+    write_candidate_core(output_root / "candidate-core-final.parquet", inputs, b0_score=engine.selected_b0_score(0))
+    write_trial_metrics(output_root / "trial-user-metrics.parquet", tuning.trial_user_metrics)
+
+    prediction_path = output_root / "validation-predictions.parquet"
+    sink = PredictionParquetSink(prediction_path)
+    try:
+        validation_rows = engine.run_full_validation(sink)
+        sink.close()
+    except Exception:
+        sink.abort()
+        raise
+    write_validation_metrics(output_root / "validation-user-metrics.parquet", validation_rows)
+
+    validation_aggregates: list[dict[str, Any]] = []
+    for k in (0, 5, 10):
+        for model_id in contract["trial_execution"]["model_order"]:
+            rows = [row for row in validation_rows if int(row["k"]) == k and row["model_id"] == model_id]
+            if not rows:
+                continue
+            selected_trial = tuning.per_model_per_k[model_id][str(k)]["trial_id"]
+            validation_aggregates.append({
+                "model_id": model_id,
+                "trial_id": selected_trial,
+                "k": k,
+                **aggregate_user_metrics(rows),
+            })
+    single_best = {
+        str(k): select_trial([row for row in validation_aggregates if int(row["k"]) == k])
+        for k in (0, 5, 10)
+    }
+    selection = {
+        "tuning_panel": tuning.tuning_panel,
+        "per_model_per_k": tuning.per_model_per_k,
+        "stability_panel": tuning.stability_panel,
+        "single_best_per_k": single_best,
+        "all_trial_metrics": tuning.all_trial_metrics,
+        "fallback_rates": {
+            f"{row['model_id']}|K{row['k']}": row["fallback_user_rate"] for row in validation_aggregates
+        },
+        "seed_variance": tuning.stability_panel,
+        "validation_metrics": validation_aggregates,
+        "champion": None,
+    }
+    atomic_write_json(output_root / "validation-selection.json", selection)
+    atomic_write_json(output_root / "validation-selection-lock.json", {
+        "contract_sha256": sha256_file(contract_path),
+        "input_checksums": dict(sorted(inputs.input_checksums.items())),
+        "selected_trial_ids": {
+            model: {k: row["trial_id"] for k, row in values.items()}
+            for model, values in tuning.per_model_per_k.items()
+        },
+        "candidate_count": len(inputs.candidate_ids),
+        "validation_user_counts": {str(k): len(engine.contexts[k]) for k in (0, 5, 10)},
+        "created_before_test_read": True,
+        "locked_test_opened": False,
+    })
+    resource = {
+        "per_trial": tuning.all_trial_metrics,
+        "budget_counters": ledger.counters,
+        "peak_rss_bytes": progress.peak_rss_bytes,
+        "wall_clock_seconds": time.monotonic() - progress.started_at,
+        "artifact_bytes": 0,
+        "resume_events": 1 if resume else 0,
+    }
+    atomic_write_json(output_root / "resource-summary.json", resource)
+
+    output_paths = [
+        output_root / "candidate-core-final.parquet",
+        output_root / "trial-registry.json",
+        output_root / "trial-user-metrics.parquet",
+        prediction_path,
+        output_root / "validation-user-metrics.parquet",
+        output_root / "validation-selection.json",
+        output_root / "validation-selection-lock.json",
+        output_root / "resource-summary.json",
+    ]
+    resource["artifact_bytes"] = sum(path.stat().st_size for path in output_paths)
+    atomic_write_json(output_root / "resource-summary.json", resource)
+    manifest_path = root / "docs/recommendation/evidence/manifests/rec-ev-019c-validation.json"
+    manifest = {
+        "schema_version": 1,
+        "evidence_id": "REC-EV-019C",
+        "status": "PASS_VALIDATION_SELECTION_LOCKED",
+        "protocol_version": contract["protocol_version"],
+        "contract_sha256": sha256_file(contract_path),
+        "source_checksums": dict(sorted(inputs.input_checksums.items())),
+        "artifacts": [artifact_entry(path, root=root) for path in output_paths],
+        "validation": {
+            "candidate_count": len(inputs.candidate_ids),
+            "user_counts": {str(k): len(engine.contexts[k]) for k in (0, 5, 10)},
+            "single_best_per_k": single_best,
+            "selection_lock_created": True,
+            "locked_test_opened": False,
+        },
+        "adoption": {
+            "champion": None,
+            "product_policy_changed": False,
+            "current_product_policy": contract["adoption_boundary"]["current_product_policy"],
+        },
+    }
+    atomic_write_json(manifest_path, manifest)
+    return {
+        "status": manifest["status"],
+        "manifest": _repo_relative(manifest_path, root=root),
+        "validation_user_counts": manifest["validation"]["user_counts"],
+        "single_best_per_k": single_best,
+        "locked_test_opened": False,
+        "champion": None,
+        "product_policy_changed": False,
+    }
 
 
 def run_resource_dry_run(contract: Mapping[str, Any], *, root: Path = ROOT) -> dict[str, Any]:
@@ -419,6 +601,9 @@ def run_resource_dry_run(contract: Mapping[str, Any], *, root: Path = ROOT) -> d
         for check, passed in budget_checks.items()
         if not passed
     ]
+    validation_ready = not blockers and bool(
+        contract["current_authorization"].get("real_validation_fit_or_score", False)
+    )
     return {
         "schema_version": 1,
         "evidence_id": "REC-EV-019C-RESOURCE-DRY-RUN",
@@ -448,12 +633,14 @@ def run_resource_dry_run(contract: Mapping[str, Any], *, root: Path = ROOT) -> d
         "budget_checks": budget_checks,
         "implementation_blockers": blockers,
         "rating_rows_or_feature_vectors_read": False,
-        "real_validation_ready": False,
+        "real_validation_ready": validation_ready,
         "real_validation_executed": False,
         "locked_test_opened": False,
         "product_policy_changed": False,
         "product_champion": None,
-        "next_gate": "IMPLEMENT_BOUNDED_REAL_VALIDATION_RUNNER" if not blockers else "AMEND_RESOURCE_CONTRACT",
+        "next_gate": "RUN_BOUNDED_REAL_VALIDATION" if validation_ready else (
+            "IMPLEMENT_BOUNDED_REAL_VALIDATION_RUNNER" if not blockers else "AMEND_RESOURCE_CONTRACT"
+        ),
     }
 
 
@@ -480,7 +667,7 @@ def write_resource_dry_run_evidence(
         "validation": {
             "metadata_only": True,
             "rating_rows_or_feature_vectors_read": False,
-            "real_validation_ready": False,
+            "real_validation_ready": bool(result["real_validation_ready"]),
             "real_validation_executed": False,
             "locked_test_opened": False,
             "blocker_ids": [item["id"] for item in result["implementation_blockers"]],
@@ -488,7 +675,9 @@ def write_resource_dry_run_evidence(
         "adoption": {
             "champion": None,
             "product_policy_changed": False,
-            "real_validation_authorized": False,
+            "real_validation_authorized": bool(
+                contract["current_authorization"].get("real_validation_fit_or_score", False)
+            ),
         },
     }
     atomic_write_json(manifest_path, manifest)
@@ -712,7 +901,9 @@ def main() -> int:
 
         validate_contract(contract, root=ROOT)
         if args.mode == "validation":
-            run_real_validation(contract)
+            result = run_real_validation(contract, resume=args.resume, root=ROOT)
+            print(json.dumps(result, ensure_ascii=False, sort_keys=True))
+            return 0
         if args.mode == "validation-dry-run":
             result = run_resource_dry_run(contract, root=ROOT)
             result_path, manifest_path = write_resource_dry_run_evidence(contract, result, root=ROOT)
@@ -723,7 +914,7 @@ def main() -> int:
                         "result": _repo_relative(result_path, root=ROOT),
                         "manifest": _repo_relative(manifest_path, root=ROOT),
                         "blockers": len(result["implementation_blockers"]),
-                        "real_validation_ready": False,
+                        "real_validation_ready": bool(result["real_validation_ready"]),
                         "locked_test_opened": False,
                         "next_gate": result["next_gate"],
                     },

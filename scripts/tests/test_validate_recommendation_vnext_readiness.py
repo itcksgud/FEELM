@@ -83,12 +83,12 @@ class RecommendationVnextReadinessValidatorTest(unittest.TestCase):
         with self.assertRaisesRegex(RuntimeError, "commands"):
             validate_backlog(mutated)
 
-    def test_rejects_019c_real_validation_authorization_in_backlog(self) -> None:
+    def test_rejects_019c_locked_test_authorization_in_backlog(self) -> None:
         mutated = copy.deepcopy(self.backlog)
         task = next(
             item for item in mutated["tasks"] if item["id"] == "TASK-REC-EV-019C"
         )
-        task["current_authorization"] = "REAL_VALIDATION"
+        task["current_authorization"] = "LOCKED_TEST"
         with self.assertRaisesRegex(RuntimeError, "019C"):
             validate_backlog(mutated)
 

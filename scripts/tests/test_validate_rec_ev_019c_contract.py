@@ -25,9 +25,15 @@ class ValidateRecEv019CContractTest(unittest.TestCase):
         self.assertEqual(41625, result["candidate_movies"])
         self.assertFalse(result["locked_test_opened"])
 
-    def test_rejects_real_validation_authorization(self) -> None:
+    def test_rejects_real_validation_being_disabled_after_runner_approval(self) -> None:
         mutated = copy.deepcopy(self.contract)
-        mutated["current_authorization"]["real_validation_fit_or_score"] = True
+        mutated["current_authorization"]["real_validation_fit_or_score"] = False
+        with self.assertRaisesRegex(RuntimeError, "authorization missing"):
+            validate_contract(mutated)
+
+    def test_rejects_locked_test_authorization(self) -> None:
+        mutated = copy.deepcopy(self.contract)
+        mutated["current_authorization"]["locked_test_access"] = True
         with self.assertRaisesRegex(RuntimeError, "unsafe authorization"):
             validate_contract(mutated)
 

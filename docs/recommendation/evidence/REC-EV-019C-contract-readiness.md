@@ -1,8 +1,8 @@
 # REC-EV-019C — 모델 비교 실행 계약 준비 결과
 
-> 상태: `BOUNDED_RESOURCE_CONTRACT_PASS`
-> 현재 허용: 상한을 지키는 실제 Validation runner 구현
-> 현재 금지: 실제 Validation 학습·점수 계산, Locked Test 열람, champion·제품 정책 변경
+> 상태: `BOUNDED_REAL_VALIDATION_GO`
+> 현재 허용: 고정된 상한 안에서 실제 Validation 학습·점수 계산
+> 현재 금지: Locked Test 열람, champion 확정, 제품 정책 변경
 
 ## 한 줄 결론
 
@@ -10,7 +10,8 @@
 자동 검증기로 고정했다. runner helper의 합성 검사 15개와 LightFM Linux 의존성 검사 9개도 통과했다.
 metadata-only 첫 점검에서 약 75.5억 번의 점수 계산과 B8 학습 update 최대 61.5억 회를 발견했고, 이를
 각각 약 15.8억 회와 12.3억 회 상한으로 줄였다. BPR은 사용자당 epoch 최대 16개 관측 pair로 고정했다.
-다음 작업은 이 상한을 지키는 실제 runner를 구현하되 아직 실행하지 않는 것이다.
+실제 runner와 작은 전체 모델 시뮬레이션까지 구현·검증했다. 다음 작업은 이 상한을 지키며 Validation만
+실행하는 것이다.
 
 ## 왜 바로 모델을 돌리지 않았나
 
@@ -94,14 +95,14 @@ ALS·BPR·cosine처럼 단위가 다른 원점수를 직접 더하지 않는다.
 | 실제 파일 metadata로 계산량을 확인했는가? | PASS — 값 행은 읽지 않음 |
 | 실제 Validation runner 구현을 시작할 수 있는가? | GO |
 | 자원 계약 차단점이 남았는가? | NO — 7개 budget check PASS |
-| 실제 Validation 모델을 지금 돌릴 수 있는가? | NO — bounded runner 구현·검토 전 |
+| 실제 Validation 모델을 지금 돌릴 수 있는가? | GO — Validation 전용, 상한·중단 규칙 적용 |
 | Locked Test를 열 수 있는가? | NO |
 | 개인화 모델을 서비스에 채택할 수 있는가? | NO |
 
-다음 Gate는 실제 runner가 고정 256명/K tuning panel, seed 17 grid, 선택 trial의 5-seed 패널 안정성,
-사용자당 B4 pair 16개 상한과 16시간 hard stop을 정확히 지키는지 확인하는 것이다. 자세한 전후 숫자는
-[계산량 사전점검](./REC-EV-019C-resource-dry-run.md)에 있다. runner 코드 검토까지 끝난 뒤에만 실제
-Validation 실행을 연다.
+runner는 고정 256명/K tuning panel, seed 17 grid, 선택 trial의 5-seed 패널 안정성,
+사용자당 B4 pair 16개 상한과 16시간 hard stop을 코드로 강제한다. 작은 전체 suite 검사와 합성 안전검사,
+Linux LightFM smoke, metadata 자원 검사를 모두 통과했으므로 실제 Validation 실행을 열었다. 자세한 전후
+숫자는 [계산량 사전점검](./REC-EV-019C-resource-dry-run.md)에 있다.
 
 ## 검증 명령
 

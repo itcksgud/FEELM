@@ -2,7 +2,7 @@
 
 > 상태: `APPROVED` — 오프라인 추천 evidence 구현 착수 기준
 > 판정일: 2026-09-02
-> 최종 판정: **조건부 GO — bounded runner 구현 가능, 실제 Validation은 runner 검토 전 NO-GO**
+> 최종 판정: **조건부 GO — bounded real Validation 실행 가능, Locked Test·채택은 NO-GO**
 > 제품 경계: 현재 C2 popularity-only 교체와 개인화 champion 승인은 이 GO에 포함하지 않는다.
 > 후속 경계: Top-2 v4와 cold-item v2는 `PROPOSED_PROTOCOL_VALIDATION_PREFLIGHT_REQUIRED`다. 별도
 > Schema·artifact contract·runner 구현은 시작할 수 있지만 현재 019C 실제 runner 구현 GO나
@@ -30,7 +30,7 @@
 | REC-EV-019C LightFM Linux dependency smoke | **DONE — 9개 검사 PASS** |
 | REC-EV-019C metadata 자원 사전점검 | **DONE — 15.8억 score·B8 12.3억·B4 3.93억 상한, 차단점 0개** |
 | REC-EV-019C 실제 Validation runner 구현 | **GO** |
-| REC-EV-019C 실제 Validation 모델 실행 | `NO-GO`, bounded runner 구현·검토 필요 |
+| REC-EV-019C 실제 Validation 모델 실행 | `GO`, 고정 상한·Validation 전용 runner만 허용 |
 | REC-EV-020P-A/B 설계→계약 구현 | `GO`, v4 Schema·artifact contract·runner 구현 가능 |
 | REC-EV-020P-A/B 실행 완료 판정 | `NO-GO`, runner·verifier·Validation power 결과 필요 |
 | REC-EV-021P 사전검사 | **DONE — firewall PASS, Validation pilot READY** |

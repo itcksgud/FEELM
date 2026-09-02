@@ -122,8 +122,10 @@ class RecEv019CRunnerTest(unittest.TestCase):
         self.assertEqual(bytes_a, bytes_b)
 
     def test_real_validation_is_blocked(self) -> None:
+        spec = contract()
+        spec["current_authorization"]["real_validation_fit_or_score"] = False
         with self.assertRaises(AuthorizationError):
-            run_real_validation(contract())
+            run_real_validation(spec)
 
     def test_cli_has_no_test_role(self) -> None:
         with contextlib.redirect_stderr(io.StringIO()):
