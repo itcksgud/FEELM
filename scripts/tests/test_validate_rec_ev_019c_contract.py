@@ -69,6 +69,13 @@ class ValidateRecEv019CContractTest(unittest.TestCase):
         with self.assertRaisesRegex(RuntimeError, "supply-chain"):
             validate_contract(mutated)
 
+    def test_rejects_lightfm_pairwise_loss_that_uses_unknown_as_negative(self) -> None:
+        mutated = copy.deepcopy(self.contract)
+        mutated["models"]["B8_LIGHTFM"]["search_space"]["loss"] = ["bpr", "warp"]
+        mutated["models"]["B8_LIGHTFM"]["trial_count"] = 8
+        with self.assertRaisesRegex(RuntimeError, "pairwise loss"):
+            validate_contract(mutated)
+
     def test_rejects_product_champion(self) -> None:
         mutated = copy.deepcopy(self.contract)
         mutated["adoption_boundary"]["validation_output_champion"] = "B8_LIGHTFM"

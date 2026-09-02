@@ -1,0 +1,3 @@
+# REC-EV-019C B8 only. Runtime dependencies are supplied by the existing data/ML locks.
+# The experiment runs in the pinned CPython 3.12 linux/amd64 container, not native Windows.
+lightfm-next==1.19.0

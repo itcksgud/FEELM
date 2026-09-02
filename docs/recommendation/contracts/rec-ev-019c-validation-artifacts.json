@@ -164,9 +164,24 @@
     },
     "B8_LIGHTFM": {
       "family": "BINARY_PLUS_TMDB_ITEM_FEATURE_HYBRID_MF",
-      "training_pairs": "OBSERVED_LIKE_AND_OBSERVED_DISLIKE_ONLY_WITH_EXPLICIT_SAMPLE_WEIGHT_SIGN",
-      "target_user": "FOLD_IN_USER_VECTOR_WITH_BASE_ITEM_AND_ITEM_FEATURE_PARAMETERS_FROZEN",
-      "search_space": {"loss": ["bpr", "warp"], "dimension": [64, 128]},
+      "dependency": {
+        "distribution": "lightfm-next",
+        "import_package": "lightfm",
+        "version": "1.19.0",
+        "python": "CPython 3.12",
+        "platform": "linux/amd64 manylinux2014_x86_64",
+        "runtime_image": "python:3.12.5-slim-bookworm@sha256:c24c34b502635f1f7c4e99dc09a2cbd85d480b7dcfd077198c6b5af138906390",
+        "direct_requirement": "requirements-rec-ev-019c.txt",
+        "hash_lock": "requirements-rec-ev-019c.lock",
+        "wheel_sha256": "84d81163ef06b21a90d28596417e81422460a16925cd2bd6143b34da9146c12f",
+        "upstream_commit": "82b74a8b78ea51b1793e89fbac2604608224e52d",
+        "native_windows_supported": false,
+        "linux_smoke_test_required_before_real_validation": true
+      },
+      "training_pairs": "OBSERVED_LIKE_AND_OBSERVED_DISLIKE_ONLY_WITH_INTERACTION_VALUE_PLUS_ONE_OR_MINUS_ONE",
+      "sample_weight_semantics": "NONNEGATIVE_CONFIDENCE_ONLY_NEVER_THE_LABEL_SIGN",
+      "target_user": "CUSTOM_LOGISTIC_FOLD_IN_USER_VECTOR_WITH_LIGHTFM_ITEM_REPRESENTATIONS_FROZEN",
+      "search_space": {"loss": ["logistic"], "dimension": [64, 128], "learning_schedule": ["adagrad", "adadelta"]},
       "fixed_parameters": {"epochs": 30, "learning_rate": 0.05, "item_alpha": 0.000001, "user_alpha": 0.000001},
       "trial_count": 4,
       "stochastic_seeds": [17, 42, 73, 101, 211],
@@ -240,6 +255,30 @@
     "top2_is_diagnostic_not_v4_adoption_gate": true
   },
   "output_root": "outputs/recommendation-evidence/rec-ev-019c",
+  "synthetic_preflight_artifacts": {
+    "result": "docs/recommendation/evidence/results/rec-ev-019c-synthetic-preflight.json",
+    "manifest": "docs/recommendation/evidence/manifests/rec-ev-019c-synthetic-preflight.json",
+    "required_result_keys": [
+      "schema_version", "evidence_id", "status", "contract_sha256", "execution_role",
+      "trial_counts", "checks", "resume", "locked_test_opened", "product_policy_changed"
+    ],
+    "required_checks": [
+      "allowed_paths_accepted", "forbidden_path_rejected_before_open", "unknown_path_rejected_before_open",
+      "identical_candidate_universe", "seen_excluded_before_scoring", "positive_injection_absent",
+      "deterministic_tie_break", "missing_feature_uses_b0", "rrf_uses_ranks_only",
+      "grid_counts_match", "trial_cap_respected", "resume_byte_equivalent",
+      "resume_hash_mismatch_refused", "validation_mode_blocked", "locked_test_never_opened"
+    ]
+  },
+  "dependency_smoke_artifacts": {
+    "result": "docs/recommendation/evidence/results/rec-ev-019c-lightfm-linux-smoke.json",
+    "manifest": "docs/recommendation/evidence/manifests/rec-ev-019c-lightfm-linux-smoke.json",
+    "required_checks": [
+      "python_3_12", "linux_x86_64", "distribution_version_exact", "signed_logistic_fit",
+      "predictions_finite", "item_features_used", "item_parameters_frozen_during_target_fold_in",
+      "unrated_negative_sampling_absent", "pairwise_losses_not_executed"
+    ]
+  },
   "future_artifacts": [
     {
       "path": "outputs/recommendation-evidence/rec-ev-019c/candidate-core-final.parquet",
@@ -318,9 +357,14 @@
     "runner_to_create": "scripts/run_rec_ev_019c_validation.py",
     "runner_unit_test_to_create": "scripts/tests/test_run_rec_ev_019c_validation.py",
     "result_verifier_to_create": "scripts/verify_rec_ev_019c_validation.py",
+    "dependency_smoke_runner": "scripts/smoke_rec_ev_019c_lightfm.py",
+    "dependency_smoke_verifier": "scripts/verify_rec_ev_019c_dependency_smoke.py",
+    "dependency_smoke_run_command": "powershell -NoProfile -ExecutionPolicy Bypass -File scripts/run-rec-ev-019c-lightfm-smoke.ps1",
     "contract_check_command": "py -3 scripts/validate_rec_ev_019c_contract.py",
     "contract_unit_command": "py -3 -m unittest scripts/tests/test_validate_rec_ev_019c_contract.py",
     "future_synthetic_preflight_command": "py -3 scripts/run_rec_ev_019c_validation.py --mode synthetic-preflight --role validation",
+    "synthetic_preflight_verify_command": "py -3 scripts/verify_rec_ev_019c_validation.py --manifest docs/recommendation/evidence/manifests/rec-ev-019c-synthetic-preflight.json",
+    "dependency_smoke_verify_command": "py -3 scripts/verify_rec_ev_019c_dependency_smoke.py --manifest docs/recommendation/evidence/manifests/rec-ev-019c-lightfm-linux-smoke.json",
     "future_validation_command": "py -3 scripts/run_rec_ev_019c_validation.py --mode validation --role validation --resume",
     "future_verify_command": "py -3 scripts/verify_rec_ev_019c_validation.py --manifest docs/recommendation/evidence/manifests/rec-ev-019c-validation.json"
   },

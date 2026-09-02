@@ -339,6 +339,8 @@ tasks:
       - scripts/run_rec_ev_019c_validation.py
       - scripts/tests/test_run_rec_ev_019c_validation.py
       - scripts/verify_rec_ev_019c_validation.py
+      - scripts/smoke_rec_ev_019c_lightfm.py
+      - scripts/verify_rec_ev_019c_dependency_smoke.py
     outputs:
       - outputs/recommendation-evidence/rec-ev-019c/candidate-core-final.parquet
       - outputs/recommendation-evidence/rec-ev-019c/trial-registry.json
@@ -354,10 +356,21 @@ tasks:
       - scripts/validate_rec_ev_019c_contract.py
       - scripts/tests/test_validate_rec_ev_019c_contract.py
       - docs/recommendation/evidence/REC-EV-019C-contract-readiness.md
+    synthetic_preflight_outputs:
+      - docs/recommendation/evidence/results/rec-ev-019c-synthetic-preflight.json
+      - docs/recommendation/evidence/manifests/rec-ev-019c-synthetic-preflight.json
+    dependency_smoke_outputs:
+      - requirements-rec-ev-019c.txt
+      - requirements-rec-ev-019c.lock
+      - docs/recommendation/evidence/results/rec-ev-019c-lightfm-linux-smoke.json
+      - docs/recommendation/evidence/manifests/rec-ev-019c-lightfm-linux-smoke.json
     commands:
       contract: "py -3 scripts/validate_rec_ev_019c_contract.py"
       unit: "py -3 -m unittest scripts/tests/test_validate_rec_ev_019c_contract.py"
       future_synthetic_preflight: "py -3 scripts/run_rec_ev_019c_validation.py --mode synthetic-preflight --role validation"
+      synthetic_preflight_verify: "py -3 scripts/verify_rec_ev_019c_validation.py --manifest docs/recommendation/evidence/manifests/rec-ev-019c-synthetic-preflight.json"
+      dependency_smoke_run: "powershell -NoProfile -ExecutionPolicy Bypass -File scripts/run-rec-ev-019c-lightfm-smoke.ps1"
+      dependency_smoke_verify: "py -3 scripts/verify_rec_ev_019c_dependency_smoke.py --manifest docs/recommendation/evidence/manifests/rec-ev-019c-lightfm-linux-smoke.json"
       future_validation: "py -3 scripts/run_rec_ev_019c_validation.py --mode validation --role validation --resume"
       future_verify: "py -3 scripts/verify_rec_ev_019c_validation.py --manifest docs/recommendation/evidence/manifests/rec-ev-019c-validation.json"
     verify:

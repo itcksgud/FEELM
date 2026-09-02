@@ -59,6 +59,8 @@ MovieLens의 timestamp는 본 날짜가 아니라 평점을 입력한 날짜일 
 - K10 Locked Test 엄격 적격 5,476명으로 최소 5,000명 Gate를 통과했지만 모델 성능은 열지 않았다.
 - 역할 값은 나뉘어 있어도 한 Parquet에 Validation과 Locked Test가 같이 있으면 코드가 Test 정답을
   물리적으로 읽을 수 있음을 발견했다. 역할별 파일로 다시 만들고 입력 allowlist로 open 전 차단했다.
+- LightFM BPR/WARP가 미관측 항목을 negative로 샘플링해 “미평가는 UNKNOWN” 규칙과 충돌함을 실제
+  dependency smoke 전에 발견했다. B8을 관측 ±1 logistic과 frozen-item fold-in으로 교정했다.
 - 키워드는 24.42%가 비어 있어 단일 메타데이터에 의존하는 모델이 위험하다는 것을 확인했다.
 
 ### 결정
@@ -66,7 +68,8 @@ MovieLens의 timestamp는 본 날짜가 아니라 평점을 입력한 날짜일 
 새 모델을 억지로 champion으로 정하지 않았다. TMDB 특징 파일은 완성했지만 새 Validation 비교가 끝날
 때까지 인기도 기준선을 유지했다. 실패를 숨기지 않고 “특징 준비 완료, 예상 별점은 가능성, 추천 순위는
 미검증”으로 분리했다. 019C의 7개 모델·탐색 수·score 변환·fallback·checkpoint를 계약으로 잠갔지만,
-계약 PASS를 모델 성능 PASS로 바꾸지 않고 runner·합성 preflight까지만 다음 권한으로 열었다.
+계약 PASS를 모델 성능 PASS로 바꾸지 않았다. 합성 runner 15개와 Linux dependency 9개를 통과한 뒤에도
+실제 Validation runner 구현까지만 다음 권한으로 열었다.
 
 ## 3. AI를 어떻게 사용했나
 
@@ -101,6 +104,10 @@ MovieLens의 timestamp는 본 날짜가 아니라 평점을 입력한 날짜일 
 발견됐다. 이후에는 “행에 role 열이 있다”는 논리 분리만으로 충분하지 않고, 실행 코드가 열 수 있는 파일
 자체를 분리해야 한다는 문제도 잡았다. AI 생산량은 컸지만, 독립 검증과 실행 계약이 없었다면 오류도 같은
 속도로 늘어났을 것이다.
+
+또 라이브러리 이름만 보고 알고리즘을 채택하지 않았다. LightFM 공식 loss 의미를 계약의 UNKNOWN 처리와
+대조해 BPR/WARP를 기각했고, 고정 Linux 이미지에서 hash-locked wheel을 설치해 signed logistic 학습과
+item 표현을 바꾸지 않는 사용자 fold-in을 실제로 확인했다.
 
 ### 실제 API 실행에서 AI 오류를 잡은 사례
 

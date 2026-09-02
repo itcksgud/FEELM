@@ -298,6 +298,9 @@ def validate_backlog(backlog: dict[str, Any]) -> None:
         "contract": implementation_019c["contract_check_command"],
         "unit": implementation_019c["contract_unit_command"],
         "future_synthetic_preflight": implementation_019c["future_synthetic_preflight_command"],
+        "synthetic_preflight_verify": implementation_019c["synthetic_preflight_verify_command"],
+        "dependency_smoke_run": implementation_019c["dependency_smoke_run_command"],
+        "dependency_smoke_verify": implementation_019c["dependency_smoke_verify_command"],
         "future_validation": implementation_019c["future_validation_command"],
         "future_verify": implementation_019c["future_verify_command"],
     }
@@ -405,6 +408,24 @@ def validate_019c_contract_readiness() -> dict[str, Any]:
     return validate_contract(contract, root=ROOT)
 
 
+def validate_019c_synthetic_preflight() -> dict[str, Any]:
+    from verify_rec_ev_019c_validation import verify_manifest
+
+    return verify_manifest(
+        ROOT / "docs/recommendation/evidence/manifests/rec-ev-019c-synthetic-preflight.json",
+        root=ROOT,
+    )
+
+
+def validate_019c_dependency_smoke() -> dict[str, Any]:
+    from verify_rec_ev_019c_dependency_smoke import verify_manifest
+
+    return verify_manifest(
+        ROOT / "docs/recommendation/evidence/manifests/rec-ev-019c-lightfm-linux-smoke.json",
+        root=ROOT,
+    )
+
+
 def validate() -> dict[str, Any]:
     documents = (
         "docs/recommendation/00-input-signal-contract-vnext.md",
@@ -429,18 +450,22 @@ def validate() -> dict[str, Any]:
     cohort_build = validate_019a_completion_manifest()
     feature_build = validate_019b_completion_manifest()
     contract_019c = validate_019c_contract_readiness()
+    synthetic_019c = validate_019c_synthetic_preflight()
+    dependency_019c = validate_019c_dependency_smoke()
 
     return {
         "status": "PASS",
-        "decision": "GO_FOR_019C_RUNNER_AND_SYNTHETIC_PREFLIGHT_ONLY",
-        "scope": "REC-EV-019A_019B_DONE_019C_CONTRACT_PASS_REAL_VALIDATION_BLOCKED",
+        "decision": "GO_FOR_019C_REAL_VALIDATION_RUNNER_IMPLEMENTATION_AND_APPROVAL_REVIEW",
+        "scope": "REC-EV-019A_019B_DONE_019C_SYNTHETIC_AND_DEPENDENCY_PASS_REAL_VALIDATION_BLOCKED",
         "next_ready_tasks": ["TASK-REC-EV-019C"],
-        "next_phase": "RUNNER_IMPLEMENTATION_AND_SYNTHETIC_PREFLIGHT",
+        "next_phase": "REAL_VALIDATION_RUNNER_IMPLEMENTATION_AND_APPROVAL_REVIEW",
         "rec_ev_019a_status": cohort_build["status"],
         "rec_ev_019a_final_identity_k10_users": cohort_build["validation"]["locked_test_k10_final_identity_eligible"],
         "rec_ev_019b_status": feature_build["status"],
         "rec_ev_019b_selected_movies": feature_build["validation"]["selected_movies"],
         "rec_ev_019c_contract_status": contract_019c["status"],
+        "rec_ev_019c_synthetic_preflight_status": synthetic_019c["status"],
+        "rec_ev_019c_dependency_smoke_status": dependency_019c["status"],
         "real_validation_authorized": False,
         "eligible_k10_test_users": preflight["eligible_test_users"],
         "current_product_policy": "APPROVED_C2A_INTERNAL_POPULARITY_ONLY",

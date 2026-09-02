@@ -1,0 +1,71 @@
+{
+  "checks": {
+    "allowed_paths_accepted": true,
+    "deterministic_tie_break": true,
+    "forbidden_path_rejected_before_open": true,
+    "grid_counts_match": true,
+    "identical_candidate_universe": true,
+    "locked_test_never_opened": true,
+    "missing_feature_uses_b0": true,
+    "positive_injection_absent": true,
+    "resume_byte_equivalent": true,
+    "resume_hash_mismatch_refused": true,
+    "rrf_uses_ranks_only": true,
+    "seen_excluded_before_scoring": true,
+    "trial_cap_respected": true,
+    "unknown_path_rejected_before_open": true,
+    "validation_mode_blocked": true
+  },
+  "contract_sha256": "3eb50a990220ea0c7d3f15b8ea13807a1812abf9167309c352a95037736d12de",
+  "current_product_policy": "APPROVED_C2A_INTERNAL_POPULARITY_ONLY",
+  "evidence_id": "REC-EV-019C-SYNTHETIC-PREFLIGHT",
+  "execution_role": "VALIDATION",
+  "fixture": {
+    "candidate_count": 8,
+    "missing_feature_movie_ids": [
+      103,
+      107
+    ],
+    "ranked_movie_ids": [
+      103,
+      104,
+      105,
+      107,
+      108,
+      102,
+      106
+    ],
+    "rrf_movie_ids": [
+      103,
+      104,
+      107,
+      105,
+      108,
+      102,
+      106
+    ],
+    "visible_after_seen_exclusion": 7
+  },
+  "locked_test_opened": false,
+  "next_gate": "LINUX_DEPENDENCY_SMOKE_AND_REAL_VALIDATION_APPROVAL_REVIEW",
+  "product_champion": null,
+  "product_policy_changed": false,
+  "real_validation_executed": false,
+  "resume": {
+    "byte_equivalent": true,
+    "first": "CREATED",
+    "hash_mismatch_refused_and_old_preserved": true,
+    "second": "REUSED"
+  },
+  "schema_version": 1,
+  "status": "PASS_SYNTHETIC_PREFLIGHT",
+  "trial_counts": {
+    "B0_MOVIELENS_BAYESIAN_RATING": 3,
+    "B2_ITEM_KNN": 9,
+    "B4_BPR_MF": 4,
+    "B6_TMDB_STRUCTURED_CONTENT": 4,
+    "B7_TMDB_TEXT_CONTENT": 1,
+    "B8_LIGHTFM": 4,
+    "B9_RRF": 9
+  }
+}

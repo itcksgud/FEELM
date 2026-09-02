@@ -140,12 +140,14 @@ def main() -> int:
     test_packages = locked_packages("recommender/requirements-test.lock", errors)
     data_packages = locked_packages("requirements-data.lock", errors)
     ml_packages = locked_packages("requirements-ml.lock", errors)
+    rec_019c_packages = locked_packages("requirements-rec-ev-019c.lock", errors)
     locked_packages("scripts/requirements-lock-tools.lock", errors)
     locked_packages("scripts/requirements-audit-tools.lock", errors)
     locked_packages("scripts/requirements-build-tools.lock", errors)
     runtime_direct, test_direct = direct_pyproject_dependencies()
     data_direct = direct_requirement_dependencies("requirements-data.txt")
     ml_direct = direct_requirement_dependencies("requirements-ml.txt")
+    rec_019c_direct = direct_requirement_dependencies("requirements-rec-ev-019c.txt")
     if missing := runtime_direct - runtime_packages:
         errors.append(f"runtime lock misses direct dependencies: {sorted(missing)}")
     if missing := (runtime_direct | test_direct) - test_packages:
@@ -154,6 +156,16 @@ def main() -> int:
         errors.append(f"data lock misses direct dependencies: {sorted(missing)}")
     if missing := ml_direct - ml_packages:
         errors.append(f"ML lock misses direct dependencies: {sorted(missing)}")
+    if missing := rec_019c_direct - rec_019c_packages:
+        errors.append(f"REC-EV-019C lock misses direct dependencies: {sorted(missing)}")
+    rec_019c_lock = read("requirements-rec-ev-019c.lock")
+    for required_fragment in (
+        "--only-binary=:all:",
+        "lightfm-next==1.19.0",
+        "84d81163ef06b21a90d28596417e81422460a16925cd2bd6143b34da9146c12f",
+    ):
+        if required_fragment not in rec_019c_lock:
+            errors.append(f"REC-EV-019C LightFM lock misses audited boundary: {required_fragment}")
 
     dockerfile = read("recommender/Dockerfile")
     for required_fragment in (
@@ -255,7 +267,7 @@ def main() -> int:
     print(
         "Supply-chain pin validation: PASS "
         f"({sum(len(value) for value in EXPECTED_IMAGES.values())} images, "
-        f"{len(EXPECTED_ACTIONS)} actions, 6 Python locks, Gradle ZIP+wrapper checksums, "
+        f"{len(EXPECTED_ACTIONS)} actions, 7 Python locks, Gradle ZIP+wrapper checksums, "
         "Gitleaks pinned+controlled, actionlint pinned)"
     )
     return 0

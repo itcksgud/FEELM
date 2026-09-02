@@ -71,7 +71,7 @@ ITEM_TRAIN 안으로 제한해 0편으로 고쳤다.
 
 ## 10. 다음에 얻어야 할 데이터
 
-1. REC-EV-019C runner·verifier의 합성 preflight 결과와 dependency lock
+1. REC-EV-019C 실제 입력 adapter·모델·block scorer·checkpoint의 구현·dry-run 결과
 2. Validation 기준선·후보의 동일 후보 공간 예측
 3. 결측이 많은 키워드에 덜 의존하는 구조·텍스트 ablation 결과
 4. 서비스 출시 후 노출→상세→관심 없음→평가 이벤트
@@ -115,7 +115,17 @@ ITEM_TRAIN 안으로 제한해 0편으로 고쳤다.
 prefix와 평가 window를 각각 별도 파일로 만들고, 019C runner는 Validation 두 파일만 open 전에 allowlist
 검사하도록 계약했다. 이 변경 뒤에도 최종 후보 41,625편과 K10 Test 5,476명은 그대로다.
 
-## 15. 대용량 실행에서 무엇을 배웠나
+## 15. 추천 라이브러리의 loss 이름만 보고 써도 되는가
+
+안 된다. LightFM의 BPR/WARP는 미관측 항목을 negative 후보로 샘플링한다. 이는 FEELM의 “미평가는
+UNKNOWN” 원칙과 충돌하므로, B8은 관측 LIKE/DISLIKE만 `+1/-1`로 쓰는 logistic loss로 바꿨다.
+새 사용자는 학습된 item·content 표현을 고정하고 사용자 vector만 별도로 fold-in한다.
+
+**해석:** 같은 “BPR” 이름이어도 B4는 실제 관측 LIKE>DISLIKE pair만 직접 만들 수 있지만, B8 LightFM의
+pairwise 구현은 다른 negative 의미를 가진다. 라이브러리 선택은 논문 이름보다 실제 sampling semantics를
+계약과 대조해야 한다. 고정 Linux 환경의 9개 smoke 검사는 통과했지만 추천 성능은 아직 측정하지 않았다.
+
+## 16. 대용량 실행에서 무엇을 배웠나
 
 TMDB 전체 수집에는 약 2시간 6분이 들었고 112,580개 응답 cache가 생겼다. embedding은 한 차례 93.2%에서
 세션이 끊겨 batch checkpoint가 없으면 거의 전부를 다시 계산해야 했다. checkpoint와 입력 hash signature,

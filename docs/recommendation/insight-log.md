@@ -373,3 +373,21 @@
   허용한다. Router·Locked Test·원본 Test·혼합 파일은 open 전에 거부한다.
 - 후속 실험: 합성 preflight에서 금지 경로, 누락 feature fallback, checkpoint resume, hash 불일치를 검사한다.
 - 관련 model version: 없음 — 실행 계약·artifact boundary 개선.
+
+### INSIGHT-20260902-022 — 같은 BPR 이름도 negative 의미가 다르면 같은 실험이 아니다
+
+- 상태: `REPRODUCED`
+- 관련 run: `REC-EV-019C-LIGHTFM-LINUX-SMOKE`
+- 비교 기준선: B8의 최초 `loss=[bpr, warp]` 계약
+- 관찰: LightFM BPR/WARP는 positive-only implicit feedback에서 미관측 항목을 negative로 샘플링한다.
+  이는 B4의 “실제 관측 LIKE > 실제 관측 DISLIKE pair” 및 FEELM의 “미평가는 UNKNOWN”과 다르다.
+- 영향 구간: B8 LightFM hybrid의 Base 학습과 K5/K10 사용자 fold-in.
+- 해석: 알고리즘 이름이 같아도 라이브러리의 interaction·negative sampling 의미를 확인하지 않으면 서로
+  다른 학습 문제를 같은 모델 비교처럼 기록하게 된다.
+- 악화된 지표·비용: 최초 B8 탐색안을 폐기하고 signed logistic, 별도 frozen-item fold-in, Linux wheel
+  dependency lock과 smoke를 추가했다.
+- 반례·한계: 3명×5편 합성 smoke는 실행 가능성만 보여 주며 실제 추천 품질을 증명하지 않는다.
+- 결정: B8은 관측 LIKE/DISLIKE `+1/-1` logistic만 사용한다. sample weight는 0 이상 confidence로 제한하고
+  BPR/WARP는 B8에서 금지한다. 고정 Linux 환경에서 9개 dependency 검사를 통과했다.
+- 후속 실험: 실제 runner 구현·dry-run 검토 뒤에만 Validation 실행 승인 여부를 판단한다.
+- 관련 model version: `lightfm-next==1.19.0`, champion 아님.

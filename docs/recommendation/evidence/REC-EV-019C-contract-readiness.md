@@ -1,14 +1,14 @@
 # REC-EV-019C — 모델 비교 실행 계약 준비 결과
 
-> 상태: `CONTRACT PASS`
-> 현재 허용: runner 구현과 합성 데이터 사전검사
+> 상태: `CONTRACT_AND_PREFLIGHT_PASS`
+> 현재 허용: 실제 Validation runner 구현과 실행 승인 검토
 > 현재 금지: 실제 Validation 학습·점수 계산, Locked Test 열람, champion·제품 정책 변경
 
 ## 한 줄 결론
 
 모델을 돌리기 전에 “어떤 데이터로 무엇을 몇 번 비교하고, 중단되면 어떻게 이어서 돌릴지”를 JSON 계약과
-자동 검증기로 고정했다. 다음 작업은 실제 성능 실험이 아니라 이 계약을 따르는 runner와 작은 합성 데이터
-사전검사를 만드는 것이다.
+자동 검증기로 고정했다. runner helper의 합성 검사 15개와 LightFM Linux 의존성 검사 9개도 통과했다.
+다음 작업은 실제 Validation runner 구현과 실행 승인 검토다.
 
 ## 왜 바로 모델을 돌리지 않았나
 
@@ -52,14 +52,16 @@
 | B4 observed like/dislike BPR | pairwise 개인화 | 4 |
 | B6 TMDB structured content | 장르·언어·연대·인물·키워드 | 4 |
 | B7 TMDB text content | 고정 E5 embedding | 1 |
-| B8 LightFM hybrid | binary와 TMDB 특징 결합 | 4 |
+| B8 LightFM hybrid | 관측 LIKE/DISLIKE logistic + TMDB 특징 | 4 |
 | B9 RRF | CF·Content·전체 head 순위 결합 | 9 |
 
 모델당 최대 30회보다 모두 작다. 확률 모델은 고정 seed 5개를 trial 안의 반복으로 사용한다. seed를 다른
 hyperparameter처럼 골라 좋은 결과만 선택하지 않는다.
 
-BPR은 미평가 영화를 가짜 negative로 뽑지 않고 실제 LIKE와 실제 DISLIKE 쌍만 사용한다. LightFM 구현에
-새 패키지가 필요하면 실제 Validation 전에 정확한 버전과 파일 hash가 lock에 추가돼야 한다.
+BPR은 미평가 영화를 가짜 negative로 뽑지 않고 실제 LIKE와 실제 DISLIKE 쌍만 사용한다. LightFM의
+BPR/WARP는 미관측 항목을 negative로 샘플링해 이 규칙과 충돌하므로 B8에는 쓰지 않는다. B8은 관측된
+LIKE/DISLIKE만 `+1/-1`로 넣는 logistic loss와 frozen-item 사용자 fold-in을 쓴다. Linux/amd64용
+`lightfm-next==1.19.0`과 모든 dependency wheel hash를 별도 lock에 고정하고 실제 smoke를 통과했다.
 
 ## 점수와 fallback
 
@@ -85,20 +87,23 @@ ALS·BPR·cosine처럼 단위가 다른 원점수를 직접 더하지 않는다.
 | 질문 | 판정 |
 | --- | --- |
 | 계약이 기계적으로 검증되는가? | PASS |
-| runner 구현을 시작할 수 있는가? | GO |
-| 합성 데이터로 후보·fallback·resume를 시험할 수 있는가? | GO |
+| runner helper 합성 preflight가 통과했는가? | PASS — 15개 검사 |
+| LightFM Linux 의존성 smoke가 통과했는가? | PASS — 9개 검사 |
+| 실제 Validation runner 구현을 시작할 수 있는가? | GO |
 | 실제 Validation 모델을 지금 돌릴 수 있는가? | NO |
 | Locked Test를 열 수 있는가? | NO |
 | 개인화 모델을 서비스에 채택할 수 있는가? | NO |
 
-다음 Gate는 runner 단위 테스트와 합성 사전검사가 모두 통과하는 것이다. 그 결과를 별도 manifest로 고정한
-뒤에만 실제 Validation 실행 승인 여부를 다시 판단한다.
+다음 Gate는 실제 runner가 역할별 Validation 파일만 읽고 41,625편을 block scan하며 trial별 checkpoint를
+남기는지 코드 검토로 확인하는 것이다. 그 뒤에만 실제 Validation 실행 승인 여부를 다시 판단한다.
 
 ## 검증 명령
 
 ```powershell
 py -3 scripts/validate_rec_ev_019c_contract.py
 py -3 -m unittest scripts/tests/test_validate_rec_ev_019c_contract.py
+npm run recommendation:019c:synthetic:check
+npm run recommendation:019c:dependency:check
 ```
 
 이 명령은 모델을 학습하거나 실제 Validation·Locked Test 평점을 읽지 않는다.

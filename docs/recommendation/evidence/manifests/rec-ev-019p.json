@@ -41,8 +41,8 @@
     },
     "evidence": {
       "path": "docs/recommendation/evidence/REC-EV-019P-binary-onboarding-preflight.md",
-      "bytes": 4651,
-      "sha256": "31b737684d66f1168ef675a633dd2e46df5ae1972b9ef0b0b6efab878c89881b"
+      "bytes": 4766,
+      "sha256": "eead94fee435c971be6d0f18b0c871773a018066b16618477001f0967452dc1a"
     },
     "rec_ev_019a_contract": {
       "path": "docs/recommendation/contracts/rec-ev-019a-artifacts.json",

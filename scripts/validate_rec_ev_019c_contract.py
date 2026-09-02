@@ -167,6 +167,50 @@ def validate_contract(contract: dict[str, Any], *, root: Path = ROOT) -> dict[st
         trial_counts[model_id] = declared
     require(models["B4_BPR_MF"].get("pair_semantics") == "BASE_AND_TARGET_PAIRS_REQUIRE_ONE_OBSERVED_LIKE_AND_ONE_OBSERVED_DISLIKE", "019C BPR pair semantics changed")
     require(models["B8_LIGHTFM"].get("dependency_rule") == "AN_EXACT_VERSION_AND_HASHED_LOCK_MUST_EXIST_BEFORE_REAL_VALIDATION_RUN", "019C LightFM supply-chain Gate missing")
+    lightfm = models["B8_LIGHTFM"].get("dependency", {})
+    require(lightfm.get("distribution") == "lightfm-next", "019C LightFM distribution changed")
+    require(lightfm.get("import_package") == "lightfm", "019C LightFM import package changed")
+    require(lightfm.get("version") == "1.19.0", "019C LightFM version changed")
+    require(lightfm.get("python") == "CPython 3.12", "019C LightFM Python runtime changed")
+    require(lightfm.get("platform") == "linux/amd64 manylinux2014_x86_64", "019C LightFM platform changed")
+    require(
+        lightfm.get("runtime_image")
+        == "python:3.12.5-slim-bookworm@sha256:c24c34b502635f1f7c4e99dc09a2cbd85d480b7dcfd077198c6b5af138906390",
+        "019C LightFM runtime image changed",
+    )
+    require(lightfm.get("native_windows_supported") is False, "019C LightFM native Windows boundary changed")
+    require(lightfm.get("linux_smoke_test_required_before_real_validation") is True, "019C LightFM smoke Gate missing")
+    requirement_path = root / str(lightfm.get("direct_requirement"))
+    lock_path = root / str(lightfm.get("hash_lock"))
+    require(requirement_path.is_file() and lock_path.is_file(), "019C LightFM dependency lock is missing")
+    expected_requirement = f"lightfm-next=={lightfm['version']}"
+    require(expected_requirement in requirement_path.read_text(encoding="utf-8"), "019C LightFM direct pin differs")
+    lock_text = lock_path.read_text(encoding="utf-8")
+    require("--only-binary=:all:" in lock_text, "019C LightFM lock permits source builds")
+    require(expected_requirement in lock_text, "019C LightFM lock version differs")
+    require(
+        f"--hash=sha256:{lightfm['wheel_sha256']}" in lock_text,
+        "019C LightFM wheel hash differs",
+    )
+    require(
+        models["B8_LIGHTFM"].get("training_pairs")
+        == "OBSERVED_LIKE_AND_OBSERVED_DISLIKE_ONLY_WITH_INTERACTION_VALUE_PLUS_ONE_OR_MINUS_ONE",
+        "019C LightFM signed interaction semantics changed",
+    )
+    require(
+        models["B8_LIGHTFM"].get("sample_weight_semantics")
+        == "NONNEGATIVE_CONFIDENCE_ONLY_NEVER_THE_LABEL_SIGN",
+        "019C LightFM sample weight semantics changed",
+    )
+    require(
+        models["B8_LIGHTFM"].get("search_space", {}).get("loss") == ["logistic"],
+        "019C LightFM pairwise loss would treat UNKNOWN candidates as negatives",
+    )
+    require(
+        models["B8_LIGHTFM"].get("target_user")
+        == "CUSTOM_LOGISTIC_FOLD_IN_USER_VECTOR_WITH_LIGHTFM_ITEM_REPRESENTATIONS_FROZEN",
+        "019C LightFM target fold-in boundary changed",
+    )
     require(models["B7_TMDB_TEXT_CONTENT"].get("model_revision") == feature_contract["embedding"]["model_revision"], "019C E5 revision differs from 019B")
     require(models["B9_RRF"].get("raw_score_input_forbidden") is True, "019C RRF could consume raw scores")
     require(models["B9_RRF"]["head_sets"]["ALL_NONBASE"] == ["B2_ITEM_KNN", "B4_BPR_MF", "B6_TMDB_STRUCTURED_CONTENT", "B7_TMDB_TEXT_CONTENT", "B8_LIGHTFM"], "019C RRF full head set changed")
@@ -193,6 +237,52 @@ def validate_contract(contract: dict[str, Any], *, root: Path = ROOT) -> dict[st
     prediction = next(item for item in contract["future_artifacts"] if item["path"].endswith("validation-predictions.parquet"))
     require({"rank", "effective_score", "fallback_used", "fallback_reason"}.issubset({column[0] for column in prediction["columns"]}), "019C prediction audit columns missing")
 
+    synthetic = contract["synthetic_preflight_artifacts"]
+    require(
+        synthetic.get("result")
+        == "docs/recommendation/evidence/results/rec-ev-019c-synthetic-preflight.json",
+        "019C synthetic result path changed",
+    )
+    require(
+        synthetic.get("manifest")
+        == "docs/recommendation/evidence/manifests/rec-ev-019c-synthetic-preflight.json",
+        "019C synthetic manifest path changed",
+    )
+    required_checks = set(synthetic.get("required_checks", []))
+    for check in (
+        "forbidden_path_rejected_before_open",
+        "unknown_path_rejected_before_open",
+        "positive_injection_absent",
+        "missing_feature_uses_b0",
+        "rrf_uses_ranks_only",
+        "resume_byte_equivalent",
+        "resume_hash_mismatch_refused",
+        "validation_mode_blocked",
+        "locked_test_never_opened",
+    ):
+        require(check in required_checks, f"019C synthetic safety check missing: {check}")
+
+    dependency_smoke = contract["dependency_smoke_artifacts"]
+    require(
+        dependency_smoke.get("result")
+        == "docs/recommendation/evidence/results/rec-ev-019c-lightfm-linux-smoke.json",
+        "019C dependency smoke result path changed",
+    )
+    require(
+        dependency_smoke.get("manifest")
+        == "docs/recommendation/evidence/manifests/rec-ev-019c-lightfm-linux-smoke.json",
+        "019C dependency smoke manifest path changed",
+    )
+    smoke_checks = set(dependency_smoke.get("required_checks", []))
+    for check in (
+        "distribution_version_exact",
+        "signed_logistic_fit",
+        "item_parameters_frozen_during_target_fold_in",
+        "unrated_negative_sampling_absent",
+        "pairwise_losses_not_executed",
+    ):
+        require(check in smoke_checks, f"019C dependency safety check missing: {check}")
+
     implementation = contract["implementation"]
     for key in (
         "contract_validator",
@@ -200,9 +290,14 @@ def validate_contract(contract: dict[str, Any], *, root: Path = ROOT) -> dict[st
         "runner_to_create",
         "runner_unit_test_to_create",
         "result_verifier_to_create",
+        "dependency_smoke_runner",
+        "dependency_smoke_verifier",
+        "dependency_smoke_run_command",
         "contract_check_command",
         "contract_unit_command",
         "future_synthetic_preflight_command",
+        "synthetic_preflight_verify_command",
+        "dependency_smoke_verify_command",
         "future_validation_command",
         "future_verify_command",
     ):

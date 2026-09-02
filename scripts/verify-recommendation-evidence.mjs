@@ -16,6 +16,8 @@ const commands = [
   [python, [...pythonPrefix, '-m', 'unittest', 'scripts/tests/test_build_rec_ev_019b_features.py']],
   [python, [...pythonPrefix, '-m', 'unittest', 'scripts/tests/test_build_rec_ev_019a_cohorts.py']],
   [python, [...pythonPrefix, '-m', 'unittest', 'scripts/tests/test_validate_rec_ev_019c_contract.py']],
+  [python, [...pythonPrefix, '-m', 'unittest', 'scripts/tests/test_run_rec_ev_019c_validation.py']],
+  [python, [...pythonPrefix, '-m', 'unittest', 'scripts/tests/test_verify_rec_ev_019c_dependency_smoke.py']],
   [python, [...pythonPrefix, 'scripts/verify_recommendation_exploration_pareto.py', '--manifest', 'docs/recommendation/evidence/manifests/rec-ev-004.json']],
   [python, [...pythonPrefix, 'scripts/verify_recommendation_exploration_full_catalog.py', '--manifest', 'docs/recommendation/evidence/manifests/rec-ev-004b.json']],
   [python, [...pythonPrefix, 'scripts/verify_recommendation_reason_faithfulness.py', '--manifest', 'docs/recommendation/evidence/manifests/rec-ev-006.json']],
@@ -28,6 +30,8 @@ const commands = [
   [python, [...pythonPrefix, 'scripts/verify_recommendation_user_percentile_audit.py', '--manifest', 'docs/recommendation/evidence/manifests/rec-ev-018.json']],
   [python, [...pythonPrefix, 'scripts/verify_recommendation_binary_onboarding_preflight.py', '--manifest', 'docs/recommendation/evidence/manifests/rec-ev-019p.json']],
   [python, [...pythonPrefix, 'scripts/validate_rec_ev_019c_contract.py']],
+  [python, [...pythonPrefix, 'scripts/verify_rec_ev_019c_validation.py', '--manifest', 'docs/recommendation/evidence/manifests/rec-ev-019c-synthetic-preflight.json']],
+  [python, [...pythonPrefix, 'scripts/verify_rec_ev_019c_dependency_smoke.py', '--manifest', 'docs/recommendation/evidence/manifests/rec-ev-019c-lightfm-linux-smoke.json']],
   [python, [...pythonPrefix, 'scripts/validate_recommendation_vnext_readiness.py']],
   [python, [...pythonPrefix, 'scripts/verify_spark_als_scaling_evidence.py', '--result', 'performance/results/spark-als-scaling/latest.json']],
   [process.execPath, ['scripts/verify-recommendation-ui-comparison.mjs']],
@@ -45,4 +49,4 @@ for (const [command, args] of commands) {
   }
 }
 
-console.log('Recommendation evidence verification passed: unit protocols, REC-EV-004/004B/006/007/008/011/013/015/016/017/018/019P/019A and REC-EV-019C contract readiness, decision packet, and Spark scaling evidence.')
+console.log('Recommendation evidence verification passed: unit protocols, REC-EV-004/004B/006/007/008/011/013/015/016/017/018/019P/019A and REC-EV-019C contract, synthetic preflight, and Linux dependency smoke, decision packet, and Spark scaling evidence.')

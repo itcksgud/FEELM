@@ -1,0 +1,35 @@
+{
+  "adoption": {
+    "champion": null,
+    "product_policy_changed": false,
+    "real_validation_authorized": false
+  },
+  "artifacts": [
+    {
+      "bytes": 1457,
+      "path": "docs/recommendation/evidence/results/rec-ev-019c-lightfm-linux-smoke.json",
+      "sha256": "5b130ffaaf03ffa8a8a0c2a43da5d29a04e867f4c44c972aeb7d92038f1b0201"
+    }
+  ],
+  "contract_sha256": "3eb50a990220ea0c7d3f15b8ea13807a1812abf9167309c352a95037736d12de",
+  "evidence_id": "REC-EV-019C-LIGHTFM-LINUX-SMOKE",
+  "runtime_lock_sha256": "408c04657ae78c3c16d8a87df03e365967e1b962951b102ee36c0950046577eb",
+  "schema_version": 1,
+  "status": "PASS_DEPENDENCY_SMOKE",
+  "validation": {
+    "all_required_checks_pass": true,
+    "locked_test_opened": false,
+    "real_validation_executed": false,
+    "required_checks": [
+      "python_3_12",
+      "linux_x86_64",
+      "distribution_version_exact",
+      "signed_logistic_fit",
+      "predictions_finite",
+      "item_features_used",
+      "item_parameters_frozen_during_target_fold_in",
+      "unrated_negative_sampling_absent",
+      "pairwise_losses_not_executed"
+    ]
+  }
+}

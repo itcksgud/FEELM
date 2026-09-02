@@ -1,0 +1,36 @@
+{
+  "base_prediction_checksum": "db12a5b77ba0afdd0d58122c9097f86de861d9d3ccdb5223182b650155d7a7be",
+  "checks": {
+    "distribution_version_exact": true,
+    "item_features_used": true,
+    "item_parameters_frozen_during_target_fold_in": true,
+    "linux_x86_64": true,
+    "pairwise_losses_not_executed": true,
+    "predictions_finite": true,
+    "python_3_12": true,
+    "signed_logistic_fit": true,
+    "unrated_negative_sampling_absent": true
+  },
+  "contract_sha256": "3eb50a990220ea0c7d3f15b8ea13807a1812abf9167309c352a95037736d12de",
+  "distribution": "lightfm-next",
+  "distribution_version": "1.19.0",
+  "evidence_id": "REC-EV-019C-LIGHTFM-LINUX-SMOKE",
+  "import_package": "lightfm",
+  "locked_test_opened": false,
+  "loss": "logistic",
+  "next_gate": "REAL_VALIDATION_RUNNER_IMPLEMENTATION_AND_APPROVAL_REVIEW",
+  "platform": "Linux-5.15.167.4-microsoft-standard-WSL2-x86_64-with-glibc2.36",
+  "product_champion": null,
+  "product_policy_changed": false,
+  "python": "3.12.5",
+  "real_validation_executed": false,
+  "runtime_image": "python:3.12.5-slim-bookworm@sha256:c24c34b502635f1f7c4e99dc09a2cbd85d480b7dcfd077198c6b5af138906390",
+  "runtime_lock_sha256": "408c04657ae78c3c16d8a87df03e365967e1b962951b102ee36c0950046577eb",
+  "schema_version": 1,
+  "signed_interaction_values": [
+    -1.0,
+    1.0
+  ],
+  "status": "PASS_DEPENDENCY_SMOKE",
+  "target_prediction_checksum": "a571943640cc82c88cf33107b740820f5580e2024e05ae381a4a069ca58337be"
+}

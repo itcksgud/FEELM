@@ -27,7 +27,7 @@
 | `REC-EV-018` user percentile audit | `COMPLETED_USER_DISTRIBUTION_DIAGNOSTIC` | 평균 외 B/T/H·효과 percentile·사용자/인기도 segment를 공개; Router 필요성 가설만 유지, champion `null` |
 | `REC-EV-019P` binary onboarding preflight | `COMPLETED_REPRODUCIBLE_FEASIBILITY_PASS` | strict eligibility로 40/10/10/40 split을 잠금; K10 5,476명으로 019A/019B 구현 `GO`, champion 권한 `NO` |
 | `REC-EV-019A` binary cohort build | `PASS_COHORT_GATES` | 최종 후보 41,625편·K10 Test 5,476명; 역할별 파일 firewall 추가, 모델 성능 미사용 |
-| `REC-EV-019C` model validation contract | `CONTRACT_PASS_IMPLEMENTATION_PREFLIGHT_ONLY` | 7개 모델·최대 탐색·fallback·checkpoint·입력 firewall 고정; runner·합성 preflight만 `GO`, 실제 Validation·Test·champion `NO` |
+| `REC-EV-019C` validation preflight | `SYNTHETIC_AND_DEPENDENCY_PREFLIGHT_PASS` | 계약·runner 안전장치 15개·Linux dependency 9개 PASS; 실제 runner 구현만 `GO`, Validation·Test·champion `NO` |
 | `REC-DATA-001` temporal feasibility | `COMPLETED_DESCRIPTIVE_AUDIT` | 동일 날짜 Rating 몰아넣기 확인; K25·90일·N500 고정 근거 `NO` |
 | `REC-DATA-002` Korean-origin coverage | `COMPLETED_PROXY_AUDIT` | KR item slice 가능; 한국 20대 또는 독립 KR 사용자 cohort 승인 `NO` |
 | `REC-DATA-003` evaluation redesign | `PROTOCOL_AMENDMENT_PROPOSED` | preference reconstruction 주 평가 + next-rating-session 보조 평가 제안 |
@@ -63,6 +63,7 @@
 [REC-EV-019P binary onboarding preflight](./REC-EV-019P-binary-onboarding-preflight.md),
 [REC-EV-019A binary cohort build](./REC-EV-019A-binary-cohort-build.md),
 [REC-EV-019C 실행 계약 준비 결과](./REC-EV-019C-contract-readiness.md),
+[REC-EV-019C runner·의존성 preflight](./REC-EV-019C-runner-and-dependency-preflight.md),
 [REC-DATA-001 시간·후보 감사](./REC-DATA-001-temporal-feasibility.md),
 [REC-DATA-002 한국-origin 감사](./REC-DATA-002-korean-origin-coverage.md),
 [REC-DATA-003 평가 설계 재판단](./REC-DATA-003-evaluation-design-decision.md),
@@ -90,7 +91,10 @@ segment 회귀를 잠그며 자체로 제품 Router나 ranking champion을 승�
 REC-EV-019C는 Validation runner가 역할 혼합 Parquet이나 Locked Test 파일을 열기 전에 실패하도록 입력
 allowlist를 고정했다. Bayesian·ItemKNN·BPR·structured/text content·LightFM·RRF의 trial 수, 사용자별
 percentile 정규화, B0 fallback, checkpoint·resume 계약도 자동 검증한다. 이 PASS는 runner와 합성
-preflight 구현만 허용하며 실제 Validation 성능이나 제품 champion을 승인하지 않는다.
+preflight 구현만 허용하며 실제 Validation 성능이나 제품 champion을 승인하지 않는다. 후속 합성 runner
+15개 검사와 Linux LightFM dependency 9개 검사도 통과했다. LightFM BPR/WARP가 미관측 영화를 negative로
+샘플링하는 계약 충돌을 실행 전에 발견해 B8을 관측 ±1 logistic과 frozen-item fold-in으로 교정했다. 이제
+실제 runner 구현은 가능하지만 실제 Validation 실행은 여전히 차단한다.
 
 Cold-start 평가에서는 K1부터 별점 MAE가 통계적으로 줄었지만, K0 대비 3% 실질 개선 Gate는
 K10부터 통과했다. 초기 sampled ranking에서는 모든 K의 최적 Fold-in 가중치가 0이었으나,
