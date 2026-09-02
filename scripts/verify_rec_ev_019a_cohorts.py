@@ -18,6 +18,30 @@ from recommendation_protocol_v4 import sha256_file
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
 HEX_64 = re.compile(r"^[0-9a-f]{64}$")
+PREFIX_COLUMNS = [
+    "role",
+    "user_key",
+    "k",
+    "input_rank",
+    "movie_id",
+    "binary_label",
+    "relative_utility",
+    "source_position",
+    "timestamp",
+]
+WINDOW_COLUMNS = [
+    "role",
+    "user_key",
+    "k",
+    "window_rank",
+    "movie_id",
+    "rating",
+    "midrank_utility",
+    "is_positive",
+    "is_negative",
+    "provisional_candidate_present",
+    "timestamp",
+]
 EXPECTED_COLUMNS = {
     "base-train-ratings.parquet": [
         "user_key",
@@ -33,30 +57,19 @@ EXPECTED_COLUMNS = {
         "first_base_train_timestamp",
         "identity_status",
     ],
-    "binary-prefixes.parquet": [
-        "role",
-        "user_key",
-        "k",
-        "input_rank",
-        "movie_id",
-        "binary_label",
-        "relative_utility",
-        "source_position",
-        "timestamp",
-    ],
-    "evaluation-windows.parquet": [
-        "role",
-        "user_key",
-        "k",
-        "window_rank",
-        "movie_id",
-        "rating",
-        "midrank_utility",
-        "is_positive",
-        "is_negative",
-        "provisional_candidate_present",
-        "timestamp",
-    ],
+    "binary-prefixes.parquet": PREFIX_COLUMNS,
+    "evaluation-windows.parquet": WINDOW_COLUMNS,
+    "router-train-binary-prefixes.parquet": PREFIX_COLUMNS,
+    "router-train-evaluation-windows.parquet": WINDOW_COLUMNS,
+    "validation-binary-prefixes.parquet": PREFIX_COLUMNS,
+    "validation-evaluation-windows.parquet": WINDOW_COLUMNS,
+    "locked-test-binary-prefixes.parquet": PREFIX_COLUMNS,
+    "locked-test-evaluation-windows.parquet": WINDOW_COLUMNS,
+}
+ROLE_FILES = {
+    "ROUTER_TRAIN": ("router-train-binary-prefixes.parquet", "router-train-evaluation-windows.parquet"),
+    "VALIDATION": ("validation-binary-prefixes.parquet", "validation-evaluation-windows.parquet"),
+    "LOCKED_TEST": ("locked-test-binary-prefixes.parquet", "locked-test-evaluation-windows.parquet"),
 }
 
 
@@ -104,6 +117,22 @@ def verify(manifest_path: Path) -> dict[str, Any]:
     candidate = tables["candidate-core-provisional.parquet"].to_pandas()
     prefixes = tables["binary-prefixes.parquet"].to_pandas()
     windows = tables["evaluation-windows.parquet"].to_pandas()
+
+    for role, (prefix_name, window_name) in ROLE_FILES.items():
+        role_prefixes = tables[prefix_name].to_pandas().reset_index(drop=True)
+        role_windows = tables[window_name].to_pandas().reset_index(drop=True)
+        require(set(role_prefixes["role"]) <= {role}, f"wrong role in {prefix_name}")
+        require(set(role_windows["role"]) <= {role}, f"wrong role in {window_name}")
+        pd.testing.assert_frame_equal(
+            role_prefixes,
+            prefixes.loc[prefixes["role"] == role].reset_index(drop=True),
+            check_dtype=True,
+        )
+        pd.testing.assert_frame_equal(
+            role_windows,
+            windows.loc[windows["role"] == role].reset_index(drop=True),
+            check_dtype=True,
+        )
 
     require(base["user_bucket"].between(0, 39).all(), "non-Base-Train user leaked into base ratings")
     require(base["user_key"].map(lambda value: bool(HEX_64.fullmatch(str(value)))).all(), "invalid base user key")
@@ -177,6 +206,21 @@ def verify(manifest_path: Path) -> dict[str, Any]:
     require(lock["contract_sha256"] == manifest["contract_sha256"], "lock/manifest contract mismatch")
 
     validation = manifest["validation"]
+    actual_role_k_counts = {
+        role: {
+            str(k): int(
+                windows.loc[
+                    (windows["role"] == role) & (windows["k"] == k), "user_key"
+                ].nunique()
+            )
+            for k in (0, 5, 10)
+        }
+        for role in sorted(allowed_roles)
+    }
+    require(
+        validation.get("strict_eligible_users_by_role_and_k") == actual_role_k_counts,
+        "manifest role/K strict user counts mismatch",
+    )
     minimum = int(contract["gates"]["locked_test_k10_strict_eligible_min"])
     provisional_count = int(
         windows.loc[(windows["role"] == "LOCKED_TEST") & (windows["k"] == 10), "user_key"].nunique()

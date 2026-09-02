@@ -24,6 +24,10 @@ MovieLens 사용자를 학습·조정·검증·최종 시험으로 서로 겹치
 사용자 ID는 결과에 저장하지 않고 고정 salt SHA-256 키로 바꿨다. K5 입력은 항상 K10 입력의 앞 5개다.
 중립 평점과 미평가는 싫어요로 만들지 않았다.
 
+Validation과 Locked Test 행은 역할별 Parquet으로도 따로 저장한다. Validation 모델 코드는 전용
+`validation-*` 두 파일만 읽을 수 있고, 전체 역할 혼합 파일·`locked-test-*`·원본 `test.parquet`은 읽지
+못한다. 역할 열을 뒤늦게 필터링하는 것보다 파일 접근 자체를 막기 위한 경계다.
+
 ## 실제 생성 결과
 
 ![후보 경계와 K10 평가 대상](../figures/rec-ev-019a-cohort-funnel.png)
@@ -68,18 +72,21 @@ K10 Locked Test 5,476명 중 TMDB 신원 격리 때문에 추가 탈락한 사�
 - 미평가와 중립을 싫어요로 바꾸지 않는다.
 - 추적 결과에는 MovieLens 원본 사용자 ID가 없다.
 - 모델 예측·지표·champion·제품 정책을 만들지 않았다.
-- 계약과 여섯 결과 파일의 크기·SHA-256을 manifest로 확인한다.
+- 계약과 전체 결과 파일의 크기·SHA-256을 manifest로 확인한다.
+- Validation runner가 Test 정답이 든 파일을 열지 않도록 Router·Validation·Locked Test의 prefix와
+  평가 window를 물리적으로 분리하고 combined 파일과 행이 같은지 검증한다.
 
 ## 지금 열린 것과 아직 닫힌 것
 
 | 열린 작업 | 아직 금지된 주장·작업 |
 | --- | --- |
-| REC-EV-019C 실행 계약 작성 | 특정 모델이 인기도보다 좋음 |
-| Validation용 기준선·후보 구현 준비 | Locked Test 모델 성능 열람 |
+| REC-EV-019C runner·합성 preflight 구현 | 특정 모델이 인기도보다 좋음 |
+| Validation용 기준선·후보 구현과 가짜 데이터 점검 | 실제 Validation·Locked Test 모델 성능 열람 |
 | 동일한 41,625편 후보에서 모델 비교 설계 | 개인화 champion·제품 정책 변경 |
 
-019C는 아이디어 목록만 있고 아직 산출물 schema, 파라미터 탐색 순서, 자원 상한, 중간 실패 복구 방식이
-실행 계약으로 충분히 고정되지 않았다. 따라서 다음 GO는 **019C 계약 작성**까지이며 모델 실행 GO는 아니다.
+후속 019C 계약은 산출물 schema, 파라미터 탐색 순서, 자원 상한, 중간 실패 복구와 입력 파일 allowlist를
+고정하고 자동 검사를 통과했다. 따라서 다음 GO는 **runner·합성 preflight 구현**까지이며 실제 Validation
+모델 실행 GO는 아니다.
 
 ## 재현 명령
 

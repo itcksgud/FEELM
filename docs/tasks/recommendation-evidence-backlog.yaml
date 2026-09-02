@@ -259,6 +259,12 @@ tasks:
       - outputs/recommendation-evidence/rec-ev-019a/candidate-core-provisional.parquet
       - outputs/recommendation-evidence/rec-ev-019a/binary-prefixes.parquet
       - outputs/recommendation-evidence/rec-ev-019a/evaluation-windows.parquet
+      - outputs/recommendation-evidence/rec-ev-019a/router-train-binary-prefixes.parquet
+      - outputs/recommendation-evidence/rec-ev-019a/router-train-evaluation-windows.parquet
+      - outputs/recommendation-evidence/rec-ev-019a/validation-binary-prefixes.parquet
+      - outputs/recommendation-evidence/rec-ev-019a/validation-evaluation-windows.parquet
+      - outputs/recommendation-evidence/rec-ev-019a/locked-test-binary-prefixes.parquet
+      - outputs/recommendation-evidence/rec-ev-019a/locked-test-evaluation-windows.parquet
       - outputs/recommendation-evidence/rec-ev-019a/cohort-summary.json
       - outputs/recommendation-evidence/rec-ev-019a/protocol-lock.json
       - docs/recommendation/evidence/manifests/rec-ev-019a.json
@@ -272,6 +278,7 @@ tasks:
       - raw user_id column is absent and user_key follows the approved contract
       - unrated and neutral rows never become DISLIKE
       - manifest checksums match every output and failure artifacts are retained
+      - Validation model code can read only the role-specific Validation files, never mixed-role or Locked Test files
     forbidden_changes:
       - product API and database schema
       - APPROVED_C2A_INTERNAL_POPULARITY_ONLY
@@ -317,22 +324,56 @@ tasks:
 
   - id: TASK-REC-EV-019C
     title: Binary baseline suite와 full-catalog evaluator
-    status: PENDING
+    status: READY
     depends_on: [TASK-REC-EV-019A, TASK-REC-EV-019B]
+    current_authorization: IMPLEMENTATION_AND_SYNTHETIC_PREFLIGHT_ONLY
+    artifact_contract: docs/recommendation/contracts/rec-ev-019c-validation-artifacts.json
     input_docs:
       - docs/recommendation/protocols/rec-eval-vnext.json
       - docs/recommendation/contracts/rec-ev-019a-artifacts.json
       - docs/recommendation/contracts/rec-ev-019b-artifacts.json
+      - docs/recommendation/contracts/rec-ev-019c-validation-artifacts.json
+    implementation_files:
+      - scripts/validate_rec_ev_019c_contract.py
+      - scripts/tests/test_validate_rec_ev_019c_contract.py
+      - scripts/run_rec_ev_019c_validation.py
+      - scripts/tests/test_run_rec_ev_019c_validation.py
+      - scripts/verify_rec_ev_019c_validation.py
     outputs:
-      - Popularity, binary ItemKNN, BPR, TMDB Content, LightFM, RRF predictions
-      - Validation-selected parameters
-      - user-level full-catalog result parquet
+      - outputs/recommendation-evidence/rec-ev-019c/candidate-core-final.parquet
+      - outputs/recommendation-evidence/rec-ev-019c/trial-registry.json
+      - outputs/recommendation-evidence/rec-ev-019c/trial-user-metrics.parquet
+      - outputs/recommendation-evidence/rec-ev-019c/validation-predictions.parquet
+      - outputs/recommendation-evidence/rec-ev-019c/validation-user-metrics.parquet
+      - outputs/recommendation-evidence/rec-ev-019c/validation-selection.json
+      - outputs/recommendation-evidence/rec-ev-019c/validation-selection-lock.json
+      - outputs/recommendation-evidence/rec-ev-019c/resource-summary.json
+      - docs/recommendation/evidence/manifests/rec-ev-019c-validation.json
+    contract_outputs:
+      - docs/recommendation/contracts/rec-ev-019c-validation-artifacts.json
+      - scripts/validate_rec_ev_019c_contract.py
+      - scripts/tests/test_validate_rec_ev_019c_contract.py
+      - docs/recommendation/evidence/REC-EV-019C-contract-readiness.md
+    commands:
+      contract: "py -3 scripts/validate_rec_ev_019c_contract.py"
+      unit: "py -3 -m unittest scripts/tests/test_validate_rec_ev_019c_contract.py"
+      future_synthetic_preflight: "py -3 scripts/run_rec_ev_019c_validation.py --mode synthetic-preflight --role validation"
+      future_validation: "py -3 scripts/run_rec_ev_019c_validation.py --mode validation --role validation --resume"
+      future_verify: "py -3 scripts/verify_rec_ev_019c_validation.py --manifest docs/recommendation/evidence/manifests/rec-ev-019c-validation.json"
     verify:
+      - contract validator and mutation tests pass before runner implementation
+      - current authorization permits only runner implementation and synthetic preflight, not real Validation
+      - Validation code reads only role-specific Validation files and cannot expose a Test CLI flag
       - final identity allowlist is joined before scoring and K10 Test strict eligible remains at least 5000
       - identical candidate universe and no positive injection
       - missing per-model feature invokes B0 fallback without removing a candidate
       - maximum 30 trials per model
       - Validation locks all parameters before Test
+    forbidden_changes:
+      - product API and database schema
+      - APPROVED_C2A_INTERNAL_POPULARITY_ONLY
+      - binary thresholds, candidate count, or positive injection
+      - real Validation or Locked Test execution before the matching phase Gate
 
   - id: TASK-REC-EV-019
     title: Binary onboarding K5·K10 제품 후보 판정

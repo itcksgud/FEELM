@@ -93,14 +93,14 @@ batching은 영화 순서를 복원하며, 100편 비교에서 기존 방식과 
 | 이제 할 수 있는 것 | 아직 할 수 없는 주장 |
 | --- | --- |
 | 019A 최종 후보의 영화 특징 조회 | 콘텐츠 추천이 인기도보다 좋음 |
-| 019C 실행 계약 작성 | 신작·한국영화 추천 성능이 검증됨 |
+| 019C 계약에 따른 runner·합성 preflight 구현 | 신작·한국영화 추천 성능이 검증됨 |
 | cold-item Validation 파일럿 준비 | 실제 FEELM 사용자가 만족함 |
 | 결측 구간별 fallback·성능 비교 | 개인화 champion 승인 |
 
 REC-EV-019A 결과와 합치면 `42,123편 cutoff-safe 1차 후보 ∩ 019B identity allowlist = 41,625편`이다.
-다음 단계는 이 동일한 후보를 모든 모델이 사용하도록 REC-EV-019C 실행 계약을 고정하는 것이다. cold-item은
-`REC-EV-021P` 사전검사를 통과해 별도 Validation 파일럿을 준비할 수 있다. 두 경로 모두 Locked Test와 제품
-정책 변경은 아직 금지된다.
+REC-EV-019C 실행 계약은 이 동일한 후보를 모든 모델이 사용하도록 고정하고 자동 검사를 통과했다. 다음은
+runner·합성 preflight다. cold-item은 `REC-EV-021P` 사전검사를 통과해 별도 Validation 파일럿을 준비할 수
+있다. 두 경로 모두 실제 Validation 승인, Locked Test와 제품 정책 변경은 아직 금지된다.
 
 ## 재현 명령
 

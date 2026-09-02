@@ -157,6 +157,12 @@ def validate_artifact_contracts() -> None:
         "outputs/recommendation-evidence/rec-ev-019a/candidate-core-provisional.parquet",
         "outputs/recommendation-evidence/rec-ev-019a/binary-prefixes.parquet",
         "outputs/recommendation-evidence/rec-ev-019a/evaluation-windows.parquet",
+        "outputs/recommendation-evidence/rec-ev-019a/router-train-binary-prefixes.parquet",
+        "outputs/recommendation-evidence/rec-ev-019a/router-train-evaluation-windows.parquet",
+        "outputs/recommendation-evidence/rec-ev-019a/validation-binary-prefixes.parquet",
+        "outputs/recommendation-evidence/rec-ev-019a/validation-evaluation-windows.parquet",
+        "outputs/recommendation-evidence/rec-ev-019a/locked-test-binary-prefixes.parquet",
+        "outputs/recommendation-evidence/rec-ev-019a/locked-test-evaluation-windows.parquet",
         "outputs/recommendation-evidence/rec-ev-019a/cohort-summary.json",
         "outputs/recommendation-evidence/rec-ev-019a/protocol-lock.json",
         "docs/recommendation/evidence/manifests/rec-ev-019a.json",
@@ -166,6 +172,15 @@ def validate_artifact_contracts() -> None:
     for item in contract_a["artifacts"]:
         if item.get("format") == "parquet" and not item.get("columns"):
             raise RuntimeError(f"019A parquet schema is missing: {item['path']}")
+    firewall = contract_a.get("role_file_firewall", {})
+    if set(firewall.get("validation_model_runner_allowed", [])) != {
+        "outputs/recommendation-evidence/rec-ev-019a/validation-binary-prefixes.parquet",
+        "outputs/recommendation-evidence/rec-ev-019a/validation-evaluation-windows.parquet",
+    }:
+        raise RuntimeError("019A Validation role-file allowlist changed")
+    forbidden = set(firewall.get("validation_model_runner_forbidden", []))
+    if "outputs/recommendation-evidence/global-time-v1/test.parquet" not in forbidden:
+        raise RuntimeError("019A Locked Test source firewall is incomplete")
 
     embedding = contract_b["embedding"]
     if embedding.get("model_id") != "intfloat/multilingual-e5-small":
@@ -221,7 +236,7 @@ def validate_backlog(backlog: dict[str, Any]) -> None:
         "TASK-REC-EV-019P": "DONE",
         "TASK-REC-EV-019A": "DONE",
         "TASK-REC-EV-019B": "DONE",
-        "TASK-REC-EV-019C": "PENDING",
+        "TASK-REC-EV-019C": "READY",
         "TASK-REC-EV-019": "PENDING",
         "TASK-REC-EV-020": "PENDING",
         "TASK-REC-EV-021": "PENDING",
@@ -267,6 +282,27 @@ def validate_backlog(backlog: dict[str, Any]) -> None:
         }
         if commands != expected_commands:
             raise RuntimeError(f"task commands differ from artifact contract: {task_id}")
+    task_019c = tasks["TASK-REC-EV-019C"]
+    contract_019c_path = "docs/recommendation/contracts/rec-ev-019c-validation-artifacts.json"
+    if task_019c.get("artifact_contract") != contract_019c_path:
+        raise RuntimeError("019C artifact contract is missing from backlog")
+    contract_019c = read_json(contract_019c_path)
+    if task_019c.get("current_authorization") != "IMPLEMENTATION_AND_SYNTHETIC_PREFLIGHT_ONLY":
+        raise RuntimeError("019C backlog authorization is too broad")
+    expected_019c_outputs = {item["path"] for item in contract_019c["future_artifacts"]}
+    if set(task_019c.get("outputs", [])) != expected_019c_outputs:
+        raise RuntimeError("019C outputs differ from its artifact contract")
+    commands_019c = task_019c.get("commands", {})
+    implementation_019c = contract_019c["implementation"]
+    expected_019c_commands = {
+        "contract": implementation_019c["contract_check_command"],
+        "unit": implementation_019c["contract_unit_command"],
+        "future_synthetic_preflight": implementation_019c["future_synthetic_preflight_command"],
+        "future_validation": implementation_019c["future_validation_command"],
+        "future_verify": implementation_019c["future_verify_command"],
+    }
+    if commands_019c != expected_019c_commands:
+        raise RuntimeError("019C commands differ from its artifact contract")
     verify_019c = "\n".join(tasks["TASK-REC-EV-019C"]["verify"])
     for required_text in ("final identity allowlist", "at least 5000", "B0 fallback"):
         if required_text not in verify_019c:
@@ -360,6 +396,15 @@ def validate_019a_completion_manifest() -> dict[str, Any]:
     return manifest
 
 
+def validate_019c_contract_readiness() -> dict[str, Any]:
+    from validate_rec_ev_019c_contract import validate_contract
+
+    contract = read_json(
+        "docs/recommendation/contracts/rec-ev-019c-validation-artifacts.json"
+    )
+    return validate_contract(contract, root=ROOT)
+
+
 def validate() -> dict[str, Any]:
     documents = (
         "docs/recommendation/00-input-signal-contract-vnext.md",
@@ -383,17 +428,20 @@ def validate() -> dict[str, Any]:
         raise RuntimeError("REC-EV-019 preflight did not produce implementation GO")
     cohort_build = validate_019a_completion_manifest()
     feature_build = validate_019b_completion_manifest()
+    contract_019c = validate_019c_contract_readiness()
 
     return {
         "status": "PASS",
-        "decision": "GO_FOR_019C_CONTRACT_NOT_MODEL_RUN",
-        "scope": "REC-EV-019A_019B_DONE_019C_EXECUTION_PENDING_CONTRACT",
-        "next_ready_tasks": [],
-        "next_contract_task": "TASK-REC-EV-019C",
+        "decision": "GO_FOR_019C_RUNNER_AND_SYNTHETIC_PREFLIGHT_ONLY",
+        "scope": "REC-EV-019A_019B_DONE_019C_CONTRACT_PASS_REAL_VALIDATION_BLOCKED",
+        "next_ready_tasks": ["TASK-REC-EV-019C"],
+        "next_phase": "RUNNER_IMPLEMENTATION_AND_SYNTHETIC_PREFLIGHT",
         "rec_ev_019a_status": cohort_build["status"],
         "rec_ev_019a_final_identity_k10_users": cohort_build["validation"]["locked_test_k10_final_identity_eligible"],
         "rec_ev_019b_status": feature_build["status"],
         "rec_ev_019b_selected_movies": feature_build["validation"]["selected_movies"],
+        "rec_ev_019c_contract_status": contract_019c["status"],
+        "real_validation_authorized": False,
         "eligible_k10_test_users": preflight["eligible_test_users"],
         "current_product_policy": "APPROVED_C2A_INTERNAL_POPULARITY_ONLY",
         "product_champion": None,

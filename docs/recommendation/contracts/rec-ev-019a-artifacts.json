@@ -109,6 +109,75 @@
       ]
     },
     {
+      "path": "outputs/recommendation-evidence/rec-ev-019a/router-train-binary-prefixes.parquet",
+      "format": "parquet",
+      "row_unit": "ROUTER_TRAIN selected binary input",
+      "sort_order": ["role", "user_key", "k", "input_rank"],
+      "columns": [
+        ["role", "enum:ROUTER_TRAIN", false], ["user_key", "string[64]", false], ["k", "int8:5|10", false],
+        ["input_rank", "int8", false], ["movie_id", "int32", false], ["binary_label", "int8:-1|1", false],
+        ["relative_utility", "float32", false], ["source_position", "int32", false], ["timestamp", "int64", false]
+      ]
+    },
+    {
+      "path": "outputs/recommendation-evidence/rec-ev-019a/router-train-evaluation-windows.parquet",
+      "format": "parquet",
+      "row_unit": "ROUTER_TRAIN post-prefix evaluation rating",
+      "sort_order": ["role", "user_key", "k", "window_rank"],
+      "columns": [
+        ["role", "enum:ROUTER_TRAIN", false], ["user_key", "string[64]", false], ["k", "int8:0|5|10", false],
+        ["window_rank", "int8:1..10", false], ["movie_id", "int32", false], ["rating", "float32", false],
+        ["midrank_utility", "float32", false], ["is_positive", "bool", false], ["is_negative", "bool", false],
+        ["provisional_candidate_present", "bool", false], ["timestamp", "int64", false]
+      ]
+    },
+    {
+      "path": "outputs/recommendation-evidence/rec-ev-019a/validation-binary-prefixes.parquet",
+      "format": "parquet",
+      "row_unit": "VALIDATION selected binary input",
+      "sort_order": ["role", "user_key", "k", "input_rank"],
+      "columns": [
+        ["role", "enum:VALIDATION", false], ["user_key", "string[64]", false], ["k", "int8:5|10", false],
+        ["input_rank", "int8", false], ["movie_id", "int32", false], ["binary_label", "int8:-1|1", false],
+        ["relative_utility", "float32", false], ["source_position", "int32", false], ["timestamp", "int64", false]
+      ]
+    },
+    {
+      "path": "outputs/recommendation-evidence/rec-ev-019a/validation-evaluation-windows.parquet",
+      "format": "parquet",
+      "row_unit": "VALIDATION post-prefix evaluation rating",
+      "sort_order": ["role", "user_key", "k", "window_rank"],
+      "columns": [
+        ["role", "enum:VALIDATION", false], ["user_key", "string[64]", false], ["k", "int8:0|5|10", false],
+        ["window_rank", "int8:1..10", false], ["movie_id", "int32", false], ["rating", "float32", false],
+        ["midrank_utility", "float32", false], ["is_positive", "bool", false], ["is_negative", "bool", false],
+        ["provisional_candidate_present", "bool", false], ["timestamp", "int64", false]
+      ]
+    },
+    {
+      "path": "outputs/recommendation-evidence/rec-ev-019a/locked-test-binary-prefixes.parquet",
+      "format": "parquet",
+      "row_unit": "LOCKED_TEST selected binary input",
+      "sort_order": ["role", "user_key", "k", "input_rank"],
+      "columns": [
+        ["role", "enum:LOCKED_TEST", false], ["user_key", "string[64]", false], ["k", "int8:5|10", false],
+        ["input_rank", "int8", false], ["movie_id", "int32", false], ["binary_label", "int8:-1|1", false],
+        ["relative_utility", "float32", false], ["source_position", "int32", false], ["timestamp", "int64", false]
+      ]
+    },
+    {
+      "path": "outputs/recommendation-evidence/rec-ev-019a/locked-test-evaluation-windows.parquet",
+      "format": "parquet",
+      "row_unit": "LOCKED_TEST post-prefix evaluation rating",
+      "sort_order": ["role", "user_key", "k", "window_rank"],
+      "columns": [
+        ["role", "enum:LOCKED_TEST", false], ["user_key", "string[64]", false], ["k", "int8:0|5|10", false],
+        ["window_rank", "int8:1..10", false], ["movie_id", "int32", false], ["rating", "float32", false],
+        ["midrank_utility", "float32", false], ["is_positive", "bool", false], ["is_negative", "bool", false],
+        ["provisional_candidate_present", "bool", false], ["timestamp", "int64", false]
+      ]
+    },
+    {
       "path": "outputs/recommendation-evidence/rec-ev-019a/cohort-summary.json",
       "format": "json",
       "required_keys": [
@@ -146,12 +215,37 @@
     "raw_user_id_column_forbidden": true,
     "duplicate_primary_key_rows": 0
   },
+  "manifest_validation_required": [
+    "locked_test_k10_provisional_eligible",
+    "locked_test_k10_final_identity_eligible",
+    "final_identity_candidate_movies",
+    "strict_eligible_users_by_role_and_k",
+    "minimum_users",
+    "prefix_nested_k5_in_k10",
+    "raw_user_ids_stored",
+    "locked_test_model_predictions_opened",
+    "product_policy_changed"
+  ],
   "candidate_boundary": {
     "provisional_core": "distinct movie IDs in base-train-ratings.parquet intersect links.csv rows with a positive parseable TMDB ID",
     "feature_superset_is_not_candidate_core": "REC-EV-019B may contain metadata for a broader catalog; 019C must intersect this provisional core with the final identity allowlist before scoring",
     "final_019c_core": "candidate-core-provisional movie_id intersect REC-EV-019B identity status ML_TMDB_VERIFIED or RECOVERED_BY_IMDB",
     "positive_injection": false,
     "optional_final_gate": "when the 019B identity parquet exists, record the provisional/final candidate counts and identity status counts, then recompute Locked Test K10 candidate-positive eligibility with the final allowlist without producing model predictions"
+  },
+  "role_file_firewall": {
+    "validation_model_runner_allowed": [
+      "outputs/recommendation-evidence/rec-ev-019a/validation-binary-prefixes.parquet",
+      "outputs/recommendation-evidence/rec-ev-019a/validation-evaluation-windows.parquet"
+    ],
+    "validation_model_runner_forbidden": [
+      "outputs/recommendation-evidence/rec-ev-019a/binary-prefixes.parquet",
+      "outputs/recommendation-evidence/rec-ev-019a/evaluation-windows.parquet",
+      "outputs/recommendation-evidence/rec-ev-019a/locked-test-binary-prefixes.parquet",
+      "outputs/recommendation-evidence/rec-ev-019a/locked-test-evaluation-windows.parquet",
+      "outputs/recommendation-evidence/global-time-v1/test.parquet"
+    ],
+    "reason": "Validation code must not physically read a mixed-role file or any Locked Test label artifact"
   },
   "failure_behavior": {
     "gate_failure_status": "BLOCKED_OR_INCONCLUSIVE",

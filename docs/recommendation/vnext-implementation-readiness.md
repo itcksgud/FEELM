@@ -2,10 +2,10 @@
 
 > 상태: `APPROVED` — 오프라인 추천 evidence 구현 착수 기준
 > 판정일: 2026-09-02
-> 최종 판정: **GO — REC-EV-019A·019B 완료, 다음 범위는 REC-EV-019C 실행 계약 작성**
+> 최종 판정: **GO — REC-EV-019C 계약 PASS, 다음 범위는 runner 구현·합성 preflight**
 > 제품 경계: 현재 C2 popularity-only 교체와 개인화 champion 승인은 이 GO에 포함하지 않는다.
 > 후속 경계: Top-2 v4와 cold-item v2는 `PROPOSED_PROTOCOL_VALIDATION_PREFLIGHT_REQUIRED`다. 별도
-> Schema·artifact contract·runner 구현은 시작할 수 있지만 현재 019C 계약 작성 GO나
+> Schema·artifact contract·runner 구현은 시작할 수 있지만 현재 019C runner·합성 preflight GO나
 > Locked Test 실행 GO에 포함되지 않는다.
 
 ## 1. GO의 정확한 의미
@@ -14,7 +14,7 @@
 
 - binary 온보딩 cohort artifact는 `PASS_COHORT_GATES`로 완료
 - 전체 TMDB feature artifact는 `PASS_FULL_GATES`로 완료
-- 강한 기준 모델과 full-catalog evaluator는 019C 실행 계약을 먼저 고정한 뒤 시작
+- 019C 실행 계약은 고정됐고, 강한 기준 모델과 full-catalog evaluator는 합성 preflight 통과 뒤 시작
 - REC-EV-019~026 evidence는 backlog dependency Gate를 순서대로 통과
 
 모델이 아직 실험 Gate를 통과하지 않았다는 이유로 구현 자체를 막지 않는다. 반대로 구현 준비가 됐다는
@@ -25,8 +25,9 @@
 | 추천 vNext 오프라인 구현 착수 | **GO** |
 | REC-EV-019A cohort 전체 생성 | **DONE — 최종 후보 41,625편, strict K10 Test 5,476명** |
 | REC-EV-019B 전체 특징 | **DONE — 69,603편 feature superset coverage Gate PASS** |
-| REC-EV-019C 실행 계약 작성 | **GO** |
-| REC-EV-019C 모델 실행 | `NO-GO`, artifact schema·탐색 순서·checkpoint·복구 계약 필요 |
+| REC-EV-019C 실행 계약 | **DONE — 계약 validator와 변이 테스트 PASS** |
+| REC-EV-019C runner·합성 preflight | **GO** |
+| REC-EV-019C 실제 Validation 모델 실행 | `NO-GO`, runner·합성 preflight·dependency lock 필요 |
 | REC-EV-020P-A/B 설계→계약 구현 | `GO`, v4 Schema·artifact contract·runner 구현 가능 |
 | REC-EV-020P-A/B 실행 완료 판정 | `NO-GO`, runner·verifier·Validation power 결과 필요 |
 | REC-EV-021P 사전검사 | **DONE — firewall PASS, Validation pilot READY** |
@@ -122,15 +123,19 @@
 전체 69,603편 feature superset 실행에서 링크 99.8635%, identity 98.8001%, 구조 특징 99.3112%, 텍스트 특징
 99.7961%로 Gate를 통과했다. 결과와 실패·복구 과정은
 [`REC-EV-019B 전체 결과`](./evidence/REC-EV-019B-tmdb-feature-build.md)에 기록했다. 019A와의 교집합과 K10
-5,000명 Gate도 이미 확인했다. 다음은 이를 변경하지 못하도록 019C 실행 계약을 작성하는 단계다.
+5,000명 Gate도 이미 확인했다. 이 값을 바꾸지 못하도록 019C 실행 계약과 자동 검증기도 고정했다.
 
-### 4.3 `TASK-REC-EV-019C` — 계약 작성만 시작 가능
+### 4.3 `TASK-REC-EV-019C` — 계약 PASS, runner·합성 preflight 시작 가능
 
-backlog에는 비교할 모델과 큰 Gate가 있지만, 아직 모델별 입력·출력 schema, 최대 30회 탐색의 정확한 순서,
-중간 checkpoint, 실패 후 재개, Validation 선택 결과 lock 형식이 없다. 따라서 현재 준비도는 다음과 같다.
+기계 판독 계약은 [`contracts/rec-ev-019c-validation-artifacts.json`](./contracts/rec-ev-019c-validation-artifacts.json),
+쉬운 설명과 판정은 [`REC-EV-019C 계약 준비 결과`](./evidence/REC-EV-019C-contract-readiness.md)에 있다.
+모델별 입력·출력 schema, 최대 30회 탐색, 중간 checkpoint, 실패 후 재개, Validation 선택 lock을
+자동 검증기로 고정했다. Validation 코드가 Locked Test 행까지 들어 있는 혼합 파일을 읽지 못하도록 019A도
+역할별 Parquet으로 분리했다. 따라서 현재 준비도는 다음과 같다.
 
-- 계약·runner·test·verifier 골격 작성: `GO`
-- Validation 모델 실행: `NO-GO` until contract validation passes
+- 계약·validator·변이 테스트: `PASS`
+- runner·unit test·합성 preflight·verifier 작성: `GO`
+- 실제 Validation 모델 실행: `NO-GO` until synthetic preflight and dependency lock pass
 - Locked Test 모델 성능: `NO-GO`
 - 제품 champion·기본 정책 변경: `NO-GO`
 
@@ -148,6 +153,7 @@ npm ci
 
 ```powershell
 npm run recommendation:vnext:readiness:check
+npm run recommendation:019c:contract:check
 npm run recommendation:evidence:check
 ```
 
@@ -212,12 +218,15 @@ checksum·schema·coverage는 019B verifier가 검사한다. TMDB 전수 재수�
 ## 8. Blind handoff용 시작 프롬프트
 
 ```text
-C:\higher\projects\FEELM-standalone에서 TASK-REC-EV-019C의 실행 계약을 작성해.
+C:\higher\projects\FEELM-standalone에서 TASK-REC-EV-019C의 runner와 합성 preflight를 구현해.
 AGENTS.md와 docs/recommendation/vnext-implementation-readiness.md를 먼저 전부 읽고,
 docs/tasks/recommendation-evidence-backlog.yaml의 해당 task 범위·산출물·검증을 그대로 따라.
-REC-EV-019A의 최종 후보 41,625편과 K10 Test 5,476명을 바꾸지 마. 모델별 입력·출력 schema,
-Validation 최대 30회 탐색 순서, checkpoint·resume, 실패 보존, parameter lock과 검증 명령을 JSON 계약에
-고정하고 계약 validator와 단위 테스트까지만 완료해. 실제 모델 학습·Validation 성능·Locked Test는 실행하지 마.
+docs/recommendation/contracts/rec-ev-019c-validation-artifacts.json을 임의로 바꾸지 말고 구현해.
+runner는 입력 파일을 열기 전에 allowlist를 검사하고 Validation 역할별 두 Parquet만 허용해야 한다.
+REC-EV-019A의 최종 후보 41,625편과 K10 Test 5,476명을 바꾸지 마. 전체 점수 행렬을 저장하지 말고
+candidate block·user batch·checkpoint·resume·실패 보존·B0 fallback·RRF rank-only를 계약대로 구현해.
+작은 합성 fixture로 정상·누락 feature·재개·hash 불일치·금지 경로를 검증하고 verifier까지 완료해.
+실제 MovieLens/TMDB 모델 학습·Validation 성능·Locked Test는 실행하지 마.
 제품 API·DB·현재 popularity-only 정책은 변경하지 말고 protocol JSON에 고정된 값을 사용해.
 commit과 push는 하지 마.
 ```

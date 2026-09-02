@@ -39,6 +39,11 @@ ROLE_RANGES = {
     "VALIDATION": (50, 59),
     "LOCKED_TEST": (60, 99),
 }
+ROLE_FILE_PREFIXES = {
+    "ROUTER_TRAIN": "router-train",
+    "VALIDATION": "validation",
+    "LOCKED_TEST": "locked-test",
+}
 HEX_64 = re.compile(r"^[0-9a-f]{64}$")
 
 
@@ -567,6 +572,15 @@ def build(args: argparse.Namespace) -> dict[str, Any]:
 
     _write_prefixes(output_root / "binary-prefixes.parquet", all_prefixes)
     _write_windows(output_root / "evaluation-windows.parquet", all_windows)
+    for role, file_prefix in ROLE_FILE_PREFIXES.items():
+        _write_prefixes(
+            output_root / f"{file_prefix}-binary-prefixes.parquet",
+            [row for row in all_prefixes if row["role"] == role],
+        )
+        _write_windows(
+            output_root / f"{file_prefix}-evaluation-windows.parquet",
+            [row for row in all_windows if row["role"] == role],
+        )
     windows_frame = pd.DataFrame(all_windows)
     minimum_users = int(contract["gates"]["locked_test_k10_strict_eligible_min"])
     provisional_test_k10 = int(
@@ -655,6 +669,12 @@ def build(args: argparse.Namespace) -> dict[str, Any]:
         "candidate-core-provisional.parquet",
         "binary-prefixes.parquet",
         "evaluation-windows.parquet",
+        "router-train-binary-prefixes.parquet",
+        "router-train-evaluation-windows.parquet",
+        "validation-binary-prefixes.parquet",
+        "validation-evaluation-windows.parquet",
+        "locked-test-binary-prefixes.parquet",
+        "locked-test-evaluation-windows.parquet",
         "cohort-summary.json",
         "protocol-lock.json",
     ):
@@ -684,6 +704,13 @@ def build(args: argparse.Namespace) -> dict[str, Any]:
             "final_identity_candidate_movies": final_gate.get(
                 "final_identity_candidate_movies"
             ),
+            "strict_eligible_users_by_role_and_k": {
+                role: {
+                    k: int(values["strict_eligible_users"])
+                    for k, values in role_summary["eligibility"].items()
+                }
+                for role, role_summary in role_summaries.items()
+            },
             "minimum_users": minimum_users,
             "prefix_nested_k5_in_k10": True,
             "raw_user_ids_stored": False,

@@ -8,6 +8,7 @@ from validate_recommendation_vnext_readiness import (
     read_yaml,
     validate_019a_completion_manifest,
     validate_019b_completion_manifest,
+    validate_019c_contract_readiness,
     validate_artifact_contracts,
     validate_backlog,
     validate_protocol,
@@ -31,6 +32,8 @@ class RecommendationVnextReadinessValidatorTest(unittest.TestCase):
         self.assertEqual("PASS_COHORT_GATES", cohort_manifest["status"])
         manifest = validate_019b_completion_manifest()
         self.assertEqual("PASS_FULL_GATES", manifest["status"])
+        contract = validate_019c_contract_readiness()
+        self.assertEqual("PASS", contract["status"])
 
     def test_rejects_smaller_test_split(self) -> None:
         mutated = copy.deepcopy(self.protocol)
@@ -72,6 +75,15 @@ class RecommendationVnextReadinessValidatorTest(unittest.TestCase):
         )
         task["commands"].pop("verify")
         with self.assertRaisesRegex(RuntimeError, "commands"):
+            validate_backlog(mutated)
+
+    def test_rejects_019c_real_validation_authorization_in_backlog(self) -> None:
+        mutated = copy.deepcopy(self.backlog)
+        task = next(
+            item for item in mutated["tasks"] if item["id"] == "TASK-REC-EV-019C"
+        )
+        task["current_authorization"] = "REAL_VALIDATION"
+        with self.assertRaisesRegex(RuntimeError, "019C"):
             validate_backlog(mutated)
 
 

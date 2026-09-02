@@ -46,8 +46,8 @@
     },
     "rec_ev_019a_contract": {
       "path": "docs/recommendation/contracts/rec-ev-019a-artifacts.json",
-      "bytes": 8105,
-      "sha256": "e04ef66d0173710d874f189d20d468b5b870f7d1dadbbf7338c8052b076b49dc"
+      "bytes": 13238,
+      "sha256": "3b57b92767fd30e3ed20b821019c4a4b6f126950a69841c430d8a4d4b84be015"
     },
     "rec_ev_019b_contract": {
       "path": "docs/recommendation/contracts/rec-ev-019b-artifacts.json",

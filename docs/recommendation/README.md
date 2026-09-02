@@ -56,6 +56,8 @@
 | 019B artifact 계약 | `contracts/rec-ev-019b-artifacts.json` | TMDB feature·embedding·cache·coverage 계약 고정 |
 | 019B 100편 사전검사 | `evidence/REC-EV-019B-tmdb-feature-preflight.md` | 실제 TMDB·cache·identity·384차원 embedding 실행 검증 |
 | 019B 전체 실행 결과 | `evidence/REC-EV-019B-tmdb-feature-build.md` | 69,603편 콘텐츠 특성 집합의 identity·structured·text coverage와 실행 실패·복구 기록 |
+| 019C 실행 계약 | `contracts/rec-ev-019c-validation-artifacts.json` | 모델·후보·trial·fallback·checkpoint·Validation/Test 방화벽 고정 |
+| 019C 계약 준비 결과 | `evidence/REC-EV-019C-contract-readiness.md` | runner·합성 사전검사만 GO, 실제 Validation과 Test는 NO |
 | 제품 서빙 경계 | `serving-contract.md` | 현재 승인 정책과 vNext 후보를 구분 |
 | 연구 보고서 | `personalized-hybrid-design-report.md` | 네 추천 Head의 가설·결과·한계를 연결 |
 

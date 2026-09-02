@@ -71,7 +71,7 @@ ITEM_TRAIN 안으로 제한해 0편으로 고쳤다.
 
 ## 10. 다음에 얻어야 할 데이터
 
-1. REC-EV-019C의 모델 입력·출력·탐색 상한·실패 복구 계약
+1. REC-EV-019C runner·verifier의 합성 preflight 결과와 dependency lock
 2. Validation 기준선·후보의 동일 후보 공간 예측
 3. 결측이 많은 키워드에 덜 의존하는 구조·텍스트 ablation 결과
 4. 서비스 출시 후 노출→상세→관심 없음→평가 이벤트
@@ -103,10 +103,19 @@ ITEM_TRAIN 안으로 제한해 0편으로 고쳤다.
 적용한 Locked Test 사용자는 5,476명이다. TMDB 신원 확인을 적용해도 추가 탈락은 없었다.
 
 **해석:** 최소 5,000명 Gate는 통과했다. 다만 이는 추천 성능이 좋다는 뜻이 아니라 공정한 최종 비교를 할
-정답 집합이 충분하다는 뜻이다. 019C 실행 계약과 Validation 선택이 끝나기 전에는 이 Test의 모델 성능을
-열지 않는다.
+정답 집합이 충분하다는 뜻이다. 019C 실행 계약은 통과했지만 runner·합성 preflight와 Validation 선택이
+끝나기 전에는 이 Test의 모델 성능을 열지 않는다.
 
-## 14. 대용량 실행에서 무엇을 배웠나
+## 14. role 열만 분리하면 Test 누출이 막히는가
+
+아니다. 처음 019A artifact는 Router·Validation·Locked Test 행을 한 Parquet에 넣고 role 열로만 구분했다.
+필터를 올바르게 쓰더라도 Validation 프로세스가 Test 정답이 든 파일을 이미 열 수 있는 구조였다.
+
+**해석:** 통계적인 역할 분리뿐 아니라 물리적인 파일 접근 경계도 필요하다. Router·Validation·Locked Test의
+prefix와 평가 window를 각각 별도 파일로 만들고, 019C runner는 Validation 두 파일만 open 전에 allowlist
+검사하도록 계약했다. 이 변경 뒤에도 최종 후보 41,625편과 K10 Test 5,476명은 그대로다.
+
+## 15. 대용량 실행에서 무엇을 배웠나
 
 TMDB 전체 수집에는 약 2시간 6분이 들었고 112,580개 응답 cache가 생겼다. embedding은 한 차례 93.2%에서
 세션이 끊겨 batch checkpoint가 없으면 거의 전부를 다시 계산해야 했다. checkpoint와 입력 hash signature,

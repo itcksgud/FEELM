@@ -357,3 +357,19 @@
 - 후속 실험: 전수 Train-known TMDB 감독·배우·키워드·overview feature artifact를 만든 뒤
   동일 split에서 `genre → structured TMDB → text embedding → tags` ablation을 수행한다.
 - 관련 model version: `rec-ev-017-tag-alpha-010`, rejected for generic ranking.
+
+### INSIGHT-20260902-021 — 논리적 role 분리만으로 Locked Test 누출을 막을 수 없다
+
+- 상태: `REPRODUCED`
+- 관련 run: `REC-EV-019A / rec-ev-019c-validation-artifacts-v1`
+- 비교 기준선: 역할 혼합 `binary-prefixes.parquet`, `evaluation-windows.parquet`
+- 관찰: 사용자 role과 checksum은 정확했지만 Validation·Locked Test 행이 같은 물리 파일에 있었다.
+  Validation 코드가 role filter를 잘못 쓰거나 늦게 적용하면 Test 정답을 읽을 수 있는 경계였다.
+- 영향 구간: Router Train·Validation·Locked Test의 K0/K5/K10 prefix와 미래 평가 window.
+- 해석: 데이터 누출 방지는 split 수식뿐 아니라 프로세스가 열 수 있는 파일의 allowlist까지 포함해야 한다.
+- 악화된 지표·비용: 역할별 prefix·window 6개를 추가 저장하고 combined 파일과 동등성 검사가 필요해졌다.
+- 반례·한계: 실제 모델이 Test 결과를 사용한 사건은 아니며, 모델 성능 결과도 아니다.
+- 결정: combined 파일은 감사용으로만 남기고 019C Validation runner에는 역할별 Validation 파일 두 개만
+  허용한다. Router·Locked Test·원본 Test·혼합 파일은 open 전에 거부한다.
+- 후속 실험: 합성 preflight에서 금지 경로, 누락 feature fallback, checkpoint resume, hash 불일치를 검사한다.
+- 관련 model version: 없음 — 실행 계약·artifact boundary 개선.

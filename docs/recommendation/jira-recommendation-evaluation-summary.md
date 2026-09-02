@@ -77,8 +77,10 @@
 
 10. **현재 판정**
    cohort·slate preflight와 TMDB feature build는 PASS. cold-item preflight도 재실행해 Validation pilot
-   READY가 됐다. REC-EV-019A도 DONE이다. 기준선·후보 paired power는 prediction artifact 부재로 계속
-   BLOCKED이며, 019C는 실행 계약 작성만 GO다. 현재 제품 추천은 popularity-only를 유지한다.
+   READY가 됐다. REC-EV-019A·019B는 DONE이고 019C 실행 계약과 변이 테스트도 PASS다. Validation과
+   Locked Test가 한 파일에 섞인 물리 경계를 발견해 역할별 파일로 분리했다. 기준선·후보 paired power는
+   prediction artifact 부재로 계속 BLOCKED이며, 다음은 runner·합성 preflight만 GO다. 현재 제품 추천은
+   popularity-only를 유지한다.
 
 ### 핵심 숫자
 
@@ -104,7 +106,8 @@
 - 예상 별점 공개 미승인
 - 현재 popularity-only 유지
 - Locked Test 성능 미실행
-- REC-EV-019A·019B DONE, 다음 작업은 REC-EV-019C 실행 계약
+- REC-EV-019A·019B DONE, REC-EV-019C 계약 PASS
+- 다음 작업은 REC-EV-019C runner·합성 preflight; 실제 Validation은 아직 금지
 
 ### 근거 문서
 
@@ -113,6 +116,7 @@
 - `docs/recommendation/03-content-cold-item-evaluation-design.md`
 - `docs/recommendation/evidence/REC-EV-020P-top2-v4-validation-preflight.md`
 - `docs/recommendation/evidence/REC-EV-021P-content-cold-v2-preflight.md`
+- `docs/recommendation/evidence/REC-EV-019C-contract-readiness.md`
 - `docs/recommendation/data-insights-summary.md`
 
 ---
@@ -247,6 +251,28 @@
 - Locked Test K10 엄격 적격 5,476명 / Gate 5,000명 PASS
 - Locked Test 모델 예측·성능 미사용, 제품 정책 변경 없음
 
+### 8. 모델 비교 실행 계약과 Test 파일 firewall
+
+**제목**
+`[추천] REC-EV-019C Validation 실행 계약·입력 격리`
+
+**완료 조건**
+
+- Validation runner가 역할별 Validation 파일만 읽도록 allowlist 고정
+- 혼합 역할·Router·Locked Test·원본 Test 파일은 open 전에 거부
+- 7개 모델의 trial 수·score 정규화·B0 fallback·RRF rank-only 고정
+- checkpoint·resume·실패 보존·선택 lock schema 고정
+- 실제 Validation·Locked Test·제품 champion은 승인하지 않음
+
+**상태:** CONTRACT PASS / RUNNER_AND_SYNTHETIC_PREFLIGHT_ONLY
+
+**결과**
+
+- 019A에 Router/Validation/Locked Test 역할별 prefix·window 파일 추가
+- 최종 후보 41,625편과 K10 Locked Test 5,476명 불변
+- 계약 validator와 9개 공격 변이 테스트 PASS
+- 실제 Validation 실행은 runner·합성 preflight·dependency lock 전까지 BLOCKED
+
 ## Jira 최종 댓글 템플릿
 
 ```text
@@ -259,18 +285,20 @@
 - REC-EV-019B full feature-superset gates: PASS (69,603 movies)
 - identity/structured/text: 98.80% / 99.31% / 99.80%
 - REC-EV-021P: PASS / READY_FOR_VALIDATION_PILOT
+- REC-EV-019C contract: PASS / RUNNER_AND_SYNTHETIC_PREFLIGHT_ONLY
 - personal champion: NOT SELECTED
 - product policy: popularity-only 유지
 
 [막힘]
 - pre-endpoint locked baseline/challenger prediction artifact 없음
-- REC-EV-019C 실행 계약과 Validation prediction 미생성
+- REC-EV-019C runner·합성 preflight와 Validation prediction 미생성
 
 [다음]
-1) REC-EV-019C 산출물·탐색 상한·checkpoint·실패 복구 계약 작성
-2) Validation baseline vs one challenger prediction lock
-3) 동일한 최종 후보 41,625편에서 paired power 계산
-4) Gate 통과 시에만 Locked Test 1회
+1) REC-EV-019C runner·verifier와 합성 preflight 구현
+2) dependency lock과 합성 preflight PASS 후 실제 Validation 승인 재판단
+3) Validation baseline vs one challenger prediction lock
+4) 동일한 최종 후보 41,625편에서 paired power 계산
+5) Gate 통과 시에만 Locked Test 1회
 
 [근거]
 docs/recommendation/FEELM-recommendation-evaluation-final-report.md

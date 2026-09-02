@@ -28,7 +28,7 @@
 | 신작·희소 영화 실험의 데이터 누출은 막았는가? | **YES** | 역할 충돌 6,964편 → 0편 |
 | TMDB 콘텐츠 특징을 만들 수 있는가? | **YES** | 69,603편의 넓은 feature 집합 Gate 통과 |
 | 비교에 쓸 시간 안전 후보와 사용자 집합이 고정됐는가? | **YES** | 최종 후보 41,625편, K10 Test 5,476명 |
-| TMDB 콘텐츠 모델을 지금 실행해도 되는가? | **아직 NO** | 019C 산출물·탐색·복구 계약을 먼저 고정해야 함 |
+| TMDB 콘텐츠 모델을 지금 실행해도 되는가? | **아직 NO** | 019C 계약은 PASS, runner·합성 preflight·dependency lock이 남음 |
 | 개인화 모델을 서비스에 채택할 수 있는가? | **NO** | 새 Validation 비교와 승격 조건 미통과 |
 
 ## 2. 왜 이전 평가가 부족했나
@@ -240,6 +240,7 @@ K10 5,476명은 입력 10개와 이후 실제 평점 10개가 있고, 이후 평
 | cold 실험의 역할 충돌을 찾아 0으로 고침 | 신작·한국영화 콘텐츠 추천 성능이 검증됨 |
 | TMDB 전체 특징 Gate를 통과하고 결측을 측정함 | TMDB popularity·vote를 취향 정답으로 사용 가능 |
 | 최종 후보 41,625편과 K10 Test 5,476명을 고정함 | 후보 수만으로 추천 성능이 검증됨 |
+| Validation과 Locked Test의 물리 파일을 분리하고 계약 검사를 통과함 | 실제 Validation·Locked Test 성능이 계산됨 |
 | cold-item Validation 파일럿의 입력이 준비됨 | 개인화·콘텐츠 champion이 선택됨 |
 
 ## 9. 최종 결정
@@ -262,12 +263,13 @@ K10 5,476명은 입력 10개와 이후 실제 평점 10개가 있고, 이후 평
 
 ### 다음 실행 순서
 
-1. `REC-EV-019C`의 모델별 입력·출력 schema, 최대 탐색 30회, checkpoint와 실패 복구 계약 작성
-2. Validation에서 기준선과 개인화 후보 하나를 결과 계산 전에 고정
-3. K=10부터 동일한 최종 후보 41,625편에서 ranking·Top-2 Harm/Miss 비교
-4. 차이의 흔들림으로 필요한 Test 사용자 수 계산
-5. 표본과 안전 Gate가 통과할 때만 Locked Test 한 번 실행
-6. 통과 후에도 실제 FEELM 이벤트로 온라인 검증
+1. `REC-EV-019C` 계약을 따르는 runner·verifier와 작은 합성 preflight 구현
+2. dependency 정확 버전·파일 hash와 합성 preflight 결과를 잠근 뒤 실제 Validation 실행 승인 재판단
+3. Validation에서 기준선과 개인화 후보 하나를 결과 계산 전에 고정
+4. K=10부터 동일한 최종 후보 41,625편에서 ranking·Top-2 Harm/Miss 비교
+5. 차이의 흔들림으로 필요한 Test 사용자 수 계산
+6. 표본과 안전 Gate가 통과할 때만 Locked Test 한 번 실행
+7. 통과 후에도 실제 FEELM 이벤트로 온라인 검증
 
 ## 10. 결과 상태표
 
@@ -277,15 +279,16 @@ K10 5,476명은 입력 10개와 이후 실제 평점 10개가 있고, 이후 평
 | REC-EV-020P-B 기준선·후보 paired power | BLOCKED | 비교 예측 artifact 필요 |
 | REC-EV-019A 사용자 분리 cohort | PASS | 최종 후보 41,625편, K10 Test 5,476명 |
 | REC-EV-019B TMDB 전체 특징 | PASS | 전체 coverage Gate 통과 |
-| REC-EV-019C 모델 비교 | PENDING CONTRACT | 실행 계약을 먼저 고정 |
+| REC-EV-019C 실행 계약 | PASS | runner·합성 preflight만 다음 단계로 허용 |
+| REC-EV-019C 실제 모델 비교 | NOT STARTED / BLOCKED | 합성 preflight와 dependency lock 전 실행 금지 |
 | REC-EV-021P 영화 firewall·모델 준비 | PASS | protected collision 0, Validation pilot 가능 |
 | 새 개인화 champion | NOT SELECTED | 현재 인기도 유지 |
 
 ## 11. 재현과 근거
 
-- 실행 계약: `docs/recommendation/contracts/rec-ev-019a-artifacts.json`, `rec-ev-019b-artifacts.json`, `rec-ev-020p-artifacts.json`, `rec-ev-021p-artifacts.json`
+- 실행 계약: `docs/recommendation/contracts/rec-ev-019a-artifacts.json`, `rec-ev-019b-artifacts.json`, `rec-ev-019c-validation-artifacts.json`, `rec-ev-020p-artifacts.json`, `rec-ev-021p-artifacts.json`
 - 프로토콜: `rec-eval-top2-v4.json`, `rec-eval-content-cold-v2.json`
-- 실행 결과: `REC-EV-019A-binary-cohort-build.md`, `REC-EV-019B-tmdb-feature-build.md`, `REC-EV-020P-top2-v4-validation-preflight.md`, `REC-EV-021P-content-cold-v2-preflight.md`
+- 실행 결과: `REC-EV-019A-binary-cohort-build.md`, `REC-EV-019B-tmdb-feature-build.md`, `REC-EV-019C-contract-readiness.md`, `REC-EV-020P-top2-v4-validation-preflight.md`, `REC-EV-021P-content-cold-v2-preflight.md`
 - 한국 영화 감사: `REC-DATA-002-korean-origin-coverage.md`
 - 기존 예상 별점 근거: `docs/recommendation/evidence/manifests/rec-ev-003b.json`
 - 원본 MovieLens SHA-256: `e4a68655d7386b8f95f2f2424b2ff975dfdd15ffd59e0d864a14dca43e99d6ee`

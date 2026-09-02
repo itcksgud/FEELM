@@ -1,0 +1,364 @@
+{
+  "schema_version": 1,
+  "contract_id": "rec-ev-019c-validation-artifacts-v1",
+  "status": "APPROVED_FOR_IMPLEMENTATION_AND_SYNTHETIC_PREFLIGHT_ONLY",
+  "task_id": "TASK-REC-EV-019C",
+  "protocol_version": "rec-eval-vnext-2",
+  "purpose": "Implement the binary-onboarding baseline suite and a streaming full-catalog Validation evaluator without reading Locked Test labels or authorizing a product model.",
+  "current_authorization": {
+    "contract_validation": true,
+    "runner_implementation": true,
+    "synthetic_preflight": true,
+    "real_validation_fit_or_score": false,
+    "locked_test_access": false,
+    "champion_selection": false,
+    "product_policy_change": false,
+    "next_gate": "RUNNER_UNIT_AND_SYNTHETIC_PREFLIGHT_PASS"
+  },
+  "source_contracts": {
+    "protocol": "docs/recommendation/protocols/rec-eval-vnext.json",
+    "cohort_contract": "docs/recommendation/contracts/rec-ev-019a-artifacts.json",
+    "cohort_manifest": "docs/recommendation/evidence/manifests/rec-ev-019a.json",
+    "feature_contract": "docs/recommendation/contracts/rec-ev-019b-artifacts.json",
+    "feature_manifest": "docs/recommendation/evidence/manifests/rec-ev-019b.json"
+  },
+  "allowed_input_artifacts": {
+    "base_train_ratings": "outputs/recommendation-evidence/rec-ev-019a/base-train-ratings.parquet",
+    "candidate_core_provisional": "outputs/recommendation-evidence/rec-ev-019a/candidate-core-provisional.parquet",
+    "validation_prefixes": "outputs/recommendation-evidence/rec-ev-019a/validation-binary-prefixes.parquet",
+    "validation_windows": "outputs/recommendation-evidence/rec-ev-019a/validation-evaluation-windows.parquet",
+    "movie_identity": "outputs/recommendation-evidence/rec-ev-019b/movie-identity.parquet",
+    "structured_features": "outputs/recommendation-evidence/rec-ev-019b/structured-features.parquet",
+    "text_embeddings": "outputs/recommendation-evidence/rec-ev-019b/text-embeddings.parquet"
+  },
+  "forbidden_input_artifacts": [
+    "outputs/recommendation-evidence/global-time-v1/test.parquet",
+    "outputs/recommendation-evidence/rec-ev-019a/binary-prefixes.parquet",
+    "outputs/recommendation-evidence/rec-ev-019a/evaluation-windows.parquet",
+    "outputs/recommendation-evidence/rec-ev-019a/router-train-binary-prefixes.parquet",
+    "outputs/recommendation-evidence/rec-ev-019a/router-train-evaluation-windows.parquet",
+    "outputs/recommendation-evidence/rec-ev-019a/locked-test-binary-prefixes.parquet",
+    "outputs/recommendation-evidence/rec-ev-019a/locked-test-evaluation-windows.parquet"
+  ],
+  "source_preconditions": {
+    "cohort_manifest_status": "PASS_COHORT_GATES",
+    "feature_manifest_status": "PASS_FULL_GATES",
+    "provisional_candidate_movies": 42123,
+    "final_identity_candidate_movies": 41625,
+    "validation_strict_users_by_k": {"0": 1674, "5": 1614, "10": 1479},
+    "locked_test_k10_structural_users_recorded_but_not_read": 5476,
+    "minimum_locked_test_k10_users": 5000,
+    "identity_allowlist": ["ML_TMDB_VERIFIED", "RECOVERED_BY_IMDB"],
+    "candidate_formula": "REC_EV_019A_PROVISIONAL_MOVIE_ID_INTERSECT_REC_EV_019B_IDENTITY_ALLOWLIST",
+    "feature_superset_is_candidate_authority": false,
+    "fail_closed_on_checksum_or_count_drift": true
+  },
+  "role_firewall": {
+    "execution_role": "VALIDATION",
+    "file_allowlist_enforced_before_data_read": true,
+    "reject_unknown_paths": true,
+    "test_path_open_is_fatal": true,
+    "test_metric_keys_in_validation_output_forbidden": true,
+    "raw_user_id_column_forbidden": true,
+    "validation_runner_cli_role_literal": "validation",
+    "validation_runner_must_not_offer_test_flag": true
+  },
+  "binary_input_semantics": {
+    "proxy": "FIRST_OBSERVED_BINARY_PROXY",
+    "k_values": [0, 5, 10],
+    "allowed_labels": [-1, 1],
+    "numeric_rating_conversion_forbidden": true,
+    "unrated_as_negative_forbidden": true,
+    "neutral_as_dislike_forbidden": true,
+    "system_visible_seen_items": "ONLY_MOVIE_IDS_IN_THE_USER_K_PREFIX",
+    "nonselected_preprefix_ratings": "FORBIDDEN_TO_MODEL_AND_NOT_EXCLUDED_AS_SYSTEM_SEEN",
+    "evaluation_window_labels": "METRICS_ONLY_NEVER_MODEL_FEATURES",
+    "k0_personalized_behavior": "B0_FALLBACK_WITH_REASON_K0_NO_PERSONAL_INPUT"
+  },
+  "candidate_and_ranking": {
+    "evaluation": "FULL_CATALOG_STREAMING_SCAN",
+    "same_core_across_models": true,
+    "core_movie_count": 41625,
+    "exclude_system_visible_seen_before_scoring": true,
+    "positive_injection": false,
+    "top_candidates": 500,
+    "top_k": 10,
+    "top2_projection": 2,
+    "tie_break": ["effective_score_desc", "movie_id_asc"],
+    "full_score_matrix_persistence_forbidden": true,
+    "user_batch_size_max": 64,
+    "candidate_block_size_max": 4096,
+    "missing_model_feature_policy": "KEEP_CANDIDATE_AND_USE_B0_PERCENTILE_SCORE",
+    "available_model_score_calibration": "WITHIN_USER_AVAILABLE_CANDIDATE_MIDRANK_PERCENTILE",
+    "fallback_score_calibration": "B0_FULL_CORE_MIDRANK_PERCENTILE",
+    "raw_cross_model_score_sum_forbidden": true,
+    "ranking_score_range": [0.0, 1.0]
+  },
+  "base_training_semantics": {
+    "training_users": "BASE_TRAIN_ONLY",
+    "base_rating_rows": 10254572,
+    "router_validation_test_ratings_forbidden": true,
+    "b0_uses_explicit_rating_values": true,
+    "binary_models_use_only_sequential_relative_binary_labels": true,
+    "base_binary_label_algorithm": "REC_EV_019A_SEQUENTIAL_BINARY_LABELS_WITH_GLOBAL_BASE_MIDRANK_AND_LAMBDA_10",
+    "base_neutral_rows_omitted_from_binary_models": true,
+    "bpr_pairwise_negative": "OBSERVED_DISLIKE_ONLY",
+    "bpr_unrated_negative_sampling_forbidden": true,
+    "target_user_factors": "FOLD_IN_WITH_ITEM_PARAMETERS_FROZEN",
+    "target_user_updates_must_not_change_base_item_parameters": true
+  },
+  "models": {
+    "B0_MOVIELENS_BAYESIAN_RATING": {
+      "family": "NON_PERSONALIZED_BASELINE_AND_FALLBACK",
+      "formula": "(item_rating_sum + prior_strength * global_rating_mean) / (item_rating_count + prior_strength)",
+      "search_space": {"prior_strength": [25, 50, 100]},
+      "trial_count": 3,
+      "stochastic_seeds": [],
+      "fallback": null
+    },
+    "B2_ITEM_KNN": {
+      "family": "SIGNED_BINARY_ITEM_ITEM_CF",
+      "similarity": "COSINE_ON_BASE_USER_SIGNED_BINARY_ROWS_TIMES_COOCCURRENCE_OVER_COOCCURRENCE_PLUS_SHRINK",
+      "target_score": "SUM_PREFIX_LABEL_TIMES_NEIGHBOR_SIMILARITY_DIVIDED_BY_SUM_ABSOLUTE_SIMILARITY",
+      "search_space": {"neighbors": [50, 100, 200], "shrink": [10, 50, 100]},
+      "trial_count": 9,
+      "stochastic_seeds": [],
+      "fallback": "B0_WHEN_NO_NONZERO_NEIGHBOR_SUPPORT"
+    },
+    "B4_BPR_MF": {
+      "family": "OBSERVED_LIKE_OVER_OBSERVED_DISLIKE_PAIRWISE_MF",
+      "pair_semantics": "BASE_AND_TARGET_PAIRS_REQUIRE_ONE_OBSERVED_LIKE_AND_ONE_OBSERVED_DISLIKE",
+      "search_space": {"factors": [64, 128], "regularization": [0.0001, 0.001]},
+      "fixed_parameters": {"epochs": 100, "learning_rate": 0.05, "optimizer": "SGD", "early_stopping": false},
+      "trial_count": 4,
+      "stochastic_seeds": [17, 42, 73, 101, 211],
+      "fallback": "B0_WHEN_TARGET_PREFIX_LACKS_EITHER_BINARY_CLASS_OR_ITEM_FACTOR"
+    },
+    "B6_TMDB_STRUCTURED_CONTENT": {
+      "family": "SIGNED_BINARY_CONTENT_PROFILE",
+      "feature_groups": {
+        "GENRE": ["genre_ids"],
+        "LANGUAGE_DECADE_RUNTIME": ["original_language", "release_year_as_decade", "runtime_minutes_bucket"],
+        "PEOPLE": ["director_ids", "top5_cast_ids"],
+        "KEYWORDS": ["keyword_ids"]
+      },
+      "feature_scaling": "L2_NORMALIZE_EACH_ACTIVE_GROUP_THEN_EQUAL_WEIGHT_CONCATENATE_AND_L2_NORMALIZE",
+      "target_profile": "L2_NORMALIZED_MEAN_LIKE_VECTOR_MINUS_MEAN_DISLIKE_VECTOR",
+      "score": "COSINE_TARGET_PROFILE_ITEM_VECTOR",
+      "ordered_variants": ["FULL", "DROP_KEYWORDS", "DROP_PEOPLE", "CORE_ONLY_GENRE_LANGUAGE_DECADE_RUNTIME"],
+      "trial_count": 4,
+      "stochastic_seeds": [],
+      "fallback": "B0_FOR_MISSING_ITEM_FEATURE_OR_UNDEFINED_TARGET_PROFILE"
+    },
+    "B7_TMDB_TEXT_CONTENT": {
+      "family": "SIGNED_BINARY_E5_CONTENT_PROFILE",
+      "model_id": "intfloat/multilingual-e5-small",
+      "model_revision": "614241f622f53c4eeff9890bdc4f31cfecc418b3",
+      "embedding_dimension": 384,
+      "target_profile": "L2_NORMALIZED_MEAN_LIKE_EMBEDDING_MINUS_MEAN_DISLIKE_EMBEDDING",
+      "score": "COSINE_TARGET_PROFILE_ITEM_EMBEDDING",
+      "search_space": {},
+      "trial_count": 1,
+      "stochastic_seeds": [],
+      "fallback": "B0_FOR_MISSING_TEXT_FEATURE_OR_UNDEFINED_TARGET_PROFILE"
+    },
+    "B8_LIGHTFM": {
+      "family": "BINARY_PLUS_TMDB_ITEM_FEATURE_HYBRID_MF",
+      "training_pairs": "OBSERVED_LIKE_AND_OBSERVED_DISLIKE_ONLY_WITH_EXPLICIT_SAMPLE_WEIGHT_SIGN",
+      "target_user": "FOLD_IN_USER_VECTOR_WITH_BASE_ITEM_AND_ITEM_FEATURE_PARAMETERS_FROZEN",
+      "search_space": {"loss": ["bpr", "warp"], "dimension": [64, 128]},
+      "fixed_parameters": {"epochs": 30, "learning_rate": 0.05, "item_alpha": 0.000001, "user_alpha": 0.000001},
+      "trial_count": 4,
+      "stochastic_seeds": [17, 42, 73, 101, 211],
+      "dependency_rule": "AN_EXACT_VERSION_AND_HASHED_LOCK_MUST_EXIST_BEFORE_REAL_VALIDATION_RUN",
+      "fallback": "B0_WHEN_TARGET_FOLD_IN_OR_ITEM_REPRESENTATION_IS_UNAVAILABLE"
+    },
+    "B9_RRF": {
+      "family": "RANK_FUSION",
+      "formula": "SUM_HEAD_1_OVER_C_PLUS_HEAD_RANK",
+      "head_rank_source": "SELECTED_SINGLE_HEAD_TRIAL_FOR_THE_SAME_K",
+      "head_sets": {
+        "CF": ["B2_ITEM_KNN", "B4_BPR_MF"],
+        "CONTENT": ["B6_TMDB_STRUCTURED_CONTENT", "B7_TMDB_TEXT_CONTENT"],
+        "ALL_NONBASE": ["B2_ITEM_KNN", "B4_BPR_MF", "B6_TMDB_STRUCTURED_CONTENT", "B7_TMDB_TEXT_CONTENT", "B8_LIGHTFM"]
+      },
+      "search_space": {"c": [10, 30, 60], "head_set": ["CF", "CONTENT", "ALL_NONBASE"]},
+      "trial_count": 9,
+      "stochastic_seeds": [],
+      "raw_score_input_forbidden": true,
+      "fallback": "B0_ONLY_IF_EVERY_COMPONENT_HEAD_FALLS_BACK"
+    }
+  },
+  "trial_execution": {
+    "maximum_trials_per_model": 30,
+    "grid_expansion_order": "JSON_SEARCH_SPACE_KEY_ORDER_THEN_VALUE_ORDER",
+    "one_trial_means": "ONE_HYPERPARAMETER_COMBINATION_EVALUATED_FOR_ALL_K; STOCHASTIC_SEEDS_ARE_REPEATS_INSIDE_THE_TRIAL",
+    "model_order": [
+      "B0_MOVIELENS_BAYESIAN_RATING",
+      "B2_ITEM_KNN",
+      "B4_BPR_MF",
+      "B6_TMDB_STRUCTURED_CONTENT",
+      "B7_TMDB_TEXT_CONTENT",
+      "B8_LIGHTFM",
+      "B9_RRF"
+    ],
+    "rrf_runs_after_single_head_selection": true,
+    "atomic_trial_commit": "WRITE_TEMP_FSYNC_RENAME_THEN_UPDATE_REGISTRY",
+    "checkpoint_after_each_trial_seed_and_user_batch": true,
+    "resume_key": "contract_sha256_plus_all_input_sha256_plus_model_id_plus_trial_id_plus_seed",
+    "resume_hash_mismatch": "REFUSE_REUSE_AND_PRESERVE_OLD_ARTIFACT",
+    "failed_trial_policy": "RECORD_ERROR_CLASS_AND_MESSAGE_WITHOUT_SECRET_THEN_BLOCK_SUITE_COMPLETION",
+    "skip_required_model_forbidden": true
+  },
+  "validation_selection": {
+    "role": "VALIDATION_ONLY",
+    "select_one_trial_per_model_per_k": true,
+    "primary_metric": "USER_MACRO_NDCG_AT_10",
+    "deterministic_tie_break": [
+      "higher_user_macro_ndcg_at_10",
+      "higher_candidate_recall_at_500",
+      "lower_fallback_user_rate",
+      "lexicographically_smaller_trial_id"
+    ],
+    "seed_aggregation": "MEAN_USER_METRIC_ACROSS_SEEDS_WITH_SEED_VARIANCE_RECORDED_SEPARATELY",
+    "select_single_best_per_k_after_rrf": true,
+    "k0_rule": "B0_ONLY; PERSONALIZED_HEAD_EQUIVALENCE_TO_B0_IS_DIAGNOSTIC_NOT_A_WIN",
+    "selection_lock_required_before_any_locked_test_path_can_be_opened": true,
+    "test_retuning_forbidden": true,
+    "null_selection_on_incomplete_required_suite": true
+  },
+  "metrics": {
+    "ranking_primary": "USER_MACRO_NDCG_AT_10",
+    "ranking_secondary": ["RECALL_AT_10", "MRR_AT_10", "POSITIVE_MEAN_RANK_PERCENTILE", "CANDIDATE_RECALL_AT_500"],
+    "top2_diagnostics": ["HARM_AT_2", "MISS_AT_2", "BOTH_GOOD_AT_2", "SAFE_HIT_AT_2"],
+    "coverage": ["USER_COVERAGE", "ITEM_FEATURE_COVERAGE", "FALLBACK_USER_RATE", "FALLBACK_ITEM_EXPOSURE_RATE"],
+    "user_distribution": ["DELTA_NDCG_P10", "P25", "P50", "P75", "P90", "BENEFIT_RATE", "TIE_RATE", "HARM_RATE"],
+    "resource": ["WALL_CLOCK_SECONDS", "PEAK_RSS_BYTES", "ARTIFACT_BYTES", "USERS_PER_SECOND"],
+    "relevance_gain": "MIDRANK_UTILITY_FOR_POSITIVES_ONLY",
+    "ndcg_discount": "LOG2_RANK_PLUS_1",
+    "candidate_recall_definition": "AT_LEAST_ONE_EVALUATION_POSITIVE_IN_TOP_500",
+    "top2_is_diagnostic_not_v4_adoption_gate": true
+  },
+  "output_root": "outputs/recommendation-evidence/rec-ev-019c",
+  "future_artifacts": [
+    {
+      "path": "outputs/recommendation-evidence/rec-ev-019c/candidate-core-final.parquet",
+      "format": "parquet",
+      "columns": [
+        ["movie_id", "int32", false], ["tmdb_id", "int32", false], ["identity_status", "string", false],
+        ["b0_rating_count", "int64", false], ["b0_rating_mean", "float32", true], ["b0_score", "float32", false],
+        ["structured_available", "bool", false], ["text_available", "bool", false]
+      ],
+      "sort_order": ["movie_id"]
+    },
+    {
+      "path": "outputs/recommendation-evidence/rec-ev-019c/trial-registry.json",
+      "format": "json",
+      "required_keys": ["contract_sha256", "input_checksums", "model_order", "trials", "resume_signature", "locked_test_opened"]
+    },
+    {
+      "path": "outputs/recommendation-evidence/rec-ev-019c/trial-user-metrics.parquet",
+      "format": "parquet",
+      "columns": [
+        ["user_key", "string[64]", false], ["k", "int8", false], ["model_id", "string", false],
+        ["trial_id", "string", false], ["seed", "int16", true], ["ndcg_at_10", "float32", false],
+        ["recall_at_10", "float32", false], ["mrr_at_10", "float32", false],
+        ["positive_mean_rank_percentile", "float32", true], ["candidate_recall_at_500", "float32", false],
+        ["fallback_user", "bool", false]
+      ],
+      "sort_order": ["model_id", "trial_id", "seed", "k", "user_key"]
+    },
+    {
+      "path": "outputs/recommendation-evidence/rec-ev-019c/validation-predictions.parquet",
+      "format": "parquet",
+      "row_unit": "selected-trial Top-500 item",
+      "columns": [
+        ["user_key", "string[64]", false], ["k", "int8", false], ["model_id", "string", false],
+        ["trial_id", "string", false], ["rank", "int16", false], ["movie_id", "int32", false],
+        ["effective_score", "float32", false], ["fallback_used", "bool", false], ["fallback_reason", "string", true]
+      ],
+      "sort_order": ["model_id", "k", "user_key", "rank"]
+    },
+    {
+      "path": "outputs/recommendation-evidence/rec-ev-019c/validation-user-metrics.parquet",
+      "format": "parquet",
+      "columns": [
+        ["user_key", "string[64]", false], ["k", "int8", false], ["model_id", "string", false],
+        ["ndcg_at_10", "float32", false], ["recall_at_10", "float32", false], ["mrr_at_10", "float32", false],
+        ["positive_mean_rank_percentile", "float32", true], ["candidate_recall_at_500", "float32", false],
+        ["harm_at_2", "bool", false], ["miss_at_2", "bool", true], ["both_good_at_2", "bool", true],
+        ["safe_hit_at_2", "bool", true], ["fallback_user", "bool", false]
+      ],
+      "sort_order": ["model_id", "k", "user_key"]
+    },
+    {
+      "path": "outputs/recommendation-evidence/rec-ev-019c/validation-selection.json",
+      "format": "json",
+      "required_keys": ["per_model_per_k", "single_best_per_k", "all_trial_metrics", "fallback_rates", "seed_variance", "champion"]
+    },
+    {
+      "path": "outputs/recommendation-evidence/rec-ev-019c/validation-selection-lock.json",
+      "format": "json",
+      "required_keys": ["contract_sha256", "input_checksums", "selected_trial_ids", "candidate_count", "validation_user_counts", "created_before_test_read", "locked_test_opened"]
+    },
+    {
+      "path": "outputs/recommendation-evidence/rec-ev-019c/resource-summary.json",
+      "format": "json",
+      "required_keys": ["per_trial", "peak_rss_bytes", "wall_clock_seconds", "artifact_bytes", "resume_events"]
+    },
+    {
+      "path": "docs/recommendation/evidence/manifests/rec-ev-019c-validation.json",
+      "format": "json",
+      "required_keys": ["schema_version", "evidence_id", "status", "protocol_version", "contract_sha256", "source_checksums", "artifacts", "validation", "adoption"]
+    }
+  ],
+  "implementation": {
+    "contract_validator": "scripts/validate_rec_ev_019c_contract.py",
+    "contract_unit_test": "scripts/tests/test_validate_rec_ev_019c_contract.py",
+    "runner_to_create": "scripts/run_rec_ev_019c_validation.py",
+    "runner_unit_test_to_create": "scripts/tests/test_run_rec_ev_019c_validation.py",
+    "result_verifier_to_create": "scripts/verify_rec_ev_019c_validation.py",
+    "contract_check_command": "py -3 scripts/validate_rec_ev_019c_contract.py",
+    "contract_unit_command": "py -3 -m unittest scripts/tests/test_validate_rec_ev_019c_contract.py",
+    "future_synthetic_preflight_command": "py -3 scripts/run_rec_ev_019c_validation.py --mode synthetic-preflight --role validation",
+    "future_validation_command": "py -3 scripts/run_rec_ev_019c_validation.py --mode validation --role validation --resume",
+    "future_verify_command": "py -3 scripts/verify_rec_ev_019c_validation.py --manifest docs/recommendation/evidence/manifests/rec-ev-019c-validation.json"
+  },
+  "implementation_acceptance": [
+    "runner rejects every path outside allowed_input_artifacts before opening files",
+    "runner CLI has no Locked Test execution option",
+    "synthetic fixture proves identical candidates, seen exclusion, no positive injection, deterministic tie break, and B0 fallback",
+    "every grid expands to the declared trial count and no model exceeds 30 trials",
+    "checkpoint resume produces byte-equivalent selected outputs for the same signatures",
+    "dependency versions and hashes are pinned before real Validation",
+    "real Validation remains unauthorized until the readiness validator records synthetic preflight PASS"
+  ],
+  "failure_behavior": {
+    "source_or_candidate_drift": "BLOCK_BEFORE_MODEL_FIT",
+    "role_firewall_violation": "FATAL_BLOCK_AND_RECORD_PATH_CLASS_ONLY",
+    "required_model_dependency_missing": "BLOCK_FULL_VALIDATION_SUITE",
+    "trial_failure": "PRESERVE_PARTIAL_AND_BLOCK_SELECTION",
+    "validation_user_count_drift": "BLOCK_WITH_COUNTS",
+    "locked_test_access_attempt": "FATAL_BLOCK",
+    "select_champion": false,
+    "change_product_policy": false
+  },
+  "adoption_boundary": {
+    "validation_output_champion": null,
+    "binary_expected_rating": null,
+    "current_product_policy": "APPROVED_C2A_INTERNAL_POPULARITY_ONLY",
+    "validation_single_best_is_only_a_locked_test_candidate": true,
+    "c2_vnext_approval_required_after_locked_test": true
+  },
+  "forbidden_changes": [
+    "product API",
+    "database schema",
+    "APPROVED_C2A_INTERNAL_POPULARITY_ONLY",
+    "binary thresholds",
+    "candidate count 41625 without a new protocol version",
+    "positive injection",
+    "raw score weighted sum",
+    "Locked Test access",
+    "personalization champion"
+  ]
+}
