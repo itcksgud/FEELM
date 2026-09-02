@@ -16,7 +16,7 @@
     "unknown_path_rejected_before_open": true,
     "validation_mode_blocked": true
   },
-  "contract_sha256": "56e219674ad85ad46d095859c1ade46389d17da648443266b07e8bc66664cfd8",
+  "contract_sha256": "89b1b8939c7730f62af9035af9fab60e6489f5f87355ed8b3082d83dce56549a",
   "current_product_policy": "APPROVED_C2A_INTERNAL_POPULARITY_ONLY",
   "evidence_id": "REC-EV-019C-SYNTHETIC-PREFLIGHT",
   "execution_role": "VALIDATION",

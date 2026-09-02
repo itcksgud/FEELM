@@ -59,11 +59,11 @@ class RecEv019CResourceDryRunVerifierTest(unittest.TestCase):
         finally:
             temporary.cleanup()
 
-    def test_rejects_missing_blocker_even_with_updated_checksum(self) -> None:
+    def test_rejects_invented_blocker_even_with_updated_checksum(self) -> None:
         temporary, isolated, result_path, manifest_path = self._isolated()
         try:
             result = json.loads(result_path.read_text(encoding="utf-8"))
-            result["implementation_blockers"].pop()
+            result["implementation_blockers"].append({"id": "INVENTED", "reason": "tamper"})
             self._rewrite_result_and_manifest(result_path, manifest_path, result)
             with self.assertRaisesRegex(RuntimeError, "blocker set"):
                 verify_manifest(manifest_path, root=isolated)
@@ -88,6 +88,17 @@ class RecEv019CResourceDryRunVerifierTest(unittest.TestCase):
             result["estimated_work"]["full_catalog_user_item_scores"] -= 1
             self._rewrite_result_and_manifest(result_path, manifest_path, result)
             with self.assertRaisesRegex(RuntimeError, "workload estimate"):
+                verify_manifest(manifest_path, root=isolated)
+        finally:
+            temporary.cleanup()
+
+    def test_rejects_failed_budget_check_even_with_updated_checksum(self) -> None:
+        temporary, isolated, result_path, manifest_path = self._isolated()
+        try:
+            result = json.loads(result_path.read_text(encoding="utf-8"))
+            result["budget_checks"]["full_catalog_score_budget"] = False
+            self._rewrite_result_and_manifest(result_path, manifest_path, result)
+            with self.assertRaisesRegex(RuntimeError, "budget check failed"):
                 verify_manifest(manifest_path, root=isolated)
         finally:
             temporary.cleanup()

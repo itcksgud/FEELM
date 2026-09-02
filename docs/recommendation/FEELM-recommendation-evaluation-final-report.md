@@ -28,7 +28,7 @@
 | 신작·희소 영화 실험의 데이터 누출은 막았는가? | **YES** | 역할 충돌 6,964편 → 0편 |
 | TMDB 콘텐츠 특징을 만들 수 있는가? | **YES** | 69,603편의 넓은 feature 집합 Gate 통과 |
 | 비교에 쓸 시간 안전 후보와 사용자 집합이 고정됐는가? | **YES** | 최종 후보 41,625편, K10 Test 5,476명 |
-| TMDB 콘텐츠 모델을 지금 실행해도 되는가? | **아직 NO** | 계산량 사전점검에서 자원 계약 차단점 4개 발견 |
+| TMDB 콘텐츠 모델을 지금 실행해도 되는가? | **아직 NO** | 자원 계약은 PASS, bounded runner 구현·검토가 남음 |
 | 개인화 모델을 서비스에 채택할 수 있는가? | **NO** | 새 Validation 비교와 승격 조건 미통과 |
 
 ## 2. 왜 이전 평가가 부족했나
@@ -243,10 +243,11 @@ fold-in을 통과시켰다. 이는 실행 가능성 검사이지 추천 성능 �
 실행하면 약 75.5억 번의 사용자×영화 점수 계산과, 최악의 경우 약 61.5억 번의 LightFM 학습 update가
 필요했다. RRF는 기존 Top-500 순위만 합치므로 이 수치에서 제외했다.
 
-원인은 모든 B4·B8 설정을 seed 5개로 반복하고, 매번 전체 41,625편을 scan하는 구조다. B4는 epoch마다
+원인은 모든 B4·B8 설정을 seed 5개로 반복하고, 매번 전체 41,625편을 scan하는 구조였다. B4는 epoch마다
 관측 LIKE/DISLIKE pair를 몇 개 만들지도 정해져 있지 않았다. 이는 추천 성능의 문제가 아니라 실행 계약의
-문제다. 실제 학습은 계속 막고, 한 고정 seed·고정 tuning panel에서 설정을 고른 뒤 선택된 설정만 seed 5개와
-전체 Validation에서 확인하는 2단계 구조로 바꾼다. 상세 근거는
+문제다. grid는 고정 256명/K·seed 17에서 비교하고, 선택된 설정만 5개 seed로 패널 안정성을 확인한 뒤
+seed 17로 전체 Validation을 계산하게 바꿨다. B4는 사용자당 epoch 최대 16쌍으로 고정했다. 재점검 결과는
+약 15.8억 score, B8 최대 12.3억 update, B4 최대 3.93억 pair update로 모든 예산을 통과했다. 상세 근거는
 [REC-EV-019C 계산량 사전점검](./evidence/REC-EV-019C-resource-dry-run.md)에 있다.
 
 ## 8. 지금 말할 수 있는 것과 없는 것
@@ -283,15 +284,13 @@ fold-in을 통과시켰다. 이는 실행 가능성 검사이지 추천 성능 �
 
 ### 다음 실행 순서
 
-1. `REC-EV-019C` B4 pair·seed 반복·score/update 예산 계약 수정
-2. 변경 계약으로 합성·Linux dependency·metadata dry-run 재검증
-3. 실제 입력 adapter·모델·block scorer·checkpoint·verifier 구현
-4. 코드 검토 뒤 Validation 실행 승인 재판단
-5. Validation에서 기준선과 개인화 후보 하나를 결과 계산 전에 고정
-6. K=10부터 동일한 최종 후보 41,625편에서 ranking·Top-2 Harm/Miss 비교
-7. 차이의 흔들림으로 필요한 Test 사용자 수 계산
-8. 표본과 안전 Gate가 통과할 때만 Locked Test 한 번 실행
-9. 통과 후에도 실제 FEELM 이벤트로 온라인 검증
+1. `REC-EV-019C` bounded 실제 입력 adapter·모델·block scorer·checkpoint·verifier 구현
+2. 합성 검사와 코드 검토 뒤 Validation 실행 승인 재판단
+3. Validation에서 기준선과 개인화 후보 하나를 결과 계산 전에 고정
+4. K=10부터 동일한 최종 후보 41,625편에서 ranking·Top-2 Harm/Miss 비교
+5. 차이의 흔들림으로 필요한 Test 사용자 수 계산
+6. 표본과 안전 Gate가 통과할 때만 Locked Test 한 번 실행
+7. 통과 후에도 실제 FEELM 이벤트로 온라인 검증
 
 ## 10. 결과 상태표
 
@@ -303,8 +302,8 @@ fold-in을 통과시켰다. 이는 실행 가능성 검사이지 추천 성능 �
 | REC-EV-019B TMDB 전체 특징 | PASS | 전체 coverage Gate 통과 |
 | REC-EV-019C 실행 계약 | PASS | 7개 모델·입력 방화벽·복구 경계 고정 |
 | REC-EV-019C 합성 runner·Linux dependency | PASS | 15개+9개 검사; B8 signed logistic으로 교정 |
-| REC-EV-019C 자원 사전점검 | PASS / MODEL RUN BLOCKED | 75.5억 score·B8 최대 61.5억 update, 계약 수정 필요 |
-| REC-EV-019C 실제 모델 비교 | NOT STARTED / BLOCKED | 자원 계약 수정·runner 검토 전 실행 금지 |
+| REC-EV-019C 자원 사전점검 | PASS | 15.8억 score·B8 12.3억·B4 3.93억 상한, 7 checks PASS |
+| REC-EV-019C 실제 모델 비교 | NOT STARTED / BLOCKED | bounded runner 구현·검토 전 실행 금지 |
 | REC-EV-021P 영화 firewall·모델 준비 | PASS | protected collision 0, Validation pilot 가능 |
 | 새 개인화 champion | NOT SELECTED | 현재 인기도 유지 |
 

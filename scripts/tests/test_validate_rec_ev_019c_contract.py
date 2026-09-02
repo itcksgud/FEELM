@@ -82,6 +82,24 @@ class ValidateRecEv019CContractTest(unittest.TestCase):
         with self.assertRaisesRegex(RuntimeError, "champion"):
             validate_contract(mutated)
 
+    def test_rejects_unbounded_b4_pairs(self) -> None:
+        mutated = copy.deepcopy(self.contract)
+        mutated["resource_execution_plan"]["b4_pair_sampling"]["maximum_pairs_per_user_per_epoch"] = 1000
+        with self.assertRaisesRegex(RuntimeError, "pair cap"):
+            validate_contract(mutated)
+
+    def test_rejects_lucky_seed_selection(self) -> None:
+        mutated = copy.deepcopy(self.contract)
+        mutated["resource_execution_plan"]["stochastic_selection"]["seed_is_never_selected"] = False
+        with self.assertRaisesRegex(RuntimeError, "lucky seed"):
+            validate_contract(mutated)
+
+    def test_rejects_score_budget_drift(self) -> None:
+        mutated = copy.deepcopy(self.contract)
+        mutated["resource_execution_plan"]["budgets"]["maximum_full_catalog_user_item_scores"] = 10_000_000_000
+        with self.assertRaisesRegex(RuntimeError, "score budget"):
+            validate_contract(mutated)
+
 
 if __name__ == "__main__":
     unittest.main()

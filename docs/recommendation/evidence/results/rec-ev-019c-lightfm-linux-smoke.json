@@ -11,7 +11,7 @@
     "signed_logistic_fit": true,
     "unrated_negative_sampling_absent": true
   },
-  "contract_sha256": "56e219674ad85ad46d095859c1ade46389d17da648443266b07e8bc66664cfd8",
+  "contract_sha256": "89b1b8939c7730f62af9035af9fab60e6489f5f87355ed8b3082d83dce56549a",
   "distribution": "lightfm-next",
   "distribution_version": "1.19.0",
   "evidence_id": "REC-EV-019C-LIGHTFM-LINUX-SMOKE",

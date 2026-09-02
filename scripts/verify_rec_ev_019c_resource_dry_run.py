@@ -24,12 +24,16 @@ EXPECTED_INPUT_ROWS = {
     "structured_features": 68_674,
     "text_embeddings": 68_674,
 }
-EXPECTED_BLOCKERS = [
-    "B4_PAIR_SAMPLING_UNDEFINED",
-    "STOCHASTIC_GRID_REPEATS_ALL_FIVE_SEEDS",
-    "B8_WORST_CASE_UPDATE_BUDGET_UNBOUNDED",
-    "FULL_CATALOG_SCORE_BUDGET_UNAPPROVED",
-]
+EXPECTED_BLOCKERS: list[str] = []
+EXPECTED_BUDGET_CHECKS = {
+    "b4_pair_sampling_exact_and_bounded",
+    "stochastic_grid_uses_one_selection_seed",
+    "full_catalog_score_budget",
+    "b8_update_budget",
+    "b4_pair_update_budget",
+    "rrf_rank_contribution_budget",
+    "wall_clock_limits_ordered",
+}
 
 
 def read_json(path: Path) -> dict[str, Any]:
@@ -73,38 +77,76 @@ def expected_work(contract: Mapping[str, Any]) -> dict[str, Any]:
     }
     all_contexts = sum(validation_counts.values())
     personalized_contexts = validation_counts[5] + validation_counts[10]
-    repeats = {
-        model_id: _grid_trial_count(model) * max(1, len(model.get("stochastic_seeds", [])))
-        for model_id, model in contract["models"].items()
+    grid_runs = {model_id: _grid_trial_count(model) for model_id, model in contract["models"].items()}
+    resource = contract["resource_execution_plan"]
+    panel_counts = {int(k): int(value) for k, value in resource["tuning_panel"]["users_per_k"].items()}
+    panel_all = sum(panel_counts.values())
+    panel_personalized = panel_counts[5] + panel_counts[10]
+    extra_seeds = len(resource["stochastic_selection"]["stability_seeds"]) - 1
+    scan_contexts = {
+        "B0_MOVIELENS_BAYESIAN_RATING": grid_runs["B0_MOVIELENS_BAYESIAN_RATING"] * panel_all
+        + all_contexts,
+        "B2_ITEM_KNN": grid_runs["B2_ITEM_KNN"] * panel_personalized + personalized_contexts,
+        "B4_BPR_MF": grid_runs["B4_BPR_MF"] * panel_personalized
+        + extra_seeds * panel_personalized
+        + personalized_contexts,
+        "B6_TMDB_STRUCTURED_CONTENT": grid_runs["B6_TMDB_STRUCTURED_CONTENT"] * panel_personalized
+        + personalized_contexts,
+        "B7_TMDB_TEXT_CONTENT": grid_runs["B7_TMDB_TEXT_CONTENT"] * panel_personalized
+        + personalized_contexts,
+        "B8_LIGHTFM": grid_runs["B8_LIGHTFM"] * panel_personalized
+        + extra_seeds * panel_personalized
+        + personalized_contexts,
+        "B9_RRF": 0,
     }
     score_counts = {
-        model_id: (
-            0
-            if model_id == "B9_RRF"
-            else repeat_count
-            * (all_contexts if model_id == "B0_MOVIELENS_BAYESIAN_RATING" else personalized_contexts)
-            * candidate_count
-        )
-        for model_id, repeat_count in repeats.items()
+        model_id: context_count * candidate_count for model_id, context_count in scan_contexts.items()
+    }
+    max_selected = int(resource["stochastic_selection"]["maximum_distinct_selected_trials_across_k"])
+    fit_bounds = {
+        model_id: grid_runs[model_id] + extra_seeds * max_selected
+        for model_id in ("B4_BPR_MF", "B8_LIGHTFM")
     }
     b8 = contract["models"]["B8_LIGHTFM"]
+    b4 = contract["models"]["B4_BPR_MF"]
+    rrf = contract["models"]["B9_RRF"]
+    rrf_head_counts = {name: len(heads) for name, heads in rrf["head_sets"].items()}
+    rrf_grid_head_sum = len(rrf["search_space"]["c"]) * sum(rrf_head_counts.values())
     return {
         "candidate_movies": candidate_count,
         "validation_contexts_all_k": all_contexts,
         "validation_contexts_personalized_k": personalized_contexts,
-        "trial_seed_repeats": repeats,
+        "tuning_panel_contexts_all_k": panel_all,
+        "tuning_panel_contexts_personalized_k": panel_personalized,
+        "grid_trial_runs": grid_runs,
+        "stability_extra_seed_count": extra_seeds,
+        "stochastic_model_fit_upper_bounds": fit_bounds,
+        "full_catalog_context_scans_by_model": scan_contexts,
         "full_catalog_user_item_scores_by_model": score_counts,
         "full_catalog_user_item_scores": sum(score_counts.values()),
         "b8_base_update_upper_bound": (
-            repeats["B8_LIGHTFM"]
+            fit_bounds["B8_LIGHTFM"]
             * int(b8["fixed_parameters"]["epochs"])
             * int(contract["base_training_semantics"]["base_rating_rows"])
         ),
-        "trial_user_metric_rows": (
-            repeats["B0_MOVIELENS_BAYESIAN_RATING"] * all_contexts
-            + sum(value for key, value in repeats.items() if key != "B0_MOVIELENS_BAYESIAN_RATING")
-            * personalized_contexts
+        "b4_pair_update_upper_bound": (
+            fit_bounds["B4_BPR_MF"]
+            * int(b4["fixed_parameters"]["epochs"])
+            * int(contract["base_training_semantics"]["base_train_users"])
+            * int(resource["b4_pair_sampling"]["maximum_pairs_per_user_per_epoch"])
         ),
+        "rrf_rank_contributions_upper_bound": (
+            rrf_grid_head_sum * panel_personalized
+            + max(rrf_head_counts.values()) * personalized_contexts
+        )
+        * int(contract["candidate_and_ranking"]["top_candidates"]),
+        "trial_user_metric_rows": (
+            grid_runs["B0_MOVIELENS_BAYESIAN_RATING"] * panel_all
+            + sum(value for key, value in grid_runs.items() if key != "B0_MOVIELENS_BAYESIAN_RATING")
+            * panel_personalized
+            + 2 * extra_seeds * panel_personalized
+        ),
+        "validation_user_metric_rows": validation_counts[0] + len(contract["models"]) * personalized_contexts,
         "selected_prediction_rows": (
             validation_counts[0] + len(contract["models"]) * personalized_contexts
         )
@@ -127,7 +169,7 @@ def verify_manifest(manifest_path: Path, *, root: Path = ROOT) -> dict[str, Any]
     require(manifest.get("schema_version") == 1, "unexpected resource dry-run manifest schema")
     require(manifest.get("evidence_id") == "REC-EV-019C-RESOURCE-DRY-RUN", "unexpected evidence id")
     require(
-        manifest.get("status") == "PASS_METADATA_AUDIT_IMPLEMENTATION_BLOCKED",
+        manifest.get("status") == "PASS_RESOURCE_CONTRACT_RUNNER_IMPLEMENTATION_READY",
         "resource dry-run status changed",
     )
     require(manifest.get("contract_sha256") == contract_sha, "resource dry-run contract hash is stale")
@@ -157,15 +199,17 @@ def verify_manifest(manifest_path: Path, *, root: Path = ROOT) -> dict[str, Any]
         require(int(metadata.get("file_bytes", 0)) > 0, f"resource file size missing: {name}")
 
     require(result.get("estimated_work") == expected_work(contract), "resource workload estimate differs from contract")
+    budget_checks = result.get("budget_checks", {})
+    require(set(budget_checks) == EXPECTED_BUDGET_CHECKS, "resource budget check inventory changed")
+    require(all(budget_checks.values()), "resource budget check failed")
     blockers = result.get("implementation_blockers", [])
     require([item.get("id") for item in blockers] == EXPECTED_BLOCKERS, "resource blocker set changed")
-    require(all(item.get("reason") for item in blockers), "resource blocker reason is missing")
     require(result.get("real_validation_ready") is False, "resource dry-run authorized real Validation")
     for key in ("real_validation_executed", "locked_test_opened", "product_policy_changed"):
         require(result.get(key) is False, f"resource dry-run crossed boundary: {key}")
     require(result.get("product_champion") is None, "resource dry-run selected a champion")
     require(
-        result.get("next_gate") == "AMEND_B4_PAIR_AND_STOCHASTIC_RESOURCE_BUDGET",
+        result.get("next_gate") == "IMPLEMENT_BOUNDED_REAL_VALIDATION_RUNNER",
         "resource next Gate changed",
     )
     serialized = json.dumps(result, ensure_ascii=False).lower()
@@ -189,6 +233,7 @@ def verify_manifest(manifest_path: Path, *, root: Path = ROOT) -> dict[str, Any]
         "candidate_movies": result["estimated_work"]["candidate_movies"],
         "full_catalog_user_item_scores": result["estimated_work"]["full_catalog_user_item_scores"],
         "b8_base_update_upper_bound": result["estimated_work"]["b8_base_update_upper_bound"],
+        "b4_pair_update_upper_bound": result["estimated_work"]["b4_pair_update_upper_bound"],
         "blockers": EXPECTED_BLOCKERS,
         "real_validation_ready": False,
         "locked_test_opened": False,

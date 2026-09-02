@@ -14,7 +14,7 @@
     "locked_test_access": false,
     "champion_selection": false,
     "product_policy_change": false,
-    "next_gate": "AMEND_B4_PAIR_AND_STOCHASTIC_RESOURCE_BUDGET"
+    "next_gate": "IMPLEMENT_BOUNDED_REAL_VALIDATION_RUNNER"
   },
   "source_contracts": {
     "protocol": "docs/recommendation/protocols/rec-eval-vnext.json",
@@ -98,6 +98,7 @@
   "base_training_semantics": {
     "training_users": "BASE_TRAIN_ONLY",
     "base_rating_rows": 10254572,
+    "base_train_users": 68161,
     "router_validation_test_ratings_forbidden": true,
     "b0_uses_explicit_rating_values": true,
     "binary_models_use_only_sequential_relative_binary_labels": true,
@@ -130,7 +131,7 @@
       "family": "OBSERVED_LIKE_OVER_OBSERVED_DISLIKE_PAIRWISE_MF",
       "pair_semantics": "BASE_AND_TARGET_PAIRS_REQUIRE_ONE_OBSERVED_LIKE_AND_ONE_OBSERVED_DISLIKE",
       "search_space": {"factors": [64, 128], "regularization": [0.0001, 0.001]},
-      "fixed_parameters": {"epochs": 100, "learning_rate": 0.05, "optimizer": "SGD", "early_stopping": false},
+      "fixed_parameters": {"epochs": 30, "learning_rate": 0.05, "optimizer": "SGD", "early_stopping": false},
       "trial_count": 4,
       "stochastic_seeds": [17, 42, 73, 101, 211],
       "fallback": "B0_WHEN_TARGET_PREFIX_LACKS_EITHER_BINARY_CLASS_OR_ITEM_FACTOR"
@@ -183,7 +184,7 @@
       "sample_weight_semantics": "NONNEGATIVE_CONFIDENCE_ONLY_NEVER_THE_LABEL_SIGN",
       "target_user": "CUSTOM_LOGISTIC_FOLD_IN_USER_VECTOR_WITH_LIGHTFM_ITEM_REPRESENTATIONS_FROZEN",
       "search_space": {"loss": ["logistic"], "dimension": [64, 128], "learning_schedule": ["adagrad", "adadelta"]},
-      "fixed_parameters": {"epochs": 30, "learning_rate": 0.05, "item_alpha": 0.000001, "user_alpha": 0.000001},
+      "fixed_parameters": {"epochs": 10, "learning_rate": 0.05, "item_alpha": 0.000001, "user_alpha": 0.000001},
       "trial_count": 4,
       "stochastic_seeds": [17, 42, 73, 101, 211],
       "dependency_rule": "AN_EXACT_VERSION_AND_HASHED_LOCK_MUST_EXIST_BEFORE_REAL_VALIDATION_RUN",
@@ -208,7 +209,7 @@
   "trial_execution": {
     "maximum_trials_per_model": 30,
     "grid_expansion_order": "JSON_SEARCH_SPACE_KEY_ORDER_THEN_VALUE_ORDER",
-    "one_trial_means": "ONE_HYPERPARAMETER_COMBINATION_EVALUATED_FOR_ALL_K; STOCHASTIC_SEEDS_ARE_REPEATS_INSIDE_THE_TRIAL",
+    "one_trial_means": "ONE_HYPERPARAMETER_COMBINATION_EVALUATED_ON_THE_FIXED_TUNING_PANEL_WITH_THE_SELECTION_SEED",
     "model_order": [
       "B0_MOVIELENS_BAYESIAN_RATING",
       "B2_ITEM_KNN",
@@ -226,6 +227,49 @@
     "failed_trial_policy": "RECORD_ERROR_CLASS_AND_MESSAGE_WITHOUT_SECRET_THEN_BLOCK_SUITE_COMPLETION",
     "skip_required_model_forbidden": true
   },
+  "resource_execution_plan": {
+    "tuning_panel": {
+      "selection": "ASC_SHA256_OF_REC_EV_019C_TUNING_PANEL_V1_PIPE_USER_KEY_PIPE_K",
+      "users_per_k": {"0": 256, "5": 256, "10": 256},
+      "same_user_keys_reused_across_models": true,
+      "full_catalog_candidates": 41625,
+      "positive_injection": false,
+      "locked_test_users_forbidden": true
+    },
+    "stochastic_selection": {
+      "selection_seed": 17,
+      "stability_seeds": [17, 42, 73, 101, 211],
+      "grid_phase": "ALL_TRIALS_SELECTION_SEED_ON_TUNING_PANEL",
+      "stability_phase": "SELECTED_TRIAL_PER_K_REMAINING_SEEDS_ON_TUNING_PANEL",
+      "full_validation_phase": "SELECTED_TRIAL_PER_K_SELECTION_SEED_ONLY",
+      "seed_is_never_selected": true,
+      "maximum_distinct_selected_trials_across_k": 2
+    },
+    "b4_pair_sampling": {
+      "eligible_pairs": "OBSERVED_LIKE_CROSS_OBSERVED_DISLIKE_FOR_THE_SAME_BASE_USER_ONLY",
+      "pairs_per_user_per_epoch": "MIN_LIKE_COUNT_TIMES_DISLIKE_COUNT_AND_16",
+      "maximum_pairs_per_user_per_epoch": 16,
+      "ordering": "ASC_SHA256_OF_MODEL_SEED_PIPE_EPOCH_PIPE_USER_KEY_PIPE_LIKE_MOVIE_ID_PIPE_DISLIKE_MOVIE_ID",
+      "without_replacement_within_user_epoch": true,
+      "unrated_items_forbidden": true,
+      "neutral_items_forbidden": true
+    },
+    "scoring_phases": {
+      "grid": "ALL_TRIALS_FULL_CATALOG_ON_FIXED_TUNING_PANEL",
+      "stability": "SELECTED_STOCHASTIC_TRIALS_FULL_CATALOG_ON_FIXED_TUNING_PANEL",
+      "full_validation": "SELECTED_TRIAL_PER_MODEL_PER_K_WITH_SELECTION_SEED_ONLY",
+      "rrf": "TOP_500_RANKS_ONLY_NO_FULL_CATALOG_RESCAN"
+    },
+    "budgets": {
+      "maximum_full_catalog_user_item_scores": 1600000000,
+      "maximum_b8_base_updates": 1300000000,
+      "maximum_b4_pair_updates": 400000000,
+      "maximum_rrf_rank_contributions": 15000000,
+      "wall_clock_soft_limit_seconds": 43200,
+      "wall_clock_hard_limit_seconds": 57600,
+      "hard_limit_behavior": "ATOMIC_CHECKPOINT_THEN_STOP_WITHOUT_SELECTION"
+    }
+  },
   "validation_selection": {
     "role": "VALIDATION_ONLY",
     "select_one_trial_per_model_per_k": true,
@@ -236,7 +280,7 @@
       "lower_fallback_user_rate",
       "lexicographically_smaller_trial_id"
     ],
-    "seed_aggregation": "MEAN_USER_METRIC_ACROSS_SEEDS_WITH_SEED_VARIANCE_RECORDED_SEPARATELY",
+    "seed_aggregation": "SELECTION_SEED_17_IS_PRIMARY; FIVE_SEED_TUNING_PANEL_VARIANCE_IS_A_STABILITY_GATE_AND_SEEDS_ARE_NEVER_SELECTED",
     "select_single_best_per_k_after_rrf": true,
     "k0_rule": "B0_ONLY; PERSONALIZED_HEAD_EQUIVALENCE_TO_B0_IS_DIAGNOSTIC_NOT_A_WIN",
     "selection_lock_required_before_any_locked_test_path_can_be_opened": true,
@@ -287,7 +331,7 @@
     "rating_rows_or_feature_vectors_read": false,
     "required_result_keys": [
       "schema_version", "evidence_id", "status", "contract_sha256", "input_metadata",
-      "estimated_work", "implementation_blockers", "real_validation_ready", "locked_test_opened"
+      "estimated_work", "budget_checks", "implementation_blockers", "real_validation_ready", "locked_test_opened"
     ]
   },
   "future_artifacts": [
@@ -311,12 +355,13 @@
       "format": "parquet",
       "columns": [
         ["user_key", "string[64]", false], ["k", "int8", false], ["model_id", "string", false],
-        ["trial_id", "string", false], ["seed", "int16", true], ["ndcg_at_10", "float32", false],
+        ["trial_id", "string", false], ["seed", "int16", true], ["evaluation_phase", "string", false],
+        ["ndcg_at_10", "float32", false],
         ["recall_at_10", "float32", false], ["mrr_at_10", "float32", false],
         ["positive_mean_rank_percentile", "float32", true], ["candidate_recall_at_500", "float32", false],
         ["fallback_user", "bool", false]
       ],
-      "sort_order": ["model_id", "trial_id", "seed", "k", "user_key"]
+      "sort_order": ["evaluation_phase", "model_id", "trial_id", "seed", "k", "user_key"]
     },
     {
       "path": "outputs/recommendation-evidence/rec-ev-019c/validation-predictions.parquet",
@@ -344,7 +389,7 @@
     {
       "path": "outputs/recommendation-evidence/rec-ev-019c/validation-selection.json",
       "format": "json",
-      "required_keys": ["per_model_per_k", "single_best_per_k", "all_trial_metrics", "fallback_rates", "seed_variance", "champion"]
+      "required_keys": ["tuning_panel", "per_model_per_k", "stability_panel", "single_best_per_k", "all_trial_metrics", "fallback_rates", "seed_variance", "champion"]
     },
     {
       "path": "outputs/recommendation-evidence/rec-ev-019c/validation-selection-lock.json",

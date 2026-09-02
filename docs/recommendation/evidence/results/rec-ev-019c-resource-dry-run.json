@@ -1,52 +1,63 @@
 {
-  "contract_sha256": "56e219674ad85ad46d095859c1ade46389d17da648443266b07e8bc66664cfd8",
+  "budget_checks": {
+    "b4_pair_sampling_exact_and_bounded": true,
+    "b4_pair_update_budget": true,
+    "b8_update_budget": true,
+    "full_catalog_score_budget": true,
+    "rrf_rank_contribution_budget": true,
+    "stochastic_grid_uses_one_selection_seed": true,
+    "wall_clock_limits_ordered": true
+  },
+  "contract_sha256": "89b1b8939c7730f62af9035af9fab60e6489f5f87355ed8b3082d83dce56549a",
   "estimated_work": {
-    "b8_base_update_upper_bound": 6152743200,
+    "b4_pair_update_upper_bound": 392607360,
+    "b8_base_update_upper_bound": 1230548640,
     "candidate_movies": 41625,
-    "full_catalog_user_item_scores": 7547569875,
-    "full_catalog_user_item_scores_by_model": {
-      "B0_MOVIELENS_BAYESIAN_RATING": 595279125,
-      "B2_ITEM_KNN": 1158715125,
-      "B4_BPR_MF": 2574922500,
-      "B6_TMDB_STRUCTURED_CONTENT": 514984500,
-      "B7_TMDB_TEXT_CONTENT": 128746125,
-      "B8_LIGHTFM": 2574922500,
+    "full_catalog_context_scans_by_model": {
+      "B0_MOVIELENS_BAYESIAN_RATING": 7071,
+      "B2_ITEM_KNN": 7701,
+      "B4_BPR_MF": 7189,
+      "B6_TMDB_STRUCTURED_CONTENT": 5141,
+      "B7_TMDB_TEXT_CONTENT": 3605,
+      "B8_LIGHTFM": 7189,
       "B9_RRF": 0
     },
-    "maximum_score_buffer_bytes": 1048576,
-    "selected_prediction_rows": 11662500,
-    "trial_seed_repeats": {
+    "full_catalog_user_item_scores": 1577421000,
+    "full_catalog_user_item_scores_by_model": {
+      "B0_MOVIELENS_BAYESIAN_RATING": 294330375,
+      "B2_ITEM_KNN": 320554125,
+      "B4_BPR_MF": 299242125,
+      "B6_TMDB_STRUCTURED_CONTENT": 213994125,
+      "B7_TMDB_TEXT_CONTENT": 150058125,
+      "B8_LIGHTFM": 299242125,
+      "B9_RRF": 0
+    },
+    "grid_trial_runs": {
       "B0_MOVIELENS_BAYESIAN_RATING": 3,
       "B2_ITEM_KNN": 9,
-      "B4_BPR_MF": 20,
+      "B4_BPR_MF": 4,
       "B6_TMDB_STRUCTURED_CONTENT": 4,
       "B7_TMDB_TEXT_CONTENT": 1,
-      "B8_LIGHTFM": 20,
+      "B8_LIGHTFM": 4,
       "B9_RRF": 9
     },
-    "trial_user_metric_rows": 209160,
+    "maximum_score_buffer_bytes": 1048576,
+    "rrf_rank_contributions_upper_bound": 14644500,
+    "selected_prediction_rows": 11662500,
+    "stability_extra_seed_count": 4,
+    "stochastic_model_fit_upper_bounds": {
+      "B4_BPR_MF": 12,
+      "B8_LIGHTFM": 12
+    },
+    "trial_user_metric_rows": 22272,
+    "tuning_panel_contexts_all_k": 768,
+    "tuning_panel_contexts_personalized_k": 512,
     "validation_contexts_all_k": 4767,
-    "validation_contexts_personalized_k": 3093
+    "validation_contexts_personalized_k": 3093,
+    "validation_user_metric_rows": 23325
   },
   "evidence_id": "REC-EV-019C-RESOURCE-DRY-RUN",
-  "implementation_blockers": [
-    {
-      "id": "B4_PAIR_SAMPLING_UNDEFINED",
-      "reason": "The contract does not define an exact observed LIKE/DISLIKE pair count per user and epoch."
-    },
-    {
-      "id": "STOCHASTIC_GRID_REPEATS_ALL_FIVE_SEEDS",
-      "reason": "B4 and B8 repeat every hyperparameter trial across five seeds before selection."
-    },
-    {
-      "id": "B8_WORST_CASE_UPDATE_BUDGET_UNBOUNDED",
-      "reason": "The metadata-only upper bound is 6152743200 signed-logistic updates."
-    },
-    {
-      "id": "FULL_CATALOG_SCORE_BUDGET_UNAPPROVED",
-      "reason": "The current grid implies 7547569875 user-item scores before selection."
-    }
-  ],
+  "implementation_blockers": [],
   "input_metadata": {
     "base_train_ratings": {
       "columns": 5,
@@ -99,12 +110,12 @@
     }
   },
   "locked_test_opened": false,
-  "next_gate": "AMEND_B4_PAIR_AND_STOCHASTIC_RESOURCE_BUDGET",
+  "next_gate": "IMPLEMENT_BOUNDED_REAL_VALIDATION_RUNNER",
   "product_champion": null,
   "product_policy_changed": false,
   "rating_rows_or_feature_vectors_read": false,
   "real_validation_executed": false,
   "real_validation_ready": false,
   "schema_version": 1,
-  "status": "PASS_METADATA_AUDIT_IMPLEMENTATION_BLOCKED"
+  "status": "PASS_RESOURCE_CONTRACT_RUNNER_IMPLEMENTATION_READY"
 }

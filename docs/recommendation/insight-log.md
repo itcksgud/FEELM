@@ -404,7 +404,8 @@
 - 악화된 지표·비용: 그대로 실행하면 결과 없이 장시간 자원을 소비하거나 구현마다 서로 다른 BPR pair 수를
   사용해 재현성이 깨질 수 있다.
 - 반례·한계: 실제 평점 행과 feature vector를 읽지 않은 보수적 상한이며 실측 wall-clock은 아니다.
-- 결정: 실제 Validation은 계속 막고 pair 상한, tuning panel, selection seed, 선택 trial의 5-seed 안정성,
-  score/update 상한을 계약에 추가한다.
-- 후속 실험: 수정 계약으로 합성·의존성·metadata 점검을 다시 통과한 뒤 bounded pilot을 실행한다.
+- 결정: 사용자당 epoch B4 pair 최대 16개, 256명/K tuning panel, selection seed 17, 선택 trial의 5-seed
+  패널 안정성, score/update 상한을 계약에 추가했다. 재점검은 약 15.8억 score, B8 12.3억, B4 3.93억
+  update 상한과 7개 budget check를 통과했다.
+- 후속 실험: 상한을 강제하는 bounded runner를 구현·검토한 뒤에만 실제 Validation을 실행한다.
 - 관련 model version: 없음 — 실행 예산·계약 개선, champion 아님.

@@ -2,7 +2,7 @@
 
 > 상태: `APPROVED` — 오프라인 추천 evidence 구현 착수 기준
 > 판정일: 2026-09-02
-> 최종 판정: **조건부 GO — runner 안전 골격은 구현 가능, 실제 Validation은 자원 계약 수정 전 NO-GO**
+> 최종 판정: **조건부 GO — bounded runner 구현 가능, 실제 Validation은 runner 검토 전 NO-GO**
 > 제품 경계: 현재 C2 popularity-only 교체와 개인화 champion 승인은 이 GO에 포함하지 않는다.
 > 후속 경계: Top-2 v4와 cold-item v2는 `PROPOSED_PROTOCOL_VALIDATION_PREFLIGHT_REQUIRED`다. 별도
 > Schema·artifact contract·runner 구현은 시작할 수 있지만 현재 019C 실제 runner 구현 GO나
@@ -28,9 +28,9 @@
 | REC-EV-019C 실행 계약 | **DONE — 계약 validator와 변이 테스트 PASS** |
 | REC-EV-019C runner helper·합성 preflight | **DONE — 15개 검사 PASS** |
 | REC-EV-019C LightFM Linux dependency smoke | **DONE — 9개 검사 PASS** |
-| REC-EV-019C metadata 자원 사전점검 | **DONE — 약 75.5억 score·B8 최대 61.5억 update, 차단점 4개** |
+| REC-EV-019C metadata 자원 사전점검 | **DONE — 15.8억 score·B8 12.3억·B4 3.93억 상한, 차단점 0개** |
 | REC-EV-019C 실제 Validation runner 구현 | **GO** |
-| REC-EV-019C 실제 Validation 모델 실행 | `NO-GO`, pair·seed·score/update 예산 계약 수정 필요 |
+| REC-EV-019C 실제 Validation 모델 실행 | `NO-GO`, bounded runner 구현·검토 필요 |
 | REC-EV-020P-A/B 설계→계약 구현 | `GO`, v4 Schema·artifact contract·runner 구현 가능 |
 | REC-EV-020P-A/B 실행 완료 판정 | `NO-GO`, runner·verifier·Validation power 결과 필요 |
 | REC-EV-021P 사전검사 | **DONE — firewall PASS, Validation pilot READY** |
@@ -138,6 +138,9 @@
 `lightfm-next==1.19.0`의 9개 dependency 검사도 통과했다. 이 과정에서 미관측 항목을 negative로 쓰는
 LightFM BPR/WARP가 FEELM의 UNKNOWN 계약과 충돌함을 발견해 B8을 signed logistic으로 교정했다.
 자세한 결과는 [runner·의존성 preflight](./evidence/REC-EV-019C-runner-and-dependency-preflight.md)에 있다.
+metadata-only 계산량 점검에서는 최초 75.5억 score·B8 61.5억 update 설계를 발견해, 고정 256명/K panel과
+selection seed 17, 선택 trial의 5-seed panel 안정성, B4 사용자당 pair 16개 상한으로 바꿨다. 재점검은
+15.8억 score·B8 12.3억·B4 3.93억 update 상한과 7개 budget check를 통과했다.
 따라서 현재 준비도는 다음과 같다.
 
 - 계약·validator·변이 테스트: `PASS`
@@ -235,6 +238,9 @@ docs/recommendation/contracts/rec-ev-019c-validation-artifacts.json을 임의로
 runner는 입력 파일을 열기 전에 allowlist를 검사하고 Validation 역할별 두 Parquet만 허용해야 한다.
 REC-EV-019A의 최종 후보 41,625편과 K10 Test 5,476명을 바꾸지 마. 전체 점수 행렬을 저장하지 말고
 candidate block·user batch·checkpoint·resume·실패 보존·B0 fallback·RRF rank-only를 계약대로 구현해.
+grid는 고정 hash 256명/K tuning panel과 seed 17만 사용하고, 선택된 B4·B8 trial만 나머지 4개 seed로
+같은 panel에서 안정성을 측정해. B4는 관측 LIKE>DISLIKE pair만 사용자당 epoch 최대 16개 사용하고,
+score 16억·B8 update 13억·B4 pair update 4억·RRF contribution 1,500만·wall-clock 16시간 상한을 강제해.
 기존 합성 fixture와 Linux LightFM smoke 결과를 깨뜨리지 말고 B0·B2·B4·B6·B7·B8·B9의 실제 입력 adapter,
 block scorer, user-level metric, trial checkpoint, selection lock을 계약 schema대로 구현해. B8은 BPR/WARP가
 아니라 signed logistic과 frozen-item fold-in만 허용한다. 작은 fixture 단위 테스트와 dry-run resource

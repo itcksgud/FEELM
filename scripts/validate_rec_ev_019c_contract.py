@@ -150,6 +150,8 @@ def validate_contract(contract: dict[str, Any], *, root: Path = ROOT) -> dict[st
 
     training = contract["base_training_semantics"]
     require(training.get("training_users") == "BASE_TRAIN_ONLY", "019C base training user role changed")
+    require(training.get("base_rating_rows") == 10254572, "019C base training row count changed")
+    require(training.get("base_train_users") == 68161, "019C base training user count changed")
     require(training.get("router_validation_test_ratings_forbidden") is True, "019C held-out users could enter base fit")
     require(training.get("bpr_unrated_negative_sampling_forbidden") is True, "019C BPR could treat unrated as negative")
     require(training.get("target_user_updates_must_not_change_base_item_parameters") is True, "019C target fold-in could mutate base items")
@@ -221,6 +223,67 @@ def validate_contract(contract: dict[str, Any], *, root: Path = ROOT) -> dict[st
     require(execution.get("checkpoint_after_each_trial_seed_and_user_batch") is True, "019C checkpoint boundary weakened")
     require(execution.get("skip_required_model_forbidden") is True, "019C required model could be silently skipped")
 
+    resource = contract["resource_execution_plan"]
+    panel = resource["tuning_panel"]
+    require(
+        panel.get("selection") == "ASC_SHA256_OF_REC_EV_019C_TUNING_PANEL_V1_PIPE_USER_KEY_PIPE_K",
+        "019C tuning panel selection changed",
+    )
+    require(panel.get("users_per_k") == {"0": 256, "5": 256, "10": 256}, "019C tuning panel size changed")
+    require(panel.get("same_user_keys_reused_across_models") is True, "019C models could use different tuning users")
+    require(panel.get("full_catalog_candidates") == 41625, "019C tuning panel candidate count changed")
+    require(panel.get("positive_injection") is False, "019C tuning panel enabled positive injection")
+    require(panel.get("locked_test_users_forbidden") is True, "019C tuning panel could include Locked Test users")
+
+    stochastic = resource["stochastic_selection"]
+    require(stochastic.get("selection_seed") == 17, "019C stochastic selection seed changed")
+    require(stochastic.get("stability_seeds") == [17, 42, 73, 101, 211], "019C stability seeds changed")
+    require(stochastic.get("seed_is_never_selected") is True, "019C could select a lucky seed")
+    require(
+        stochastic.get("grid_phase") == "ALL_TRIALS_SELECTION_SEED_ON_TUNING_PANEL",
+        "019C stochastic grid phase changed",
+    )
+    require(
+        stochastic.get("stability_phase") == "SELECTED_TRIAL_PER_K_REMAINING_SEEDS_ON_TUNING_PANEL",
+        "019C stochastic stability phase changed",
+    )
+    require(
+        stochastic.get("full_validation_phase") == "SELECTED_TRIAL_PER_K_SELECTION_SEED_ONLY",
+        "019C stochastic full Validation phase changed",
+    )
+    require(stochastic.get("maximum_distinct_selected_trials_across_k") == 2, "019C selected-trial fit bound changed")
+    require(17 in stochastic["stability_seeds"], "019C stability seeds omit the selection seed")
+
+    pairs = resource["b4_pair_sampling"]
+    require(
+        pairs.get("eligible_pairs") == "OBSERVED_LIKE_CROSS_OBSERVED_DISLIKE_FOR_THE_SAME_BASE_USER_ONLY",
+        "019C B4 pair population changed",
+    )
+    require(pairs.get("maximum_pairs_per_user_per_epoch") == 16, "019C B4 pair cap changed")
+    require(pairs.get("without_replacement_within_user_epoch") is True, "019C B4 could repeat pairs within an epoch")
+    require(pairs.get("unrated_items_forbidden") is True, "019C B4 could use unrated items")
+    require(pairs.get("neutral_items_forbidden") is True, "019C B4 could use neutral items")
+    require(models["B4_BPR_MF"]["fixed_parameters"].get("epochs") == 30, "019C B4 epoch budget changed")
+    require(models["B8_LIGHTFM"]["fixed_parameters"].get("epochs") == 10, "019C B8 epoch budget changed")
+
+    scoring = resource["scoring_phases"]
+    require(scoring.get("grid") == "ALL_TRIALS_FULL_CATALOG_ON_FIXED_TUNING_PANEL", "019C grid scoring changed")
+    require(
+        scoring.get("full_validation") == "SELECTED_TRIAL_PER_MODEL_PER_K_WITH_SELECTION_SEED_ONLY",
+        "019C full Validation scoring changed",
+    )
+    require(scoring.get("rrf") == "TOP_500_RANKS_ONLY_NO_FULL_CATALOG_RESCAN", "019C RRF scan budget changed")
+    budgets = resource["budgets"]
+    require(budgets.get("maximum_full_catalog_user_item_scores") == 1600000000, "019C score budget changed")
+    require(budgets.get("maximum_b8_base_updates") == 1300000000, "019C B8 update budget changed")
+    require(budgets.get("maximum_b4_pair_updates") == 400000000, "019C B4 update budget changed")
+    require(budgets.get("maximum_rrf_rank_contributions") == 15000000, "019C RRF budget changed")
+    require(budgets.get("wall_clock_hard_limit_seconds") == 57600, "019C hard time limit changed")
+    require(
+        budgets.get("hard_limit_behavior") == "ATOMIC_CHECKPOINT_THEN_STOP_WITHOUT_SELECTION",
+        "019C hard-limit failure behavior changed",
+    )
+
     selection = contract["validation_selection"]
     require(selection.get("role") == "VALIDATION_ONLY", "019C selection role changed")
     require(selection.get("primary_metric") == protocol["selection"]["primary_metric"], "019C primary metric changed")
@@ -236,6 +299,8 @@ def validate_contract(contract: dict[str, Any], *, root: Path = ROOT) -> dict[st
         require("user_id" not in column_names, f"019C raw user_id column declared: {artifact['path']}")
     prediction = next(item for item in contract["future_artifacts"] if item["path"].endswith("validation-predictions.parquet"))
     require({"rank", "effective_score", "fallback_used", "fallback_reason"}.issubset({column[0] for column in prediction["columns"]}), "019C prediction audit columns missing")
+    trial_metrics = next(item for item in contract["future_artifacts"] if item["path"].endswith("trial-user-metrics.parquet"))
+    require("evaluation_phase" in {column[0] for column in trial_metrics["columns"]}, "019C tuning/stability phase column missing")
 
     synthetic = contract["synthetic_preflight_artifacts"]
     require(
@@ -321,7 +386,7 @@ def validate_contract(contract: dict[str, Any], *, root: Path = ROOT) -> dict[st
 
     return {
         "status": "PASS",
-        "decision": "GO_FOR_IMPLEMENTATION_PREFLIGHT_AND_METADATA_DRY_RUN_ONLY",
+        "decision": "GO_FOR_BOUNDED_RUNNER_IMPLEMENTATION_AND_PREFLIGHT_ONLY",
         "contract_id": contract["contract_id"],
         "candidate_movies": 41625,
         "validation_users_k10": preconditions["validation_strict_users_by_k"]["10"],

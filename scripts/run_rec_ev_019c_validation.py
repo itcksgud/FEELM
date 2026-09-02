@@ -317,73 +317,135 @@ def run_resource_dry_run(contract: Mapping[str, Any], *, root: Path = ROOT) -> d
     all_k_contexts = sum(validation_counts.values())
     personalized_contexts = validation_counts[5] + validation_counts[10]
     trials = expand_trials(contract)
-    repeat_counts = {
-        model_id: len(rows) * max(1, len(contract["models"][model_id].get("stochastic_seeds", [])))
-        for model_id, rows in trials.items()
+    grid_trial_runs = {model_id: len(rows) for model_id, rows in trials.items()}
+    resource_plan = contract["resource_execution_plan"]
+    panel_counts = {int(k): int(value) for k, value in resource_plan["tuning_panel"]["users_per_k"].items()}
+    all_panel_contexts = sum(panel_counts.values())
+    personalized_panel_contexts = panel_counts[5] + panel_counts[10]
+    stochastic = resource_plan["stochastic_selection"]
+    stability_extra_seed_count = len(stochastic["stability_seeds"]) - 1
+    full_catalog_context_scans_by_model = {
+        "B0_MOVIELENS_BAYESIAN_RATING": grid_trial_runs["B0_MOVIELENS_BAYESIAN_RATING"]
+        * all_panel_contexts
+        + all_k_contexts,
+        "B2_ITEM_KNN": grid_trial_runs["B2_ITEM_KNN"] * personalized_panel_contexts
+        + personalized_contexts,
+        "B4_BPR_MF": grid_trial_runs["B4_BPR_MF"] * personalized_panel_contexts
+        + stability_extra_seed_count * personalized_panel_contexts
+        + personalized_contexts,
+        "B6_TMDB_STRUCTURED_CONTENT": grid_trial_runs["B6_TMDB_STRUCTURED_CONTENT"]
+        * personalized_panel_contexts
+        + personalized_contexts,
+        "B7_TMDB_TEXT_CONTENT": grid_trial_runs["B7_TMDB_TEXT_CONTENT"] * personalized_panel_contexts
+        + personalized_contexts,
+        "B8_LIGHTFM": grid_trial_runs["B8_LIGHTFM"] * personalized_panel_contexts
+        + stability_extra_seed_count * personalized_panel_contexts
+        + personalized_contexts,
+        "B9_RRF": 0,
     }
-    full_catalog_scores_by_model: dict[str, int] = {}
-    for model_id, repeats in repeat_counts.items():
-        if model_id == "B9_RRF":
-            full_catalog_scores_by_model[model_id] = 0
-            continue
-        contexts = all_k_contexts if model_id == "B0_MOVIELENS_BAYESIAN_RATING" else personalized_contexts
-        full_catalog_scores_by_model[model_id] = repeats * contexts * candidate_count
+    full_catalog_scores_by_model = {
+        model_id: contexts * candidate_count
+        for model_id, contexts in full_catalog_context_scans_by_model.items()
+    }
     full_catalog_scores = sum(full_catalog_scores_by_model.values())
+    maximum_distinct_selected = int(stochastic["maximum_distinct_selected_trials_across_k"])
+    stochastic_fit_upper_bounds = {
+        model_id: grid_trial_runs[model_id] + stability_extra_seed_count * maximum_distinct_selected
+        for model_id in ("B4_BPR_MF", "B8_LIGHTFM")
+    }
     b8 = contract["models"]["B8_LIGHTFM"]
     b8_upper_updates = (
-        repeat_counts["B8_LIGHTFM"]
+        stochastic_fit_upper_bounds["B8_LIGHTFM"]
         * int(b8["fixed_parameters"]["epochs"])
         * int(contract["base_training_semantics"]["base_rating_rows"])
+    )
+    b4 = contract["models"]["B4_BPR_MF"]
+    b4_pair_upper_updates = (
+        stochastic_fit_upper_bounds["B4_BPR_MF"]
+        * int(b4["fixed_parameters"]["epochs"])
+        * int(contract["base_training_semantics"]["base_train_users"])
+        * int(resource_plan["b4_pair_sampling"]["maximum_pairs_per_user_per_epoch"])
     )
     selected_prediction_rows = (
         validation_counts[0] + len(contract["models"]) * personalized_contexts
     ) * int(contract["candidate_and_ranking"]["top_candidates"])
     trial_metric_rows = (
-        repeat_counts["B0_MOVIELENS_BAYESIAN_RATING"] * all_k_contexts
-        + sum(value for key, value in repeat_counts.items() if key != "B0_MOVIELENS_BAYESIAN_RATING")
-        * personalized_contexts
+        grid_trial_runs["B0_MOVIELENS_BAYESIAN_RATING"] * all_panel_contexts
+        + sum(value for key, value in grid_trial_runs.items() if key != "B0_MOVIELENS_BAYESIAN_RATING")
+        * personalized_panel_contexts
+        + 2 * stability_extra_seed_count * personalized_panel_contexts
     )
+    validation_metric_rows = validation_counts[0] + len(contract["models"]) * personalized_contexts
+    rrf = contract["models"]["B9_RRF"]
+    rrf_head_counts = {name: len(heads) for name, heads in rrf["head_sets"].items()}
+    rrf_grid_head_sum = len(rrf["search_space"]["c"]) * sum(rrf_head_counts.values())
+    rrf_rank_contributions = (
+        rrf_grid_head_sum * personalized_panel_contexts
+        + max(rrf_head_counts.values()) * personalized_contexts
+    ) * int(contract["candidate_and_ranking"]["top_candidates"])
     score_buffer_bytes = (
         int(contract["candidate_and_ranking"]["user_batch_size_max"])
         * int(contract["candidate_and_ranking"]["candidate_block_size_max"])
         * 4
     )
+    budgets = resource_plan["budgets"]
+    budget_checks = {
+        "b4_pair_sampling_exact_and_bounded": resource_plan["b4_pair_sampling"].get(
+            "pairs_per_user_per_epoch"
+        )
+        == "MIN_LIKE_COUNT_TIMES_DISLIKE_COUNT_AND_16",
+        "stochastic_grid_uses_one_selection_seed": stochastic.get("grid_phase")
+        == "ALL_TRIALS_SELECTION_SEED_ON_TUNING_PANEL",
+        "full_catalog_score_budget": full_catalog_scores <= int(budgets["maximum_full_catalog_user_item_scores"]),
+        "b8_update_budget": b8_upper_updates <= int(budgets["maximum_b8_base_updates"]),
+        "b4_pair_update_budget": b4_pair_upper_updates <= int(budgets["maximum_b4_pair_updates"]),
+        "rrf_rank_contribution_budget": rrf_rank_contributions
+        <= int(budgets["maximum_rrf_rank_contributions"]),
+        "wall_clock_limits_ordered": 0
+        < int(budgets["wall_clock_soft_limit_seconds"])
+        < int(budgets["wall_clock_hard_limit_seconds"]),
+    }
+    blocker_reasons = {
+        "b4_pair_sampling_exact_and_bounded": "B4 observed pair sampling is not exact and bounded.",
+        "stochastic_grid_uses_one_selection_seed": "The stochastic grid does not use one precommitted seed.",
+        "full_catalog_score_budget": f"The bounded plan still implies {full_catalog_scores} user-item scores.",
+        "b8_update_budget": f"The B8 upper bound is {b8_upper_updates} signed-logistic updates.",
+        "b4_pair_update_budget": f"The B4 upper bound is {b4_pair_upper_updates} observed-pair updates.",
+        "rrf_rank_contribution_budget": f"The RRF upper bound is {rrf_rank_contributions} rank contributions.",
+        "wall_clock_limits_ordered": "The wall-clock soft and hard limits are invalid.",
+    }
     blockers = [
-        {
-            "id": "B4_PAIR_SAMPLING_UNDEFINED",
-            "reason": "The contract does not define an exact observed LIKE/DISLIKE pair count per user and epoch.",
-        },
-        {
-            "id": "STOCHASTIC_GRID_REPEATS_ALL_FIVE_SEEDS",
-            "reason": "B4 and B8 repeat every hyperparameter trial across five seeds before selection.",
-        },
-        {
-            "id": "B8_WORST_CASE_UPDATE_BUDGET_UNBOUNDED",
-            "reason": f"The metadata-only upper bound is {b8_upper_updates} signed-logistic updates.",
-        },
-        {
-            "id": "FULL_CATALOG_SCORE_BUDGET_UNAPPROVED",
-            "reason": f"The current grid implies {full_catalog_scores} user-item scores before selection.",
-        },
+        {"id": check.upper(), "reason": blocker_reasons[check]}
+        for check, passed in budget_checks.items()
+        if not passed
     ]
     return {
         "schema_version": 1,
         "evidence_id": "REC-EV-019C-RESOURCE-DRY-RUN",
-        "status": "PASS_METADATA_AUDIT_IMPLEMENTATION_BLOCKED",
+        "status": "PASS_RESOURCE_CONTRACT_RUNNER_IMPLEMENTATION_READY" if not blockers else "FAIL_RESOURCE_CONTRACT",
         "contract_sha256": sha256_file(root / "docs/recommendation/contracts/rec-ev-019c-validation-artifacts.json"),
         "input_metadata": input_metadata,
         "estimated_work": {
             "candidate_movies": candidate_count,
             "validation_contexts_all_k": all_k_contexts,
             "validation_contexts_personalized_k": personalized_contexts,
-            "trial_seed_repeats": repeat_counts,
+            "tuning_panel_contexts_all_k": all_panel_contexts,
+            "tuning_panel_contexts_personalized_k": personalized_panel_contexts,
+            "grid_trial_runs": grid_trial_runs,
+            "stability_extra_seed_count": stability_extra_seed_count,
+            "stochastic_model_fit_upper_bounds": stochastic_fit_upper_bounds,
+            "full_catalog_context_scans_by_model": full_catalog_context_scans_by_model,
             "full_catalog_user_item_scores_by_model": full_catalog_scores_by_model,
             "full_catalog_user_item_scores": full_catalog_scores,
             "b8_base_update_upper_bound": b8_upper_updates,
+            "b4_pair_update_upper_bound": b4_pair_upper_updates,
+            "rrf_rank_contributions_upper_bound": rrf_rank_contributions,
             "trial_user_metric_rows": trial_metric_rows,
+            "validation_user_metric_rows": validation_metric_rows,
             "selected_prediction_rows": selected_prediction_rows,
             "maximum_score_buffer_bytes": score_buffer_bytes,
         },
+        "budget_checks": budget_checks,
         "implementation_blockers": blockers,
         "rating_rows_or_feature_vectors_read": False,
         "real_validation_ready": False,
@@ -391,7 +453,7 @@ def run_resource_dry_run(contract: Mapping[str, Any], *, root: Path = ROOT) -> d
         "locked_test_opened": False,
         "product_policy_changed": False,
         "product_champion": None,
-        "next_gate": "AMEND_B4_PAIR_AND_STOCHASTIC_RESOURCE_BUDGET",
+        "next_gate": "IMPLEMENT_BOUNDED_REAL_VALIDATION_RUNNER" if not blockers else "AMEND_RESOURCE_CONTRACT",
     }
 
 

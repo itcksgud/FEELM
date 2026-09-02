@@ -6,22 +6,17 @@
   },
   "artifacts": [
     {
-      "bytes": 3294,
+      "bytes": 3593,
       "path": "docs/recommendation/evidence/results/rec-ev-019c-resource-dry-run.json",
-      "sha256": "c529e2b3062cba176f946d1e49711481372d51f3b92816f63ec040894da642dc"
+      "sha256": "c1ed95b2633163d6425e4b35505e684d7f14dda427477c9a20ca8e2be26c362d"
     }
   ],
-  "contract_sha256": "56e219674ad85ad46d095859c1ade46389d17da648443266b07e8bc66664cfd8",
+  "contract_sha256": "89b1b8939c7730f62af9035af9fab60e6489f5f87355ed8b3082d83dce56549a",
   "evidence_id": "REC-EV-019C-RESOURCE-DRY-RUN",
   "schema_version": 1,
-  "status": "PASS_METADATA_AUDIT_IMPLEMENTATION_BLOCKED",
+  "status": "PASS_RESOURCE_CONTRACT_RUNNER_IMPLEMENTATION_READY",
   "validation": {
-    "blocker_ids": [
-      "B4_PAIR_SAMPLING_UNDEFINED",
-      "STOCHASTIC_GRID_REPEATS_ALL_FIVE_SEEDS",
-      "B8_WORST_CASE_UPDATE_BUDGET_UNBOUNDED",
-      "FULL_CATALOG_SCORE_BUDGET_UNAPPROVED"
-    ],
+    "blocker_ids": [],
     "locked_test_opened": false,
     "metadata_only": true,
     "rating_rows_or_feature_vectors_read": false,
