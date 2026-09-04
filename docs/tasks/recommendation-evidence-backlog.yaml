@@ -550,7 +550,7 @@ tasks:
   - id: TASK-REC-EV-019
     title: Binary onboarding K5·K10 제품 후보 판정
     status: PENDING
-    depends_on: [TASK-REC-EV-019E]
+    depends_on: [TASK-REC-EV-019F]
     outputs:
       - docs/recommendation/evidence/REC-EV-019-binary-onboarding.md
       - docs/recommendation/evidence/manifests/rec-ev-019.json
@@ -561,6 +561,63 @@ tasks:
       - Holm-corrected hierarchical bootstrap CI lower bound above zero
       - current product policy remains popularity-only unless a separate C2 vNext approval is made
       - fresh target-independent preregistered Validation must confirm the 019E routing before product selection
+
+  - id: TASK-REC-EV-019F
+    title: frozen 019E routing의 새 temporal episode 독립 확인
+    status: PREREGISTERED_NOT_RUN
+    depends_on: [TASK-REC-EV-019E]
+    current_authorization: VALIDATION_SOURCE_ROW_WINDOW_CONFIRMATION_ONLY
+    validation_result: NOT_RUN
+    locked_test_authorization: FORBIDDEN
+    artifact_contract: docs/recommendation/contracts/rec-ev-019f-independent-temporal-routing.json
+    purpose:
+      - 019E routing을 같은 Validation 사용자의 뒤쪽 source row와 fresh future window에서 사전등록 확인한다.
+      - 독립성은 사용자 독립이 아니라 source-row/window 독립이며, 한국 사용자·한국 영화·최신 영화 해결을 주장하지 않는다.
+      - 성공 상태도 PASS_INDEPENDENT_TEMPORAL_WINDOW_REQUIRES_TARGET_DOMAIN_CONFIRMATION을 넘지 않는다.
+    implementation_files:
+      - scripts/validate_rec_ev_019f_contract.py
+      - scripts/run_rec_ev_019f_independent_temporal_routing.py
+      - scripts/verify_rec_ev_019f_independent_temporal_routing.py
+      - scripts/tests/test_rec_ev_019f_contract.py
+      - scripts/tests/test_run_rec_ev_019f_independent_temporal_routing.py
+      - scripts/tests/test_verify_rec_ev_019f_independent_temporal_routing.py
+    outputs:
+      - outputs/recommendation-evidence/rec-ev-019f/protocol-lock.json
+      - outputs/recommendation-evidence/rec-ev-019f/source-manifest.json
+      - outputs/recommendation-evidence/rec-ev-019f/structural-cohort.parquet
+      - outputs/recommendation-evidence/rec-ev-019f/strict-cohort.parquet
+      - outputs/recommendation-evidence/rec-ev-019f/fresh-prefixes.parquet
+      - outputs/recommendation-evidence/rec-ev-019f/fresh-windows.parquet
+      - outputs/recommendation-evidence/rec-ev-019f/arm-definitions.parquet
+      - outputs/recommendation-evidence/rec-ev-019f/rankings-top500.parquet
+      - outputs/recommendation-evidence/rec-ev-019f/user-arm-metrics.parquet
+      - outputs/recommendation-evidence/rec-ev-019f/paired-deltas.parquet
+      - outputs/recommendation-evidence/rec-ev-019f/strata-summary.json
+      - outputs/recommendation-evidence/rec-ev-019f/result.json
+      - docs/recommendation/evidence/manifests/rec-ev-019f-validation.json
+      - docs/recommendation/evidence/REC-EV-019F-independent-temporal-routing-preregistration.md
+      - docs/recommendation/evidence/REC-EV-019F-independent-temporal-routing.md
+    commands:
+      contract: "npm run recommendation:019f:contract:check"
+      lock: "npm run recommendation:019f:lock"
+      run: "npm run recommendation:019f:run"
+      full_rescore_verify: "npm run recommendation:019f:check"
+    verify:
+      - Phase 1 preregistration commit is pushed before protocol lock or any REC-EV-019F ranking metric
+      - lock records contract/spec/source/runner/verifier SHA, clean git revision, ranking_metrics_read=false, eligibility_counts_observed=true
+      - tuning union 477 is excluded before fresh future labels; observed structural 1021 and strict 802 are disclosed as non-blind audit expectations
+      - source-row/window independence is explicit and fresh prefix/window source-row overlap with the preceding 019A semantic episode is zero
+      - user overlap is allowed and reported as historical K10 629, outside historical K10 173, completely new to 019A Validation 31
+      - both fresh K5 and K10 profiles are newly folded in and full-catalog rescored under the common K10 candidate-valid seen mask
+      - REC-EV-019E routing semantics are byte-equivalent; fit, refit, threshold, route search, and 019D prediction reuse are forbidden
+      - paired bootstrap is 10000 users with seed 20260924 and Harm-first decision order
+      - candidate recall@500 and positive rank percentile degradation are reported even though they are non-Gate metrics
+      - locked_test_used=false, champion=null, product_policy_updated=false, and user_independent=false
+    forbidden_changes:
+      - Locked Test or mixed-role artifact access
+      - product API, DB schema, champion, or APPROVED_C2A_INTERNAL_POPULARITY_ONLY
+      - interpreting temporal source-row/window independence as user independence or target-domain confirmation
+      - modifying the REC-EV-019C-only PPTX
 
   - id: TASK-REC-EV-020P-A
     title: Top-2 v4 cohort·label·slate·seed Validation preflight

@@ -15,7 +15,8 @@
 - binary 온보딩 cohort artifact는 `PASS_COHORT_GATES`로 완료
 - 전체 TMDB feature artifact는 `PASS_FULL_GATES`로 완료
 - 019C Validation과 독립 감사, 019D full-rescore, 019E post-hoc mitigation까지 완료됐다. 019D는 안전 Gate
-  `FAIL`, 019E는 `PASS_POST_HOC_VALIDATION_REQUIRES_FRESH_CONFIRMATION`이다.
+  `FAIL`, 019E는 `PASS_POST_HOC_VALIDATION_REQUIRES_FRESH_CONFIRMATION`이다. 019F 새 temporal episode는
+  source-row/window 독립 확인으로 사전등록됐고 아직 실행하지 않았다.
 - REC-EV-019~026 evidence는 backlog dependency Gate를 순서대로 통과
 
 모델이 아직 실험 Gate를 통과하지 않았다는 이유로 구현 자체를 막지 않는다. 반대로 구현 준비가 됐다는
@@ -34,6 +35,7 @@
 | REC-EV-019D same-window prefix ablation | **DONE — NDCG 효능 기준 통과, Harm@2 안전 Gate `FAIL`** |
 | REC-EV-019D 독립 full-rescore 감사 | **DONE — 1,479명·5,916 ranking exact Top-10/Top-500·aggregate PASS** |
 | REC-EV-019E no-retune mitigation | **DONE — post-hoc PASS, fresh target-independent confirmation 필수** |
+| REC-EV-019F independent temporal routing | **PREREGISTERED — source-row/window 독립, 사용자 독립 아님, ranking metric 미생성** |
 | REC-EV-020P-A/B 설계→계약 구현 | `GO`, v4 Schema·artifact contract·runner 구현 가능 |
 | REC-EV-020P-A/B 실행 완료 판정 | `NO-GO`, runner·verifier·Validation power 결과 필요 |
 | REC-EV-021P 사전검사 | **DONE — firewall PASS, Validation pilot READY** |
@@ -184,6 +186,19 @@ benefit/neutral/harm은 `70/957/26`이다. 같은 집단을 재사용한 post-ho
 `PASS_POST_HOC_VALIDATION_REQUIRES_FRESH_CONFIRMATION`이며 Locked Test·champion·제품 정책은 계속
 `NO-GO`다. 자세한 결과는 [019E 보고서](./evidence/REC-EV-019E-no-retune-incremental-applicability.md)에 있다.
 
+### 4.6 `TASK-REC-EV-019F` — 새 temporal source-row/window 확인 사전등록
+
+[019F machine contract](./contracts/rec-ev-019f-independent-temporal-routing.json)와
+[사전등록](./evidence/REC-EV-019F-independent-temporal-routing-preregistration.md)은 019E frozen routing을
+동일 Validation 사용자의 더 뒤쪽 episode에서 확인하도록 고정한다. 독립성은 source row와 future window에
+한정되며 사용자 독립이 아니다. structural 1,021명, strict 802명과 overlap 진단 629/173(그중 완전 신규
+31)은 이미 관측된 audit expectation임을 숨기지 않는다. Phase 1에서는 ranking metric과 결과를 생성하거나
+읽지 않았고, clean preregistration commit을 push한 다음 별도 Phase 2 lock에서만 실행할 수 있다.
+
+성공해도 최대 상태는 `PASS_INDEPENDENT_TEMPORAL_WINDOW_REQUIRES_TARGET_DOMAIN_CONFIRMATION`이다. 한국 사용자,
+한국 영화, 최신 영화의 성능 근거와 champion·제품 정책·Locked Test 권한은 계속 `NO-GO`다. 019C 전용
+`docs/presentation/FEELM-REC-EV-019C-results.pptx`는 수정 대상이 아니다.
+
 ## 5. 완료 명령
 
 환경 설치:
@@ -204,6 +219,7 @@ npm run recommendation:019c:dependency:check
 npm run recommendation:019d:check
 npm run recommendation:019d:full-rescore:check
 npm run recommendation:019e:check
+npm run recommendation:019f:contract:check
 npm run recommendation:evidence:check
 ```
 

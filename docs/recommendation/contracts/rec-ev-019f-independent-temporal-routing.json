@@ -1,0 +1,189 @@
+{
+  "schema_version": 1,
+  "contract_id": "REC-EV-019F-INDEPENDENT-TEMPORAL-ROUTING-V1",
+  "status": "APPROVED_FOR_PREREGISTERED_VALIDATION_ONLY",
+  "task_id": "TASK-REC-EV-019F",
+  "protocol_version": "rec-eval-vnext-2-independent-temporal-019f",
+  "purpose": "Independently check the frozen REC-EV-019E routing rule on a later source-row/window episode in the same Validation users. Independence is source-row/window independence, not user independence.",
+  "evidence_classification": {
+    "preregistered_before_019f_ranking_metrics": true,
+    "independence_unit": "SOURCE_ROW_AND_TEMPORAL_WINDOW",
+    "user_independent": false,
+    "source_row_independent_from_rec_ev_019a": true,
+    "maximum_success_status": "PASS_INDEPENDENT_TEMPORAL_WINDOW_REQUIRES_TARGET_DOMAIN_CONFIRMATION",
+    "target_domain_confirmation_required": true,
+    "does_not_establish": [
+      "KOREAN_USER_PERFORMANCE",
+      "KOREAN_MOVIE_PERFORMANCE",
+      "RECENT_MOVIE_PERFORMANCE",
+      "PRODUCT_POLICY_READINESS"
+    ],
+    "eligibility_counts_observed_before_preregistration": true,
+    "observed_audit_expectations_are_not_blind": {
+      "structural_users": 1021,
+      "strict_users": 802,
+      "existing_019a_k10_users": 629,
+      "outside_existing_019a_k10_users": 173,
+      "completely_new_to_019a_validation_users": 31
+    }
+  },
+  "current_authorization": {
+    "contract_and_lock_creation": true,
+    "validation_full_catalog_scoring": true,
+    "locked_test_access": false,
+    "fit_or_refit": false,
+    "candidate_threshold_or_route_search": false,
+    "champion_selection": false,
+    "product_policy_change": false
+  },
+  "invariants": {
+    "execution_role": "VALIDATION_019F_TEMPORAL",
+    "independence_unit": "SOURCE_ROW_AND_TEMPORAL_WINDOW",
+    "user_independent": false,
+    "locked_test_used": false,
+    "champion": null,
+    "product_policy_updated": false
+  },
+  "source_contracts": {
+    "global_time": "docs/recommendation/evidence/manifests/global-time-v1.json",
+    "historical_cohort": "docs/recommendation/contracts/rec-ev-019a-artifacts.json",
+    "frozen_model": "docs/recommendation/contracts/rec-ev-019d-prefix-ablation-artifacts.json",
+    "frozen_routing": "docs/recommendation/contracts/rec-ev-019e-no-retune-incremental-applicability-gate.json",
+    "preregistration": "docs/recommendation/evidence/REC-EV-019F-independent-temporal-routing-preregistration.md"
+  },
+  "allowed_input_artifacts": {
+    "evaluation_protocol": {"path": "docs/recommendation/protocols/rec-eval-vnext.json", "bytes": 4213, "sha256": "7356c6006897c259aa402c53c326d81b53bd7ceb11d5a9ace077176b7c3692db"},
+    "global_time_manifest": {"path": "docs/recommendation/evidence/manifests/global-time-v1.json", "bytes": 6665, "sha256": "fa55e29328f0aa8ea5822c32ae964ee9a6ae5817479834a017cf2325bf39ab0a"},
+    "validation_ratings": {"path": "outputs/recommendation-evidence/global-time-v1/validation.parquet", "bytes": 16216012, "sha256": "b8668c0b7dffaafc90b0ce8e19ef22598c335e6e2e313c704eaf557da6265adf"},
+    "historical_validation_prefixes": {"path": "outputs/recommendation-evidence/rec-ev-019a/validation-binary-prefixes.parquet", "bytes": 231375, "sha256": "eaeb04627d6a160351036350469f8d2894ea3464fc6897e97af04bcfce7da8c4"},
+    "historical_validation_windows": {"path": "outputs/recommendation-evidence/rec-ev-019a/validation-evaluation-windows.parquet", "bytes": 366667, "sha256": "88fe1ab55491714358f985e1783e334bce24ffc08cf6f079e063a3ccd2547e56"},
+    "candidate_core": {"path": "outputs/recommendation-evidence/rec-ev-019c/candidate-core-final.parquet", "bytes": 651984, "sha256": "9bb0560cb0c3538160dce7568a4dc366e2937b1ec6019cbacfd7113cd34c910e"},
+    "validation_selection": {"path": "outputs/recommendation-evidence/rec-ev-019c/validation-selection.json", "bytes": 123039, "sha256": "9fab1f5bfd184c246c916dce6daefa5ef4366520e2538559efc6c12e2e38c7df"},
+    "lightfm_config": {"path": "outputs/recommendation-evidence/rec-ev-019c/cache/B8_LIGHTFM-T003-S17/config.json", "bytes": 167, "sha256": "5ce840552cdf3703fa29133818f11e6d8d9ac31577360d792cf397bb53b79d12"},
+    "lightfm_interactions": {"path": "outputs/recommendation-evidence/rec-ev-019c/cache/B8_LIGHTFM-T003-S17/interactions.npz", "bytes": 13413796, "sha256": "cc15c50c170279d15523dab1051b11be4c03f7c8a7b1f321c2b3bf88afba04eb"},
+    "lightfm_item_features": {"path": "outputs/recommendation-evidence/rec-ev-019c/cache/B8_LIGHTFM-T003-S17/item-features.npz", "bytes": 1720759, "sha256": "8d7221098b1d5bc66b6c2f207d5124d07627f5303afc852a2e39b7dc3d87fc39"},
+    "lightfm_result": {"path": "outputs/recommendation-evidence/rec-ev-019c/cache/B8_LIGHTFM-T003-S17/result.npz", "bytes": 19946732, "sha256": "da3414ef1a18cbe515e319a93f04ca5498e76669ab756680384e8f82bc918c35"}
+  },
+  "forbidden_input_artifacts": [
+    "outputs/recommendation-evidence/global-time-v1/test.parquet",
+    "outputs/recommendation-evidence/rec-ev-019a/binary-prefixes.parquet",
+    "outputs/recommendation-evidence/rec-ev-019a/evaluation-windows.parquet",
+    "outputs/recommendation-evidence/rec-ev-019a/router-train-binary-prefixes.parquet",
+    "outputs/recommendation-evidence/rec-ev-019a/router-train-evaluation-windows.parquet",
+    "outputs/recommendation-evidence/rec-ev-019a/locked-test-binary-prefixes.parquet",
+    "outputs/recommendation-evidence/rec-ev-019a/locked-test-evaluation-windows.parquet",
+    "outputs/recommendation-evidence/rec-ev-019d/predictions.parquet"
+  ],
+  "role_firewall": {
+    "file_allowlist_enforced_before_open": true,
+    "reject_unknown_paths": true,
+    "validation_role_literal": "validation-019f-temporal",
+    "validation_bucket_range": [50, 59],
+    "test_mode_or_test_flag_forbidden": true,
+    "raw_user_id_forbidden_in_outputs": true
+  },
+  "episode": {
+    "source": "VALIDATION_PARQUET_BUCKETS_50_THROUGH_59_ONLY",
+    "historical_boundary": "AFTER_REC_EV_019A_K10_TENTH_SELECTED_SOURCE_POSITION_AND_ITS_NEXT_TEN_ORIGINAL_OBSERVATIONS",
+    "tail_start_position": "HISTORICAL_K10_TENTH_SOURCE_POSITION_PLUS_11",
+    "relative_utility_reset_at_tail": true,
+    "binary_shrinkage_lambda": 10.0,
+    "binary_relative_like_min": 0.15,
+    "binary_relative_dislike_max": -0.15,
+    "prefix": "FIRST_10_NON_NEUTRAL_BINARY_LABELS_IN_RESET_TAIL",
+    "future_window": "EXACTLY_10_ORIGINAL_OBSERVATIONS_IMMEDIATELY_AFTER_THE_NEW_TENTH_SELECTION",
+    "future_positive_midrank_min": 0.65,
+    "future_negative_midrank_max": 0.35,
+    "historical_source_row_overlap_required": 0,
+    "user_overlap_allowed": true,
+    "ordering": ["TIMESTAMP_ASC", "MOVIE_ID_ASC"],
+    "source_row_id": "USER_KEY_PLUS_ZERO_BASED_SOURCE_POSITION"
+  },
+  "cohort": {
+    "tuning_exclusion": "UNION_OF_REC_EV_019C_K5_AND_K10_TUNING_PANEL_USER_KEYS_BEFORE_FRESH_FUTURE_LABELS",
+    "expected_tuning_union_users_observed": 477,
+    "structural_definition": "HAS_NEW_K10_PREFIX_AND_EXACTLY_10_FRESH_FUTURE_OBSERVATIONS_AFTER_TUNING_EXCLUSION",
+    "expected_structural_users_observed": 1021,
+    "strict_definition": "STRUCTURAL_AND_FUTURE_POSITIVE_COUNT_GTE_3_AND_AT_LEAST_ONE_FUTURE_POSITIVE_IN_FIXED_CANDIDATE_41625",
+    "expected_strict_users_observed": 802,
+    "observed_expectation_mismatch_policy": "FAIL_CLOSED_AND_REPORT_DIRECTLY_COMPUTED_COUNTS;_DO_NOT_FORCE_EXPECTATIONS"
+  },
+  "model": {
+    "primary": "B8_LIGHTFM",
+    "trial_id": "B8_LIGHTFM-T003",
+    "seed": 17,
+    "fallback": "B0_MOVIELENS_BAYESIAN_RATING_T003",
+    "candidate_count": 41625,
+    "lightfm_config": {"dimension": 128, "epochs": 10, "item_alpha": 0.000001, "learning_rate": 0.05, "learning_schedule": "adagrad", "seed": 17, "user_alpha": 0.000001},
+    "target_fold_in": {"algorithm": "REC_EV_019C_CUSTOM_LOGISTIC_FOLD_IN_WITH_ITEM_PARAMETERS_FROZEN", "epochs": 80, "requires_candidate_valid_positive_and_negative_anchor": true},
+    "fit_refit_threshold_and_search_forbidden": true,
+    "rec_ev_019d_prediction_reuse_allowed": false,
+    "base_cache": {"exact_hash_required": true, "external_artifact_uri": null, "commit_only_third_party_reproducible": false, "limitation": "The raw source and large frozen cache are local ignored artifacts with no external artifact URI; a commit-only third party cannot reproduce the run."}
+  },
+  "frozen_routing_semantics": {
+    "comparator": {"id": "K5_PROFILE_COMMON_K10_SEEN_MASK", "source_estimand": "COMMON_K10_SEEN_MASK", "source_arm": "K5", "seen_mask": "COMMON_K10_CANDIDATE_VALID_SEEN_MASK"},
+    "candidate": {
+      "id": "NO_RETUNE_INCREMENTAL_APPLICABILITY_ROUTER",
+      "parameters": [],
+      "thresholds": [],
+      "candidate_search_allowed": false,
+      "seen_mask": "COMMON_K10_CANDIDATE_VALID_SEEN_MASK",
+      "routing_priority": [
+        {"order": 1, "when": "K5_HAS_CANDIDATE_VALID_POSITIVE_AND_NEGATIVE_ANCHOR", "source_arm": "K5", "model": "K5_FOLD_IN", "stratum": "BOTH_LIGHTFM"},
+        {"order": 2, "when": "K5_NOT_APPLICABLE_AND_K10_HAS_BOTH_ANCHORS", "source_arm": "K10", "model": "K10_FOLD_IN", "stratum": "K10_NEWLY_APPLICABLE"},
+        {"order": 3, "when": "K10_NOT_APPLICABLE", "source_arm": "K5", "model": "B0", "stratum": "BOTH_FALLBACK"}
+      ]
+    }
+  },
+  "scoring": {
+    "profiles": ["K5_FIRST_FIVE_FRESH_PREFIX_ROWS", "K10_FIRST_TEN_FRESH_PREFIX_ROWS"],
+    "full_catalog_rescore_required_for_every_strict_user_and_both_profiles": true,
+    "common_seen_mask": "ALL_CANDIDATE_VALID_ITEMS_IN_FRESH_K10_PREFIX",
+    "tie_break": ["EFFECTIVE_SCORE_DESC", "MOVIE_ID_ASC"],
+    "top_candidates": 500,
+    "top_k": 10,
+    "positive_injection": false
+  },
+  "metrics": {
+    "paired_candidate_minus_comparator": ["NDCG_AT_10", "RECALL_AT_10", "MRR_AT_10", "CANDIDATE_RECALL_AT_500", "POSITIVE_MEAN_RANK_PERCENTILE", "HARM_AT_2"],
+    "operational": ["FALLBACK_RATE", "APPLICABILITY_RATE", "ROUTING_STRATUM"],
+    "stratified_audit": true,
+    "benefit_harm_user_counts": {"benefit": "DELTA_NDCG_AT_10_GT_0", "neutral": "DELTA_NDCG_AT_10_EQ_0", "harm": "DELTA_NDCG_AT_10_LT_0"},
+    "candidate_recall_and_positive_rank_are_non_gate_but_any_degradation_must_be_reported": true
+  },
+  "bootstrap": {"unit": "USER", "method": "PERCENTILE", "iterations": 10000, "seed": 20260924, "ndcg_interval": "TWO_SIDED_95_PERCENT_2_5_AND_97_5_PERCENTILES", "harm_interval": "ONE_SIDED_95_PERCENT_UPPER_95TH_PERCENTILE"},
+  "decision_rule": {
+    "evaluated_on": "STRICT_COHORT_ONLY",
+    "priority_is_normative": true,
+    "thresholds": {"harm_at_2_delta_one_sided_95_upper_max": 0.005, "mean_delta_ndcg_at_10_min": 0.005, "ndcg_two_sided_95_lower_strictly_greater_than": 0.0},
+    "priority": [
+      {"order": 1, "status": "FAIL", "when": "HARM_AT_2_ONE_SIDED_95_UPPER_GT_0_005"},
+      {"order": 2, "status": "PASS_INDEPENDENT_TEMPORAL_WINDOW_REQUIRES_TARGET_DOMAIN_CONFIRMATION", "when": "MEAN_NDCG_DELTA_GTE_0_005_AND_NDCG_95_LOWER_GT_0"},
+      {"order": 3, "status": "INCONCLUSIVE", "when": "OTHERWISE"}
+    ]
+  },
+  "leakage_lock": {
+    "path": "outputs/recommendation-evidence/rec-ev-019f/protocol-lock.json",
+    "must_be_created_from_clean_preregistration_commit_before": "ANY_REC_EV_019F_RANKING_METRIC_OR_RESULT",
+    "required_attestations": ["CONTRACT_SHA256", "PREREGISTRATION_SHA256", "PREREGISTERED_SPEC_SHA256", "SOURCE_ARTIFACT_PATH_SIZE_SHA256", "RUNNER_SHA256", "VERIFIER_SHA256", "CONTRACT_VALIDATOR_SHA256", "GIT_REVISION", "GIT_DIRTY_FALSE", "RANKING_METRICS_READ_FALSE", "ELIGIBILITY_COUNTS_OBSERVED_TRUE"],
+    "post_lock_contract_spec_source_runner_or_verifier_change_forbidden": true
+  },
+  "resource_bounds": {"user_batch_size_max": 32, "candidate_count": 41625, "checkpoint_after_each_user_batch": true, "resume_required_for_real_run": true, "full_score_matrix_persistence_forbidden": true},
+  "output_root": "outputs/recommendation-evidence/rec-ev-019f",
+  "outputs": {
+    "source_manifest": "source-manifest.json",
+    "protocol_lock": "protocol-lock.json",
+    "structural_cohort": "structural-cohort.parquet",
+    "strict_cohort": "strict-cohort.parquet",
+    "prefixes": "fresh-prefixes.parquet",
+    "windows": "fresh-windows.parquet",
+    "arm_definitions": "arm-definitions.parquet",
+    "rankings": "rankings-top500.parquet",
+    "user_arm_metrics": "user-arm-metrics.parquet",
+    "paired_deltas": "paired-deltas.parquet",
+    "strata": "strata-summary.json",
+    "result": "result.json",
+    "progress": "run-progress.json",
+    "checkpoints": "checkpoints"
+  }
+}

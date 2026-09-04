@@ -240,6 +240,7 @@ def validate_backlog(backlog: dict[str, Any]) -> None:
         "TASK-REC-EV-019C": "DONE",
         "TASK-REC-EV-019D": "DONE",
         "TASK-REC-EV-019E": "DONE",
+        "TASK-REC-EV-019F": "PREREGISTERED_NOT_RUN",
         "TASK-REC-EV-019": "PENDING",
         "TASK-REC-EV-020": "PENDING",
         "TASK-REC-EV-021": "PENDING",
@@ -254,7 +255,7 @@ def validate_backlog(backlog: dict[str, Any]) -> None:
             raise RuntimeError(f"backlog task is missing or has wrong status: {task_id}")
         if not tasks[task_id].get("outputs"):
             raise RuntimeError(f"backlog task has no outputs: {task_id}")
-    for task_id in ("TASK-REC-EV-019P", "TASK-REC-EV-019A", "TASK-REC-EV-019B", "TASK-REC-EV-019C", "TASK-REC-EV-019D", "TASK-REC-EV-019E", "TASK-REC-EV-019"):
+    for task_id in ("TASK-REC-EV-019P", "TASK-REC-EV-019A", "TASK-REC-EV-019B", "TASK-REC-EV-019C", "TASK-REC-EV-019D", "TASK-REC-EV-019E", "TASK-REC-EV-019F", "TASK-REC-EV-019"):
         if not tasks[task_id].get("verify"):
             raise RuntimeError(f"executable verification is missing: {task_id}")
     expected_contracts = {
@@ -382,8 +383,28 @@ def validate_backlog(backlog: dict[str, Any]) -> None:
     for required_text in ("1053", "661/277/115", "10000", "70/957/26", "PASS_POST_HOC_VALIDATION_REQUIRES_FRESH_CONFIRMATION"):
         if required_text not in verify_019e:
             raise RuntimeError(f"019E verification boundary is incomplete: {required_text}")
-    if tasks["TASK-REC-EV-019"].get("depends_on") != ["TASK-REC-EV-019E"]:
-        raise RuntimeError("binary product decision does not depend on 019E and fresh confirmation")
+    task_019f = tasks["TASK-REC-EV-019F"]
+    if task_019f.get("artifact_contract") != "docs/recommendation/contracts/rec-ev-019f-independent-temporal-routing.json":
+        raise RuntimeError("019F artifact contract is missing from backlog")
+    if task_019f.get("depends_on") != ["TASK-REC-EV-019E"]:
+        raise RuntimeError("019F does not depend on frozen 019E routing")
+    if task_019f.get("current_authorization") != "VALIDATION_SOURCE_ROW_WINDOW_CONFIRMATION_ONLY":
+        raise RuntimeError("019F authority boundary is missing")
+    if task_019f.get("validation_result") != "NOT_RUN" or task_019f.get("locked_test_authorization") != "FORBIDDEN":
+        raise RuntimeError("019F preregistered-not-run boundary differs")
+    if task_019f.get("commands") != {
+        "contract": "npm run recommendation:019f:contract:check",
+        "lock": "npm run recommendation:019f:lock",
+        "run": "npm run recommendation:019f:run",
+        "full_rescore_verify": "npm run recommendation:019f:check",
+    }:
+        raise RuntimeError("019F commands are incomplete")
+    verify_019f = "\n".join(task_019f.get("verify", []))
+    for required_text in ("1021", "802", "629", "173", "31", "source-row/window", "user_independent=false"):
+        if required_text not in verify_019f:
+            raise RuntimeError(f"019F preregistration boundary is incomplete: {required_text}")
+    if tasks["TASK-REC-EV-019"].get("depends_on") != ["TASK-REC-EV-019F"]:
+        raise RuntimeError("binary product decision does not depend on 019F temporal confirmation")
 
 
 def validate_current_product_boundary() -> None:
@@ -708,13 +729,17 @@ def validate() -> dict[str, Any]:
         "docs/recommendation/contracts/rec-ev-019e-no-retune-incremental-applicability-gate.json"
     ))
     completion_019e = validate_019e_completion_manifest()
+    from validate_rec_ev_019f_contract import validate as validate_019f_contract
+    contract_019f = validate_019f_contract(read_json(
+        "docs/recommendation/contracts/rec-ev-019f-independent-temporal-routing.json"
+    ), root=ROOT, check_files=True)
 
     return {
         "status": "PASS",
-        "decision": "REC_EV_019E_POST_HOC_PASS_REQUIRES_FRESH_CONFIRMATION_TEST_LOCKED",
-        "scope": "REC-EV-019E_POST_HOC_MITIGATION_COMPLETE_FRESH_CONFIRMATION_REQUIRED_LOCKED_TEST_AND_PRODUCT_POLICY_UNCHANGED",
-        "next_ready_tasks": [],
-        "next_phase": "PREREGISTER_FRESH_TARGET_INDEPENDENT_VALIDATION_WITHOUT_OPENING_LOCKED_TEST",
+        "decision": "REC_EV_019F_PREREGISTERED_SOURCE_ROW_WINDOW_CONFIRMATION_NOT_RUN_TEST_LOCKED",
+        "scope": "REC-EV-019F_PREREGISTERED_SOURCE_ROW_WINDOW_NOT_USER_INDEPENDENT_LOCKED_TEST_AND_PRODUCT_POLICY_UNCHANGED",
+        "next_ready_tasks": ["TASK-REC-EV-019F_PHASE_2"],
+        "next_phase": "CREATE_LOCK_FROM_CLEAN_PREREGISTRATION_COMMIT_THEN_RUN_019F_VALIDATION",
         "rec_ev_019a_status": cohort_build["status"],
         "rec_ev_019a_final_identity_k10_users": cohort_build["validation"]["locked_test_k10_final_identity_eligible"],
         "rec_ev_019b_status": feature_build["status"],
@@ -733,6 +758,10 @@ def validate() -> dict[str, Any]:
         "rec_ev_019e_validation_status": completion_019e["status"],
         "rec_ev_019e_contract_status": contract_019e["status"],
         "rec_ev_019e_fresh_confirmation_required": completion_019e["fresh_target_independent_validation_required"],
+        "rec_ev_019f_contract_status": contract_019f["status"],
+        "rec_ev_019f_validation_status": "NOT_RUN",
+        "rec_ev_019f_independence_unit": contract_019f["independence_unit"],
+        "rec_ev_019f_user_independent": contract_019f["user_independent"],
         "rec_ev_019c_full_catalog_user_item_scores": resource_019c["full_catalog_user_item_scores"],
         "rec_ev_019c_b8_base_update_upper_bound": resource_019c["b8_base_update_upper_bound"],
         "rec_ev_019c_b4_pair_update_upper_bound": resource_019c["b4_pair_update_upper_bound"],
