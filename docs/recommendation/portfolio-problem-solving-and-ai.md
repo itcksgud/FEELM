@@ -124,7 +124,7 @@ AI는 문제와 평가 기준을 대신 정하는 용도로 사용하지 않았�
 AI를 사용한 이유는 “AI 모델을 썼다”는 말을 만들기 위해서가 아니다. 제한된 시간에 여러 가설을 같은
 조건으로 구현하고, 사람이 결과의 의미와 한계를 판단하는 데 필요한 비교 자료를 만들기 위해서였다.
 
-## 5. REC-EV-019C·019D·019E 결과와 판단
+## 5. REC-EV-019C·019D·019E·019F 결과와 판단
 
 K별 256명 tuning panel을 제외한 confirmatory 보조 비교에서도 LightFM T003은 B0보다 높았다. K5는
 1,358명에서 `+0.03331` (95% CI `[0.02582, 0.04114]`), K10은 1,223명에서 `+0.04532`
@@ -153,6 +153,14 @@ REC-EV-019D confirmatory 1,053명에서는 K5 `61`, K10 `34`다. 서로 다른 �
 candidate recall@500은 `-0.020893`였고 benefit/neutral/harm은 `70/957/26`이었다. 그래서 성공을
 `PASS_POST_HOC_VALIDATION_REQUIRES_FRESH_CONFIRMATION`으로 제한하고 fresh target-independent Validation
 전에는 champion이나 제품 정책을 바꾸지 않았다.
+
+REC-EV-019F에서는 frozen 019E rule을 기존 episode 뒤의 새 source row와 future window에 적용했다. 이는
+사용자 독립이 아니라 source-row/window 독립이다. tuning union 477명을 future label 전에 제외한 structural
+1,021명 중 strict 802명에서 ΔNDCG는 `+0.003617 [0.000291, 0.007239]`, Harm upper는 `0.003741`이었다.
+안전 한계는 넘지 않았지만 mean SESOI 0.005에 못 미쳐 `INCONCLUSIVE`로 판정했다. candidate recall@500
+`-0.012469`와 positive rank percentile `+0.020316` 악화도 함께 남겼다. 802명 전원의 K5/K10 1,604개
+full-catalog ranking을 독립 재계산해 exact Top-10/Top-500과 source-row overlap 0을 검증했지만, 이 결과를
+한국 사용자·한국 영화·최신 영화 또는 제품 정책 confirmation으로 확대하지 않았다.
 
 재현성 감사에서는 019D의 5,916개 ranking을 hashed LightFM item representation에서 full-catalog로 다시
 계산해 exact Top-10/Top-500, positive mean rank percentile, aggregate를 검증했다. 과거 lock에 없던
@@ -187,8 +195,9 @@ E5 임베딩으로 영화 콘텐츠를 표현하는 방법을 시도했습니다
 tuning panel을 제외해도 LightFM은 K5와 K10 각각에서 인기도보다 높았습니다. 처음 실험의 K5와 K10은
 사용자와 미래 구간이 달라 우열을 정하지 않았고, 후속 실험에서 같은 사용자·같은 미래를 고정했습니다.
 first10의 NDCG는 개선됐지만 Harm@2 안전 한계를 넘어 사전 규칙대로 실패 처리하고 K10 정책을 채택하지
-않았습니다. 이후 적용 가능한 사용자만 전환하는 규칙은 post-hoc Gate를 통과했지만 같은 집단을 재사용해
-fresh confirmation이 필요하다고 제한했습니다. 양방향 신호는 fallback 설계의 적용 전제라 효과라고
+않았습니다. 이후 적용 가능한 사용자만 전환하는 규칙은 post-hoc Gate를 통과했지만, 뒤쪽 source-row/window
+확인은 mean SESOI 미달로 `INCONCLUSIVE`였습니다. 사용자 독립이나 목표 도메인 확인으로 부풀리지 않고 제품
+채택을 보류했습니다. 양방향 신호는 fallback 설계의 적용 전제라 효과라고
 주장하지 않았습니다. positive의
 약 96%가 인기 Q4에 몰렸고 한국어 원어와 2020년 이후 영화는 표본이 너무 작거나 0이었습니다. 평균 개선과
 처음 문제의 해결을 분리해 판단하고, Locked Test와 제품 정책을 그대로 유지한 경험입니다.
@@ -222,5 +231,6 @@ fresh confirmation이 필요하다고 제한했습니다. 양방향 신호는 fa
 - “K10이 K5보다 좋으므로 기본값으로 채택했다” — same-window NDCG는 개선됐지만 사전 Harm@2 안전 Gate를
   실패했고 primary는 양 arm에 K10 seen mask를 쓴 통제 ablation이다.
 - “양방향 신호가 효과를 냈다” — 양쪽 valid anchor는 LightFM 적용 전제이며 한쪽이면 B0로 fallback한다.
+- “019F가 독립 사용자로 019E를 확인했다” — 독립성은 source-row/window에만 있고 결과도 `INCONCLUSIVE`다.
 - “저인기·한국 영화·신작에서 실패했다” — 작은 표본 또는 positive 0으로 검정력이 없다.
 - 구현 중 잘못 설계한 split, 인증, 라이브러리 설정을 고친 일을 핵심 문제 해결로 포장하지 않는다.

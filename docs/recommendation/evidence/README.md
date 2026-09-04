@@ -30,7 +30,7 @@
 | `REC-EV-019C` validation suite | `PASS_VALIDATION_SELECTION_LOCKED` | 각 K 안에서 LightFM T003-B0 confirmatory paired CI가 0보다 큼; K 직접 비교·양방향 효과·희소 slice 품질 결론 금지, `locked_test_used=false`, `champion=null`, `product_policy_updated=false` |
 | `REC-EV-019D` same-window prefix ablation | `FAIL_SAFETY_MARGIN_EXCEEDED` | confirmatory 1,053명에서 NDCG delta `+0.02656 [0.01784, 0.03520]`이나 Harm@2 one-sided upper `0.01235>0.005`; K10 정책 채택 금지 |
 | `REC-EV-019E` no-retune incremental applicability | `PASS_POST_HOC_VALIDATION_REQUIRES_FRESH_CONFIRMATION` | 019D를 본 뒤 같은 1,053명을 재사용한 완화: ΔNDCG `+0.013997 [0.008433, 0.019758]`, Harm upper `0.003799`; 새 confirmatory evidence·champion·정책 승인 아님 |
-| `REC-EV-019F` independent temporal routing | `PREREGISTERED_NOT_RUN` | 019E frozen routing을 새 source-row/window episode에서 확인하도록 사전등록; 사용자 독립이 아니며 관측된 structural 1,021·strict 802 기대를 공개, ranking metric은 아직 없음 |
+| `REC-EV-019F` independent temporal routing | `INCONCLUSIVE` | source-row/window 독립(사용자 독립 아님) 802명: ΔNDCG `+0.003617 [0.000291, 0.007239]`로 mean SESOI 0.005 미달; Harm upper `0.003741`, candidate recall/rank percentile 악화 |
 | `REC-DATA-001` temporal feasibility | `COMPLETED_DESCRIPTIVE_AUDIT` | 동일 날짜 Rating 몰아넣기 확인; K25·90일·N500 고정 근거 `NO` |
 | `REC-DATA-002` Korean-origin coverage | `COMPLETED_PROXY_AUDIT` | KR item slice 가능; 한국 20대 또는 독립 KR 사용자 cohort 승인 `NO` |
 | `REC-DATA-003` evaluation redesign | `PROTOCOL_AMENDMENT_PROPOSED` | preference reconstruction 주 평가 + next-rating-session 보조 평가 제안 |
@@ -43,8 +43,8 @@
 
 실험을 실행하지 않은 상태에서 빈 결과 문서를 만들어 수치가 있는 것처럼 보이게 하지 않는다.
 `TASK-REC-EV-001~018`, `REC-EV-019P`, `REC-EV-019A/B`, `REC-EV-019C` Validation과
-`REC-EV-019D` full-rescore 감사와 `REC-EV-019E` post-hoc mitigation까지 완료됐고,
-`REC-EV-019F`는 새 temporal source-row/window 확인을 사전등록했지만 아직 실행하지 않았다.
+`REC-EV-019D` full-rescore 감사, `REC-EV-019E` post-hoc mitigation과 `REC-EV-019F` 새 temporal
+source-row/window 확인까지 완료됐다. 019F는 사용자 독립 confirmation이 아니며 결과는 `INCONCLUSIVE`다.
 현 개인 프로젝트 범위에서 실사용자 수집은 하지
 않으며, MovieLens offline 실험으로 개선 기록을 계속 남긴다. 따라서 현재 선택을 실사용자 성능·만족도
 주장으로 확대하지 않고 제품 노출 Gate는 닫힌 상태로 둔다. 실제 결과는
@@ -74,6 +74,7 @@
 [REC-EV-019D 동일 미래 구간 prefix ablation](./REC-EV-019D-prefix-ablation.md),
 [REC-EV-019E no-retune incremental applicability](./REC-EV-019E-no-retune-incremental-applicability.md),
 [REC-EV-019F temporal routing 사전등록](./REC-EV-019F-independent-temporal-routing-preregistration.md),
+[REC-EV-019F temporal routing 결과](./REC-EV-019F-independent-temporal-routing.md),
 [REC-DATA-001 시간·후보 감사](./REC-DATA-001-temporal-feasibility.md),
 [REC-DATA-002 한국-origin 감사](./REC-DATA-002-korean-origin-coverage.md),
 [REC-DATA-003 평가 설계 재판단](./REC-DATA-003-evaluation-design-decision.md),
@@ -104,6 +105,9 @@ segment 회귀를 잠그며 자체로 제품 Router나 ranking champion을 승�
 [REC-EV-019D Validation manifest](./manifests/rec-ev-019d-validation.json)는 결과 확인 전 생성한 계약·source
 hash·protocol lock과 same-window Top-500·paired delta·strata·안전성 `FAIL`을 잠근다. Locked Test와
 제품 정책은 바꾸지 않았고 `champion=null`이다.
+[REC-EV-019F Validation manifest](./manifests/rec-ev-019f-validation.json)는 clean preregistration SHA,
+source/code hash, 새 temporal episode 1,021/802명, 0 source-row overlap, paired `INCONCLUSIVE`와
+`locked_test_used=false`, `champion=null`, `product_policy_updated=false`를 잠근다.
 
 REC-EV-019C는 Validation runner가 역할 혼합 Parquet이나 Locked Test 파일을 열기 전에 실패하도록 입력
 allowlist를 고정했다. Bayesian·ItemKNN·BPR·structured/text content·LightFM·RRF의 trial 수, 사용자별
@@ -135,10 +139,13 @@ candidate recall@500은 `-0.020893`였다. 상태는
 `PASS_POST_HOC_VALIDATION_REQUIRES_FRESH_CONFIRMATION`이며 fresh target-independent Validation 전에는
 champion·제품 정책·Locked Test를 열지 않는다.
 
-REC-EV-019F는 이 frozen routing을 동일 Validation 사용자의 더 뒤쪽 행에 적용하는 별도 temporal episode다.
+REC-EV-019F는 이 frozen routing을 동일 Validation 사용자의 더 뒤쪽 행에 적용한 별도 temporal episode다.
 독립성은 source row/window에만 있으며 사용자 독립이 아니다. 구조 cohort 1,021명과 strict cohort 802명,
 기존 019A K10 overlap 629명·그 밖 173명·019A Validation에 완전히 새 사용자 31명은 이미 감사에서 본
-기대값으로 공개한다. Phase 1 사전등록 상태에서는 019F ranking metric이나 결과를 만들거나 읽지 않는다.
+기대값으로 공개했고 실제 실행에서 일치했다. ΔNDCG는 `+0.003617 [0.000291, 0.007239]`, Harm upper는
+`0.003741`이었다. 안전 한계는 넘지 않았지만 mean SESOI 0.005에 미달해 `INCONCLUSIVE`다. candidate
+recall@500 `-0.012469`와 positive mean rank percentile `+0.020316` 악화도 비-Gate라는 이유로 숨기지 않았다.
+독립 verifier는 802명 전원의 K5/K10 1,604개 full-catalog profile ranking을 exact Top-10/Top-500으로 재현했다.
 
 Cold-start 평가에서는 K1부터 별점 MAE가 통계적으로 줄었지만, K0 대비 3% 실질 개선 Gate는
 K10부터 통과했다. 초기 sampled ranking에서는 모든 K의 최적 Fold-in 가중치가 0이었으나,

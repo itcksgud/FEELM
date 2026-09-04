@@ -64,6 +64,7 @@
 | 019D 감사 보정 | `contracts/rec-ev-019d-post-run-audit-amendment.json` | 과거 lock 보존, exact cache/hash required·no-refit 및 full-rescore 범위 고정 |
 | 019E post-hoc 완화 계약 | `contracts/rec-ev-019e-no-retune-incremental-applicability-gate.json` | parameter-free incremental applicability routing과 제한된 PASS 상태 고정 |
 | 019E 결과 | `evidence/REC-EV-019E-no-retune-incremental-applicability.md` | 동일 1,053명 재사용 post-hoc PASS, fresh target-independent confirmation 필수 |
+| 019F 결과 | `evidence/REC-EV-019F-independent-temporal-routing.md` | source-row/window 독립 802명(사용자 독립 아님) `INCONCLUSIVE`; target-domain confirmation·champion·정책 승인 아님 |
 | 제품 서빙 경계 | `serving-contract.md` | 현재 승인 정책과 vNext 후보를 구분 |
 | 연구 보고서 | `personalized-hybrid-design-report.md` | 네 추천 Head의 가설·결과·한계를 연결 |
 

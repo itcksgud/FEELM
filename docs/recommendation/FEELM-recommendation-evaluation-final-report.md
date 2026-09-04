@@ -398,7 +398,12 @@ recall@500은 `-0.020893` 감소했고 benefit/neutral/harm은 `70/957/26`이었
 | 처음의 문제 | 이번에 얻은 답 | 남은 한계 |
 | --- | --- | --- |
 | MovieLens의 외국·인기 영화 편향과 수록 이후 영화 공백 | TMDB 구조·E5로 41,625편을 같은 공간에서 표현하고 콘텐츠·결합 모델을 비교할 수 있었다. | Q4 표본 교란이 크고 한국어 원어·2020년 이후·true cold item 정답이 부족하거나 없다. 문제는 미해결이다. |
-| 실사용 추천·시청·평가 순환 부재 | tuning panel을 제외해도 K5·K10 각각에서 LightFM T003의 B0 대비 우위를 확인했고, 019E 적용성 routing은 post-hoc Gate를 통과했다. | 019D 전체 K10 전환은 안전 실패했고 019E는 같은 집단 재사용이다. fresh target-independent confirmation이 필요하다. |
+| 실사용 추천·시청·평가 순환 부재 | tuning panel을 제외해도 K5·K10 각각에서 LightFM T003의 B0 대비 우위를 확인했고, 019E 적용성 routing은 post-hoc Gate를 통과했다. | 019D 전체 K10 전환은 안전 실패했고, 019F 새 source-row/window 확인도 mean SESOI 미달 `INCONCLUSIVE`다. target-domain confirmation이 필요하다. |
+
+REC-EV-019F는 기존 019A episode를 지난 새 source row와 future window를 사용했지만 사용자는 독립이 아니다.
+structural 1,021명 중 strict 802명에서 ΔNDCG는 `+0.003617 [0.000291, 0.007239]`, Harm upper는
+`0.003741`이었다. 안전 한계는 넘지 않았지만 mean SESOI 0.005에 못 미쳤다. candidate recall@500
+`-0.012469`와 positive rank percentile `+0.020316`도 악화해 frozen routing은 채택 근거가 되지 않았다.
 
 따라서 이번 실험의 성과는 “한국 영화 추천을 해결했다”가 아니다. 사용할 수 없는 실제 피드백을
 MovieLens 대리 평가로 바꾸고, 가능한 콘텐츠 보완책을 같은 조건에서 시험해 **어디까지 유효하고 어디서
@@ -408,7 +413,7 @@ MovieLens 대리 평가로 바꾸고, 가능한 콘텐츠 보완책을 같은 �
 
 ### 다음 검증 후보
 
-- 019E routing을 결과와 독립적인 새 Validation 집단에서 사전등록 confirmation한다.
+- 019F temporal 확인은 `INCONCLUSIVE`이므로 019E routing을 채택하지 않고 target-domain evidence 또는 별도 사전등록 가설을 요구한다.
 - LightFM T003은 각 K 안 B0 대비 challenger로 유지하되 019E post-hoc PASS를 제품 우위로 주장하지 않는다.
 - 양쪽 valid candidate anchor는 현재 구현의 적용 전제로만 둔다.
 - cutoff 정책의 결론은 전체 관측 범위 보조 실험 전까지 확정하지 않는다.
@@ -441,6 +446,8 @@ MovieLens 대리 평가로 바꾸고, 가능한 콘텐츠 보완책을 같은 �
 | REC-EV-019D same-window ablation | `FAIL_SAFETY_MARGIN_EXCEEDED` | NDCG 효능 기준 통과, Harm upper 0.01235로 전체 K10 전환 금지 |
 | REC-EV-019D full-rescore 감사 | PASS | 1,479명·5,916 ranking exact Top-10/Top-500·aggregate, boundary tie 0 |
 | REC-EV-019E no-retune routing | `PASS_POST_HOC_VALIDATION_REQUIRES_FRESH_CONFIRMATION` | ΔNDCG +0.013997, Harm upper 0.003799, 동일 1,053명 재사용 |
+| REC-EV-019F independent temporal routing | `INCONCLUSIVE` | source-row/window 독립 802명(사용자 독립 아님), ΔNDCG +0.003617로 SESOI 미달, Harm upper 0.003741 |
+| REC-EV-019F full-rescore 감사 | PASS | 802명·1,604 K5/K10 profile ranking exact Top-10/Top-500, source-row overlap 0 |
 | 새 개인화 champion | NOT SELECTED | `null`; 현재 제품 정책 유지 |
 | Locked Test | NOT USED | `locked_test_used=false` |
 
@@ -453,6 +460,9 @@ MovieLens 대리 평가로 바꾸고, 가능한 콘텐츠 보완책을 같은 �
 - 019D 결과: `docs/recommendation/evidence/REC-EV-019D-prefix-ablation.md`
 - 019E 결과: `docs/recommendation/evidence/REC-EV-019E-no-retune-incremental-applicability.md`
 - 019E manifest: `docs/recommendation/evidence/manifests/rec-ev-019e-validation.json`
+- 019F 결과: `docs/recommendation/evidence/REC-EV-019F-independent-temporal-routing.md`
+- 019F manifest: `docs/recommendation/evidence/manifests/rec-ev-019f-validation.json`
+- 019F 독립 검증: `py -3 scripts/verify_rec_ev_019f_independent_temporal_routing.py --manifest docs/recommendation/evidence/manifests/rec-ev-019f-validation.json --full-rescore-users all`
 - 실행: `py -3 scripts/run_rec_ev_019c_validation.py --mode validation --role validation --resume`
 - Validation 검증: `py -3 scripts/verify_rec_ev_019c_validation.py --manifest docs/recommendation/evidence/manifests/rec-ev-019c-validation.json`
 - 분석: `py -3 scripts/analyze_rec_ev_019c_validation.py`

@@ -1,0 +1,385 @@
+{
+  "artifacts": [
+    {
+      "bytes": 2624,
+      "path": "outputs/recommendation-evidence/rec-ev-019f/protocol-lock.json",
+      "sha256": "0723f600603321fde27996687ae0368538f4f16efb8e44fa8bf58775a05f6d69"
+    },
+    {
+      "bytes": 4736,
+      "path": "outputs/recommendation-evidence/rec-ev-019f/source-manifest.json",
+      "sha256": "fcee436089ac415fea55d0fb0a6a0a5105d2e10c237e1312d57fd5f8e9aca85e"
+    },
+    {
+      "bytes": 43244,
+      "path": "outputs/recommendation-evidence/rec-ev-019f/structural-cohort.parquet",
+      "sha256": "9e3c9f02f88fcfb1a777c400747c1c0e993e35fe3597607877039de25a83ff34"
+    },
+    {
+      "bytes": 32078,
+      "path": "outputs/recommendation-evidence/rec-ev-019f/strict-cohort.parquet",
+      "sha256": "ec48cd5a148b69ca6c907a8e32723b737abc07da7f5f58f4dc9491d3196425aa"
+    },
+    {
+      "bytes": 191935,
+      "path": "outputs/recommendation-evidence/rec-ev-019f/fresh-prefixes.parquet",
+      "sha256": "b1ab9127054cd39e8eb3377944b98735558271db48f3e7033b544e6f94638336"
+    },
+    {
+      "bytes": 180156,
+      "path": "outputs/recommendation-evidence/rec-ev-019f/fresh-windows.parquet",
+      "sha256": "9194159a797cc059c4288522aad6f36540a4679ab72b47b035a92ee9b6d5cd4f"
+    },
+    {
+      "bytes": 109054,
+      "path": "outputs/recommendation-evidence/rec-ev-019f/arm-definitions.parquet",
+      "sha256": "1c1d4032f9f8b0742f62fbbff444791df76b58dbfe3481bb545c6fb2a4b13d09"
+    },
+    {
+      "bytes": 2480432,
+      "path": "outputs/recommendation-evidence/rec-ev-019f/rankings-top500.parquet",
+      "sha256": "27a660782fbfd60abbc8cbe22f52f2b57b2a90ed25102e1cb7d4af5078d2a8ad"
+    },
+    {
+      "bytes": 118747,
+      "path": "outputs/recommendation-evidence/rec-ev-019f/user-arm-metrics.parquet",
+      "sha256": "500a53b18065dbbd7bdda803394237e3f1ec2823f1eeaa2b5e4dbc62274b71be"
+    },
+    {
+      "bytes": 35367,
+      "path": "outputs/recommendation-evidence/rec-ev-019f/paired-deltas.parquet",
+      "sha256": "bb4ffdbe0c3a593ac2311e96df3e6a13b87efeda054c8b44dd75f25d17ccc9de"
+    },
+    {
+      "bytes": 4903,
+      "path": "outputs/recommendation-evidence/rec-ev-019f/strata-summary.json",
+      "sha256": "7df97f024961563994aa545e9402307d88d397c652e065d289a84e8efffd05df"
+    },
+    {
+      "bytes": 8797,
+      "path": "outputs/recommendation-evidence/rec-ev-019f/result.json",
+      "sha256": "3e45aa03241f7ee60432f343529eb48d32669767c90d0b996805e85675c4a30d"
+    },
+    {
+      "bytes": 824,
+      "path": "outputs/recommendation-evidence/rec-ev-019f/run-progress.json",
+      "sha256": "564732fef7102be810e728dbb60d55be90efcded13ea4b989dd19c979a3be39e"
+    }
+  ],
+  "champion": null,
+  "contract_path": "docs/recommendation/contracts/rec-ev-019f-independent-temporal-routing.json",
+  "contract_sha256": "fd220fdfee43b4eeacd9c32f310929f254e41bdfab6e0f60bd7f0e2e2423877e",
+  "evidence_id": "REC-EV-019F",
+  "execution": {
+    "eligibility_counts_observed_before_lock": true,
+    "git_dirty_at_lock": false,
+    "git_revision": "fe9764e12fdbe0362a816d452b39b7ae1385cb42",
+    "lock_command": "py -3 scripts/run_rec_ev_019f_independent_temporal_routing.py --phase lock --role validation-019f-temporal",
+    "ranking_metrics_read_at_lock": false,
+    "resume": true,
+    "run_command": "py -3 scripts/run_rec_ev_019f_independent_temporal_routing.py --phase run --role validation-019f-temporal --resume",
+    "verify_command": "py -3 scripts/verify_rec_ev_019f_independent_temporal_routing.py --manifest docs/recommendation/evidence/manifests/rec-ev-019f-validation.json --full-rescore-users all"
+  },
+  "independence_unit": "SOURCE_ROW_AND_TEMPORAL_WINDOW",
+  "locked_test_used": false,
+  "preregistration_path": "docs/recommendation/evidence/REC-EV-019F-independent-temporal-routing-preregistration.md",
+  "preregistration_sha256": "ac2d587186693bec75fa9d9f9388f5de4551b38f628c058ec22c7931455ebaac",
+  "product_policy_updated": false,
+  "result": {
+    "aggregate_metrics": {
+      "CANDIDATE": {
+        "applicability_rate": 0.912718204488778,
+        "candidate_recall_at_500": 0.57356608478803,
+        "fallback_user_rate": 0.08728179551122195,
+        "harm_at_2": 0.014962593516209476,
+        "mrr_at_10": 0.05142649329058307,
+        "ndcg_at_10": 0.0316326974556839,
+        "positive_mean_rank_percentile": 0.3166045592005239,
+        "recall_at_10": 0.04078494240589003,
+        "users": 802
+      },
+      "COMPARATOR": {
+        "applicability_rate": 0.7082294264339152,
+        "candidate_recall_at_500": 0.5860349127182045,
+        "fallback_user_rate": 0.29177057356608477,
+        "harm_at_2": 0.01371571072319202,
+        "mrr_at_10": 0.048158868701262715,
+        "ndcg_at_10": 0.028016028073965228,
+        "positive_mean_rank_percentile": 0.2962880773941368,
+        "recall_at_10": 0.035010687566797295,
+        "users": 802
+      }
+    },
+    "champion": null,
+    "cohort": {
+      "completely_new_to_019a_validation_users": 31,
+      "existing_019a_k10_users": 629,
+      "outside_existing_019a_k10_users": 173,
+      "strict_users": 802,
+      "structural_users": 1021
+    },
+    "contract_id": "REC-EV-019F-INDEPENDENT-TEMPORAL-ROUTING-V1",
+    "contract_sha256": "fd220fdfee43b4eeacd9c32f310929f254e41bdfab6e0f60bd7f0e2e2423877e",
+    "decision": {
+      "reason": "TEMPORAL_WINDOW_SUCCESS_NOT_ESTABLISHED",
+      "status": "INCONCLUSIVE"
+    },
+    "decision_rule_priority": [
+      {
+        "order": 1,
+        "status": "FAIL",
+        "when": "HARM_AT_2_ONE_SIDED_95_UPPER_GT_0_005"
+      },
+      {
+        "order": 2,
+        "status": "PASS_INDEPENDENT_TEMPORAL_WINDOW_REQUIRES_TARGET_DOMAIN_CONFIRMATION",
+        "when": "MEAN_NDCG_DELTA_GTE_0_005_AND_NDCG_95_LOWER_GT_0"
+      },
+      {
+        "order": 3,
+        "status": "INCONCLUSIVE",
+        "when": "OTHERWISE"
+      }
+    ],
+    "eligibility_counts_observed_before_lock": true,
+    "evidence_classification": {
+      "does_not_establish": [
+        "KOREAN_USER_PERFORMANCE",
+        "KOREAN_MOVIE_PERFORMANCE",
+        "RECENT_MOVIE_PERFORMANCE",
+        "PRODUCT_POLICY_READINESS"
+      ],
+      "eligibility_counts_observed_before_preregistration": true,
+      "independence_unit": "SOURCE_ROW_AND_TEMPORAL_WINDOW",
+      "maximum_success_status": "PASS_INDEPENDENT_TEMPORAL_WINDOW_REQUIRES_TARGET_DOMAIN_CONFIRMATION",
+      "observed_audit_expectations_are_not_blind": {
+        "completely_new_to_019a_validation_users": 31,
+        "existing_019a_k10_users": 629,
+        "outside_existing_019a_k10_users": 173,
+        "strict_users": 802,
+        "structural_users": 1021
+      },
+      "preregistered_before_019f_ranking_metrics": true,
+      "source_row_independent_from_rec_ev_019a": true,
+      "target_domain_confirmation_required": true,
+      "user_independent": false
+    },
+    "evidence_id": "REC-EV-019F",
+    "execution_role": "VALIDATION_019F_TEMPORAL",
+    "independence_unit": "SOURCE_ROW_AND_TEMPORAL_WINDOW",
+    "interpretation_limits": [
+      "Independence is source-row and temporal-window independence, not user independence.",
+      "This does not establish Korean-user, Korean-movie, or recent-movie performance.",
+      "No status from this experiment can select a champion or update product policy."
+    ],
+    "lock_preceded_019f_ranking_metrics": true,
+    "locked_test_used": false,
+    "maximum_success_status": "PASS_INDEPENDENT_TEMPORAL_WINDOW_REQUIRES_TARGET_DOMAIN_CONFIRMATION",
+    "non_gate_degradation": {
+      "candidate_recall_at_500_degraded": true,
+      "is_gate": false,
+      "mean_delta_candidate_recall_at_500": -0.012468827930174564,
+      "mean_delta_positive_mean_rank_percentile": 0.020316481806387097,
+      "positive_mean_rank_percentile_degraded": true
+    },
+    "paired_strict": {
+      "benefit_harm_user_counts": {
+        "benefit": 27,
+        "harm": 13,
+        "neutral": 762
+      },
+      "bootstrap": {
+        "harm_mean": 0.0012468827930174563,
+        "harm_one_sided_95_upper": 0.003740648379052369,
+        "iterations": 10000,
+        "ndcg_mean": 0.003616669381718675,
+        "ndcg_two_sided_95": [
+          0.00029076236093404434,
+          0.007238695894209743
+        ],
+        "seed": 20260924
+      },
+      "users": 802
+    },
+    "product_policy_updated": false,
+    "protocol_lock_sha256": "0723f600603321fde27996687ae0368538f4f16efb8e44fa8bf58775a05f6d69",
+    "ranking_metrics_read_at_lock": false,
+    "reason": "TEMPORAL_WINDOW_SUCCESS_NOT_ESTABLISHED",
+    "rec_ev_019d_predictions_reused": false,
+    "routing_counts": {
+      "BOTH_FALLBACK": 70,
+      "BOTH_LIGHTFM": 568,
+      "K10_NEWLY_APPLICABLE": 164
+    },
+    "schema_version": 1,
+    "status": "INCONCLUSIVE",
+    "stratified_audit": {
+      "BOTH_FALLBACK": {
+        "aggregate": {
+          "CANDIDATE": {
+            "applicability_rate": 0.0,
+            "candidate_recall_at_500": 0.7,
+            "fallback_user_rate": 1.0,
+            "harm_at_2": 0.014285714285714285,
+            "mrr_at_10": 0.02709750566893424,
+            "ndcg_at_10": 0.01311741570169237,
+            "positive_mean_rank_percentile": 0.20495273050748444,
+            "recall_at_10": 0.017278911564625854,
+            "users": 70
+          },
+          "COMPARATOR": {
+            "applicability_rate": 0.0,
+            "candidate_recall_at_500": 0.7,
+            "fallback_user_rate": 1.0,
+            "harm_at_2": 0.014285714285714285,
+            "mrr_at_10": 0.02709750566893424,
+            "ndcg_at_10": 0.01311741570169237,
+            "positive_mean_rank_percentile": 0.20495273050748444,
+            "recall_at_10": 0.017278911564625854,
+            "users": 70
+          }
+        },
+        "benefit_harm_user_counts": {
+          "benefit": 0,
+          "harm": 0,
+          "neutral": 70
+        },
+        "mean_deltas": {
+          "delta_applicable_user": 0.0,
+          "delta_candidate_recall_at_500": 0.0,
+          "delta_fallback_user": 0.0,
+          "delta_harm_at_2": 0.0,
+          "delta_mrr_at_10": 0.0,
+          "delta_ndcg_at_10": 0.0,
+          "delta_positive_mean_rank_percentile": 0.0,
+          "delta_recall_at_10": 0.0
+        },
+        "users": 70
+      },
+      "BOTH_LIGHTFM": {
+        "aggregate": {
+          "CANDIDATE": {
+            "applicability_rate": 1.0,
+            "candidate_recall_at_500": 0.5369718309859155,
+            "fallback_user_rate": 0.0,
+            "harm_at_2": 0.017605633802816902,
+            "mrr_at_10": 0.05747331209479096,
+            "ndcg_at_10": 0.0333917668922907,
+            "positive_mean_rank_percentile": 0.3404984990187334,
+            "recall_at_10": 0.0409372904091214,
+            "users": 568
+          },
+          "COMPARATOR": {
+            "applicability_rate": 1.0,
+            "candidate_recall_at_500": 0.5369718309859155,
+            "fallback_user_rate": 0.0,
+            "harm_at_2": 0.017605633802816902,
+            "mrr_at_10": 0.05747331209479096,
+            "ndcg_at_10": 0.0333917668922907,
+            "positive_mean_rank_percentile": 0.3404984990187334,
+            "recall_at_10": 0.0409372904091214,
+            "users": 568
+          }
+        },
+        "benefit_harm_user_counts": {
+          "benefit": 0,
+          "harm": 0,
+          "neutral": 568
+        },
+        "mean_deltas": {
+          "delta_applicable_user": 0.0,
+          "delta_candidate_recall_at_500": 0.0,
+          "delta_fallback_user": 0.0,
+          "delta_harm_at_2": 0.0,
+          "delta_mrr_at_10": 0.0,
+          "delta_ndcg_at_10": 0.0,
+          "delta_positive_mean_rank_percentile": 0.0,
+          "delta_recall_at_10": 0.0
+        },
+        "users": 568
+      },
+      "K10_NEWLY_APPLICABLE": {
+        "aggregate": {
+          "CANDIDATE": {
+            "applicability_rate": 1.0,
+            "candidate_recall_at_500": 0.6463414634146342,
+            "fallback_user_rate": 0.0,
+            "harm_at_2": 0.006097560975609756,
+            "mrr_at_10": 0.04086817653890825,
+            "ndcg_at_10": 0.03344317478974944,
+            "positive_mean_rank_percentile": 0.2815062067113151,
+            "recall_at_10": 0.0502903600464576,
+            "users": 164
+          },
+          "COMPARATOR": {
+            "applicability_rate": 0.0,
+            "candidate_recall_at_500": 0.7073170731707317,
+            "fallback_user_rate": 1.0,
+            "harm_at_2": 0.0,
+            "mrr_at_10": 0.02488869531552458,
+            "ndcg_at_10": 0.015756779398661772,
+            "positive_mean_rank_percentile": 0.18215365543861725,
+            "recall_at_10": 0.022052845528455284,
+            "users": 164
+          }
+        },
+        "benefit_harm_user_counts": {
+          "benefit": 27,
+          "harm": 13,
+          "neutral": 124
+        },
+        "mean_deltas": {
+          "delta_applicable_user": 1.0,
+          "delta_candidate_recall_at_500": -0.06097560975609756,
+          "delta_fallback_user": -1.0,
+          "delta_harm_at_2": 0.006097560975609756,
+          "delta_mrr_at_10": 0.015979481223383666,
+          "delta_ndcg_at_10": 0.017686395391087666,
+          "delta_positive_mean_rank_percentile": 0.09935255127269788,
+          "delta_recall_at_10": 0.028237514518002327
+        },
+        "users": 164
+      }
+    },
+    "target_domain_confirmation_required": true,
+    "user_independent": false
+  },
+  "schema_version": 1,
+  "source_checksums": {
+    "candidate_core": "9bb0560cb0c3538160dce7568a4dc366e2937b1ec6019cbacfd7113cd34c910e",
+    "evaluation_protocol": "7356c6006897c259aa402c53c326d81b53bd7ceb11d5a9ace077176b7c3692db",
+    "global_time_manifest": "fa55e29328f0aa8ea5822c32ae964ee9a6ae5817479834a017cf2325bf39ab0a",
+    "historical_validation_prefixes": "eaeb04627d6a160351036350469f8d2894ea3464fc6897e97af04bcfce7da8c4",
+    "historical_validation_windows": "88fe1ab55491714358f985e1783e334bce24ffc08cf6f079e063a3ccd2547e56",
+    "lightfm_config": "5ce840552cdf3703fa29133818f11e6d8d9ac31577360d792cf397bb53b79d12",
+    "lightfm_interactions": "cc15c50c170279d15523dab1051b11be4c03f7c8a7b1f321c2b3bf88afba04eb",
+    "lightfm_item_features": "8d7221098b1d5bc66b6c2f207d5124d07627f5303afc852a2e39b7dc3d87fc39",
+    "lightfm_result": "da3414ef1a18cbe515e319a93f04ca5498e76669ab756680384e8f82bc918c35",
+    "validation_ratings": "b8668c0b7dffaafc90b0ce8e19ef22598c335e6e2e313c704eaf557da6265adf",
+    "validation_selection": "9fab1f5bfd184c246c916dce6daefa5ef4366520e2538559efc6c12e2e38c7df"
+  },
+  "source_code": {
+    "binary_label_helper": {
+      "path": "scripts/recommendation_binary_onboarding_preflight.py",
+      "sha256": "42809913f4a055ab56589261f646f7d5edfe81c10b512cc63720bc05eaa7bfd6"
+    },
+    "contract_validator": {
+      "path": "scripts/validate_rec_ev_019f_contract.py",
+      "sha256": "73e9c22c2bf7dae7bca46f30635c6071ab9d00c35a4fa33b9f64704fa7a22cba"
+    },
+    "runner": {
+      "path": "scripts/run_rec_ev_019f_independent_temporal_routing.py",
+      "sha256": "76c63fcdaa9aa50a8d3c00f978fe3a8322c5d6947c66fa397d4b3f5161547c54"
+    },
+    "user_key_helper": {
+      "path": "scripts/build_rec_ev_019a_cohorts.py",
+      "sha256": "6501ac6d1550636c4a28a3ec59aa77ffc520710673aa0357919d570e25f8cf3c"
+    },
+    "verifier": {
+      "path": "scripts/verify_rec_ev_019f_independent_temporal_routing.py",
+      "sha256": "04c7d55830bab25d0da91a30525b99a7c61d73aacb9d249ac04402beacd35377"
+    }
+  },
+  "status": "INCONCLUSIVE",
+  "user_independent": false
+}

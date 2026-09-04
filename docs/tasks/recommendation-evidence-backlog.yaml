@@ -564,10 +564,10 @@ tasks:
 
   - id: TASK-REC-EV-019F
     title: frozen 019E routing의 새 temporal episode 독립 확인
-    status: PREREGISTERED_NOT_RUN
+    status: DONE
     depends_on: [TASK-REC-EV-019E]
-    current_authorization: VALIDATION_SOURCE_ROW_WINDOW_CONFIRMATION_ONLY
-    validation_result: NOT_RUN
+    current_authorization: VALIDATION_COMPLETE_TARGET_DOMAIN_CONFIRMATION_STILL_REQUIRED
+    validation_result: INCONCLUSIVE
     locked_test_authorization: FORBIDDEN
     artifact_contract: docs/recommendation/contracts/rec-ev-019f-independent-temporal-routing.json
     purpose:
@@ -603,7 +603,7 @@ tasks:
       run: "npm run recommendation:019f:run"
       full_rescore_verify: "npm run recommendation:019f:check"
     verify:
-      - Phase 1 preregistration commit is pushed before protocol lock or any REC-EV-019F ranking metric
+      - Phase 1 preregistration commit was pushed before protocol lock or any REC-EV-019F ranking metric
       - lock records contract/spec/source/runner/verifier SHA, clean git revision, ranking_metrics_read=false, eligibility_counts_observed=true
       - tuning union 477 is excluded before fresh future labels; observed structural 1021 and strict 802 are disclosed as non-blind audit expectations
       - source-row/window independence is explicit and fresh prefix/window source-row overlap with the preceding 019A semantic episode is zero
@@ -612,6 +612,8 @@ tasks:
       - REC-EV-019E routing semantics are byte-equivalent; fit, refit, threshold, route search, and 019D prediction reuse are forbidden
       - paired bootstrap is 10000 users with seed 20260924 and Harm-first decision order
       - candidate recall@500 and positive rank percentile degradation are reported even though they are non-Gate metrics
+      - final result is INCONCLUSIVE because mean delta NDCG 0.003617 is below 0.005 despite positive CI lower and Harm upper 0.003741
+      - all 802 strict users and 1604 K5/K10 profile rankings pass independent full-rescore exact Top10/Top500 verification
       - locked_test_used=false, champion=null, product_policy_updated=false, and user_independent=false
     forbidden_changes:
       - Locked Test or mixed-role artifact access

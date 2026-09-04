@@ -42,6 +42,7 @@ const commands = [
   [python, [...pythonPrefix, 'scripts/verify_rec_ev_019e_no_retune_incremental_applicability.py', '--manifest', 'docs/recommendation/evidence/manifests/rec-ev-019e-validation.json']],
   [python, [...pythonPrefix, '-m', 'unittest', 'scripts/tests/test_rec_ev_019f_contract.py', 'scripts/tests/test_run_rec_ev_019f_independent_temporal_routing.py', 'scripts/tests/test_verify_rec_ev_019f_independent_temporal_routing.py']],
   [python, [...pythonPrefix, 'scripts/validate_rec_ev_019f_contract.py']],
+  [python, [...pythonPrefix, 'scripts/verify_rec_ev_019f_independent_temporal_routing.py', '--manifest', 'docs/recommendation/evidence/manifests/rec-ev-019f-validation.json', '--full-rescore-users', '64']],
   [python, [...pythonPrefix, 'scripts/validate_recommendation_vnext_readiness.py']],
   [python, [...pythonPrefix, 'scripts/verify_spark_als_scaling_evidence.py', '--result', 'performance/results/spark-als-scaling/latest.json']],
   [process.execPath, ['scripts/verify-recommendation-ui-comparison.mjs']],
@@ -59,4 +60,4 @@ for (const [command, args] of commands) {
   }
 }
 
-console.log('Recommendation evidence verification passed: unit protocols, REC-EV-004/004B/006/007/008/011/013/015/016/017/018/019P/019A, REC-EV-019C gates, REC-EV-019D independent full-rescore sampling, REC-EV-019E post-hoc routing, REC-EV-019F preregistered contract, decision packet, and Spark scaling evidence.')
+console.log('Recommendation evidence verification passed: unit protocols, REC-EV-004/004B/006/007/008/011/013/015/016/017/018/019P/019A, REC-EV-019C gates, REC-EV-019D/019F independent full-rescore sampling, REC-EV-019E post-hoc routing, decision packet, and Spark scaling evidence.')

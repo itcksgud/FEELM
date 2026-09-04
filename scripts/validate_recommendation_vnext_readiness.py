@@ -240,7 +240,7 @@ def validate_backlog(backlog: dict[str, Any]) -> None:
         "TASK-REC-EV-019C": "DONE",
         "TASK-REC-EV-019D": "DONE",
         "TASK-REC-EV-019E": "DONE",
-        "TASK-REC-EV-019F": "PREREGISTERED_NOT_RUN",
+        "TASK-REC-EV-019F": "DONE",
         "TASK-REC-EV-019": "PENDING",
         "TASK-REC-EV-020": "PENDING",
         "TASK-REC-EV-021": "PENDING",
@@ -388,10 +388,10 @@ def validate_backlog(backlog: dict[str, Any]) -> None:
         raise RuntimeError("019F artifact contract is missing from backlog")
     if task_019f.get("depends_on") != ["TASK-REC-EV-019E"]:
         raise RuntimeError("019F does not depend on frozen 019E routing")
-    if task_019f.get("current_authorization") != "VALIDATION_SOURCE_ROW_WINDOW_CONFIRMATION_ONLY":
+    if task_019f.get("current_authorization") != "VALIDATION_COMPLETE_TARGET_DOMAIN_CONFIRMATION_STILL_REQUIRED":
         raise RuntimeError("019F authority boundary is missing")
-    if task_019f.get("validation_result") != "NOT_RUN" or task_019f.get("locked_test_authorization") != "FORBIDDEN":
-        raise RuntimeError("019F preregistered-not-run boundary differs")
+    if task_019f.get("validation_result") != "INCONCLUSIVE" or task_019f.get("locked_test_authorization") != "FORBIDDEN":
+        raise RuntimeError("019F completed result boundary differs")
     if task_019f.get("commands") != {
         "contract": "npm run recommendation:019f:contract:check",
         "lock": "npm run recommendation:019f:lock",
@@ -400,9 +400,9 @@ def validate_backlog(backlog: dict[str, Any]) -> None:
     }:
         raise RuntimeError("019F commands are incomplete")
     verify_019f = "\n".join(task_019f.get("verify", []))
-    for required_text in ("1021", "802", "629", "173", "31", "source-row/window", "user_independent=false"):
+    for required_text in ("1021", "802", "629", "173", "31", "1604", "INCONCLUSIVE", "source-row/window", "user_independent=false"):
         if required_text not in verify_019f:
-            raise RuntimeError(f"019F preregistration boundary is incomplete: {required_text}")
+            raise RuntimeError(f"019F completion boundary is incomplete: {required_text}")
     if tasks["TASK-REC-EV-019"].get("depends_on") != ["TASK-REC-EV-019F"]:
         raise RuntimeError("binary product decision does not depend on 019F temporal confirmation")
 
@@ -617,6 +617,86 @@ def validate_019e_completion_manifest() -> dict[str, Any]:
     }
 
 
+def validate_019f_completion_manifest() -> dict[str, Any]:
+    contract_path = ROOT / "docs/recommendation/contracts/rec-ev-019f-independent-temporal-routing.json"
+    manifest_path = ROOT / "docs/recommendation/evidence/manifests/rec-ev-019f-validation.json"
+    contract = json.loads(contract_path.read_text(encoding="utf-8"))
+    manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
+    digest = hashlib.sha256(contract_path.read_bytes().replace(b"\r\n", b"\n")).hexdigest()
+    if manifest.get("evidence_id") != "REC-EV-019F" or manifest.get("contract_sha256") != digest:
+        raise RuntimeError("REC-EV-019F manifest contract identity differs")
+    if manifest.get("status") != "INCONCLUSIVE":
+        raise RuntimeError("REC-EV-019F inconclusive status differs")
+    result = manifest.get("result", {})
+    if result.get("status") != "INCONCLUSIVE" or result.get("reason") != "TEMPORAL_WINDOW_SUCCESS_NOT_ESTABLISHED":
+        raise RuntimeError("REC-EV-019F decision differs")
+    if result.get("independence_unit") != "SOURCE_ROW_AND_TEMPORAL_WINDOW" or result.get("user_independent") is not False:
+        raise RuntimeError("REC-EV-019F independence boundary differs")
+    if result.get("cohort") != {
+        "completely_new_to_019a_validation_users": 31,
+        "existing_019a_k10_users": 629,
+        "outside_existing_019a_k10_users": 173,
+        "strict_users": 802,
+        "structural_users": 1021,
+    }:
+        raise RuntimeError("REC-EV-019F cohort/overlap differs")
+    if result.get("routing_counts") != {
+        "BOTH_FALLBACK": 70,
+        "BOTH_LIGHTFM": 568,
+        "K10_NEWLY_APPLICABLE": 164,
+    }:
+        raise RuntimeError("REC-EV-019F routing strata differ")
+    paired = result.get("paired_strict", {})
+    bootstrap = paired.get("bootstrap", {})
+    if paired.get("users") != 802 or bootstrap.get("iterations") != 10000 or bootstrap.get("seed") != 20260924:
+        raise RuntimeError("REC-EV-019F paired bootstrap contract differs")
+    if bootstrap.get("harm_one_sided_95_upper", 1.0) > 0.005:
+        raise RuntimeError("REC-EV-019F Harm Gate differs")
+    if bootstrap.get("ndcg_two_sided_95", [0.0])[0] <= 0.0 or bootstrap.get("ndcg_mean", 1.0) >= 0.005:
+        raise RuntimeError("REC-EV-019F inconclusive efficacy boundary differs")
+    if paired.get("benefit_harm_user_counts") != {"benefit": 27, "harm": 13, "neutral": 762}:
+        raise RuntimeError("REC-EV-019F benefit/neutral/harm differs")
+    non_gate = result.get("non_gate_degradation", {})
+    if non_gate.get("candidate_recall_at_500_degraded") is not True or non_gate.get("positive_mean_rank_percentile_degraded") is not True:
+        raise RuntimeError("REC-EV-019F non-Gate degradation disclosure differs")
+    if result.get("maximum_success_status") != "PASS_INDEPENDENT_TEMPORAL_WINDOW_REQUIRES_TARGET_DOMAIN_CONFIRMATION":
+        raise RuntimeError("REC-EV-019F maximum status boundary differs")
+    execution = manifest.get("execution", {})
+    if execution.get("git_dirty_at_lock") is not False or len(str(execution.get("git_revision", ""))) != 40:
+        raise RuntimeError("REC-EV-019F clean git lock attestation differs")
+    if execution.get("ranking_metrics_read_at_lock") is not False or execution.get("eligibility_counts_observed_before_lock") is not True:
+        raise RuntimeError("REC-EV-019F lock timing/disclosure differs")
+    if set(manifest.get("source_code", {})) != {"runner", "verifier", "contract_validator", "binary_label_helper", "user_key_helper"}:
+        raise RuntimeError("REC-EV-019F source-code attestation differs")
+    evidence = result.get("evidence_classification", {})
+    if evidence.get("source_row_independent_from_rec_ev_019a") is not True:
+        raise RuntimeError("REC-EV-019F source-row overlap differs")
+    artifact_paths = {artifact.get("path") for artifact in manifest.get("artifacts", [])}
+    for required_path in (
+        contract["leakage_lock"]["path"],
+        f'{contract["output_root"]}/{contract["outputs"]["strata"]}',
+        f'{contract["output_root"]}/{contract["outputs"]["result"]}',
+    ):
+        if required_path not in artifact_paths:
+            raise RuntimeError(f"REC-EV-019F artifact attestation is missing: {required_path}")
+    for payload in (manifest, result):
+        if payload.get("locked_test_used") is not False:
+            raise RuntimeError("REC-EV-019F opened Locked Test")
+        if payload.get("champion") is not None:
+            raise RuntimeError("REC-EV-019F invented a champion")
+        if payload.get("product_policy_updated") is not False:
+            raise RuntimeError("REC-EV-019F changed product policy")
+    return {
+        "status": "INCONCLUSIVE",
+        "independence_unit": "SOURCE_ROW_AND_TEMPORAL_WINDOW",
+        "user_independent": False,
+        "strict_users": 802,
+        "locked_test_used": False,
+        "champion": None,
+        "product_policy_updated": False,
+    }
+
+
 def validate_019a_completion_manifest() -> dict[str, Any]:
     manifest = read_json("docs/recommendation/evidence/manifests/rec-ev-019a.json")
     contract = read_json("docs/recommendation/contracts/rec-ev-019a-artifacts.json")
@@ -733,13 +813,14 @@ def validate() -> dict[str, Any]:
     contract_019f = validate_019f_contract(read_json(
         "docs/recommendation/contracts/rec-ev-019f-independent-temporal-routing.json"
     ), root=ROOT, check_files=True)
+    completion_019f = validate_019f_completion_manifest()
 
     return {
         "status": "PASS",
-        "decision": "REC_EV_019F_PREREGISTERED_SOURCE_ROW_WINDOW_CONFIRMATION_NOT_RUN_TEST_LOCKED",
-        "scope": "REC-EV-019F_PREREGISTERED_SOURCE_ROW_WINDOW_NOT_USER_INDEPENDENT_LOCKED_TEST_AND_PRODUCT_POLICY_UNCHANGED",
-        "next_ready_tasks": ["TASK-REC-EV-019F_PHASE_2"],
-        "next_phase": "CREATE_LOCK_FROM_CLEAN_PREREGISTRATION_COMMIT_THEN_RUN_019F_VALIDATION",
+        "decision": "REC_EV_019F_INCONCLUSIVE_SOURCE_ROW_WINDOW_CONFIRMATION_TEST_LOCKED",
+        "scope": "REC-EV-019F_INCONCLUSIVE_SOURCE_ROW_WINDOW_NOT_USER_INDEPENDENT_LOCKED_TEST_AND_PRODUCT_POLICY_UNCHANGED",
+        "next_ready_tasks": [],
+        "next_phase": "TARGET_DOMAIN_CONFIRMATION_OR_NEW_PREREGISTERED_HYPOTHESIS_WITHOUT_OPENING_LOCKED_TEST",
         "rec_ev_019a_status": cohort_build["status"],
         "rec_ev_019a_final_identity_k10_users": cohort_build["validation"]["locked_test_k10_final_identity_eligible"],
         "rec_ev_019b_status": feature_build["status"],
@@ -759,9 +840,10 @@ def validate() -> dict[str, Any]:
         "rec_ev_019e_contract_status": contract_019e["status"],
         "rec_ev_019e_fresh_confirmation_required": completion_019e["fresh_target_independent_validation_required"],
         "rec_ev_019f_contract_status": contract_019f["status"],
-        "rec_ev_019f_validation_status": "NOT_RUN",
-        "rec_ev_019f_independence_unit": contract_019f["independence_unit"],
-        "rec_ev_019f_user_independent": contract_019f["user_independent"],
+        "rec_ev_019f_validation_status": completion_019f["status"],
+        "rec_ev_019f_independence_unit": completion_019f["independence_unit"],
+        "rec_ev_019f_user_independent": completion_019f["user_independent"],
+        "rec_ev_019f_strict_users": completion_019f["strict_users"],
         "rec_ev_019c_full_catalog_user_item_scores": resource_019c["full_catalog_user_item_scores"],
         "rec_ev_019c_b8_base_update_upper_bound": resource_019c["b8_base_update_upper_bound"],
         "rec_ev_019c_b4_pair_update_upper_bound": resource_019c["b4_pair_update_upper_bound"],
