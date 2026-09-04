@@ -128,6 +128,13 @@ champion은 아니다. 제품 C2B 카드의 예상 별점은 paired C1 규모 �
 표본 수가 드러난 취향 관측 근거를 비교한다. 이는 자기보고 만족도가 아니다. Explore05와 constrained
 2+1 v1은 relevance 손실 Gate를 실패해 비활성이다.
 
+REC-EV-019C 독립 감사 교정에서는 K별 256명 tuning panel을 제외해도 LightFM T003의 B0 대비 우위가
+유지됨을 확인했다. 다만 K5·K10은 사용자와 미래 구간이 달라 직접 비교하지 않고, 양쪽 신호는 현재
+fold-in의 적용 전제로만 해석한다. Q4 positive 집중, 한국어 원어 작은 표본, 2020년 이후 positive 0과
+true cold-item 후보 0 때문에 한국 영화·최신 영화 문제는 미해결이다. raw Parquet은 `outputs/` ignore에만
+있고 외부 artifact URI가 없어 commit 단독 제3자 재현도 불가능하다. `locked_test_used=false`,
+`champion=null`, `product_policy_updated=false`를 유지한다.
+
 집계값이 실제 추천 목록을 어떻게 바꾸는지는
 [MovieLens 사용자 A 추천 변화 사례](./docs/recommendation/evidence/REC-EV-016-user-case-a.md)에서 확인할 수 있다.
 동일한 비식별 사용자의 실제 영화 Top-10을 알고리즘별로 비교하지만, 이 한 사례로 모델을 채택하지는 않는다.

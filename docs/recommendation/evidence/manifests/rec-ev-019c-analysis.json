@@ -1,9 +1,9 @@
 {
   "artifacts": [
     {
-      "bytes": 129505,
+      "bytes": 195487,
       "path": "outputs/recommendation-evidence/rec-ev-019c/analysis-summary.json",
-      "sha256": "62a9b42bebde9ecf174f182301b16a24533bc14923e173a8f7b411da1824ea2f"
+      "sha256": "d42b32c15f3841eef1539e4c1b87d42617b2643daca2889e176b176397c3b34f"
     },
     {
       "bytes": 156133,
@@ -21,17 +21,24 @@
       "sha256": "5302fe870367558ee49268330e7ffda9723ecbe659c07ca10e58bd7ea4f6a828"
     },
     {
-      "bytes": 51857,
+      "bytes": 59317,
       "path": "docs/recommendation/figures/rec-ev-019c-stability.png",
-      "sha256": "754b5310bdd973b490c5ce079fd672aa7a0fe7d05e4139436a7e0ebe330e066f"
+      "sha256": "1612b5ef3994473835be8de8cdb94bee3a0a1d91da4fc9702b98f61808065c8c"
     },
     {
-      "bytes": 150712,
+      "bytes": 160435,
       "path": "docs/recommendation/figures/rec-ev-019c-item-slices.png",
-      "sha256": "daeffadec7e5e80e184bce54dc7b2e98877d97bc4a462b446b4723407cd92a28"
+      "sha256": "4d4cccebf29e7ec342cec7d99aea4531f9dc70d2707fe86b765cb832b8df4c82"
     }
   ],
   "evidence_id": "REC-EV-019C-ANALYSIS",
+  "reproducibility": {
+    "commit_only_third_party_reproduction": false,
+    "external_artifact_uri": null,
+    "limitation": "Raw Parquet artifacts are ignored under outputs and no external artifact URI is recorded; the commit alone cannot reproduce the analysis on a third-party checkout.",
+    "raw_artifact_root": "outputs/recommendation-evidence/rec-ev-019c",
+    "raw_artifacts_git_tracked": false
+  },
   "schema_version": 1,
   "source_validation_manifest": {
     "path": "docs/recommendation/evidence/manifests/rec-ev-019c-validation.json",
@@ -39,9 +46,13 @@
   },
   "status": "PASS_VALIDATION_ANALYSIS_ONLY",
   "validation": {
+    "champion": null,
     "champion_selected": false,
     "locked_test_opened": false,
+    "locked_test_used": false,
     "post_hoc_results_are_confirmatory": false,
-    "product_policy_changed": false
+    "product_policy_changed": false,
+    "product_policy_updated": false,
+    "tuning_panel_excluded_paired_is_confirmatory_auxiliary": true
   }
 }

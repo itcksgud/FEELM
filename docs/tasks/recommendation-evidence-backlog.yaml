@@ -332,9 +332,9 @@ tasks:
     locked_test_authorization: FORBIDDEN
     purpose:
       - MovieLens의 외국 영화 편향과 데이터 수록 이후 영화의 상호작용 공백을 TMDB 구조 특징과 E5 콘텐츠 벡터로 보완할 수 있는지 비교한다.
-      - 실제 추천 후 시청·평가 피드백을 수집할 수 없는 단계에서 MovieLens를 모델 학습·평가·검증 환경으로 사용해 초기 추천 정책을 결정한다.
+      - 실제 추천 후 시청·평가 피드백을 수집할 수 없는 단계에서 MovieLens를 모델 학습·평가·검증 환경으로 사용하되, 서로 다른 사용자·미래 구간의 K5/K10 우열은 결정하지 않는다.
     decision_questions:
-      - 초기 선호 입력은 K=5와 K=10 중 어느 조건이 유효한가
+      - 같은 사용자·같은 미래 구간 prefix ablation 전 K=5와 K=10에 대해 어디까지 말할 수 있는가
       - 인기도, ItemKNN, 관측 BPR, TMDB 구조·텍스트, LightFM, RRF 중 어느 모델이 기준선보다 나은가
       - 사용자 이력량, 입력 영화 인기도, 영화 인기도, 콘텐츠 정보 유무에 따라 어느 점수와 fallback을 우선할 것인가
       - MovieLens를 특정 시점 cutoff로 제한한 결과와 전체 관측 범위의 보조 결과를 어떻게 구분할 것인가
@@ -371,6 +371,7 @@ tasks:
       - scripts/analyze_rec_ev_019c_validation.py
       - scripts/tests/test_analyze_rec_ev_019c_validation.py
       - scripts/verify_rec_ev_019c_analysis.py
+      - scripts/tests/test_verify_rec_ev_019c_analysis.py
     outputs:
       - outputs/recommendation-evidence/rec-ev-019c/candidate-core-final.parquet
       - outputs/recommendation-evidence/rec-ev-019c/trial-registry.json
@@ -415,7 +416,7 @@ tasks:
       future_verify: "py -3 scripts/verify_rec_ev_019c_validation.py --manifest docs/recommendation/evidence/manifests/rec-ev-019c-validation.json"
     analysis_commands:
       analyze: "py -3 scripts/analyze_rec_ev_019c_validation.py"
-      unit: "py -3 -m unittest scripts/tests/test_analyze_rec_ev_019c_validation.py"
+      unit: "py -3 -m unittest scripts/tests/test_analyze_rec_ev_019c_validation.py scripts/tests/test_verify_rec_ev_019c_analysis.py"
       verify: "py -3 scripts/verify_rec_ev_019c_analysis.py --manifest docs/recommendation/evidence/manifests/rec-ev-019c-analysis.json"
     verify:
       - contract validator and mutation tests pass before runner implementation
@@ -426,6 +427,12 @@ tasks:
       - missing per-model feature invokes B0 fallback without removing a candidate
       - maximum 30 trials per model
       - Validation locks all parameters before Test
+      - LightFM T003 vs B0 confirmatory auxiliary excludes exactly 256 tuning users per K and recomputes paired mean and fixed-seed 2000-iteration bootstrap from raw Validation metrics
+      - K5/K10 quality is not compared directly because evaluation users and future windows differ; common-user absolute LightFM NDCG is diagnostic only
+      - raw both-signals users with insufficient valid candidate anchors are counted as K5 97 and K10 46 fallback users, not as evidence of a bidirectional-signal effect
+      - Q4 positive concentration, Korean-original Top500, release_year>=2020 zero-positive, and base-train-zero cold-item slices are recomputed from raw Parquet without omitting zeros
+      - raw Parquet remains outputs-ignored with no external artifact URI, so commit-only third-party reproduction is false
+      - locked_test_used=false, champion=null, and product_policy_updated=false
     forbidden_changes:
       - product API and database schema
       - APPROVED_C2A_INTERNAL_POPULARITY_ONLY

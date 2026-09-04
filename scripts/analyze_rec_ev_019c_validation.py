@@ -41,7 +41,16 @@ MODEL_LABELS = {
     "B9_RRF": "B9 RRF",
 }
 BASELINE = "B0_MOVIELENS_BAYESIAN_RATING"
+LIGHTFM = "B8_LIGHTFM"
 EPSILON = 1e-12
+CONFIRMATORY_BOOTSTRAP_ITERATIONS = 2_000
+CONFIRMATORY_BOOTSTRAP_SEED_BASE = 20260905
+RELEASE_YEAR_GROUPS = (
+    "RELEASE_BEFORE_2020",
+    "RELEASE_2020_OR_LATER",
+    "RELEASE_YEAR_UNKNOWN",
+)
+COLD_ITEM_GROUPS = ("BASE_TRAIN_ZERO", "BASE_TRAIN_OBSERVED")
 
 
 def _native(value: Any) -> Any:
@@ -178,8 +187,101 @@ def paired_summary(metrics: pd.DataFrame) -> list[dict[str, Any]]:
                     joined["safe_hit_at_2_candidate"].astype(float).mean()
                     - joined["safe_hit_at_2_baseline"].astype(float).mean()
                 ),
+                "bootstrap": {
+                    "unit": "user",
+                    "method": "percentile",
+                    "seed": 20260904 + k,
+                    "iterations": 10_000,
+                },
             })
     return rows
+
+
+def confirmatory_paired_summary(
+    metrics: pd.DataFrame,
+    tuning_panel: Mapping[str, Iterable[str]],
+) -> list[dict[str, Any]]:
+    """Recompute LightFM T003 vs B0 after excluding the K-specific tuning panel."""
+    rows: list[dict[str, Any]] = []
+    for k in (5, 10):
+        baseline = metrics.loc[
+            (metrics["k"] == k) & (metrics["model_id"] == BASELINE)
+        ].set_index("user_key")
+        candidate = metrics.loc[
+            (metrics["k"] == k) & (metrics["model_id"] == LIGHTFM)
+        ].set_index("user_key")
+        joined = candidate.join(baseline, lsuffix="_candidate", rsuffix="_baseline", how="inner")
+        panel = set(map(str, tuning_panel[str(k)]))
+        confirmatory = joined.loc[~joined.index.astype(str).isin(panel)]
+        delta = (
+            confirmatory["ndcg_at_10_candidate"]
+            - confirmatory["ndcg_at_10_baseline"]
+        ).to_numpy(dtype=np.float64)
+        seed = CONFIRMATORY_BOOTSTRAP_SEED_BASE + k
+        lower, upper = paired_bootstrap_ci(
+            delta,
+            seed=seed,
+            iterations=CONFIRMATORY_BOOTSTRAP_ITERATIONS,
+        )
+        rows.append({
+            "status": "CONFIRMATORY_AUXILIARY_TUNING_PANEL_EXCLUDED",
+            "k": k,
+            "model_id": LIGHTFM,
+            "baseline_model_id": BASELINE,
+            "users_before_exclusion": int(len(joined)),
+            "tuning_panel_users_excluded": int(joined.index.astype(str).isin(panel).sum()),
+            "users": int(len(confirmatory)),
+            "delta_ndcg_mean": float(delta.mean()),
+            "delta_ndcg_ci95": [lower, upper],
+            "bootstrap": {
+                "unit": "user",
+                "method": "percentile",
+                "seed": seed,
+                "iterations": CONFIRMATORY_BOOTSTRAP_ITERATIONS,
+            },
+        })
+    return rows
+
+
+def common_user_k_diagnostic(metrics: pd.DataFrame) -> dict[str, Any]:
+    """Compare absolute K5/K10 metrics on common users without claiming a K effect."""
+    by_model_k = {
+        (model_id, k): metrics.loc[
+            (metrics["model_id"] == model_id) & (metrics["k"] == k)
+        ].set_index("user_key")
+        for model_id in (BASELINE, LIGHTFM)
+        for k in (5, 10)
+    }
+    common = sorted(
+        set(by_model_k[(LIGHTFM, 5)].index.astype(str))
+        & set(by_model_k[(LIGHTFM, 10)].index.astype(str))
+        & set(by_model_k[(BASELINE, 5)].index.astype(str))
+        & set(by_model_k[(BASELINE, 10)].index.astype(str))
+    )
+    absolute = {
+        model_id: {
+            str(k): float(by_model_k[(model_id, k)].loc[common, "ndcg_at_10"].mean())
+            for k in (5, 10)
+        }
+        for model_id in (BASELINE, LIGHTFM)
+    }
+    return {
+        "status": "DIAGNOSTIC_COMMON_USERS_DIFFERENT_FUTURE_WINDOWS",
+        "users": len(common),
+        "same_users": True,
+        "same_future_window": False,
+        "absolute_ndcg_at_10": absolute,
+        "delta_vs_b0": {
+            str(k): float(
+                (
+                    by_model_k[(LIGHTFM, k)].loc[common, "ndcg_at_10"]
+                    - by_model_k[(BASELINE, k)].loc[common, "ndcg_at_10"]
+                ).mean()
+            )
+            for k in (5, 10)
+        },
+        "required_next_test": "SAME_USERS_SAME_FUTURE_WINDOW_PREFIX_ABLATION",
+    }
 
 
 def _quartile(series: pd.Series, prefix: str) -> pd.Series:
@@ -214,9 +316,18 @@ def build_user_contexts(metrics: pd.DataFrame, candidate: pd.DataFrame) -> pd.Da
 
     prefixes["input_rating_count"] = prefixes["movie_id"].map(count_by_movie)
     prefixes["structured_available"] = prefixes["movie_id"].map(available_by_movie).eq(True)
+    prefixes["valid_candidate_anchor"] = prefixes["input_rating_count"].notna()
+    prefixes["valid_positive_anchor"] = (
+        prefixes["valid_candidate_anchor"] & prefixes["binary_label"].eq(1)
+    )
+    prefixes["valid_negative_anchor"] = (
+        prefixes["valid_candidate_anchor"] & prefixes["binary_label"].eq(-1)
+    )
     prefix_context = prefixes.groupby(["user_key", "k"], observed=True).agg(
         prefix_positive=("binary_label", lambda value: int((value == 1).sum())),
         prefix_negative=("binary_label", lambda value: int((value == -1).sum())),
+        valid_candidate_positive=("valid_positive_anchor", "sum"),
+        valid_candidate_negative=("valid_negative_anchor", "sum"),
         prefix_utility_std=("relative_utility", "std"),
         input_popularity_median=("input_rating_count", "median"),
         input_structured_coverage=("structured_available", "mean"),
@@ -224,8 +335,19 @@ def build_user_contexts(metrics: pd.DataFrame, candidate: pd.DataFrame) -> pd.Da
     ).reset_index()
     prefix_context["prefix_signal"] = np.where(
         (prefix_context["prefix_positive"] > 0) & (prefix_context["prefix_negative"] > 0),
-        "좋아요·싫어요 모두 있음",
-        "한쪽 신호만 있음",
+        "원시 prefix 양쪽 신호",
+        "원시 prefix 한쪽 신호",
+    )
+    prefix_context["raw_both_signals"] = (
+        (prefix_context["prefix_positive"] > 0) & (prefix_context["prefix_negative"] > 0)
+    )
+    prefix_context["valid_candidate_both_signals"] = (
+        (prefix_context["valid_candidate_positive"] > 0)
+        & (prefix_context["valid_candidate_negative"] > 0)
+    )
+    prefix_context["candidate_anchor_loss_forces_fallback"] = (
+        prefix_context["raw_both_signals"]
+        & ~prefix_context["valid_candidate_both_signals"]
     )
     for k in (5, 10):
         mask = prefix_context["k"] == k
@@ -254,6 +376,48 @@ def build_user_contexts(metrics: pd.DataFrame, candidate: pd.DataFrame) -> pd.Da
         contexts["evaluation_has_ko"], "평가창에 한국어 원어 영화 있음", "없음"
     )
     return contexts
+
+
+def fallback_anchor_diagnostics(
+    metrics: pd.DataFrame,
+    contexts: pd.DataFrame,
+) -> list[dict[str, Any]]:
+    lightfm = metrics.loc[
+        metrics["model_id"] == LIGHTFM,
+        ["user_key", "k", "fallback_user"],
+    ].merge(
+        contexts[
+            [
+                "user_key",
+                "k",
+                "raw_both_signals",
+                "valid_candidate_both_signals",
+                "candidate_anchor_loss_forces_fallback",
+            ]
+        ],
+        on=["user_key", "k"],
+        how="inner",
+    )
+    rows: list[dict[str, Any]] = []
+    for k in (5, 10):
+        group = lightfm.loc[lightfm["k"] == k]
+        raw_both = group["raw_both_signals"].astype(bool)
+        valid_both = group["valid_candidate_both_signals"].astype(bool)
+        fallback = group["fallback_user"].astype(bool)
+        anchor_loss = group["candidate_anchor_loss_forces_fallback"].astype(bool)
+        rows.append({
+            "k": k,
+            "users": int(len(group)),
+            "raw_both_signal_users": int(raw_both.sum()),
+            "valid_candidate_both_anchor_users": int(valid_both.sum()),
+            "raw_both_but_candidate_anchor_loss_users": int(anchor_loss.sum()),
+            "raw_both_but_fallback_users": int((raw_both & fallback).sum()),
+            "raw_one_sided_users": int((~raw_both).sum()),
+            "raw_one_sided_fallback_users": int(((~raw_both) & fallback).sum()),
+            "fallback_users": int(fallback.sum()),
+            "fallback_is_design_precondition_not_signal_effect": True,
+        })
+    return rows
 
 
 def cohort_summaries(
@@ -289,12 +453,28 @@ def item_slice_summary(prediction_path: Path, candidate: pd.DataFrame) -> list[d
     )
     structured = pd.read_parquet(
         ROOT / "outputs/recommendation-evidence/rec-ev-019b/structured-features.parquet",
-        columns=["movie_id", "original_language"],
+        columns=["movie_id", "original_language", "release_year"],
     )
     item = candidate[["movie_id", "b0_rating_count"]].merge(structured, on="movie_id", how="left")
     item["popularity_group"] = _quartile(item["b0_rating_count"], "영화 인기도")
     item["language_group"] = np.where(item["original_language"].eq("ko"), "한국어 원어", "그 외")
-    windows = windows.merge(item[["movie_id", "popularity_group", "language_group"]], on="movie_id", how="left")
+    item["release_year_group"] = np.select(
+        [item["release_year"].ge(2020), item["release_year"].notna()],
+        ["RELEASE_2020_OR_LATER", "RELEASE_BEFORE_2020"],
+        default="RELEASE_YEAR_UNKNOWN",
+    )
+    item["cold_item_group"] = np.where(
+        item["b0_rating_count"].eq(0),
+        "BASE_TRAIN_ZERO",
+        "BASE_TRAIN_OBSERVED",
+    )
+    dimensions = (
+        "popularity_group",
+        "language_group",
+        "release_year_group",
+        "cold_item_group",
+    )
+    windows = windows.merge(item[["movie_id", *dimensions]], on="movie_id", how="left")
     windows = windows.loc[windows["movie_id"].isin(set(candidate["movie_id"].astype(int)))].copy()
     truth = {
         (str(row.user_key), int(row.k), int(row.movie_id)): {
@@ -302,6 +482,8 @@ def item_slice_summary(prediction_path: Path, candidate: pd.DataFrame) -> list[d
             "is_negative": bool(row.is_negative),
             "popularity_group": row.popularity_group,
             "language_group": row.language_group,
+            "release_year_group": row.release_year_group,
+            "cold_item_group": row.cold_item_group,
         }
         for row in windows.itertuples(index=False)
     }
@@ -325,9 +507,15 @@ def item_slice_summary(prediction_path: Path, candidate: pd.DataFrame) -> list[d
                 })
     matched_frame = pd.DataFrame(matched)
     rows: list[dict[str, Any]] = []
-    for dimension in ("popularity_group", "language_group"):
+    cohort_values = {
+        "popularity_group": sorted(item["popularity_group"].dropna().astype(str).unique()),
+        "language_group": ["한국어 원어", "그 외"],
+        "release_year_group": list(RELEASE_YEAR_GROUPS),
+        "cold_item_group": list(COLD_ITEM_GROUPS),
+    }
+    for dimension in dimensions:
         for k in sorted(seen_ks):
-            cohorts = windows.loc[windows["k"] == k, dimension].drop_duplicates().tolist()
+            cohorts = cohort_values[dimension]
             for model_id in sorted(seen_models):
                 for cohort in cohorts:
                     group = matched_frame.loc[
@@ -338,6 +526,7 @@ def item_slice_summary(prediction_path: Path, candidate: pd.DataFrame) -> list[d
                     positives = group.loc[group["is_positive"]]
                     negatives = group.loc[group["is_negative"]]
                     denominator = windows.loc[(windows["k"] == k) & (windows[dimension] == cohort)]
+                    candidate_items = int((item[dimension].astype(str) == str(cohort)).sum())
                     total_positives = int(denominator["is_positive"].sum())
                     total_negatives = int(denominator["is_negative"].sum())
                     rows.append({
@@ -345,6 +534,7 @@ def item_slice_summary(prediction_path: Path, candidate: pd.DataFrame) -> list[d
                         "k": k,
                         "dimension": dimension,
                         "cohort": str(cohort),
+                        "candidate_item_total": candidate_items,
                         "observed_positive_total": total_positives,
                         "observed_positives_in_top500": int(len(positives)),
                         "positive_hit_at_500": float(len(positives) / total_positives) if total_positives else None,
@@ -359,6 +549,77 @@ def item_slice_summary(prediction_path: Path, candidate: pd.DataFrame) -> list[d
                         ),
                     })
     return rows
+
+
+def core_item_slice_diagnostics(item_slices: list[dict[str, Any]]) -> dict[str, Any]:
+    def row(k: int, dimension: str, cohort: str, model_id: str) -> dict[str, Any]:
+        matches = [
+            item
+            for item in item_slices
+            if int(item["k"]) == k
+            and item["dimension"] == dimension
+            and item["cohort"] == cohort
+            and item["model_id"] == model_id
+        ]
+        if len(matches) != 1:
+            raise RuntimeError(f"missing or duplicate item slice: K{k} {dimension} {cohort} {model_id}")
+        return matches[0]
+
+    positive_concentration: dict[str, Any] = {}
+    korean_original_language: dict[str, Any] = {}
+    release_year: dict[str, Any] = {}
+    cold_item: dict[str, Any] = {}
+    for k in (5, 10):
+        popularity_rows = [
+            item
+            for item in item_slices
+            if int(item["k"]) == k
+            and item["dimension"] == "popularity_group"
+            and item["model_id"] == BASELINE
+        ]
+        total_positive = sum(int(item["observed_positive_total"]) for item in popularity_rows)
+        q4 = row(k, "popularity_group", "영화 인기도 Q4", BASELINE)
+        q4_positive = int(q4["observed_positive_total"])
+        positive_concentration[str(k)] = {
+            "observed_positive_total": total_positive,
+            "q4_observed_positive_total": q4_positive,
+            "q4_share": float(q4_positive / total_positive) if total_positive else None,
+        }
+
+        ko_b0 = row(k, "language_group", "한국어 원어", BASELINE)
+        ko_lightfm = row(k, "language_group", "한국어 원어", LIGHTFM)
+        korean_original_language[str(k)] = {
+            "observed_positive_total": int(ko_b0["observed_positive_total"]),
+            "b0_positive_top500": int(ko_b0["observed_positives_in_top500"]),
+            "lightfm_positive_top500": int(ko_lightfm["observed_positives_in_top500"]),
+            "b0_positive_top10": int(
+                round(float(ko_b0["positive_hit_at_10"] or 0.0) * int(ko_b0["observed_positive_total"]))
+            ),
+            "lightfm_positive_top10": int(
+                round(float(ko_lightfm["positive_hit_at_10"] or 0.0) * int(ko_lightfm["observed_positive_total"]))
+            ),
+            "small_sample_no_inferiority_claim": True,
+        }
+
+        recent = row(k, "release_year_group", "RELEASE_2020_OR_LATER", BASELINE)
+        release_year[str(k)] = {
+            "release_year_gte_2020_candidate_items": int(recent["candidate_item_total"]),
+            "observed_positive_total": int(recent["observed_positive_total"]),
+            "quality_measured": int(recent["observed_positive_total"]) > 0,
+        }
+
+        zero = row(k, "cold_item_group", "BASE_TRAIN_ZERO", BASELINE)
+        cold_item[str(k)] = {
+            "base_train_zero_candidate_items": int(zero["candidate_item_total"]),
+            "observed_positive_total": int(zero["observed_positive_total"]),
+            "quality_measured": int(zero["observed_positive_total"]) > 0,
+        }
+    return {
+        "positive_concentration": positive_concentration,
+        "korean_original_language": korean_original_language,
+        "release_year": release_year,
+        "cold_item": cold_item,
+    }
 
 
 def load_titles() -> dict[int, str]:
@@ -565,8 +826,8 @@ def chart_stability(selection: Mapping[str, Any]) -> None:
                   color="#5B7FFF", ecolor="#E05263", linewidth=2)
     labels = [f"{MODEL_LABELS[row.model_id]}\nK={row.k}" for row in frame.itertuples(index=False)]
     axis.set_xticks(x, labels)
-    axis.set_ylabel("5개 seed NDCG@10 평균 ± 표준편차")
-    axis.set_title("확률 모델은 같은 설정을 5개 seed로 반복해 흔들림을 확인했다")
+    axis.set_ylabel("256명/K tuning panel · 5-seed NDCG@10 평균 ± 표준편차")
+    axis.set_title("안정성은 전체 Validation이 아니라 tuning panel에서만 측정했다")
     axis.grid(axis="y", alpha=0.18)
     fig.tight_layout()
     save_figure(fig, "rec-ev-019c-stability.png")
@@ -609,8 +870,8 @@ def chart_item_slices(
             axis.set_title(f"K={k} · {'영화 인기도' if dimension == 'popularity_group' else '원어'} 구간")
             axis.grid(axis="y", alpha=0.18)
             axis.legend(frameon=False, fontsize=8)
-    fig.suptitle("전체 평균이 인기작 또는 특정 언어 구간만의 효과인지 분리한다", fontsize=16, fontweight="bold")
-    fig.text(0.5, 0.01, "한국어 원어는 TMDB original_language=ko proxy이며 한국 사용자 성능을 뜻하지 않음", ha="center", fontsize=9, color="#5E6673")
+    fig.suptitle("관측 positive 자체가 Q4에 약 96% 집중돼 저인기 구간은 검정력이 부족하다", fontsize=16, fontweight="bold")
+    fig.text(0.5, 0.01, "한국어 원어는 TMDB original_language=ko proxy · 작은 표본의 Top-10 0을 열등 확정으로 해석하지 않음", ha="center", fontsize=9, color="#5E6673")
     fig.tight_layout(rect=(0, 0.035, 1, 0.96))
     save_figure(fig, "rec-ev-019c-item-slices.png")
 
@@ -638,8 +899,12 @@ def run_analysis() -> dict[str, Any]:
     ]
     paired = paired_summary(metrics)
     contexts = build_user_contexts(metrics, candidate)
+    confirmatory_paired = confirmatory_paired_summary(metrics, selection["tuning_panel"])
+    common_k = common_user_k_diagnostic(metrics)
+    fallback_anchors = fallback_anchor_diagnostics(metrics, contexts)
     cohorts = cohort_summaries(metrics, contexts, selection["single_best_per_k"])
     item_slices = item_slice_summary(RUN_ROOT / "validation-predictions.parquet", candidate)
+    item_slice_diagnostics = core_item_slice_diagnostics(item_slices)
     cases = example_users(metrics, RUN_ROOT / "validation-predictions.parquet", selection["single_best_per_k"])
 
     summary = {
@@ -650,14 +915,22 @@ def run_analysis() -> dict[str, Any]:
             "movie_lens_users_are_feelm_users": False,
             "unobserved_means_dislike": False,
             "locked_test_opened": False,
+            "locked_test_used": False,
+            "champion": None,
             "champion_selected": False,
             "product_policy_changed": False,
+            "product_policy_updated": False,
             "post_hoc_results_are_confirmatory": False,
+            "tuning_panel_excluded_paired_is_confirmatory_auxiliary": True,
         },
         "aggregate": aggregate,
         "paired_vs_b0": paired,
+        "confirmatory_tuning_panel_excluded_vs_b0": confirmatory_paired,
+        "common_user_k_diagnostic": common_k,
+        "fallback_anchor_diagnostics": fallback_anchors,
         "cohorts_for_validation_best_vs_b0": cohorts,
         "item_slices": item_slices,
+        "core_item_slice_diagnostics": item_slice_diagnostics,
         "example_users": cases,
         "selected_trials": selection["per_model_per_k"],
         "validation_best_per_k": selection["single_best_per_k"],
@@ -667,6 +940,16 @@ def run_analysis() -> dict[str, Any]:
             "peak_rss_bytes": resource["peak_rss_bytes"],
             "artifact_bytes": resource["artifact_bytes"],
             "budget_counters": resource.get("budget_counters", {}),
+        },
+        "reproducibility": {
+            "raw_artifacts_git_tracked": False,
+            "raw_artifact_root": "outputs/recommendation-evidence/rec-ev-019c",
+            "external_artifact_uri": None,
+            "commit_only_third_party_reproduction": False,
+            "limitation": (
+                "Raw Parquet artifacts are ignored under outputs and no external artifact URI is recorded; "
+                "the commit alone cannot reproduce the analysis on a third-party checkout."
+            ),
         },
     }
     atomic_write_json(SUMMARY_PATH, summary)
@@ -695,10 +978,15 @@ def run_analysis() -> dict[str, Any]:
         "artifacts": [artifact_entry(SUMMARY_PATH), *[artifact_entry(path) for path in figure_paths]],
         "validation": {
             "locked_test_opened": False,
+            "locked_test_used": False,
+            "champion": None,
             "champion_selected": False,
             "product_policy_changed": False,
+            "product_policy_updated": False,
             "post_hoc_results_are_confirmatory": False,
+            "tuning_panel_excluded_paired_is_confirmatory_auxiliary": True,
         },
+        "reproducibility": summary["reproducibility"],
     })
     return summary
 
@@ -715,7 +1003,10 @@ def main() -> int:
         "summary": SUMMARY_PATH.resolve().relative_to(ROOT.resolve()).as_posix(),
         "manifest": MANIFEST_PATH.resolve().relative_to(ROOT.resolve()).as_posix(),
         "locked_test_opened": False,
+        "locked_test_used": False,
+        "champion": None,
         "champion_selected": False,
+        "product_policy_updated": False,
     }, ensure_ascii=False, indent=2))
     return 0
 

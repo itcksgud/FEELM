@@ -3,11 +3,11 @@
 > 문서 상태: `FINAL_RESEARCH_REPORT`
 > 작성 기준: 2026-09-05
 > 제품 추천 정책: `APPROVED_C2A_INTERNAL_POPULARITY_ONLY` 유지
-> 핵심 결론: MovieLens를 대리 학습·평가·검증 환경으로 사용한 결과, K=5·10 모두 LightFM이 인기도
-> 기준선보다 높은 NDCG@10을 보였다. 그러나 개선은 대부분 인기 영화와 비한국어 원어 영화에 집중됐고,
-> TMDB 구조·E5 콘텐츠 단독 모델은 인기도를 이기지 못했다. 따라서 초기 모델 선택 근거는 얻었지만
-> 한국 영화와 MovieLens 수록 이후 영화 문제는 해결됐다고 판단하지 않는다. Locked Test와 제품 정책은
-> 그대로 유지한다.
+> 핵심 결론: K별 256명 tuning panel을 제외해도 LightFM T003은 K5·K10 각각의 조건 안에서 B0
+> 인기도보다 높았다. K5와 K10은 사용자와 미래 구간이 달라 품질을 직접 비교하지 않는다. 양방향 신호는
+> 구현상 적용 전제이며 효과 검증이 아니다. 한국어 원어·저인기·2020년 이후·true cold item은 작은 표본
+> 또는 정답 부재로 미확정이다. `locked_test_used=false`, `champion=null`,
+> `product_policy_updated=false`를 유지한다.
 
 ## 0. 이 작업의 목적
 
@@ -24,7 +24,7 @@
 
 | 문제 | 이번 실험의 답 | 이 답으로 주장할 수 없는 것 |
 | --- | --- | --- |
-| MovieLens의 외국 영화 편향과 수록 이후 영화 공백 | TMDB 장르·언어·연도·인물·키워드 구조 특징과 384차원 E5 텍스트 임베딩으로 영화를 표현하고, 평점 기반 모델과 콘텐츠 벡터 기반 모델을 같은 조건에서 비교한다. 출시 전 사용할 수 있는 다른 행동 데이터 해법은 찾지 못했으므로 콘텐츠 벡터를 현실적인 보완책으로 검증한다. | 콘텐츠 벡터가 한국 사용자의 취향 정답이나 새로운 사용자 행동을 만들어 준다는 주장 |
+| MovieLens의 외국 영화 편향과 수록 이후 영화 공백 | TMDB 장르·언어·연도·인물·키워드 구조 특징과 384차원 E5 텍스트 임베딩으로 영화를 표현하고, 평점 기반 모델과 콘텐츠 벡터 기반 모델을 같은 조건에서 비교한다. 목표 도메인·최신성·한국 영화 범위·제품 사용 가능한 라이선스·사용자 행동을 동시에 만족하는 즉시 사용 가능한 대안은 확인되지 않았다. | 콘텐츠 벡터가 한국 사용자의 취향 정답이나 새로운 사용자 행동을 만들어 준다는 주장 |
 | 실사용 추천·피드백 수집 불가 | MovieLens를 대리 실험 환경으로 사용해 모델을 학습·평가·검증한다. 이 환경에서 초기 선호 입력 수, 모델 종류, 상황별 점수와 fallback, MovieLens를 특정 시점 기준으로 제한할지 전체 관측 범위로 사용할지를 비교·결정한다. | 오프라인 결과가 실제 FEELM 사용자의 시청·만족을 증명한다는 주장 |
 
 `REC-EV-019C`의 인기도·ItemKNN·BPR·TMDB 구조·TMDB 텍스트·LightFM·RRF 비교는 이 두 답이
@@ -57,11 +57,11 @@ ItemKNN, 관측 BPR, TMDB 구조·텍스트 콘텐츠, LightFM과 RRF를 같은 
 | --- | --- | --- |
 | MovieLens 대리 환경에서 인기도보다 나은 모델이 있는가? | **YES** | LightFM NDCG@10: K5 0.0713, K10 0.0725 |
 | 같은 사용자에서 개선 방향이 반복되는가? | **YES, 다수는 동률** | K5 개선 15.5%·악화 5.4%, K10 개선 21.8%·악화 6.2% |
-| seed에 따라 결론이 크게 흔들리는가? | **NO** | LightFM 5-seed 표준편차: K5 0.00223, K10 0.00168 |
+| seed에 따라 tuning panel 결과가 크게 흔들리는가? | **NO, panel 한정** | 256명/K panel의 LightFM 5-seed 표준편차: K5 0.00223, K10 0.00168 |
 | 콘텐츠 단독 모델이 인기도를 이기는가? | **NO** | 구조·텍스트 모두 K5·10에서 인기도보다 낮음 |
-| 낮은 인기도 영화에서도 개선되는가? | **NO** | 관측 GOOD Top-10 적중이 Q1~Q3에서 모두 0 |
-| 한국어 원어 영화 문제를 해결했는가? | **판단 불가/근거 없음** | 양성 21·23건뿐이며 두 모델 모두 Top-10 적중 0 |
-| K=5와 K=10 중 어느 쪽을 우선 검토할 수 있는가? | **K=10** | 개선 폭이 더 크고 fallback이 38.8%에서 11.5%로 감소 |
+| 낮은 인기도 영화에서도 개선되는가? | **판단 보류** | Q1~Q3 positive가 K5 259건, K10 214건뿐이고 Top-10 적중 0 |
+| 한국어 원어 영화 문제를 해결했는가? | **판단 불가/근거 없음** | positive 21·23건, Top-10 0, Top-500은 B0 10건 대 LightFM 6건 |
+| K=5와 K=10 중 어느 쪽이 우수한가? | **직접 비교 불가** | 사용자와 미래 구간이 다르며 공통 1,253명 LightFM 절대 NDCG도 사실상 동일 |
 | 전체 관측 범위까지 사용할 것인가? | **미결정** | 이번에는 cutoff 정책만 실행 |
 | 제품 정책이나 Locked Test를 열 수 있는가? | **NO** | champion `null`, Locked Test 미개봉, 제품 정책 유지 |
 
@@ -286,7 +286,7 @@ seed 17로 전체 Validation을 계산하게 바꿨다. B4는 사용자당 epoch
 
 ## 8. REC-EV-019C Validation 결과
 
-### 8.1 평균 성능과 상위 2편 위험
+### 8.1 평균 성능과 tuning panel 제외 결과
 
 ![모델별 NDCG와 Harm](figures/rec-ev-019c-model-comparison.png)
 
@@ -300,11 +300,19 @@ seed 17로 전체 Validation을 계산하게 바꿨다. B4는 사용자당 epoch
 | **B8 LightFM** | **0.0713** | **0.0725** | 3.72% | 2.91% |
 | B9 RRF | 0.0615 | 0.0622 | 3.22% | 2.84% |
 
-LightFM은 K5에서 인기도 대비 NDCG@10을 0.0311, K10에서 0.0434 높였다. 같은 사용자 paired
-bootstrap 95% 구간도 각각 `[0.0243, 0.0383]`, `[0.0355, 0.0515]`로 0보다 컸다. Harm@2는
-각각 0.62%p, 0.61%p 낮아졌지만 신뢰구간이 0을 포함하므로 안전성 개선으로 단정하지 않는다.
+전체 Validation의 LightFM − B0 차이 K5 `+0.0311`, K10 `+0.0434`에는 모델 선택에 사용한
+256명/K tuning panel이 포함된다. 공식 제한·보조 결과는 panel 제외 paired 비교다.
 
-### 8.2 평균 개선은 모든 사용자에게 동일하지 않았다
+| 조건 | 사용자 | LightFM − B0 평균 | paired bootstrap 95% CI |
+| --- | ---: | ---: | ---: |
+| K5 | 1,358 | +0.03331 | [0.02582, 0.04114] |
+| K10 | 1,223 | +0.04532 | [0.03681, 0.05462] |
+
+사용자 단위 percentile bootstrap을 2,000회 수행했고 seed는 `20260905+K`로 고정했다. 두 조건
+각각에서 LightFM T003의 B0 대비 우위는 유지된다. Harm@2 차이는 신뢰구간이 0을 포함하므로 안전성
+개선으로 단정하지 않는다.
+
+### 8.2 K5와 K10은 품질을 직접 비교할 수 없다
 
 ![사용자별 개선·동률·악화](figures/rec-ev-019c-benefit-harm-rates.png)
 
@@ -313,12 +321,17 @@ bootstrap 95% 구간도 각각 `[0.0243, 0.0383]`, `[0.0355, 0.0515]`로 0보다
 | K=5 | 15.49% | 79.12% | 5.39% | 38.79% |
 | K=10 | 21.77% | 72.01% | 6.22% | 11.49% |
 
-K10은 K5보다 개선 사용자와 평균 개선 폭이 컸고 fallback도 적었다. 이력량 Q1~Q4 모두 NDCG 차이가
-양수였지만, 좋아요·싫어요가 모두 있는 입력에서만 K5 `+0.0463`, K10 `+0.0474`가 나타났다. 한쪽
-신호만 있는 사용자는 100% fallback해 인기도와 차이가 없었다. 따라서 현 실험 안에서는 **K10과 양방향
-선호 신호가 LightFM을 사용할 최소 조건**이다. 이는 제품 채택이 아니라 다음 검증 후보를 좁힌 결과다.
+개선·동률·악화율은 각 K 내부의 기술 통계다. K5와 K10은 적격 사용자와 미래 구간이 다르므로 서로의
+품질 차이를 뜻하지 않는다. 공통 1,253명에서도 미래 구간은 다르지만, LightFM 절대 NDCG@10은 K5
+`0.075359`, K10 `0.075348`로 사실상 같았다. B0는 K5 `0.038780`, K10 `0.030512`였다.
+K10의 더 큰 B0 대비 차이는 LightFM 상승보다 B0 하락의 영향이다. 다음 검증은 같은 사용자·같은 미래
+구간을 고정한 prefix ablation이다.
 
-### 8.3 개선은 인기 영화에 집중됐다
+현재 LightFM 구현은 최종 후보에 positive와 negative anchor가 각각 하나 이상 없으면 B0로 fallback한다.
+원시 prefix에 양쪽 신호가 있어도 후보 anchor가 부족해 fallback한 사용자는 K5 97명, K10 46명이었다.
+따라서 `양방향 신호 효과`를 주장하지 않는다. 한쪽 신호 동률은 모델 효과가 아니라 적용하지 않은 설계 결과다.
+
+### 8.3 Q4 집중과 한국어 원어 방향
 
 ![영화 인기도와 원어 구간 적중](figures/rec-ev-019c-item-slices.png)
 
@@ -331,13 +344,21 @@ K10은 K5보다 개선 사용자와 평균 개선 폭이 컸고 fallback도 적�
 | 비한국어 원어 | 4.74% | 8.29% | 3.63% | 9.16% | 6,324 / 5,920 |
 | 한국어 원어 | 0.00% | 0.00% | 0.00% | 0.00% | 21 / 23 |
 
-이 결과가 문제 1에 대한 핵심 판정이다. LightFM의 평균 개선은 거의 전부 인기도 Q4에서 발생했다.
-한국어 원어 영화는 표본 자체가 21·23건으로 너무 작고 두 모델 모두 Top-10 적중이 0이었다. TMDB 구조와
-E5 텍스트 단독 모델도 인기도를 이기지 못했다. 따라서 콘텐츠 벡터는 상호작용이 없는 영화를 표현하고
-후보화할 수 있게 했지만, **한국 영화와 MovieLens 수록 이후 영화의 추천 품질을 해결했다는 근거는 만들지
-못했다.**
+관측 positive 자체가 Q4에 K5 `6,086/6,345=95.9%`, K10 `5,729/5,943=96.4%`로
+몰렸다. Q1~Q3 Top-10 적중 0은 실패 확정이 아니라 검정력 부족을 포함한 미확정 결과다.
 
-### 8.4 5-seed 안정성과 실행 자원
+한국어 원어 positive는 K5 21건, K10 23건이고 두 모델 Top-10은 0이다. Top-500에서는 B0 대
+LightFM이 K5 `10/21` 대 `6/21`, K10 `10/23` 대 `6/23`으로 LightFM에 불리한 방향이다.
+표본이 작아 열등을 확정하지 않는다.
+
+### 8.4 최신 영화와 cold item 미측정
+
+최종 후보 41,625편 중 `release_year >= 2020`은 9편이고 해당 Validation positive는 K5·K10 모두
+0이다. base-train rating count가 0인 true cold item은 최종 후보에 0편이다. 따라서 최신·포스트-
+MovieLens와 true cold-item 추천 품질은 성공·실패 어느 쪽도 측정하지 못했다. 분석 summary와 검증기는
+release-year/cold-item 0건 slice를 누락하지 않는다.
+
+### 8.5 tuning-panel stability와 실행 자원
 
 | 모델·조건 | 5-seed NDCG 평균 | 표준편차 |
 | --- | ---: | ---: |
@@ -346,7 +367,8 @@ E5 텍스트 단독 모델도 인기도를 이기지 못했다. 따라서 콘텐
 | B8 LightFM K5 | 0.06689 | 0.00223 |
 | B8 LightFM K10 | 0.07543 | 0.00168 |
 
-중단된 LightFM T003 seed 42는 기존 cache를 보존한 `--resume`으로 이어서 실행했다. 전체 재개 실행은
+5-seed 수치는 전체 Validation이 아니라 K별 256명 tuning panel에 한정된다. 중단된 LightFM T003
+seed 42는 기존 cache를 보존한 `--resume`으로 이어서 실행했다. 전체 재개 실행은
 6,088.5초, peak RSS 약 652 MiB, 결과 artifact 약 32.7 MiB였다. 예측 11,662,500행과 Validation
 metric 23,325행을 독립 검증했고, selection lock을 생성했다.
 
@@ -354,8 +376,8 @@ metric 23,325행을 독립 검증했고, selection lock을 생성했다.
 
 | 처음의 문제 | 이번에 얻은 답 | 남은 한계 |
 | --- | --- | --- |
-| MovieLens의 외국·인기 영화 편향과 수록 이후 영화 공백 | TMDB 구조·E5로 41,625편을 같은 공간에서 표현하고 콘텐츠·결합 모델을 비교할 수 있었다. | 콘텐츠 단독 모델은 인기도를 이기지 못했고, LightFM 개선도 인기 영화에 집중됐다. 문제는 미해결이다. |
-| 실사용 추천·시청·평가 순환 부재 | MovieLens를 대리 환경으로 써 K10, 양방향 입력 신호, LightFM을 다음 검증 후보로 좁혔다. | 실제 FEELM 만족은 알 수 없고 전체 관측 범위 사용 여부도 아직 비교하지 않았다. |
+| MovieLens의 외국·인기 영화 편향과 수록 이후 영화 공백 | TMDB 구조·E5로 41,625편을 같은 공간에서 표현하고 콘텐츠·결합 모델을 비교할 수 있었다. | Q4 표본 교란이 크고 한국어 원어·2020년 이후·true cold item 정답이 부족하거나 없다. 문제는 미해결이다. |
+| 실사용 추천·시청·평가 순환 부재 | tuning panel을 제외해도 K5·K10 각각에서 LightFM T003의 B0 대비 우위를 확인했다. | K 간 우열과 양방향 신호 효과는 검증하지 못했다. 같은 사용자·같은 미래 구간 prefix ablation이 필요하다. |
 
 따라서 이번 실험의 성과는 “한국 영화 추천을 해결했다”가 아니다. 사용할 수 없는 실제 피드백을
 MovieLens 대리 평가로 바꾸고, 가능한 콘텐츠 보완책을 같은 조건에서 시험해 **어디까지 유효하고 어디서
@@ -365,18 +387,26 @@ MovieLens 대리 평가로 바꾸고, 가능한 콘텐츠 보완책을 같은 �
 
 ### 다음 검증 후보
 
-- 초기 입력은 K=10을 우선한다.
-- 좋아요와 싫어요가 모두 관측될 때만 LightFM T003을 비교 후보로 둔다.
-- 한쪽 신호만 있거나 feature가 부족하면 B0 인기도로 fallback한다.
+- 같은 사용자와 같은 미래 구간을 고정하고 K5·K10 prefix만 바꾸는 ablation을 수행한다.
+- LightFM T003은 각 K 안 B0 대비 challenger로 유지하되 K10 우위를 주장하지 않는다.
+- 양쪽 valid candidate anchor는 현재 구현의 적용 전제로만 둔다.
 - cutoff 정책의 결론은 전체 관측 범위 보조 실험 전까지 확정하지 않는다.
 
 ### 유지와 보류
 
 - 현재 서비스 정책 `APPROVED_C2A_INTERNAL_POPULARITY_ONLY`를 유지한다.
-- champion은 `null`로 유지한다.
-- Locked Test를 열지 않는다.
+- `champion=null`을 유지한다.
+- `locked_test_used=false`를 유지한다.
+- `product_policy_updated=false`를 유지한다.
 - 한국 영화·신작 성능, 실제 사용자 만족, 온라인 성과를 주장하지 않는다.
 - 문제 1의 다음 유효한 검증은 목표 도메인 행동 데이터 수집 또는 독립적인 한국 영화 평가 표본 확보다.
+
+목표 도메인·최신성·한국 영화 범위·제품 사용 가능한 라이선스·사용자 행동을 동시에 만족하는 즉시 사용
+가능한 대안은 확인되지 않았다. [ML-32M Extension](https://uwaterlooir.github.io/datasets/ml-32m-extension.html),
+[MovieLens Beliefs 2024](https://grouplens.org/datasets/movielens/ml_belief_2024/),
+[KMRD](https://github.com/lovit/kmrd),
+[Amazon Reviews 2023](https://amazon-reviews-2023.github.io/main.html)은 각각 연구 접근 제한, MovieLens
+문맥, synthetic·라이선스·최신성 Gate, 상품 리뷰 도메인 한계가 있어 보조 검증 후보로만 둔다.
 
 ## 11. 결과 상태표
 
@@ -386,9 +416,9 @@ MovieLens 대리 평가로 바꾸고, 가능한 콘텐츠 보완책을 같은 �
 | REC-EV-019B TMDB 전체 특징 | PASS | 구조 특징·384차원 E5 전체 coverage Gate 통과 |
 | REC-EV-019C 계약·합성·의존성·자원 검사 | PASS | 역할 firewall, resume, seed, 계산 상한 검증 |
 | REC-EV-019C 실제 Validation | `PASS_VALIDATION_SELECTION_LOCKED` | K5 1,614명, K10 1,479명, selection lock 생성 |
-| REC-EV-019C 사용자·영화 구간 분석 | `PASS_VALIDATION_ANALYSIS_ONLY` | paired·cohort·item slice·5-seed 결과 |
+| REC-EV-019C 사용자·영화 구간 분석 | `PASS_VALIDATION_ANALYSIS_ONLY` | tuning-panel 제외 paired, 공통 사용자, anchor fallback, release-year/cold-item slice |
 | 새 개인화 champion | NOT SELECTED | `null`; 현재 제품 정책 유지 |
-| Locked Test | NOT OPENED | manifest에서 `false` 확인 |
+| Locked Test | NOT USED | `locked_test_used=false` |
 
 ## 12. 재현과 근거
 
@@ -402,4 +432,6 @@ MovieLens 대리 평가로 바꾸고, 가능한 콘텐츠 보완책을 같은 �
 - 분석 검증: `py -3 scripts/verify_rec_ev_019c_analysis.py --manifest docs/recommendation/evidence/manifests/rec-ev-019c-analysis.json`
 - 원본 MovieLens SHA-256: `e4a68655d7386b8f95f2f2424b2ff975dfdd15ffd59e0d864a14dca43e99d6ee`
 
-대용량 원본과 생성 Parquet은 Git에 올리지 않는다. manifest의 경로·크기·SHA-256으로 같은 파일인지 확인한다.
+대용량 원본과 생성 Parquet은 Git에 올리지 않는다. manifest의 경로·크기·SHA-256으로 로컬 파일의 동일성을
+확인한다. 현재 raw Parquet은 `outputs/` ignore에만 있고 외부 artifact URI가 없으므로, commit만으로는
+제3자가 이 분석을 재현할 수 없다.

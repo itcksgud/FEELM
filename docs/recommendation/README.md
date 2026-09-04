@@ -59,6 +59,8 @@
 | 019C 실행 계약 | `contracts/rec-ev-019c-validation-artifacts.json` | 모델·후보·trial·fallback·checkpoint·Validation/Test 방화벽 고정 |
 | 019C 계약 준비 결과 | `evidence/REC-EV-019C-contract-readiness.md` | 계약·preflight 상태와 실제 Validation·Test 차단 경계 |
 | 019C runner·의존성 preflight | `evidence/REC-EV-019C-runner-and-dependency-preflight.md` | 합성 15개·Linux dependency 9개 PASS, 실제 runner 구현만 GO |
+| 019C Validation 독립 감사 교정 | `evidence/REC-EV-019C-validation-analysis.md` | tuning-panel 제외 paired, 공통 사용자 K 진단, anchor fallback, Q4·한국어·release-year·cold-item slice |
+| 019C 결과 장표 | `../presentation/FEELM-REC-EV-019C-results.pptx` | K 직접 비교·양방향 효과 주장을 제거한 9장 결과 요약 |
 | 제품 서빙 경계 | `serving-contract.md` | 현재 승인 정책과 vNext 후보를 구분 |
 | 연구 보고서 | `personalized-hybrid-design-report.md` | 네 추천 Head의 가설·결과·한계를 연결 |
 
@@ -77,6 +79,9 @@ docs/recommendation/experiments/<run_id>/
 
 대용량 모델·Parquet은 Git에 넣지 않고 `artifacts.json`에 위치와 checksum만 기록한다. 실패한 실험도
 삭제하지 않는다. 실패 원인과 배제한 가설은 중복 작업을 막는 프로젝트 자산이다.
+
+REC-EV-019C raw Parquet은 현재 `outputs/` ignore에만 있고 외부 artifact URI가 없다. manifest checksum은
+로컬 파일 동일성을 검증하지만 commit만으로 제3자가 분석을 재현할 수 있다는 뜻은 아니다.
 
 ## 4. 통찰 작성 규칙
 

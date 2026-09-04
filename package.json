@@ -29,6 +29,7 @@
     "recommendation:019c:dependency:run": "powershell -NoProfile -ExecutionPolicy Bypass -File scripts/run-rec-ev-019c-lightfm-smoke.ps1",
     "recommendation:019c:resource:run": "node scripts/run-python.mjs scripts/run_rec_ev_019c_validation.py --mode validation-dry-run --role validation && node scripts/run-python.mjs scripts/verify_rec_ev_019c_resource_dry_run.py --manifest docs/recommendation/evidence/manifests/rec-ev-019c-resource-dry-run.json",
     "recommendation:019c:resource:check": "node scripts/run-python.mjs -m unittest scripts/tests/test_verify_rec_ev_019c_resource_dry_run.py && node scripts/run-python.mjs scripts/verify_rec_ev_019c_resource_dry_run.py --manifest docs/recommendation/evidence/manifests/rec-ev-019c-resource-dry-run.json",
+    "recommendation:019c:analysis:check": "node scripts/run-python.mjs -m unittest scripts/tests/test_analyze_rec_ev_019c_validation.py scripts/tests/test_verify_rec_ev_019c_analysis.py && node scripts/run-python.mjs scripts/verify_rec_ev_019c_analysis.py --manifest docs/recommendation/evidence/manifests/rec-ev-019c-analysis.json",
     "revision:readiness:check": "node scripts/check-revision-readiness.mjs",
     "revision:readiness:require": "node scripts/check-revision-readiness.mjs --require-ready",
     "verification:parity:check": "node scripts/validate-verification-parity.mjs",

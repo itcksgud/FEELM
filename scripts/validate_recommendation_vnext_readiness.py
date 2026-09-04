@@ -325,7 +325,7 @@ def validate_backlog(backlog: dict[str, Any]) -> None:
         raise RuntimeError("019C commands differ from its artifact contract")
     expected_analysis_commands = {
         "analyze": "py -3 scripts/analyze_rec_ev_019c_validation.py",
-        "unit": "py -3 -m unittest scripts/tests/test_analyze_rec_ev_019c_validation.py",
+        "unit": "py -3 -m unittest scripts/tests/test_analyze_rec_ev_019c_validation.py scripts/tests/test_verify_rec_ev_019c_analysis.py",
         "verify": "py -3 scripts/verify_rec_ev_019c_analysis.py --manifest docs/recommendation/evidence/manifests/rec-ev-019c-analysis.json",
     }
     if task_019c.get("analysis_commands") != expected_analysis_commands:
@@ -409,10 +409,14 @@ def validate_019c_completion_manifests() -> dict[str, Any]:
     if analysis.get("status") != "PASS_VALIDATION_ANALYSIS_ONLY":
         raise RuntimeError("REC-EV-019C analysis status differs")
     if analysis.get("validation") != {
+        "champion": None,
         "champion_selected": False,
         "locked_test_opened": False,
+        "locked_test_used": False,
         "post_hoc_results_are_confirmatory": False,
         "product_policy_changed": False,
+        "product_policy_updated": False,
+        "tuning_panel_excluded_paired_is_confirmatory_auxiliary": True,
     }:
         raise RuntimeError("REC-EV-019C analysis boundary differs")
     source = analysis.get("source_validation_manifest", {})

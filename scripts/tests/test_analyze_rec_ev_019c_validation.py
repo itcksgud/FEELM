@@ -12,7 +12,12 @@ sys.path.insert(0, str(SCRIPTS))
 
 from analyze_rec_ev_019c_validation import (
     BASELINE,
+    CONFIRMATORY_BOOTSTRAP_ITERATIONS,
+    LIGHTFM,
     aggregate_metrics,
+    common_user_k_diagnostic,
+    confirmatory_paired_summary,
+    fallback_anchor_diagnostics,
     paired_bootstrap_ci,
     paired_summary,
     source_history_depth,
@@ -76,6 +81,56 @@ class RecEv019cAnalysisTest(unittest.TestCase):
         self.assertAlmostEqual(result[0]["benefit_rate"], 1 / 3)
         self.assertAlmostEqual(result[0]["tie_rate"], 1 / 3)
         self.assertAlmostEqual(result[0]["harm_rate"], 1 / 3)
+
+    def test_confirmatory_summary_excludes_k_specific_tuning_users(self) -> None:
+        rows = []
+        for k in (5, 10):
+            for user, baseline, lightfm in (("tuned", 0.9, 0.0), ("held", 0.1, 0.4)):
+                rows.append({"user_key": user, "k": k, "model_id": BASELINE, "ndcg_at_10": baseline})
+                rows.append({"user_key": user, "k": k, "model_id": LIGHTFM, "ndcg_at_10": lightfm})
+        result = confirmatory_paired_summary(
+            pd.DataFrame(rows),
+            {"5": ["tuned"], "10": ["tuned"]},
+        )
+        self.assertEqual([row["users"] for row in result], [1, 1])
+        self.assertTrue(all(row["tuning_panel_users_excluded"] == 1 for row in result))
+        self.assertTrue(all(abs(row["delta_ndcg_mean"] - 0.3) < 1e-12 for row in result))
+        self.assertTrue(
+            all(row["bootstrap"]["iterations"] == CONFIRMATORY_BOOTSTRAP_ITERATIONS for row in result)
+        )
+
+    def test_common_user_k_diagnostic_does_not_claim_same_future_window(self) -> None:
+        rows = []
+        for model_id, by_k in (
+            (BASELINE, {5: [0.1, 0.2], 10: [0.05, 0.15]}),
+            (LIGHTFM, {5: [0.3, 0.4], 10: [0.31, 0.39]}),
+        ):
+            for k, values in by_k.items():
+                for user, value in zip(("a", "b"), values, strict=True):
+                    rows.append({"user_key": user, "k": k, "model_id": model_id, "ndcg_at_10": value})
+        result = common_user_k_diagnostic(pd.DataFrame(rows))
+        self.assertEqual(result["users"], 2)
+        self.assertFalse(result["same_future_window"])
+        self.assertEqual(result["required_next_test"], "SAME_USERS_SAME_FUTURE_WINDOW_PREFIX_ABLATION")
+
+    def test_fallback_anchor_diagnostic_separates_raw_and_valid_anchors(self) -> None:
+        metrics = pd.DataFrame({
+            "user_key": ["lost", "valid", "one-sided"],
+            "k": [5, 5, 5],
+            "model_id": [LIGHTFM, LIGHTFM, LIGHTFM],
+            "fallback_user": [True, False, True],
+        })
+        contexts = pd.DataFrame({
+            "user_key": ["lost", "valid", "one-sided"],
+            "k": [5, 5, 5],
+            "raw_both_signals": [True, True, False],
+            "valid_candidate_both_signals": [False, True, False],
+            "candidate_anchor_loss_forces_fallback": [True, False, False],
+        })
+        row = fallback_anchor_diagnostics(metrics, contexts)[0]
+        self.assertEqual(row["raw_both_but_candidate_anchor_loss_users"], 1)
+        self.assertEqual(row["raw_one_sided_fallback_users"], 1)
+        self.assertTrue(row["fallback_is_design_precondition_not_signal_effect"])
 
 
 if __name__ == "__main__":

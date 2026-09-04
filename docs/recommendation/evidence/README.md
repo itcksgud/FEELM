@@ -27,7 +27,7 @@
 | `REC-EV-018` user percentile audit | `COMPLETED_USER_DISTRIBUTION_DIAGNOSTIC` | 평균 외 B/T/H·효과 percentile·사용자/인기도 segment를 공개; Router 필요성 가설만 유지, champion `null` |
 | `REC-EV-019P` binary onboarding preflight | `COMPLETED_REPRODUCIBLE_FEASIBILITY_PASS` | strict eligibility로 40/10/10/40 split을 잠금; K10 5,476명으로 019A/019B 구현 `GO`, champion 권한 `NO` |
 | `REC-EV-019A` binary cohort build | `PASS_COHORT_GATES` | 최종 후보 41,625편·K10 Test 5,476명; 역할별 파일 firewall 추가, 모델 성능 미사용 |
-| `REC-EV-019C` validation suite | `PASS_VALIDATION_SELECTION_LOCKED` | K5·10에서 LightFM이 Validation NDCG 1위, 개선은 인기 영화에 집중; Test·champion·제품 변경 `NO` |
+| `REC-EV-019C` validation suite | `PASS_VALIDATION_SELECTION_LOCKED` | 각 K 안에서 LightFM T003-B0 confirmatory paired CI가 0보다 큼; K 직접 비교·양방향 효과·희소 slice 품질 결론 금지, `locked_test_used=false`, `champion=null`, `product_policy_updated=false` |
 | `REC-DATA-001` temporal feasibility | `COMPLETED_DESCRIPTIVE_AUDIT` | 동일 날짜 Rating 몰아넣기 확인; K25·90일·N500 고정 근거 `NO` |
 | `REC-DATA-002` Korean-origin coverage | `COMPLETED_PROXY_AUDIT` | KR item slice 가능; 한국 20대 또는 독립 KR 사용자 cohort 승인 `NO` |
 | `REC-DATA-003` evaluation redesign | `PROTOCOL_AMENDMENT_PROPOSED` | preference reconstruction 주 평가 + next-rating-session 보조 평가 제안 |
@@ -91,7 +91,8 @@ segment 회귀를 잠그며 자체로 제품 Router나 ranking champion을 승�
 잠그며 REC-EV-019 구현 착수만 승인한다.
 [REC-EV-019C Validation manifest](./manifests/rec-ev-019c-validation.json)는 후보 41,625편과 K5·10
 선택 결과, selection lock, Locked Test 미개봉을 잠근다. [분석 manifest](./manifests/rec-ev-019c-analysis.json)는
-사용자·영화 구간 분석 artifact와 제품 정책 미변경 경계를 잠근다.
+사용자·영화 구간 분석 artifact, `locked_test_used=false`, `champion=null`,
+`product_policy_updated=false`와 commit 단독 재현 불가 경계를 잠근다.
 
 REC-EV-019C는 Validation runner가 역할 혼합 Parquet이나 Locked Test 파일을 열기 전에 실패하도록 입력
 allowlist를 고정했다. Bayesian·ItemKNN·BPR·structured/text content·LightFM·RRF의 trial 수, 사용자별
@@ -99,12 +100,13 @@ percentile 정규화, B0 fallback, checkpoint·resume 계약도 자동 검증한
 LightFM dependency 9개 검사와 자원 사전점검을 통과한 뒤 bounded Validation을 실행했다. 중단된 LightFM
 T003 seed 42는 cache를 보존한 `--resume`으로 재개했다.
 
-Validation에서는 K5 1,614명과 K10 1,479명 모두 LightFM이 인기도보다 높은 NDCG@10을 보였다.
-그러나 콘텐츠 단독 모델은 인기도를 이기지 못했고 LightFM 개선도 인기도 Q4와 비한국어 원어 영화에
-집중됐다. 한국어 원어 관측 GOOD는 21·23건뿐이었고 Top-10 적중은 두 모델 모두 0이었다. 따라서 K10,
-양방향 선호 신호, LightFM을 다음 검증 후보로 좁혔지만 한국 영화와 수록 이후 영화 문제는 미해결로
-판정했다. selection lock은 생성했고 Locked Test·제품 champion·현재 정책은 열지 않았다. 상세 결과는
-[019C Validation·구간 분석](./REC-EV-019C-validation-analysis.md)에 있다.
+K별 256명 tuning panel을 제외한 보조 confirmatory paired 결과에서도 LightFM T003은 B0보다 높았다.
+K5는 1,358명 `+0.03331 [0.02582, 0.04114]`, K10은 1,223명 `+0.04532
+[0.03681, 0.05462]`다. K5와 K10은 사용자·미래 구간이 달라 직접 비교하지 않는다. 원시 양쪽
+신호가 있어도 valid candidate anchor 부족으로 K5 97명, K10 46명이 fallback했으므로 양방향 신호
+효과를 주장하지 않는다. positive는 Q4에 95.9%·96.4% 집중됐고 한국어 원어 Top-500은 B0 10건 대
+LightFM 6건 방향이지만 작은 표본으로 열등을 확정하지 않는다. `release_year>=2020` 후보 9편의
+Validation positive와 true cold-item 후보는 모두 0이다. 상세 결과는 [019C 독립 감사 교정](./REC-EV-019C-validation-analysis.md)에 있다.
 
 Cold-start 평가에서는 K1부터 별점 MAE가 통계적으로 줄었지만, K0 대비 3% 실질 개선 Gate는
 K10부터 통과했다. 초기 sampled ranking에서는 모든 K의 최적 Fold-in 가중치가 0이었으나,
