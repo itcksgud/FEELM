@@ -1,0 +1,268 @@
+{
+  "schema_version": 1,
+  "contract_id": "rec-ev-019d-prefix-ablation-artifacts-v1",
+  "status": "APPROVED_FOR_BOUNDED_REAL_VALIDATION",
+  "task_id": "TASK-REC-EV-019D",
+  "protocol_version": "rec-eval-vnext-2",
+  "purpose": "Estimate the paired effect of first-10 versus first-5 profile information for the same K10 Validation users and the same K10 future window without Locked Test access, retuning, champion selection, or product-policy change.",
+  "current_authorization": {
+    "contract_and_lock_creation": true,
+    "real_validation_fit_or_score": true,
+    "locked_test_access": false,
+    "tuning_or_threshold_change": false,
+    "champion_selection": false,
+    "product_policy_change": false
+  },
+  "invariants": {
+    "execution_role": "VALIDATION_019D",
+    "locked_test_used": false,
+    "champion": null,
+    "product_policy_updated": false
+  },
+  "source_contracts": {
+    "cohort": "docs/recommendation/contracts/rec-ev-019a-artifacts.json",
+    "model_suite": "docs/recommendation/contracts/rec-ev-019c-validation-artifacts.json",
+    "validation_manifest": "docs/recommendation/evidence/manifests/rec-ev-019c-validation.json",
+    "analysis": "docs/recommendation/evidence/REC-EV-019C-validation-analysis.md"
+  },
+  "allowed_input_artifacts": {
+    "validation_prefixes": {
+      "path": "outputs/recommendation-evidence/rec-ev-019a/validation-binary-prefixes.parquet",
+      "bytes": 231375,
+      "sha256": "eaeb04627d6a160351036350469f8d2894ea3464fc6897e97af04bcfce7da8c4"
+    },
+    "validation_windows": {
+      "path": "outputs/recommendation-evidence/rec-ev-019a/validation-evaluation-windows.parquet",
+      "bytes": 366667,
+      "sha256": "88fe1ab55491714358f985e1783e334bce24ffc08cf6f079e063a3ccd2547e56"
+    },
+    "candidate_core": {
+      "path": "outputs/recommendation-evidence/rec-ev-019c/candidate-core-final.parquet",
+      "bytes": 651984,
+      "sha256": "9bb0560cb0c3538160dce7568a4dc366e2937b1ec6019cbacfd7113cd34c910e"
+    },
+    "validation_selection": {
+      "path": "outputs/recommendation-evidence/rec-ev-019c/validation-selection.json",
+      "bytes": 123039,
+      "sha256": "9fab1f5bfd184c246c916dce6daefa5ef4366520e2538559efc6c12e2e38c7df"
+    },
+    "lightfm_config": {
+      "path": "outputs/recommendation-evidence/rec-ev-019c/cache/B8_LIGHTFM-T003-S17/config.json",
+      "bytes": 167,
+      "sha256": "5ce840552cdf3703fa29133818f11e6d8d9ac31577360d792cf397bb53b79d12"
+    },
+    "lightfm_interactions": {
+      "path": "outputs/recommendation-evidence/rec-ev-019c/cache/B8_LIGHTFM-T003-S17/interactions.npz",
+      "bytes": 13413796,
+      "sha256": "cc15c50c170279d15523dab1051b11be4c03f7c8a7b1f321c2b3bf88afba04eb"
+    },
+    "lightfm_item_features": {
+      "path": "outputs/recommendation-evidence/rec-ev-019c/cache/B8_LIGHTFM-T003-S17/item-features.npz",
+      "bytes": 1720759,
+      "sha256": "8d7221098b1d5bc66b6c2f207d5124d07627f5303afc852a2e39b7dc3d87fc39"
+    },
+    "lightfm_result": {
+      "path": "outputs/recommendation-evidence/rec-ev-019c/cache/B8_LIGHTFM-T003-S17/result.npz",
+      "bytes": 19946732,
+      "sha256": "da3414ef1a18cbe515e319a93f04ca5498e76669ab756680384e8f82bc918c35"
+    }
+  },
+  "forbidden_input_artifacts": [
+    "outputs/recommendation-evidence/global-time-v1/test.parquet",
+    "outputs/recommendation-evidence/rec-ev-019a/binary-prefixes.parquet",
+    "outputs/recommendation-evidence/rec-ev-019a/evaluation-windows.parquet",
+    "outputs/recommendation-evidence/rec-ev-019a/router-train-binary-prefixes.parquet",
+    "outputs/recommendation-evidence/rec-ev-019a/router-train-evaluation-windows.parquet",
+    "outputs/recommendation-evidence/rec-ev-019a/locked-test-binary-prefixes.parquet",
+    "outputs/recommendation-evidence/rec-ev-019a/locked-test-evaluation-windows.parquet"
+  ],
+  "role_firewall": {
+    "file_allowlist_enforced_before_open": true,
+    "reject_unknown_paths": true,
+    "forbidden_path_open_before_check_is_fatal": true,
+    "validation_role_literal": "validation-019d",
+    "test_mode_or_test_flag_forbidden": true,
+    "raw_user_id_forbidden": true
+  },
+  "cohort": {
+    "source": "REC-EV-019A K10 strict Validation users",
+    "expected_users": 1479,
+    "prefix_rows_per_user": 10,
+    "future_rows_per_user": 10,
+    "future_window": "THE_EXISTING_K10_EVALUATION_WINDOW_SHARED_BYTE_FOR_BYTE_BY_BOTH_ARMS",
+    "ordering_checks": [
+      "INPUT_RANK_IS_EXACTLY_1_THROUGH_10_PER_USER",
+      "SOURCE_POSITION_IS_STRICTLY_INCREASING_IN_INPUT_RANK_ORDER",
+      "TIMESTAMP_IS_NONDECREASING_IN_INPUT_RANK_ORDER",
+      "FIRST5_IS_AN_EXACT_PREFIX_OF_FIRST10"
+    ]
+  },
+  "confirmatory_set": {
+    "definition": "K10 cohort minus the union of the existing K5 and K10 tuning-panel user keys after intersection with the K10 cohort",
+    "expected_excluded_users": 426,
+    "expected_users": 1053,
+    "tuning_or_threshold_changes_forbidden": true,
+    "success_decision_population": "CONFIRMATORY_ONLY"
+  },
+  "model": {
+    "primary": "B8_LIGHTFM",
+    "trial_id": "B8_LIGHTFM-T003",
+    "seed": 17,
+    "fallback": "B0_MOVIELENS_BAYESIAN_RATING_T003",
+    "candidate_count": 41625,
+    "lightfm_config": {
+      "dimension": 128,
+      "epochs": 10,
+      "item_alpha": 0.000001,
+      "learning_rate": 0.05,
+      "learning_schedule": "adagrad",
+      "seed": 17,
+      "user_alpha": 0.000001
+    },
+    "target_fold_in": {
+      "algorithm": "REC_EV_019C_CUSTOM_LOGISTIC_FOLD_IN_WITH_ITEM_PARAMETERS_FROZEN",
+      "epochs": 80,
+      "requires_candidate_valid_positive_and_negative_anchor": true
+    },
+    "base_representation": {
+      "sharing": "THE_EXACT_SAME_ITEM_BIASES_AND_ITEM_FACTORS_ARTIFACT_IS_USED_BY_BOTH_ARMS",
+      "reuse_policy": "REQUIRE_HASH_VERIFIED_REC_EV_019C_T003_SEED17_CACHE_WITH_RESUME",
+      "refit_policy": "ONLY_IF_CACHE_IS_ABSENT_OR_FAILS_INTEGRITY; REFIT_ONCE_WITH_THE_LOCKED_CONFIG_AND SHARE_THE_RESULT",
+      "third_party_reproducibility_limit": "The large cache and source Parquet files are local ignored artifacts with no external artifact URI, so a commit-only third party cannot reproduce the run."
+    }
+  },
+  "arms": {
+    "K5_PROFILE": "first five K10 prefix rows in verified input/source order",
+    "K10_PROFILE": "all ten K10 prefix rows in verified input/source order",
+    "only_changed_component": "TARGET_USER_FOLD_IN_PROFILE_INFORMATION"
+  },
+  "estimands": {
+    "primary": {
+      "id": "COMMON_K10_SEEN_MASK_PROFILE_ABLATION",
+      "seen_mask": "Both arms exclude all candidate-valid items in the full K10 prefix.",
+      "interpretation": "Controlled profile-information ablation; K10 information is deliberately used in the candidate-exclusion mask and therefore this is not an end-to-end K5 serving simulation."
+    },
+    "secondary": {
+      "id": "ARM_SPECIFIC_SEEN_MASK_END_TO_END",
+      "seen_mask": "K5 excludes its candidate-valid first five items; K10 excludes its candidate-valid first ten items.",
+      "interpretation": "End-to-end diagnostic that changes both profile information and the visible-seen exclusion set."
+    }
+  },
+  "applicability_strata": {
+    "mutually_exclusive": [
+      "BOTH_LIGHTFM",
+      "K10_NEWLY_APPLICABLE",
+      "BOTH_FALLBACK"
+    ],
+    "diagnostic": "RAW_BOTH_BUT_CANDIDATE_ANCHOR_LOSS",
+    "expected_confirmatory_counts_for_drift_detection_only": {
+      "BOTH_LIGHTFM": 661,
+      "K10_NEWLY_APPLICABLE": 277,
+      "BOTH_FALLBACK": 115,
+      "RAW_BOTH_BUT_CANDIDATE_ANCHOR_LOSS_K5": 61,
+      "RAW_BOTH_BUT_CANDIDATE_ANCHOR_LOSS_K10": 34
+    },
+    "mismatch_policy": "Do not force expected values; report the directly computed values and the diagnosed cause."
+  },
+  "metrics": {
+    "primary": "PER_USER_PAIRED_DELTA_NDCG_AT_10_K10_MINUS_K5",
+    "secondary": [
+      "RECALL_AT_10",
+      "MRR_AT_10",
+      "CANDIDATE_RECALL_AT_500",
+      "HARM_AT_2",
+      "FALLBACK_TRANSITIONS",
+      "APPLICABILITY_STRATA"
+    ],
+    "top_candidates": 500,
+    "top_k": 10,
+    "tie_break": ["effective_score_desc", "movie_id_asc"],
+    "positive_injection": false
+  },
+  "bootstrap": {
+    "unit": "USER",
+    "method": "PERCENTILE",
+    "iterations": 10000,
+    "seed": 20260924,
+    "ndcg_interval": "TWO_SIDED_95_PERCENT_2_5_AND_97_5_PERCENTILES",
+    "harm_interval": "ONE_SIDED_95_PERCENT_UPPER_95TH_PERCENTILE"
+  },
+  "decision_rule": {
+    "evaluated_on": "PRIMARY_ESTIMAND_CONFIRMATORY_SET_ONLY",
+    "thresholds": {
+      "mean_delta_ndcg_at_10_min": 0.005,
+      "ndcg_two_sided_95_lower_strictly_greater_than": 0.0,
+      "harm_at_2_delta_one_sided_95_upper_max": 0.005
+    },
+    "priority": [
+      {
+        "order": 1,
+        "status": "FAIL",
+        "when": "HARM_AT_2_ONE_SIDED_95_UPPER_GT_0_005",
+        "reason": "SAFETY_MARGIN_EXCEEDED"
+      },
+      {
+        "order": 2,
+        "status": "FAIL",
+        "when": "NDCG_TWO_SIDED_95_UPPER_LT_0",
+        "reason": "EFFICACY_INTERVAL_ENTIRELY_NEGATIVE"
+      },
+      {
+        "order": 3,
+        "status": "PASS",
+        "when": "MEAN_NDCG_DELTA_GTE_0_005_AND_NDCG_95_LOWER_GT_0_AND_HARM_95_UPPER_LTE_0_005",
+        "reason": "ALL_PREDECLARED_EFFICACY_AND_SAFETY_CRITERIA_MET"
+      },
+      {
+        "order": 4,
+        "status": "INCONCLUSIVE",
+        "when": "OTHERWISE",
+        "reason": "PREDECLARED_SUCCESS_NOT_ESTABLISHED_WITHOUT_A_DECLARED_FAIL_CONDITION"
+      }
+    ]
+  },
+  "leakage_lock": {
+    "path": "outputs/recommendation-evidence/rec-ev-019d/protocol-lock.json",
+    "must_precede": "ANY_FUTURE_LABEL_JOIN_OR_SCORE_ANALYSIS",
+    "locked_fields": [
+      "contract_sha256",
+      "source_artifact_paths_sizes_and_sha256",
+      "cohort_definition",
+      "confirmatory_exclusion",
+      "arm_and_mask_definitions",
+      "model_trial_seed_and_cache",
+      "metrics_bootstrap_and_decision_rule"
+    ],
+    "post_run_contract_change_forbidden": true
+  },
+  "rec_ev_019c_prediction_reuse": {
+    "allowed": false,
+    "reasons": [
+      "The saved K5 predictions omit 226 users in the K10 cohort.",
+      "Every K5 future window differs from the K10 future window used here.",
+      "The seen mask and cohort-selection process differ.",
+      "Only Top-500 predictions were persisted, so the required full-catalog reranking under new masks cannot be reconstructed."
+    ]
+  },
+  "resource_bounds": {
+    "user_batch_size_max": 32,
+    "candidate_count": 41625,
+    "full_score_matrix_persistence_forbidden": true,
+    "checkpoint_after_each_user_batch": true,
+    "resume_required_for_real_run": true,
+    "maximum_user_arm_estimand_rankings": 5916
+  },
+  "output_root": "outputs/recommendation-evidence/rec-ev-019d",
+  "outputs": {
+    "source_manifest": "source-manifest.json",
+    "cohort": "cohort.parquet",
+    "arm_definitions": "arm-definitions.parquet",
+    "predictions": "predictions.parquet",
+    "user_arm_metrics": "user-arm-metrics.parquet",
+    "paired_deltas": "paired-deltas.parquet",
+    "strata": "strata-summary.json",
+    "result": "result.json",
+    "progress": "run-progress.json",
+    "checkpoints": "checkpoints"
+  }
+}

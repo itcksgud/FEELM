@@ -17,6 +17,7 @@
 | [REC-EV-005 합성 파티 결과](./evidence/REC-EV-005-party-policy.md) | 2/3/4명 합성 그룹의 네 정책 효용·격차·coverage와 순위 반전 | 실제 파티 만족, 일반화 가능한 4인 정책, UI 이해도 |
 | [REC-EV-006 reason faithfulness](./evidence/REC-EV-006-reason-faithfulness.md) | 실제 score contribution·ablation 기반 typed reason 후보 coverage | UI 문구·표시 개수·사용자 이해도 |
 | [REC-EV-008 React 비교](./evidence/REC-EV-008-ui-comparison.md) | 네 표현안의 정적 정보 밀도·최소 조작 수·동일 viewport 화면 | 실제 사용자 선호·이탈·완료시간·만족도와 제품 기본값 |
+| [REC-EV-019D same-window prefix ablation](./evidence/REC-EV-019D-prefix-ablation.md) | 동일 사용자·동일 K10 미래 창에서 first5와 first10 profile의 paired 품질·Harm 차이 | 실제 온보딩 이탈·한국 사용자 만족·제품 K10 기본값 |
 
 REC-EV-001은 완료되어 공통 4점 threshold를 폐기할 실제 근거가 생겼다. REC-EV-002에서는
 Validation 뒤 구간의 ALS 직접 coverage 11.74%, warm 보정 MAE 0.6268, 전체 Bias fallback 보정
@@ -28,7 +29,9 @@ REC-EV-003/003B에서는 평가 사용자 3,014명을 학습에서 제외해 최
 Fold-in은 K20에서도 sampled Popularity 순위를 이기지 못했다. 별점·순위를 분리해 검증한 결과,
 별점은 K1부터 통계적 개선이 있었지만 K0 대비 3% 실질 개선 Gate는 K10부터 통과했고, 순위의
 최적 Fold-in 가중치는 모든 K에서 0이었다. 따라서 K10은 예상 별점 화면 비교 후보로만 올리고,
-온보딩 최대 입력 수는 React K5/K10 비용 자료가 생길 때까지 `PARTIAL_EVIDENCE`로 둔다.
+온보딩 최대 입력 수는 `PARTIAL_EVIDENCE`로 둔다. 후속 REC-EV-019D에서 same-window NDCG는
+`+0.02656 [0.01784, 0.03520]`였지만 Harm@2 one-sided upper `0.01235`가 사전 한계 `0.005`를
+넘어 `FAIL`했다. 따라서 품질 평균만으로 K10을 기본값으로 고르지 않으며 실제 부담 자료도 여전히 필요하다.
 
 REC-EV-004에서는 Validation의 1% relevance-loss 후보가 held-out Test에서 1.59% NDCG 손실로
 사전 candidate budget을 넘었다. 같은 후보는 novelty·diversity·catalog coverage·long-tail exposure를

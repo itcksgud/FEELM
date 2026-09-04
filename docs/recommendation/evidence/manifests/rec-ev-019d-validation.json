@@ -1,0 +1,245 @@
+{
+  "artifacts": [
+    {
+      "bytes": 1167,
+      "path": "outputs/recommendation-evidence/rec-ev-019d/protocol-lock.json",
+      "sha256": "632b4b70ed285afffe09d742397c0561b75774cc5aa3cf45ff6947dbed6b84e7"
+    },
+    {
+      "bytes": 3044,
+      "path": "outputs/recommendation-evidence/rec-ev-019d/source-manifest.json",
+      "sha256": "ccf81317efa7a99b0c4ed850ff016965cde69ecd178d2646a8d0f3b39d826aef"
+    },
+    {
+      "bytes": 55980,
+      "path": "outputs/recommendation-evidence/rec-ev-019d/cohort.parquet",
+      "sha256": "e272925a72dc5c48e93dd9568a81947e6a555f40d60e3fb41364ffe0076370ae"
+    },
+    {
+      "bytes": 137135,
+      "path": "outputs/recommendation-evidence/rec-ev-019d/arm-definitions.parquet",
+      "sha256": "7bfa2c36718ab1468b14f891797c94ef3c1654b4f72704a836a869f1eff574c5"
+    },
+    {
+      "bytes": 7217028,
+      "path": "outputs/recommendation-evidence/rec-ev-019d/predictions.parquet",
+      "sha256": "836cb993cf2e1e34380565df0550d2e2dc9897a9748bc7a2d8796f509db943e4"
+    },
+    {
+      "bytes": 238999,
+      "path": "outputs/recommendation-evidence/rec-ev-019d/user-arm-metrics.parquet",
+      "sha256": "84d5d695d0eef3554feb367dbfaf061f32ae665a14d655b1a89060e30f6d9b7c"
+    },
+    {
+      "bytes": 65763,
+      "path": "outputs/recommendation-evidence/rec-ev-019d/paired-deltas.parquet",
+      "sha256": "a5fe0814c466085669129062711b619f9da10f0d27dbe3f980ba2f2bcbc44b8a"
+    },
+    {
+      "bytes": 508,
+      "path": "outputs/recommendation-evidence/rec-ev-019d/strata-summary.json",
+      "sha256": "5b2de743ed67f13adafdacdfb00de708cb566b28fa314456c0dde022721bd49c"
+    },
+    {
+      "bytes": 5323,
+      "path": "outputs/recommendation-evidence/rec-ev-019d/result.json",
+      "sha256": "c3d47789d102c6ac579f3fd0bea313000207fb91be3b7f774e148803489cfcb6"
+    },
+    {
+      "bytes": 874,
+      "path": "outputs/recommendation-evidence/rec-ev-019d/run-progress.json",
+      "sha256": "61a15a68a04baef3c587b9721b875eddb791d6acd8cb6c1473afe8723d81190d"
+    }
+  ],
+  "champion": null,
+  "contract_path": "docs/recommendation/contracts/rec-ev-019d-prefix-ablation-artifacts.json",
+  "contract_sha256": "8d077f3633c0808a0fa8824d5f7e369433a3339d723327710bd6813c827f14f5",
+  "evidence_id": "REC-EV-019D",
+  "execution": {
+    "lightfm_config": {
+      "dimension": 128,
+      "epochs": 10,
+      "item_alpha": 1e-06,
+      "learning_rate": 0.05,
+      "learning_schedule": "adagrad",
+      "seed": 17,
+      "user_alpha": 1e-06
+    },
+    "lock_command": "py -3 scripts/run_rec_ev_019d_prefix_ablation.py --phase lock --role validation-019d",
+    "resume": true,
+    "run_command": "py -3 scripts/run_rec_ev_019d_prefix_ablation.py --phase run --role validation-019d --resume",
+    "verify_command": "py -3 scripts/verify_rec_ev_019d_prefix_ablation.py --manifest docs/recommendation/evidence/manifests/rec-ev-019d-validation.json"
+  },
+  "locked_test_used": false,
+  "product_policy_updated": false,
+  "result": {
+    "aggregate_metrics": {
+      "ARM_SPECIFIC_SEEN_MASK": {
+        "ALL_K10_COHORT": {
+          "K10": {
+            "candidate_recall_at_500": 0.68289384719405,
+            "fallback_user_rate": 0.11494252873563218,
+            "harm_at_2": 0.0290736984448952,
+            "mrr_at_10": 0.11966230936819172,
+            "ndcg_at_10": 0.07254518275897859,
+            "recall_at_10": 0.0857706300911169,
+            "users": 1479
+          },
+          "K5": {
+            "candidate_recall_at_500": 0.6720757268424611,
+            "fallback_user_rate": 0.38269100743745776,
+            "harm_at_2": 0.029749830966869506,
+            "mrr_at_10": 0.0811707824892409,
+            "ndcg_at_10": 0.047210885348941266,
+            "recall_at_10": 0.05558453266364016,
+            "users": 1479
+          }
+        },
+        "CONFIRMATORY": {
+          "K10": {
+            "candidate_recall_at_500": 0.6723646723646723,
+            "fallback_user_rate": 0.10921177587844255,
+            "harm_at_2": 0.032288698955365625,
+            "mrr_at_10": 0.12616748820452525,
+            "ndcg_at_10": 0.07451949629195359,
+            "recall_at_10": 0.08581377470266359,
+            "users": 1053
+          },
+          "K5": {
+            "candidate_recall_at_500": 0.6695156695156695,
+            "fallback_user_rate": 0.37226970560303896,
+            "harm_at_2": 0.02849002849002849,
+            "mrr_at_10": 0.08175582990397806,
+            "ndcg_at_10": 0.045593273467183205,
+            "recall_at_10": 0.052423913535024645,
+            "users": 1053
+          }
+        }
+      },
+      "COMMON_K10_SEEN_MASK": {
+        "ALL_K10_COHORT": {
+          "K10": {
+            "candidate_recall_at_500": 0.68289384719405,
+            "fallback_user_rate": 0.11494252873563218,
+            "harm_at_2": 0.0290736984448952,
+            "mrr_at_10": 0.11966230936819172,
+            "ndcg_at_10": 0.07254518275897859,
+            "recall_at_10": 0.0857706300911169,
+            "users": 1479
+          },
+          "K5": {
+            "candidate_recall_at_500": 0.6720757268424611,
+            "fallback_user_rate": 0.38269100743745776,
+            "harm_at_2": 0.03177822853279243,
+            "mrr_at_10": 0.08677087693314872,
+            "ndcg_at_10": 0.04959014259380682,
+            "recall_at_10": 0.05715090633954731,
+            "users": 1479
+          }
+        },
+        "CONFIRMATORY": {
+          "K10": {
+            "candidate_recall_at_500": 0.6723646723646723,
+            "fallback_user_rate": 0.10921177587844255,
+            "harm_at_2": 0.032288698955365625,
+            "mrr_at_10": 0.12616748820452525,
+            "ndcg_at_10": 0.07451949629195359,
+            "recall_at_10": 0.08581377470266359,
+            "users": 1053
+          },
+          "K5": {
+            "candidate_recall_at_500": 0.6695156695156695,
+            "fallback_user_rate": 0.37226970560303896,
+            "harm_at_2": 0.029439696106362774,
+            "mrr_at_10": 0.08691908228945265,
+            "ndcg_at_10": 0.047957818539645036,
+            "recall_at_10": 0.05414914303803193,
+            "users": 1053
+          }
+        }
+      }
+    },
+    "base_cache": {
+      "commit_only_third_party_reproducible": false,
+      "path": "outputs/recommendation-evidence/rec-ev-019c/cache/B8_LIGHTFM-T003-S17/result.npz",
+      "reused": true,
+      "sha256": "da3414ef1a18cbe515e319a93f04ca5498e76669ab756680384e8f82bc918c35",
+      "shared_by_both_arms": true
+    },
+    "champion": null,
+    "cohort": {
+      "confirmatory_users": 1053,
+      "k10_users": 1479,
+      "tuning_panel_excluded": 426
+    },
+    "contract_sha256": "8d077f3633c0808a0fa8824d5f7e369433a3339d723327710bd6813c827f14f5",
+    "evidence_id": "REC-EV-019D",
+    "execution_role": "VALIDATION_019D",
+    "interpretation_limits": [
+      "Primary is a controlled profile-information ablation that uses K10 information in both seen masks.",
+      "Secondary changes both profile information and the seen set and is diagnostic only.",
+      "This does not establish Korean-user, Korean-movie, recent-movie, or product-policy performance."
+    ],
+    "lock_preceded_future_label_join": true,
+    "locked_test_used": false,
+    "primary_estimand": {
+      "bootstrap": {
+        "harm_mean": 0.002849002849002849,
+        "harm_one_sided_95_upper": 0.012345679012345678,
+        "iterations": 10000,
+        "ndcg_mean": 0.026561677752308544,
+        "ndcg_two_sided_95": [
+          0.017837457884291873,
+          0.035202801332300665
+        ],
+        "seed": 20260924
+      },
+      "decision": {
+        "reason": "SAFETY_MARGIN_EXCEEDED",
+        "status": "FAIL"
+      },
+      "id": "COMMON_K10_SEEN_MASK_PROFILE_ABLATION",
+      "paired_users": 1053,
+      "population": "CONFIRMATORY"
+    },
+    "product_policy_updated": false,
+    "protocol_lock_sha256": "632b4b70ed285afffe09d742397c0561b75774cc5aa3cf45ff6947dbed6b84e7",
+    "reason": "SAFETY_MARGIN_EXCEEDED",
+    "schema_version": 1,
+    "secondary_estimand_is_decision_gate": false,
+    "status": "FAIL",
+    "strata": {
+      "confirmatory_users": 1053,
+      "expected_for_drift_detection_only": {
+        "BOTH_FALLBACK": 115,
+        "BOTH_LIGHTFM": 661,
+        "K10_NEWLY_APPLICABLE": 277,
+        "RAW_BOTH_BUT_CANDIDATE_ANCHOR_LOSS_K10": 34,
+        "RAW_BOTH_BUT_CANDIDATE_ANCHOR_LOSS_K5": 61
+      },
+      "matches_expected": true,
+      "mutually_exclusive_counts": {
+        "BOTH_FALLBACK": 115,
+        "BOTH_LIGHTFM": 661,
+        "K10_NEWLY_APPLICABLE": 277
+      },
+      "raw_both_but_candidate_anchor_loss": {
+        "K10": 34,
+        "K5": 61
+      },
+      "schema_version": 1
+    }
+  },
+  "schema_version": 1,
+  "source_checksums": {
+    "candidate_core": "9bb0560cb0c3538160dce7568a4dc366e2937b1ec6019cbacfd7113cd34c910e",
+    "lightfm_config": "5ce840552cdf3703fa29133818f11e6d8d9ac31577360d792cf397bb53b79d12",
+    "lightfm_interactions": "cc15c50c170279d15523dab1051b11be4c03f7c8a7b1f321c2b3bf88afba04eb",
+    "lightfm_item_features": "8d7221098b1d5bc66b6c2f207d5124d07627f5303afc852a2e39b7dc3d87fc39",
+    "lightfm_result": "da3414ef1a18cbe515e319a93f04ca5498e76669ab756680384e8f82bc918c35",
+    "validation_prefixes": "eaeb04627d6a160351036350469f8d2894ea3464fc6897e97af04bcfce7da8c4",
+    "validation_selection": "9fab1f5bfd184c246c916dce6daefa5ef4366520e2538559efc6c12e2e38c7df",
+    "validation_windows": "88fe1ab55491714358f985e1783e334bce24ffc08cf6f079e063a3ccd2547e56"
+  },
+  "status": "FAIL"
+}

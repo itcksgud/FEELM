@@ -14,7 +14,7 @@
 
 - binary 온보딩 cohort artifact는 `PASS_COHORT_GATES`로 완료
 - 전체 TMDB feature artifact는 `PASS_FULL_GATES`로 완료
-- 019C 실행 계약·합성 runner·Linux 의존성 smoke는 통과했고 실제 full-catalog runner 구현이 다음 단계
+- 019C Validation과 독립 감사, 019D same-window prefix ablation까지 완료됐고 019D는 안전 Gate `FAIL`
 - REC-EV-019~026 evidence는 backlog dependency Gate를 순서대로 통과
 
 모델이 아직 실험 Gate를 통과하지 않았다는 이유로 구현 자체를 막지 않는다. 반대로 구현 준비가 됐다는
@@ -29,13 +29,13 @@
 | REC-EV-019C runner helper·합성 preflight | **DONE — 15개 검사 PASS** |
 | REC-EV-019C LightFM Linux dependency smoke | **DONE — 9개 검사 PASS** |
 | REC-EV-019C metadata 자원 사전점검 | **DONE — 15.8억 score·B8 12.3억·B4 3.93억 상한, 차단점 0개** |
-| REC-EV-019C 실제 Validation runner 구현 | **GO** |
-| REC-EV-019C 실제 Validation 모델 실행 | `GO`, 고정 상한·Validation 전용 runner만 허용 |
+| REC-EV-019C 실제 Validation runner·모델 실행 | **DONE — Validation only, selection locked** |
+| REC-EV-019D same-window prefix ablation | **DONE — NDCG 효능 기준 통과, Harm@2 안전 Gate `FAIL`** |
 | REC-EV-020P-A/B 설계→계약 구현 | `GO`, v4 Schema·artifact contract·runner 구현 가능 |
 | REC-EV-020P-A/B 실행 완료 판정 | `NO-GO`, runner·verifier·Validation power 결과 필요 |
 | REC-EV-021P 사전검사 | **DONE — firewall PASS, Validation pilot READY** |
 | REC-EV-021 전체 grid·Locked Test | `NO-GO`, 소규모 Validation 실행 시간·적용 모델 Gate 필요 |
-| binary 개인화 champion | `null`, 실험 결과 대기 |
+| binary 개인화 champion | `null`, 019D 안전 실패로 채택 금지 |
 | 예상 별점 public 노출 | `NO` |
 | C2 기본 정책 교체 | `NO`, 별도 vNext 승인 필요 |
 
@@ -128,7 +128,7 @@
 [`REC-EV-019B 전체 결과`](./evidence/REC-EV-019B-tmdb-feature-build.md)에 기록했다. 019A와의 교집합과 K10
 5,000명 Gate도 이미 확인했다. 이 값을 바꾸지 못하도록 019C 실행 계약과 자동 검증기도 고정했다.
 
-### 4.3 `TASK-REC-EV-019C` — preflight PASS, 실제 runner 구현 가능
+### 4.3 `TASK-REC-EV-019C` — Validation·독립 감사 완료
 
 기계 판독 계약은 [`contracts/rec-ev-019c-validation-artifacts.json`](./contracts/rec-ev-019c-validation-artifacts.json),
 쉬운 설명과 판정은 [`REC-EV-019C 계약 준비 결과`](./evidence/REC-EV-019C-contract-readiness.md)에 있다.
@@ -141,14 +141,24 @@ LightFM BPR/WARP가 FEELM의 UNKNOWN 계약과 충돌함을 발견해 B8을 sign
 metadata-only 계산량 점검에서는 최초 75.5억 score·B8 61.5억 update 설계를 발견해, 고정 256명/K panel과
 selection seed 17, 선택 trial의 5-seed panel 안정성, B4 사용자당 pair 16개 상한으로 바꿨다. 재점검은
 15.8억 score·B8 12.3억·B4 3.93억 update 상한과 7개 budget check를 통과했다.
-따라서 현재 준비도는 다음과 같다.
+이후 bounded full-catalog Validation과 독립 분석도 완료했다. 각 K 안에서 LightFM T003의 B0 대비 우위는
+유지됐지만 K5와 K10은 사용자·미래 구간이 달라 직접 비교하지 않았다. 따라서 현재 준비도는 다음과 같다.
 
 - 계약·validator·변이 테스트: `PASS`
 - runner helper·unit test·합성 preflight·dependency smoke: `PASS`
-- 실제 Validation runner 작성: `GO`
-- 실제 Validation 모델 실행: `NO-GO` until real runner review explicitly authorizes it
+- 실제 Validation runner 작성·모델 실행·독립 감사: `DONE`
 - Locked Test 모델 성능: `NO-GO`
 - 제품 champion·기본 정책 변경: `NO-GO`
+
+### 4.4 `TASK-REC-EV-019D` — same-window ablation 안전 Gate 실패
+
+기계 판독 계약은
+[`contracts/rec-ev-019d-prefix-ablation-artifacts.json`](./contracts/rec-ev-019d-prefix-ablation-artifacts.json),
+결과는 [REC-EV-019D 보고서](./evidence/REC-EV-019D-prefix-ablation.md)에 있다. K10 Validation 1,479명과
+동일한 K10 미래 구간을 고정하고 first5·first10 profile만 바꿨다. tuning panel 합집합 426명을 제외한
+1,053명에서 NDCG delta는 `+0.02656 [0.01784, 0.03520]`였지만 Harm@2 one-sided 95% upper
+`0.01235`가 사전 한계 `0.005`를 넘었다. 사전 우선순위대로 `FAIL_SAFETY_MARGIN_EXCEEDED`이며
+K10 정책과 champion을 승인하지 않는다. Locked Test는 계속 `NO-GO`다.
 
 ## 5. 완료 명령
 
@@ -167,6 +177,7 @@ npm run recommendation:vnext:readiness:check
 npm run recommendation:019c:contract:check
 npm run recommendation:019c:synthetic:check
 npm run recommendation:019c:dependency:check
+npm run recommendation:019d:check
 npm run recommendation:evidence:check
 ```
 
@@ -227,6 +238,7 @@ checksum·schema·coverage는 019B verifier가 검사한다. TMDB 전수 재수�
 6. 현재 제품 fallback을 바꾸지 않는다.
 7. `npm run recommendation:evidence:check`를 통과한다.
 8. 019C verifier는 019B identity allowlist 적용 strict K10 Test 5,476명과 최종 후보 41,625편이 바뀌지 않았는지 확인한다.
+9. 019D verifier는 same-window cohort·mask·strata·paired bootstrap과 안전 실패를 원자료에서 재계산한다.
 
 ## 8. Blind handoff용 시작 프롬프트
 

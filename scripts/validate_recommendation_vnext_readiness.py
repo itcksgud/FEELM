@@ -238,6 +238,7 @@ def validate_backlog(backlog: dict[str, Any]) -> None:
         "TASK-REC-EV-019A": "DONE",
         "TASK-REC-EV-019B": "DONE",
         "TASK-REC-EV-019C": "DONE",
+        "TASK-REC-EV-019D": "DONE",
         "TASK-REC-EV-019": "PENDING",
         "TASK-REC-EV-020": "PENDING",
         "TASK-REC-EV-021": "PENDING",
@@ -252,7 +253,7 @@ def validate_backlog(backlog: dict[str, Any]) -> None:
             raise RuntimeError(f"backlog task is missing or has wrong status: {task_id}")
         if not tasks[task_id].get("outputs"):
             raise RuntimeError(f"backlog task has no outputs: {task_id}")
-    for task_id in ("TASK-REC-EV-019P", "TASK-REC-EV-019A", "TASK-REC-EV-019B", "TASK-REC-EV-019C", "TASK-REC-EV-019"):
+    for task_id in ("TASK-REC-EV-019P", "TASK-REC-EV-019A", "TASK-REC-EV-019B", "TASK-REC-EV-019C", "TASK-REC-EV-019D", "TASK-REC-EV-019"):
         if not tasks[task_id].get("verify"):
             raise RuntimeError(f"executable verification is missing: {task_id}")
     expected_contracts = {
@@ -334,6 +335,30 @@ def validate_backlog(backlog: dict[str, Any]) -> None:
     for required_text in ("final identity allowlist", "at least 5000", "B0 fallback"):
         if required_text not in verify_019c:
             raise RuntimeError(f"019C final candidate gate is incomplete: {required_text}")
+
+    task_019d = tasks["TASK-REC-EV-019D"]
+    if task_019d.get("artifact_contract") != "docs/recommendation/contracts/rec-ev-019d-prefix-ablation-artifacts.json":
+        raise RuntimeError("019D artifact contract is missing from backlog")
+    if task_019d.get("current_authorization") != "VALIDATION_COMPLETE_LOCKED_TEST_FORBIDDEN":
+        raise RuntimeError("019D completion boundary is missing")
+    if task_019d.get("validation_result") != "FAIL_SAFETY_MARGIN_EXCEEDED":
+        raise RuntimeError("019D safety failure is not preserved")
+    if task_019d.get("locked_test_authorization") != "FORBIDDEN":
+        raise RuntimeError("019D Locked Test boundary is missing")
+    expected_019d_commands = {
+        "contract": "py -3 scripts/validate_rec_ev_019d_contract.py && py -3 -m unittest scripts/tests/test_rec_ev_019d_contract.py scripts/tests/test_run_rec_ev_019d_prefix_ablation.py",
+        "lock": "py -3 scripts/run_rec_ev_019d_prefix_ablation.py --phase lock --role validation-019d",
+        "run": "py -3 scripts/run_rec_ev_019d_prefix_ablation.py --phase run --role validation-019d --resume",
+        "verify": "py -3 scripts/verify_rec_ev_019d_prefix_ablation.py --manifest docs/recommendation/evidence/manifests/rec-ev-019d-validation.json",
+    }
+    if task_019d.get("commands") != expected_019d_commands:
+        raise RuntimeError("019D commands differ from the completed experiment")
+    verify_019d = "\n".join(task_019d.get("verify", []))
+    for required_text in ("1479", "426", "1053", "661/277/115", "FAIL_SAFETY_MARGIN_EXCEEDED"):
+        if required_text not in verify_019d:
+            raise RuntimeError(f"019D verification boundary is incomplete: {required_text}")
+    if tasks["TASK-REC-EV-019"].get("depends_on") != ["TASK-REC-EV-019D"]:
+        raise RuntimeError("binary product decision does not depend on the completed 019D safety result")
 
 
 def validate_current_product_boundary() -> None:
@@ -431,6 +456,53 @@ def validate_019c_completion_manifests() -> dict[str, Any]:
         "locked_test_opened": False,
         "product_champion": None,
         "product_policy_changed": False,
+    }
+
+
+def validate_019d_completion_manifest() -> dict[str, Any]:
+    contract_path = ROOT / "docs/recommendation/contracts/rec-ev-019d-prefix-ablation-artifacts.json"
+    manifest_path = ROOT / "docs/recommendation/evidence/manifests/rec-ev-019d-validation.json"
+    contract = json.loads(contract_path.read_text(encoding="utf-8"))
+    manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
+    digest = hashlib.sha256(contract_path.read_bytes().replace(b"\r\n", b"\n")).hexdigest()
+    if manifest.get("evidence_id") != "REC-EV-019D" or manifest.get("contract_sha256") != digest:
+        raise RuntimeError("REC-EV-019D manifest contract identity differs")
+    if manifest.get("status") != "FAIL":
+        raise RuntimeError("REC-EV-019D safety failure status is missing")
+    result = manifest.get("result", {})
+    if result.get("reason") != "SAFETY_MARGIN_EXCEEDED":
+        raise RuntimeError("REC-EV-019D safety failure reason is missing")
+    cohort = result.get("cohort", {})
+    if cohort != {"k10_users": 1479, "tuning_panel_excluded": 426, "confirmatory_users": 1053}:
+        raise RuntimeError("REC-EV-019D cohort differs")
+    primary = result.get("primary_estimand", {})
+    bootstrap = primary.get("bootstrap", {})
+    if primary.get("paired_users") != 1053 or bootstrap.get("iterations") != 10000 or bootstrap.get("seed") != 20260924:
+        raise RuntimeError("REC-EV-019D paired bootstrap contract differs")
+    if bootstrap.get("harm_one_sided_95_upper", 0) <= 0.005:
+        raise RuntimeError("REC-EV-019D safety failure was weakened")
+    strata = result.get("strata", {})
+    if strata.get("mutually_exclusive_counts") != {
+        "BOTH_FALLBACK": 115,
+        "BOTH_LIGHTFM": 661,
+        "K10_NEWLY_APPLICABLE": 277,
+    }:
+        raise RuntimeError("REC-EV-019D strata differ")
+    if strata.get("raw_both_but_candidate_anchor_loss") != {"K10": 34, "K5": 61}:
+        raise RuntimeError("REC-EV-019D candidate-anchor loss differs")
+    for payload in (manifest, result):
+        if payload.get("locked_test_used") is not False:
+            raise RuntimeError("REC-EV-019D opened Locked Test")
+        if payload.get("champion") is not None:
+            raise RuntimeError("REC-EV-019D invented a champion")
+        if payload.get("product_policy_updated") is not False:
+            raise RuntimeError("REC-EV-019D changed product policy")
+    return {
+        "status": manifest["status"],
+        "reason": result["reason"],
+        "locked_test_used": False,
+        "champion": None,
+        "product_policy_updated": False,
     }
 
 
@@ -536,13 +608,18 @@ def validate() -> dict[str, Any]:
     dependency_019c = validate_019c_dependency_smoke()
     resource_019c = validate_019c_resource_dry_run()
     completion_019c = validate_019c_completion_manifests()
+    from validate_rec_ev_019d_contract import validate_contract as validate_019d_contract
+    contract_019d = validate_019d_contract(read_json(
+        "docs/recommendation/contracts/rec-ev-019d-prefix-ablation-artifacts.json"
+    ))
+    completion_019d = validate_019d_completion_manifest()
 
     return {
         "status": "PASS",
-        "decision": "REC_EV_019C_VALIDATION_COMPLETE_TEST_LOCKED",
-        "scope": "REC-EV-019C_VALIDATION_AND_ANALYSIS_COMPLETE_LOCKED_TEST_AND_PRODUCT_POLICY_UNCHANGED",
+        "decision": "REC_EV_019D_VALIDATION_FAIL_SAFETY_TEST_LOCKED",
+        "scope": "REC-EV-019D_SAME_WINDOW_ABLATION_COMPLETE_SAFETY_FAIL_LOCKED_TEST_AND_PRODUCT_POLICY_UNCHANGED",
         "next_ready_tasks": [],
-        "next_phase": "REVIEW_VALIDATION_WITHOUT_OPENING_LOCKED_TEST",
+        "next_phase": "KEEP_K_POLICY_UNCHANGED_AND_REVIEW_HARM_WITHOUT_OPENING_LOCKED_TEST",
         "rec_ev_019a_status": cohort_build["status"],
         "rec_ev_019a_final_identity_k10_users": cohort_build["validation"]["locked_test_k10_final_identity_eligible"],
         "rec_ev_019b_status": feature_build["status"],
@@ -555,6 +632,9 @@ def validate() -> dict[str, Any]:
         "rec_ev_019c_validation_status": completion_019c["validation_status"],
         "rec_ev_019c_analysis_status": completion_019c["analysis_status"],
         "rec_ev_019c_locked_test_opened": completion_019c["locked_test_opened"],
+        "rec_ev_019d_validation_status": completion_019d["status"],
+        "rec_ev_019d_validation_reason": completion_019d["reason"],
+        "rec_ev_019d_contract_status": contract_019d["status"],
         "rec_ev_019c_full_catalog_user_item_scores": resource_019c["full_catalog_user_item_scores"],
         "rec_ev_019c_b8_base_update_upper_bound": resource_019c["b8_base_update_upper_bound"],
         "rec_ev_019c_b4_pair_update_upper_bound": resource_019c["b4_pair_update_upper_bound"],

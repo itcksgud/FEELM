@@ -439,10 +439,62 @@ tasks:
       - binary thresholds, candidate count, or positive injection
       - Locked Test execution before a separate matching phase Gate
 
+  - id: TASK-REC-EV-019D
+    title: 동일 사용자·동일 미래 구간 K5/K10 prefix 정보량 ablation
+    status: DONE
+    depends_on: [TASK-REC-EV-019C]
+    current_authorization: VALIDATION_COMPLETE_LOCKED_TEST_FORBIDDEN
+    validation_result: FAIL_SAFETY_MARGIN_EXCEEDED
+    locked_test_authorization: FORBIDDEN
+    artifact_contract: docs/recommendation/contracts/rec-ev-019d-prefix-ablation-artifacts.json
+    purpose:
+      - K10 strict Validation 사용자와 K10 미래 구간을 고정하고 first5·first10 profile 정보량만 paired 비교한다.
+      - 평균 품질과 Harm@2 안전 Gate를 사전등록 순서대로 판정하며 제품 K 정책을 자동 변경하지 않는다.
+    implementation_files:
+      - scripts/validate_rec_ev_019d_contract.py
+      - scripts/run_rec_ev_019d_prefix_ablation.py
+      - scripts/verify_rec_ev_019d_prefix_ablation.py
+      - scripts/tests/test_rec_ev_019d_contract.py
+      - scripts/tests/test_run_rec_ev_019d_prefix_ablation.py
+      - scripts/tests/test_verify_rec_ev_019d_prefix_ablation.py
+    outputs:
+      - outputs/recommendation-evidence/rec-ev-019d/protocol-lock.json
+      - outputs/recommendation-evidence/rec-ev-019d/source-manifest.json
+      - outputs/recommendation-evidence/rec-ev-019d/cohort.parquet
+      - outputs/recommendation-evidence/rec-ev-019d/arm-definitions.parquet
+      - outputs/recommendation-evidence/rec-ev-019d/predictions.parquet
+      - outputs/recommendation-evidence/rec-ev-019d/user-arm-metrics.parquet
+      - outputs/recommendation-evidence/rec-ev-019d/paired-deltas.parquet
+      - outputs/recommendation-evidence/rec-ev-019d/strata-summary.json
+      - outputs/recommendation-evidence/rec-ev-019d/result.json
+      - outputs/recommendation-evidence/rec-ev-019d/run-progress.json
+      - docs/recommendation/evidence/manifests/rec-ev-019d-validation.json
+      - docs/recommendation/evidence/REC-EV-019D-prefix-ablation-preregistration.md
+      - docs/recommendation/evidence/REC-EV-019D-prefix-ablation.md
+    commands:
+      contract: "py -3 scripts/validate_rec_ev_019d_contract.py && py -3 -m unittest scripts/tests/test_rec_ev_019d_contract.py scripts/tests/test_run_rec_ev_019d_prefix_ablation.py"
+      lock: "py -3 scripts/run_rec_ev_019d_prefix_ablation.py --phase lock --role validation-019d"
+      run: "py -3 scripts/run_rec_ev_019d_prefix_ablation.py --phase run --role validation-019d --resume"
+      verify: "py -3 scripts/verify_rec_ev_019d_prefix_ablation.py --manifest docs/recommendation/evidence/manifests/rec-ev-019d-validation.json"
+    verify:
+      - protocol lock timestamp and contract/source hashes precede any future-label join
+      - K10 cohort is 1479, tuning-panel union exclusion is 426, and confirmatory set is 1053
+      - common K10 seen mask is the primary profile-information ablation and arm-specific seen mask is secondary only
+      - B8 LightFM T003 seed 17 base representation is hash-verified and shared by both arms with B0 fallback
+      - strata 661/277/115 and candidate-anchor loss K5 61/K10 34 are independently recomputed
+      - paired NDCG and Harm bootstrap use 10000 user-level iterations and seed 20260924
+      - safety failure has priority over efficacy success and is preserved as FAIL_SAFETY_MARGIN_EXCEEDED
+      - locked_test_used=false, champion=null, and product_policy_updated=false
+    forbidden_changes:
+      - product API and database schema
+      - APPROVED_C2A_INTERNAL_POPULARITY_ONLY
+      - Locked Test access
+      - confirmatory tuning, threshold, mask, model, seed, metric, or success-rule changes after lock
+
   - id: TASK-REC-EV-019
     title: Binary onboarding K5·K10 제품 후보 판정
     status: PENDING
-    depends_on: [TASK-REC-EV-019C]
+    depends_on: [TASK-REC-EV-019D]
     outputs:
       - docs/recommendation/evidence/REC-EV-019-binary-onboarding.md
       - docs/recommendation/evidence/manifests/rec-ev-019.json
