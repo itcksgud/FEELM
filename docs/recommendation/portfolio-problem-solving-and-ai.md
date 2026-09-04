@@ -124,7 +124,7 @@ AI는 문제와 평가 기준을 대신 정하는 용도로 사용하지 않았�
 AI를 사용한 이유는 “AI 모델을 썼다”는 말을 만들기 위해서가 아니다. 제한된 시간에 여러 가설을 같은
 조건으로 구현하고, 사람이 결과의 의미와 한계를 판단하는 데 필요한 비교 자료를 만들기 위해서였다.
 
-## 5. REC-EV-019C·019D 결과와 판단
+## 5. REC-EV-019C·019D·019E 결과와 판단
 
 K별 256명 tuning panel을 제외한 confirmatory 보조 비교에서도 LightFM T003은 B0보다 높았다. K5는
 1,358명에서 `+0.03331` (95% CI `[0.02582, 0.04114]`), K10은 1,223명에서 `+0.04532`
@@ -143,8 +143,20 @@ tuning panel 합집합 426명을 제외한 1,053명의 common-seen-mask 결과�
 seen mask를 쓰므로 profile 정보량만 바꾸는 통제 실험이며 실제 K5·K10 온보딩 전체 효과도 아니다.
 
 양방향 신호도 효과로 해석하지 않았다. 현재 구현은 최종 후보에 positive와 negative anchor가 모두 없으면
-B0로 fallback한다. 원시 prefix에 양쪽 신호가 있어도 valid anchor 부족으로 fallback한 사용자가 K5 97명,
-K10 46명이었다. 이는 적용 전제와 후보 매핑 손실이지 신호 조합의 효과 검증이 아니다.
+B0로 fallback한다. `97/46`은 REC-EV-019C **full Validation 전체**의 K5/K10 anchor-loss 사용자 수다.
+REC-EV-019D confirmatory 1,053명에서는 K5 `61`, K10 `34`다. 서로 다른 모집단의 값을 섞지 않았으며,
+둘 다 적용 전제와 후보 매핑 손실이지 신호 조합의 효과 검증이 아니다.
+
+019D 결과와 Harm 원인을 본 뒤, 이미 K5가 적용 가능한 사용자는 K5를 유지하고 K10에서 새로 적용 가능한
+사용자만 K10으로 바꾸는 019E 규칙을 threshold 없이 고정했다. 같은 1,053명 재사용에서 ΔNDCG는
+`+0.013997 [0.008433, 0.019758]`, Harm upper는 `0.003799`로 post-hoc Gate를 통과했다. 그러나
+candidate recall@500은 `-0.020893`였고 benefit/neutral/harm은 `70/957/26`이었다. 그래서 성공을
+`PASS_POST_HOC_VALIDATION_REQUIRES_FRESH_CONFIRMATION`으로 제한하고 fresh target-independent Validation
+전에는 champion이나 제품 정책을 바꾸지 않았다.
+
+재현성 감사에서는 019D의 5,916개 ranking을 hashed LightFM item representation에서 full-catalog로 다시
+계산해 exact Top-10/Top-500, positive mean rank percentile, aggregate를 검증했다. 과거 lock에 없던
+runner/verifier hash와 git revision/dirty attestation은 019E부터 추가했고, 과거 lock을 소급 수정하지 않았다.
 
 그러나 처음 문제 1은 해결되지 않았다. TMDB 구조와 E5 텍스트 단독 모델은 인기도를 이기지 못했다.
 관측 positive 자체가 Q4에 K5 95.9%, K10 96.4% 몰려 Q1~Q3의 0 적중을 실패로 확정할 검정력이
@@ -175,7 +187,9 @@ E5 임베딩으로 영화 콘텐츠를 표현하는 방법을 시도했습니다
 tuning panel을 제외해도 LightFM은 K5와 K10 각각에서 인기도보다 높았습니다. 처음 실험의 K5와 K10은
 사용자와 미래 구간이 달라 우열을 정하지 않았고, 후속 실험에서 같은 사용자·같은 미래를 고정했습니다.
 first10의 NDCG는 개선됐지만 Harm@2 안전 한계를 넘어 사전 규칙대로 실패 처리하고 K10 정책을 채택하지
-않았습니다. 양방향 신호는 fallback 설계의 적용 전제라 효과라고 주장하지 않았습니다. positive의
+않았습니다. 이후 적용 가능한 사용자만 전환하는 규칙은 post-hoc Gate를 통과했지만 같은 집단을 재사용해
+fresh confirmation이 필요하다고 제한했습니다. 양방향 신호는 fallback 설계의 적용 전제라 효과라고
+주장하지 않았습니다. positive의
 약 96%가 인기 Q4에 몰렸고 한국어 원어와 2020년 이후 영화는 표본이 너무 작거나 0이었습니다. 평균 개선과
 처음 문제의 해결을 분리해 판단하고, Locked Test와 제품 정책을 그대로 유지한 경험입니다.
 

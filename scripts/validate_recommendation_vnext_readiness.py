@@ -239,6 +239,7 @@ def validate_backlog(backlog: dict[str, Any]) -> None:
         "TASK-REC-EV-019B": "DONE",
         "TASK-REC-EV-019C": "DONE",
         "TASK-REC-EV-019D": "DONE",
+        "TASK-REC-EV-019E": "DONE",
         "TASK-REC-EV-019": "PENDING",
         "TASK-REC-EV-020": "PENDING",
         "TASK-REC-EV-021": "PENDING",
@@ -253,7 +254,7 @@ def validate_backlog(backlog: dict[str, Any]) -> None:
             raise RuntimeError(f"backlog task is missing or has wrong status: {task_id}")
         if not tasks[task_id].get("outputs"):
             raise RuntimeError(f"backlog task has no outputs: {task_id}")
-    for task_id in ("TASK-REC-EV-019P", "TASK-REC-EV-019A", "TASK-REC-EV-019B", "TASK-REC-EV-019C", "TASK-REC-EV-019D", "TASK-REC-EV-019"):
+    for task_id in ("TASK-REC-EV-019P", "TASK-REC-EV-019A", "TASK-REC-EV-019B", "TASK-REC-EV-019C", "TASK-REC-EV-019D", "TASK-REC-EV-019E", "TASK-REC-EV-019"):
         if not tasks[task_id].get("verify"):
             raise RuntimeError(f"executable verification is missing: {task_id}")
     expected_contracts = {
@@ -346,19 +347,43 @@ def validate_backlog(backlog: dict[str, Any]) -> None:
     if task_019d.get("locked_test_authorization") != "FORBIDDEN":
         raise RuntimeError("019D Locked Test boundary is missing")
     expected_019d_commands = {
-        "contract": "py -3 scripts/validate_rec_ev_019d_contract.py && py -3 -m unittest scripts/tests/test_rec_ev_019d_contract.py scripts/tests/test_run_rec_ev_019d_prefix_ablation.py",
+        "contract": "py -3 scripts/validate_rec_ev_019d_contract.py && py -3 -m unittest scripts/tests/test_rec_ev_019d_contract.py scripts/tests/test_run_rec_ev_019d_prefix_ablation.py scripts/tests/test_verify_rec_ev_019d_prefix_ablation.py",
         "lock": "py -3 scripts/run_rec_ev_019d_prefix_ablation.py --phase lock --role validation-019d",
         "run": "py -3 scripts/run_rec_ev_019d_prefix_ablation.py --phase run --role validation-019d --resume",
         "verify": "py -3 scripts/verify_rec_ev_019d_prefix_ablation.py --manifest docs/recommendation/evidence/manifests/rec-ev-019d-validation.json",
+        "full_rescore_verify": "py -3 scripts/verify_rec_ev_019d_prefix_ablation.py --manifest docs/recommendation/evidence/manifests/rec-ev-019d-validation.json --full-rescore-users all",
     }
     if task_019d.get("commands") != expected_019d_commands:
         raise RuntimeError("019D commands differ from the completed experiment")
     verify_019d = "\n".join(task_019d.get("verify", []))
-    for required_text in ("1479", "426", "1053", "661/277/115", "FAIL_SAFETY_MARGIN_EXCEEDED"):
+    for required_text in ("1479", "426", "1053", "661/277/115", "5916", "FAIL_SAFETY_MARGIN_EXCEEDED"):
         if required_text not in verify_019d:
             raise RuntimeError(f"019D verification boundary is incomplete: {required_text}")
-    if tasks["TASK-REC-EV-019"].get("depends_on") != ["TASK-REC-EV-019D"]:
-        raise RuntimeError("binary product decision does not depend on the completed 019D safety result")
+    task_019e = tasks["TASK-REC-EV-019E"]
+    if task_019e.get("artifact_contract") != "docs/recommendation/contracts/rec-ev-019e-no-retune-incremental-applicability-gate.json":
+        raise RuntimeError("019E artifact contract is missing from backlog")
+    if task_019e.get("depends_on") != ["TASK-REC-EV-019D"]:
+        raise RuntimeError("019E does not depend on the completed 019D result")
+    if task_019e.get("current_authorization") != "POST_HOC_VALIDATION_COMPLETE_FRESH_CONFIRMATION_REQUIRED":
+        raise RuntimeError("019E post-hoc authority boundary is missing")
+    if task_019e.get("validation_result") != "PASS_POST_HOC_VALIDATION_REQUIRES_FRESH_CONFIRMATION":
+        raise RuntimeError("019E limited result status is missing")
+    if task_019e.get("locked_test_authorization") != "FORBIDDEN":
+        raise RuntimeError("019E Locked Test boundary is missing")
+    expected_019e_commands = {
+        "contract": "py -3 scripts/validate_rec_ev_019e_contract.py && py -3 -m unittest scripts/tests/test_rec_ev_019e_contract.py scripts/tests/test_run_rec_ev_019e_no_retune_incremental_applicability.py scripts/tests/test_verify_rec_ev_019e_no_retune_incremental_applicability.py",
+        "lock": "py -3 scripts/run_rec_ev_019e_no_retune_incremental_applicability.py --phase lock --role validation-019e-post-hoc",
+        "run": "py -3 scripts/run_rec_ev_019e_no_retune_incremental_applicability.py --phase run --role validation-019e-post-hoc --resume",
+        "verify": "py -3 scripts/verify_rec_ev_019e_no_retune_incremental_applicability.py --manifest docs/recommendation/evidence/manifests/rec-ev-019e-validation.json",
+    }
+    if task_019e.get("commands") != expected_019e_commands:
+        raise RuntimeError("019E commands differ from the completed experiment")
+    verify_019e = "\n".join(task_019e.get("verify", []))
+    for required_text in ("1053", "661/277/115", "10000", "70/957/26", "PASS_POST_HOC_VALIDATION_REQUIRES_FRESH_CONFIRMATION"):
+        if required_text not in verify_019e:
+            raise RuntimeError(f"019E verification boundary is incomplete: {required_text}")
+    if tasks["TASK-REC-EV-019"].get("depends_on") != ["TASK-REC-EV-019E"]:
+        raise RuntimeError("binary product decision does not depend on 019E and fresh confirmation")
 
 
 def validate_current_product_boundary() -> None:
@@ -506,6 +531,71 @@ def validate_019d_completion_manifest() -> dict[str, Any]:
     }
 
 
+def validate_019e_completion_manifest() -> dict[str, Any]:
+    contract_path = ROOT / "docs/recommendation/contracts/rec-ev-019e-no-retune-incremental-applicability-gate.json"
+    manifest_path = ROOT / "docs/recommendation/evidence/manifests/rec-ev-019e-validation.json"
+    contract = json.loads(contract_path.read_text(encoding="utf-8"))
+    manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
+    digest = hashlib.sha256(contract_path.read_bytes().replace(b"\r\n", b"\n")).hexdigest()
+    if manifest.get("evidence_id") != "REC-EV-019E" or manifest.get("contract_sha256") != digest:
+        raise RuntimeError("REC-EV-019E manifest contract identity differs")
+    expected_status = "PASS_POST_HOC_VALIDATION_REQUIRES_FRESH_CONFIRMATION"
+    if manifest.get("status") != expected_status:
+        raise RuntimeError("REC-EV-019E limited post-hoc status differs")
+    result = manifest.get("result", {})
+    if result.get("status") != expected_status or result.get("fresh_target_independent_validation_required") is not True:
+        raise RuntimeError("REC-EV-019E fresh confirmation boundary differs")
+    evidence = result.get("evidence_classification", {})
+    if evidence.get("post_hoc") is not True or evidence.get("independent_confirmatory_evidence") is not False:
+        raise RuntimeError("REC-EV-019E post-hoc disclosure differs")
+    if evidence.get("reuses_same_confirmatory_users") != 1053:
+        raise RuntimeError("REC-EV-019E reused cohort disclosure differs")
+    if result.get("cohort") != {"k10_users": 1479, "tuning_panel_excluded": 426, "confirmatory_users": 1053}:
+        raise RuntimeError("REC-EV-019E cohort differs")
+    if result.get("routing_counts_confirmatory") != {
+        "BOTH_FALLBACK": 115,
+        "BOTH_LIGHTFM": 661,
+        "K10_NEWLY_APPLICABLE": 277,
+    }:
+        raise RuntimeError("REC-EV-019E routing counts differ")
+    paired = result.get("paired_confirmatory", {})
+    bootstrap = paired.get("bootstrap", {})
+    if bootstrap.get("iterations") != 10000 or bootstrap.get("seed") != 20260924:
+        raise RuntimeError("REC-EV-019E bootstrap contract differs")
+    if bootstrap.get("harm_one_sided_95_upper", 1.0) > 0.005:
+        raise RuntimeError("REC-EV-019E safety Gate differs")
+    if bootstrap.get("ndcg_mean", 0.0) < 0.005 or bootstrap.get("ndcg_two_sided_95", [0.0])[0] <= 0.0:
+        raise RuntimeError("REC-EV-019E efficacy Gate differs")
+    if paired.get("benefit_harm_user_counts") != {"benefit": 70, "neutral": 957, "harm": 26}:
+        raise RuntimeError("REC-EV-019E benefit/harm counts differ")
+    lock_path = ROOT / contract["leakage_lock"]["path"]
+    lock = json.loads(lock_path.read_text(encoding="utf-8"))
+    if lock.get("future_metrics_read") is not False:
+        raise RuntimeError("REC-EV-019E lock timing boundary differs")
+    if lock.get("rec_ev_019d_result_and_harm_decomposition_already_observed") is not True:
+        raise RuntimeError("REC-EV-019E post-hoc source disclosure missing from lock")
+    git = lock.get("git", {})
+    if len(str(git.get("revision", ""))) != 40 or not isinstance(git.get("dirty"), bool) or len(str(git.get("status_sha256", ""))) != 64:
+        raise RuntimeError("REC-EV-019E git attestation differs")
+    if set(lock.get("source_code", {})) != {"runner", "verifier", "contract_validator"}:
+        raise RuntimeError("REC-EV-019E source-code attestation differs")
+    for payload in (manifest, result, lock):
+        if payload.get("locked_test_used") is not False:
+            raise RuntimeError("REC-EV-019E opened Locked Test")
+        if payload.get("champion") is not None:
+            raise RuntimeError("REC-EV-019E invented a champion")
+        if payload.get("product_policy_updated") is not False:
+            raise RuntimeError("REC-EV-019E changed product policy")
+    return {
+        "status": expected_status,
+        "post_hoc": True,
+        "fresh_target_independent_validation_required": True,
+        "locked_test_used": False,
+        "champion": None,
+        "product_policy_updated": False,
+    }
+
+
 def validate_019a_completion_manifest() -> dict[str, Any]:
     manifest = read_json("docs/recommendation/evidence/manifests/rec-ev-019a.json")
     contract = read_json("docs/recommendation/contracts/rec-ev-019a-artifacts.json")
@@ -613,13 +703,18 @@ def validate() -> dict[str, Any]:
         "docs/recommendation/contracts/rec-ev-019d-prefix-ablation-artifacts.json"
     ))
     completion_019d = validate_019d_completion_manifest()
+    from validate_rec_ev_019e_contract import validate_contract as validate_019e_contract
+    contract_019e = validate_019e_contract(read_json(
+        "docs/recommendation/contracts/rec-ev-019e-no-retune-incremental-applicability-gate.json"
+    ))
+    completion_019e = validate_019e_completion_manifest()
 
     return {
         "status": "PASS",
-        "decision": "REC_EV_019D_VALIDATION_FAIL_SAFETY_TEST_LOCKED",
-        "scope": "REC-EV-019D_SAME_WINDOW_ABLATION_COMPLETE_SAFETY_FAIL_LOCKED_TEST_AND_PRODUCT_POLICY_UNCHANGED",
+        "decision": "REC_EV_019E_POST_HOC_PASS_REQUIRES_FRESH_CONFIRMATION_TEST_LOCKED",
+        "scope": "REC-EV-019E_POST_HOC_MITIGATION_COMPLETE_FRESH_CONFIRMATION_REQUIRED_LOCKED_TEST_AND_PRODUCT_POLICY_UNCHANGED",
         "next_ready_tasks": [],
-        "next_phase": "KEEP_K_POLICY_UNCHANGED_AND_REVIEW_HARM_WITHOUT_OPENING_LOCKED_TEST",
+        "next_phase": "PREREGISTER_FRESH_TARGET_INDEPENDENT_VALIDATION_WITHOUT_OPENING_LOCKED_TEST",
         "rec_ev_019a_status": cohort_build["status"],
         "rec_ev_019a_final_identity_k10_users": cohort_build["validation"]["locked_test_k10_final_identity_eligible"],
         "rec_ev_019b_status": feature_build["status"],
@@ -635,6 +730,9 @@ def validate() -> dict[str, Any]:
         "rec_ev_019d_validation_status": completion_019d["status"],
         "rec_ev_019d_validation_reason": completion_019d["reason"],
         "rec_ev_019d_contract_status": contract_019d["status"],
+        "rec_ev_019e_validation_status": completion_019e["status"],
+        "rec_ev_019e_contract_status": contract_019e["status"],
+        "rec_ev_019e_fresh_confirmation_required": completion_019e["fresh_target_independent_validation_required"],
         "rec_ev_019c_full_catalog_user_item_scores": resource_019c["full_catalog_user_item_scores"],
         "rec_ev_019c_b8_base_update_upper_bound": resource_019c["b8_base_update_upper_bound"],
         "rec_ev_019c_b4_pair_update_upper_bound": resource_019c["b4_pair_update_upper_bound"],

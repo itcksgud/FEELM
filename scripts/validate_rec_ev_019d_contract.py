@@ -10,6 +10,7 @@ from typing import Any, Mapping
 
 ROOT = Path(__file__).resolve().parents[1]
 CONTRACT = ROOT / "docs/recommendation/contracts/rec-ev-019d-prefix-ablation-artifacts.json"
+AMENDMENT = ROOT / "docs/recommendation/contracts/rec-ev-019d-post-run-audit-amendment.json"
 
 
 def require(condition: bool, message: str) -> None:
@@ -17,7 +18,7 @@ def require(condition: bool, message: str) -> None:
         raise RuntimeError(message)
 
 
-def validate_contract(contract: Mapping[str, Any]) -> dict[str, Any]:
+def validate_contract(contract: Mapping[str, Any], amendment: Mapping[str, Any] | None = None) -> dict[str, Any]:
     require(contract.get("contract_id") == "rec-ev-019d-prefix-ablation-artifacts-v1", "contract identity drift")
     require(contract.get("status") == "APPROVED_FOR_BOUNDED_REAL_VALIDATION", "contract status drift")
     require(contract.get("task_id") == "TASK-REC-EV-019D", "task identity drift")
@@ -72,8 +73,26 @@ def validate_contract(contract: Mapping[str, Any]) -> dict[str, Any]:
     require(contract["rec_ev_019c_prediction_reuse"]["allowed"] is False, "019C prediction reuse drift")
     require(contract["leakage_lock"]["post_run_contract_change_forbidden"] is True, "post-run mutation boundary drift")
     require(contract["resource_bounds"]["resume_required_for_real_run"] is True, "resume boundary drift")
+    effective_amendment = amendment or json.loads(AMENDMENT.read_text(encoding="utf-8"))
+    require(effective_amendment.get("amendment_id") == "rec-ev-019d-post-run-audit-amendment-v1", "audit amendment identity drift")
+    require(effective_amendment.get("status") == "APPROVED_POST_RUN_AUDIT_AMENDMENT_NO_METRIC_CHANGE", "audit amendment status drift")
+    historical = effective_amendment["historical_execution_contract"]
+    require(historical["sha256_at_lock"] == "8d077f3633c0808a0fa8824d5f7e369433a3339d723327710bd6813c827f14f5", "historical contract hash drift")
+    require(historical["protocol_lock_sha256"] == "632b4b70ed285afffe09d742397c0561b75774cc5aa3cf45ff6947dbed6b84e7", "historical lock hash drift")
+    require(historical["must_not_be_rewritten"] is True, "historical lock preservation drift")
+    cache_policy = effective_amendment["authoritative_cache_policy_for_any_reverification_or_follow_up"]
+    require(cache_policy["policy"] == "REQUIRE_EXACT_HASH_VERIFIED_REC_EV_019C_T003_SEED17_CACHE", "effective cache policy drift")
+    require(cache_policy["cache_absent_action"] == "FAIL_CLOSED_NO_REFIT", "cache-absent policy drift")
+    require(cache_policy["cache_hash_mismatch_action"] == "FAIL_CLOSED_NO_REFIT", "cache-integrity policy drift")
+    require(cache_policy["implicit_or_explicit_refit_allowed"] is False, "refit policy drift")
+    full_rescore = effective_amendment["independent_full_rescore_contract"]
+    require(full_rescore["default_mode"]["users"] == 64, "bounded verifier default drift")
+    require(full_rescore["final_audit_mode"]["rankings"] == 5916, "all-user verifier scope drift")
     return {
         "status": "PASS_REC_EV_019D_CONTRACT",
+        "effective_cache_policy": "REQUIRE_EXACT_HASH_VERIFIED_CACHE_NO_REFIT",
+        "historical_lock_preserved": True,
+        "final_full_rescore_rankings": 5916,
         "cohort_users": 1479,
         "confirmatory_users": 1053,
         "locked_test_used": False,
@@ -84,7 +103,8 @@ def validate_contract(contract: Mapping[str, Any]) -> dict[str, Any]:
 
 def main() -> int:
     contract = json.loads(CONTRACT.read_text(encoding="utf-8"))
-    print(json.dumps(validate_contract(contract), ensure_ascii=False, sort_keys=True))
+    amendment = json.loads(AMENDMENT.read_text(encoding="utf-8"))
+    print(json.dumps(validate_contract(contract, amendment), ensure_ascii=False, sort_keys=True))
     return 0
 
 

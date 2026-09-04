@@ -447,6 +447,7 @@ tasks:
     validation_result: FAIL_SAFETY_MARGIN_EXCEEDED
     locked_test_authorization: FORBIDDEN
     artifact_contract: docs/recommendation/contracts/rec-ev-019d-prefix-ablation-artifacts.json
+    post_run_audit_amendment: docs/recommendation/contracts/rec-ev-019d-post-run-audit-amendment.json
     purpose:
       - K10 strict Validation 사용자와 K10 미래 구간을 고정하고 first5·first10 profile 정보량만 paired 비교한다.
       - 평균 품질과 Harm@2 안전 Gate를 사전등록 순서대로 판정하며 제품 K 정책을 자동 변경하지 않는다.
@@ -471,11 +472,13 @@ tasks:
       - docs/recommendation/evidence/manifests/rec-ev-019d-validation.json
       - docs/recommendation/evidence/REC-EV-019D-prefix-ablation-preregistration.md
       - docs/recommendation/evidence/REC-EV-019D-prefix-ablation.md
+      - docs/recommendation/contracts/rec-ev-019d-post-run-audit-amendment.json
     commands:
-      contract: "py -3 scripts/validate_rec_ev_019d_contract.py && py -3 -m unittest scripts/tests/test_rec_ev_019d_contract.py scripts/tests/test_run_rec_ev_019d_prefix_ablation.py"
+      contract: "py -3 scripts/validate_rec_ev_019d_contract.py && py -3 -m unittest scripts/tests/test_rec_ev_019d_contract.py scripts/tests/test_run_rec_ev_019d_prefix_ablation.py scripts/tests/test_verify_rec_ev_019d_prefix_ablation.py"
       lock: "py -3 scripts/run_rec_ev_019d_prefix_ablation.py --phase lock --role validation-019d"
       run: "py -3 scripts/run_rec_ev_019d_prefix_ablation.py --phase run --role validation-019d --resume"
       verify: "py -3 scripts/verify_rec_ev_019d_prefix_ablation.py --manifest docs/recommendation/evidence/manifests/rec-ev-019d-validation.json"
+      full_rescore_verify: "py -3 scripts/verify_rec_ev_019d_prefix_ablation.py --manifest docs/recommendation/evidence/manifests/rec-ev-019d-validation.json --full-rescore-users all"
     verify:
       - protocol lock timestamp and contract/source hashes precede any future-label join
       - K10 cohort is 1479, tuning-panel union exclusion is 426, and confirmatory set is 1053
@@ -484,6 +487,8 @@ tasks:
       - strata 661/277/115 and candidate-anchor loss K5 61/K10 34 are independently recomputed
       - paired NDCG and Harm bootstrap use 10000 user-level iterations and seed 20260924
       - safety failure has priority over efficacy success and is preserved as FAIL_SAFETY_MARGIN_EXCEEDED
+      - historical lock is preserved; effective cache policy is exact hash required and cache absence or mismatch fails closed without refit
+      - all 5916 full-catalog rankings reproduce exact Top10/Top500, positive mean rank percentile, aggregate, and Top500 boundary-tie handling
       - locked_test_used=false, champion=null, and product_policy_updated=false
     forbidden_changes:
       - product API and database schema
@@ -491,10 +496,61 @@ tasks:
       - Locked Test access
       - confirmatory tuning, threshold, mask, model, seed, metric, or success-rule changes after lock
 
+  - id: TASK-REC-EV-019E
+    title: no-retune incremental applicability post-hoc mitigation
+    status: DONE
+    depends_on: [TASK-REC-EV-019D]
+    current_authorization: POST_HOC_VALIDATION_COMPLETE_FRESH_CONFIRMATION_REQUIRED
+    validation_result: PASS_POST_HOC_VALIDATION_REQUIRES_FRESH_CONFIRMATION
+    locked_test_authorization: FORBIDDEN
+    artifact_contract: docs/recommendation/contracts/rec-ev-019e-no-retune-incremental-applicability-gate.json
+    purpose:
+      - 019D를 본 뒤 선택한 parameter-free routing을 동일 confirmatory 1053명에서 평가한다.
+      - BOTH_LIGHTFM은 K5, K10_NEWLY_APPLICABLE은 K10, BOTH_FALLBACK은 B0를 common K10 seen mask에서 선택한다.
+      - 통과해도 새 confirmatory evidence가 아니며 fresh target-independent Validation을 요구한다.
+    implementation_files:
+      - scripts/validate_rec_ev_019e_contract.py
+      - scripts/run_rec_ev_019e_no_retune_incremental_applicability.py
+      - scripts/verify_rec_ev_019e_no_retune_incremental_applicability.py
+      - scripts/tests/test_rec_ev_019e_contract.py
+      - scripts/tests/test_run_rec_ev_019e_no_retune_incremental_applicability.py
+      - scripts/tests/test_verify_rec_ev_019e_no_retune_incremental_applicability.py
+    outputs:
+      - outputs/recommendation-evidence/rec-ev-019e/protocol-lock.json
+      - outputs/recommendation-evidence/rec-ev-019e/source-manifest.json
+      - outputs/recommendation-evidence/rec-ev-019e/cohort.parquet
+      - outputs/recommendation-evidence/rec-ev-019e/routing.parquet
+      - outputs/recommendation-evidence/rec-ev-019e/user-arm-metrics.parquet
+      - outputs/recommendation-evidence/rec-ev-019e/paired-deltas.parquet
+      - outputs/recommendation-evidence/rec-ev-019e/strata-summary.json
+      - outputs/recommendation-evidence/rec-ev-019e/result.json
+      - outputs/recommendation-evidence/rec-ev-019e/run-progress.json
+      - docs/recommendation/evidence/manifests/rec-ev-019e-validation.json
+      - docs/recommendation/evidence/REC-EV-019E-no-retune-incremental-applicability-preregistration.md
+      - docs/recommendation/evidence/REC-EV-019E-no-retune-incremental-applicability.md
+    commands:
+      contract: "py -3 scripts/validate_rec_ev_019e_contract.py && py -3 -m unittest scripts/tests/test_rec_ev_019e_contract.py scripts/tests/test_run_rec_ev_019e_no_retune_incremental_applicability.py scripts/tests/test_verify_rec_ev_019e_no_retune_incremental_applicability.py"
+      lock: "py -3 scripts/run_rec_ev_019e_no_retune_incremental_applicability.py --phase lock --role validation-019e-post-hoc"
+      run: "py -3 scripts/run_rec_ev_019e_no_retune_incremental_applicability.py --phase run --role validation-019e-post-hoc --resume"
+      verify: "py -3 scripts/verify_rec_ev_019e_no_retune_incremental_applicability.py --manifest docs/recommendation/evidence/manifests/rec-ev-019e-validation.json"
+    verify:
+      - lock records contract/spec/source and runner/verifier hashes plus git revision/dirty status before any 019E hybrid result
+      - post-hoc reuse of the same 1053 users and prior observation of 019D result/Harm decomposition are explicit
+      - deterministic routing counts are BOTH_LIGHTFM/K10_NEWLY_APPLICABLE/BOTH_FALLBACK = 661/277/115
+      - user bootstrap uses 10000 iterations and seed 20260924 with Harm-first decision priority
+      - result is PASS_POST_HOC_VALIDATION_REQUIRES_FRESH_CONFIRMATION and never a product or champion approval
+      - benefit/neutral/harm users are 70/957/26 and candidate recall at 500 regression is retained
+      - locked_test_used=false, champion=null, and product_policy_updated=false
+    forbidden_changes:
+      - candidate or threshold search, retuning, or alternative routing branches
+      - Locked Test access
+      - product API, DB schema, champion, or APPROVED_C2A_INTERNAL_POPULARITY_ONLY
+      - interpreting this reused cohort as fresh confirmatory evidence
+
   - id: TASK-REC-EV-019
     title: Binary onboarding K5·K10 제품 후보 판정
     status: PENDING
-    depends_on: [TASK-REC-EV-019D]
+    depends_on: [TASK-REC-EV-019E]
     outputs:
       - docs/recommendation/evidence/REC-EV-019-binary-onboarding.md
       - docs/recommendation/evidence/manifests/rec-ev-019.json
@@ -504,6 +560,7 @@ tasks:
       - absolute NDCG@10 SESOI 0.002 and relative 5 percent
       - Holm-corrected hierarchical bootstrap CI lower bound above zero
       - current product policy remains popularity-only unless a separate C2 vNext approval is made
+      - fresh target-independent preregistered Validation must confirm the 019E routing before product selection
 
   - id: TASK-REC-EV-020P-A
     title: Top-2 v4 cohort·label·slate·seed Validation preflight

@@ -1,0 +1,347 @@
+{
+  "artifacts": [
+    {
+      "bytes": 3319,
+      "path": "outputs/recommendation-evidence/rec-ev-019e/protocol-lock.json",
+      "sha256": "42caab72b2a23f224dda8ea26f741c88b55b1df51011cbc4626fc670ed0f45e7"
+    },
+    {
+      "bytes": 5781,
+      "path": "outputs/recommendation-evidence/rec-ev-019e/source-manifest.json",
+      "sha256": "2edd46cb0c3893b2956f5816810d976a5b9c4d47fab12a1d19a439e3174e5aee"
+    },
+    {
+      "bytes": 54878,
+      "path": "outputs/recommendation-evidence/rec-ev-019e/cohort.parquet",
+      "sha256": "9b2ae635cf4fe2fc4aa84f787975ac4e1b9917aeb091e971488ecc5c6c21d760"
+    },
+    {
+      "bytes": 100409,
+      "path": "outputs/recommendation-evidence/rec-ev-019e/routing.parquet",
+      "sha256": "2e530defea7bbd716f7a6edec0e9dddd556c73637d13f0e754cee03f0165540f"
+    },
+    {
+      "bytes": 149838,
+      "path": "outputs/recommendation-evidence/rec-ev-019e/user-arm-metrics.parquet",
+      "sha256": "ee8433ac48189b14ddd1abfce2fc210b9c19d00ef20f78bc912f2217b152d481"
+    },
+    {
+      "bytes": 132829,
+      "path": "outputs/recommendation-evidence/rec-ev-019e/paired-deltas.parquet",
+      "sha256": "c29db116b1338bd098677d2fd12d96d53c1eaf02deee79919c0318aaac7d7e27"
+    },
+    {
+      "bytes": 4450,
+      "path": "outputs/recommendation-evidence/rec-ev-019e/strata-summary.json",
+      "sha256": "5b85cdc503ca14067ff10c61fa6473e80b2bf5e6288b244ca58199ffbf8ac85d"
+    },
+    {
+      "bytes": 9268,
+      "path": "outputs/recommendation-evidence/rec-ev-019e/result.json",
+      "sha256": "58b5875aad30da958c6a629f9b395c2ee19a42fe0d19e2ca737b8d415dbca2c1"
+    },
+    {
+      "bytes": 722,
+      "path": "outputs/recommendation-evidence/rec-ev-019e/run-progress.json",
+      "sha256": "831f853ca765fcaf1e99f81a3873ae35bb3f8fe2880ab0a846a20ae9547b2c79"
+    }
+  ],
+  "champion": null,
+  "contract_path": "docs/recommendation/contracts/rec-ev-019e-no-retune-incremental-applicability-gate.json",
+  "contract_sha256": "d2847fa757fa7e842550d865c5b5223071e378bb7cb1e7382defb850da4a1f22",
+  "evidence_id": "REC-EV-019E",
+  "execution": {
+    "lock_command": "py -3 scripts/run_rec_ev_019e_no_retune_incremental_applicability.py --phase lock --role validation-019e-post-hoc",
+    "required_019d_full_rescore_command": "py -3 scripts/verify_rec_ev_019d_prefix_ablation.py --manifest docs/recommendation/evidence/manifests/rec-ev-019d-validation.json --full-rescore-users all",
+    "resume": true,
+    "run_command": "py -3 scripts/run_rec_ev_019e_no_retune_incremental_applicability.py --phase run --role validation-019e-post-hoc --resume",
+    "verify_command": "py -3 scripts/verify_rec_ev_019e_no_retune_incremental_applicability.py --manifest docs/recommendation/evidence/manifests/rec-ev-019e-validation.json"
+  },
+  "locked_test_used": false,
+  "preregistration_path": "docs/recommendation/evidence/REC-EV-019E-no-retune-incremental-applicability-preregistration.md",
+  "preregistration_sha256": "9e2bab175d933e859f5f9503f56b142ba72686221b94cd55c1514103385f56fe",
+  "product_policy_updated": false,
+  "result": {
+    "aggregate_metrics": {
+      "ALL_K10_COHORT_DIAGNOSTIC": {
+        "CANDIDATE": {
+          "applicability_rate": 0.8850574712643678,
+          "candidate_recall_at_500": 0.6612576064908722,
+          "fallback_user_rate": 0.11494252873563218,
+          "harm_at_2": 0.027721433400946585,
+          "mrr_at_10": 0.10310994129452547,
+          "ndcg_at_10": 0.061477703970374775,
+          "positive_mean_rank_percentile": 0.26305296663167954,
+          "recall_at_10": 0.07157345696899449,
+          "users": 1479
+        },
+        "COMPARATOR": {
+          "applicability_rate": 0.6173089925625422,
+          "candidate_recall_at_500": 0.6720757268424611,
+          "fallback_user_rate": 0.38269100743745776,
+          "harm_at_2": 0.03177822853279243,
+          "mrr_at_10": 0.08677087693314872,
+          "ndcg_at_10": 0.04959014259380682,
+          "positive_mean_rank_percentile": 0.23719803184080127,
+          "recall_at_10": 0.05715090633954731,
+          "users": 1479
+        }
+      },
+      "CONFIRMATORY": {
+        "CANDIDATE": {
+          "applicability_rate": 0.8907882241215574,
+          "candidate_recall_at_500": 0.6486229819563153,
+          "fallback_user_rate": 0.10921177587844255,
+          "harm_at_2": 0.026590693257359924,
+          "mrr_at_10": 0.10791804217730143,
+          "ndcg_at_10": 0.06195456025449545,
+          "positive_mean_rank_percentile": 0.2706479234188292,
+          "recall_at_10": 0.07038619816397595,
+          "users": 1053
+        },
+        "COMPARATOR": {
+          "applicability_rate": 0.627730294396961,
+          "candidate_recall_at_500": 0.6695156695156695,
+          "fallback_user_rate": 0.37226970560303896,
+          "harm_at_2": 0.029439696106362774,
+          "mrr_at_10": 0.08691908228945265,
+          "ndcg_at_10": 0.047957818539645036,
+          "positive_mean_rank_percentile": 0.2448935101225095,
+          "recall_at_10": 0.05414914303803193,
+          "users": 1053
+        }
+      }
+    },
+    "champion": null,
+    "cohort": {
+      "confirmatory_users": 1053,
+      "k10_users": 1479,
+      "tuning_panel_excluded": 426
+    },
+    "contract_id": "REC-EV-019E-NO-RETUNE-INCREMENTAL-APPLICABILITY-GATE",
+    "contract_sha256": "d2847fa757fa7e842550d865c5b5223071e378bb7cb1e7382defb850da4a1f22",
+    "decision": {
+      "reason": "POST_HOC_EFFICACY_AND_SAFETY_THRESHOLDS_MET",
+      "status": "PASS_POST_HOC_VALIDATION_REQUIRES_FRESH_CONFIRMATION"
+    },
+    "decision_rule_priority": [
+      {
+        "order": 1,
+        "status": "FAIL_SAFETY_MARGIN_EXCEEDED",
+        "when": "HARM_AT_2_ONE_SIDED_95_UPPER_GT_0_005"
+      },
+      {
+        "order": 2,
+        "status": "PASS_POST_HOC_VALIDATION_REQUIRES_FRESH_CONFIRMATION",
+        "when": "MEAN_NDCG_DELTA_GTE_0_005_AND_NDCG_95_LOWER_GT_0"
+      },
+      {
+        "order": 3,
+        "status": "INCONCLUSIVE_POST_HOC_VALIDATION",
+        "when": "OTHERWISE"
+      }
+    ],
+    "evidence_classification": {
+      "fresh_target_independent_validation_required": true,
+      "independent_confirmatory_evidence": false,
+      "maximum_success_status": "PASS_POST_HOC_VALIDATION_REQUIRES_FRESH_CONFIRMATION",
+      "post_hoc": true,
+      "reuses_same_confirmatory_users": 1053,
+      "selected_after_observing": [
+        "REC-EV-019D confirmatory result",
+        "REC-EV-019D Harm@2 cause decomposition"
+      ]
+    },
+    "evidence_id": "REC-EV-019E",
+    "execution_role": "VALIDATION_019E_POST_HOC",
+    "fresh_target_independent_validation_required": true,
+    "interpretation_limits": [
+      "The mitigation was selected after REC-EV-019D and reuses the same 1053 confirmatory users.",
+      "A post-hoc pass is not new confirmatory evidence and cannot select a champion or update product policy.",
+      "Fresh target-independent preregistered Validation is required before any product claim."
+    ],
+    "lock_preceded_019e_hybrid_result": true,
+    "locked_test_used": false,
+    "paired_confirmatory": {
+      "benefit_harm_user_counts": {
+        "benefit": 70,
+        "harm": 26,
+        "neutral": 957
+      },
+      "bootstrap": {
+        "harm_mean": -0.002849002849002849,
+        "harm_one_sided_95_upper": 0.003798670465337132,
+        "iterations": 10000,
+        "ndcg_mean": 0.013996741714850401,
+        "ndcg_two_sided_95": [
+          0.00843329881389502,
+          0.019758025342277122
+        ],
+        "seed": 20260924
+      },
+      "users": 1053
+    },
+    "product_policy_updated": false,
+    "protocol_lock_sha256": "42caab72b2a23f224dda8ea26f741c88b55b1df51011cbc4626fc670ed0f45e7",
+    "reason": "POST_HOC_EFFICACY_AND_SAFETY_THRESHOLDS_MET",
+    "rec_ev_019d_result_and_harm_decomposition_already_observed": true,
+    "routing_counts_confirmatory": {
+      "BOTH_FALLBACK": 115,
+      "BOTH_LIGHTFM": 661,
+      "K10_NEWLY_APPLICABLE": 277
+    },
+    "schema_version": 1,
+    "source_ranking_reuse": {
+      "allowed": true,
+      "no_new_model_fit_or_scoring": true,
+      "reason": "The comparator and every routed candidate branch are exact REC-EV-019D COMMON_K10_SEEN_MASK rankings; routing selects a whole precomputed ranking without score blending or reranking.",
+      "required_independent_audit": "REC-EV-019D all-user full-catalog rescore must verify all 5916 rankings, exact Top-10/Top-500, boundary ties, positive mean rank percentile, and aggregates."
+    },
+    "status": "PASS_POST_HOC_VALIDATION_REQUIRES_FRESH_CONFIRMATION",
+    "stratified_audit": {
+      "BOTH_FALLBACK": {
+        "aggregate": {
+          "CANDIDATE": {
+            "applicability_rate": 0.0,
+            "candidate_recall_at_500": 0.7304347826086957,
+            "fallback_user_rate": 1.0,
+            "harm_at_2": 0.043478260869565216,
+            "mrr_at_10": 0.05031055900621118,
+            "ndcg_at_10": 0.02614897820666495,
+            "positive_mean_rank_percentile": 0.1885225931330141,
+            "recall_at_10": 0.030124223602484467,
+            "users": 115
+          },
+          "COMPARATOR": {
+            "applicability_rate": 0.0,
+            "candidate_recall_at_500": 0.7304347826086957,
+            "fallback_user_rate": 1.0,
+            "harm_at_2": 0.043478260869565216,
+            "mrr_at_10": 0.05031055900621118,
+            "ndcg_at_10": 0.02614897820666495,
+            "positive_mean_rank_percentile": 0.1885225931330141,
+            "recall_at_10": 0.030124223602484467,
+            "users": 115
+          }
+        },
+        "benefit_harm_user_counts": {
+          "benefit": 0,
+          "harm": 0,
+          "neutral": 115
+        },
+        "mean_deltas": {
+          "delta_applicable_user": 0.0,
+          "delta_candidate_recall_at_500": 0.0,
+          "delta_fallback_user": 0.0,
+          "delta_harm_at_2": 0.0,
+          "delta_mrr_at_10": 0.0,
+          "delta_ndcg_at_10": 0.0,
+          "delta_recall_at_10": 0.0
+        },
+        "users": 115
+      },
+      "BOTH_LIGHTFM": {
+        "aggregate": {
+          "CANDIDATE": {
+            "applicability_rate": 1.0,
+            "candidate_recall_at_500": 0.6111951588502269,
+            "fallback_user_rate": 0.0,
+            "harm_at_2": 0.02118003025718608,
+            "mrr_at_10": 0.09867564776793218,
+            "ndcg_at_10": 0.05598865769520592,
+            "positive_mean_rank_percentile": 0.3014172689860481,
+            "recall_at_10": 0.0651826237302788,
+            "users": 661
+          },
+          "COMPARATOR": {
+            "applicability_rate": 1.0,
+            "candidate_recall_at_500": 0.6111951588502269,
+            "fallback_user_rate": 0.0,
+            "harm_at_2": 0.02118003025718608,
+            "mrr_at_10": 0.09867564776793218,
+            "ndcg_at_10": 0.05598865769520592,
+            "positive_mean_rank_percentile": 0.3014172689860481,
+            "recall_at_10": 0.0651826237302788,
+            "users": 661
+          }
+        },
+        "benefit_harm_user_counts": {
+          "benefit": 0,
+          "harm": 0,
+          "neutral": 661
+        },
+        "mean_deltas": {
+          "delta_applicable_user": 0.0,
+          "delta_candidate_recall_at_500": 0.0,
+          "delta_fallback_user": 0.0,
+          "delta_harm_at_2": 0.0,
+          "delta_mrr_at_10": 0.0,
+          "delta_ndcg_at_10": 0.0,
+          "delta_recall_at_10": 0.0
+        },
+        "users": 661
+      },
+      "K10_NEWLY_APPLICABLE": {
+        "aggregate": {
+          "CANDIDATE": {
+            "applicability_rate": 1.0,
+            "candidate_recall_at_500": 0.703971119133574,
+            "fallback_user_rate": 0.0,
+            "harm_at_2": 0.032490974729241874,
+            "mrr_at_10": 0.15388946192195288,
+            "ndcg_at_10": 0.09105601703135784,
+            "positive_mean_rank_percentile": 0.23117645806715179,
+            "recall_at_10": 0.09951865222623343,
+            "users": 277
+          },
+          "COMPARATOR": {
+            "applicability_rate": 0.0,
+            "candidate_recall_at_500": 0.7833935018050542,
+            "fallback_user_rate": 1.0,
+            "harm_at_2": 0.04332129963898917,
+            "mrr_at_10": 0.07406309094034726,
+            "ndcg_at_10": 0.037848186613533015,
+            "positive_mean_rank_percentile": 0.13301108564784636,
+            "recall_at_10": 0.037794395736634,
+            "users": 277
+          }
+        },
+        "benefit_harm_user_counts": {
+          "benefit": 70,
+          "harm": 26,
+          "neutral": 181
+        },
+        "mean_deltas": {
+          "delta_applicable_user": 1.0,
+          "delta_candidate_recall_at_500": -0.07942238267148015,
+          "delta_fallback_user": -1.0,
+          "delta_harm_at_2": -0.010830324909747292,
+          "delta_mrr_at_10": 0.07982637098160565,
+          "delta_ndcg_at_10": 0.053207830417824814,
+          "delta_recall_at_10": 0.06172425648959945
+        },
+        "users": 277
+      }
+    }
+  },
+  "schema_version": 1,
+  "source_checksums": {
+    "candidate_core": "9bb0560cb0c3538160dce7568a4dc366e2937b1ec6019cbacfd7113cd34c910e",
+    "lightfm_config": "5ce840552cdf3703fa29133818f11e6d8d9ac31577360d792cf397bb53b79d12",
+    "lightfm_interactions": "cc15c50c170279d15523dab1051b11be4c03f7c8a7b1f321c2b3bf88afba04eb",
+    "lightfm_item_features": "8d7221098b1d5bc66b6c2f207d5124d07627f5303afc852a2e39b7dc3d87fc39",
+    "lightfm_result": "da3414ef1a18cbe515e319a93f04ca5498e76669ab756680384e8f82bc918c35",
+    "rec_ev_019d_arm_definitions": "7bfa2c36718ab1468b14f891797c94ef3c1654b4f72704a836a869f1eff574c5",
+    "rec_ev_019d_cohort": "e272925a72dc5c48e93dd9568a81947e6a555f40d60e3fb41364ffe0076370ae",
+    "rec_ev_019d_predictions": "836cb993cf2e1e34380565df0550d2e2dc9897a9748bc7a2d8796f509db943e4",
+    "rec_ev_019d_protocol_lock": "632b4b70ed285afffe09d742397c0561b75774cc5aa3cf45ff6947dbed6b84e7",
+    "rec_ev_019d_result": "c3d47789d102c6ac579f3fd0bea313000207fb91be3b7f774e148803489cfcb6",
+    "rec_ev_019d_source_manifest": "ccf81317efa7a99b0c4ed850ff016965cde69ecd178d2646a8d0f3b39d826aef",
+    "rec_ev_019d_user_arm_metrics": "84d5d695d0eef3554feb367dbfaf061f32ae665a14d655b1a89060e30f6d9b7c",
+    "rec_ev_019d_validation_manifest": "2401f01421195f6501b068c3ad7bd01cf34d1a3e48daac7f603f05a8453824c6",
+    "validation_prefixes": "eaeb04627d6a160351036350469f8d2894ea3464fc6897e97af04bcfce7da8c4",
+    "validation_selection": "9fab1f5bfd184c246c916dce6daefa5ef4366520e2538559efc6c12e2e38c7df",
+    "validation_windows": "88fe1ab55491714358f985e1783e334bce24ffc08cf6f079e063a3ccd2547e56"
+  },
+  "status": "PASS_POST_HOC_VALIDATION_REQUIRES_FRESH_CONFIRMATION"
+}

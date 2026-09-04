@@ -14,7 +14,8 @@
 
 - binary 온보딩 cohort artifact는 `PASS_COHORT_GATES`로 완료
 - 전체 TMDB feature artifact는 `PASS_FULL_GATES`로 완료
-- 019C Validation과 독립 감사, 019D same-window prefix ablation까지 완료됐고 019D는 안전 Gate `FAIL`
+- 019C Validation과 독립 감사, 019D full-rescore, 019E post-hoc mitigation까지 완료됐다. 019D는 안전 Gate
+  `FAIL`, 019E는 `PASS_POST_HOC_VALIDATION_REQUIRES_FRESH_CONFIRMATION`이다.
 - REC-EV-019~026 evidence는 backlog dependency Gate를 순서대로 통과
 
 모델이 아직 실험 Gate를 통과하지 않았다는 이유로 구현 자체를 막지 않는다. 반대로 구현 준비가 됐다는
@@ -31,11 +32,13 @@
 | REC-EV-019C metadata 자원 사전점검 | **DONE — 15.8억 score·B8 12.3억·B4 3.93억 상한, 차단점 0개** |
 | REC-EV-019C 실제 Validation runner·모델 실행 | **DONE — Validation only, selection locked** |
 | REC-EV-019D same-window prefix ablation | **DONE — NDCG 효능 기준 통과, Harm@2 안전 Gate `FAIL`** |
+| REC-EV-019D 독립 full-rescore 감사 | **DONE — 1,479명·5,916 ranking exact Top-10/Top-500·aggregate PASS** |
+| REC-EV-019E no-retune mitigation | **DONE — post-hoc PASS, fresh target-independent confirmation 필수** |
 | REC-EV-020P-A/B 설계→계약 구현 | `GO`, v4 Schema·artifact contract·runner 구현 가능 |
 | REC-EV-020P-A/B 실행 완료 판정 | `NO-GO`, runner·verifier·Validation power 결과 필요 |
 | REC-EV-021P 사전검사 | **DONE — firewall PASS, Validation pilot READY** |
 | REC-EV-021 전체 grid·Locked Test | `NO-GO`, 소규모 Validation 실행 시간·적용 모델 Gate 필요 |
-| binary 개인화 champion | `null`, 019D 안전 실패로 채택 금지 |
+| binary 개인화 champion | `null`, 019E는 동일 집단 post-hoc 결과이므로 fresh confirmation 전 채택 금지 |
 | 예상 별점 public 노출 | `NO` |
 | C2 기본 정책 교체 | `NO`, 별도 vNext 승인 필요 |
 
@@ -160,6 +163,27 @@ selection seed 17, 선택 trial의 5-seed panel 안정성, B4 사용자당 pair 
 `0.01235`가 사전 한계 `0.005`를 넘었다. 사전 우선순위대로 `FAIL_SAFETY_MARGIN_EXCEEDED`이며
 K10 정책과 champion을 승인하지 않는다. Locked Test는 계속 `NO-GO`다.
 
+019D의 과거 lock은 runner/verifier SHA-256과 git revision/dirty status를 기록하지 않았고, historical
+contract의 cache 부재 시 refit 문구는 실제 no-refit runner와 달랐다. 과거 lock을 바꾸지 않고
+[`019D audit amendment`](./contracts/rec-ev-019d-post-run-audit-amendment.json)에서 이후 권위를 exact
+cache/hash required·부재/불일치 시 fail-closed로 좁혔다. 최종 verifier는 5,916개 full-catalog ranking을
+다시 계산해 exact Top-10/Top-500, positive mean rank percentile, aggregate를 확인했고 boundary tie는 0건이었다.
+
+### 4.5 `TASK-REC-EV-019E` — post-hoc 완화 통과, fresh confirmation 필요
+
+결과를 보기 전 [`019E 계약`](./contracts/rec-ev-019e-no-retune-incremental-applicability-gate.json)과
+[사전등록](./evidence/REC-EV-019E-no-retune-incremental-applicability-preregistration.md)을 고정했다. 019D
+결과와 Harm 분해는 이미 본 source임을 명시했고, `future_metrics_read=false`는 019E hybrid 결과가 lock 전에
+없었다는 뜻으로 한정했다. 강화된 lock은 contract/spec/source와 runner/verifier/validator SHA-256, git
+revision/dirty attestation을 기록했다.
+
+동일 confirmatory 1,053명에서 `BOTH_LIGHTFM→K5`, `K10_NEWLY_APPLICABLE→K10`,
+`BOTH_FALLBACK→B0`를 threshold 없이 선택했다. ΔNDCG는 `+0.013997 [0.008433, 0.019758]`, Harm
+one-sided upper는 `0.003799`로 사전 Gate를 통과했다. 다만 candidate recall@500은 `-0.020893`였고,
+benefit/neutral/harm은 `70/957/26`이다. 같은 집단을 재사용한 post-hoc 결과이므로 상태는
+`PASS_POST_HOC_VALIDATION_REQUIRES_FRESH_CONFIRMATION`이며 Locked Test·champion·제품 정책은 계속
+`NO-GO`다. 자세한 결과는 [019E 보고서](./evidence/REC-EV-019E-no-retune-incremental-applicability.md)에 있다.
+
 ## 5. 완료 명령
 
 환경 설치:
@@ -178,6 +202,8 @@ npm run recommendation:019c:contract:check
 npm run recommendation:019c:synthetic:check
 npm run recommendation:019c:dependency:check
 npm run recommendation:019d:check
+npm run recommendation:019d:full-rescore:check
+npm run recommendation:019e:check
 npm run recommendation:evidence:check
 ```
 
@@ -239,6 +265,8 @@ checksum·schema·coverage는 019B verifier가 검사한다. TMDB 전수 재수�
 7. `npm run recommendation:evidence:check`를 통과한다.
 8. 019C verifier는 019B identity allowlist 적용 strict K10 Test 5,476명과 최종 후보 41,625편이 바뀌지 않았는지 확인한다.
 9. 019D verifier는 same-window cohort·mask·strata·paired bootstrap과 안전 실패를 원자료에서 재계산한다.
+10. 019D 최종 감사는 5,916개 ranking을 full-rescore하고 Top-500 boundary tie와 positive mean rank percentile을 검증한다.
+11. 019E verifier는 post-hoc 오염, lock의 source/git attestation, 결정적 routing, B/T/H와 trade-off를 재계산한다.
 
 ## 8. Blind handoff용 시작 프롬프트
 

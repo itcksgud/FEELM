@@ -61,6 +61,9 @@
 | 019C runner·의존성 preflight | `evidence/REC-EV-019C-runner-and-dependency-preflight.md` | 합성 15개·Linux dependency 9개 PASS, 실제 runner 구현만 GO |
 | 019C Validation 독립 감사 교정 | `evidence/REC-EV-019C-validation-analysis.md` | tuning-panel 제외 paired, 공통 사용자 K 진단, anchor fallback, Q4·한국어·release-year·cold-item slice |
 | 019C 결과 장표 | `../presentation/FEELM-REC-EV-019C-results.pptx` | K 직접 비교·양방향 효과 주장을 제거한 9장 결과 요약 |
+| 019D 감사 보정 | `contracts/rec-ev-019d-post-run-audit-amendment.json` | 과거 lock 보존, exact cache/hash required·no-refit 및 full-rescore 범위 고정 |
+| 019E post-hoc 완화 계약 | `contracts/rec-ev-019e-no-retune-incremental-applicability-gate.json` | parameter-free incremental applicability routing과 제한된 PASS 상태 고정 |
+| 019E 결과 | `evidence/REC-EV-019E-no-retune-incremental-applicability.md` | 동일 1,053명 재사용 post-hoc PASS, fresh target-independent confirmation 필수 |
 | 제품 서빙 경계 | `serving-contract.md` | 현재 승인 정책과 vNext 후보를 구분 |
 | 연구 보고서 | `personalized-hybrid-design-report.md` | 네 추천 Head의 가설·결과·한계를 연결 |
 

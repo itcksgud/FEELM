@@ -1,0 +1,174 @@
+{
+  "schema_version": 1,
+  "contract_id": "REC-EV-019E-NO-RETUNE-INCREMENTAL-APPLICABILITY-GATE",
+  "status": "APPROVED_POST_HOC_VALIDATION_ONLY_BEFORE_RESULT",
+  "task_id": "TASK-REC-EV-019E",
+  "protocol_version": "rec-eval-vnext-2-post-hoc-019e",
+  "purpose": "Evaluate a parameter-free incremental-applicability routing mitigation selected after observing REC-EV-019D, without retuning, Locked Test access, champion selection, or product-policy change.",
+  "evidence_classification": {
+    "post_hoc": true,
+    "selected_after_observing": [
+      "REC-EV-019D confirmatory result",
+      "REC-EV-019D Harm@2 cause decomposition"
+    ],
+    "reuses_same_confirmatory_users": 1053,
+    "independent_confirmatory_evidence": false,
+    "maximum_success_status": "PASS_POST_HOC_VALIDATION_REQUIRES_FRESH_CONFIRMATION",
+    "fresh_target_independent_validation_required": true
+  },
+  "current_authorization": {
+    "contract_and_lock_creation": true,
+    "validation_routing_and_metric_recomputation": true,
+    "locked_test_access": false,
+    "candidate_or_threshold_search": false,
+    "retuning": false,
+    "champion_selection": false,
+    "product_policy_change": false
+  },
+  "invariants": {
+    "execution_role": "VALIDATION_019E_POST_HOC",
+    "locked_test_used": false,
+    "champion": null,
+    "product_policy_updated": false
+  },
+  "source_contracts": {
+    "historical_019d": "docs/recommendation/contracts/rec-ev-019d-prefix-ablation-artifacts.json",
+    "019d_audit_amendment": "docs/recommendation/contracts/rec-ev-019d-post-run-audit-amendment.json",
+    "019d_manifest": "docs/recommendation/evidence/manifests/rec-ev-019d-validation.json",
+    "preregistration": "docs/recommendation/evidence/REC-EV-019E-no-retune-incremental-applicability-preregistration.md"
+  },
+  "allowed_input_artifacts": {
+    "validation_prefixes": {"path": "outputs/recommendation-evidence/rec-ev-019a/validation-binary-prefixes.parquet", "bytes": 231375, "sha256": "eaeb04627d6a160351036350469f8d2894ea3464fc6897e97af04bcfce7da8c4"},
+    "validation_windows": {"path": "outputs/recommendation-evidence/rec-ev-019a/validation-evaluation-windows.parquet", "bytes": 366667, "sha256": "88fe1ab55491714358f985e1783e334bce24ffc08cf6f079e063a3ccd2547e56"},
+    "candidate_core": {"path": "outputs/recommendation-evidence/rec-ev-019c/candidate-core-final.parquet", "bytes": 651984, "sha256": "9bb0560cb0c3538160dce7568a4dc366e2937b1ec6019cbacfd7113cd34c910e"},
+    "validation_selection": {"path": "outputs/recommendation-evidence/rec-ev-019c/validation-selection.json", "bytes": 123039, "sha256": "9fab1f5bfd184c246c916dce6daefa5ef4366520e2538559efc6c12e2e38c7df"},
+    "lightfm_config": {"path": "outputs/recommendation-evidence/rec-ev-019c/cache/B8_LIGHTFM-T003-S17/config.json", "bytes": 167, "sha256": "5ce840552cdf3703fa29133818f11e6d8d9ac31577360d792cf397bb53b79d12"},
+    "lightfm_interactions": {"path": "outputs/recommendation-evidence/rec-ev-019c/cache/B8_LIGHTFM-T003-S17/interactions.npz", "bytes": 13413796, "sha256": "cc15c50c170279d15523dab1051b11be4c03f7c8a7b1f321c2b3bf88afba04eb"},
+    "lightfm_item_features": {"path": "outputs/recommendation-evidence/rec-ev-019c/cache/B8_LIGHTFM-T003-S17/item-features.npz", "bytes": 1720759, "sha256": "8d7221098b1d5bc66b6c2f207d5124d07627f5303afc852a2e39b7dc3d87fc39"},
+    "lightfm_result": {"path": "outputs/recommendation-evidence/rec-ev-019c/cache/B8_LIGHTFM-T003-S17/result.npz", "bytes": 19946732, "sha256": "da3414ef1a18cbe515e319a93f04ca5498e76669ab756680384e8f82bc918c35"},
+    "rec_ev_019d_predictions": {"path": "outputs/recommendation-evidence/rec-ev-019d/predictions.parquet", "bytes": 7217028, "sha256": "836cb993cf2e1e34380565df0550d2e2dc9897a9748bc7a2d8796f509db943e4"},
+    "rec_ev_019d_user_arm_metrics": {"path": "outputs/recommendation-evidence/rec-ev-019d/user-arm-metrics.parquet", "bytes": 238999, "sha256": "84d5d695d0eef3554feb367dbfaf061f32ae665a14d655b1a89060e30f6d9b7c"},
+    "rec_ev_019d_cohort": {"path": "outputs/recommendation-evidence/rec-ev-019d/cohort.parquet", "bytes": 55980, "sha256": "e272925a72dc5c48e93dd9568a81947e6a555f40d60e3fb41364ffe0076370ae"},
+    "rec_ev_019d_arm_definitions": {"path": "outputs/recommendation-evidence/rec-ev-019d/arm-definitions.parquet", "bytes": 137135, "sha256": "7bfa2c36718ab1468b14f891797c94ef3c1654b4f72704a836a869f1eff574c5"},
+    "rec_ev_019d_result": {"path": "outputs/recommendation-evidence/rec-ev-019d/result.json", "bytes": 5323, "sha256": "c3d47789d102c6ac579f3fd0bea313000207fb91be3b7f774e148803489cfcb6"},
+    "rec_ev_019d_protocol_lock": {"path": "outputs/recommendation-evidence/rec-ev-019d/protocol-lock.json", "bytes": 1167, "sha256": "632b4b70ed285afffe09d742397c0561b75774cc5aa3cf45ff6947dbed6b84e7"},
+    "rec_ev_019d_source_manifest": {"path": "outputs/recommendation-evidence/rec-ev-019d/source-manifest.json", "bytes": 3044, "sha256": "ccf81317efa7a99b0c4ed850ff016965cde69ecd178d2646a8d0f3b39d826aef"},
+    "rec_ev_019d_validation_manifest": {"path": "docs/recommendation/evidence/manifests/rec-ev-019d-validation.json", "bytes": 9408, "sha256": "2401f01421195f6501b068c3ad7bd01cf34d1a3e48daac7f603f05a8453824c6"}
+  },
+  "forbidden_input_artifacts": [
+    "outputs/recommendation-evidence/global-time-v1/test.parquet",
+    "outputs/recommendation-evidence/rec-ev-019a/binary-prefixes.parquet",
+    "outputs/recommendation-evidence/rec-ev-019a/evaluation-windows.parquet",
+    "outputs/recommendation-evidence/rec-ev-019a/router-train-binary-prefixes.parquet",
+    "outputs/recommendation-evidence/rec-ev-019a/router-train-evaluation-windows.parquet",
+    "outputs/recommendation-evidence/rec-ev-019a/locked-test-binary-prefixes.parquet",
+    "outputs/recommendation-evidence/rec-ev-019a/locked-test-evaluation-windows.parquet"
+  ],
+  "role_firewall": {
+    "file_allowlist_enforced_before_open": true,
+    "reject_unknown_paths": true,
+    "forbidden_path_open_before_check_is_fatal": true,
+    "validation_role_literal": "validation-019e-post-hoc",
+    "test_mode_or_test_flag_forbidden": true,
+    "raw_user_id_forbidden": true
+  },
+  "population": {
+    "source": "REC-EV-019D K10 cohort and confirmatory exclusion",
+    "k10_cohort_users": 1479,
+    "tuning_union_excluded_users": 426,
+    "confirmatory_users": 1053,
+    "evaluation_population": "CONFIRMATORY_ONLY"
+  },
+  "comparator": {
+    "id": "K5_PROFILE_COMMON_K10_SEEN_MASK",
+    "source_estimand": "COMMON_K10_SEEN_MASK",
+    "source_arm": "K5",
+    "seen_mask": "COMMON_K10_CANDIDATE_VALID_SEEN_MASK"
+  },
+  "candidate": {
+    "id": "NO_RETUNE_INCREMENTAL_APPLICABILITY_ROUTER",
+    "parameters": [],
+    "thresholds": [],
+    "candidate_search_allowed": false,
+    "seen_mask": "COMMON_K10_CANDIDATE_VALID_SEEN_MASK",
+    "routing_priority": [
+      {"order": 1, "when": "K5_HAS_CANDIDATE_VALID_POSITIVE_AND_NEGATIVE_ANCHOR", "source_arm": "K5", "model": "K5_FOLD_IN", "stratum": "BOTH_LIGHTFM"},
+      {"order": 2, "when": "K5_NOT_APPLICABLE_AND_K10_HAS_BOTH_ANCHORS", "source_arm": "K10", "model": "K10_FOLD_IN", "stratum": "K10_NEWLY_APPLICABLE"},
+      {"order": 3, "when": "K10_NOT_APPLICABLE", "source_arm": "K5", "model": "B0", "stratum": "BOTH_FALLBACK"}
+    ]
+  },
+  "source_ranking_reuse": {
+    "allowed": true,
+    "reason": "The comparator and every routed candidate branch are exact REC-EV-019D COMMON_K10_SEEN_MASK rankings; routing selects a whole precomputed ranking without score blending or reranking.",
+    "required_independent_audit": "REC-EV-019D all-user full-catalog rescore must verify all 5916 rankings, exact Top-10/Top-500, boundary ties, positive mean rank percentile, and aggregates.",
+    "no_new_model_fit_or_scoring": true
+  },
+  "metrics": {
+    "paired_candidate_minus_comparator": ["NDCG_AT_10", "RECALL_AT_10", "MRR_AT_10", "CANDIDATE_RECALL_AT_500", "HARM_AT_2"],
+    "operational": ["FALLBACK_RATE", "APPLICABILITY_RATE", "ROUTING_STRATUM"],
+    "stratified_audit": true,
+    "benefit_harm_user_counts": {
+      "benefit": "DELTA_NDCG_AT_10_GT_0",
+      "neutral": "DELTA_NDCG_AT_10_EQ_0",
+      "harm": "DELTA_NDCG_AT_10_LT_0"
+    }
+  },
+  "bootstrap": {
+    "unit": "USER",
+    "method": "PERCENTILE",
+    "iterations": 10000,
+    "seed": 20260924,
+    "ndcg_interval": "TWO_SIDED_95_PERCENT_2_5_AND_97_5_PERCENTILES",
+    "harm_interval": "ONE_SIDED_95_PERCENT_UPPER_95TH_PERCENTILE"
+  },
+  "decision_rule": {
+    "evaluated_on": "CONFIRMATORY_ONLY",
+    "priority_is_normative": true,
+    "thresholds": {
+      "harm_at_2_delta_one_sided_95_upper_max": 0.005,
+      "mean_delta_ndcg_at_10_min": 0.005,
+      "ndcg_two_sided_95_lower_strictly_greater_than": 0.0
+    },
+    "priority": [
+      {"order": 1, "status": "FAIL_SAFETY_MARGIN_EXCEEDED", "when": "HARM_AT_2_ONE_SIDED_95_UPPER_GT_0_005"},
+      {"order": 2, "status": "PASS_POST_HOC_VALIDATION_REQUIRES_FRESH_CONFIRMATION", "when": "MEAN_NDCG_DELTA_GTE_0_005_AND_NDCG_95_LOWER_GT_0"},
+      {"order": 3, "status": "INCONCLUSIVE_POST_HOC_VALIDATION", "when": "OTHERWISE"}
+    ]
+  },
+  "leakage_lock": {
+    "path": "outputs/recommendation-evidence/rec-ev-019e/protocol-lock.json",
+    "must_precede": "ANY_019E_ROUTING_METRIC_DELTA_OR_RESULT_ARTIFACT",
+    "future_metrics_read_definition": "false means that no REC-EV-019E routed hybrid metric, delta, bootstrap result, or decision existed or was read before this lock. It does not mean REC-EV-019D was blind: the 019D result, Harm decomposition, rankings, and metrics were already observed and are explicit post-hoc sources.",
+    "required_attestations": [
+      "CONTRACT_SHA256",
+      "PREREGISTRATION_SHA256",
+      "SOURCE_ARTIFACT_PATH_SIZE_SHA256",
+      "RUNNER_SHA256",
+      "VERIFIER_SHA256",
+      "CONTRACT_VALIDATOR_SHA256",
+      "GIT_REVISION",
+      "GIT_DIRTY_STATUS_AND_STATUS_SHA256",
+      "FUTURE_METRICS_READ_FALSE"
+    ],
+    "post_lock_contract_spec_or_source_change_forbidden": true
+  },
+  "resource_bounds": {
+    "user_batch_size_max": 64,
+    "checkpoint_after_each_user_batch": true,
+    "resume_required_for_real_run": true,
+    "full_score_matrix_persistence_forbidden": true
+  },
+  "output_root": "outputs/recommendation-evidence/rec-ev-019e",
+  "outputs": {
+    "source_manifest": "source-manifest.json",
+    "protocol_lock": "protocol-lock.json",
+    "cohort": "cohort.parquet",
+    "routing": "routing.parquet",
+    "user_arm_metrics": "user-arm-metrics.parquet",
+    "paired_deltas": "paired-deltas.parquet",
+    "strata": "strata-summary.json",
+    "result": "result.json",
+    "progress": "run-progress.json",
+    "checkpoints": "checkpoints"
+  }
+}

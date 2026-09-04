@@ -29,6 +29,7 @@
 | `REC-EV-019A` binary cohort build | `PASS_COHORT_GATES` | 최종 후보 41,625편·K10 Test 5,476명; 역할별 파일 firewall 추가, 모델 성능 미사용 |
 | `REC-EV-019C` validation suite | `PASS_VALIDATION_SELECTION_LOCKED` | 각 K 안에서 LightFM T003-B0 confirmatory paired CI가 0보다 큼; K 직접 비교·양방향 효과·희소 slice 품질 결론 금지, `locked_test_used=false`, `champion=null`, `product_policy_updated=false` |
 | `REC-EV-019D` same-window prefix ablation | `FAIL_SAFETY_MARGIN_EXCEEDED` | confirmatory 1,053명에서 NDCG delta `+0.02656 [0.01784, 0.03520]`이나 Harm@2 one-sided upper `0.01235>0.005`; K10 정책 채택 금지 |
+| `REC-EV-019E` no-retune incremental applicability | `PASS_POST_HOC_VALIDATION_REQUIRES_FRESH_CONFIRMATION` | 019D를 본 뒤 같은 1,053명을 재사용한 완화: ΔNDCG `+0.013997 [0.008433, 0.019758]`, Harm upper `0.003799`; 새 confirmatory evidence·champion·정책 승인 아님 |
 | `REC-DATA-001` temporal feasibility | `COMPLETED_DESCRIPTIVE_AUDIT` | 동일 날짜 Rating 몰아넣기 확인; K25·90일·N500 고정 근거 `NO` |
 | `REC-DATA-002` Korean-origin coverage | `COMPLETED_PROXY_AUDIT` | KR item slice 가능; 한국 20대 또는 독립 KR 사용자 cohort 승인 `NO` |
 | `REC-DATA-003` evaluation redesign | `PROTOCOL_AMENDMENT_PROPOSED` | preference reconstruction 주 평가 + next-rating-session 보조 평가 제안 |
@@ -41,7 +42,7 @@
 
 실험을 실행하지 않은 상태에서 빈 결과 문서를 만들어 수치가 있는 것처럼 보이게 하지 않는다.
 `TASK-REC-EV-001~018`, `REC-EV-019P`, `REC-EV-019A/B`, `REC-EV-019C` Validation과
-`REC-EV-019D` bounded ablation이 완료됐다.
+`REC-EV-019D` full-rescore 감사와 `REC-EV-019E` post-hoc mitigation까지 완료됐다.
 현 개인 프로젝트 범위에서 실사용자 수집은 하지
 않으며, MovieLens offline 실험으로 개선 기록을 계속 남긴다. 따라서 현재 선택을 실사용자 성능·만족도
 주장으로 확대하지 않고 제품 노출 Gate는 닫힌 상태로 둔다. 실제 결과는
@@ -69,6 +70,7 @@
 [REC-EV-019C runner·의존성 preflight](./REC-EV-019C-runner-and-dependency-preflight.md),
 [REC-EV-019C Validation·구간 분석](./REC-EV-019C-validation-analysis.md),
 [REC-EV-019D 동일 미래 구간 prefix ablation](./REC-EV-019D-prefix-ablation.md),
+[REC-EV-019E no-retune incremental applicability](./REC-EV-019E-no-retune-incremental-applicability.md),
 [REC-DATA-001 시간·후보 감사](./REC-DATA-001-temporal-feasibility.md),
 [REC-DATA-002 한국-origin 감사](./REC-DATA-002-korean-origin-coverage.md),
 [REC-DATA-003 평가 설계 재판단](./REC-DATA-003-evaluation-design-decision.md),
@@ -108,8 +110,9 @@ T003 seed 42는 cache를 보존한 `--resume`으로 재개했다.
 
 K별 256명 tuning panel을 제외한 보조 confirmatory paired 결과에서도 LightFM T003은 B0보다 높았다.
 K5는 1,358명 `+0.03331 [0.02582, 0.04114]`, K10은 1,223명 `+0.04532
-[0.03681, 0.05462]`다. K5와 K10은 사용자·미래 구간이 달라 직접 비교하지 않는다. 원시 양쪽
-신호가 있어도 valid candidate anchor 부족으로 K5 97명, K10 46명이 fallback했으므로 양방향 신호
+[0.03681, 0.05462]`다. K5와 K10은 사용자·미래 구간이 달라 직접 비교하지 않는다. 019C full
+Validation 전체에서 원시 양쪽 신호가 있어도 valid candidate anchor 부족으로 K5 97명, K10 46명이
+fallback했으므로 양방향 신호
 효과를 주장하지 않는다. positive는 Q4에 95.9%·96.4% 집중됐고 한국어 원어 Top-500은 B0 10건 대
 LightFM 6건 방향이지만 작은 표본으로 열등을 확정하지 않는다. `release_year>=2020` 후보 9편의
 Validation positive와 true cold-item 후보는 모두 0이다. 상세 결과는 [019C 독립 감사 교정](./REC-EV-019C-validation-analysis.md)에 있다.
@@ -119,6 +122,15 @@ REC-EV-019D는 K10 Validation 1,479명에서 같은 K10 미래 창을 유지하�
 95% CI `[0.01784, 0.03520]`였지만 Harm@2 증가 one-sided 95% upper가 `0.01235`로 사전 한계
 `0.005`를 넘었다. 사전 우선순위에 따라 판정은 `FAIL_SAFETY_MARGIN_EXCEEDED`이며 K10이나 champion을
 채택하지 않는다. 적용 strata `661/277/115`와 candidate-anchor loss `61/34`는 원자료 재계산과 일치했다.
+여기서 `61/34`는 019D confirmatory 1,053명 값이며 019C full Validation의 `97/46`과 모집단이 다르다.
+019D full-rescore 감사는 5,916개 ranking의 exact Top-10/Top-500, positive mean rank percentile,
+aggregate를 확인했고 boundary tie는 0건이었다.
+
+REC-EV-019E는 019D 결과를 본 뒤 같은 1,053명에서 새로 적용 가능한 277명만 K10으로 전환한 post-hoc
+완화다. ΔNDCG `+0.013997 [0.008433, 0.019758]`, Harm upper `0.003799`로 Gate를 통과했지만
+candidate recall@500은 `-0.020893`였다. 상태는
+`PASS_POST_HOC_VALIDATION_REQUIRES_FRESH_CONFIRMATION`이며 fresh target-independent Validation 전에는
+champion·제품 정책·Locked Test를 열지 않는다.
 
 Cold-start 평가에서는 K1부터 별점 MAE가 통계적으로 줄었지만, K0 대비 3% 실질 개선 Gate는
 K10부터 통과했다. 초기 sampled ranking에서는 모든 K의 최적 Fold-in 가중치가 0이었으나,

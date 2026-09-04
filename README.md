@@ -135,6 +135,12 @@ true cold-item 후보 0 때문에 한국 영화·최신 영화 문제는 미해�
 있고 외부 artifact URI가 없어 commit 단독 제3자 재현도 불가능하다. `locked_test_used=false`,
 `champion=null`, `product_policy_updated=false`를 유지한다.
 
+REC-EV-019D의 같은-window ablation은 Harm@2 안전 Gate를 실패했다. 이후 결과와 원인 분해를 본 뒤 고른
+REC-EV-019E parameter-free routing은 같은 confirmatory 1,053명에서 ΔNDCG `+0.013997`, Harm one-sided
+upper `0.003799`로 post-hoc Gate를 통과했다. 이는 동일 집단 재사용 결과라 새 confirmatory evidence가
+아니며 fresh target-independent Validation 전에는 `champion=null`과 기존 popularity-only 정책을 유지한다.
+019D source ranking은 5,916개 full-catalog 재점수로 exact Top-10/Top-500과 aggregate를 확인했다.
+
 집계값이 실제 추천 목록을 어떻게 바꾸는지는
 [MovieLens 사용자 A 추천 변화 사례](./docs/recommendation/evidence/REC-EV-016-user-case-a.md)에서 확인할 수 있다.
 동일한 비식별 사용자의 실제 영화 Top-10을 알고리즘별로 비교하지만, 이 한 사례로 모델을 채택하지는 않는다.

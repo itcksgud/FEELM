@@ -8,6 +8,7 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[2]
 CONTRACT = ROOT / "docs/recommendation/contracts/rec-ev-019d-prefix-ablation-artifacts.json"
+AMENDMENT = ROOT / "docs/recommendation/contracts/rec-ev-019d-post-run-audit-amendment.json"
 
 from scripts.validate_rec_ev_019d_contract import validate_contract
 
@@ -41,6 +42,11 @@ class RecEv019dContractTests(unittest.TestCase):
         self.assertEqual([row["status"] for row in contract["decision_rule"]["priority"]], ["FAIL", "FAIL", "PASS", "INCONCLUSIVE"])
         self.assertFalse(contract["rec_ev_019c_prediction_reuse"]["allowed"])
         self.assertEqual(validate_contract(contract)["status"], "PASS_REC_EV_019D_CONTRACT")
+        amendment = json.loads(AMENDMENT.read_text(encoding="utf-8"))
+        self.assertEqual(
+            amendment["authoritative_cache_policy_for_any_reverification_or_follow_up"]["cache_absent_action"],
+            "FAIL_CLOSED_NO_REFIT",
+        )
 
     def test_mutation_of_safety_priority_is_rejected(self) -> None:
         contract = json.loads(CONTRACT.read_text(encoding="utf-8"))
@@ -55,6 +61,14 @@ class RecEv019dContractTests(unittest.TestCase):
         mutated["current_authorization"]["locked_test_access"] = True
         with self.assertRaisesRegex(RuntimeError, "Locked Test"):
             validate_contract(mutated)
+
+    def test_mutation_of_effective_refit_policy_is_rejected(self) -> None:
+        contract = json.loads(CONTRACT.read_text(encoding="utf-8"))
+        amendment = json.loads(AMENDMENT.read_text(encoding="utf-8"))
+        mutated = copy.deepcopy(amendment)
+        mutated["authoritative_cache_policy_for_any_reverification_or_follow_up"]["implicit_or_explicit_refit_allowed"] = True
+        with self.assertRaisesRegex(RuntimeError, "refit policy"):
+            validate_contract(contract, mutated)
 
 
 if __name__ == "__main__":

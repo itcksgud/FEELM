@@ -104,8 +104,8 @@ OTT Snapshot은 개인 취향을 만드는 Feature가 아니다. 추천된 영�
 | --- | --- | --- |
 | MovieLens Popularity | `OFFLINE BASELINE` | 과거 MovieLens 집단의 보정 평균이며 현재 FEELM 인기도가 아님 |
 | MovieLens Tag Content | `REJECT FOR PRODUCT` | 소수 사용자의 자유 태그를 영화 정보로 사용함 |
-| REC-EV-019 cohort | `019A·019B DONE` | 최종 후보 41,625편, K10 Test 5,476명; 019C 실행 계약 대기 |
-| Binary onboarding model | `PROTOCOL READY, NOT EVALUATED` | 실제 입력과 맞춘 REC-EV-019가 아직 없음 |
+| REC-EV-019 cohort | `019A·019B DONE` | 최종 후보 41,625편, K10 Test 5,476명; Locked Test 미개봉 |
+| Binary onboarding model | `POST_HOC MITIGATION REQUIRES FRESH CONFIRMATION` | 019D 전체 K10 전환 안전 실패, 019E 적용성 routing은 동일 1,053명 post-hoc PASS |
 | ALS / ItemKNN | `PRETRAIN CANDIDATE` | 사용자 공동 선호 사전 지식으로 검증할 가치가 있음 |
 | Bias / BPR / EASE / LightFM | `REQUIRED BASELINES` | 별점·implicit·강한 선형·metadata hybrid 기준선 |
 | TMDB Content | `FEATURE READY, NOT YET EVALUATED` | 넓은 69,603편 feature 집합 Gate PASS; 실제 후보는 41,625편 |
@@ -717,6 +717,8 @@ superiority family만 Holm 보정을 사용한다.
 - B0, binary KNN, BPR, TMDB Content, LightFM, RRF 비교
 - proxy별 eligible 탈락률·coverage·NDCG·Benefit/Harm 공개
 - Explicit ALS와 predicted rating은 binary 결과에서 제외
+- 019D same-window 전체 K10 전환은 Harm 안전 Gate 실패
+- 019E no-retune applicability routing은 post-hoc PASS이나 fresh target-independent Validation 전 채택 금지
 
 ### REC-EV-020 — Explicit rating maturity와 Top-2 안전
 
@@ -810,8 +812,8 @@ superiority family만 Holm 보정을 사용한다.
 - raw score 합산보다 RRF·K별 Single Best를 먼저 검증하고 그 뒤 사용자별 Router를 비교한다.
 - 추천 제품 기능은 개인·유사·발견·파티 네 종류이며 XAI와 OTT Availability는 횡단 계약이다.
 - 현재 C3 Party baseline은 OTT catalog 정렬이지 최종 개인화 파티 추천이 아니다.
-- 현재 개인 추천 champion은 `null`이며, REC-EV-019~026 결과 전에는 추천 시스템 전체 완료를 주장하지
-  않는다.
+- 현재 개인 추천 champion은 `null`이며, 019E의 동일 집단 post-hoc PASS는 fresh target-independent
+  confirmation 전에는 추천 시스템 완료나 제품 채택 근거가 아니다.
 - 현재 승인된 popularity-only 정책은 C2 vNext가 별도 승인될 때까지 유지한다.
 
 ## 참고 근거

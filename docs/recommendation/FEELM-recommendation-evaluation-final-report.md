@@ -62,6 +62,8 @@ ItemKNN, 관측 BPR, TMDB 구조·텍스트 콘텐츠, LightFM과 RRF를 같은 
 | 낮은 인기도 영화에서도 개선되는가? | **판단 보류** | Q1~Q3 positive가 K5 259건, K10 214건뿐이고 Top-10 적중 0 |
 | 한국어 원어 영화 문제를 해결했는가? | **판단 불가/근거 없음** | positive 21·23건, Top-10 0, Top-500은 B0 10건 대 LightFM 6건 |
 | K=5와 K=10 중 어느 쪽이 우수한가? | **직접 비교 불가** | 사용자와 미래 구간이 다르며 공통 1,253명 LightFM 절대 NDCG도 사실상 동일 |
+| 같은-window K10 전환이 안전한가? | **NO** | 019D NDCG는 증가했지만 Harm upper 0.01235로 안전 Gate 실패 |
+| 적용 가능한 사용자만 K10으로 전환하면 되는가? | **POST-HOC PASS, 재확인 필요** | 019E ΔNDCG +0.013997, Harm upper 0.003799; 같은 1,053명 재사용 |
 | 전체 관측 범위까지 사용할 것인가? | **미결정** | 이번에는 cutoff 정책만 실행 |
 | 제품 정책이나 Locked Test를 열 수 있는가? | **NO** | champion `null`, Locked Test 미개봉, 제품 정책 유지 |
 
@@ -328,7 +330,8 @@ K10의 더 큰 B0 대비 차이는 LightFM 상승보다 B0 하락의 영향이�
 구간을 고정한 prefix ablation이다.
 
 현재 LightFM 구현은 최종 후보에 positive와 negative anchor가 각각 하나 이상 없으면 B0로 fallback한다.
-원시 prefix에 양쪽 신호가 있어도 후보 anchor가 부족해 fallback한 사용자는 K5 97명, K10 46명이었다.
+REC-EV-019C **full Validation 전체**에서 원시 prefix에 양쪽 신호가 있어도 후보 anchor가 부족해
+fallback한 사용자는 K5 97명, K10 46명이었다.
 따라서 `양방향 신호 효과`를 주장하지 않는다. 한쪽 신호 동률은 모델 효과가 아니라 적용하지 않은 설계 결과다.
 
 ### 8.3 Q4 집중과 한국어 원어 방향
@@ -372,12 +375,30 @@ seed 42는 기존 cache를 보존한 `--resume`으로 이어서 실행했다. �
 6,088.5초, peak RSS 약 652 MiB, 결과 artifact 약 32.7 MiB였다. 예측 11,662,500행과 Validation
 metric 23,325행을 독립 검증했고, selection lock을 생성했다.
 
+### 8.6 019D 안전 실패와 019E post-hoc 완화
+
+019D는 동일 K10 Validation 1,479명과 동일 미래 10행에서 first5/first10 profile을 비교했다. tuning-panel
+합집합 426명을 제외한 confirmatory 1,053명의 ΔNDCG는 `+0.02656 [0.01784, 0.03520]`였지만 Harm
+one-sided upper `0.01235`가 `0.005`를 넘어 `FAIL_SAFETY_MARGIN_EXCEEDED`다. 이 confirmatory 집단의
+candidate-anchor loss는 K5 61명, K10 34명이다. 앞의 97/46은 019C full Validation 값이므로 모집단과
+의미를 섞지 않는다.
+
+019D 결과와 Harm 분해를 본 뒤 고른 019E는 이미 K5에 적용 가능한 661명은 K5를 유지하고, K10에서 새로
+적용 가능한 277명만 K10으로 전환하며, 나머지 115명은 B0를 유지한다. 같은 1,053명에서 ΔNDCG는
+`+0.013997 [0.008433, 0.019758]`, Harm upper는 `0.003799`로 Gate를 통과했다. 반면 candidate
+recall@500은 `-0.020893` 감소했고 benefit/neutral/harm은 `70/957/26`이었다.
+
+따라서 상태는 `PASS_POST_HOC_VALIDATION_REQUIRES_FRESH_CONFIRMATION`이다. 같은 집단을 재사용한 결과라
+새 confirmatory evidence가 아니며, fresh target-independent preregistered Validation 전에는 champion과
+제품 정책을 바꾸지 않는다. 019D source ranking 5,916개는 hashed item representation에서 full-catalog로
+재점수해 exact Top-10/Top-500, positive rank percentile, aggregate를 확인했다.
+
 ## 9. 두 문제에 대한 최종 판정
 
 | 처음의 문제 | 이번에 얻은 답 | 남은 한계 |
 | --- | --- | --- |
 | MovieLens의 외국·인기 영화 편향과 수록 이후 영화 공백 | TMDB 구조·E5로 41,625편을 같은 공간에서 표현하고 콘텐츠·결합 모델을 비교할 수 있었다. | Q4 표본 교란이 크고 한국어 원어·2020년 이후·true cold item 정답이 부족하거나 없다. 문제는 미해결이다. |
-| 실사용 추천·시청·평가 순환 부재 | tuning panel을 제외해도 K5·K10 각각에서 LightFM T003의 B0 대비 우위를 확인했다. | K 간 우열과 양방향 신호 효과는 검증하지 못했다. 같은 사용자·같은 미래 구간 prefix ablation이 필요하다. |
+| 실사용 추천·시청·평가 순환 부재 | tuning panel을 제외해도 K5·K10 각각에서 LightFM T003의 B0 대비 우위를 확인했고, 019E 적용성 routing은 post-hoc Gate를 통과했다. | 019D 전체 K10 전환은 안전 실패했고 019E는 같은 집단 재사용이다. fresh target-independent confirmation이 필요하다. |
 
 따라서 이번 실험의 성과는 “한국 영화 추천을 해결했다”가 아니다. 사용할 수 없는 실제 피드백을
 MovieLens 대리 평가로 바꾸고, 가능한 콘텐츠 보완책을 같은 조건에서 시험해 **어디까지 유효하고 어디서
@@ -387,8 +408,8 @@ MovieLens 대리 평가로 바꾸고, 가능한 콘텐츠 보완책을 같은 �
 
 ### 다음 검증 후보
 
-- 같은 사용자와 같은 미래 구간을 고정하고 K5·K10 prefix만 바꾸는 ablation을 수행한다.
-- LightFM T003은 각 K 안 B0 대비 challenger로 유지하되 K10 우위를 주장하지 않는다.
+- 019E routing을 결과와 독립적인 새 Validation 집단에서 사전등록 confirmation한다.
+- LightFM T003은 각 K 안 B0 대비 challenger로 유지하되 019E post-hoc PASS를 제품 우위로 주장하지 않는다.
 - 양쪽 valid candidate anchor는 현재 구현의 적용 전제로만 둔다.
 - cutoff 정책의 결론은 전체 관측 범위 보조 실험 전까지 확정하지 않는다.
 
@@ -417,6 +438,9 @@ MovieLens 대리 평가로 바꾸고, 가능한 콘텐츠 보완책을 같은 �
 | REC-EV-019C 계약·합성·의존성·자원 검사 | PASS | 역할 firewall, resume, seed, 계산 상한 검증 |
 | REC-EV-019C 실제 Validation | `PASS_VALIDATION_SELECTION_LOCKED` | K5 1,614명, K10 1,479명, selection lock 생성 |
 | REC-EV-019C 사용자·영화 구간 분석 | `PASS_VALIDATION_ANALYSIS_ONLY` | tuning-panel 제외 paired, 공통 사용자, anchor fallback, release-year/cold-item slice |
+| REC-EV-019D same-window ablation | `FAIL_SAFETY_MARGIN_EXCEEDED` | NDCG 효능 기준 통과, Harm upper 0.01235로 전체 K10 전환 금지 |
+| REC-EV-019D full-rescore 감사 | PASS | 1,479명·5,916 ranking exact Top-10/Top-500·aggregate, boundary tie 0 |
+| REC-EV-019E no-retune routing | `PASS_POST_HOC_VALIDATION_REQUIRES_FRESH_CONFIRMATION` | ΔNDCG +0.013997, Harm upper 0.003799, 동일 1,053명 재사용 |
 | 새 개인화 champion | NOT SELECTED | `null`; 현재 제품 정책 유지 |
 | Locked Test | NOT USED | `locked_test_used=false` |
 
@@ -426,6 +450,9 @@ MovieLens 대리 평가로 바꾸고, 가능한 콘텐츠 보완책을 같은 �
 - 결과 장표: `docs/presentation/FEELM-REC-EV-019C-results.pptx`
 - Validation manifest: `docs/recommendation/evidence/manifests/rec-ev-019c-validation.json`
 - 분석 manifest: `docs/recommendation/evidence/manifests/rec-ev-019c-analysis.json`
+- 019D 결과: `docs/recommendation/evidence/REC-EV-019D-prefix-ablation.md`
+- 019E 결과: `docs/recommendation/evidence/REC-EV-019E-no-retune-incremental-applicability.md`
+- 019E manifest: `docs/recommendation/evidence/manifests/rec-ev-019e-validation.json`
 - 실행: `py -3 scripts/run_rec_ev_019c_validation.py --mode validation --role validation --resume`
 - Validation 검증: `py -3 scripts/verify_rec_ev_019c_validation.py --manifest docs/recommendation/evidence/manifests/rec-ev-019c-validation.json`
 - 분석: `py -3 scripts/analyze_rec_ev_019c_validation.py`

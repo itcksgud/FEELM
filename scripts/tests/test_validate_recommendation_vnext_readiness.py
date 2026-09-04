@@ -12,6 +12,8 @@ from validate_recommendation_vnext_readiness import (
     validate_019c_completion_manifests,
     validate_019c_dependency_smoke,
     validate_019c_synthetic_preflight,
+    validate_019d_completion_manifest,
+    validate_019e_completion_manifest,
     validate_artifact_contracts,
     validate_backlog,
     validate_protocol,
@@ -44,6 +46,10 @@ class RecommendationVnextReadinessValidatorTest(unittest.TestCase):
         completion = validate_019c_completion_manifests()
         self.assertEqual("PASS_VALIDATION_SELECTION_LOCKED", completion["validation_status"])
         self.assertFalse(completion["locked_test_opened"])
+        self.assertEqual("FAIL", validate_019d_completion_manifest()["status"])
+        completion_019e = validate_019e_completion_manifest()
+        self.assertEqual("PASS_POST_HOC_VALIDATION_REQUIRES_FRESH_CONFIRMATION", completion_019e["status"])
+        self.assertTrue(completion_019e["fresh_target_independent_validation_required"])
 
     def test_rejects_smaller_test_split(self) -> None:
         mutated = copy.deepcopy(self.protocol)
@@ -94,6 +100,15 @@ class RecommendationVnextReadinessValidatorTest(unittest.TestCase):
         )
         task["current_authorization"] = "LOCKED_TEST"
         with self.assertRaisesRegex(RuntimeError, "019C"):
+            validate_backlog(mutated)
+
+    def test_rejects_019e_that_claims_fresh_confirmation(self) -> None:
+        mutated = copy.deepcopy(self.backlog)
+        task = next(
+            item for item in mutated["tasks"] if item["id"] == "TASK-REC-EV-019E"
+        )
+        task["validation_result"] = "PASS_CONFIRMATORY"
+        with self.assertRaisesRegex(RuntimeError, "019E"):
             validate_backlog(mutated)
 
 

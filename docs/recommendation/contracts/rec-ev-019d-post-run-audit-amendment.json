@@ -1,0 +1,73 @@
+{
+  "schema_version": 1,
+  "amendment_id": "rec-ev-019d-post-run-audit-amendment-v1",
+  "status": "APPROVED_POST_RUN_AUDIT_AMENDMENT_NO_METRIC_CHANGE",
+  "task_id": "TASK-REC-EV-019D",
+  "historical_execution_contract": {
+    "path": "docs/recommendation/contracts/rec-ev-019d-prefix-ablation-artifacts.json",
+    "sha256_at_lock": "8d077f3633c0808a0fa8824d5f7e369433a3339d723327710bd6813c827f14f5",
+    "protocol_lock_path": "outputs/recommendation-evidence/rec-ev-019d/protocol-lock.json",
+    "protocol_lock_sha256": "632b4b70ed285afffe09d742397c0561b75774cc5aa3cf45ff6947dbed6b84e7",
+    "must_not_be_rewritten": true
+  },
+  "finding": "The historical preregistration text promised a one-time refit when the cache was absent or invalid, while the implemented runner, source manifest, and completed run required and reused the exact hash-verified cache.",
+  "authoritative_cache_policy_for_any_reverification_or_follow_up": {
+    "policy": "REQUIRE_EXACT_HASH_VERIFIED_REC_EV_019C_T003_SEED17_CACHE",
+    "cache_absent_action": "FAIL_CLOSED_NO_REFIT",
+    "cache_hash_mismatch_action": "FAIL_CLOSED_NO_REFIT",
+    "implicit_or_explicit_refit_allowed": false,
+    "required_artifacts": {
+      "config": {
+        "path": "outputs/recommendation-evidence/rec-ev-019c/cache/B8_LIGHTFM-T003-S17/config.json",
+        "sha256": "5ce840552cdf3703fa29133818f11e6d8d9ac31577360d792cf397bb53b79d12"
+      },
+      "interactions": {
+        "path": "outputs/recommendation-evidence/rec-ev-019c/cache/B8_LIGHTFM-T003-S17/interactions.npz",
+        "sha256": "cc15c50c170279d15523dab1051b11be4c03f7c8a7b1f321c2b3bf88afba04eb"
+      },
+      "item_features": {
+        "path": "outputs/recommendation-evidence/rec-ev-019c/cache/B8_LIGHTFM-T003-S17/item-features.npz",
+        "sha256": "8d7221098b1d5bc66b6c2f207d5124d07627f5303afc852a2e39b7dc3d87fc39"
+      },
+      "result": {
+        "path": "outputs/recommendation-evidence/rec-ev-019c/cache/B8_LIGHTFM-T003-S17/result.npz",
+        "sha256": "da3414ef1a18cbe515e319a93f04ca5498e76669ab756680384e8f82bc918c35"
+      }
+    }
+  },
+  "historical_lock_limitations": [
+    "The 019D lock recorded timestamps, contract/spec hashes, and source artifact hashes but did not attest the runner/verifier source SHA-256.",
+    "The 019D lock did not attest git revision or dirty status.",
+    "Those missing attestations are disclosed rather than retroactively inserted into the historical lock. REC-EV-019E applies the strengthened lock prospectively."
+  ],
+  "independent_full_rescore_contract": {
+    "implementation": "scripts/verify_rec_ev_019d_prefix_ablation.py",
+    "default_mode": {
+      "mode": "BOUNDED_DETERMINISTIC_FULL_RESCORE",
+      "users": 64,
+      "selection": "ascending SHA-256 of the pseudonymous user_key, then user_key",
+      "rankings_per_user": 4
+    },
+    "final_audit_mode": {
+      "mode": "ALL_USERS_FULL_RESCORE",
+      "users": 1479,
+      "rankings": 5916,
+      "required_cli": "--full-rescore-users all"
+    },
+    "checks": [
+      "REFOLD_USER_FROM_ALLOWLISTED_PREFIX_AND_HASHED_ITEM_REPRESENTATION",
+      "RESCORE_ALL_41625_CANDIDATES",
+      "APPLY_COMMON_AND_ARM_SPECIFIC_SEEN_MASKS",
+      "EXACT_TOP10_MOVIE_IDS_AND_FLOAT32_EFFECTIVE_SCORES",
+      "EXACT_TOP500_MEMBERSHIP_AND_ORDER",
+      "TOP500_BOUNDARY_TIE_MOVIE_ID_TIE_BREAK",
+      "POSITIVE_MEAN_RANK_PERCENTILE_FROM_FULL_CATALOG",
+      "ALL_USER_ARM_METRICS_AND_AGGREGATES_IN_ALL_USERS_MODE"
+    ]
+  },
+  "invariants": {
+    "locked_test_used": false,
+    "champion": null,
+    "product_policy_updated": false
+  }
+}

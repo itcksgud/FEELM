@@ -28,7 +28,8 @@ prefix임을 직접 확인했다. confirmatory strata는 사전 예상과 모두
 | K5·K10 모두 B0 fallback | 115 |
 | 합계 | 1,053 |
 
-원시 prefix에는 양쪽 label이 있지만 candidate-valid anchor가 부족한 사용자는 K5 61명, K10 34명이었다.
+원시 prefix에는 양쪽 label이 있지만 candidate-valid anchor가 부족한 사용자는 confirmatory 1,053명에서
+K5 61명, K10 34명이었다.
 이는 효과 strata가 아니라 적용 가능성 손실 진단이다.
 
 ## 3. primary: common K10 seen mask
@@ -76,6 +77,9 @@ py -3 scripts/run_rec_ev_019d_prefix_ablation.py --phase lock --role validation-
 py -3 scripts/run_rec_ev_019d_prefix_ablation.py --phase run --role validation-019d --resume
 py -3 scripts/verify_rec_ev_019d_prefix_ablation.py `
   --manifest docs/recommendation/evidence/manifests/rec-ev-019d-validation.json
+py -3 scripts/verify_rec_ev_019d_prefix_ablation.py `
+  --manifest docs/recommendation/evidence/manifests/rec-ev-019d-validation.json `
+  --full-rescore-users all
 ```
 
 양 arm은 019C의 `B8_LIGHTFM-T003-S17/result.npz`를 공통 사용했다. 파일 크기는 19,946,732 bytes,
@@ -83,13 +87,25 @@ SHA-256은 `da3414ef1a18cbe515e319a93f04ca5498e76669ab756680384e8f82bc918c35`이
 10 epochs, adagrad, learning rate 0.05, item/user alpha 1e-6, seed 17이다. source manifest에는 config,
 interactions, item features와 result의 경로·크기·SHA-256을 모두 기록했다.
 
+과거 사전등록에는 cache가 없거나 무결성 검증에 실패하면 같은 config로 한 번 refit한다고 적혔지만 실제
+runner에는 해당 refit 경로가 없고 source manifest도 exact cache reuse를 기록한다. 과거 contract와 lock
+hash는 소급 변경하지 않았다. 대신
+`contracts/rec-ev-019d-post-run-audit-amendment.json`에서 이후 재검증·후속 실험의 권위를 exact
+cache/hash required로 좁혔고 cache 부재·불일치는 no-refit fail-closed로 처리한다.
+
 캐시와 원본 Parquet은 `outputs/` ignore에만 있고 외부 artifact URI가 없다. 따라서 현재 로컬 원자료가 있는
 환경에서는 재검증 가능하지만 commit만 받은 제3자는 base fit이나 결과를 재현할 수 없다. 실행기는 사용자
 batch 최대 32명, full score matrix 비저장, batch별 hash checkpoint와 `--resume`를 강제했다.
 
-독립 verifier는 allowlisted prefix/window와 Top-500 prediction에서 cohort, 순서, mask, fallback, 네 핵심
-순위 지표, paired delta, strata, 10,000회 bootstrap과 최종 판정을 다시 계산해
-`PASS_INDEPENDENT_RECOMPUTATION`을 반환했다.
+독립 verifier의 기본 실행은 SHA-256 기반으로 고른 64명을 full-catalog 재점수하는 bounded deterministic
+mode다. 최종 감사에서는 `--full-rescore-users all`로 hashed LightFM item representation과 allowlisted
+prefix/window에서 1,479명×2 arm×2 estimand=5,916개 ranking을 모두 다시 계산했다. exact Top-10/Top-500,
+full-catalog `positive_mean_rank_percentile`, aggregate가 일치했고 Top-500/501 boundary tie는 0건이었다.
+aggregate audit hash는 `6c0f633da7b2327bb04f566b72bf4b5886ea6dfab3a9e74136d3f3cf1048cfe9`다.
+
+과거 019D lock은 timestamp·contract/spec/source artifact hash는 기록했지만 runner/verifier source SHA-256과
+git revision/dirty status는 attest하지 않았다. 이 한계는 과거 lock에 소급 삽입하지 않았다. 강화된 코드·git
+attestation은 REC-EV-019E lock부터 적용했다.
 
 ## 6. 019C prediction과 PPTX
 
