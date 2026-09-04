@@ -568,7 +568,9 @@ def derive_episode(
                 "window_rank": window_rank,
                 "movie_id": int(movies[position]),
                 "rating": float(values[position]),
-                "midrank_utility": float(utilities[offset]),
+                # Metrics must consume the exact value persisted in the float32
+                # window artifact so an independent artifact-only verifier is exact.
+                "midrank_utility": float(np.float32(utilities[offset])),
                 "is_positive": bool(positives[offset]),
                 "is_negative": bool(negatives[offset]),
                 "candidate_present": int(movies[position]) in candidate_movie_ids,
