@@ -405,6 +405,15 @@ structural 1,021명 중 strict 802명에서 ΔNDCG는 `+0.003617 [0.000291, 0.00
 `0.003741`이었다. 안전 한계는 넘지 않았지만 mean SESOI 0.005에 못 미쳤다. candidate recall@500
 `-0.012469`와 positive rank percentile `+0.020316`도 악화해 frozen routing은 채택 근거가 되지 않았다.
 
+2026-09-05 독립 재감사에서도 802명 전체의 K5/K10 1,604 ranking을 다시 점수화해 같은 cohort, overlap,
+strata, bootstrap과 비-gate 악화를 재현했다. clean preregistration lock과 float64 invalid-run 격리도
+확인했으며 결과를 바꾸는 결함은 없었다.
+
+다음 단계로 MovieLens와 분리된 REC-EV-021V 사람 평가를 사전등록했다. 한국 거주 100명, K10 mapped
+positive/negative 각 2개 이상, recent-Korean-low-pop과 세 control stratum 각 12개, B0/B7/B8/B9 blind
+pool, paired NDCG@10과 Top-2 harm Gate를 고정했다. 현재는 4명 synthetic fixture에서 192개 judgment
+pipeline만 검증했으며 실제 모집과 target evidence는 없다.
+
 따라서 이번 실험의 성과는 “한국 영화 추천을 해결했다”가 아니다. 사용할 수 없는 실제 피드백을
 MovieLens 대리 평가로 바꾸고, 가능한 콘텐츠 보완책을 같은 조건에서 시험해 **어디까지 유효하고 어디서
 실패하는지 수치로 경계를 정한 것**이다.
@@ -426,6 +435,8 @@ MovieLens 대리 평가로 바꾸고, 가능한 콘텐츠 보완책을 같은 �
 - `product_policy_updated=false`를 유지한다.
 - 한국 영화·신작 성능, 실제 사용자 만족, 온라인 성과를 주장하지 않는다.
 - 문제 1의 다음 유효한 검증은 목표 도메인 행동 데이터 수집 또는 독립적인 한국 영화 평가 표본 확보다.
+- REC-EV-021V는 그 평가 표본을 만들기 위한 인프라만 준비됐다. catalog/license·consent·privacy·budget·모집과
+  frozen ranking이 승인되기 전에는 `INSUFFICIENT_TARGET_DOMAIN_EVIDENCE`를 유지한다.
 
 목표 도메인·최신성·한국 영화 범위·제품 사용 가능한 라이선스·사용자 행동을 동시에 만족하는 즉시 사용
 가능한 대안은 확인되지 않았다. [ML-32M Extension](https://uwaterlooir.github.io/datasets/ml-32m-extension.html),
@@ -448,6 +459,9 @@ MovieLens 대리 평가로 바꾸고, 가능한 콘텐츠 보완책을 같은 �
 | REC-EV-019E no-retune routing | `PASS_POST_HOC_VALIDATION_REQUIRES_FRESH_CONFIRMATION` | ΔNDCG +0.013997, Harm upper 0.003799, 동일 1,053명 재사용 |
 | REC-EV-019F independent temporal routing | `INCONCLUSIVE` | source-row/window 독립 802명(사용자 독립 아님), ΔNDCG +0.003617로 SESOI 미달, Harm upper 0.003741 |
 | REC-EV-019F full-rescore 감사 | PASS | 802명·1,604 K5/K10 profile ranking exact Top-10/Top-500, source-row overlap 0 |
+| REC-EV-019F 2026-09-05 독립 재감사 | PASS | clean lock·격리 run·cohort/overlap/strata/metrics/1,604 rankings 재확인, 결과 변경 결함 없음 |
+| REC-EV-021V 모집 전 preflight | `PASS_INFRASTRUCTURE_READY` | catalog/schema/pool/import/analyzer/resume 검증; 실제 target evidence `NO` |
+| REC-EV-021V 실제 pooled judgment | `INSUFFICIENT_TARGET_DOMAIN_EVIDENCE` | valid 100명·4,000 judgment·target positive 300·mapping/dedup 95% 미수집 |
 | 새 개인화 champion | NOT SELECTED | `null`; 현재 제품 정책 유지 |
 | Locked Test | NOT USED | `locked_test_used=false` |
 
@@ -463,6 +477,10 @@ MovieLens 대리 평가로 바꾸고, 가능한 콘텐츠 보완책을 같은 �
 - 019F 결과: `docs/recommendation/evidence/REC-EV-019F-independent-temporal-routing.md`
 - 019F manifest: `docs/recommendation/evidence/manifests/rec-ev-019f-validation.json`
 - 019F 독립 검증: `py -3 scripts/verify_rec_ev_019f_independent_temporal_routing.py --manifest docs/recommendation/evidence/manifests/rec-ev-019f-validation.json --full-rescore-users all`
+- 019F 재감사 finding: `docs/recommendation/evidence/REC-EV-019F-independent-audit-2026-09-05.md`
+- 021V 사전등록: `docs/recommendation/evidence/REC-EV-021V-kr-recent-niche-preregistration.md`
+- 021V 모집 전 결과: `docs/recommendation/evidence/REC-EV-021V-kr-recent-niche-preflight.md`
+- 021V 검증: `npm run recommendation:021v:preflight:check`
 - 실행: `py -3 scripts/run_rec_ev_019c_validation.py --mode validation --role validation --resume`
 - Validation 검증: `py -3 scripts/verify_rec_ev_019c_validation.py --manifest docs/recommendation/evidence/manifests/rec-ev-019c-validation.json`
 - 분석: `py -3 scripts/analyze_rec_ev_019c_validation.py`

@@ -1,0 +1,221 @@
+{
+  "schema_version": 1,
+  "contract_id": "REC-EV-021V-KR-RECENT-NICHE-POOLED-JUDGMENT-V1",
+  "status": "APPROVED_FOR_RECRUITMENT_PREFLIGHT_ONLY",
+  "task_id": "TASK-REC-EV-021V",
+  "protocol_version": "rec-ev-021v-kr-recent-niche-pooled-judgment-v1",
+  "purpose": "Measure Korean-resident judgments of recent Korean low-popularity movies separately from MovieLens behavioral validation.",
+  "evidence_boundary": {
+    "separate_from_movielens_behavioral_validation": true,
+    "infrastructure_ready_status": "READY_FOR_APPROVED_EXTERNAL_INPUTS_AND_RECRUITMENT",
+    "current_target_evidence_status": "NO_ACTUAL_TARGET_DOMAIN_EVIDENCE",
+    "insufficient_status": "INSUFFICIENT_TARGET_DOMAIN_EVIDENCE",
+    "synthetic_fixture_is_not_target_evidence": true
+  },
+  "current_authorization": {
+    "contract_and_preflight_implementation": true,
+    "synthetic_fixture_execution": true,
+    "public_data_download": false,
+    "human_recruitment": false,
+    "consent_collection": false,
+    "incentive_or_payment": false,
+    "pii_collection_or_storage": false,
+    "locked_test_access": false,
+    "champion_selection": false,
+    "product_policy_change": false
+  },
+  "invariants": {
+    "execution_role": "TARGET_DOMAIN_POOLED_JUDGMENT_PREFLIGHT",
+    "locked_test_used": false,
+    "champion": null,
+    "product_policy_updated": false,
+    "pii_stored": false
+  },
+  "cohort": {
+    "residency": "KR",
+    "target_valid_users": 100,
+    "minimum_valid_users": 100,
+    "hard_recruited_participant_cap": 120,
+    "age_eligibility": "CONSENT_FORM_DEFINED_ADULT_OR_SEPARATELY_APPROVED_GUARDIAN_FLOW",
+    "raw_residency_evidence_storage_forbidden": true
+  },
+  "onboarding": {
+    "input_name": "K10",
+    "items_per_user": 10,
+    "allowed_labels": ["POSITIVE", "NEGATIVE"],
+    "minimum_mapped_positive": 2,
+    "minimum_mapped_negative": 2,
+    "unmapped_is_not_negative": true,
+    "duplicate_movie_inputs_allowed": false
+  },
+  "catalog": {
+    "catalog_as_of_date": "2026-09-05",
+    "recent_release_date_min": "2024-01-01",
+    "recent_release_date_max": "2026-09-05",
+    "target_origin_country_code": "KR",
+    "target_stratum": "RECENT_KR_LOW_POP",
+    "strata": {
+      "RECENT_KR_LOW_POP": "KR origin, release date in the frozen recent window, and source-defined low popularity",
+      "OLDER_KR_LOW_POP": "KR origin, release date before 2024-01-01, and source-defined low popularity",
+      "RECENT_NON_KR_CONTROL": "non-KR origin, release date in the frozen recent window, and source-defined low popularity",
+      "POPULAR_CONTROL": "release date no later than catalog_as_of_date and source-defined popular"
+    },
+    "source_manifest_schema": "docs/recommendation/schemas/rec-ev-021v/catalog-source-manifest.schema.json",
+    "license_and_snapshot_required_before_external_open": true,
+    "local_source_absence_behavior": "FAIL_CLOSED_NO_DOWNLOAD",
+    "mapping_status_allowlist": ["VERIFIED_CANONICAL_ID"],
+    "conflicting_duplicate_behavior": "FAIL_CLOSED",
+    "minimum_mapping_and_dedup_rate": 0.95
+  },
+  "frozen_systems": {
+    "B0": {
+      "model_id": "B0_MOVIELENS_BAYESIAN_RATING",
+      "trial_id": "B0_MOVIELENS_BAYESIAN_RATING-T003",
+      "role": "BASELINE"
+    },
+    "B7": {
+      "model_id": "B7_TMDB_TEXT_CONTENT",
+      "trial_id": "B7_TMDB_TEXT_CONTENT-T001",
+      "embedding_model": "intfloat/multilingual-e5-small",
+      "embedding_revision": "614241f622f53c4eeff9890bdc4f31cfecc418b3",
+      "role": "CONTENT_CHALLENGER"
+    },
+    "B8": {
+      "model_id": "B8_LIGHTFM",
+      "trial_id": "B8_LIGHTFM-T003",
+      "seed": 17,
+      "fit_or_refit_allowed": false,
+      "role": "HYBRID_CHALLENGER"
+    },
+    "B9": {
+      "model_id": "B9_RRF",
+      "trial_id": "B9_RRF-T003",
+      "raw_score_fusion_allowed": false,
+      "role": "RANK_FUSION_CHALLENGER"
+    }
+  },
+  "frozen_ranking_manifest_schema": "docs/recommendation/schemas/rec-ev-021v/frozen-ranking-manifest.schema.json",
+  "blind_pool": {
+    "systems": ["B0", "B7", "B8", "B9"],
+    "selection": "DETERMINISTIC_BALANCED_ROUND_ROBIN_OVER_FROZEN_SYSTEM_RANKS_WITH_DEDUP",
+    "randomization_seed": 20260925,
+    "max_items_per_user": 48,
+    "items_per_stratum": {
+      "RECENT_KR_LOW_POP": 12,
+      "OLDER_KR_LOW_POP": 12,
+      "RECENT_NON_KR_CONTROL": 12,
+      "POPULAR_CONTROL": 12
+    },
+    "participant_visible_model_or_source_fields": false,
+    "sealed_pool_source_required": true,
+    "pool_source_robustness": "LEAVE_ONE_SELECTION_SOURCE_OUT_RETAINS_POSITIVE_MEAN_AND_RELATIVE_GAIN_GTE_5_PERCENT"
+  },
+  "deidentified_schemas": {
+    "participant": "docs/recommendation/schemas/rec-ev-021v/participant.schema.json",
+    "onboarding_input": "docs/recommendation/schemas/rec-ev-021v/onboarding-input.schema.json",
+    "judgment": "docs/recommendation/schemas/rec-ev-021v/judgment.schema.json"
+  },
+  "judgments": {
+    "seen_status": ["SEEN", "UNSEEN"],
+    "viewing_intent_scale": [0, 4],
+    "expected_satisfaction_scale": [0, 4],
+    "uninterested_reason_required_when_viewing_intent_lte": 1,
+    "free_text_allowed": false,
+    "actual_watch_14_day": {
+      "values": ["YES", "NO", "UNKNOWN", null],
+      "role": "SECONDARY_ONLY",
+      "excluded_from_primary_and_success_gate": true
+    }
+  },
+  "primary_endpoint": {
+    "population": "VALID_KR_RESIDENT_USERS_WITH_AT_LEAST_5_UNSEEN_RECENT_KR_LOW_POP_JUDGMENTS_AND_AT_LEAST_1_TARGET_POSITIVE",
+    "metric": "PAIRED_LINEAR_NDCG_AT_10",
+    "target_items": "UNSEEN_RECENT_KR_LOW_POP",
+    "compatibility": "(VIEWING_INTENT_PLUS_EXPECTED_SATISFACTION)_DIVIDED_BY_8",
+    "positive_threshold": 0.75,
+    "comparison": "EACH_OF_B7_B8_B9_MINUS_B0_ON_THE_SAME_USER_AND_JUDGED_ITEM_SET",
+    "actual_watch_14_day_used": false
+  },
+  "safety_endpoint": {
+    "metric": "PAIRED_TOP2_NO_POSITIVE_EVENT_RATE_DELTA",
+    "harm_event": "NO_COMPATIBILITY_GTE_0_75_ITEM_IN_MODEL_TOP2",
+    "one_sided_95_upper_max_percentage_points": 2.0
+  },
+  "completion_gates": {
+    "valid_users_min": 100,
+    "accepted_unique_judgments_min": 4000,
+    "unseen_recent_kr_low_pop_positives_min": 300,
+    "mapping_and_dedup_rate_min": 0.95,
+    "failure_status": "INSUFFICIENT_TARGET_DOMAIN_EVIDENCE"
+  },
+  "success_rule": {
+    "candidate_arms": ["B7", "B8", "B9"],
+    "experiment_success_requires_at_least_one_candidate": true,
+    "per_candidate": {
+      "paired_ndcg_two_sided_95_lower_strictly_greater_than": 0.0,
+      "relative_ndcg_improvement_min": 0.05,
+      "top2_harm_delta_one_sided_95_upper_max": 0.02,
+      "pool_source_robustness_required": true
+    },
+    "success_status": "PASS_TARGET_DOMAIN_POOLED_JUDGMENT_REQUIRES_SEPARATE_PRODUCT_REVIEW",
+    "no_candidate_status": "FAIL_TARGET_DOMAIN_EFFECT_OR_SAFETY_GATE"
+  },
+  "statistics": {
+    "unit": "PARTICIPANT",
+    "bootstrap_method": "PERCENTILE",
+    "iterations": 10000,
+    "seed": 20260925,
+    "ndcg_interval": "TWO_SIDED_95_PERCENT",
+    "harm_interval": "ONE_SIDED_95_PERCENT_UPPER"
+  },
+  "firewalls": {
+    "forbidden_pii_fields": [
+      "name",
+      "email",
+      "phone",
+      "address",
+      "ip",
+      "ip_address",
+      "device_id",
+      "advertising_id",
+      "resident_registration_number",
+      "payment_account",
+      "bank_account"
+    ],
+    "participant_id_pattern": "^p_[0-9a-f]{16}$",
+    "consent_version_required": true,
+    "consent_timestamp_required": true,
+    "consent_revocation_excludes_participant": true,
+    "invalid_rows_are_not_persisted_by_importer": true,
+    "locked_test_paths_must_not_be_opened": true,
+    "product_policy_paths_must_not_be_opened": true
+  },
+  "budget": {
+    "approved_budget_krw": null,
+    "incentive_per_valid_user_krw": null,
+    "recruitment_authorized": false,
+    "payment_authorized": false,
+    "fixture_cost_krw": 0,
+    "external_pool_requires_explicit_nonnegative_incentive_and_approved_cap": true,
+    "planned_total_must_not_exceed_approved_cap": true
+  },
+  "resources": {
+    "checkpoint_after_each_participant": true,
+    "resume_required_for_external_mode": true,
+    "max_rank_rows_per_participant": 200000,
+    "max_pool_rows_per_participant": 48,
+    "max_judgment_rows": 5760
+  },
+  "implementation": {
+    "core": "scripts/rec_ev_021v_pooled_judgment.py",
+    "preflight": "scripts/run_rec_ev_021v_preflight.py",
+    "catalog_and_pool_builder": "scripts/build_rec_ev_021v_catalog_and_pool.py",
+    "importer": "scripts/import_rec_ev_021v_judgments.py",
+    "analyzer": "scripts/analyze_rec_ev_021v_judgments.py",
+    "verifier": "scripts/verify_rec_ev_021v_preflight.py",
+    "unit_test": "scripts/tests/test_rec_ev_021v_pooled_judgment.py",
+    "output_root": "outputs/recommendation-evidence/rec-ev-021v-preflight",
+    "manifest": "docs/recommendation/evidence/manifests/rec-ev-021v-preflight.json",
+    "result": "docs/recommendation/evidence/results/rec-ev-021v-preflight.json"
+  }
+}

@@ -31,6 +31,7 @@
 | `REC-EV-019D` same-window prefix ablation | `FAIL_SAFETY_MARGIN_EXCEEDED` | confirmatory 1,053명에서 NDCG delta `+0.02656 [0.01784, 0.03520]`이나 Harm@2 one-sided upper `0.01235>0.005`; K10 정책 채택 금지 |
 | `REC-EV-019E` no-retune incremental applicability | `PASS_POST_HOC_VALIDATION_REQUIRES_FRESH_CONFIRMATION` | 019D를 본 뒤 같은 1,053명을 재사용한 완화: ΔNDCG `+0.013997 [0.008433, 0.019758]`, Harm upper `0.003799`; 새 confirmatory evidence·champion·정책 승인 아님 |
 | `REC-EV-019F` independent temporal routing | `INCONCLUSIVE` | source-row/window 독립(사용자 독립 아님) 802명: ΔNDCG `+0.003617 [0.000291, 0.007239]`로 mean SESOI 0.005 미달; Harm upper `0.003741`, candidate recall/rank percentile 악화 |
+| `REC-EV-021V` KR recent/niche pooled judgment | `PASS_INFRASTRUCTURE_READY / NO_ACTUAL_TARGET_DOMAIN_EVIDENCE` | 4명 synthetic fixture의 catalog·blind pool·import·paired analysis·resume 검증만 완료; 실제 모집 전 license/consent/PII/budget/frozen-ranking 입력 대기 |
 | `REC-DATA-001` temporal feasibility | `COMPLETED_DESCRIPTIVE_AUDIT` | 동일 날짜 Rating 몰아넣기 확인; K25·90일·N500 고정 근거 `NO` |
 | `REC-DATA-002` Korean-origin coverage | `COMPLETED_PROXY_AUDIT` | KR item slice 가능; 한국 20대 또는 독립 KR 사용자 cohort 승인 `NO` |
 | `REC-DATA-003` evaluation redesign | `PROTOCOL_AMENDMENT_PROPOSED` | preference reconstruction 주 평가 + next-rating-session 보조 평가 제안 |
@@ -45,6 +46,7 @@
 `TASK-REC-EV-001~018`, `REC-EV-019P`, `REC-EV-019A/B`, `REC-EV-019C` Validation과
 `REC-EV-019D` full-rescore 감사, `REC-EV-019E` post-hoc mitigation과 `REC-EV-019F` 새 temporal
 source-row/window 확인까지 완료됐다. 019F는 사용자 독립 confirmation이 아니며 결과는 `INCONCLUSIVE`다.
+REC-EV-021V는 이 한계를 직접 측정할 사람 평가 인프라만 준비했고 실제 target evidence는 아직 없다.
 현 개인 프로젝트 범위에서 실사용자 수집은 하지
 않으며, MovieLens offline 실험으로 개선 기록을 계속 남긴다. 따라서 현재 선택을 실사용자 성능·만족도
 주장으로 확대하지 않고 제품 노출 Gate는 닫힌 상태로 둔다. 실제 결과는
@@ -75,6 +77,9 @@ source-row/window 확인까지 완료됐다. 019F는 사용자 독립 confirmati
 [REC-EV-019E no-retune incremental applicability](./REC-EV-019E-no-retune-incremental-applicability.md),
 [REC-EV-019F temporal routing 사전등록](./REC-EV-019F-independent-temporal-routing-preregistration.md),
 [REC-EV-019F temporal routing 결과](./REC-EV-019F-independent-temporal-routing.md),
+[REC-EV-019F 독립 재감사](./REC-EV-019F-independent-audit-2026-09-05.md),
+[REC-EV-021V 사전등록](./REC-EV-021V-kr-recent-niche-preregistration.md),
+[REC-EV-021V 모집 전 preflight](./REC-EV-021V-kr-recent-niche-preflight.md),
 [REC-DATA-001 시간·후보 감사](./REC-DATA-001-temporal-feasibility.md),
 [REC-DATA-002 한국-origin 감사](./REC-DATA-002-korean-origin-coverage.md),
 [REC-DATA-003 평가 설계 재판단](./REC-DATA-003-evaluation-design-decision.md),
@@ -108,6 +113,9 @@ hash·protocol lock과 same-window Top-500·paired delta·strata·안전성 `FAI
 [REC-EV-019F Validation manifest](./manifests/rec-ev-019f-validation.json)는 clean preregistration SHA,
 source/code hash, 새 temporal episode 1,021/802명, 0 source-row overlap, paired `INCONCLUSIVE`와
 `locked_test_used=false`, `champion=null`, `product_policy_updated=false`를 잠근다.
+[REC-EV-021V preflight manifest](./manifests/rec-ev-021v-preflight.json)는 catalog/source schema,
+synthetic blind pool·judgment·분석 artifact와 구현 checksum을 잠근다. 이 manifest의 `PASS`는 인프라에만
+적용되며 target evidence 상태는 `NO_ACTUAL_TARGET_DOMAIN_EVIDENCE`다.
 
 REC-EV-019C는 Validation runner가 역할 혼합 Parquet이나 Locked Test 파일을 열기 전에 실패하도록 입력
 allowlist를 고정했다. Bayesian·ItemKNN·BPR·structured/text content·LightFM·RRF의 trial 수, 사용자별

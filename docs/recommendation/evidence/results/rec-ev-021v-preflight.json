@@ -1,0 +1,89 @@
+{
+  "analysis_status": "INSUFFICIENT_TARGET_DOMAIN_EVIDENCE",
+  "budget_guard": {
+    "approved_cap_krw": 0,
+    "mode": "SYNTHETIC_FIXTURE",
+    "planned_cost_krw": 0,
+    "status": "PASS_ZERO_COST"
+  },
+  "catalog_audit": {
+    "duplicate_rows": 0,
+    "mapped_rows": 80,
+    "mapping_and_dedup_rate": 1.0,
+    "rejected_rows": 0,
+    "source_rows": 80,
+    "stratum_counts": {
+      "OLDER_KR_LOW_POP": 20,
+      "POPULAR_CONTROL": 20,
+      "RECENT_KR_LOW_POP": 20,
+      "RECENT_NON_KR_CONTROL": 20
+    },
+    "unique_eligible_items": 80
+  },
+  "champion": null,
+  "checkpoint_resume": {
+    "checkpoint_after_each_participant": true,
+    "exact_reconstruction": true,
+    "resumed_participants": 4
+  },
+  "evidence_id": "REC-EV-021V-PREFLIGHT",
+  "fixture_is_target_evidence": false,
+  "import_summary": {
+    "accepted_unique_judgments": 192,
+    "actual_watch_14d_role": "SECONDARY_ONLY",
+    "free_text_stored": false,
+    "invalid_reason_counts": {},
+    "invalid_users": 0,
+    "mapping_and_dedup_rate": 1.0,
+    "pii_stored": false,
+    "schema_valid_judgment_rows": 192,
+    "submitted_judgment_rows": 192,
+    "submitted_participant_rows": 4,
+    "unseen_recent_kr_low_pop_positives": 6,
+    "valid_users": 4
+  },
+  "infrastructure_status": "READY_FOR_APPROVED_EXTERNAL_INPUTS_AND_RECRUITMENT",
+  "locked_test_used": false,
+  "mode": "SYNTHETIC_FIXTURE",
+  "performed": {
+    "consent_collection": false,
+    "human_recruitment": false,
+    "incentive_or_payment": false,
+    "locked_test_access": false,
+    "pii_storage": false,
+    "product_policy_change": false,
+    "public_data_download": false
+  },
+  "pool_audit": {
+    "max_items_per_user": 48,
+    "participant_visible_model_fields": false,
+    "participants": 4,
+    "pool_rows": 192,
+    "resumed_participants": 0,
+    "sealed_rows": 192,
+    "selection_source_counts": {
+      "B0": 48,
+      "B7": 48,
+      "B8": 48,
+      "B9": 48
+    },
+    "stratum_counts": {
+      "OLDER_KR_LOW_POP": 48,
+      "POPULAR_CONTROL": 48,
+      "RECENT_KR_LOW_POP": 48,
+      "RECENT_NON_KR_CONTROL": 48
+    }
+  },
+  "product_policy_updated": false,
+  "required_before_external_collection": [
+    "Owner-approved public catalog source, local snapshot, checksum, license, attribution, and frozen popularity rule",
+    "Owner-approved consent text/version, ethics/privacy review, retention and deletion procedure",
+    "Explicit recruitment authorization, incentive amount, and approved KRW budget cap",
+    "Locally supplied deidentified KR-resident participants and K10 inputs",
+    "Frozen B0/B7-E5/B8-LightFM/B9-RRF rankings for the approved catalog snapshot",
+    "A separate collection system that never exports name, email, phone, address, IP, device, or payment identifiers"
+  ],
+  "schema_version": 1,
+  "status": "PASS_INFRASTRUCTURE_READY",
+  "target_evidence_status": "NO_ACTUAL_TARGET_DOMAIN_EVIDENCE"
+}

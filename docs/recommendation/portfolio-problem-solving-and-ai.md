@@ -124,7 +124,7 @@ AI는 문제와 평가 기준을 대신 정하는 용도로 사용하지 않았�
 AI를 사용한 이유는 “AI 모델을 썼다”는 말을 만들기 위해서가 아니다. 제한된 시간에 여러 가설을 같은
 조건으로 구현하고, 사람이 결과의 의미와 한계를 판단하는 데 필요한 비교 자료를 만들기 위해서였다.
 
-## 5. REC-EV-019C·019D·019E·019F 결과와 판단
+## 5. REC-EV-019C·019D·019E·019F 결과와 021V 다음 검증
 
 K별 256명 tuning panel을 제외한 confirmatory 보조 비교에서도 LightFM T003은 B0보다 높았다. K5는
 1,358명에서 `+0.03331` (95% CI `[0.02582, 0.04114]`), K10은 1,223명에서 `+0.04532`
@@ -166,6 +166,10 @@ full-catalog ranking을 독립 재계산해 exact Top-10/Top-500과 source-row o
 계산해 exact Top-10/Top-500, positive mean rank percentile, aggregate를 검증했다. 과거 lock에 없던
 runner/verifier hash와 git revision/dirty attestation은 019E부터 추가했고, 과거 lock을 소급 수정하지 않았다.
 
+019F도 별도 감사에서 802명 전원의 1,604 ranking을 다시 계산했다. cohort 1,021/802명, source-row overlap
+0, user overlap 629/173/31, strata 568/164/70과 최종 `INCONCLUSIVE`를 재현했다. 최초 float64/float32
+불일치 run이 별도 경로에 격리되고 clean revision에서 다시 lock된 사실도 확인했다.
+
 그러나 처음 문제 1은 해결되지 않았다. TMDB 구조와 E5 텍스트 단독 모델은 인기도를 이기지 못했다.
 관측 positive 자체가 Q4에 K5 95.9%, K10 96.4% 몰려 Q1~Q3의 0 적중을 실패로 확정할 검정력이
 부족했다. 한국어 원어 positive는 K5 21건, K10 23건이고 Top-10은 모두 0이었다. Top-500도 B0 대
@@ -176,6 +180,13 @@ LightFM이 K5 `10/21` 대 `6/21`, K10 `10/23` 대 `6/23`으로 불리한 방향�
 MovieLens 전체 관측 범위를 사용하는 보조 실험은 수행하지 않았으므로 시간 cutoff 정책도 확정하지
 않았다. raw Parquet은 `outputs/` ignore에만 있고 외부 artifact URI가 없어 commit 단독 제3자 재현도
 불가능하다. `locked_test_used=false`, `champion=null`, `product_policy_updated=false`를 유지했다.
+
+이 한계를 다음 구현 문제로 바꿔 REC-EV-021V를 만들었다. 한국 거주 평가자 100명의 K10 입력과
+recent-Korean-low-pop 영화를 직접 판단하는 blind pool을 정의하고, catalog license/time manifest,
+비식별 schema, deterministic pool, checkpoint/resume, PII·budget firewall, importer와 paired analyzer를
+자동화했다. 다만 4명 synthetic fixture 192행은 시스템 검증일 뿐 사람 평가가 아니다. 인프라 준비 완료와
+실제 target evidence 부재를 같은 PASS로 섞지 않고 각각 `PASS_INFRASTRUCTURE_READY`와
+`NO_ACTUAL_TARGET_DOMAIN_EVIDENCE`로 기록했다.
 
 ## 6. 자기소개서 원문 초안
 
@@ -232,5 +243,7 @@ first10의 NDCG는 개선됐지만 Harm@2 안전 한계를 넘어 사전 규칙�
   실패했고 primary는 양 arm에 K10 seen mask를 쓴 통제 ablation이다.
 - “양방향 신호가 효과를 냈다” — 양쪽 valid anchor는 LightFM 적용 전제이며 한쪽이면 B0로 fallback한다.
 - “019F가 독립 사용자로 019E를 확인했다” — 독립성은 source-row/window에만 있고 결과도 `INCONCLUSIVE`다.
+- “021V로 한국 사용자·신작·저인기 성능을 검증했다” — 현재는 synthetic 모집 전 인프라만 있으며 실제
+  target-domain judgment는 없다.
 - “저인기·한국 영화·신작에서 실패했다” — 작은 표본 또는 positive 0으로 검정력이 없다.
 - 구현 중 잘못 설계한 split, 인증, 라이브러리 설정을 고친 일을 핵심 문제 해결로 포장하지 않는다.

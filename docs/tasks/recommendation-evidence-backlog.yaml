@@ -597,6 +597,7 @@ tasks:
       - docs/recommendation/evidence/manifests/rec-ev-019f-validation.json
       - docs/recommendation/evidence/REC-EV-019F-independent-temporal-routing-preregistration.md
       - docs/recommendation/evidence/REC-EV-019F-independent-temporal-routing.md
+      - docs/recommendation/evidence/REC-EV-019F-independent-audit-2026-09-05.md
     commands:
       contract: "npm run recommendation:019f:contract:check"
       lock: "npm run recommendation:019f:lock"
@@ -614,6 +615,7 @@ tasks:
       - candidate recall@500 and positive rank percentile degradation are reported even though they are non-Gate metrics
       - final result is INCONCLUSIVE because mean delta NDCG 0.003617 is below 0.005 despite positive CI lower and Harm upper 0.003741
       - all 802 strict users and 1604 K5/K10 profile rankings pass independent full-rescore exact Top10/Top500 verification
+      - 2026-09-05 re-audit found no result-changing defect and reconfirmed clean lock plus isolated float64 invalid run
       - locked_test_used=false, champion=null, product_policy_updated=false, and user_independent=false
     forbidden_changes:
       - Locked Test or mixed-role artifact access
@@ -728,6 +730,73 @@ tasks:
       - panelized 5-fold masked-density and non-target control drift reports
       - relation redaction and human similarity pilot packet
       - CURRENT_METADATA_RETROSPECTIVE disclosure
+
+  - id: TASK-REC-EV-021V
+    title: KR Recent/Niche Pooled-Judgment Validation
+    status: PREFLIGHT_DONE_EXTERNAL_COLLECTION_BLOCKED
+    depends_on: [TASK-REC-EV-019B, TASK-REC-EV-019F]
+    current_authorization: SYNTHETIC_PREFLIGHT_ONLY
+    target_evidence_status: NO_ACTUAL_TARGET_DOMAIN_EVIDENCE
+    locked_test_authorization: FORBIDDEN
+    artifact_contract: docs/recommendation/contracts/rec-ev-021v-kr-recent-niche-pooled-judgment.json
+    purpose:
+      - MovieLens 행동 검증과 분리해 한국 거주 사용자의 2024-2026 한국-origin 저인기 영화 판단을 직접 측정한다.
+      - 실제 모집 전 catalog license/time, consent, PII, budget, frozen ranking, blind pool과 분석 계약을 fail-closed로 검증한다.
+      - synthetic fixture는 인프라 증거일 뿐 target-domain evidence가 아니다.
+    implementation_files:
+      - scripts/rec_ev_021v_pooled_judgment.py
+      - scripts/run_rec_ev_021v_preflight.py
+      - scripts/build_rec_ev_021v_catalog_and_pool.py
+      - scripts/import_rec_ev_021v_judgments.py
+      - scripts/analyze_rec_ev_021v_judgments.py
+      - scripts/verify_rec_ev_021v_preflight.py
+      - scripts/tests/test_rec_ev_021v_pooled_judgment.py
+    outputs:
+      - docs/recommendation/schemas/rec-ev-021v/catalog-source-manifest.schema.json
+      - docs/recommendation/schemas/rec-ev-021v/frozen-ranking-manifest.schema.json
+      - docs/recommendation/schemas/rec-ev-021v/participant.schema.json
+      - docs/recommendation/schemas/rec-ev-021v/onboarding-input.schema.json
+      - docs/recommendation/schemas/rec-ev-021v/judgment.schema.json
+      - docs/recommendation/evidence/REC-EV-021V-kr-recent-niche-preregistration.md
+      - docs/recommendation/evidence/REC-EV-021V-kr-recent-niche-preflight.md
+      - docs/recommendation/evidence/results/rec-ev-021v-preflight.json
+      - docs/recommendation/evidence/manifests/rec-ev-021v-preflight.json
+      - outputs/recommendation-evidence/rec-ev-021v-preflight/blind-pool.jsonl
+      - outputs/recommendation-evidence/rec-ev-021v-preflight/sealed-pool-source.jsonl
+      - outputs/recommendation-evidence/rec-ev-021v-preflight/normalized-judgments.jsonl
+      - outputs/recommendation-evidence/rec-ev-021v-preflight/analysis.json
+    commands:
+      preflight: "npm run recommendation:021v:preflight:run"
+      verify: "npm run recommendation:021v:preflight:check"
+    completion_gates:
+      - valid users at least 100
+      - accepted unique judgments at least 4000
+      - unfamiliar recent Korean low-pop positives at least 300
+      - mapping and dedup rate at least 95 percent
+      - any miss returns INSUFFICIENT_TARGET_DOMAIN_EVIDENCE
+    success_gates:
+      - B7 B8 or B9 versus B0 paired NDCG at 10 CI lower above zero and relative gain at least 5 percent
+      - Top-2 no-positive harm delta one-sided 95 percent upper at most 2 percentage points
+      - leave-one-pool-selection-source-out robustness retains positive mean and relative gain at least 5 percent
+    remaining_blockers:
+      - approved local public catalog snapshot, checksum, license, attribution, and popularity definition
+      - approved consent privacy retention deletion recruitment and incentive budget
+      - actual deidentified KR-resident participants K10 inputs and judgments
+      - frozen B0 B7 E5 B8 LightFM B9 RRF ranking artifacts on the approved catalog
+    verify:
+      - Korean-resident target 100 and K10 mapped positive 2 negative 2 are fixed
+      - each user pool is at most 48 with four strata of 12 and participant-visible model provenance is absent
+      - seen status intent 0-4 satisfaction 0-4 uninterested reason and secondary 14-day actual-watch schemas are fixed
+      - catalog source is never downloaded and external mode fails closed without license snapshot and local checksum
+      - PII and free text are rejected before normalized persistence
+      - participant checkpoint resume is deterministic and budget cap is enforced
+      - synthetic dry-run status is PASS_INFRASTRUCTURE_READY with NO_ACTUAL_TARGET_DOMAIN_EVIDENCE and analysis is INSUFFICIENT_TARGET_DOMAIN_EVIDENCE
+      - locked_test_used=false champion=null and product_policy_updated=false
+    forbidden_changes:
+      - opening Locked Test or product policy paths
+      - external download recruitment consent collection payment or PII storage
+      - fitting retuning or searching the frozen four systems
+      - treating fixture output or incomplete human collection as target-domain evidence
 
   - id: TASK-REC-EV-022
     title: RRF와 K-aware Router

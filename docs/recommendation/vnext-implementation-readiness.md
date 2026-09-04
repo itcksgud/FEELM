@@ -1,12 +1,14 @@
 # FEELM 추천 vNext 구현 준비도
 
 > 상태: `APPROVED` — 오프라인 추천 evidence 구현 착수 기준
-> 판정일: 2026-09-02
+> 판정일: 2026-09-05
 > 최종 판정: **조건부 GO — bounded real Validation 실행 가능, Locked Test·채택은 NO-GO**
 > 제품 경계: 현재 C2 popularity-only 교체와 개인화 champion 승인은 이 GO에 포함하지 않는다.
 > 후속 경계: Top-2 v4와 cold-item v2는 `PROPOSED_PROTOCOL_VALIDATION_PREFLIGHT_REQUIRED`다. 별도
 > Schema·artifact contract·runner 구현은 시작할 수 있지만 현재 019C 실제 runner 구현 GO나
 > Locked Test 실행 GO에 포함되지 않는다.
+> Target-domain 경계: REC-EV-021V 사람 평가 인프라는 준비됐지만 실제 모집·동의·인센티브·target
+> judgment는 없으며 `NO_ACTUAL_TARGET_DOMAIN_EVIDENCE`다.
 
 ## 1. GO의 정확한 의미
 
@@ -17,6 +19,8 @@
 - 019C Validation과 독립 감사, 019D full-rescore, 019E post-hoc mitigation까지 완료됐다. 019D는 안전 Gate
   `FAIL`, 019E는 `PASS_POST_HOC_VALIDATION_REQUIRES_FRESH_CONFIRMATION`이다. 019F 새 temporal episode는
   source-row/window 독립 확인(사용자 독립 아님) 결과 `INCONCLUSIVE`다.
+- 019F를 802명·1,604 ranking 전수로 다시 감사해 결과 변경 결함이 없음을 확인했다.
+- 021V는 한국 거주자 recent/niche pooled-judgment의 synthetic 모집 전 preflight만 완료했다.
 - REC-EV-019~026 evidence는 backlog dependency Gate를 순서대로 통과
 
 모델이 아직 실험 Gate를 통과하지 않았다는 이유로 구현 자체를 막지 않는다. 반대로 구현 준비가 됐다는
@@ -36,10 +40,13 @@
 | REC-EV-019D 독립 full-rescore 감사 | **DONE — 1,479명·5,916 ranking exact Top-10/Top-500·aggregate PASS** |
 | REC-EV-019E no-retune mitigation | **DONE — post-hoc PASS, fresh target-independent confirmation 필수** |
 | REC-EV-019F independent temporal routing | **DONE — `INCONCLUSIVE`, source-row/window 독립, 사용자 독립 아님** |
+| REC-EV-019F 2026-09-05 독립 재감사 | **DONE — 802명·1,604 ranking 전수 재현, 결과 변경 결함 없음** |
 | REC-EV-020P-A/B 설계→계약 구현 | `GO`, v4 Schema·artifact contract·runner 구현 가능 |
 | REC-EV-020P-A/B 실행 완료 판정 | `NO-GO`, runner·verifier·Validation power 결과 필요 |
 | REC-EV-021P 사전검사 | **DONE — firewall PASS, Validation pilot READY** |
 | REC-EV-021 전체 grid·Locked Test | `NO-GO`, 소규모 Validation 실행 시간·적용 모델 Gate 필요 |
+| REC-EV-021V 모집 전 인프라 | **DONE — fixture E2E·checkpoint/resume·PII/budget firewall PASS** |
+| REC-EV-021V 실제 target evidence | `NO-GO`, 승인 catalog/license·consent·budget·모집·frozen ranking 필요 |
 | binary 개인화 champion | `null`, 019F temporal 확인도 `INCONCLUSIVE`이고 target-domain confirmation이 아님 |
 | 예상 별점 public 노출 | `NO` |
 | C2 기본 정책 교체 | `NO`, 별도 vNext 승인 필요 |
@@ -205,6 +212,20 @@ Top-10/Top-500과 aggregate를 재현했다. 자세한 내용은 [019F 결과](.
 그보다 낮다. 한국 사용자, 한국 영화, 최신 영화의 성능 근거와 champion·제품 정책·Locked Test 권한은 계속
 `NO-GO`다. 019C 전용 `docs/presentation/FEELM-REC-EV-019C-results.pptx`는 수정하지 않았다.
 
+### 4.7 `TASK-REC-EV-021V` — 사람 모집 전 인프라 완료, 실제 증거 없음
+
+[021V machine contract](./contracts/rec-ev-021v-kr-recent-niche-pooled-judgment.json)와
+[사전등록](./evidence/REC-EV-021V-kr-recent-niche-preregistration.md)은 MovieLens와 분리된 한국 거주
+평가자 100명 목표의 pooled-judgment를 고정한다. K10 mapped positive/negative 2개 이상, 2024~2026
+KR-origin low-pop target, B0/B7 E5/B8 frozen LightFM/B9 RRF의 blind pool, 네 stratum 각 12개, 최대
+48개와 사람 judgment schema를 구현했다.
+
+4명 synthetic fixture에서 catalog 80편, pool/judgment 192행, checkpoint resume와 독립 재구성을
+통과했다. 그러나 실제 평가자는 0명이고 public source 다운로드·동의·인센티브·PII 수집을 수행하지 않았다.
+따라서 인프라는 `PASS_INFRASTRUCTURE_READY`, target evidence는 `NO_ACTUAL_TARGET_DOMAIN_EVIDENCE`, 분석은
+`INSUFFICIENT_TARGET_DOMAIN_EVIDENCE`다. 상세 차단 입력은
+[021V preflight](./evidence/REC-EV-021V-kr-recent-niche-preflight.md)에 있다.
+
 ## 5. 완료 명령
 
 환경 설치:
@@ -226,6 +247,7 @@ npm run recommendation:019d:check
 npm run recommendation:019d:full-rescore:check
 npm run recommendation:019e:check
 npm run recommendation:019f:check
+npm run recommendation:021v:preflight:check
 npm run recommendation:evidence:check
 ```
 

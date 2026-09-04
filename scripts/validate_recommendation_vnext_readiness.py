@@ -244,6 +244,7 @@ def validate_backlog(backlog: dict[str, Any]) -> None:
         "TASK-REC-EV-019": "PENDING",
         "TASK-REC-EV-020": "PENDING",
         "TASK-REC-EV-021": "PENDING",
+        "TASK-REC-EV-021V": "PREFLIGHT_DONE_EXTERNAL_COLLECTION_BLOCKED",
         "TASK-REC-EV-022": "PENDING",
         "TASK-REC-EV-023": "PENDING",
         "TASK-REC-EV-024": "PENDING",
@@ -255,7 +256,7 @@ def validate_backlog(backlog: dict[str, Any]) -> None:
             raise RuntimeError(f"backlog task is missing or has wrong status: {task_id}")
         if not tasks[task_id].get("outputs"):
             raise RuntimeError(f"backlog task has no outputs: {task_id}")
-    for task_id in ("TASK-REC-EV-019P", "TASK-REC-EV-019A", "TASK-REC-EV-019B", "TASK-REC-EV-019C", "TASK-REC-EV-019D", "TASK-REC-EV-019E", "TASK-REC-EV-019F", "TASK-REC-EV-019"):
+    for task_id in ("TASK-REC-EV-019P", "TASK-REC-EV-019A", "TASK-REC-EV-019B", "TASK-REC-EV-019C", "TASK-REC-EV-019D", "TASK-REC-EV-019E", "TASK-REC-EV-019F", "TASK-REC-EV-019", "TASK-REC-EV-021V"):
         if not tasks[task_id].get("verify"):
             raise RuntimeError(f"executable verification is missing: {task_id}")
     expected_contracts = {
@@ -405,6 +406,26 @@ def validate_backlog(backlog: dict[str, Any]) -> None:
             raise RuntimeError(f"019F completion boundary is incomplete: {required_text}")
     if tasks["TASK-REC-EV-019"].get("depends_on") != ["TASK-REC-EV-019F"]:
         raise RuntimeError("binary product decision does not depend on 019F temporal confirmation")
+    task_021v = tasks["TASK-REC-EV-021V"]
+    if task_021v.get("artifact_contract") != "docs/recommendation/contracts/rec-ev-021v-kr-recent-niche-pooled-judgment.json":
+        raise RuntimeError("021V artifact contract is missing from backlog")
+    if task_021v.get("depends_on") != ["TASK-REC-EV-019B", "TASK-REC-EV-019F"]:
+        raise RuntimeError("021V dependencies do not preserve feature and 019F evidence provenance")
+    if task_021v.get("current_authorization") != "SYNTHETIC_PREFLIGHT_ONLY":
+        raise RuntimeError("021V authorization exceeds recruitment preflight")
+    if task_021v.get("target_evidence_status") != "NO_ACTUAL_TARGET_DOMAIN_EVIDENCE":
+        raise RuntimeError("021V target evidence boundary differs")
+    if task_021v.get("locked_test_authorization") != "FORBIDDEN":
+        raise RuntimeError("021V Locked Test boundary differs")
+    if task_021v.get("commands") != {
+        "preflight": "npm run recommendation:021v:preflight:run",
+        "verify": "npm run recommendation:021v:preflight:check",
+    }:
+        raise RuntimeError("021V commands are incomplete")
+    verify_021v = "\n".join(task_021v.get("verify", []))
+    for required_text in ("100", "K10", "48", "12", "NO_ACTUAL_TARGET_DOMAIN_EVIDENCE", "INSUFFICIENT_TARGET_DOMAIN_EVIDENCE", "locked_test_used=false"):
+        if required_text not in verify_021v:
+            raise RuntimeError(f"021V preflight boundary is incomplete: {required_text}")
 
 
 def validate_current_product_boundary() -> None:
@@ -814,13 +835,15 @@ def validate() -> dict[str, Any]:
         "docs/recommendation/contracts/rec-ev-019f-independent-temporal-routing.json"
     ), root=ROOT, check_files=True)
     completion_019f = validate_019f_completion_manifest()
+    from verify_rec_ev_021v_preflight import verify as verify_021v_preflight
+    completion_021v = verify_021v_preflight()
 
     return {
         "status": "PASS",
         "decision": "REC_EV_019F_INCONCLUSIVE_SOURCE_ROW_WINDOW_CONFIRMATION_TEST_LOCKED",
         "scope": "REC-EV-019F_INCONCLUSIVE_SOURCE_ROW_WINDOW_NOT_USER_INDEPENDENT_LOCKED_TEST_AND_PRODUCT_POLICY_UNCHANGED",
         "next_ready_tasks": [],
-        "next_phase": "TARGET_DOMAIN_CONFIRMATION_OR_NEW_PREREGISTERED_HYPOTHESIS_WITHOUT_OPENING_LOCKED_TEST",
+        "next_phase": "APPROVED_REC_EV_021V_EXTERNAL_INPUTS_AND_RECRUITMENT_OR_NEW_PREREGISTERED_HYPOTHESIS_WITHOUT_OPENING_LOCKED_TEST",
         "rec_ev_019a_status": cohort_build["status"],
         "rec_ev_019a_final_identity_k10_users": cohort_build["validation"]["locked_test_k10_final_identity_eligible"],
         "rec_ev_019b_status": feature_build["status"],
@@ -844,6 +867,9 @@ def validate() -> dict[str, Any]:
         "rec_ev_019f_independence_unit": completion_019f["independence_unit"],
         "rec_ev_019f_user_independent": completion_019f["user_independent"],
         "rec_ev_019f_strict_users": completion_019f["strict_users"],
+        "rec_ev_021v_preflight_status": completion_021v["status"],
+        "rec_ev_021v_infrastructure_status": completion_021v["infrastructure_status"],
+        "rec_ev_021v_target_evidence_status": completion_021v["target_evidence_status"],
         "rec_ev_019c_full_catalog_user_item_scores": resource_019c["full_catalog_user_item_scores"],
         "rec_ev_019c_b8_base_update_upper_bound": resource_019c["b8_base_update_upper_bound"],
         "rec_ev_019c_b4_pair_update_upper_bound": resource_019c["b4_pair_update_upper_bound"],

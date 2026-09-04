@@ -43,6 +43,8 @@
     "recommendation:019f:lock": "node scripts/run-python.mjs scripts/run_rec_ev_019f_independent_temporal_routing.py --phase lock --role validation-019f-temporal",
     "recommendation:019f:run": "node scripts/run-python.mjs scripts/run_rec_ev_019f_independent_temporal_routing.py --phase run --role validation-019f-temporal --resume",
     "recommendation:019f:check": "node scripts/run-python.mjs scripts/validate_rec_ev_019f_contract.py && node scripts/run-python.mjs -m unittest scripts/tests/test_rec_ev_019f_contract.py scripts/tests/test_run_rec_ev_019f_independent_temporal_routing.py scripts/tests/test_verify_rec_ev_019f_independent_temporal_routing.py && node scripts/run-python.mjs scripts/verify_rec_ev_019f_independent_temporal_routing.py --manifest docs/recommendation/evidence/manifests/rec-ev-019f-validation.json --full-rescore-users all",
+    "recommendation:021v:preflight:run": "node scripts/run-python.mjs scripts/run_rec_ev_021v_preflight.py --mode fixture",
+    "recommendation:021v:preflight:check": "node scripts/run-python.mjs -m unittest scripts/tests/test_rec_ev_021v_pooled_judgment.py && node scripts/run-python.mjs scripts/verify_rec_ev_021v_preflight.py --manifest docs/recommendation/evidence/manifests/rec-ev-021v-preflight.json",
     "revision:readiness:check": "node scripts/check-revision-readiness.mjs",
     "revision:readiness:require": "node scripts/check-revision-readiness.mjs --require-ready",
     "verification:parity:check": "node scripts/validate-verification-parity.mjs",

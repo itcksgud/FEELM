@@ -1,0 +1,59 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://feelm.local/schemas/rec-ev-021v/catalog-source-manifest.schema.json",
+  "title": "REC-EV-021V catalog source, license, and time manifest",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "source_id",
+    "snapshot_version",
+    "retrieved_at_utc",
+    "catalog_as_of_date",
+    "license",
+    "local_artifact",
+    "popularity_rule",
+    "synthetic_fixture"
+  ],
+  "properties": {
+    "schema_version": {"const": 1},
+    "source_id": {"type": "string", "minLength": 1},
+    "snapshot_version": {"type": "string", "minLength": 1},
+    "retrieved_at_utc": {"type": "string", "format": "date-time"},
+    "catalog_as_of_date": {"type": "string", "format": "date"},
+    "synthetic_fixture": {"type": "boolean"},
+    "license": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["license_id", "license_url", "research_use_status", "redistribution_status", "attribution"],
+      "properties": {
+        "license_id": {"type": "string", "minLength": 1},
+        "license_url": {"type": "string", "minLength": 1},
+        "research_use_status": {"enum": ["APPROVED", "REQUIRES_APPROVAL", "PROHIBITED"]},
+        "redistribution_status": {"enum": ["ALLOWED", "METADATA_ONLY", "PROHIBITED"]},
+        "attribution": {"type": "string", "minLength": 1}
+      }
+    },
+    "local_artifact": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["path", "bytes", "sha256"],
+      "properties": {
+        "path": {"type": ["string", "null"]},
+        "bytes": {"type": ["integer", "null"], "minimum": 0},
+        "sha256": {"type": ["string", "null"], "pattern": "^[0-9a-f]{64}$"}
+      }
+    },
+    "popularity_rule": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["field", "low_pop_max_inclusive", "popular_min_inclusive", "frozen_before_judgments"],
+      "properties": {
+        "field": {"type": "string", "minLength": 1},
+        "low_pop_max_inclusive": {"type": "number"},
+        "popular_min_inclusive": {"type": "number"},
+        "frozen_before_judgments": {"const": true}
+      }
+    }
+  }
+}

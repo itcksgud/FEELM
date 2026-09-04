@@ -111,6 +111,15 @@ class RecommendationVnextReadinessValidatorTest(unittest.TestCase):
         with self.assertRaisesRegex(RuntimeError, "019E"):
             validate_backlog(mutated)
 
+    def test_rejects_021v_that_claims_target_evidence_from_preflight(self) -> None:
+        mutated = copy.deepcopy(self.backlog)
+        task = next(
+            item for item in mutated["tasks"] if item["id"] == "TASK-REC-EV-021V"
+        )
+        task["target_evidence_status"] = "PASS_TARGET_EVIDENCE"
+        with self.assertRaisesRegex(RuntimeError, "021V"):
+            validate_backlog(mutated)
+
 
 if __name__ == "__main__":
     unittest.main()

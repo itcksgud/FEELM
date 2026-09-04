@@ -1,0 +1,16 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://feelm.local/schemas/rec-ev-021v/participant.schema.json",
+  "title": "REC-EV-021V deidentified participant",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["participant_id", "residency", "consent_version", "consented_at_utc", "consent_active"],
+  "properties": {
+    "participant_id": {"type": "string", "pattern": "^p_[0-9a-f]{16}$"},
+    "residency": {"const": "KR"},
+    "consent_version": {"type": "string", "minLength": 1},
+    "consented_at_utc": {"type": "string", "format": "date-time"},
+    "consent_active": {"const": true},
+    "collection_wave": {"type": "string", "maxLength": 64}
+  }
+}

@@ -1,0 +1,27 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://feelm.local/schemas/rec-ev-021v/onboarding-input.schema.json",
+  "title": "REC-EV-021V deidentified K10 input",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["participant_id", "items"],
+  "properties": {
+    "participant_id": {"type": "string", "pattern": "^p_[0-9a-f]{16}$"},
+    "items": {
+      "type": "array",
+      "minItems": 10,
+      "maxItems": 10,
+      "uniqueItems": true,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["movie_key", "mapped_label", "mapping_status"],
+        "properties": {
+          "movie_key": {"type": "string", "minLength": 1},
+          "mapped_label": {"enum": ["POSITIVE", "NEGATIVE"]},
+          "mapping_status": {"const": "VERIFIED_CANONICAL_ID"}
+        }
+      }
+    }
+  }
+}

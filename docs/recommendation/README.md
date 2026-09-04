@@ -65,6 +65,9 @@
 | 019E post-hoc 완화 계약 | `contracts/rec-ev-019e-no-retune-incremental-applicability-gate.json` | parameter-free incremental applicability routing과 제한된 PASS 상태 고정 |
 | 019E 결과 | `evidence/REC-EV-019E-no-retune-incremental-applicability.md` | 동일 1,053명 재사용 post-hoc PASS, fresh target-independent confirmation 필수 |
 | 019F 결과 | `evidence/REC-EV-019F-independent-temporal-routing.md` | source-row/window 독립 802명(사용자 독립 아님) `INCONCLUSIVE`; target-domain confirmation·champion·정책 승인 아님 |
+| 019F 재감사 | `evidence/REC-EV-019F-independent-audit-2026-09-05.md` | 802명·1,604 ranking full-rescore와 lock·float invalid-run 격리를 재검증, 결과 변경 결함 없음 |
+| 021V target-domain 계약 | `contracts/rec-ev-021v-kr-recent-niche-pooled-judgment.json` | 한국 거주 100명, K10, 4×12 blind pool, paired NDCG·Top-2 harm·license/consent/PII/budget Gate 고정 |
+| 021V 모집 전 preflight | `evidence/REC-EV-021V-kr-recent-niche-preflight.md` | synthetic E2E 인프라 PASS, 실제 평가자·target evidence는 없음 |
 | 제품 서빙 경계 | `serving-contract.md` | 현재 승인 정책과 vNext 후보를 구분 |
 | 연구 보고서 | `personalized-hybrid-design-report.md` | 네 추천 Head의 가설·결과·한계를 연결 |
 

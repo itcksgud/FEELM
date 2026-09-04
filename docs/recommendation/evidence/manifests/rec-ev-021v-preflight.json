@@ -1,0 +1,149 @@
+{
+  "artifacts": [
+    {
+      "bytes": 2966,
+      "path": "docs/recommendation/evidence/results/rec-ev-021v-preflight.json",
+      "sha256": "511ca44960ed175cfa552af3a02b8107e62a3fadcf3590685ed54b8b40ea3ef7"
+    },
+    {
+      "bytes": 5122,
+      "path": "outputs/recommendation-evidence/rec-ev-021v-preflight/analysis.json",
+      "sha256": "7634d9e52615016718d211108b59868fab7fe34972af129846a135362f383dfa"
+    },
+    {
+      "bytes": 48252,
+      "path": "outputs/recommendation-evidence/rec-ev-021v-preflight/blind-pool.jsonl",
+      "sha256": "3ef2c7a01a0862c96ae7f86eaffc1e7e2cb42ea55beffadaba20d17745971816"
+    },
+    {
+      "bytes": 1002,
+      "path": "outputs/recommendation-evidence/rec-ev-021v-preflight/fixture-inputs/catalog-source-manifest.json",
+      "sha256": "03cc02515caea1fb03feb9c31b84b91f18b5e3af6f834d0afbc6d624edecf1f8"
+    },
+    {
+      "bytes": 6662,
+      "path": "outputs/recommendation-evidence/rec-ev-021v-preflight/fixture-inputs/catalog.csv",
+      "sha256": "b4ce4d381c16297cced2daafc2f49b2d0795c57fb7a086fd2c18c89e37d6ca74"
+    },
+    {
+      "bytes": 1243,
+      "path": "outputs/recommendation-evidence/rec-ev-021v-preflight/fixture-inputs/frozen-ranking-manifest.json",
+      "sha256": "739b90547d00b9e051ddb17edcb8840f9e5a8eb1716c3e9205e0b4c03025a1ba"
+    },
+    {
+      "bytes": 170846,
+      "path": "outputs/recommendation-evidence/rec-ev-021v-preflight/fixture-inputs/frozen-rankings.jsonl",
+      "sha256": "8e3fe5d5ea809064a68c90cec25c8ebce95d26a69445d485e9958c12697e7284"
+    },
+    {
+      "bytes": 52148,
+      "path": "outputs/recommendation-evidence/rec-ev-021v-preflight/fixture-inputs/judgments.jsonl",
+      "sha256": "6dfe86228753a0632986feeeec98edb86b763b6db575402e206f13296e025b8a"
+    },
+    {
+      "bytes": 4128,
+      "path": "outputs/recommendation-evidence/rec-ev-021v-preflight/fixture-inputs/onboarding-inputs.jsonl",
+      "sha256": "b9a6d857b2fbad32f6bb56bd013a05f86d9015a6c97fad358329a1babc79c3b1"
+    },
+    {
+      "bytes": 832,
+      "path": "outputs/recommendation-evidence/rec-ev-021v-preflight/fixture-inputs/participants.jsonl",
+      "sha256": "022cbaddd26b33f83cb10c6514f0884fa2cb2e459585ca308fe19833039acdb4"
+    },
+    {
+      "bytes": 405,
+      "path": "outputs/recommendation-evidence/rec-ev-021v-preflight/import-summary.json",
+      "sha256": "9c2fc22ff2d1fb1df71b8a45dec9f99728681c2416cef66ec44aaacf22483f81"
+    },
+    {
+      "bytes": 22992,
+      "path": "outputs/recommendation-evidence/rec-ev-021v-preflight/normalized-catalog.jsonl",
+      "sha256": "40e5b6f066cf1afe13037d11f10b29497bcab963fed701c301a32bfedffcaba2"
+    },
+    {
+      "bytes": 57922,
+      "path": "outputs/recommendation-evidence/rec-ev-021v-preflight/normalized-judgments.jsonl",
+      "sha256": "2b2c1d8e67695949f29232ceda3e1560ef34e4ed2c7d9c3920efba2acc43ccae"
+    },
+    {
+      "bytes": 2966,
+      "path": "outputs/recommendation-evidence/rec-ev-021v-preflight/preflight-summary.json",
+      "sha256": "511ca44960ed175cfa552af3a02b8107e62a3fadcf3590685ed54b8b40ea3ef7"
+    },
+    {
+      "bytes": 49960,
+      "path": "outputs/recommendation-evidence/rec-ev-021v-preflight/sealed-pool-source.jsonl",
+      "sha256": "8afe4c03a5ccc88a3aa64383496a37fbbe101e6a46d984ac60c0852cf7506b9f"
+    }
+  ],
+  "champion": null,
+  "contract": "docs/recommendation/contracts/rec-ev-021v-kr-recent-niche-pooled-judgment.json",
+  "contract_sha256": "d52d9d72fa2e5b51e72145829e17341080f21216825782273868136acdbd9b27",
+  "evidence_id": "REC-EV-021V-PREFLIGHT",
+  "evidence_mode": "SYNTHETIC_FIXTURE",
+  "infrastructure_status": "READY_FOR_APPROVED_EXTERNAL_INPUTS_AND_RECRUITMENT",
+  "locked_test_used": false,
+  "product_policy_updated": false,
+  "schema_version": 1,
+  "schemas": [
+    {
+      "bytes": 2211,
+      "path": "docs/recommendation/schemas/rec-ev-021v/catalog-source-manifest.schema.json",
+      "sha256": "64fd8ac9b13614161ab3a3341211dbf12d9520b4f25e3513c398f9b9728bfa8d"
+    },
+    {
+      "bytes": 1915,
+      "path": "docs/recommendation/schemas/rec-ev-021v/frozen-ranking-manifest.schema.json",
+      "sha256": "68c92d1d5006db4750544e447d273b544cf64b9f1c6956b48f09ed676f867793"
+    },
+    {
+      "bytes": 1185,
+      "path": "docs/recommendation/schemas/rec-ev-021v/judgment.schema.json",
+      "sha256": "bda12ccee12f763fc7f8397214a370711b435283b6b4c95336086a923a2b8d22"
+    },
+    {
+      "bytes": 878,
+      "path": "docs/recommendation/schemas/rec-ev-021v/onboarding-input.schema.json",
+      "sha256": "378bc8d49ee563cdc561a3e188ac4d735dae871adedcf32105269d348de0ba3e"
+    },
+    {
+      "bytes": 702,
+      "path": "docs/recommendation/schemas/rec-ev-021v/participant.schema.json",
+      "sha256": "c32912a747b003d9254f0f69d1750899eeeb9c6ae8f68ebd2049c99b8edd6e53"
+    }
+  ],
+  "source_code": [
+    {
+      "bytes": 1598,
+      "path": "scripts/analyze_rec_ev_021v_judgments.py",
+      "sha256": "c19e3c01c5d7ee35707b0382d2ed7967cdb62b0dfb680db5cec79071fdb79453"
+    },
+    {
+      "bytes": 4217,
+      "path": "scripts/build_rec_ev_021v_catalog_and_pool.py",
+      "sha256": "f9695c9b96bc117b1597dd523e28178f56ba1eefd96dfccc8d4393aa9808f0ca"
+    },
+    {
+      "bytes": 1723,
+      "path": "scripts/import_rec_ev_021v_judgments.py",
+      "sha256": "fadb553fc1e0eca921afb7228630220bb00f191ad03cdec94381493dd1244899"
+    },
+    {
+      "bytes": 49675,
+      "path": "scripts/rec_ev_021v_pooled_judgment.py",
+      "sha256": "6e66539a730e141e9bfd1194c2bade9a1cea62c860681bfb7b60d06c9fba90ed"
+    },
+    {
+      "bytes": 11761,
+      "path": "scripts/run_rec_ev_021v_preflight.py",
+      "sha256": "eda9ea44ee3fb0fc0b352bfa2ed9fc9210f0e30bd0d238f712514ec8d0f64880"
+    },
+    {
+      "bytes": 9855,
+      "path": "scripts/verify_rec_ev_021v_preflight.py",
+      "sha256": "3b51fde038710622924706832cbbfb41ddaecc3d36c7208fbfa0043ec4885328"
+    }
+  ],
+  "status": "PASS_INFRASTRUCTURE_READY",
+  "target_evidence_status": "NO_ACTUAL_TARGET_DOMAIN_EVIDENCE"
+}
