@@ -51,4 +51,4 @@ for (const [command, args] of commands) {
   }
 }
 
-console.log('Recommendation evidence verification passed: unit protocols, REC-EV-004/004B/006/007/008/011/013/015/016/017/018/019P/019A and REC-EV-019C contract, synthetic preflight, Linux dependency smoke, metadata resource dry-run, decision packet, and Spark scaling evidence.')
+console.log('Recommendation evidence verification passed: unit protocols, REC-EV-004/004B/006/007/008/011/013/015/016/017/018/019P/019A, REC-EV-019C preflight gates and completion boundaries, decision packet, and Spark scaling evidence.')

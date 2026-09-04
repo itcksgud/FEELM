@@ -323,10 +323,21 @@ tasks:
       - preference labels or TMDB popularity truth
 
   - id: TASK-REC-EV-019C
-    title: Binary baseline suite와 full-catalog evaluator
-    status: READY
+    title: MovieLens 대리 검증과 TMDB 콘텐츠 보완 모델 비교
+    status: DONE
     depends_on: [TASK-REC-EV-019A, TASK-REC-EV-019B]
-    current_authorization: BOUNDED_REAL_VALIDATION_ONLY
+    current_authorization: VALIDATION_COMPLETE_LOCKED_TEST_FORBIDDEN
+    validation_result: PASS_VALIDATION_SELECTION_LOCKED
+    analysis_result: PASS_VALIDATION_ANALYSIS_ONLY
+    locked_test_authorization: FORBIDDEN
+    purpose:
+      - MovieLens의 외국 영화 편향과 데이터 수록 이후 영화의 상호작용 공백을 TMDB 구조 특징과 E5 콘텐츠 벡터로 보완할 수 있는지 비교한다.
+      - 실제 추천 후 시청·평가 피드백을 수집할 수 없는 단계에서 MovieLens를 모델 학습·평가·검증 환경으로 사용해 초기 추천 정책을 결정한다.
+    decision_questions:
+      - 초기 선호 입력은 K=5와 K=10 중 어느 조건이 유효한가
+      - 인기도, ItemKNN, 관측 BPR, TMDB 구조·텍스트, LightFM, RRF 중 어느 모델이 기준선보다 나은가
+      - 사용자 이력량, 입력 영화 인기도, 영화 인기도, 콘텐츠 정보 유무에 따라 어느 점수와 fallback을 우선할 것인가
+      - MovieLens를 특정 시점 cutoff로 제한한 결과와 전체 관측 범위의 보조 결과를 어떻게 구분할 것인가
     artifact_contract: docs/recommendation/contracts/rec-ev-019c-validation-artifacts.json
     input_docs:
       - docs/recommendation/protocols/rec-eval-vnext.json
@@ -357,6 +368,9 @@ tasks:
       - scripts/smoke_rec_ev_019c_lightfm.py
       - scripts/verify_rec_ev_019c_dependency_smoke.py
       - scripts/verify_rec_ev_019c_resource_dry_run.py
+      - scripts/analyze_rec_ev_019c_validation.py
+      - scripts/tests/test_analyze_rec_ev_019c_validation.py
+      - scripts/verify_rec_ev_019c_analysis.py
     outputs:
       - outputs/recommendation-evidence/rec-ev-019c/candidate-core-final.parquet
       - outputs/recommendation-evidence/rec-ev-019c/trial-registry.json
@@ -367,6 +381,11 @@ tasks:
       - outputs/recommendation-evidence/rec-ev-019c/validation-selection-lock.json
       - outputs/recommendation-evidence/rec-ev-019c/resource-summary.json
       - docs/recommendation/evidence/manifests/rec-ev-019c-validation.json
+    analysis_outputs:
+      - outputs/recommendation-evidence/rec-ev-019c/analysis-summary.json
+      - docs/recommendation/evidence/manifests/rec-ev-019c-analysis.json
+      - docs/recommendation/evidence/REC-EV-019C-validation-analysis.md
+      - docs/presentation/FEELM-REC-EV-019C-results.pptx
     contract_outputs:
       - docs/recommendation/contracts/rec-ev-019c-validation-artifacts.json
       - scripts/validate_rec_ev_019c_contract.py
@@ -394,9 +413,13 @@ tasks:
       resource_dry_run_verify: "py -3 scripts/verify_rec_ev_019c_resource_dry_run.py --manifest docs/recommendation/evidence/manifests/rec-ev-019c-resource-dry-run.json"
       future_validation: "py -3 scripts/run_rec_ev_019c_validation.py --mode validation --role validation --resume"
       future_verify: "py -3 scripts/verify_rec_ev_019c_validation.py --manifest docs/recommendation/evidence/manifests/rec-ev-019c-validation.json"
+    analysis_commands:
+      analyze: "py -3 scripts/analyze_rec_ev_019c_validation.py"
+      unit: "py -3 -m unittest scripts/tests/test_analyze_rec_ev_019c_validation.py"
+      verify: "py -3 scripts/verify_rec_ev_019c_analysis.py --manifest docs/recommendation/evidence/manifests/rec-ev-019c-analysis.json"
     verify:
       - contract validator and mutation tests pass before runner implementation
-      - current authorization permits only runner implementation and synthetic preflight, not real Validation
+      - Validation result is selection-locked and cannot authorize Locked Test or a product champion
       - Validation code reads only role-specific Validation files and cannot expose a Test CLI flag
       - final identity allowlist is joined before scoring and K10 Test strict eligible remains at least 5000
       - identical candidate universe and no positive injection
@@ -407,7 +430,7 @@ tasks:
       - product API and database schema
       - APPROVED_C2A_INTERNAL_POPULARITY_ONLY
       - binary thresholds, candidate count, or positive injection
-      - real Validation or Locked Test execution before the matching phase Gate
+      - Locked Test execution before a separate matching phase Gate
 
   - id: TASK-REC-EV-019
     title: Binary onboarding K5·K10 제품 후보 판정

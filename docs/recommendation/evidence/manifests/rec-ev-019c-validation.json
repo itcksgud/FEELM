@@ -1,0 +1,120 @@
+{
+  "adoption": {
+    "champion": null,
+    "current_product_policy": "APPROVED_C2A_INTERNAL_POPULARITY_ONLY",
+    "product_policy_changed": false
+  },
+  "artifacts": [
+    {
+      "bytes": 651984,
+      "path": "outputs/recommendation-evidence/rec-ev-019c/candidate-core-final.parquet",
+      "sha256": "9bb0560cb0c3538160dce7568a4dc366e2937b1ec6019cbacfd7113cd34c910e"
+    },
+    {
+      "bytes": 7640,
+      "path": "outputs/recommendation-evidence/rec-ev-019c/trial-registry.json",
+      "sha256": "0cb33453b09bae09d1b8df793f17ef15e5800be520c496e310786b86de28d47a"
+    },
+    {
+      "bytes": 223997,
+      "path": "outputs/recommendation-evidence/rec-ev-019c/trial-user-metrics.parquet",
+      "sha256": "713989ee3638e796dd0d0a98c6767a288d43e0fc749017310a9497121196c555"
+    },
+    {
+      "bytes": 32938814,
+      "path": "outputs/recommendation-evidence/rec-ev-019c/validation-predictions.parquet",
+      "sha256": "9481601ba08730cb7670cdaf26f098bf4bc0609628c7acee85b20357a93bdf47"
+    },
+    {
+      "bytes": 332310,
+      "path": "outputs/recommendation-evidence/rec-ev-019c/validation-user-metrics.parquet",
+      "sha256": "2ff3ef607f011f2b7edbcabce1e7d5351d542f0ffa398bff5d2bc6bbb7a0effe"
+    },
+    {
+      "bytes": 123039,
+      "path": "outputs/recommendation-evidence/rec-ev-019c/validation-selection.json",
+      "sha256": "9fab1f5bfd184c246c916dce6daefa5ef4366520e2538559efc6c12e2e38c7df"
+    },
+    {
+      "bytes": 1762,
+      "path": "outputs/recommendation-evidence/rec-ev-019c/validation-selection-lock.json",
+      "sha256": "671dd4b8d914d54616fd9edfa19eeae6812a7ab2c7c88e12ae8568d371ffb609"
+    },
+    {
+      "bytes": 44730,
+      "path": "outputs/recommendation-evidence/rec-ev-019c/resource-summary.json",
+      "sha256": "dfff7a8a67058ff2ba5b39d84cb588dd7fd7c0708fba08e86d31624339c87070"
+    }
+  ],
+  "contract_sha256": "480f91704231684abf3e7ec54fd1092d0f120f21682e1d8bb9cb2120bc535069",
+  "evidence_id": "REC-EV-019C",
+  "protocol_version": "rec-eval-vnext-2",
+  "schema_version": 1,
+  "source_checksums": {
+    "base_train_ratings": "c9ff0b4aa3b82802ef9203bcb65e672a85de5380fd71e2b3d93a798ef3ef3518",
+    "candidate_core_provisional": "b31b4b2f17aa0ca3b37d0347e30fc93923ff19b9c61dbd5719fe4dff8d0d5e25",
+    "movie_identity": "cdf78e31d436a3b83ff8c147816c8ac8b52d4d69ca4488eaeed98bd375f12aa4",
+    "structured_features": "d68b93496c003c2a51e5defe0c9ee9af24e7b0d99eb68a0536d2e0a305460c62",
+    "text_embeddings": "ff35381f231e6d2a1fe35b79b8b55f64744c16188f9b92ce74c1466930967bda",
+    "validation_prefixes": "eaeb04627d6a160351036350469f8d2894ea3464fc6897e97af04bcfce7da8c4",
+    "validation_windows": "88fe1ab55491714358f985e1783e334bce24ffc08cf6f079e063a3ccd2547e56"
+  },
+  "status": "PASS_VALIDATION_SELECTION_LOCKED",
+  "validation": {
+    "candidate_count": 41625,
+    "locked_test_opened": false,
+    "selection_lock_created": true,
+    "single_best_per_k": {
+      "0": {
+        "both_good_at_2": 0.038953134510042606,
+        "candidate_recall_at_500": 0.8452807646356033,
+        "fallback_user_rate": 0.0,
+        "harm_at_2": 0.11051373954599761,
+        "k": 0,
+        "miss_at_2": 0.7171052631578947,
+        "model_id": "B0_MOVIELENS_BAYESIAN_RATING",
+        "mrr_at_10": 0.2719273292749995,
+        "positive_mean_rank_percentile": 0.09773426731283154,
+        "recall_at_10": 0.15331967912613073,
+        "safe_hit_at_2": 0.24342105263157895,
+        "trial_id": "B0_MOVIELENS_BAYESIAN_RATING-T003",
+        "user_macro_ndcg_at_10": 0.15242465046037934
+      },
+      "10": {
+        "both_good_at_2": 0.01314878892733564,
+        "candidate_recall_at_500": 0.68289384719405,
+        "fallback_user_rate": 0.11494252873563218,
+        "harm_at_2": 0.0290736984448952,
+        "k": 10,
+        "miss_at_2": 0.8897158322056834,
+        "model_id": "B8_LIGHTFM",
+        "mrr_at_10": 0.11966230936819172,
+        "positive_mean_rank_percentile": 0.259988151663733,
+        "recall_at_10": 0.0857706300911169,
+        "safe_hit_at_2": 0.10554803788903924,
+        "trial_id": "B8_LIGHTFM-T003",
+        "user_macro_ndcg_at_10": 0.07254518275897859
+      },
+      "5": {
+        "both_good_at_2": 0.014021669853409816,
+        "candidate_recall_at_500": 0.7317224287484511,
+        "fallback_user_rate": 0.3878562577447336,
+        "harm_at_2": 0.03717472118959108,
+        "k": 5,
+        "miss_at_2": 0.8841387856257745,
+        "model_id": "B8_LIGHTFM",
+        "mrr_at_10": 0.12078145591156744,
+        "positive_mean_rank_percentile": 0.22391134485798764,
+        "recall_at_10": 0.08221809169764559,
+        "safe_hit_at_2": 0.11338289962825279,
+        "trial_id": "B8_LIGHTFM-T003",
+        "user_macro_ndcg_at_10": 0.0712774743497093
+      }
+    },
+    "user_counts": {
+      "0": 1674,
+      "10": 1479,
+      "5": 1614
+    }
+  }
+}

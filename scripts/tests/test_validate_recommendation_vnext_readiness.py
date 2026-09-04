@@ -9,6 +9,7 @@ from validate_recommendation_vnext_readiness import (
     validate_019a_completion_manifest,
     validate_019b_completion_manifest,
     validate_019c_contract_readiness,
+    validate_019c_completion_manifests,
     validate_019c_dependency_smoke,
     validate_019c_synthetic_preflight,
     validate_artifact_contracts,
@@ -40,6 +41,9 @@ class RecommendationVnextReadinessValidatorTest(unittest.TestCase):
         self.assertEqual("PASS", synthetic["status"])
         dependency = validate_019c_dependency_smoke()
         self.assertEqual("PASS", dependency["status"])
+        completion = validate_019c_completion_manifests()
+        self.assertEqual("PASS_VALIDATION_SELECTION_LOCKED", completion["validation_status"])
+        self.assertFalse(completion["locked_test_opened"])
 
     def test_rejects_smaller_test_split(self) -> None:
         mutated = copy.deepcopy(self.protocol)

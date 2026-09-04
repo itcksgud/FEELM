@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import json
+import hashlib
 from pathlib import Path
 from typing import Any
 
@@ -236,7 +237,7 @@ def validate_backlog(backlog: dict[str, Any]) -> None:
         "TASK-REC-EV-019P": "DONE",
         "TASK-REC-EV-019A": "DONE",
         "TASK-REC-EV-019B": "DONE",
-        "TASK-REC-EV-019C": "READY",
+        "TASK-REC-EV-019C": "DONE",
         "TASK-REC-EV-019": "PENDING",
         "TASK-REC-EV-020": "PENDING",
         "TASK-REC-EV-021": "PENDING",
@@ -287,11 +288,25 @@ def validate_backlog(backlog: dict[str, Any]) -> None:
     if task_019c.get("artifact_contract") != contract_019c_path:
         raise RuntimeError("019C artifact contract is missing from backlog")
     contract_019c = read_json(contract_019c_path)
-    if task_019c.get("current_authorization") != "BOUNDED_REAL_VALIDATION_ONLY":
-        raise RuntimeError("019C backlog authorization is too broad")
+    if task_019c.get("current_authorization") != "VALIDATION_COMPLETE_LOCKED_TEST_FORBIDDEN":
+        raise RuntimeError("019C completion boundary is missing")
+    if task_019c.get("validation_result") != "PASS_VALIDATION_SELECTION_LOCKED":
+        raise RuntimeError("019C Validation result is missing from backlog")
+    if task_019c.get("analysis_result") != "PASS_VALIDATION_ANALYSIS_ONLY":
+        raise RuntimeError("019C analysis result is missing from backlog")
+    if task_019c.get("locked_test_authorization") != "FORBIDDEN":
+        raise RuntimeError("019C Locked Test boundary is missing")
     expected_019c_outputs = {item["path"] for item in contract_019c["future_artifacts"]}
     if set(task_019c.get("outputs", [])) != expected_019c_outputs:
         raise RuntimeError("019C outputs differ from its artifact contract")
+    expected_analysis_outputs = {
+        "outputs/recommendation-evidence/rec-ev-019c/analysis-summary.json",
+        "docs/recommendation/evidence/manifests/rec-ev-019c-analysis.json",
+        "docs/recommendation/evidence/REC-EV-019C-validation-analysis.md",
+        "docs/presentation/FEELM-REC-EV-019C-results.pptx",
+    }
+    if set(task_019c.get("analysis_outputs", [])) != expected_analysis_outputs:
+        raise RuntimeError("019C analysis outputs are incomplete")
     commands_019c = task_019c.get("commands", {})
     implementation_019c = contract_019c["implementation"]
     expected_019c_commands = {
@@ -308,6 +323,13 @@ def validate_backlog(backlog: dict[str, Any]) -> None:
     }
     if commands_019c != expected_019c_commands:
         raise RuntimeError("019C commands differ from its artifact contract")
+    expected_analysis_commands = {
+        "analyze": "py -3 scripts/analyze_rec_ev_019c_validation.py",
+        "unit": "py -3 -m unittest scripts/tests/test_analyze_rec_ev_019c_validation.py",
+        "verify": "py -3 scripts/verify_rec_ev_019c_analysis.py --manifest docs/recommendation/evidence/manifests/rec-ev-019c-analysis.json",
+    }
+    if task_019c.get("analysis_commands") != expected_analysis_commands:
+        raise RuntimeError("019C analysis commands are incomplete")
     verify_019c = "\n".join(tasks["TASK-REC-EV-019C"]["verify"])
     for required_text in ("final identity allowlist", "at least 5000", "B0 fallback"):
         if required_text not in verify_019c:
@@ -361,6 +383,51 @@ def validate_019b_completion_manifest() -> dict[str, Any]:
     if {item.get("path") for item in manifest.get("artifacts", [])} != expected_artifacts:
         raise RuntimeError("REC-EV-019B tracked artifact inventory changed")
     return manifest
+
+
+def validate_019c_completion_manifests() -> dict[str, Any]:
+    validation_path = "docs/recommendation/evidence/manifests/rec-ev-019c-validation.json"
+    validation = read_json(validation_path)
+    if validation.get("evidence_id") != "REC-EV-019C":
+        raise RuntimeError("REC-EV-019C Validation evidence id differs")
+    if validation.get("status") != "PASS_VALIDATION_SELECTION_LOCKED":
+        raise RuntimeError("REC-EV-019C Validation is not selection-locked")
+    validation_boundary = validation.get("validation", {})
+    if validation_boundary.get("locked_test_opened") is not False:
+        raise RuntimeError("REC-EV-019C opened Locked Test")
+    if validation_boundary.get("selection_lock_created") is not True:
+        raise RuntimeError("REC-EV-019C selection lock is missing")
+    adoption = validation.get("adoption", {})
+    if adoption.get("champion") is not None:
+        raise RuntimeError("REC-EV-019C invented a product champion")
+    if adoption.get("product_policy_changed") is not False:
+        raise RuntimeError("REC-EV-019C changed product policy")
+    if adoption.get("current_product_policy") != "APPROVED_C2A_INTERNAL_POPULARITY_ONLY":
+        raise RuntimeError("REC-EV-019C product policy boundary differs")
+
+    analysis = read_json("docs/recommendation/evidence/manifests/rec-ev-019c-analysis.json")
+    if analysis.get("status") != "PASS_VALIDATION_ANALYSIS_ONLY":
+        raise RuntimeError("REC-EV-019C analysis status differs")
+    if analysis.get("validation") != {
+        "champion_selected": False,
+        "locked_test_opened": False,
+        "post_hoc_results_are_confirmatory": False,
+        "product_policy_changed": False,
+    }:
+        raise RuntimeError("REC-EV-019C analysis boundary differs")
+    source = analysis.get("source_validation_manifest", {})
+    if source.get("path") != validation_path:
+        raise RuntimeError("REC-EV-019C analysis source manifest differs")
+    digest = hashlib.sha256((ROOT / validation_path).read_bytes()).hexdigest()
+    if source.get("sha256") != digest:
+        raise RuntimeError("REC-EV-019C analysis source checksum differs")
+    return {
+        "validation_status": validation["status"],
+        "analysis_status": analysis["status"],
+        "locked_test_opened": False,
+        "product_champion": None,
+        "product_policy_changed": False,
+    }
 
 
 def validate_019a_completion_manifest() -> dict[str, Any]:
@@ -464,13 +531,14 @@ def validate() -> dict[str, Any]:
     synthetic_019c = validate_019c_synthetic_preflight()
     dependency_019c = validate_019c_dependency_smoke()
     resource_019c = validate_019c_resource_dry_run()
+    completion_019c = validate_019c_completion_manifests()
 
     return {
         "status": "PASS",
-        "decision": "GO_FOR_019C_BOUNDED_REAL_VALIDATION_RUN",
-        "scope": "REC-EV-019A_019B_DONE_019C_RUNNER_SYNTHETIC_DEPENDENCY_AND_RESOURCE_GATES_PASS_REAL_VALIDATION_ONLY",
-        "next_ready_tasks": ["TASK-REC-EV-019C"],
-        "next_phase": "RUN_BOUNDED_REAL_VALIDATION_WITHOUT_LOCKED_TEST",
+        "decision": "REC_EV_019C_VALIDATION_COMPLETE_TEST_LOCKED",
+        "scope": "REC-EV-019C_VALIDATION_AND_ANALYSIS_COMPLETE_LOCKED_TEST_AND_PRODUCT_POLICY_UNCHANGED",
+        "next_ready_tasks": [],
+        "next_phase": "REVIEW_VALIDATION_WITHOUT_OPENING_LOCKED_TEST",
         "rec_ev_019a_status": cohort_build["status"],
         "rec_ev_019a_final_identity_k10_users": cohort_build["validation"]["locked_test_k10_final_identity_eligible"],
         "rec_ev_019b_status": feature_build["status"],
@@ -480,10 +548,13 @@ def validate() -> dict[str, Any]:
         "rec_ev_019c_dependency_smoke_status": dependency_019c["status"],
         "rec_ev_019c_resource_dry_run_status": resource_019c["status"],
         "rec_ev_019c_resource_blockers": resource_019c["blockers"],
+        "rec_ev_019c_validation_status": completion_019c["validation_status"],
+        "rec_ev_019c_analysis_status": completion_019c["analysis_status"],
+        "rec_ev_019c_locked_test_opened": completion_019c["locked_test_opened"],
         "rec_ev_019c_full_catalog_user_item_scores": resource_019c["full_catalog_user_item_scores"],
         "rec_ev_019c_b8_base_update_upper_bound": resource_019c["b8_base_update_upper_bound"],
         "rec_ev_019c_b4_pair_update_upper_bound": resource_019c["b4_pair_update_upper_bound"],
-        "real_validation_authorized": True,
+        "real_validation_authorized": False,
         "eligible_k10_test_users": preflight["eligible_test_users"],
         "current_product_policy": "APPROVED_C2A_INTERNAL_POPULARITY_ONLY",
         "product_champion": None,

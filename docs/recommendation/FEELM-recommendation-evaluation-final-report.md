@@ -1,35 +1,69 @@
 # FEELM 추천 설계·데이터 분석 최종 보고서
 
 > 문서 상태: `FINAL_RESEARCH_REPORT`
-> 작성 기준: 2026-09-02
+> 작성 기준: 2026-09-05
 > 제품 추천 정책: `APPROVED_C2A_INTERNAL_POPULARITY_ONLY` 유지
-> 핵심 결론: 평가 방법·고정 cohort·시간 안전 후보·TMDB 특징은 준비됐지만 새 개인화 모델의 승인은 아직 아니다.
+> 핵심 결론: MovieLens를 대리 학습·평가·검증 환경으로 사용한 결과, K=5·10 모두 LightFM이 인기도
+> 기준선보다 높은 NDCG@10을 보였다. 그러나 개선은 대부분 인기 영화와 비한국어 원어 영화에 집중됐고,
+> TMDB 구조·E5 콘텐츠 단독 모델은 인기도를 이기지 못했다. 따라서 초기 모델 선택 근거는 얻었지만
+> 한국 영화와 MovieLens 수록 이후 영화 문제는 해결됐다고 판단하지 않는다. Locked Test와 제품 정책은
+> 그대로 유지한다.
+
+## 0. 이 작업의 목적
+
+이 작업은 추천 모델 자체를 만들기 위해 시작한 것이 아니다. 서비스 개발 중 다음 두 문제에 답하기 위해
+시작했다.
+
+1. **MovieLens의 영화·평점이 외국 영화, 특히 유명 외국 영화에 지나치게 치우쳐 있고, 데이터 수록
+   시점 이후 영화에는 상호작용이 없어 한국 영화와 최신 영화를 추천하기 어렵다.** 협업 신호가 부족하거나
+   존재하지 않는 영화를 ID로만 학습하면 비교 가능한 영화 표현을 만들기 어렵다.
+2. **출시 전에는 실제 사용자에게 영화를 추천하고, 시청·평가를 다시 받아 추천 품질을 검증하는 순환을
+   만들기 사실상 불가능하다.** 따라서 실제 사용자 만족을 직접 정답으로 사용할 수 없다.
+
+두 문제에 대해 이번 실험은 다음과 같이 범위를 제한해 답한다.
+
+| 문제 | 이번 실험의 답 | 이 답으로 주장할 수 없는 것 |
+| --- | --- | --- |
+| MovieLens의 외국 영화 편향과 수록 이후 영화 공백 | TMDB 장르·언어·연도·인물·키워드 구조 특징과 384차원 E5 텍스트 임베딩으로 영화를 표현하고, 평점 기반 모델과 콘텐츠 벡터 기반 모델을 같은 조건에서 비교한다. 출시 전 사용할 수 있는 다른 행동 데이터 해법은 찾지 못했으므로 콘텐츠 벡터를 현실적인 보완책으로 검증한다. | 콘텐츠 벡터가 한국 사용자의 취향 정답이나 새로운 사용자 행동을 만들어 준다는 주장 |
+| 실사용 추천·피드백 수집 불가 | MovieLens를 대리 실험 환경으로 사용해 모델을 학습·평가·검증한다. 이 환경에서 초기 선호 입력 수, 모델 종류, 상황별 점수와 fallback, MovieLens를 특정 시점 기준으로 제한할지 전체 관측 범위로 사용할지를 비교·결정한다. | 오프라인 결과가 실제 FEELM 사용자의 시청·만족을 증명한다는 주장 |
+
+`REC-EV-019C`의 인기도·ItemKNN·BPR·TMDB 구조·TMDB 텍스트·LightFM·RRF 비교는 이 두 답이
+실제로 어느 범위에서 유효한지 확인하는 하위 실험이다. 모델 순위표 자체가 작업 목적은 아니다.
+
+### 0.1 REC-EV-019C가 결정할 것
+
+완료한 `REC-EV-019C`는 위 목적을 위한 모델 비교 단계다. K=5·10의 초기 선호 입력에서 인기도,
+ItemKNN, 관측 BPR, TMDB 구조·텍스트 콘텐츠, LightFM과 RRF를 같은 MovieLens Validation 환경에 놓고
+비교한다. 전체 평균뿐 아니라 사용자 이력량, 입력 영화 인기도, 영화 인기도, 한국어 원어 여부에 따라
+어느 모델과 점수 기준이 유효한지도 분석한다.
+
+이번 실행의 시간 cutoff는 MovieLens를 사용하는 하나의 실험 정책이다. 전체 관측 범위를 사용하는 보조
+실험은 아직 수행하지 않았으므로 시점 정책은 미결정으로 남긴다. MovieLens timestamp 자체를 실제 관람
+순서라고 주장하지 않는다.
 
 ## 1. 가장 먼저 볼 결론
 
-완벽한 “추천 정답” 데이터는 없다. 사용자가 보지 않은 영화는 좋아할지 싫어할지 알 수 없기 때문이다.
-그래도 우리가 가진 환경에서 다음 질문은 정직하게 비교할 수 있다.
+실제 FEELM 사용자의 추천–시청–평가 순환을 만들 수 없으므로 완벽한 “추천 정답” 데이터는 없다.
+그래도 MovieLens 사용자가 이미 남긴 평점 집합 안에서는 다음 대리 질문을 비교할 수 있다.
 
 > 이 사용자가 이미 평가한 영화 20편을 잠시 숨겼을 때, 모델이 그중 상위 2편에 사용자가 싫어한 영화를
 > 올렸는가? 좋아한 영화가 있었는데도 하나도 고르지 못했는가?
 
-이 방식의 사전검사는 통과했다. Validation 사용자 20,271명이 있었고, K=10에서도 16,795명이 평가
-가능했다. 16,516명은 “좋은 영화를 놓쳤는가”까지 채점할 수 있었다.
-
-하지만 지금 새 모델이 더 좋다고 말할 수는 없다. 새 기준으로 비교할 인기도 기준선과 개인화 후보 예측을
-아직 고정·실행하지 않았기 때문이다. 현재 최종 판정은 다음과 같다.
+실제 `REC-EV-019C` Validation은 후보 41,625편에서 K=5 사용자 1,614명, K=10 사용자 1,479명을
+평가했다. K=5·10 모두 LightFM T003이 단일 최고 NDCG@10을 기록했다. 다만 이 결과는 MovieLens
+관측 선호 복원에 대한 Validation 결과이며, 한국 영화·신작 추천이나 실제 FEELM 만족을 증명하지 않는다.
 
 | 질문 | 판정 | 쉬운 설명 |
 | --- | --- | --- |
-| 이 평가를 실행할 사용자 수가 충분한가? | **YES** | K=10에서 16,795명 |
-| 상위 2편의 위험과 놓침을 채점할 수 있는가? | **YES** | K=10 채점 가능 98.34% |
-| 기존 ALS 실험이 추천 순위를 개선했는가? | **NO** | 예상 별점은 개선됐지만 순위는 인기도보다 낫지 않았음 |
-| 한국 영화 데이터가 충분한가? | **NO** | 목록은 많지만 평점이 촘촘한 영화가 매우 적음 |
-| 신작·희소 영화 실험의 데이터 누출은 막았는가? | **YES** | 역할 충돌 6,964편 → 0편 |
-| TMDB 콘텐츠 특징을 만들 수 있는가? | **YES** | 69,603편의 넓은 feature 집합 Gate 통과 |
-| 비교에 쓸 시간 안전 후보와 사용자 집합이 고정됐는가? | **YES** | 최종 후보 41,625편, K10 Test 5,476명 |
-| TMDB 콘텐츠 모델을 지금 실행해도 되는가? | **아직 NO** | 자원 계약은 PASS, bounded runner 구현·검토가 남음 |
-| 개인화 모델을 서비스에 채택할 수 있는가? | **NO** | 새 Validation 비교와 승격 조건 미통과 |
+| MovieLens 대리 환경에서 인기도보다 나은 모델이 있는가? | **YES** | LightFM NDCG@10: K5 0.0713, K10 0.0725 |
+| 같은 사용자에서 개선 방향이 반복되는가? | **YES, 다수는 동률** | K5 개선 15.5%·악화 5.4%, K10 개선 21.8%·악화 6.2% |
+| seed에 따라 결론이 크게 흔들리는가? | **NO** | LightFM 5-seed 표준편차: K5 0.00223, K10 0.00168 |
+| 콘텐츠 단독 모델이 인기도를 이기는가? | **NO** | 구조·텍스트 모두 K5·10에서 인기도보다 낮음 |
+| 낮은 인기도 영화에서도 개선되는가? | **NO** | 관측 GOOD Top-10 적중이 Q1~Q3에서 모두 0 |
+| 한국어 원어 영화 문제를 해결했는가? | **판단 불가/근거 없음** | 양성 21·23건뿐이며 두 모델 모두 Top-10 적중 0 |
+| K=5와 K=10 중 어느 쪽을 우선 검토할 수 있는가? | **K=10** | 개선 폭이 더 크고 fallback이 38.8%에서 11.5%로 감소 |
+| 전체 관측 범위까지 사용할 것인가? | **미결정** | 이번에는 cutoff 정책만 실행 |
+| 제품 정책이나 Locked Test를 열 수 있는가? | **NO** | champion `null`, Locked Test 미개봉, 제품 정책 유지 |
 
 ## 2. 왜 이전 평가가 부족했나
 
@@ -210,8 +244,8 @@ coverage가 곧 추천 후보 coverage인 것처럼 보이므로 계약·검증�
 112,614개 cache hit를 사용했고, 독립 검증기가 manifest·schema·coverage·모델 SHA·비밀값 비저장을 모두
 확인했다.
 
-따라서 “TMDB 특징을 만들 수 있는가”는 PASS다. 그러나 “TMDB 콘텐츠 모델이 좋은 추천을 하는가”는
-다음 Validation 비교의 질문이며 아직 답하지 않았다.
+따라서 “TMDB 특징을 만들 수 있는가”는 PASS다. 이어진 Validation에서 TMDB 구조·텍스트 단독 모델은
+인기도 기준선보다 낮았다. 영화 표현을 만들 수 있다는 사실만으로 관측 선호 복원력이 생기지는 않았다.
 
 ### 7.3 REC-EV-019A 고정 cohort와 실제 후보 경계
 
@@ -250,70 +284,122 @@ seed 17로 전체 Validation을 계산하게 바꿨다. B4는 사용자당 epoch
 약 15.8억 score, B8 최대 12.3억 update, B4 최대 3.93억 pair update로 모든 예산을 통과했다. 상세 근거는
 [REC-EV-019C 계산량 사전점검](./evidence/REC-EV-019C-resource-dry-run.md)에 있다.
 
-## 8. 지금 말할 수 있는 것과 없는 것
+## 8. REC-EV-019C Validation 결과
 
-| 말할 수 있는 것 | 아직 말하면 안 되는 것 |
-| --- | --- |
-| 상위 2편 위험을 평가할 방법과 Validation 표본이 준비됨 | 개인화 후보가 인기도보다 안전하거나 좋음 |
-| K가 늘면 기존 실험의 예상 별점 오차가 줄었음 | K10이면 실제 FEELM 사용자가 만족함 |
-| 기존 ALS 순위는 인기도를 이기지 못했음 | ALS는 언제나 추천에 나쁨 |
-| 한국-origin MovieLens 상호작용이 희소함 | 한국 20대 사용자에게 성능이 낮음 |
-| cold 실험의 역할 충돌을 찾아 0으로 고침 | 신작·한국영화 콘텐츠 추천 성능이 검증됨 |
-| TMDB 전체 특징 Gate를 통과하고 결측을 측정함 | TMDB popularity·vote를 취향 정답으로 사용 가능 |
-| 최종 후보 41,625편과 K10 Test 5,476명을 고정함 | 후보 수만으로 추천 성능이 검증됨 |
-| Validation과 Locked Test의 물리 파일을 분리하고 계약 검사를 통과함 | 실제 Validation·Locked Test 성능이 계산됨 |
-| cold-item Validation 파일럿의 입력이 준비됨 | 개인화·콘텐츠 champion이 선택됨 |
+### 8.1 평균 성능과 상위 2편 위험
 
-## 9. 최종 결정
+![모델별 NDCG와 Harm](figures/rec-ev-019c-model-comparison.png)
 
-### 유지
+| 모델 | K5 NDCG@10 | K10 NDCG@10 | K5 Harm@2 | K10 Harm@2 |
+| --- | ---: | ---: | ---: | ---: |
+| B0 인기도 | 0.0402 | 0.0291 | 4.34% | 3.52% |
+| B2 ItemKNN | 0.0055 | 0.0022 | 0.43% | 0.54% |
+| B4 관측 BPR | 0.0587 | 0.0583 | 3.66% | 3.11% |
+| B6 TMDB 구조 | 0.0307 | 0.0218 | 2.66% | 1.15% |
+| B7 TMDB 텍스트 | 0.0250 | 0.0131 | 2.42% | 0.81% |
+| **B8 LightFM** | **0.0713** | **0.0725** | 3.72% | 2.91% |
+| B9 RRF | 0.0615 | 0.0622 | 3.22% | 2.84% |
 
-- 현재 서비스 추천 순위는 `APPROVED_C2A_INTERNAL_POPULARITY_ONLY`를 유지한다.
-- 미평가 영화는 UNKNOWN으로 처리한다.
-- 예상 별점, 추천 순위, 탐험 추천은 별도 모델·별도 Gate로 관리한다.
-- 결과를 보기 전 protocol·seed·후보·비교 모델 SHA-256을 잠근다.
+LightFM은 K5에서 인기도 대비 NDCG@10을 0.0311, K10에서 0.0434 높였다. 같은 사용자 paired
+bootstrap 95% 구간도 각각 `[0.0243, 0.0383]`, `[0.0355, 0.0515]`로 0보다 컸다. Harm@2는
+각각 0.62%p, 0.61%p 낮아졌지만 신뢰구간이 0을 포함하므로 안전성 개선으로 단정하지 않는다.
 
-### 보류
+### 8.2 평균 개선은 모든 사용자에게 동일하지 않았다
 
-- 예상 별점 공개 UI
-- 개인화 ranking champion
-- TMDB Hybrid 채택
-- K별 자동 Router
-- 신작·한국영화 성능 주장
-- Locked Test 성능 실행
+![사용자별 개선·동률·악화](figures/rec-ev-019c-benefit-harm-rates.png)
 
-### 다음 실행 순서
+| 조건 | 개선 | 동률 | 악화 | LightFM fallback |
+| --- | ---: | ---: | ---: | ---: |
+| K=5 | 15.49% | 79.12% | 5.39% | 38.79% |
+| K=10 | 21.77% | 72.01% | 6.22% | 11.49% |
 
-1. `REC-EV-019C` bounded 실제 입력 adapter·모델·block scorer·checkpoint·verifier 구현
-2. 합성 검사와 코드 검토 뒤 Validation 실행 승인 재판단
-3. Validation에서 기준선과 개인화 후보 하나를 결과 계산 전에 고정
-4. K=10부터 동일한 최종 후보 41,625편에서 ranking·Top-2 Harm/Miss 비교
-5. 차이의 흔들림으로 필요한 Test 사용자 수 계산
-6. 표본과 안전 Gate가 통과할 때만 Locked Test 한 번 실행
-7. 통과 후에도 실제 FEELM 이벤트로 온라인 검증
+K10은 K5보다 개선 사용자와 평균 개선 폭이 컸고 fallback도 적었다. 이력량 Q1~Q4 모두 NDCG 차이가
+양수였지만, 좋아요·싫어요가 모두 있는 입력에서만 K5 `+0.0463`, K10 `+0.0474`가 나타났다. 한쪽
+신호만 있는 사용자는 100% fallback해 인기도와 차이가 없었다. 따라서 현 실험 안에서는 **K10과 양방향
+선호 신호가 LightFM을 사용할 최소 조건**이다. 이는 제품 채택이 아니라 다음 검증 후보를 좁힌 결과다.
 
-## 10. 결과 상태표
+### 8.3 개선은 인기 영화에 집중됐다
+
+![영화 인기도와 원어 구간 적중](figures/rec-ev-019c-item-slices.png)
+
+| 영화 구간 | K5 B0 | K5 LightFM | K10 B0 | K10 LightFM | 관측 GOOD 수 K5/K10 |
+| --- | ---: | ---: | ---: | ---: | ---: |
+| 인기도 Q1 | 0.00% | 0.00% | 0.00% | 0.00% | 38 / 36 |
+| 인기도 Q2 | 0.00% | 0.00% | 0.00% | 0.00% | 44 / 33 |
+| 인기도 Q3 | 0.00% | 0.00% | 0.00% | 0.00% | 177 / 145 |
+| 인기도 Q4 | 4.93% | 8.61% | 3.75% | 9.46% | 6,086 / 5,729 |
+| 비한국어 원어 | 4.74% | 8.29% | 3.63% | 9.16% | 6,324 / 5,920 |
+| 한국어 원어 | 0.00% | 0.00% | 0.00% | 0.00% | 21 / 23 |
+
+이 결과가 문제 1에 대한 핵심 판정이다. LightFM의 평균 개선은 거의 전부 인기도 Q4에서 발생했다.
+한국어 원어 영화는 표본 자체가 21·23건으로 너무 작고 두 모델 모두 Top-10 적중이 0이었다. TMDB 구조와
+E5 텍스트 단독 모델도 인기도를 이기지 못했다. 따라서 콘텐츠 벡터는 상호작용이 없는 영화를 표현하고
+후보화할 수 있게 했지만, **한국 영화와 MovieLens 수록 이후 영화의 추천 품질을 해결했다는 근거는 만들지
+못했다.**
+
+### 8.4 5-seed 안정성과 실행 자원
+
+| 모델·조건 | 5-seed NDCG 평균 | 표준편차 |
+| --- | ---: | ---: |
+| B4 BPR K5 | 0.06533 | 0.00520 |
+| B4 BPR K10 | 0.06191 | 0.00256 |
+| B8 LightFM K5 | 0.06689 | 0.00223 |
+| B8 LightFM K10 | 0.07543 | 0.00168 |
+
+중단된 LightFM T003 seed 42는 기존 cache를 보존한 `--resume`으로 이어서 실행했다. 전체 재개 실행은
+6,088.5초, peak RSS 약 652 MiB, 결과 artifact 약 32.7 MiB였다. 예측 11,662,500행과 Validation
+metric 23,325행을 독립 검증했고, selection lock을 생성했다.
+
+## 9. 두 문제에 대한 최종 판정
+
+| 처음의 문제 | 이번에 얻은 답 | 남은 한계 |
+| --- | --- | --- |
+| MovieLens의 외국·인기 영화 편향과 수록 이후 영화 공백 | TMDB 구조·E5로 41,625편을 같은 공간에서 표현하고 콘텐츠·결합 모델을 비교할 수 있었다. | 콘텐츠 단독 모델은 인기도를 이기지 못했고, LightFM 개선도 인기 영화에 집중됐다. 문제는 미해결이다. |
+| 실사용 추천·시청·평가 순환 부재 | MovieLens를 대리 환경으로 써 K10, 양방향 입력 신호, LightFM을 다음 검증 후보로 좁혔다. | 실제 FEELM 만족은 알 수 없고 전체 관측 범위 사용 여부도 아직 비교하지 않았다. |
+
+따라서 이번 실험의 성과는 “한국 영화 추천을 해결했다”가 아니다. 사용할 수 없는 실제 피드백을
+MovieLens 대리 평가로 바꾸고, 가능한 콘텐츠 보완책을 같은 조건에서 시험해 **어디까지 유효하고 어디서
+실패하는지 수치로 경계를 정한 것**이다.
+
+## 10. 최종 결정
+
+### 다음 검증 후보
+
+- 초기 입력은 K=10을 우선한다.
+- 좋아요와 싫어요가 모두 관측될 때만 LightFM T003을 비교 후보로 둔다.
+- 한쪽 신호만 있거나 feature가 부족하면 B0 인기도로 fallback한다.
+- cutoff 정책의 결론은 전체 관측 범위 보조 실험 전까지 확정하지 않는다.
+
+### 유지와 보류
+
+- 현재 서비스 정책 `APPROVED_C2A_INTERNAL_POPULARITY_ONLY`를 유지한다.
+- champion은 `null`로 유지한다.
+- Locked Test를 열지 않는다.
+- 한국 영화·신작 성능, 실제 사용자 만족, 온라인 성과를 주장하지 않는다.
+- 문제 1의 다음 유효한 검증은 목표 도메인 행동 데이터 수집 또는 독립적인 한국 영화 평가 표본 확보다.
+
+## 11. 결과 상태표
 
 | 작업 | 상태 | 산출물 |
 | --- | --- | --- |
-| REC-EV-020P-A 사용자·평가판 사전검사 | PASS | `rec-ev-020p.json` |
-| REC-EV-020P-B 기준선·후보 paired power | BLOCKED | 비교 예측 artifact 필요 |
 | REC-EV-019A 사용자 분리 cohort | PASS | 최종 후보 41,625편, K10 Test 5,476명 |
-| REC-EV-019B TMDB 전체 특징 | PASS | 전체 coverage Gate 통과 |
-| REC-EV-019C 실행 계약 | PASS | 7개 모델·입력 방화벽·복구 경계 고정 |
-| REC-EV-019C 합성 runner·Linux dependency | PASS | 15개+9개 검사; B8 signed logistic으로 교정 |
-| REC-EV-019C 자원 사전점검 | PASS | 15.8억 score·B8 12.3억·B4 3.93억 상한, 7 checks PASS |
-| REC-EV-019C 실제 모델 비교 | NOT STARTED / BLOCKED | bounded runner 구현·검토 전 실행 금지 |
-| REC-EV-021P 영화 firewall·모델 준비 | PASS | protected collision 0, Validation pilot 가능 |
-| 새 개인화 champion | NOT SELECTED | 현재 인기도 유지 |
+| REC-EV-019B TMDB 전체 특징 | PASS | 구조 특징·384차원 E5 전체 coverage Gate 통과 |
+| REC-EV-019C 계약·합성·의존성·자원 검사 | PASS | 역할 firewall, resume, seed, 계산 상한 검증 |
+| REC-EV-019C 실제 Validation | `PASS_VALIDATION_SELECTION_LOCKED` | K5 1,614명, K10 1,479명, selection lock 생성 |
+| REC-EV-019C 사용자·영화 구간 분석 | `PASS_VALIDATION_ANALYSIS_ONLY` | paired·cohort·item slice·5-seed 결과 |
+| 새 개인화 champion | NOT SELECTED | `null`; 현재 제품 정책 유지 |
+| Locked Test | NOT OPENED | manifest에서 `false` 확인 |
 
-## 11. 재현과 근거
+## 12. 재현과 근거
 
-- 실행 계약: `docs/recommendation/contracts/rec-ev-019a-artifacts.json`, `rec-ev-019b-artifacts.json`, `rec-ev-019c-validation-artifacts.json`, `rec-ev-020p-artifacts.json`, `rec-ev-021p-artifacts.json`
-- 프로토콜: `rec-eval-top2-v4.json`, `rec-eval-content-cold-v2.json`
-- 실행 결과: `REC-EV-019A-binary-cohort-build.md`, `REC-EV-019B-tmdb-feature-build.md`, `REC-EV-019C-contract-readiness.md`, `REC-EV-019C-runner-and-dependency-preflight.md`, `REC-EV-019C-resource-dry-run.md`, `REC-EV-020P-top2-v4-validation-preflight.md`, `REC-EV-021P-content-cold-v2-preflight.md`
-- 한국 영화 감사: `REC-DATA-002-korean-origin-coverage.md`
-- 기존 예상 별점 근거: `docs/recommendation/evidence/manifests/rec-ev-003b.json`
+- 결과 보고서: `docs/recommendation/evidence/REC-EV-019C-validation-analysis.md`
+- 결과 장표: `docs/presentation/FEELM-REC-EV-019C-results.pptx`
+- Validation manifest: `docs/recommendation/evidence/manifests/rec-ev-019c-validation.json`
+- 분석 manifest: `docs/recommendation/evidence/manifests/rec-ev-019c-analysis.json`
+- 실행: `py -3 scripts/run_rec_ev_019c_validation.py --mode validation --role validation --resume`
+- Validation 검증: `py -3 scripts/verify_rec_ev_019c_validation.py --manifest docs/recommendation/evidence/manifests/rec-ev-019c-validation.json`
+- 분석: `py -3 scripts/analyze_rec_ev_019c_validation.py`
+- 분석 검증: `py -3 scripts/verify_rec_ev_019c_analysis.py --manifest docs/recommendation/evidence/manifests/rec-ev-019c-analysis.json`
 - 원본 MovieLens SHA-256: `e4a68655d7386b8f95f2f2424b2ff975dfdd15ffd59e0d864a14dca43e99d6ee`
 
 대용량 원본과 생성 Parquet은 Git에 올리지 않는다. manifest의 경로·크기·SHA-256으로 같은 파일인지 확인한다.

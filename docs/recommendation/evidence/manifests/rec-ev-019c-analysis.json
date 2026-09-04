@@ -1,0 +1,47 @@
+{
+  "artifacts": [
+    {
+      "bytes": 129505,
+      "path": "outputs/recommendation-evidence/rec-ev-019c/analysis-summary.json",
+      "sha256": "62a9b42bebde9ecf174f182301b16a24533bc14923e173a8f7b411da1824ea2f"
+    },
+    {
+      "bytes": 156133,
+      "path": "docs/recommendation/figures/rec-ev-019c-model-comparison.png",
+      "sha256": "8e3de3e704491b28f02169967b8570b331eb7ee14515dc76f344c7b0e472eb9a"
+    },
+    {
+      "bytes": 113417,
+      "path": "docs/recommendation/figures/rec-ev-019c-user-delta-distribution.png",
+      "sha256": "11dad6818c04e09d74b176170a203c9c6c2d841fc7aecd68908a40f798947f1b"
+    },
+    {
+      "bytes": 81525,
+      "path": "docs/recommendation/figures/rec-ev-019c-benefit-harm-rates.png",
+      "sha256": "5302fe870367558ee49268330e7ffda9723ecbe659c07ca10e58bd7ea4f6a828"
+    },
+    {
+      "bytes": 51857,
+      "path": "docs/recommendation/figures/rec-ev-019c-stability.png",
+      "sha256": "754b5310bdd973b490c5ce079fd672aa7a0fe7d05e4139436a7e0ebe330e066f"
+    },
+    {
+      "bytes": 150712,
+      "path": "docs/recommendation/figures/rec-ev-019c-item-slices.png",
+      "sha256": "daeffadec7e5e80e184bce54dc7b2e98877d97bc4a462b446b4723407cd92a28"
+    }
+  ],
+  "evidence_id": "REC-EV-019C-ANALYSIS",
+  "schema_version": 1,
+  "source_validation_manifest": {
+    "path": "docs/recommendation/evidence/manifests/rec-ev-019c-validation.json",
+    "sha256": "1f138fe8ecd03612b37ed789b3e33394a5773142bfa96bef5db05c51d179e8f0"
+  },
+  "status": "PASS_VALIDATION_ANALYSIS_ONLY",
+  "validation": {
+    "champion_selected": false,
+    "locked_test_opened": false,
+    "post_hoc_results_are_confirmatory": false,
+    "product_policy_changed": false
+  }
+}
