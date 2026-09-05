@@ -1,0 +1,247 @@
+{
+  "schema_version": 1,
+  "contract_id": "rec-ev-023a-content-vector-development-screen-v1",
+  "status": "APPROVED_FOR_ADAPTIVE_STAGE2_DEVELOPMENT_SCREEN",
+  "task_id": "TASK-REC-EV-023A",
+  "purpose": "Determine whether current-metadata content representations provide predictive signal over B0 when ranking an already-rated JUDGED20 set for high-activity MovieLens Stage2 users. This adaptive development screen does not evaluate full-catalog retrieval, chronological onboarding, Korean or recent movies, cold-item transfer, service users, safety, a champion, or product policy.",
+  "independent_design_audit": {
+    "thread_id": "01a06eeb-df86-7252-ac77-afc8d6ec24f7",
+    "final_verdict": "023A_DESIGN_PASS",
+    "passed_at_local_date": "2026-09-05"
+  },
+  "authorization": {
+    "stage2_reuse": true,
+    "locked_test_access": false,
+    "final_reserve_access": false,
+    "model_fit_or_retune": false,
+    "champion_selection": false,
+    "product_policy_change": false
+  },
+  "adaptive_reuse": {
+    "same_stage2_users_and_judged20_seen_in_rec_ev_022b": true,
+    "selection_source": "REC_EV_022B_SIX_CELLS",
+    "selection_adjusted_in_current_family": false,
+    "interval_label": "ADAPTIVE_STAGE2_DESCRIPTIVE_MAX_T_INTERVAL",
+    "forbidden_terms": ["PASS", "CONFIRMED", "VALIDATED", "95_PERCENT_FAMILYWISE_EVIDENCE"]
+  },
+  "implementation_artifacts": [
+    "scripts/rec_ev_022a_core.py",
+    "scripts/run_rec_ev_022a_stage1.py",
+    "scripts/run_rec_ev_023a_content_screen.py",
+    "scripts/validate_rec_ev_023a_contract.py"
+  ],
+  "allowed_input_artifacts": {
+    "rec_ev_022b_protocol_lock": {
+      "path": "outputs/recommendation-evidence/rec-ev-022b/protocol-lock.json",
+      "bytes": 812,
+      "sha256": "9aa8d654d743c8002dc1fa62b8157d5679649f0c1b7c17ff02d629a73455ed09"
+    },
+    "rec_ev_022b_selection": {
+      "path": "outputs/recommendation-evidence/rec-ev-022b/stage2-selection.json",
+      "bytes": 1581,
+      "sha256": "af1ed55515030265c4d346e17636085c498ba04f525e08723df514dd6118118c"
+    },
+    "stage2_cohort": {
+      "path": "outputs/recommendation-evidence/rec-ev-022b/cache/stage2-common30.parquet",
+      "bytes": 2991264,
+      "sha256": "d6d7991762745ff775406c22f3c94cbd78613d310a70436d46fcda8158f48756"
+    },
+    "train_model": {
+      "path": "outputs/recommendation-evidence/rec-ev-022a/cache/train-model.npz",
+      "bytes": 552962,
+      "sha256": "afd18bc16e357871ca6a4dfd01ce9319f09efd1f63b29d4bbd5d6565190b218d"
+    },
+    "train_z": {
+      "path": "outputs/recommendation-evidence/rec-ev-022a/cache/train-z.npz",
+      "bytes": 27012486,
+      "sha256": "925e2730ecac3756dfb691c60679261868bfdb37d90aec20ae2613d8754426f7"
+    },
+    "structured_full": {
+      "path": "outputs/recommendation-evidence/rec-ev-022a/cache/structured-full.npz",
+      "bytes": 1434894,
+      "sha256": "8fcc9afc68219fbefa0f80fa8a9909b9afaa8f23d6e4093c885426f5a1df796f"
+    },
+    "text_embeddings": {
+      "path": "outputs/recommendation-evidence/rec-ev-019b/text-embeddings.parquet",
+      "bytes": 99988968,
+      "sha256": "ff35381f231e6d2a1fe35b79b8b55f64744c16188f9b92ce74c1466930967bda"
+    },
+    "rec_ev_019c_trial_registry": {
+      "path": "outputs/recommendation-evidence/rec-ev-019c/trial-registry.json",
+      "bytes": 7640,
+      "sha256": "0cb33453b09bae09d1b8df793f17ef15e5800be520c496e310786b86de28d47a"
+    },
+    "rec_ev_019c_validation_selection": {
+      "path": "outputs/recommendation-evidence/rec-ev-019c/validation-selection.json",
+      "bytes": 123039,
+      "sha256": "9fab1f5bfd184c246c916dce6daefa5ef4366520e2538559efc6c12e2e38c7df"
+    },
+    "rec_ev_019c_validation_manifest": {
+      "path": "docs/recommendation/evidence/manifests/rec-ev-019c-validation.json",
+      "bytes": 4785,
+      "sha256": "1f138fe8ecd03612b37ed789b3e33394a5773142bfa96bef5db05c51d179e8f0"
+    }
+  },
+  "forbidden_input_artifacts": [
+    "outputs/recommendation-evidence/global-time-v1/test.parquet",
+    "outputs/recommendation-evidence/rec-ev-019a/locked-test-binary-prefixes.parquet",
+    "outputs/recommendation-evidence/rec-ev-019a/locked-test-evaluation-windows.parquet",
+    "outputs/recommendation-evidence/rec-ev-022a/stage1-user-metrics.parquet",
+    "outputs/recommendation-evidence/rec-ev-022b/stage2-user-metrics.parquet",
+    "outputs/recommendation-evidence/rec-ev-022b/stage2-result.json"
+  ],
+  "cells": [
+    {"encoding": "BINARY_SIGN", "k": 6},
+    {"encoding": "PERCENTILE_MAGNITUDE", "k": 6},
+    {"encoding": "BINARY_SIGN", "k": 8},
+    {"encoding": "PERCENTILE_MAGNITUDE", "k": 8},
+    {"encoding": "BINARY_SIGN", "k": 14},
+    {"encoding": "PERCENTILE_MAGNITUDE", "k": 14}
+  ],
+  "heads": [
+    "B0",
+    "ITEMKNN",
+    "STRUCTURED",
+    "E5",
+    "AVAILABLE_HEAD_CONTENT_ENSEMBLE_POLICY",
+    "AVAILABLE_HEAD_HYBRID_POLICY"
+  ],
+  "fixed_semantics": {
+    "candidate_set": "SAME_FIXED_JUDGED20_PER_STAGE2_USER",
+    "profile": "SAME_HASH_ORDERED_FIRST30_WITH_FIRST_K_PREFIX",
+    "rating_encodings": "BYTE_IDENTICAL_REC_EV_022A_TAU5",
+    "b0": "REC_EV_022A_TRAIN_ONLY_BAYESIAN_SCORE_PRIOR100",
+    "itemknn": "REC_EV_022A_TRAIN_ONLY_SIGNED_Z_COSINE_SHRINK50_MIN_SUPPORT2_POSITIVE_SIMILARITY_ONLY",
+    "structured": "REC_EV_022A_FOUR_GROUP_EQUAL_WEIGHT_L2_COSINE_NONNEGATIVE",
+    "e5": "PINNED_384D_L2_NORMALIZED_EMBEDDING_RAW_COSINE_WITH_NEGATIVE_VALUES_PRESERVED",
+    "profile_score": "SIMILARITY_MATRIX_TIMES_FULL_FIRST_K_WEIGHTS_DIVIDED_BY_SUM_ABSOLUTE_WEIGHTS_FLOAT64",
+    "active_head": "WEIGHT_DENOMINATOR_GT_ZERO_AND_ALL_PERSONAL_SCORES_FINITE_AND_AT_LEAST_TWO_UNIQUE_PERSONAL_SCORES",
+    "inactive_standalone": "HEAD_WIDE_B0_FALLBACK",
+    "tie_break": ["PERSONAL_DESC", "B0_DESC", "MOVIE_ID_ASC"],
+    "b0_tie_break": ["B0_DESC", "MOVIE_ID_ASC"]
+  },
+  "e5_primary_invariants": {
+    "target_eligible_exposures": 182140,
+    "target_total_exposures": 182140,
+    "profile_eligible_exposures_by_k": {"6": 54642, "8": 72856, "14": 127498},
+    "profile_total_exposures_by_k": {"6": 54642, "8": 72856, "14": 127498},
+    "usable_weight_zero_users_each_cell": 0,
+    "on_any_mismatch": "SOURCE_DRIFT_BLOCKED",
+    "item_level_mixed_score_fallback": false
+  },
+  "rrf": {
+    "c": 10,
+    "formula": "SUM_ACTIVE_HEAD_1_OVER_10_PLUS_ONE_BASED_RANK",
+    "rank_dtype": "INT32_ONE_TO_TWENTY_EXACT_PERMUTATION",
+    "accumulation_dtype": "FLOAT64",
+    "content_policy_heads": ["STRUCTURED", "E5"],
+    "hybrid_policy_heads": ["ITEMKNN", "STRUCTURED", "E5"],
+    "inactive_head_contribution": "NONE_NEVER_REUSE_B0_FALLBACK_RANK",
+    "empty_active_set": "HEAD_WIDE_B0_FALLBACK",
+    "tie_break": ["RRF_DESC", "B0_DESC", "MOVIE_ID_ASC"],
+    "interpretation": "AVAILABLE_HEAD_POLICY_NOT_PURE_FUSION_OR_CAUSAL_ADDITION",
+    "provenance": "ONLY_C10_REUSED_FROM_REC_EV_019C_B9_INTERNAL_PER_MODEL_SELECTION_T003_NOT_OVERALL_SINGLE_BEST_OR_CHAMPION",
+    "retune_on_stage2": false
+  },
+  "metrics": {
+    "primary_n": 2,
+    "utility": "PAIR1_MEAN_Q_HIGHER_BETTER",
+    "worst_loss": "PAIR1_WORST_Q_LOSS_LOWER_BETTER",
+    "secondary_descriptive_only": ["PAIRWISE_CONCORDANCE", "FALLBACK_RATE", "ACTIVE_HEAD_COMPOSITION"]
+  },
+  "statistics": {
+    "unit": "USER",
+    "user_order": "USER_KEY_ASC",
+    "contrasts": {
+      "challenger_minus_b0": "6_CELLS_X_5_CHALLENGERS_X_2_ENDPOINTS",
+      "e5_minus_structured": "6_CELLS_X_2_ENDPOINTS",
+      "content_policy_minus_e5": "6_CELLS_X_2_ENDPOINTS",
+      "content_policy_minus_structured": "6_CELLS_X_2_ENDPOINTS",
+      "hybrid_policy_minus_itemknn": "6_CELLS_X_2_ENDPOINTS"
+    },
+    "expected_contrasts": 108,
+    "bootstrap_repeats": 10000,
+    "seed": 20260924,
+    "numpy_version": "1.26.4",
+    "bit_generator": "PCG64",
+    "shared_resample_vector": true,
+    "sample_sd_ddof": 1,
+    "zero_se": "ZERO_HALF_WIDTH",
+    "interval_label": "ADAPTIVE_STAGE2_DESCRIPTIVE_MAX_T_INTERVAL"
+  },
+  "decision": {
+    "q_definition": "Q(A,B,CELL)=UTILITY_LOW_GTE_0_005_AND_WORST_LOSS_HIGH_LTE_0_010",
+    "utility_margin": 0.005,
+    "worst_loss_margin": 0.01,
+    "propositions_reported_separately": [
+      "PURE_CONTENT_SIGNAL",
+      "E5_INCREMENTAL_SIGNAL",
+      "AVAILABLE_HEAD_CONTENT_ENSEMBLE_POLICY_SIGNAL",
+      "AVAILABLE_HEAD_HYBRID_POLICY_INCREMENT"
+    ],
+    "pure_content_signal": "ANY_OF_Q_STRUCTURED_B0_Q_E5_B0_Q_CONTENT_POLICY_B0",
+    "e5_incremental_signal": "Q_E5_B0_AND_Q_E5_STRUCTURED",
+    "available_head_content_ensemble_policy_signal": "Q_CONTENT_POLICY_B0_AND_Q_CONTENT_POLICY_E5_AND_Q_CONTENT_POLICY_STRUCTURED",
+    "available_head_hybrid_policy_increment": "Q_HYBRID_POLICY_B0_AND_Q_HYBRID_POLICY_ITEMKNN",
+    "forward_itemknn": "Q_ITEMKNN_B0",
+    "forward_structured": "Q_STRUCTURED_B0",
+    "forward_e5": "E5_INCREMENTAL_SIGNAL",
+    "forward_content_policy": "AVAILABLE_HEAD_CONTENT_ENSEMBLE_POLICY_SIGNAL",
+    "forward_hybrid_policy": "AVAILABLE_HEAD_HYBRID_POLICY_INCREMENT",
+    "forward_set": "ALL_HEAD_CELL_PAIRS_PASSING_THEIR_EXACT_RULE_NO_POINT_ESTIMATE_RANKING_NO_CAP",
+    "content_forward_set": "FORWARD_SET_EXCLUDING_ITEMKNN",
+    "status_signal": "DEVELOPMENT_SCREEN_SIGNAL_IFF_CONTENT_FORWARD_SET_NONEMPTY",
+    "status_no_signal": "DEVELOPMENT_SCREEN_NO_SIGNAL_IFF_CONTENT_FORWARD_SET_EMPTY",
+    "itemknn_only_does_not_change_status": true,
+    "pure_content_alone_does_not_imply_forwarding": true
+  },
+  "claim_boundary": {
+    "allowed": "CURRENT_METADATA_PREDICTIVE_SIGNAL_FOR_RANKING_ALREADY_RATED_JUDGED20_WITHIN_ADAPTIVELY_REUSED_MOVIELENS_STAGE2",
+    "forbidden": [
+      "FRESH_CONFIRMATION",
+      "FULL_CATALOG_RETRIEVAL",
+      "CHRONOLOGICAL_ONBOARDING",
+      "KOREAN_MOVIE_TRANSFER",
+      "RECENT_MOVIE_TRANSFER",
+      "COLD_ITEM_TRANSFER",
+      "SERVICE_USER_PERFORMANCE",
+      "SAFETY",
+      "CHAMPION",
+      "PRODUCT_POLICY"
+    ]
+  },
+  "output_root": "outputs/recommendation-evidence/rec-ev-023a",
+  "outputs": {
+    "protocol_lock": "protocol-lock.json",
+    "source_manifest": "source-manifest.json",
+    "progress": "run-progress.json",
+    "e5_aligned": "cache/e5-aligned.npy",
+    "e5_available": "cache/e5-available.npy",
+    "prepared_integrity": "cache/prepared-integrity.json",
+    "metric_parts": "cache/metric-parts",
+    "user_metrics": "user-metrics.parquet",
+    "user_metrics_integrity": "user-metrics.integrity.json",
+    "selection": "development-screen-selection.json",
+    "result": "development-screen-result.json"
+  },
+  "resume": {
+    "required": true,
+    "checkpoint_after_users": 100,
+    "drift": "FAIL_CLOSED",
+    "source_manifest_sha_verified": true,
+    "implementation_sha_locked": true,
+    "prepared_sha_rows_and_run_signature_verified": true,
+    "direct_score_revalidates_prepared": true,
+    "each_metric_part_sha_rows_user_slice_and_run_signature_verified": true,
+    "expected_metric_part_path_set_exact": true,
+    "partial_combined_artifact_fails_closed": true,
+    "combined_user_metrics_sha_rows_and_run_signature_verified": true
+  },
+  "invariants": {
+    "locked_test_opened": false,
+    "final_reserve_opened": false,
+    "model_fitted_or_retuned": false,
+    "champion": null,
+    "product_policy_updated": false
+  }
+}

@@ -32,6 +32,11 @@
 | `REC-EV-019E` no-retune incremental applicability | `PASS_POST_HOC_VALIDATION_REQUIRES_FRESH_CONFIRMATION` | 019D를 본 뒤 같은 1,053명을 재사용한 완화: ΔNDCG `+0.013997 [0.008433, 0.019758]`, Harm upper `0.003799`; 새 confirmatory evidence·champion·정책 승인 아님 |
 | `REC-EV-019F` independent temporal routing | `INCONCLUSIVE` | source-row/window 독립(사용자 독립 아님) 802명: ΔNDCG `+0.003617 [0.000291, 0.007239]`로 mean SESOI 0.005 미달; Harm upper `0.003741`, candidate recall/rank percentile 악화 |
 | `REC-EV-021V` KR recent/niche pooled judgment | `PASS_INFRASTRUCTURE_READY / NO_ACTUAL_TARGET_DOMAIN_EVIDENCE` | 4명 synthetic fixture의 catalog·blind pool·import·paired analysis·resume 검증만 완료; 실제 모집 전 license/consent/PII/budget/frozen-ranking 입력 대기 |
+| `REC-EV-022A/B` K·rating encoding | `PASS_EXACT_CELLS_TO_MODEL_DEVELOPMENT` | K=0~30 탐색 뒤 K=6·8·14 × Binary·Percentile만 후속 모델 후보; 제품 K·입력 UI 미승인 |
+| `REC-EV-023A~F` content mechanism·target transfer | `NO_ROBUST_TARGET_SIGNAL` | masked pseudo-cold 구조 신호는 있었으나 E5·RRF·LightFM 증분과 한국·최근 target robust 전이는 확인 못함 |
+| `REC-EV-024A/B` two-anchor input remedy | `NO_SUFFICIENT_INPUT_REMEDY` | 입력 두 편 고정만으로 한국·최근 영화 target 한계를 해결하지 못함 |
+| `REC-EV-025A/B R1` feature transfer | `INCONCLUSIVE / NO_ROBUST_TRANSFER_HEAD` | 한국 target은 정밀도 부족, 최근 target은 robust head 없음 |
+| `REC-EV-026` E5→BPR alignment | `INCONCLUSIVE_PRECISION_OR_NONESTIMABLE` | 한국 target 평균은 양수지만 n=181 동시추론 정밀도 부족, 최근 target은 절대 margin 미달; 새 target evidence 전 확증 중단 |
 | `REC-DATA-001` temporal feasibility | `COMPLETED_DESCRIPTIVE_AUDIT` | 동일 날짜 Rating 몰아넣기 확인; K25·90일·N500 고정 근거 `NO` |
 | `REC-DATA-002` Korean-origin coverage | `COMPLETED_PROXY_AUDIT` | KR item slice 가능; 한국 20대 또는 독립 KR 사용자 cohort 승인 `NO` |
 | `REC-DATA-003` evaluation redesign | `PROTOCOL_AMENDMENT_PROPOSED` | preference reconstruction 주 평가 + next-rating-session 보조 평가 제안 |
@@ -78,6 +83,7 @@ REC-EV-021V는 이 한계를 직접 측정할 사람 평가 인프라만 준비�
 [REC-EV-019F temporal routing 사전등록](./REC-EV-019F-independent-temporal-routing-preregistration.md),
 [REC-EV-019F temporal routing 결과](./REC-EV-019F-independent-temporal-routing.md),
 [REC-EV-019F 독립 재감사](./REC-EV-019F-independent-audit-2026-09-05.md),
+[REC-EV-022~026 최종 보고서](./REC-EV-022-026-final-report.md),
 [REC-EV-021V 사전등록](./REC-EV-021V-kr-recent-niche-preregistration.md),
 [REC-EV-021V 모집 전 preflight](./REC-EV-021V-kr-recent-niche-preflight.md),
 [REC-DATA-001 시간·후보 감사](./REC-DATA-001-temporal-feasibility.md),

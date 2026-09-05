@@ -1,0 +1,101 @@
+{
+  "schema_version": 1,
+  "contract_id": "rec-ev-025ab-feature-transfer-design-v1",
+  "status": "APPROVED_FOR_PRELABEL_COMMON_SUPPORT_FEASIBILITY",
+  "purpose": "Freeze common-support Korean-origin and recent-release transfer comparisons for CURRENT_FULL, GENRE_ONLY, TRANSFER_NO_CONTEXT, and pinned 384-dimensional E5 representations before reading any new selected outcomes.",
+  "independent_design_audit": {"thread_id": "01a0704a-ff92-7851-904a-bf3970b3d905", "verdict": "NEXT_FEATURE_TRANSFER_DESIGN_PASS"},
+  "motivation_only": ["REC-EV-023E", "REC-EV-023F", "REC-EV-024A", "REC-EV-024B"],
+  "prior_invalid_preflight_incident": {"old_locked_user_movie_ids_parsed": true, "rating_values_parsed": false, "timestamps_parsed": false, "metrics_or_labels_opened": false, "discarded_counts_forbidden_as_inputs": [431, 3498]},
+  "authorization": {"adaptive_development": true, "stage1_stage2_user_movie_id_preflight": true, "feature_metadata_read": true, "rating_or_timestamp_access": false, "old_locked_outcome_access": false, "final_reserve_access": false, "champion_selection": false, "product_policy_change": false},
+  "implementation_artifacts": ["scripts/rec_ev_022a_core.py", "scripts/run_rec_ev_023ef_preflight.py", "scripts/validate_rec_ev_023ef_contract.py", "scripts/run_rec_ev_025ab_preflight.py", "scripts/validate_rec_ev_025ab_contract.py", "scripts/tests/test_rec_ev_025ab_preflight.py"],
+  "allowed_input_artifacts": {
+    "movielens_archive": {"path": "C:/higher/projects/MM/data/raw/ml-32m.zip", "member": "ml-32m/ratings.csv", "bytes": 238950008, "sha256": "e4a68655d7386b8f95f2f2424b2ff975dfdd15ffd59e0d864a14dca43e99d6ee"},
+    "structured_features": {"path": "outputs/recommendation-evidence/rec-ev-019b/structured-features.parquet", "bytes": 3008444, "sha256": "d68b93496c003c2a51e5defe0c9ee9af24e7b0d99eb68a0536d2e0a305460c62"},
+    "text_embeddings": {"path": "outputs/recommendation-evidence/rec-ev-019b/text-embeddings.parquet", "bytes": 99988968, "sha256": "ff35381f231e6d2a1fe35b79b8b55f64744c16188f9b92ce74c1466930967bda"},
+    "korean_movie_id_projection": {"path": "docs/recommendation/evidence/results/korean-origin-movie-id-projection-v1.json", "bytes": 13584, "sha256": "38aa109efadbbc465e567180fc5e5a9bb55929b03fb6e75869f8a02260df09bf"},
+    "stage2_selection": {"path": "outputs/recommendation-evidence/rec-ev-022b/stage2-selection.json", "bytes": 1581, "sha256": "af1ed55515030265c4d346e17636085c498ba04f525e08723df514dd6118118c"},
+    "train_prior": {"path": "outputs/recommendation-evidence/rec-ev-022a/cache/train-model.npz", "bytes": 552962, "sha256": "afd18bc16e357871ca6a4dfd01ce9319f09efd1f63b29d4bbd5d6565190b218d"}
+  },
+  "forbidden_input_artifacts": ["outputs/recommendation-evidence/global-time-v1/test.parquet", "outputs/recommendation-evidence/rec-ev-019a/locked-test-binary-prefixes.parquet", "outputs/recommendation-evidence/rec-ev-019a/locked-test-evaluation-windows.parquet", "outputs/recommendation-evidence/rec-ev-022a/final-reserve-input.parquet", "outputs/recommendation-evidence/rec-ev-023e", "outputs/recommendation-evidence/rec-ev-023f", "outputs/recommendation-evidence/rec-ev-024a", "outputs/recommendation-evidence/rec-ev-024b"],
+  "reader": {"maximum_user_id": 300000, "old_allow": "old_user_bucket<=59", "role_ranges": [[6000, 7999], [8000, 9199]], "raw_sequence": "PARSE_USER_ID_TO_FIRST_COMMA_THEN_ROLE_DECISION_ALLOWED_ONLY_PARSE_MOVIE_ID_TO_SECOND_COMMA", "rating_value_bytes_parsed": 0, "timestamp_bytes_parsed": 0, "raw_user_id_output": "FORBIDDEN"},
+  "common_support": {
+    "structured": "FEATURE_ELIGIBLE_TRUE_AND_RELEASE_YEAR_NONNULL_AND_CURRENT_FULL_NONZERO",
+    "e5_model_id": "intfloat/multilingual-e5-small",
+    "e5_revision": "614241f622f53c4eeff9890bdc4f31cfecc418b3",
+    "e5_dimension": 384,
+    "e5": "FEATURE_ELIGIBLE_TRUE_AND_REVISION_EXACT_AND_ALL_FINITE_AND_ABS_L2_MINUS_1_LTE_0_0001",
+    "intersection": "STRUCTURED_INTERSECT_E5_BY_UNIQUE_MOVIE_ID"
+  },
+  "serialization": {"pipe": "UTF8_0x7C", "canonical_decimal": "UNSIGNED_BASE10_NO_LEADING_ZERO", "order": "SHA256_UTF8_SALT_PIPE_USER_KEY_PIPE_ROLE_PIPE_MOVIE_ID_RAW_DIGEST_ASC_THEN_MOVIE_ID_ASC", "exposure_record": "USER_KEY_PIPE_ROLE_PIPE_PANEL_OR_GLOBAL_PIPE_MOVIE_ID", "exposure_hash": "SHA256_CANONICAL_JSON_SORTED_RECORD_ARRAY"},
+  "heads": {
+    "reporting_order": ["GENRE_ONLY", "TRANSFER_NO_CONTEXT", "E5", "CURRENT_FULL"],
+    "CURRENT_FULL": "FINAL_L2_CONCAT_GROUP_ROW_L2_G_DIV4_C_DIV4_P_DIV4_W_DIV4",
+    "GENRE_ONLY": "G_GROUP_ROW_L2",
+    "TRANSFER_NO_CONTEXT": "FINAL_L2_CONCAT_GROUP_ROW_L2_G_DIV3_P_DIV3_W_DIV3_EMPTY_BLOCK_ZERO_NO_ACTIVE_GROUP_REWEIGHT_ALL_ZERO_INACTIVE",
+    "E5": "PINNED_L2_NORMALIZED_384D_RAW_COSINE_NEGATIVE_PRESERVED"
+  },
+  "common_design": {
+    "profile_n": 14,
+    "panels": 4,
+    "cells": [{"encoding": "BINARY_SIGN", "k": 6}, {"encoding": "PERCENTILE_MAGNITUDE", "k": 6}, {"encoding": "BINARY_SIGN", "k": 8}, {"encoding": "PERCENTILE_MAGNITUDE", "k": 8}, {"encoding": "BINARY_SIGN", "k": 14}, {"encoding": "PERCENTILE_MAGNITUDE", "k": 14}],
+    "global_profile": "FIRST14_GLOBAL_SOURCE_ORDER_SHARED_BY_ALL_PANELS",
+    "panel_control": "FIRST_CONTROL_N_OF_PANEL_ORDER_OVER_SOURCE_COMPLEMENT_OF_GLOBAL_PROFILE",
+    "panel_target": "FIRST_TARGET_N_OF_PANEL_ORDER_OVER_TARGET_DOMAIN",
+    "profile_control_global_disjoint": true,
+    "selection_forbidden": ["RATING", "Q", "TIMESTAMP", "POPULARITY"]
+  },
+  "experiments": {
+    "REC-EV-025A": {
+      "source_domain": "NON_KOREAN_COMMON_SUPPORT", "target_domain": "KOREAN_ORIGIN_COMMON_SUPPORT", "minimum_source_ratings": 24, "minimum_target_ratings": 10, "target_n": 10, "control_n": 10, "minimum_users": 150, "minimum_unique_targets": 60,
+      "global_profile_salt": "rec-ev-025a-global-nonkorean-profile-v1",
+      "panel_target_salts": ["rec-ev-025a-panel-0-korean-target-v1", "rec-ev-025a-panel-1-korean-target-v1", "rec-ev-025a-panel-2-korean-target-v1", "rec-ev-025a-panel-3-korean-target-v1"],
+      "panel_control_salts": ["rec-ev-025a-panel-0-nonkorean-control-v1", "rec-ev-025a-panel-1-nonkorean-control-v1", "rec-ev-025a-panel-2-nonkorean-control-v1", "rec-ev-025a-panel-3-nonkorean-control-v1"],
+      "role_discriminators": {"profile": "GLOBAL_PROFILE", "target": "PANEL_TARGET", "control": "PANEL_CONTROL"},
+      "tie_prefix": "rec-ev-025a-common-head-tie-v1"
+    },
+    "REC-EV-025B": {
+      "source_domain": "PRE2020_COMMON_SUPPORT", "target_domain": "RELEASE_2020_2023_COMMON_SUPPORT", "minimum_source_ratings": 34, "minimum_target_ratings": 20, "target_n": 20, "control_n": 20, "minimum_users": 500, "minimum_unique_targets": 200,
+      "global_profile_salt": "rec-ev-025b-global-pre2020-profile-v1",
+      "panel_target_salts": ["rec-ev-025b-panel-0-recent-target-v1", "rec-ev-025b-panel-1-recent-target-v1", "rec-ev-025b-panel-2-recent-target-v1", "rec-ev-025b-panel-3-recent-target-v1"],
+      "panel_control_salts": ["rec-ev-025b-panel-0-pre2020-control-v1", "rec-ev-025b-panel-1-pre2020-control-v1", "rec-ev-025b-panel-2-pre2020-control-v1", "rec-ev-025b-panel-3-pre2020-control-v1"],
+      "role_discriminators": {"profile": "GLOBAL_PROFILE", "target": "PANEL_TARGET", "control": "PANEL_CONTROL"},
+      "tie_prefix": "rec-ev-025b-common-head-tie-v1"
+    }
+  },
+  "execution_statistics": {
+    "profile_percentile": "REC_EV_022A_SELECTED_PROFILE_SMOOTHED_TAU5_G0_MID",
+    "primary_n": 2,
+    "score": "SUM_WEIGHT_TIMES_COSINE_DIV_SUM_ABS_WEIGHT",
+    "inactive": "EXACT_ANALYTIC_RANDOM_TOP2_NO_USER_EXCLUSION",
+    "tie_payload": "PREFIX|USER_KEY|PANEL|DOMAIN|ENCODING|K|MOVIE_ID_HEAD_OMITTED",
+    "absolute_family": "4_HEADS_X_6_CELLS_X_3_CLASSES_X_2_ENDPOINTS_EQUALS_144",
+    "incremental_family": "3_CHALLENGERS_X_6_CELLS_X_2_DOMAINS_X_2_ENDPOINTS_EQUALS_72",
+    "joint_family_each_experiment": 216,
+    "primary_unit": "USER_AFTER_FOUR_PANEL_ARITHMETIC_MEAN",
+    "bootstrap": "KEYED_POISSON1_USER_ONLY_4000_VALID_ATTEMPTS_0_TO_7999_DECIMAL80",
+    "max_t": "ABSOLUTE_STUDENTIZED_216_TWO_SIDED_97_5_PERCENT_NEAREST_RANK"
+  },
+  "decision": {
+    "absolute_target_margin": 0.02, "absolute_gap_noninferiority": -0.02, "incremental_target_utility_margin": 0.005, "incremental_target_safety_margin": 0.01, "incremental_control_noninferiority": -0.02, "maximum_half_width": 0.05,
+    "robust_absolute": "HEAD_ABSOLUTE_TARGET_AND_GAP_PASS_ALL_SIX_CELLS",
+    "robust_incremental": "CHALLENGER_ROBUST_ABSOLUTE_AND_CHALLENGER_MINUS_CURRENT_TARGET_AND_CONTROL_PASS_ALL_SIX_CELLS",
+    "cell_specific_trigger": "ANY_ABSOLUTE_HEAD_CELL_TARGET_AND_GAP_PASS_OR_ANY_INCREMENTAL_CHALLENGER_CELL_TARGET_AND_CONTROL_PASS",
+    "passing_sets": "RECORD_ALL_WITHOUT_TOP1_SELECTION",
+    "status_precedence": ["INFEASIBLE_PRELABEL", "INCONCLUSIVE_PRECISION_OR_NONESTIMABLE", "ROBUST_INCREMENTAL_TRANSFER_HEAD", "ROBUST_ABSOLUTE_TRANSFER_HEAD", "CELL_SPECIFIC_SIGNAL_NOT_ROBUST", "NO_ROBUST_TRANSFER_HEAD"],
+    "result_driven_relaxation": false, "champion": null
+  },
+  "bootstrap": {
+    "namespace": "feelm-bootstrap-v1|rec-ev-025ab-feature-transfer-bootstrap-v1|EVIDENCE_ID|ATTEMPT|user|USER_KEY", "attempt_ids": [0, 7999], "valid_replicates": 4000,
+    "golden_fixtures": [
+      {"evidence_id": "REC-EV-025A", "attempt": 1, "user_key": "0000000000000000000000000000000000000000000000000000000000000000", "uint64": 12622342551381180557, "weight": 1},
+      {"evidence_id": "REC-EV-025A", "attempt": 9, "user_key": "ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff", "uint64": 16713304240444905809, "weight": 2},
+      {"evidence_id": "REC-EV-025B", "attempt": 0, "user_key": "0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef", "uint64": 8985751955320445579, "weight": 1},
+      {"evidence_id": "REC-EV-025B", "attempt": 0, "user_key": "abcdef0123456789abcdef0123456789abcdef0123456789abcdef0123456789", "uint64": 10929670766280237474, "weight": 1}
+    ]
+  },
+  "claim_boundary": {"allowed": "ADAPTIVE_RETROSPECTIVE_COMMON_SUPPORT_TRANSFER_AND_INCREMENTAL_HEAD_EVIDENCE_IN_FIXED_STAGE1_STAGE2_MOVIELENS_COHORTS", "forbidden": ["CAUSE_OF_PRIOR_FAILURE", "KOREAN_USER_PERFORMANCE", "UNRATED_OR_FUTURE_ITEM_GENERALIZATION", "FULL_CATALOG_RETRIEVAL", "ITEM_GENERALIZATION_FROM_USER_ONLY_CI", "ACTUAL_ONLINE_RESPONSE", "PRODUCT_POLICY", "CHAMPION"]},
+  "output_root": "outputs/recommendation-evidence/rec-ev-025ab-preflight",
+  "outputs": {"protocol_lock": "protocol-lock.json", "source_manifest": "source-manifest.json", "progress": "run-progress.json", "preflight": "preflight.json", "preflight_integrity": "preflight.integrity.json"},
+  "resume": {"required": true, "partial": "FAIL_CLOSED", "drift": "FAIL_CLOSED"},
+  "invariants": {"rating_value_bytes_parsed": 0, "timestamp_bytes_parsed": 0, "old_locked_ratings_timestamps_metrics_opened": false, "final_reserve_opened": false, "product_policy_updated": false, "champion": null}
+}

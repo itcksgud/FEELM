@@ -1,0 +1,87 @@
+{
+  "schema_version": 1,
+  "contract_id": "rec-ev-025ab-feature-transfer-execution-r1-correction-v1",
+  "status": "PROPOSED_FOR_INDEPENDENT_CORRECTION_AUDIT",
+  "base_contract": {
+    "path": "docs/recommendation/contracts/rec-ev-025ab-feature-transfer-execution.json",
+    "bytes": 16936,
+    "sha256": "cb02c607a50e35595e6765ed2508c919690d2f3178611061c0863a5058586ddf"
+  },
+  "failed_locked_attempts": {
+    "REC-EV-025A": {
+      "output_root": "outputs/recommendation-evidence/rec-ev-025a",
+      "failure": "MISSING_PREFLIGHT_FLOOR_FIELDS_BEFORE_MEMBERSHIP_SEAL",
+      "files_created": ["protocol-lock.json", "source-manifest.json"],
+      "selected_profile_rating_rows_parsed": 0,
+      "evaluation_rating_rows_parsed": 0,
+      "timestamp_bytes_parsed": 0,
+      "evaluation_labels_opened": false
+    },
+    "REC-EV-025B": {
+      "output_root": "outputs/recommendation-evidence/rec-ev-025b",
+      "failure": "MISSING_PREFLIGHT_FLOOR_FIELDS_BEFORE_MEMBERSHIP_SEAL",
+      "files_created": ["protocol-lock.json", "source-manifest.json"],
+      "selected_profile_rating_rows_parsed": 0,
+      "evaluation_rating_rows_parsed": 0,
+      "timestamp_bytes_parsed": 0,
+      "evaluation_labels_opened": false
+    }
+  },
+  "corrections": {
+    "materialized_contract_id": "rec-ev-025ab-feature-transfer-execution-r1-v1",
+    "materialized_status": "APPROVED_FOR_ADAPTIVE_FEATURE_TRANSFER_EXECUTION_R1",
+    "execution_revision": "R1_FIELD_COMPLETENESS_ONLY_NO_ESTIMAND_OR_THRESHOLD_CHANGE",
+    "experiments": {
+      "REC-EV-025A": {"minimum_users": 150, "minimum_unique_targets": 60},
+      "REC-EV-025B": {"minimum_users": 500, "minimum_unique_targets": 200}
+    },
+    "output_roots": {
+      "REC-EV-025A": "outputs/recommendation-evidence/rec-ev-025a-r1",
+      "REC-EV-025B": "outputs/recommendation-evidence/rec-ev-025b-r1"
+    },
+    "implementation_artifacts": [
+      "scripts/rec_ev_022a_core.py",
+      "scripts/run_rec_ev_023ef_transfer.py",
+      "scripts/run_rec_ev_023ef_preflight.py",
+      "scripts/validate_rec_ev_023ef_contract.py",
+      "scripts/run_rec_ev_025ab_preflight.py",
+      "scripts/validate_rec_ev_025ab_contract.py",
+      "scripts/run_rec_ev_025_feature_transfer.py",
+      "scripts/validate_rec_ev_025_feature_transfer_contract.py",
+      "scripts/tests/test_rec_ev_025_feature_transfer.py",
+      "docs/recommendation/contracts/rec-ev-025ab-feature-transfer-execution.json",
+      "docs/recommendation/contracts/rec-ev-025ab-feature-transfer-execution-r1.json",
+      "scripts/run_rec_ev_025_feature_transfer_r1.py",
+      "scripts/validate_rec_ev_025_feature_transfer_r1_contract.py",
+      "scripts/tests/test_rec_ev_025_feature_transfer_r1.py"
+    ]
+  },
+  "unchanged_sections": [
+    "purpose",
+    "design_audit",
+    "preflight_audits",
+    "authorization",
+    "allowed_input_artifacts",
+    "forbidden_input_artifacts",
+    "reader",
+    "common_support",
+    "preflight",
+    "cells",
+    "heads",
+    "rating_scale",
+    "phases",
+    "scoring",
+    "metrics",
+    "statistics",
+    "bootstrap_golden_fixtures",
+    "decision",
+    "claim_boundary",
+    "outputs",
+    "resume",
+    "invariants"
+  ],
+  "claim_boundary": {
+    "allowed": "FIELD_COMPLETENESS_CORRECTION_AND_NEW_OUTPUT_NAMESPACE_ONLY",
+    "forbidden": ["ESTIMAND_CHANGE", "THRESHOLD_CHANGE", "COHORT_CHANGE", "MEMBERSHIP_CHANGE", "FEATURE_CHANGE", "OUTCOME_INFORMED_CHANGE", "OLD_OUTPUT_REUSE"]
+  }
+}

@@ -1,0 +1,153 @@
+{
+  "contract_id": "rec-ev-023c-crossed-membership-sensitivity-v1",
+  "status": "APPROVED_FOR_ADAPTIVE_CROSSED_MEMBERSHIP_SENSITIVITY",
+  "purpose": "Test whether REC-EV-023B fixed-slate content signals remain under user and observed target-item membership reweighting before fitting another model.",
+  "independent_design_audit": {
+    "thread_id": "01a06eeb-df86-7252-ac77-afc8d6ec24f7",
+    "rounds": 3,
+    "final_verdict": "023C_DESIGN_PASS"
+  },
+  "authorization": {
+    "reuse_rec_ev_023b_fixed_metrics_and_membership": true,
+    "prediction_or_ranking_recompute": false,
+    "model_fit_or_retune": false,
+    "locked_test_access": false,
+    "stage2_access": false,
+    "final_reserve_access": false,
+    "champion_selection": false,
+    "product_policy_change": false
+  },
+  "adaptive_boundary": {
+    "rec_ev_023b_result_seen_before_design": true,
+    "interval_label": "ADAPTIVE_OBSERVED_MEMBERSHIP_TWO_WAY_MAX_T_INTERVAL",
+    "allowed_claim": "OBSERVED_FIXED_JUDGED20_MASKED_COLD_ITEM_MEMBERSHIP_UNCERTAINTY_SENSITIVITY",
+    "forbidden_claims": ["FRESH", "CONFIRMATORY", "ITEM_GENERALIZATION", "FULL_MASKED_COLD_UNIVERSE", "STRICT_COLD_START", "FUTURE_ITEM"]
+  },
+  "implementation_artifacts": [
+    "scripts/rec_ev_022a_core.py",
+    "scripts/run_rec_ev_023b_masked_cold_screen.py",
+    "scripts/run_rec_ev_023c_crossed_sensitivity.py",
+    "scripts/validate_rec_ev_023c_contract.py"
+  ],
+  "allowed_input_artifacts": {
+    "rec_ev_023b_contract": {"path": "docs/recommendation/contracts/rec-ev-023b-masked-item-cold-content-screen.json", "bytes": 12891, "sha256": "681de4d5cbbea4f1837524dc7cbbf0ad294e56b3a87aa1f988cb19d5aeb61e43"},
+    "rec_ev_023b_protocol_lock": {"path": "outputs/recommendation-evidence/rec-ev-023b/protocol-lock.json", "bytes": 864, "sha256": "bd126b87ff5f9a6e02ea99b93d09d2339aa5cce6fbf7fbdfece7c26bb4a62761"},
+    "rec_ev_023b_source_manifest": {"path": "outputs/recommendation-evidence/rec-ev-023b/source-manifest.json", "bytes": 2520, "sha256": "ebed1f6afa88569739af2ab3a359d19d588e531736777eb2d149024dd97b9249"},
+    "rec_ev_023b_universe": {"path": "outputs/recommendation-evidence/rec-ev-023b/cache/universe.npz", "bytes": 65369, "sha256": "0870becb1a4bfccc40ebe0ba1b476efe06df65186531d09b5f53b77e491075b9"},
+    "rec_ev_023b_score_input": {"path": "outputs/recommendation-evidence/rec-ev-023b/cache/score-input.parquet", "bytes": 1231878, "sha256": "bbfa203a3762ae0c87635c735d6313e66c1d2757e8b92be314ded1e84212a0d1"},
+    "rec_ev_023b_score_prepared_integrity": {"path": "outputs/recommendation-evidence/rec-ev-023b/cache/score-prepared.integrity.json", "bytes": 2903, "sha256": "3880762d4f9d9e9226d146a65b9c067f21d9e7fb52f92e0021118aece292864b"},
+    "rec_ev_023b_user_metrics": {"path": "outputs/recommendation-evidence/rec-ev-023b/user-metrics.parquet", "bytes": 2305130, "sha256": "5ead3ea375593d38c26a2dc23ca53461c009379ccc86623771a80d6e51e2bf6c"},
+    "rec_ev_023b_user_metrics_integrity": {"path": "outputs/recommendation-evidence/rec-ev-023b/user-metrics.integrity.json", "bytes": 444, "sha256": "84c67913d7de40659f502caaddeac68a0278689c9611120cc3e9bf40ade4cd3d"},
+    "rec_ev_023b_result": {"path": "outputs/recommendation-evidence/rec-ev-023b/development-screen-result.json", "bytes": 45398, "sha256": "b4240b34e36fa660334741a8b8e0a2cf5ac71618a1534e8becae6379e9183ba0"},
+    "rec_ev_023b_selection": {"path": "outputs/recommendation-evidence/rec-ev-023b/development-screen-selection.json", "bytes": 2066, "sha256": "a078ba60578e0e671f10cf79878198bc4b4cdad08935bce121b96c5b58d1e504"}
+  },
+  "forbidden_input_artifacts": [
+    "outputs/recommendation-evidence/rec-ev-023b/score-rank.parquet",
+    "outputs/recommendation-evidence/rec-ev-023b/cache/evaluation-labels.parquet",
+    "outputs/recommendation-evidence/rec-ev-023b/cache/label-source.parquet",
+    "outputs/recommendation-evidence/global-time-v1/test.parquet",
+    "outputs/recommendation-evidence/rec-ev-019a/locked-test-binary-prefixes.parquet",
+    "outputs/recommendation-evidence/rec-ev-019a/locked-test-evaluation-windows.parquet"
+  ],
+  "membership": {
+    "users": 9520,
+    "items_per_user": 20,
+    "memberships": 190400,
+    "unique_items": 3565,
+    "connected_components": 1,
+    "maximum_item_degree": 3025,
+    "top10_item_degree_sum": 23067,
+    "top10_share_exact": "23067/190400",
+    "target_items_must_be_masked_cold": true,
+    "csr_value": 0.05,
+    "membership_recomputed_in_replicate": false
+  },
+  "contrast_family": {
+    "source": "BYTE_IDENTICAL_REC_EV_023B_BUILD_CONTRASTS",
+    "cells": 6,
+    "comparisons_per_cell": 6,
+    "endpoints": 2,
+    "expected_contrasts": 72,
+    "point_estimate": "UNWEIGHTED_USER_MEAN_FROM_SEALED_REC_EV_023B_METRICS"
+  },
+  "bootstrap": {
+    "protocol_version": "rec-ev-023c-crossed-sensitivity-v1",
+    "digest_prefix": "feelm-bootstrap-v1|",
+    "attempts": 10000,
+    "valid_replicates": 2000,
+    "valid_attempt_selection": "FIRST_2000_ATTEMPTS_COMMON_VALID_ACROSS_ALL_THREE_REGIMES",
+    "axes": ["user", "item"],
+    "user_cluster_id": "LOWERCASE_64HEX_USER_KEY",
+    "item_cluster_id": "CANONICAL_DECIMAL_MOVIE_ID",
+    "digest": "SHA256_UTF8_PREFIX_PROTOCOL_ATTEMPT_AXIS_CLUSTER",
+    "uniform": "U=(2*UINT64_BE_DIGEST_FIRST8+1)/2^65",
+    "weight": "POISSON1_INVERSE_CDF_MIN_K",
+    "decimal_precision": 80,
+    "numpy_version": "1.26.4",
+    "dtype": "FLOAT64",
+    "regimes": {
+      "USER_ONLY": "USER_WEIGHT",
+      "ITEM_ONLY": "MEAN_ITEM_WEIGHT_OVER_FIXED_20",
+      "TWO_WAY": "USER_WEIGHT_TIMES_MEAN_ITEM_WEIGHT_OVER_FIXED_20"
+    },
+    "common_valid": "ALL_THREE_DENOMINATORS_GT_ZERO_FINITE_AND_ALL_216_ESTIMATES_FINITE",
+    "invalid_attempt_ids_and_reasons_recorded": true,
+    "golden": [
+      {"attempt": 0, "axis": "user", "cluster_id": "0000000000000000000000000000000000000000000000000000000000000000", "x": 11644714544804977649, "weight": 1},
+      {"attempt": 0, "axis": "item", "cluster_id": "1", "x": 7654935420082890939, "weight": 1},
+      {"attempt": 17, "axis": "user", "cluster_id": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa", "x": 14214353544981560736, "weight": 2},
+      {"attempt": 1999, "axis": "item", "cluster_id": "999", "x": 2181741186927563465, "weight": 0}
+    ]
+  },
+  "intervals": {
+    "per_regime": true,
+    "se": "STD_OF_2000_WEIGHTED_ESTIMATES_DDOF1",
+    "studentized": "MAX_ABS_REPLICATE_MINUS_POINT_DIV_SE_OVER_ACTIVE_72",
+    "critical": "NEAREST_RANK_CEIL_0_95_TIMES_2000_NO_INTERPOLATION",
+    "ci": "POINT_PLUS_MINUS_CRITICAL_TIMES_SE",
+    "zero_se": "NON_ESTIMABLE_AND_GATE_FAIL",
+    "all_zero_se": "CRITICAL_ZERO_DIAGNOSTIC_AND_ALL_GATES_FAIL"
+  },
+  "decision": {
+    "utility_margin": 0.005,
+    "worst_loss_margin": 0.01,
+    "rec_ev_023b_q_recomputed_from_sealed_intervals": true,
+    "two_way_truth_table": "SAME_STRUCTURED_E5_RRF_RULES_AS_REC_EV_023B",
+    "robust_forward": "REC_EV_023B_RULE_AND_TWO_WAY_RULE",
+    "robust_forward_subset_of_rec_ev_023b_forward": true,
+    "user_only_and_item_only": "DECOMPOSITION_DIAGNOSTIC_ONLY",
+    "new_forward_from_023c_only": false,
+    "retune_or_family_reduction": false,
+    "champion": null
+  },
+  "output_root": "outputs/recommendation-evidence/rec-ev-023c",
+  "outputs": {
+    "protocol_lock": "protocol-lock.json",
+    "source_manifest": "source-manifest.json",
+    "progress": "run-progress.json",
+    "membership": "cache/membership.npz",
+    "membership_integrity": "cache/membership.integrity.json",
+    "replicates": "cache/bootstrap-replicates.npz",
+    "replicates_integrity": "cache/bootstrap-replicates.integrity.json",
+    "selection": "crossed-sensitivity-selection.json",
+    "result": "crossed-sensitivity-result.json"
+  },
+  "resume": {
+    "required": true,
+    "drift": "FAIL_CLOSED",
+    "source_code_spec_lock": true,
+    "membership_sha_and_constants_verified": true,
+    "replicate_sha_attempt_ids_and_signature_verified": true,
+    "result_recomputed_from_sealed_replicates": true
+  },
+  "invariants": {
+    "predictions_recomputed": false,
+    "rankings_recomputed": false,
+    "q_labels_opened": false,
+    "locked_test_opened": false,
+    "stage2_opened": false,
+    "final_reserve_opened": false,
+    "champion": null,
+    "product_policy_updated": false
+  }
+}

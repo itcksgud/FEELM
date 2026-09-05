@@ -1,0 +1,291 @@
+{
+  "schema_version": 1,
+  "contract_id": "rec-ev-023ef-joint-transfer-design-v1",
+  "status": "APPROVED_FOR_PRELABEL_FIREWALLED_FEASIBILITY",
+  "purpose": "Jointly freeze the REC-EV-023E Korean-origin judged10 and REC-EV-023F 2020-2023 judged20 conditional-transfer development designs, then measure feasibility using only protected-role-safe user and movie identifiers before either outcome is opened.",
+  "independent_design_audit": {
+    "thread_id": "01a0704a-ff92-7851-904a-bf3970b3d905",
+    "rounds": 3,
+    "final_verdict": "NEXT_DESIGN_PASS"
+  },
+  "prior_invalid_preflight_incident": {
+    "occurred_after_rec_ev_023d_a1_final_seal": true,
+    "ephemeral_nonartifact_command": true,
+    "old_locked_user_movie_ids_parsed": true,
+    "rating_values_parsed": false,
+    "timestamps_parsed": false,
+    "metrics_or_labels_opened": false,
+    "counts_discarded_and_forbidden_as_contract_inputs": [431, 3498],
+    "claim": "THE_OLD_LOCKED_TEST_IS_NO_LONGER_UNTOUCHED_AT_ITEM_MEMBERSHIP_LEVEL; ITS_RATINGS_TIMESTAMPS_AND_METRICS_REMAIN_UNOPENED_AND_IT_IS_EXCLUDED_FROM_ALL_NEW_ARTIFACTS"
+  },
+  "authorization": {
+    "adaptive_development": true,
+    "train_users_prior_only": true,
+    "stage1_and_stage2_evaluation": true,
+    "old_locked_ratings_timestamps_or_metrics": false,
+    "final_reserve_access": false,
+    "champion_selection": false,
+    "product_policy_change": false
+  },
+  "implementation_artifacts": [
+    "scripts/rec_ev_022a_core.py",
+    "scripts/run_rec_ev_023ef_preflight.py",
+    "scripts/validate_rec_ev_023ef_contract.py",
+    "scripts/tests/test_rec_ev_023ef_preflight.py"
+  ],
+  "allowed_input_artifacts": {
+    "movielens_archive": {
+      "path": "C:/higher/projects/MM/data/raw/ml-32m.zip",
+      "member": "ml-32m/ratings.csv",
+      "bytes": 238950008,
+      "sha256": "e4a68655d7386b8f95f2f2424b2ff975dfdd15ffd59e0d864a14dca43e99d6ee"
+    },
+    "structured_features": {
+      "path": "outputs/recommendation-evidence/rec-ev-019b/structured-features.parquet",
+      "bytes": 3008444,
+      "sha256": "d68b93496c003c2a51e5defe0c9ee9af24e7b0d99eb68a0536d2e0a305460c62"
+    },
+    "korean_movie_id_projection": {
+      "path": "docs/recommendation/evidence/results/korean-origin-movie-id-projection-v1.json",
+      "bytes": 13584,
+      "sha256": "38aa109efadbbc465e567180fc5e5a9bb55929b03fb6e75869f8a02260df09bf"
+    },
+    "korean_coverage_evidence": {
+      "path": "docs/recommendation/evidence/REC-DATA-002-korean-origin-coverage.md",
+      "bytes": 2052,
+      "sha256": "e7ab773a2307dd71e79b880533edcd061003e16e3ded6402c4b5c2feaadfb14d"
+    },
+    "stage2_selection": {
+      "path": "outputs/recommendation-evidence/rec-ev-022b/stage2-selection.json",
+      "bytes": 1581,
+      "sha256": "af1ed55515030265c4d346e17636085c498ba04f525e08723df514dd6118118c"
+    },
+    "train_prior": {
+      "path": "outputs/recommendation-evidence/rec-ev-022a/cache/train-model.npz",
+      "bytes": 552962,
+      "sha256": "afd18bc16e357871ca6a4dfd01ce9319f09efd1f63b29d4bbd5d6565190b218d"
+    }
+  },
+  "forbidden_input_artifacts": [
+    "outputs/recommendation-evidence/global-time-v1/test.parquet",
+    "outputs/recommendation-evidence/rec-ev-019a/locked-test-binary-prefixes.parquet",
+    "outputs/recommendation-evidence/rec-ev-019a/locked-test-evaluation-windows.parquet",
+    "outputs/recommendation-evidence/rec-ev-022a/final-reserve-input.parquet"
+  ],
+  "roles_and_reader": {
+    "maximum_user_id": 300000,
+    "old_base_allow": "old_user_bucket(user_id)<=59",
+    "evaluation_roles": ["STAGE1_SELECTION", "STAGE2_DEVELOPMENT"],
+    "evaluation_role_bucket_ranges": [[6000, 7999], [8000, 9199]],
+    "train_role": "PRIOR_ARTIFACT_ONLY_NOT_RAW_EVALUATION",
+    "final_reserve_bucket_range_forbidden": [9200, 9999],
+    "raw_sequence": "PARSE_ONLY_USER_ID_TO_FIRST_COMMA_THEN_ROLE_DECISION; IF_EXCLUDED_DISCARD_RAW_LINE; IF_ALLOWED_PARSE_ONLY_MOVIE_ID_TO_SECOND_COMMA",
+    "preflight_rating_value_bytes_parsed": 0,
+    "preflight_timestamp_bytes_parsed": 0,
+    "excluded_counts_forbidden": true,
+    "raw_user_id_forbidden_in_outputs": true,
+    "anonymous_user_key": "lowerhex(SHA256(UTF8('rec-ev-022a-user-key-v1|' + canonical_user_id)))"
+  },
+  "universe": {
+    "definition": "ALL_MOVIELENS_LINKED_ROWS_IN_STRUCTURED_FEATURES_WITH_FEATURE_ELIGIBLE_TRUE_AND_NON_NULL_RELEASE_YEAR",
+    "e5_intersection_forbidden": true,
+    "basic_nonzero_required": true,
+    "korean_origin": "UNION_OF_KOREAN_ORIGIN_MATCHED_ITEMS_AND_AWARENESS_OK_IS_KOREAN_ORIGIN_INTERSECT_UNIVERSE",
+    "recent": "2020_LE_RELEASE_YEAR_LE_2023",
+    "old": "RELEASE_YEAR_LT_2020"
+  },
+  "common_design": {
+    "panels": 4,
+    "panel_role": "DETERMINISTIC_SENSITIVITY_VIEWS_NOT_INDEPENDENT_REPLICATES",
+    "profile_n": 14,
+    "primary_n": 2,
+    "cells": [
+      {"encoding": "BINARY_SIGN", "k": 6},
+      {"encoding": "PERCENTILE_MAGNITUDE", "k": 6},
+      {"encoding": "BINARY_SIGN", "k": 8},
+      {"encoding": "PERCENTILE_MAGNITUDE", "k": 8},
+      {"encoding": "BINARY_SIGN", "k": 14},
+      {"encoding": "PERCENTILE_MAGNITUDE", "k": 14}
+    ],
+    "profile_weight_prior": "REC_EV_022A_TRAIN_ONLY_G0_MID_TAU_5",
+    "profile_weight_inputs": "ONLY_FIRST_K_PROFILE_RATINGS",
+    "target_q": "FULL_ALLOWED_USER_RATING_HISTOGRAM_MID_PERCENTILE_LABEL_AFTER_RANK_SEAL",
+    "eligibility_order_forbidden_inputs": ["RATING", "Q_EVAL", "TIMESTAMP", "POPULARITY"],
+    "hash_order": "SHA256(SALT|USER_KEY|MOVIE_ID)_DIGEST_ASC_THEN_MOVIE_ID_ASC",
+    "panel_salts": {
+      "REC-EV-023E": {
+        "profile_control_order": [
+          "rec-ev-023e-panel-0-non-korean-order-v1",
+          "rec-ev-023e-panel-1-non-korean-order-v1",
+          "rec-ev-023e-panel-2-non-korean-order-v1",
+          "rec-ev-023e-panel-3-non-korean-order-v1"
+        ],
+        "target_order": [
+          "rec-ev-023e-panel-0-korean-target-order-v1",
+          "rec-ev-023e-panel-1-korean-target-order-v1",
+          "rec-ev-023e-panel-2-korean-target-order-v1",
+          "rec-ev-023e-panel-3-korean-target-order-v1"
+        ],
+        "tie_prefix": "rec-ev-023e-rank-tie-v1"
+      },
+      "REC-EV-023F": {
+        "profile_control_order": [
+          "rec-ev-023f-panel-0-pre2020-order-v1",
+          "rec-ev-023f-panel-1-pre2020-order-v1",
+          "rec-ev-023f-panel-2-pre2020-order-v1",
+          "rec-ev-023f-panel-3-pre2020-order-v1"
+        ],
+        "target_order": [
+          "rec-ev-023f-panel-0-recent-target-order-v1",
+          "rec-ev-023f-panel-1-recent-target-order-v1",
+          "rec-ev-023f-panel-2-recent-target-order-v1",
+          "rec-ev-023f-panel-3-recent-target-order-v1"
+        ],
+        "tie_prefix": "rec-ev-023f-rank-tie-v1"
+      }
+    },
+    "tie_payload": "UTF8(TIE_PREFIX|USER_KEY|PANEL_INDEX|DOMAIN|HEAD|ENCODING|K|MOVIE_ID)",
+    "heads": ["BASIC", "RELEASE_PROXY", "FULL_CURRENT"],
+    "feature_groups": {
+      "G": "GENRE_IDS",
+      "C": "ORIGINAL_LANGUAGE_RELEASE_DECADE_RUNTIME30",
+      "P": "DIRECTOR_IDS_TOP5_CAST_IDS",
+      "W": "KEYWORD_IDS"
+    },
+    "feature_normalization": "EACH_BINARY_MULTI_HOT_GROUP_ROW_L2; EMPTY_ZERO; INCLUDED_GROUPS_TIMES_0_25_CONCAT; FINAL_ROW_L2; NO_ACTIVE_GROUP_REWEIGHT",
+    "head_groups": {"BASIC": ["G", "C"], "RELEASE_PROXY": ["G", "C", "P"], "FULL_CURRENT": ["G", "C", "P", "W"]},
+    "score": "SUM_I(W_UI*DOT(V_HI,V_HJ))/SUM_I(ABS(W_UI)); NO_PROFILE_RENORMALIZATION",
+    "inactive": "SUM_ABS_WEIGHT_ZERO_OR_NONFINITE_SCORE_OR_TARGET_UNIQUE_SCORE_LT_2_THEN_ANALYTIC_RANDOM_METRIC_AND_ZERO_CONTRAST",
+    "partial_tie": "SHA256(TIE_PREFIX|USER_KEY|PANEL_INDEX|DOMAIN|HEAD|ENCODING|K|MOVIE_ID)_DIGEST_ASC_THEN_MOVIE_ID_ASC",
+    "b0_or_target_popularity": "FORBIDDEN"
+  },
+  "experiments": {
+    "REC-EV-023E": {
+      "name": "KOREAN_ORIGIN_JUDGED10_CONDITIONAL_TRANSFER",
+      "profile_pool": "NON_KOREAN_STRUCTURED",
+      "target_pool": "KOREAN_ORIGIN_STRUCTURED",
+      "control_pool": "NON_KOREAN_STRUCTURED_DISJOINT_FROM_PROFILE",
+      "target_n": 10,
+      "control_n": 10,
+      "minimum_profile_control_ratings": 24,
+      "minimum_target_ratings": 10,
+      "minimum_users": 150,
+      "minimum_unique_target_items": 60,
+      "unique_target_item_floor_population": "UNION_OF_ACTUALLY_SELECTED_TARGET10_ACROSS_FOUR_FIXED_PANELS_AND_ELIGIBLE_USERS",
+      "alpha": 0.025
+    },
+    "REC-EV-023F": {
+      "name": "RECENT_RELEASE_JUDGED20_CONDITIONAL_TRANSFER",
+      "profile_pool": "PRE_2020_STRUCTURED",
+      "target_pool": "RELEASE_2020_2023_STRUCTURED",
+      "control_pool": "PRE_2020_STRUCTURED_DISJOINT_FROM_PROFILE",
+      "target_n": 20,
+      "control_n": 20,
+      "minimum_profile_control_ratings": 34,
+      "minimum_target_ratings": 20,
+      "minimum_users": 500,
+      "minimum_unique_target_items": 200,
+      "unique_target_item_floor_population": "UNION_OF_ACTUALLY_SELECTED_TARGET20_ACROSS_FOUR_FIXED_PANELS_AND_ELIGIBLE_USERS",
+      "alpha": 0.025
+    }
+  },
+  "statistics": {
+    "primary_unit": "USER_AFTER_ARITHMETIC_MEAN_OF_FOUR_PANEL_CONTRASTS",
+    "primary_bootstrap": "KEYED_POISSON1_USER_ONLY",
+    "valid_replicates": 4000,
+    "attempt_ids": [0, 7999],
+    "valid_attempt_selection": "FIRST_4000_ATTEMPTS_WITH_POSITIVE_USER_WEIGHT_DENOMINATOR_AND_ALL_108_ESTIMATES_FINITE",
+    "poisson_protocol": "SHA256_UTF8(feelm-bootstrap-v1|rec-ev-023ef-user-bootstrap-v1|EVIDENCE_ID|ATTEMPT|user|USER_KEY)_FIRST_UINT64_BE_THEN_DECIMAL80_POISSON1_INVERSE_CDF",
+    "poisson_golden_fixture_required": true,
+    "poisson_golden_fixtures": [
+      {
+        "evidence_id": "REC-EV-023E",
+        "attempt": 0,
+        "user_key": "0000000000000000000000000000000000000000000000000000000000000000",
+        "uint64": 11217529067192843872,
+        "weight": 1
+      },
+      {
+        "evidence_id": "REC-EV-023E",
+        "attempt": 7999,
+        "user_key": "ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff",
+        "uint64": 17955834813087592270,
+        "weight": 3
+      },
+      {
+        "evidence_id": "REC-EV-023F",
+        "attempt": 17,
+        "user_key": "0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef",
+        "uint64": 6667954965483306694,
+        "weight": 0
+      },
+      {
+        "evidence_id": "REC-EV-023F",
+        "attempt": 2026,
+        "user_key": "abcdef0123456789abcdef0123456789abcdef0123456789abcdef0123456789",
+        "uint64": 12004171215448210824,
+        "weight": 1
+      }
+    ],
+    "expected_primary_family": 108,
+    "family_formula": "3_HEADS_X_6_CELLS_X_3_CLASSES_X_2_FAVORABLE_ENDPOINTS",
+    "classes": ["TARGET_IMPROVEMENT", "CONTROL_IMPROVEMENT", "CONDITIONAL_GAP"],
+    "endpoints": ["UTILITY_IMPROVEMENT_MODEL_MINUS_RANDOM", "SAFETY_IMPROVEMENT_RANDOM_LOSS_MINUS_MODEL"],
+    "se": "STD_OF_4000_REPLICATES_DDOF1",
+    "max_t": "ABSOLUTE_STUDENTIZED_108_FAMILY",
+    "critical": "NEAREST_RANK_CEIL_0_975_TIMES_4000",
+    "zero_or_nonfinite_se": "INCONCLUSIVE_NO_HEAD_PASS",
+    "fixed_panel_membership_reweighting": "DIAGNOSTIC_ONLY_NOT_PRIMARY_GATE_OR_ITEM_GENERALIZATION"
+  },
+  "decision": {
+    "target_signal": "BOTH_ENDPOINT_SIMULTANEOUS_LOW_GTE_0_02_AND_HALF_WIDTH_LTE_0_05_AND_ALL_FOUR_PANEL_POINTS_GT_0",
+    "conditional_noninferiority": "BOTH_GAP_ENDPOINT_SIMULTANEOUS_LOW_GTE_NEG_0_02_AND_HALF_WIDTH_LTE_0_05_AND_ALL_FOUR_PANEL_POINTS_GTE_NEG_0_02",
+    "head_hierarchy": ["BASIC", "RELEASE_PROXY", "FULL_CURRENT"],
+    "cell_conjunction": "ALL_SIX_CELLS",
+    "control_signal": "IN_FAMILY_AND_REPORTED_BUT_NOT_GATE",
+    "statuses": [
+      "INFEASIBLE_PRELABEL",
+      "INCONCLUSIVE_PRECISION_OR_NONESTIMABLE",
+      "TARGET_SIGNAL_AND_CONDITIONAL_NONINFERIOR",
+      "TARGET_SIGNAL_WITH_CONDITIONAL_GAP_UNRESOLVED_OR_DEGRADED",
+      "NO_ROBUST_TARGET_SIGNAL"
+    ],
+    "status_precedence": "INFEASIBLE_PRELABEL_THEN_INCONCLUSIVE_PRECISION_OR_NONESTIMABLE_THEN_TARGET_SIGNAL_AND_CONDITIONAL_NONINFERIOR_THEN_TARGET_SIGNAL_WITH_CONDITIONAL_GAP_UNRESOLVED_OR_DEGRADED_THEN_NO_ROBUST_TARGET_SIGNAL",
+    "result_driven_relaxation": false,
+    "champion": null
+  },
+  "claim_boundary": {
+    "allowed_e": "FIXED_JUDGED10_CROSS_ORIGIN_SIGNAL_AND_CONDITIONAL_DOMAIN_GAP_AMONG_SELECTED_STAGE1_STAGE2_MOVIELENS_KOREAN_FILM_RATERS_USING_CURRENT_TMDB_FEATURES",
+    "allowed_f": "FIXED_JUDGED20_RELEASE_COHORT_TRANSFER_SIGNAL_AND_CONDITIONAL_GAP_AMONG_SELECTED_STAGE1_STAGE2_MOVIELENS_RECENT_FILM_RATERS_USING_CURRENT_TMDB_FEATURES",
+    "forbidden": [
+      "KOREAN_USER_PERFORMANCE",
+      "GENERAL_MOVIELENS_USER_PERFORMANCE",
+      "CAUSAL_BIAS",
+      "PREFERENCE_DYNAMICS",
+      "FULL_CATALOG_RETRIEVAL",
+      "UNRATED_ITEM_GENERALIZATION",
+      "FUTURE_OR_POST_MOVIELENS_PERFORMANCE",
+      "RELEASE_TIME_METADATA_AVAILABILITY",
+      "ITEM_OR_CATALOG_GENERALIZATION_FROM_USER_ONLY_CI",
+      "PRODUCT_QUOTA",
+      "CHAMPION",
+      "PRODUCT_POLICY"
+    ]
+  },
+  "output_root": "outputs/recommendation-evidence/rec-ev-023ef-preflight",
+  "outputs": {
+    "protocol_lock": "protocol-lock.json",
+    "source_manifest": "source-manifest.json",
+    "progress": "run-progress.json",
+    "preflight": "preflight.json",
+    "preflight_integrity": "preflight.integrity.json"
+  },
+  "resume": {"required": true, "partial_state": "FAIL_CLOSED", "drift": "FAIL_CLOSED"},
+  "invariants": {
+    "old_locked_rating_timestamp_metric_opened": false,
+    "final_reserve_opened": false,
+    "evaluation_labels_opened": false,
+    "product_policy_updated": false,
+    "champion": null
+  }
+}

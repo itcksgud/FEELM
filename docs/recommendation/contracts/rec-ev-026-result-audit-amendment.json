@@ -1,0 +1,28 @@
+{
+  "schema_version": 1,
+  "contract_id": "rec-ev-026-result-audit-amendment-v1",
+  "status": "POST_RUN_READ_ONLY_AUDIT",
+  "purpose": "Verify every sealed REC-EV-026 phase deterministically without mutating the original locked runner or regressing completed progress.",
+  "incident": "ORIGINAL_ADVANCE_REJECTS_FINAL_PHASE_WHEN_REVERIFYING_EARLIER_SEALED_PHASE",
+  "result_effect": "NONE_RESULT_VALUES_INDEPENDENTLY_MATCHED_BEFORE_INCIDENT",
+  "pinned": {
+    "execution_contract": {"path": "docs/recommendation/contracts/rec-ev-026-content-cf-alignment-execution.json", "bytes": 8914, "sha256": "135fab2b65370493b9948907026547119b53018f7c6ccb3afeb3b4b4b40fceb1"},
+    "execution_validator": {"path": "scripts/validate_rec_ev_026_execution.py", "bytes": 6833, "sha256": "dfa15bf542b1b6c86b08718f8914f71777f39bb269b2813f2a84dd045e91a01e"},
+    "locked_runner": {"path": "scripts/run_rec_ev_026_experiment.py", "bytes": 51789, "sha256": "26a52e477b6b2ba37853a834d003c398b0811ba334c645f57d903862c54bae0d"},
+    "locked_tests": {"path": "scripts/tests/test_rec_ev_026_experiment.py", "bytes": 7109, "sha256": "df236155b73fd7c0127ee32e4f1502d5b52db8594671a26d192751fe6a82d249"},
+    "protocol_lock": {"path": "outputs/recommendation-evidence/rec-ev-026/protocol-lock.json", "bytes": 707, "sha256": "095a757285320b450080ad67dd12fdc5fc8f5859bb6d9613fb37a1d226e33dd7"},
+    "source_manifest": {"path": "outputs/recommendation-evidence/rec-ev-026/source-manifest.json", "bytes": 5397, "sha256": "bd28d15e769f8625a5538199dc7d73e6167ecee033746f68a553e9b885059889"},
+    "result_integrity": {"path": "outputs/recommendation-evidence/rec-ev-026/content-cf-alignment-result.integrity.json", "bytes": 1564, "sha256": "c9c4f44e94b0cfcfe3cda7785642ce30fe05a1aac5d25aad1ac83a908bd795b4"}
+  },
+  "audit": {
+    "required_initial_phase": "METRICS_BOOTSTRAP_RESULT_SEAL",
+    "advance_behavior": "VALIDATE_CURRENT_FINAL_PROGRESS_THEN_NO_OP_NO_WRITE",
+    "verification_order": ["MAPPER_FIT_GATE", "PROFILE_RATING_OPEN", "ALL_HEAD_RANK_SEAL", "EVALUATION_LABEL_OPEN", "METRICS_BOOTSTRAP_RESULT_SEAL"],
+    "before_after_full_file_inventory_sha256_equal": true,
+    "timestamp_read": false,
+    "locked_test_access": false,
+    "final_reserve_access": false,
+    "product_policy_change": false,
+    "champion": null
+  }
+}

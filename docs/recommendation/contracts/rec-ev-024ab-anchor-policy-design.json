@@ -1,0 +1,224 @@
+{
+  "schema_version": 1,
+  "contract_id": "rec-ev-024ab-anchor-policy-design-v1",
+  "status": "APPROVED_FOR_PRELABEL_FIREWALLED_FEASIBILITY",
+  "purpose": "Freeze and feasibility-check two paired offline policy-replacement experiments: replace the last two source-domain onboarding ratings with two target-domain rated anchors, without claiming a pure anchor causal effect or explaining the earlier transfer failure.",
+  "independent_design_audit": {
+    "thread_id": "01a0704a-ff92-7851-904a-bf3970b3d905",
+    "rounds": 3,
+    "final_verdict": "NEXT_ANCHOR_DESIGN_PASS"
+  },
+  "prior_invalid_preflight_incident": {
+    "old_locked_user_movie_ids_parsed": true,
+    "rating_values_parsed": false,
+    "timestamps_parsed": false,
+    "metrics_or_labels_opened": false,
+    "discarded_counts_forbidden_as_inputs": [431, 3498]
+  },
+  "authorization": {
+    "adaptive_development": true,
+    "stage1_and_stage2_user_movie_id_preflight": true,
+    "rating_or_timestamp_access": false,
+    "old_locked_outcome_access": false,
+    "final_reserve_access": false,
+    "champion_selection": false,
+    "product_policy_change": false
+  },
+  "implementation_artifacts": [
+    "scripts/rec_ev_022a_core.py",
+    "scripts/run_rec_ev_023ef_preflight.py",
+    "scripts/validate_rec_ev_023ef_contract.py",
+    "scripts/run_rec_ev_024ab_preflight.py",
+    "scripts/validate_rec_ev_024ab_contract.py",
+    "scripts/tests/test_rec_ev_024ab_preflight.py"
+  ],
+  "allowed_input_artifacts": {
+    "movielens_archive": {
+      "path": "C:/higher/projects/MM/data/raw/ml-32m.zip",
+      "member": "ml-32m/ratings.csv",
+      "bytes": 238950008,
+      "sha256": "e4a68655d7386b8f95f2f2424b2ff975dfdd15ffd59e0d864a14dca43e99d6ee"
+    },
+    "structured_features": {
+      "path": "outputs/recommendation-evidence/rec-ev-019b/structured-features.parquet",
+      "bytes": 3008444,
+      "sha256": "d68b93496c003c2a51e5defe0c9ee9af24e7b0d99eb68a0536d2e0a305460c62"
+    },
+    "korean_movie_id_projection": {
+      "path": "docs/recommendation/evidence/results/korean-origin-movie-id-projection-v1.json",
+      "bytes": 13584,
+      "sha256": "38aa109efadbbc465e567180fc5e5a9bb55929b03fb6e75869f8a02260df09bf"
+    }
+  },
+  "forbidden_input_artifacts": [
+    "outputs/recommendation-evidence/global-time-v1/test.parquet",
+    "outputs/recommendation-evidence/rec-ev-019a/locked-test-binary-prefixes.parquet",
+    "outputs/recommendation-evidence/rec-ev-019a/locked-test-evaluation-windows.parquet",
+    "outputs/recommendation-evidence/rec-ev-022a/final-reserve-input.parquet",
+    "outputs/recommendation-evidence/rec-ev-023e",
+    "outputs/recommendation-evidence/rec-ev-023f"
+  ],
+  "roles_and_reader": {
+    "maximum_user_id": 300000,
+    "old_base_allow": "old_user_bucket(user_id)<=59",
+    "evaluation_role_bucket_ranges": [[6000, 7999], [8000, 9199]],
+    "final_reserve_bucket_range_forbidden": [9200, 9999],
+    "raw_sequence": "PARSE_ONLY_USER_ID_TO_FIRST_COMMA_THEN_ROLE_DECISION; IF_EXCLUDED DISCARD_RAW_LINE; IF_ALLOWED PARSE_ONLY_MOVIE_ID_TO_SECOND_COMMA",
+    "rating_value_bytes_parsed": 0,
+    "timestamp_bytes_parsed": 0,
+    "excluded_counts_forbidden": true,
+    "raw_user_id_forbidden_in_outputs": true,
+    "anonymous_user_key": "lowerhex(SHA256(UTF8('rec-ev-022a-user-key-v1|' + canonical_user_id)))"
+  },
+  "serialization": {
+    "pipe": "UTF8_0x7C",
+    "canonical_decimal": "UNSIGNED_BASE10_NO_LEADING_ZERO",
+    "order": "SHA256_UTF8_SALT_PIPE_USER_KEY_PIPE_MOVIE_ID_RAW_DIGEST_ASC_THEN_MOVIE_ID_ASC",
+    "exposure_records": "USER_KEY_PIPE_ROLE_PIPE_PANEL_OR_GLOBAL_PIPE_MOVIE_ID",
+    "exposure_hash": "SHA256_CANONICAL_JSON_SORTED_RECORD_ARRAY"
+  },
+  "universe": {
+    "definition": "ALL_MOVIELENS_LINKED_ROWS_IN_STRUCTURED_FEATURES_WITH_FEATURE_ELIGIBLE_TRUE_AND_NON_NULL_RELEASE_YEAR",
+    "korean_origin": "PINNED_KOREAN_MOVIE_ID_PROJECTION_INTERSECT_UNIVERSE",
+    "recent": "2020_LE_RELEASE_YEAR_LE_2023",
+    "old": "RELEASE_YEAR_LT_2020"
+  },
+  "common_design": {
+    "profile_master_n": 14,
+    "anchor_n": 2,
+    "panels": 4,
+    "cells": [
+      {"encoding": "BINARY_SIGN", "k": 6},
+      {"encoding": "PERCENTILE_MAGNITUDE", "k": 6},
+      {"encoding": "BINARY_SIGN", "k": 8},
+      {"encoding": "PERCENTILE_MAGNITUDE", "k": 8},
+      {"encoding": "BINARY_SIGN", "k": 14},
+      {"encoding": "PERCENTILE_MAGNITUDE", "k": 14}
+    ],
+    "source_only": "P1_THROUGH_PK",
+    "target2_mixed": "P1_THROUGH_P_K_MINUS_2_PLUS_A1_A2",
+    "global_partition": "A_IS_FIRST2_GLOBAL_TARGET_ORDER; EPOOL_IS_TARGET_REMAINDER; P_IS_FIRST14_GLOBAL_SOURCE_ORDER; CPOOL_IS_SOURCE_REMAINDER",
+    "panel_role": "EVALUATION_TARGET_AND_CONTROL_MEMBERSHIP_SENSITIVITY_ONLY_NOT_INDEPENDENT_REPLICATES",
+    "input_evaluation_disjoint": "P_UNION_A_INTERSECTION_UNION_ALL_PANEL_EVAL_AND_CONTROL_IS_EMPTY"
+  },
+  "experiments": {
+    "REC-EV-024A": {
+      "name": "KOREAN_TARGET2_POLICY_REPLACEMENT",
+      "source_domain": "NON_KOREAN_STRUCTURED",
+      "target_domain": "KOREAN_ORIGIN_STRUCTURED",
+      "target_n": 10,
+      "control_n": 10,
+      "minimum_source_ratings": 24,
+      "minimum_target_ratings": 12,
+      "minimum_users": 150,
+      "minimum_unique_anchors": 40,
+      "minimum_unique_evaluation_targets": 60,
+      "global_target_salt": "rec-ev-024a-global-korean-role-v1",
+      "global_source_salt": "rec-ev-024a-global-nonkorean-role-v1",
+      "panel_target_salts": [
+        "rec-ev-024a-panel-0-korean-eval-v1",
+        "rec-ev-024a-panel-1-korean-eval-v1",
+        "rec-ev-024a-panel-2-korean-eval-v1",
+        "rec-ev-024a-panel-3-korean-eval-v1"
+      ],
+      "panel_control_salts": [
+        "rec-ev-024a-panel-0-nonkorean-control-v1",
+        "rec-ev-024a-panel-1-nonkorean-control-v1",
+        "rec-ev-024a-panel-2-nonkorean-control-v1",
+        "rec-ev-024a-panel-3-nonkorean-control-v1"
+      ],
+      "tie_prefix": "rec-ev-024a-rank-tie-v1"
+    },
+    "REC-EV-024B": {
+      "name": "RECENT_TARGET2_POLICY_REPLACEMENT",
+      "source_domain": "PRE_2020_STRUCTURED",
+      "target_domain": "RELEASE_2020_2023_STRUCTURED",
+      "target_n": 20,
+      "control_n": 20,
+      "minimum_source_ratings": 34,
+      "minimum_target_ratings": 22,
+      "minimum_users": 500,
+      "minimum_unique_anchors": 100,
+      "minimum_unique_evaluation_targets": 200,
+      "global_target_salt": "rec-ev-024b-global-recent-role-v1",
+      "global_source_salt": "rec-ev-024b-global-pre2020-role-v1",
+      "panel_target_salts": [
+        "rec-ev-024b-panel-0-recent-eval-v1",
+        "rec-ev-024b-panel-1-recent-eval-v1",
+        "rec-ev-024b-panel-2-recent-eval-v1",
+        "rec-ev-024b-panel-3-recent-eval-v1"
+      ],
+      "panel_control_salts": [
+        "rec-ev-024b-panel-0-pre2020-control-v1",
+        "rec-ev-024b-panel-1-pre2020-control-v1",
+        "rec-ev-024b-panel-2-pre2020-control-v1",
+        "rec-ev-024b-panel-3-pre2020-control-v1"
+      ],
+      "tie_prefix": "rec-ev-024b-rank-tie-v1"
+    }
+  },
+  "execution_contract": {
+    "feature_head": "FULL_CURRENT_STRUCTURED_G_C_P_W",
+    "primary_n": 2,
+    "profile_percentile": "q_policy_K(r)=(n_selected_profile_lt_r+0.5*n_selected_profile_eq_r+5*G0_mid(r))/(K+5)",
+    "input_rating_allowlist": "EXACTLY_P_UNION_A_AFTER_MEMBERSHIP_SEAL",
+    "evaluation_open": "ONLY_AFTER_ALL_POLICY_CELL_DOMAIN_RANKS_ARE_INTEGRITY_SEALED",
+    "primary_family_each_experiment": "6_CELLS_X_2_DOMAINS_X_2_ENDPOINTS_EQUALS_24",
+    "statistics": "FOUR_PANEL_MEAN_PER_USER_THEN_KEYED_POISSON1_USER_ONLY_MAX_T",
+    "status_gate": "ALL_SIX_TARGET_SUPERIOR_AND_CONTROL_NONINFERIOR_FOR_ROBUST_INPUT_REMEDY"
+  },
+  "bootstrap": {
+    "namespace": "feelm-bootstrap-v1|rec-ev-024ab-anchor-user-bootstrap-v1|EVIDENCE_ID|ATTEMPT|user|USER_KEY",
+    "attempt_ids": [0, 7999],
+    "valid_replicates": 4000,
+    "valid_attempt_selection": "FIRST_4000_WITH_POSITIVE_USER_WEIGHT_DENOMINATOR_AND_ALL_24_ESTIMATES_FINITE",
+    "poisson_inverse": "DECIMAL80_POISSON1_CDF_CUTOFF_FLOOR_CDF_TIMES_2_POW_65_MINUS_1_DIV_2_BISECT_LEFT",
+    "se": "STD_4000_REPLICATES_DDOF1",
+    "critical": "ABSOLUTE_STUDENTIZED_MAX24_NEAREST_RANK_CEIL_0_975_TIMES_4000",
+    "golden_fixtures": [
+      {"evidence_id": "REC-EV-024A", "attempt": 0, "user_key": "0000000000000000000000000000000000000000000000000000000000000000", "uint64": 371541410255146118, "weight": 0},
+      {"evidence_id": "REC-EV-024A", "attempt": 7999, "user_key": "ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff", "uint64": 12760701297768416407, "weight": 1},
+      {"evidence_id": "REC-EV-024B", "attempt": 17, "user_key": "0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef", "uint64": 10522838499065419017, "weight": 1},
+      {"evidence_id": "REC-EV-024B", "attempt": 2026, "user_key": "abcdef0123456789abcdef0123456789abcdef0123456789abcdef0123456789", "uint64": 12016793457427006599, "weight": 1}
+    ]
+  },
+  "train_prior_pin": {
+    "path": "outputs/recommendation-evidence/rec-ev-022a/cache/train-model.npz",
+    "bytes": 552962,
+    "sha256": "afd18bc16e357871ca6a4dfd01ce9319f09efd1f63b29d4bbd5d6565190b218d",
+    "key": "g0_mid",
+    "shape": [10],
+    "dtype": "<f8",
+    "c_order_value_bytes_sha256": "a1096d7ebdebeb41da6ee84aef1670e3d0925447989a52314ab4b7f6612fb907"
+  },
+  "claim_boundary": {
+    "allowed": "PAIRED_OFFLINE_EFFECT_OF_REPLACING_LAST_TWO_SOURCE_RATED_PROFILE_ITEMS_WITH_TWO_LABEL_BLIND_TARGET_DOMAIN_RATED_ANCHORS_IN_NEW_ANCHOR_ELIGIBLE_STAGE1_STAGE2_COHORTS_AND_FIXED_PANELS",
+    "forbidden": [
+      "PURE_ANCHOR_CAUSAL_EFFECT",
+      "CAUSE_OF_REC_EV_023E_OR_023F_FAILURE",
+      "KOREAN_USER_PERFORMANCE",
+      "UNRATED_OR_FUTURE_ITEM_GENERALIZATION",
+      "ITEM_OR_CATALOG_GENERALIZATION_FROM_USER_ONLY_CI",
+      "ACTUAL_NEW_USER_RESPONSE_BEHAVIOR",
+      "PRODUCT_POLICY",
+      "CHAMPION"
+    ]
+  },
+  "output_root": "outputs/recommendation-evidence/rec-ev-024ab-preflight",
+  "outputs": {
+    "protocol_lock": "protocol-lock.json",
+    "source_manifest": "source-manifest.json",
+    "progress": "run-progress.json",
+    "preflight": "preflight.json",
+    "preflight_integrity": "preflight.integrity.json"
+  },
+  "resume": {"required": true, "partial_state": "FAIL_CLOSED", "drift": "FAIL_CLOSED"},
+  "invariants": {
+    "rating_value_bytes_parsed": 0,
+    "timestamp_bytes_parsed": 0,
+    "old_locked_ratings_timestamps_metrics_opened": false,
+    "final_reserve_opened": false,
+    "product_policy_updated": false,
+    "champion": null
+  }
+}

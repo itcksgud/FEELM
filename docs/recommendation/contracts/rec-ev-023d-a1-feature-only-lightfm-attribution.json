@@ -1,0 +1,213 @@
+{
+  "contract_id": "rec-ev-023d-a1-feature-only-lightfm-attribution-v1",
+  "evidence_id": "REC-EV-023D-A1",
+  "status": "APPROVED_FOR_PRELABEL_FOLDIN_NUMERICAL_AMENDMENT",
+  "base_contract": {
+    "path": "docs/recommendation/contracts/rec-ev-023d-feature-only-lightfm-attribution.json",
+    "bytes": 16740,
+    "sha256": "d684e84dd58d28c300d267354dc082107bdf8a567af659053d31a5e9d49a40bf"
+  },
+  "output_root": "outputs/recommendation-evidence/rec-ev-023d-a1",
+  "predecessor": {
+    "evidence_id": "REC-EV-023D",
+    "failure_phase": "PRE_RANK_FOLDIN_LIPSCHITZ_GUARD",
+    "rank_root": "outputs/recommendation-evidence/rec-ev-023d/cache/rank-seeds",
+    "rank_root_required_absent": true,
+    "evaluation_labels_opened": false,
+    "progress_phase": "FITTING",
+    "completed_seeds": [17, 42, 73, 101, 211],
+    "reuse": "EXACT_BYTE_IDENTICAL_PRELABEL_FITS_ONLY_NO_REFIT_NO_RESEAL",
+    "run_signature": "8406ac2ad7ce48d50780cf9c157c6b1f2e8e5cd5135ae7c5475694d713a88cee",
+    "artifacts": {
+      "predecessor_contract": {
+        "path": "docs/recommendation/contracts/rec-ev-023d-feature-only-lightfm-attribution.json",
+        "bytes": 16740,
+        "sha256": "d684e84dd58d28c300d267354dc082107bdf8a567af659053d31a5e9d49a40bf"
+      },
+      "predecessor_protocol_lock": {
+        "path": "outputs/recommendation-evidence/rec-ev-023d/protocol-lock.json",
+        "bytes": 832,
+        "sha256": "007ddf4e72592f37585e58ce8806528b6c15211897a21b0eaaff59e458778dc7"
+      },
+      "predecessor_source_manifest": {
+        "path": "outputs/recommendation-evidence/rec-ev-023d/source-manifest.json",
+        "bytes": 7561,
+        "sha256": "903d63f45173a8c2c0394004af95a9dc180bfc4a7ec9e5b5c194607b8e7aff76"
+      },
+      "predecessor_progress": {
+        "path": "outputs/recommendation-evidence/rec-ev-023d/run-progress.json",
+        "bytes": 884,
+        "sha256": "691cda9b063aebf613490305c3255a7da3374a795ea69e593b20ae0d173a7ef3"
+      },
+      "predecessor_prepared_integrity": {
+        "path": "outputs/recommendation-evidence/rec-ev-023d/cache/prepared.integrity.json",
+        "bytes": 1838,
+        "sha256": "911c430203e880552e970298a0fde74f22034d352c2238d22d584bf48a130e9a"
+      },
+      "predecessor_interactions": {
+        "path": "outputs/recommendation-evidence/rec-ev-023d/cache/train-interactions.npz",
+        "bytes": 15684004,
+        "sha256": "b821ef8b96b6892a576b7f9c147c17703e35d705d16e8efdebb26c6ce33acbd2"
+      },
+      "predecessor_train_users": {
+        "path": "outputs/recommendation-evidence/rec-ev-023d/cache/train-user-keys.npy",
+        "bytes": 18580352,
+        "sha256": "795647ecd7626760fa48c750866ad6bd052584e23b9b22247ab970c8bc025169"
+      },
+      "predecessor_feature_mask": {
+        "path": "outputs/recommendation-evidence/rec-ev-023d/cache/feature-mask.npy",
+        "bytes": 121980,
+        "sha256": "a5af8e99713b92d25745f9c0272148620c8fbad3057b96f9a31a0e65f7fa1f8b"
+      },
+      "predecessor_structured_matched": {
+        "path": "outputs/recommendation-evidence/rec-ev-023d/cache/structured-matched.npz",
+        "bytes": 1589662,
+        "sha256": "4b57176e5dc7defbbae2867de9576ab0fc2d7ff4d4577245dc684ab6d022731a"
+      },
+      "predecessor_s17_config": {
+        "path": "outputs/recommendation-evidence/rec-ev-023d/cache/lightfm-seeds/S17/config.json",
+        "bytes": 416,
+        "sha256": "298c6d3ed52e20554057e8f0f4a65573f394c92092c909005eecd5eae97fc959"
+      },
+      "predecessor_s17_result": {
+        "path": "outputs/recommendation-evidence/rec-ev-023d/cache/lightfm-seeds/S17/result.npz",
+        "bytes": 19866512,
+        "sha256": "78768d565c62decd38b3768d3c946fe46c2e08792b1caa7d93ef1cfdbfb58c29"
+      },
+      "predecessor_s17_integrity": {
+        "path": "outputs/recommendation-evidence/rec-ev-023d/cache/lightfm-seeds/S17/integrity.json",
+        "bytes": 809,
+        "sha256": "5551e49a5195cbf95cee537ca22af9013a1123326ef940d27665bad04309d89f"
+      },
+      "predecessor_s42_config": {
+        "path": "outputs/recommendation-evidence/rec-ev-023d/cache/lightfm-seeds/S42/config.json",
+        "bytes": 416,
+        "sha256": "becc85770b7beefbbd228e148664b909c643ae406e1019f1d5ed2b2bbd0c2bcf"
+      },
+      "predecessor_s42_result": {
+        "path": "outputs/recommendation-evidence/rec-ev-023d/cache/lightfm-seeds/S42/result.npz",
+        "bytes": 19862965,
+        "sha256": "e96dcee7898f885926d08dd532064bf715d4b232a558c00b86187cb47400f33b"
+      },
+      "predecessor_s42_integrity": {
+        "path": "outputs/recommendation-evidence/rec-ev-023d/cache/lightfm-seeds/S42/integrity.json",
+        "bytes": 809,
+        "sha256": "8442013942ed61529d12604cf7ddc7fd5c4ad55a9569141e6b0791671baae1d6"
+      },
+      "predecessor_s73_config": {
+        "path": "outputs/recommendation-evidence/rec-ev-023d/cache/lightfm-seeds/S73/config.json",
+        "bytes": 416,
+        "sha256": "0d33a3a1e2c8064e250359569a3d28190aaefd539e25ddce08878c092a1269eb"
+      },
+      "predecessor_s73_result": {
+        "path": "outputs/recommendation-evidence/rec-ev-023d/cache/lightfm-seeds/S73/result.npz",
+        "bytes": 19860776,
+        "sha256": "b10c5dc121023d62dc49f092d70ac963e5f3ad35de65c2548e4d449852a344a0"
+      },
+      "predecessor_s73_integrity": {
+        "path": "outputs/recommendation-evidence/rec-ev-023d/cache/lightfm-seeds/S73/integrity.json",
+        "bytes": 809,
+        "sha256": "278ca02a205506c8c56a57caf7ddabd4559dd8cd327bb77730fe636d2cbb2505"
+      },
+      "predecessor_s101_config": {
+        "path": "outputs/recommendation-evidence/rec-ev-023d/cache/lightfm-seeds/S101/config.json",
+        "bytes": 417,
+        "sha256": "9c842637dda377ccf9514e09744cac10fed777d4f8b67f286e9cb48a077cf10d"
+      },
+      "predecessor_s101_result": {
+        "path": "outputs/recommendation-evidence/rec-ev-023d/cache/lightfm-seeds/S101/result.npz",
+        "bytes": 19864483,
+        "sha256": "2525a7fe7e8443b3c7fe4431d473448d0f73fe049c3ecfaa8cfd619d392cca25"
+      },
+      "predecessor_s101_integrity": {
+        "path": "outputs/recommendation-evidence/rec-ev-023d/cache/lightfm-seeds/S101/integrity.json",
+        "bytes": 812,
+        "sha256": "2fde0595a77e1ea772c6d6a1f60344dba5e83c57f8ccda5d85a481c690fbed87"
+      },
+      "predecessor_s211_config": {
+        "path": "outputs/recommendation-evidence/rec-ev-023d/cache/lightfm-seeds/S211/config.json",
+        "bytes": 417,
+        "sha256": "dd4d2a2c9ebcc6fd95729f8368cbb793176fba9347bc6b2a20c570e0e3acb8cb"
+      },
+      "predecessor_s211_result": {
+        "path": "outputs/recommendation-evidence/rec-ev-023d/cache/lightfm-seeds/S211/result.npz",
+        "bytes": 19858985,
+        "sha256": "16eb1de637b5c7328b3fb4aaa4c4daa64556cc7bd1053e4a40ad42867a8135a4"
+      },
+      "predecessor_s211_integrity": {
+        "path": "outputs/recommendation-evidence/rec-ev-023d/cache/lightfm-seeds/S211/integrity.json",
+        "bytes": 812,
+        "sha256": "5b2a0af1b4ae4146ad28f8727ea83059cb160e444bf2847d89573f9cd0a74809"
+      }
+    }
+  },
+  "target_fold_in": {
+    "name": "REC_EV_023D_A1_WEIGHTED_FULL_BATCH_USER_VECTOR_ONLY_80_STEP_ROW_LIPSCHITZ_CAPPED",
+    "reuse_019c_fold_in": false,
+    "weights": "REC_EV_023B_ENCODING_WEIGHTS_FIRST_K",
+    "labels": "SIGN_NONZERO_WEIGHT",
+    "confidence": "ABS_WEIGHT_DIV_MEAN_ABS_WEIGHT_RELATIVE_SCALE_ONLY",
+    "initial_user_vector": 0.0,
+    "user_bias": false,
+    "steps": 80,
+    "base_learning_rate": 0.05,
+    "safety_factor": 0.9,
+    "regularization": 0.000001,
+    "score": "ITEM_FEATURE_BIAS_PLUS_USER_VECTOR_DOT_ITEM_FEATURE_FACTOR",
+    "gradient": "NEGATIVE_WEIGHTED_MEAN_Y_SIGMOID_NEGATIVE_YZ_TIMES_V_PLUS_LAMBDA_U",
+    "stable_sigmoid": "BRANCH_STABLE_EXP_NO_CLIP",
+    "dtype": "FLOAT64",
+    "one_class_allowed": true,
+    "zero_nonzero_weights": "ANALYTIC_RANDOM_BEFORE_CONFIDENCE_MEAN",
+    "lipschitz_bound": "L_I_EQUALS_REGULARIZATION_PLUS_SUM_J_CONFIDENCE_IJ_TIMES_SQUARED_L2_NORM_PROFILE_ITEM_FACTOR_IJ_DIV_4_TIMES_SUM_J_CONFIDENCE_IJ",
+    "learning_rate_rule": "ACTIVE_ROW_I_ETA_I_EQUALS_MIN_BASE_LEARNING_RATE_AND_SAFETY_FACTOR_DIV_L_I",
+    "inactive_row_rule": "ZERO_NONZERO_WEIGHT_ROW_HAS_ETA_ZERO_AND_NO_USER_VECTOR_UPDATE",
+    "step_application": "ETA_I_COMPUTED_ONCE_BEFORE_STEP_ZERO_AND_FIXED_FOR_ALL_80_STEPS",
+    "guard": "ACTIVE_ROWS_REQUIRE_FINITE_POSITIVE_L_I_AND_ETA_I_TIMES_L_I_LTE_0_9_PLUS_32_FLOAT64_EPS_FAIL_CLOSED",
+    "step_size_inputs": "FROZEN_ITEM_FACTORS_PROFILE_POSITIONS_ABSOLUTE_PROFILE_WEIGHTS_AND_REGULARIZATION_ONLY",
+    "step_size_forbidden_inputs": "ITEM_BIAS_TARGET_POSITION_TARGET_FACTOR_TARGET_SCORE_RANK_Q_EVALUATION_LABEL_METRIC",
+    "optimizer_exclusions": "NO_BACKTRACKING_NO_LINE_SEARCH_NO_EARLY_STOPPING_NO_GRADIENT_CLIPPING",
+    "item_representation_frozen_sha_before_after": true,
+    "claim": "FIXED_80_STEP_ITERATE_NOT_OPTIMUM"
+  },
+  "implementation_artifacts": [
+    "scripts/rec_ev_022a_core.py",
+    "scripts/run_rec_ev_023b_masked_cold_screen.py",
+    "scripts/run_rec_ev_023c_crossed_sensitivity.py",
+    "scripts/train_rec_ev_023d_lightfm.py",
+    "scripts/run_rec_ev_023d_lightfm_attribution.py",
+    "scripts/run_rec_ev_023d_a1_lightfm_attribution.py",
+    "scripts/validate_rec_ev_023d_a1_contract.py"
+  ],
+  "outputs": {
+    "protocol_lock": "protocol-lock.json",
+    "source_manifest": "source-manifest.json",
+    "progress": "run-progress.json",
+    "foldin_schedule": "cache/foldin-schedule.npz",
+    "foldin_schedule_integrity": "cache/foldin-schedule.integrity.json",
+    "rank_root": "cache/rank-seeds",
+    "rank_set_integrity": "cache/rank-set.integrity.json",
+    "user_metrics": "user-metrics.parquet",
+    "user_metrics_integrity": "user-metrics.integrity.json",
+    "bootstrap_replicates": "cache/bootstrap-replicates.npz",
+    "bootstrap_integrity": "cache/bootstrap-replicates.integrity.json",
+    "selection": "feature-only-lightfm-a1-selection.json",
+    "result": "feature-only-lightfm-a1-result.json",
+    "analysis_integrity": "feature-only-lightfm-a1-result.integrity.json"
+  },
+  "resume": {
+    "required": true,
+    "drift": "FAIL_CLOSED",
+    "predecessor_fit_carry_forward": "VERIFY_OLD_SIGNATURE_AND_EXACT_SHA_NO_COPY_NO_REFIT_NO_RESEAL",
+    "foldin_schedule_sealed_before_rank": true,
+    "all_five_rank_sets_sealed_before_label_open": true,
+    "completed_rank_byte_mtime_unchanged": true
+  },
+  "invariants": {
+    "locked_test_opened": false,
+    "stage2_opened": false,
+    "final_reserve_opened": false,
+    "champion": null,
+    "product_policy_updated": false
+  }
+}

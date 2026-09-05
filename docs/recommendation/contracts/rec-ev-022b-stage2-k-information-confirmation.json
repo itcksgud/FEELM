@@ -1,0 +1,192 @@
+{
+  "schema_version": 1,
+  "contract_id": "rec-ev-022b-stage2-k-information-confirmation-v1",
+  "status": "APPROVED_FOR_STAGE2_IMPLEMENTATION_PARITY",
+  "task_id": "TASK-REC-EV-022B",
+  "purpose": "Rerun the already-seen REC-EV-022A Stage2 user slice after repairing the pre-filter and resume-integrity implementation boundaries. This establishes implementation parity for within-anchor K and encoding development evidence, not a fresh confirmation. No UI, Korean-market, recent-item, champion, safety, or product-policy decision.",
+  "independent_design_audit": {
+    "thread_id": "01a06eeb-df86-7252-ac77-afc8d6ec24f7",
+    "final_verdict": "PASS",
+    "passed_at_local_date": "2026-09-05"
+  },
+  "authorization": {
+    "stage2_materialization": true,
+    "locked_test_access": false,
+    "stage1_reselection": false,
+    "final_reserve_access": false,
+    "model_retrain_or_retune": false,
+    "product_policy_change": false,
+    "champion_selection": false
+  },
+  "implementation_artifacts": [
+    "scripts/rec_ev_022a_core.py",
+    "scripts/run_rec_ev_022a_stage1.py",
+    "scripts/validate_rec_ev_022a_contract.py",
+    "scripts/run_rec_ev_022b_stage2.py",
+    "scripts/validate_rec_ev_022b_contract.py"
+  ],
+  "motivation_only_not_execution_input": {
+    "rec_ev_022a_result": {
+      "path": "outputs/recommendation-evidence/rec-ev-022a/stage1-result.json",
+      "bytes": 290467,
+      "sha256": "73fbe2720b9e0742d87cfa50d8700adc2fe2a05187be810795043b191c5a4a6a",
+      "status": "COMPLETED_NO_ELIGIBLE_POLICY"
+    }
+  },
+  "allowed_input_artifacts": {
+    "movielens_archive": {
+      "path": "C:/higher/projects/MM/data/raw/ml-32m.zip",
+      "bytes": 238950008,
+      "sha256": "e4a68655d7386b8f95f2f2424b2ff975dfdd15ffd59e0d864a14dca43e99d6ee",
+      "member": "ml-32m/ratings.csv"
+    },
+    "rec_ev_022a_contract": {
+      "path": "docs/recommendation/contracts/rec-ev-022a-k-input-encoding-stage1.json",
+      "bytes": 11999,
+      "sha256": "4d358515b1066d2c77c572739b27db3443da8f7a14a0b24a63bf20007b5f364b"
+    },
+    "rec_ev_022a_protocol_lock": {
+      "path": "outputs/recommendation-evidence/rec-ev-022a/protocol-lock.json",
+      "bytes": 868,
+      "sha256": "f1c39c7a5d3876026171e5ef2fce79514cef1d8b082587cc544ccfc8ed30bb00"
+    },
+    "train_model": {
+      "path": "outputs/recommendation-evidence/rec-ev-022a/cache/train-model.npz",
+      "bytes": 552962,
+      "sha256": "afd18bc16e357871ca6a4dfd01ce9319f09efd1f63b29d4bbd5d6565190b218d"
+    },
+    "train_z": {
+      "path": "outputs/recommendation-evidence/rec-ev-022a/cache/train-z.npz",
+      "bytes": 27012486,
+      "sha256": "925e2730ecac3756dfb691c60679261868bfdb37d90aec20ae2613d8754426f7"
+    },
+    "structured_full": {
+      "path": "outputs/recommendation-evidence/rec-ev-022a/cache/structured-full.npz",
+      "bytes": 1434894,
+      "sha256": "8fcc9afc68219fbefa0f80fa8a9909b9afaa8f23d6e4093c885426f5a1df796f"
+    }
+  },
+  "forbidden_input_artifacts": [
+    "outputs/recommendation-evidence/global-time-v1/test.parquet",
+    "outputs/recommendation-evidence/rec-ev-019a/locked-test-binary-prefixes.parquet",
+    "outputs/recommendation-evidence/rec-ev-019a/locked-test-evaluation-windows.parquet",
+    "outputs/recommendation-evidence/rec-ev-022a/cache/stage1-common30.parquet",
+    "outputs/recommendation-evidence/rec-ev-022a/stage1-user-metrics.parquet"
+  ],
+  "role_and_source": {
+    "old_locked_test_exclusion": "old split bucket 60..99 skipped before rating processing exactly as REC-EV-022A",
+    "evaluation_role": "STAGE2_DEVELOPMENT",
+    "new_role_bucket_range": [8000, 9199],
+    "final_reserve_bucket_range_forbidden": [9200, 9999],
+    "training": "REUSE_HASH_PINNED_REC_EV_022A_TRAIN_ONLY_ARTIFACTS_NO_REFIT",
+    "future_role": "DEVELOPMENT_NOT_FINAL_CONFIRMATION"
+  },
+  "prefilter_reader": {
+    "before_role_decision": "READ_RAW_LINE_AND_PARSE_ONLY_FIRST_USER_ID_FIELD",
+    "excluded_row": "DISCARD_RAW_LINE_WITHOUT_PARSING_MOVIE_ID_RATING_OR_TIMESTAMP",
+    "allowed_row": "PARSE_MOVIE_ID_RATING_AFTER_OLD_AND_NEW_ROLE_ALLOWLIST",
+    "sentinel_test_required": true
+  },
+  "fixed_semantics": {
+    "user_key_order_hash_rating_scale_i_star_profile_judged20_q_eval_encodings_anchors_scoring_fallback_tie_break": "BYTE_IDENTICAL_SEMANTICS_FROM_HASH_PINNED_REC_EV_022A_CONTRACT",
+    "primary_order_salt": "rec-ev-022a-order-primary-v1",
+    "common30": "Stage2 users with at least 50 I_STAR ratings; first30 profile, next20 JUDGED20",
+    "minimum_common30_users": 5000
+  },
+  "k_values": {
+    "selection_even_set": [2, 4, 6, 8, 10, 12, 14, 16, 18, 20, 22, 24, 26, 28, 30],
+    "absolute_b0_diagnostic": 0,
+    "odd_k": "NOT_COMPUTED",
+    "k2_interpretation": "MINIMUM_ONE_PAIR_REFERENCE_NOT_PRODUCT_DEFAULT",
+    "k30_automatic_candidate": false
+  },
+  "metrics": {
+    "primary_n": 2,
+    "utility": "PAIR1_MEAN_Q_HIGHER_BETTER",
+    "worst_loss": "PAIR1_WORST_Q_LOSS_LOWER_BETTER",
+    "candidate_set": "FIXED_JUDGED20",
+    "unrated_as_negative": false,
+    "safety_claim": false
+  },
+  "statistics": {
+    "unit": "USER",
+    "single_family_contrasts": {
+      "k_minus_k2": "all encoding x anchor x metric x K in 4,6,...,30",
+      "k_minus_k30": "all encoding x anchor x metric x K in 2,4,...,28",
+      "percentile_minus_binary": "both anchors x both metrics at every K in 2,4,...,30",
+      "percentile_minus_ordinal": "both anchors x both metrics at every K in 2,4,...,30"
+    },
+    "expected_contrasts": 456,
+    "bootstrap": "REC_EV_022A_NUMPY_1_26_4_PCG64_USER_ASC_SHARED_VECTOR_EXACT_ALGORITHM",
+    "bootstrap_repeats": 10000,
+    "seed": 20260924,
+    "interval": "TWO_SIDED_95_PERCENT_MAX_T_SIMULTANEOUS",
+    "utility_margin": 0.005,
+    "worst_loss_margin": 0.01,
+    "equivalence_utility": 0.005,
+    "equivalence_worst_loss": 0.01,
+    "separate_precision_gate": false
+  },
+  "k_screen": {
+    "k_onset": "for each encoding, first K in 2,4,...,26 where K,K+2,K+4 on both anchors have K-K2 utility lower>=0.005 and worst-loss upper<=0.010",
+    "onset_required_for_encoding": true,
+    "k_plateau_search": [2, 4, 6, 8, 10, 12, 14, 16, 18, 20, 22, 24, 26, 28],
+    "k_plateau": "for eligible encoding, first search K where every even follow-up through 28 is simultaneously equivalent to K30 on both endpoints and anchors; K30 is reference only",
+    "plateau_without_onset_can_enter": false
+  },
+  "candidate_truth_table": {
+    "g": "encodings with non-null K_ONSET",
+    "k_cand": "sorted unique union of every G encoding onset and non-null plateau",
+    "s0": "G cross K_CAND",
+    "percentile_rule": "if PERCENTILE_MAGNITUDE in G, retain every PERCENTILE_MAGNITUDE x K_CAND cell",
+    "binary_removal": "only if percentile and binary are both in G and at that K both anchors have percentile-minus-binary utility lower>=0.005 and worst-loss upper<=0.010",
+    "ordinal_removal": "only if percentile and ordinal are both in G and at that K both anchors have percentile-minus-ordinal utility lower>=-0.005 and worst-loss upper<=0.010",
+    "percentile_absent": "retain all G binary and ordinal S0 cells",
+    "reverse_or_undefined_removal": false,
+    "zero_cells": "NO_ELIGIBLE_POLICY",
+    "one_to_six_cells": "PASS_EXACT_CELLS_TO_MODEL_DEVELOPMENT",
+    "seven_or_more_cells": "OVERFLOW_NO_SELECTION",
+    "arbitrary_top6": false
+  },
+  "claim_boundary": {
+    "confirmatory": "NONE_STAGE2_SLICE_ALREADY_SEEN_BEFORE_IMPLEMENTATION_REPAIR",
+    "implementation_parity": "WITHIN_ANCHOR_INCREMENTAL_INFORMATION_AND_ENCODING_RETENTION_ON_022A_STAGE2_USERS",
+    "fresh_confirmation": false,
+    "exploratory_motivation": "REC_EV_022A_STAGE1_RESULT",
+    "not_claimed": ["ABSOLUTE_MODEL_CHAMPION", "REAL_BINARY_UI", "UX_OPTIMAL_K", "KOREAN_OR_RECENT_MOVIE_TRANSFER", "PRODUCT_SAFETY", "PRODUCT_POLICY"]
+  },
+  "output_root": "outputs/recommendation-evidence/rec-ev-022b",
+  "outputs": {
+    "protocol_lock": "protocol-lock.json",
+    "source_manifest": "source-manifest.json",
+    "progress": "run-progress.json",
+    "cohort": "cache/stage2-common30.parquet",
+    "cohort_integrity": "cache/stage2-common30.integrity.json",
+    "metric_parts": "cache/metric-parts",
+    "user_metrics": "stage2-user-metrics.parquet",
+    "user_metrics_integrity": "stage2-user-metrics.integrity.json",
+    "result": "stage2-result.json",
+    "selection": "stage2-selection.json"
+  },
+  "resume": {
+    "required": true,
+    "checkpoint_after_users": 100,
+    "drift": "FAIL_CLOSED",
+    "source_manifest_sha_verified": true,
+    "cohort_sha_rows_and_run_signature_verified": true,
+    "each_metric_part_sha_rows_user_slice_and_run_signature_verified": true,
+    "combined_user_metrics_sha_rows_and_run_signature_verified": true,
+    "direct_score_revalidates_cohort": true,
+    "partial_combined_artifact_fails_closed": true,
+    "expected_metric_part_path_set_exact": true,
+    "implementation_sha_locked": true
+  },
+  "invariants": {
+    "locked_test_opened": false,
+    "stage1_user_metrics_opened": false,
+    "final_reserve_opened": false,
+    "model_retrained": false,
+    "product_policy_updated": false,
+    "champion": null
+  }
+}

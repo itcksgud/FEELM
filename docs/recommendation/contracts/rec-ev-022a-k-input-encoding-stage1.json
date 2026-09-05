@@ -1,0 +1,247 @@
+{
+  "schema_version": 1,
+  "contract_id": "rec-ev-022a-k-input-encoding-stage1-v1",
+  "status": "APPROVED_FOR_STAGE1_DEVELOPMENT",
+  "task_id": "TASK-REC-EV-022A",
+  "purpose": "Among non-Locked-Test MovieLens users, estimate how K=0..30 and three rating encodings change discrimination of a fixed JUDGED20 set under two frozen anchor similarities. This is not a product, UI, safety, Korean-market, recent-item, or model-champion decision.",
+  "independent_design_audit": {
+    "thread_id": "01a06eeb-df86-7252-ac77-afc8d6ec24f7",
+    "final_verdict": "PASS",
+    "passed_at_local_date": "2026-09-05"
+  },
+  "authorization": {
+    "create_protocol_lock": true,
+    "run_stage1": true,
+    "locked_test_access": false,
+    "stage2_access": false,
+    "final_reserve_access": false,
+    "product_policy_change": false,
+    "champion_selection": false
+  },
+  "implementation_artifacts": [
+    "scripts/rec_ev_022a_core.py",
+    "scripts/run_rec_ev_022a_stage1.py",
+    "scripts/validate_rec_ev_022a_contract.py"
+  ],
+  "allowed_input_artifacts": {
+    "movielens_archive": {
+      "path": "C:/higher/projects/MM/data/raw/ml-32m.zip",
+      "bytes": 238950008,
+      "sha256": "e4a68655d7386b8f95f2f2424b2ff975dfdd15ffd59e0d864a14dca43e99d6ee",
+      "member": "ml-32m/ratings.csv"
+    },
+    "candidate_identity": {
+      "path": "outputs/recommendation-evidence/rec-ev-019c/candidate-core-final.parquet",
+      "bytes": 651984,
+      "sha256": "9bb0560cb0c3538160dce7568a4dc366e2937b1ec6019cbacfd7113cd34c910e"
+    },
+    "structured_features": {
+      "path": "outputs/recommendation-evidence/rec-ev-019b/structured-features.parquet",
+      "bytes": 3008444,
+      "sha256": "d68b93496c003c2a51e5defe0c9ee9af24e7b0d99eb68a0536d2e0a305460c62"
+    }
+  },
+  "forbidden_input_artifacts": [
+    "outputs/recommendation-evidence/global-time-v1/test.parquet",
+    "outputs/recommendation-evidence/rec-ev-019a/locked-test-binary-prefixes.parquet",
+    "outputs/recommendation-evidence/rec-ev-019a/locked-test-evaluation-windows.parquet"
+  ],
+  "source_population": {
+    "canonical_decimal": "BASE10_ASCII_NO_SIGN_NO_LEADING_ZERO",
+    "old_bucket": "uint64_be_first8(SHA256(UTF8('feelm-rec-vnext-user-split-v1|' + canonical_user_id))) mod 100",
+    "eligible_old_buckets": [0, 59],
+    "excluded_old_buckets": [60, 99],
+    "excluded_policy": "SKIP_BEFORE_RATING_MOVIE_TIMESTAMP_PROCESSING_AND_DO_NOT_REPORT_COUNTS",
+    "claim": "TASK_SPECIFIC_DEVELOPMENT_EVIDENCE_ON_MOVIELENS_USERS_OUTSIDE_THE_EXISTING_LOCKED_TEST"
+  },
+  "prefilter_reader": {
+    "before_role_decision": "READ_RAW_LINE_AND_PARSE_ONLY_FIRST_USER_ID_FIELD",
+    "excluded_row": "DISCARD_RAW_LINE_WITHOUT_PARSING_MOVIE_ID_RATING_OR_TIMESTAMP",
+    "allowed_row": "PARSE_MOVIE_ID_RATING_AND_TIMESTAMP_AFTER_OLD_AND_NEW_ROLE_ALLOWLIST",
+    "sentinel_test_required": true
+  },
+  "user_roles": {
+    "user_key": "lowerhex(SHA256(UTF8('rec-ev-022a-user-key-v1|' + canonical_user_id)))",
+    "bucket": "uint256_be(SHA256(UTF8('rec-ev-022a-user-role-v1|' + canonical_user_id))) mod 10000",
+    "ranges": {
+      "TRAIN_USERS": [0, 5999],
+      "STAGE1_SELECTION": [6000, 7999],
+      "STAGE2_DEVELOPMENT": [8000, 9199],
+      "FINAL_RESERVE": [9200, 9999]
+    },
+    "learned_quantities_use_train_users_only": true,
+    "stage1_may_materialize_roles": ["TRAIN_USERS", "STAGE1_SELECTION"],
+    "stage1_forbidden_roles": ["STAGE2_DEVELOPMENT", "FINAL_RESERVE"]
+  },
+  "determinism": {
+    "order_key": "SHA256(UTF8(order_salt + '|' + user_key + '|' + canonical_movie_id)).digest() BYTE_LEXICOGRAPHIC_ASC_THEN_NUMERIC_MOVIE_ID_ASC",
+    "primary_order_salt": "rec-ev-022a-order-primary-v1",
+    "sensitivity_order_salts": [
+      "rec-ev-022a-order-sensitivity-01-v1",
+      "rec-ev-022a-order-sensitivity-02-v1",
+      "rec-ev-022a-order-sensitivity-03-v1",
+      "rec-ev-022a-order-sensitivity-04-v1",
+      "rec-ev-022a-order-sensitivity-05-v1",
+      "rec-ev-022a-order-sensitivity-06-v1",
+      "rec-ev-022a-order-sensitivity-07-v1",
+      "rec-ev-022a-order-sensitivity-08-v1",
+      "rec-ev-022a-order-sensitivity-09-v1"
+    ],
+    "sensitivity_can_select_candidates": false,
+    "numpy_version": "1.26.4"
+  },
+  "rating_scale": {
+    "values": [0.5, 1.0, 1.5, 2.0, 2.5, 3.0, 3.5, 4.0, 4.5, 5.0],
+    "prior": "pi0(r)=mean_over_TRAIN_USERS(count_u(r)/count_u_all)",
+    "prior_mid_cdf": "G0_mid(r)=sum_s_lt_r pi0(s)+0.5*pi0(r)",
+    "tau_primary": 5.0,
+    "tau_descriptive": [2.0, 10.0],
+    "profile_percentile": "q_K(r)=(n_profile_lt_r+0.5*n_profile_eq_r+tau*G0_mid(r))/(K+tau)",
+    "evaluation_percentile": "q_eval(r)=(n_user_full_lt_r+0.5*n_user_full_eq_r)/n_user_full",
+    "q_eval_use": "METRIC_GROUND_TRUTH_ONLY"
+  },
+  "item_universe": {
+    "i0": "PINNED_IDENTITY intersect STRUCTURED_FEATURE_ELIGIBLE_AND_FULL_ROW_NORM_GT_0 intersect TRAIN_RAW_RATING_COUNT_GTE_2",
+    "train_item_weight": "z_ui=2*((n_user_full_lt+0.5*n_user_full_eq+5*G0_mid(r))/(n_user_full+5))-1; omit exact zero",
+    "i_star": "I0 intersect TRAIN_ITEM_Z_COLUMN_L2_NORM_GT_0",
+    "profile_target_split_after_i_star": true
+  },
+  "cohort": {
+    "primary_role": "STAGE1_SELECTION",
+    "common30": "users with at least 50 ratings on I_STAR",
+    "profile_pool": "first 30 items in primary ORDER_KEY order",
+    "judged20": "next 20 items in the same order",
+    "all_eligible": "K-specific users with at least K+20 I_STAR ratings; descriptive transport only",
+    "minimum_common30_users": 5000,
+    "timestamp_as_watch_order": false,
+    "active_question_ui_claim": false
+  },
+  "descriptive_strata": {
+    "selection_use": false,
+    "rating_count": ["50_99", "100_499", "500_PLUS"],
+    "join_period": "quartiles of minimum rating timestamp with cut points learned from TRAIN_USERS only",
+    "preference_entropy": "quartiles of normalized Shannon entropy across ten rating bins with cut points learned from TRAIN_USERS only",
+    "popularity_affinity": "quartiles of mean TRAIN-only B0 midrank percentile over the user's I_STAR ratings with cut points learned from TRAIN_USERS only"
+  },
+  "encodings": {
+    "BINARY_SIGN": "w=sign(2*q_K-1); exact zero is neutral",
+    "PERCENTILE_MAGNITUDE": "w=2*q_K-1",
+    "ORDINAL_RANK": "w=2*(n_profile_lt+0.5*n_profile_eq)/K-1; K1 is NOT_APPLICABLE",
+    "actual_binary_behavior_claim": false
+  },
+  "anchors": {
+    "STRUCTURED_CONTENT_SIM": {
+      "groups": ["GENRE", "CONTEXT_LANGUAGE_DECADE_RUNTIME30", "PEOPLE_DIRECTOR_TOP5_CAST", "KEYWORDS"],
+      "construction": "GROUP_BINARY_MULTI_HOT_ROW_L2_NORMALIZE_THEN_WEIGHT_EACH_GROUP_ONE_QUARTER_CONCAT_AND_FINAL_ROW_L2_NORMALIZE",
+      "similarity": "max(0,row_i_dot_row_j)",
+      "top_neighbor_pruning": false
+    },
+    "USER_DISJOINT_ITEMKNN_SIM": {
+      "matrix": "TRAIN_USERS_ONLY_Z",
+      "similarity": "if support<2 or cosine<=0 then 0 else cosine*support/(support+50)",
+      "co_rating_support": "count TRAIN users where both z values are nonzero",
+      "negative_similarity": "CLIP_TO_ZERO",
+      "top_neighbor_pruning": false,
+      "shrinkage": 50.0
+    }
+  },
+  "scoring": {
+    "profile_denominator": "D_u=sum_profile(abs(w_ui))",
+    "personalized": "if D_u>0 then sum_profile(w_ui*sim(i,j))/D_u for every JUDGED20 target",
+    "zero_similarity": "VALID_ZERO_CONTRIBUTION_NO_TARGET_FALLBACK",
+    "cell_fallback": "if D_u=0 use B0 for entire user_encoding_K cell",
+    "b0": "TRAIN_USERS_ONLY_BAYESIAN_RATING_WITH_PRIOR_STRENGTH_100",
+    "ranking_tie_break": ["PERSONALIZED_SCORE_DESC", "B0_SCORE_DESC", "MOVIE_ID_ASC"],
+    "fallback_tie_break": ["B0_SCORE_DESC", "MOVIE_ID_ASC"]
+  },
+  "evaluation": {
+    "primary_candidate_set": "JUDGED20_ONLY",
+    "primary_n": 2,
+    "primary_metrics": {
+      "PAIR1_MEAN_Q": "mean q_eval of first two ranked JUDGED20 items; higher is better",
+      "PAIR1_WORST_Q_LOSS": "1-min q_eval of first two ranked JUDGED20 items; lower is better"
+    },
+    "secondary": ["PAIRWISE_CONCORDANCE_WITH_HALF_CREDIT_FOR_LABEL_TIES", "CELL_FALLBACK_RATE"],
+    "descriptive_even_n": [4, 6, 8, 10, 12, 14, 16, 18, 20],
+    "full_catalog_stage1": false,
+    "unrated_as_negative": false,
+    "safety_claim": false
+  },
+  "statistics": {
+    "unit": "USER",
+    "primary_family": "PRIMARY_SALT_COMMON30_N2_ALL_VALID_ENCODING_X_ANCHOR_CONTRASTS_OF_K1_TO_30_MINUS_K0_AND_K1_TO_29_MINUS_K30_FOR_BOTH_PRIMARY_METRICS_EXCLUDING_ORDINAL_K1",
+    "bootstrap_repeats": 10000,
+    "seed": 20260924,
+    "numpy_version": "1.26.4",
+    "bit_generator": "PCG64",
+    "user_order": "LOWERCASE_USER_KEY_ASCII_ASC",
+    "draw": "for each repeat call rng.integers(0,n_users,size=n_users,endpoint=False,dtype=np.int64) exactly once and share indices across all contrasts",
+    "sample_sd_ddof": 1,
+    "standardized_bootstrap": "t_bh=(theta_bh-theta_hat_h)/se_hat_h",
+    "critical_value": "numpy.quantile(max_h(abs(t_bh)),0.95,method='linear')",
+    "simultaneous_interval": "theta_hat_h plus_or_minus critical_value*se_hat_h",
+    "zero_se": "deterministic point interval and exclude from max statistic",
+    "parallel_rng": false
+  },
+  "decision": {
+    "utility_margin": 0.005,
+    "utility_margin_reason": "A 0.005 change in the two-item mean is a 0.01 total-Q change: one displayed item improves by one preference percentile when the other is fixed.",
+    "worst_loss_noninferiority_margin": 0.01,
+    "worst_loss_margin_reason": "Allow at most one preference-percentile deterioration in the lower-preference member of the pair.",
+    "plateau_utility_equivalence": 0.005,
+    "plateau_worst_loss_equivalence": 0.01,
+    "precision_half_width_utility_max": 0.005,
+    "precision_half_width_worst_loss_max": 0.01,
+    "gate_order": ["OBSERVED_PREFERENCE_WORST_ITEM_NONINFERIORITY", "PAIR1_MEAN_Q_IMPROVEMENT"],
+    "k_minimum": "first K in 1..28 where K,K+1,K+2 pass both endpoints and precision on both anchors versus K0",
+    "encoding_eligibility": "K_MINIMUM_MUST_EXIST",
+    "k_plateau": "eligible encoding only; first K where every K..30 is equivalent to K30 on both endpoints and precision for both anchors, and plateau K itself passes both K0 gates",
+    "maximum_stage2_candidates_per_encoding": 2,
+    "maximum_stage2_candidates_total": 6,
+    "deduplicate_minimum_and_plateau": true,
+    "tie_break": ["SMALLER_K", "ENCODING_ASCII_ASC"],
+    "k30_automatic_candidate": false
+  },
+  "role_boundary": {
+    "stage1": "K_AND_ENCODING_SELECTION_ONLY",
+    "stage2": "MODEL_KOREAN_RECENT_COLD_ITEM_AND_E5_DEVELOPMENT_USING_SELECTED_STAGE1_CANDIDATES_ONLY",
+    "final": "022A_INTERNAL_RESERVE_ONLY_NOT_HISTORICALLY_UNTOUCHED",
+    "locked_test": "UNTOUCHED_AND_OUT_OF_SCOPE"
+  },
+  "output_root": "outputs/recommendation-evidence/rec-ev-022a",
+  "outputs": {
+    "protocol_lock": "protocol-lock.json",
+    "source_manifest": "source-manifest.json",
+    "progress": "run-progress.json",
+    "train_cache": "cache/train-model.npz",
+    "train_z": "cache/train-z.npz",
+    "structured_cache": "cache/structured-full.npz",
+    "cohort_cache": "cache/stage1-common30.parquet",
+    "metric_parts": "cache/metric-parts",
+    "cache_integrity": "cache/cache-integrity.json",
+    "user_metrics": "stage1-user-metrics.parquet",
+    "user_metrics_integrity": "stage1-user-metrics.integrity.json",
+    "result": "stage1-result.json",
+    "selection": "stage1-selection.json"
+  },
+  "resume": {
+    "required_for_run": true,
+    "contract_or_source_drift": "FAIL_CLOSED",
+    "checkpoint_after_users": 100,
+    "source_manifest_sha_verified": true,
+    "prepared_cache_sha_and_run_signature_verified": true,
+    "each_metric_part_sha_rows_user_slice_and_run_signature_verified": true,
+    "combined_user_metrics_sha_rows_and_run_signature_verified": true,
+    "direct_score_revalidates_prepared_cache": true,
+    "partial_combined_artifact_fails_closed": true,
+    "expected_metric_part_path_set_exact": true,
+    "implementation_sha_locked": true
+  },
+  "invariants": {
+    "locked_test_opened": false,
+    "stage2_opened": false,
+    "final_reserve_opened": false,
+    "product_policy_updated": false,
+    "champion": null
+  }
+}

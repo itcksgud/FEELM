@@ -1,0 +1,124 @@
+{
+  "schema_version": 1,
+  "contract_id": "rec-ev-026-content-cf-alignment-execution-v1",
+  "status": "PROPOSED_FOR_EXECUTION_AUDIT",
+  "purpose": "Execute the design-locked REC-EV-026A/B E5-to-frozen-BPR alignment mechanism screen without Locked Test, final reserve, champion selection, or product-policy change.",
+  "audits": {
+    "thread_id": "01a0704a-ff92-7851-904a-bf3970b3d905",
+    "design": "REC_EV_026_DESIGN_PASS_EXACT_CONTRACT",
+    "preflight_implementation": "REC_EV_026_PREFLIGHT_IMPLEMENTATION_PASS",
+    "preflight_result": "REC_EV_026_PREFLIGHT_RESULT_PASS",
+    "required_execution": "REC_EV_026_EXECUTION_PASS_EXACT_CONTRACT_AND_IMPLEMENTATION"
+  },
+  "authorization": {
+    "mapper_feature_and_frozen_teacher_read": true,
+    "profile_rating_read_after_mapper_gate": true,
+    "evaluation_rating_read_after_rank_seal": true,
+    "timestamp_read": false,
+    "locked_test_access": false,
+    "final_reserve_access": false,
+    "champion_selection": false,
+    "product_policy_change": false
+  },
+  "allowed_input_artifacts": {
+    "design": {"path": "docs/recommendation/contracts/rec-ev-026-content-cf-alignment-design.json", "bytes": 28654, "sha256": "098dfe6a45f6b6ca2226e1b699008e0c9c6de495d6006e586e21354252ac5af7"},
+    "preflight_lock": {"path": "outputs/recommendation-evidence/rec-ev-026-preflight/protocol-lock.json", "bytes": 678, "sha256": "232e6e0a9f33ab9eaa4a17c0b0410cd98770ccc2b1e4244b4ae61f1debb27370"},
+    "preflight_manifest": {"path": "outputs/recommendation-evidence/rec-ev-026-preflight/source-manifest.json", "bytes": 10714, "sha256": "52afb48a081db0f7d634d0b6b60b152e4ddddd5e3e68afd29437ae8b4ec3ad04"},
+    "preflight_registry": {"path": "outputs/recommendation-evidence/rec-ev-026-preflight/exposure-registry.parquet", "bytes": 5530766, "sha256": "73ce92d9ebaed6e93c99351886d6e9126cda5b5f02808dfe7bf34c0e3fa0fca8"},
+    "preflight_registry_integrity": {"path": "outputs/recommendation-evidence/rec-ev-026-preflight/exposure-registry.integrity.json", "bytes": 328, "sha256": "d4833e975db35780ff988d3a6f93418fb7ef99c81ca684cd2d3783f4999325be"},
+    "preflight_membership": {"path": "outputs/recommendation-evidence/rec-ev-026-preflight/cache/membership.parquet", "bytes": 117181, "sha256": "abd88d25efea68ea3160ab04d5279564fe83a59ff5e6549127256aaa4c310ca8"},
+    "preflight_membership_integrity": {"path": "outputs/recommendation-evidence/rec-ev-026-preflight/cache/membership.integrity.json", "bytes": 292, "sha256": "7e2c1f9ebcf491eb3f5b879a56e3ea237e0addab87c67961afe886c366556ecb"},
+    "preflight_result": {"path": "outputs/recommendation-evidence/rec-ev-026-preflight/preflight.json", "bytes": 1543, "sha256": "2e6c208a541681542b59402f068fef7fa749e1a7f8392e0bbd4d7e589ab53e60"},
+    "preflight_progress": {"path": "outputs/recommendation-evidence/rec-ev-026-preflight/run-progress.json", "bytes": 955, "sha256": "188a5f22d80283a1f8982d7d5ede8cebf764609ad2d3504c3782318d65c28d5b"},
+    "preflight_integrity": {"path": "outputs/recommendation-evidence/rec-ev-026-preflight/preflight.integrity.json", "bytes": 1587, "sha256": "b8490d7275bbcfa9acf89b22ac48421aca7e9b77d9e13c63d1ec6c8b8ba73b95"},
+    "movielens_archive": {"path": "C:/higher/projects/MM/data/raw/ml-32m.zip", "member": "ml-32m/ratings.csv", "bytes": 238950008, "sha256": "e4a68655d7386b8f95f2f2424b2ff975dfdd15ffd59e0d864a14dca43e99d6ee"},
+    "structured_features": {"path": "outputs/recommendation-evidence/rec-ev-019b/structured-features.parquet", "bytes": 3008444, "sha256": "d68b93496c003c2a51e5defe0c9ee9af24e7b0d99eb68a0536d2e0a305460c62"},
+    "text_embeddings": {"path": "outputs/recommendation-evidence/rec-ev-019b/text-embeddings.parquet", "bytes": 99988968, "sha256": "ff35381f231e6d2a1fe35b79b8b55f64744c16188f9b92ce74c1466930967bda"},
+    "train_prior": {"path": "outputs/recommendation-evidence/rec-ev-022a/cache/train-model.npz", "bytes": 552962, "sha256": "afd18bc16e357871ca6a4dfd01ce9319f09efd1f63b29d4bbd5d6565190b218d"},
+    "candidate_core": {"path": "outputs/recommendation-evidence/rec-ev-019c/candidate-core-final.parquet", "bytes": 651984, "sha256": "9bb0560cb0c3538160dce7568a4dc366e2937b1ec6019cbacfd7113cd34c910e"},
+    "factor_s17": {"path": "outputs/recommendation-evidence/rec-ev-019c/cache/B4_BPR_MF-T003-S17/bpr-result.npz", "bytes": 19850923, "sha256": "6971f401ca410a91cebbdc21bbdc8b46f71f7241d0dae67396b9bf65dfb9056a"},
+    "factor_s42": {"path": "outputs/recommendation-evidence/rec-ev-019c/cache/B4_BPR_MF-T003-S42/bpr-result.npz", "bytes": 19851082, "sha256": "268039731def1ce03408d0ad04664c5577ee68cbe7fc51950c44c97f650920ab"},
+    "factor_s73": {"path": "outputs/recommendation-evidence/rec-ev-019c/cache/B4_BPR_MF-T003-S73/bpr-result.npz", "bytes": 19850684, "sha256": "ddded347399508f50d66e765376f3427ca2cbcbd23bd40b9abef3635b3bb0690"},
+    "factor_s101": {"path": "outputs/recommendation-evidence/rec-ev-019c/cache/B4_BPR_MF-T003-S101/bpr-result.npz", "bytes": 19851900, "sha256": "db161514fe68d9a3cb1c90245f9477a5c9cd6488aaa18fb0eafddfa047d0cf2c"},
+    "factor_s211": {"path": "outputs/recommendation-evidence/rec-ev-019c/cache/B4_BPR_MF-T003-S211/bpr-result.npz", "bytes": 19852059, "sha256": "f6f6c3dfe2f1a68897fba02be82288252cb1d9eaa24eeca9568449e8ee5ba5ba"}
+  },
+  "forbidden_input_artifacts": [
+    "outputs/recommendation-evidence/global-time-v1/test.parquet",
+    "outputs/recommendation-evidence/rec-ev-019a/locked-test-binary-prefixes.parquet",
+    "outputs/recommendation-evidence/rec-ev-019a/locked-test-evaluation-windows.parquet",
+    "outputs/recommendation-evidence/rec-ev-022a/final-reserve-input.parquet"
+  ],
+  "implementation_artifacts": [
+    "scripts/rec_ev_022a_core.py",
+    "scripts/validate_rec_ev_026_design.py",
+    "scripts/run_rec_ev_026_experiment.py",
+    "scripts/validate_rec_ev_026_execution.py",
+    "scripts/tests/test_rec_ev_026_experiment.py"
+  ],
+  "phase_order": ["PROTOCOL_LOCK", "MAPPER_FIT_GATE", "PROFILE_RATING_OPEN", "ALL_HEAD_RANK_SEAL", "EVALUATION_LABEL_OPEN", "METRICS_BOOTSTRAP_RESULT_SEAL"],
+  "reader": {
+    "maximum_user_id": 300000,
+    "rating_parse": "PARSE_USER_ID_THEN_MOVIE_ID_THEN_ONLY_IF_ALLOWLISTED_PARSE_RATING_TO_THIRD_COMMA",
+    "timestamp_parse": false,
+    "raw_user_id_output": "FORBIDDEN"
+  },
+  "mapper": {
+    "experiments": ["REC-EV-026A", "REC-EV-026B"],
+    "seeds": [17, 42, 73, 101, 211],
+    "alpha_grid": [0.1, 1.0, 10.0, 100.0, 1000.0],
+    "fit_before_profile_rating": true,
+    "target_and_control_actual_factor_access": false,
+    "gate": "FIVE_VALIDATION_MEAN_COSINES_STRICTLY_POSITIVE_AND_ALL_REFIT_COEFFICIENTS_FINITE_AND_ALL_SELECTED_TARGET_CONTROL_PREDICTIONS_FINITE_NONZERO_BEFORE_PROFILE_RATING"
+  },
+  "ranking": {
+    "heads": ["CURRENT_FULL", "E5", "E5_TO_BPR"],
+    "cells": [{"encoding": "BINARY_SIGN", "k": 6}, {"encoding": "PERCENTILE_MAGNITUDE", "k": 6}, {"encoding": "BINARY_SIGN", "k": 8}, {"encoding": "PERCENTILE_MAGNITUDE", "k": 8}, {"encoding": "BINARY_SIGN", "k": 14}, {"encoding": "PERCENTILE_MAGNITUDE", "k": 14}],
+    "slate_n": 4,
+    "top_n": 2,
+    "tie_payload": "UTF8(rec-ev-026-rank-tie-v1|EVIDENCE_ID|USER_KEY022|PANEL|DOMAIN|ENCODING|K|MOVIE_ID)",
+    "inactive_metric": "EXACT_ANALYTIC_RANDOM_TOP2"
+  },
+  "statistics": {
+    "contrasts": 312,
+    "metadata_sha256": "50105fbaff9a80bca249d2725ab469cfbd1da01f02b747902f9502c24b9d8775",
+    "union_user_shared_keyed_poisson": true,
+    "valid_replicates": 4000,
+    "attempt_ids": [0, 7999],
+    "max_t_nearest_rank": 0.975,
+    "ddof": 1
+  },
+  "output_root": "outputs/recommendation-evidence/rec-ev-026",
+  "outputs": {
+    "protocol_lock": "protocol-lock.json",
+    "source_manifest": "source-manifest.json",
+    "progress": "run-progress.json",
+    "mapper": "cache/mappers.npz",
+    "mapper_selection": "cache/mapper-selection.json",
+    "mapper_integrity": "cache/mapper.integrity.json",
+    "profile_ratings": "cache/profile-ratings.parquet",
+    "profile_integrity": "cache/profile-ratings.integrity.json",
+    "ranks": "score-rank.parquet",
+    "rank_integrity": "score-rank.integrity.json",
+    "labels": "cache/evaluation-labels.parquet",
+    "label_integrity": "cache/evaluation-labels.integrity.json",
+    "panel_metrics": "panel-metrics.parquet",
+    "user_contrasts": "user-contrasts.parquet",
+    "bootstrap": "cache/bootstrap.npz",
+    "result": "content-cf-alignment-result.json",
+    "selection": "content-cf-alignment-selection.json",
+    "result_integrity": "content-cf-alignment-result.integrity.json"
+  },
+  "resume": {
+    "post_lock_requires_resume": true,
+    "partial_or_drift": "FAIL_CLOSED_NO_OVERWRITE",
+    "phase_artifact_hash_required": true,
+    "post_label_change_requires_new_evidence_id": true
+  },
+  "result_boundary": {
+    "allowed": "ADAPTIVE_MECHANISM_SCREEN_WITH_USER_MOVIE_PAIR_NONREUSE_SINCE_REC_EV_019A_ONLY",
+    "locked_test_opened": false,
+    "final_reserve_opened": false,
+    "champion": null,
+    "product_policy_updated": false
+  }
+}

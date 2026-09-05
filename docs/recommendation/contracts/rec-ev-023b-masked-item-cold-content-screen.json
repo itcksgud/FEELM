@@ -1,0 +1,270 @@
+{
+  "contract_id": "rec-ev-023b-masked-item-cold-content-screen-v1",
+  "status": "APPROVED_FOR_ADAPTIVE_STAGE1_DEVELOPMENT_SCREEN",
+  "purpose": "Evaluate current TMDB structured features and pinned 384-dimensional E5 embeddings on an interaction-masked item-disjoint pseudo-cold judged slate across the six REC-EV-022B K/input candidates; this is adaptive development evidence, not fresh confirmation or a product decision.",
+  "independent_design_audit": {
+    "thread_id": "01a06eeb-df86-7252-ac77-afc8d6ec24f7",
+    "rounds": 3,
+    "final_verdict": "023B_DESIGN_PASS"
+  },
+  "authorization": {
+    "stage1_reuse": true,
+    "locked_test_access": false,
+    "stage2_access": false,
+    "final_reserve_access": false,
+    "champion_selection": false,
+    "product_policy_change": false
+  },
+  "adaptive_reuse": {
+    "stage1_users_and_split_feasibility_previously_seen": true,
+    "observed_universe_items": 41439,
+    "observed_warm_items": 33078,
+    "observed_masked_cold_items": 8361,
+    "observed_eligible_users": 9520,
+    "interval_label": "ADAPTIVE_STAGE1_DESCRIPTIVE_MAX_T_INTERVAL",
+    "forbidden_terms": ["FRESH", "PREREGISTERED", "CONFIRMED", "VALIDATED", "STRICT_COLD_START"]
+  },
+  "implementation_artifacts": [
+    "scripts/rec_ev_022a_core.py",
+    "scripts/run_rec_ev_023b_masked_cold_screen.py",
+    "scripts/validate_rec_ev_023b_contract.py"
+  ],
+  "allowed_input_artifacts": {
+    "movielens_archive": {
+      "path": "C:/higher/projects/MM/data/raw/ml-32m.zip",
+      "bytes": 238950008,
+      "sha256": "e4a68655d7386b8f95f2f2424b2ff975dfdd15ffd59e0d864a14dca43e99d6ee",
+      "member": "ml-32m/ratings.csv"
+    },
+    "candidate_identity": {
+      "path": "outputs/recommendation-evidence/rec-ev-019c/candidate-core-final.parquet",
+      "bytes": 651984,
+      "sha256": "9bb0560cb0c3538160dce7568a4dc366e2937b1ec6019cbacfd7113cd34c910e"
+    },
+    "structured_features": {
+      "path": "outputs/recommendation-evidence/rec-ev-019b/structured-features.parquet",
+      "bytes": 3008444,
+      "sha256": "d68b93496c003c2a51e5defe0c9ee9af24e7b0d99eb68a0536d2e0a305460c62"
+    },
+    "text_embeddings": {
+      "path": "outputs/recommendation-evidence/rec-ev-019b/text-embeddings.parquet",
+      "bytes": 99988968,
+      "sha256": "ff35381f231e6d2a1fe35b79b8b55f64744c16188f9b92ce74c1466930967bda"
+    },
+    "rec_ev_022b_selection": {
+      "path": "outputs/recommendation-evidence/rec-ev-022b/stage2-selection.json",
+      "bytes": 1581,
+      "sha256": "af1ed55515030265c4d346e17636085c498ba04f525e08723df514dd6118118c"
+    },
+    "rec_ev_019c_trial_registry": {
+      "path": "outputs/recommendation-evidence/rec-ev-019c/trial-registry.json",
+      "bytes": 7640,
+      "sha256": "0cb33453b09bae09d1b8df793f17ef15e5800be520c496e310786b86de28d47a"
+    },
+    "rec_ev_019b_contract": {
+      "path": "docs/recommendation/contracts/rec-ev-019b-artifacts.json",
+      "bytes": 11823,
+      "sha256": "a6a6240d31b36ac5587bc41fa0047587a88371b80f1bc31417076a055e722e9d"
+    }
+  },
+  "forbidden_input_artifacts": [
+    "outputs/recommendation-evidence/global-time-v1/test.parquet",
+    "outputs/recommendation-evidence/rec-ev-019a/locked-test-binary-prefixes.parquet",
+    "outputs/recommendation-evidence/rec-ev-019a/locked-test-evaluation-windows.parquet",
+    "outputs/recommendation-evidence/rec-ev-022a/cache/train-model.npz",
+    "outputs/recommendation-evidence/rec-ev-022a/cache/train-z.npz",
+    "outputs/recommendation-evidence/rec-ev-022a/cache/structured-full.npz",
+    "outputs/recommendation-evidence/rec-ev-022a/cache/stage1-common30.parquet",
+    "outputs/recommendation-evidence/rec-ev-022b/cache/stage2-common30.parquet",
+    "outputs/recommendation-evidence/rec-ev-022a/stage1-user-metrics.parquet",
+    "outputs/recommendation-evidence/rec-ev-022b/stage2-user-metrics.parquet"
+  ],
+  "roles_and_reader": {
+    "old_base_allow": "old_user_bucket(user_id)<=59",
+    "train": "old_base_allow AND user_role_bucket(user_id)<6000",
+    "stage1": "old_base_allow AND 6000<=user_role_bucket(user_id)<8000",
+    "excluded": "PARSE_USER_ID_ONLY_THEN_DISCARD_RAW_LINE",
+    "train_sequence": "USER_ROLE_THEN_MOVIE_ID_THEN_WARM_MEMBERSHIP_THEN_RATING",
+    "train_masked_cold_rating_parsed": 0,
+    "timestamp_parsed_all_roles": 0,
+    "candidate_projection_columns": ["movie_id"]
+  },
+  "item_split": {
+    "name": "INTERACTION_MASKED_ITEM_DISJOINT_PSEUDO_COLD",
+    "source_limitation": "019A_019C_CANDIDATE_CORE_ALREADY_REQUIRED_PRIOR_TRAIN_INTERACTION",
+    "universe": "CANDIDATE_IDENTITY_INTERSECT_STRUCTURED_ELIGIBLE_POSITIVE_NORM_INTERSECT_E5_ELIGIBLE_FINITE_NORM",
+    "salt": "rec-ev-023b-item-holdout-v1",
+    "payload": "UTF8(SALT_PIPE_CANONICAL_DECIMAL_MOVIE_ID)",
+    "bucket": "SHA256_FULL_DIGEST_BIG_ENDIAN_UNSIGNED_MOD_10000",
+    "masked_cold_rule": "BUCKET_LT_2000",
+    "expected_items": 41439,
+    "expected_warm": 33078,
+    "expected_masked_cold": 8361
+  },
+  "cohort": {
+    "role": "STAGE1_SELECTION",
+    "minimum_warm_eligible_ratings": 14,
+    "minimum_masked_cold_eligible_ratings": 20,
+    "expected_users": 9520,
+    "profile_n": 14,
+    "target_n": 20,
+    "profile_order_salt": "rec-ev-023b-warm-profile-order-v1",
+    "target_order_salt": "rec-ev-023b-cold-target-order-v1",
+    "order_payload": "UTF8(SALT_PIPE_LOWERCASE_64HEX_USER_KEY_PIPE_CANONICAL_DECIMAL_MOVIE_ID)",
+    "order": "SHA256_DIGEST_BYTES_ASC_THEN_MOVIE_ID_ASC_COLLISION_GUARD",
+    "eligibility_and_order_forbidden_inputs": ["RATING", "Q_EVAL", "TIMESTAMP"]
+  },
+  "cells": [
+    {"encoding": "BINARY_SIGN", "k": 6},
+    {"encoding": "PERCENTILE_MAGNITUDE", "k": 6},
+    {"encoding": "BINARY_SIGN", "k": 8},
+    {"encoding": "PERCENTILE_MAGNITUDE", "k": 8},
+    {"encoding": "BINARY_SIGN", "k": 14},
+    {"encoding": "PERCENTILE_MAGNITUDE", "k": 14}
+  ],
+  "train_warm_prior": {
+    "rating_bins": [0.5, 1.0, 1.5, 2.0, 2.5, 3.0, 3.5, 4.0, 4.5, 5.0],
+    "population": "TRAIN_USERS_WITH_AT_LEAST_ONE_WARM_UNIVERSE_RATING",
+    "pi0": "MEAN_OF_WITHIN_USER_NORMALIZED_10_BIN_HISTOGRAMS_THEN_RENORMALIZE_SUM_ONE",
+    "g0_mid": "CUMSUM_PI0_MINUS_0_5_TIMES_PI0",
+    "dtype": "FLOAT64",
+    "tau": 5.0,
+    "derived_seal_before_score": true
+  },
+  "q_eval": {
+    "name": "FULL_STAGE1_RAW_HISTORY_MIDRANK_Q_EVAL",
+    "reference": "ALL_RAW_MOVIELENS_RATINGS_FOR_THE_STAGE1_USER_INCLUDING_OUTSIDE_UNIVERSE_WARM_COLD_PROFILE_TARGET_AND_UNSELECTED",
+    "formula": "(N_FULL_LT_R_PLUS_0_5_N_FULL_EQ_R)_DIV_N_FULL",
+    "use": "METRIC_LABEL_ONLY_AFTER_COMPLETE_SCORE_RANK_INTEGRITY",
+    "forbidden_in_score_input_and_score_rank": true
+  },
+  "features": {
+    "structured": "DIRECT_CALL_REC_EV_022A_BUILD_STRUCTURED_FULL_FOUR_GROUP_BINARY_EQUAL_WEIGHT_ROW_L2_NONNEGATIVE_COSINE",
+    "structured_groups": ["GENRE", "ORIGINAL_LANGUAGE_DECADE_RUNTIME30", "DIRECTOR_TOP5_CAST", "KEYWORD"],
+    "structured_forbidden": ["COUNTRY", "IDF", "INTERACTION_FREQUENCY_SCALING"],
+    "catalog_transductive_vocabulary": true,
+    "e5_model_id": "intfloat/multilingual-e5-small",
+    "e5_revision": "614241f622f53c4eeff9890bdc4f31cfecc418b3",
+    "e5_dimension": 384,
+    "e5_norm_tolerance": 0.0001,
+    "e5_similarity": "RAW_COSINE_NEGATIVE_PRESERVED_CURRENT_METADATA_RETROSPECTIVE"
+  },
+  "heads": ["STRUCTURED", "E5", "AVAILABLE_HEAD_CONTENT_RRF"],
+  "scoring": {
+    "profile_score": "SIMILARITY_MATRIX_TIMES_FULL_FIRST_K_WEIGHTS_DIVIDED_BY_SUM_ABSOLUTE_WEIGHTS_FLOAT64",
+    "active": "WEIGHT_DENOMINATOR_GT_ZERO_AND_ALL_TARGET_SCORES_FINITE_AND_AT_LEAST_TWO_UNIQUE_TARGET_SCORES",
+    "inactive_primary": "ANALYTIC_RANDOM_EXPECTATION_METRICS_NO_ORDER",
+    "inactive_concordance": null,
+    "active_concordance": "RAW_SCORE_PAIRWISE_WITH_SCORE_TIES_HALF",
+    "head_tie_prefix": "rec-ev-023b-score-tie-v1|HEAD|",
+    "head_tie_payload": "UTF8(PREFIX_PLUS_HEAD_PIPE_ENCODING_PIPE_K_PIPE_USER_KEY_PIPE_MOVIE_ID)",
+    "head_order": "SCORE_DESC_SHA256_DIGEST_BYTES_ASC_MOVIE_ID_ASC_COLLISION_GUARD",
+    "standalone_and_rrf_component_rank_identical": true,
+    "rrf_c": 10,
+    "rrf_formula": "SUM_ACTIVE_HEAD_1_OVER_10_PLUS_ONE_BASED_RANK",
+    "rrf_final_tie_prefix": "rec-ev-023b-score-tie-v1|RRF_FINAL|",
+    "rrf_final_order": "RRF_DESC_SHA256_DIGEST_BYTES_ASC_MOVIE_ID_ASC_COLLISION_GUARD",
+    "all_components_inactive": "ANALYTIC_RANDOM_EXPECTATION_METRICS_NO_ORDER"
+  },
+  "metrics": {
+    "primary_n": 2,
+    "utility": "TOP2_MEAN_Q_HIGHER_BETTER",
+    "worst_loss": "ONE_MINUS_MIN_TOP2_Q_LOWER_BETTER",
+    "random_expected_utility": "MEAN_Q_OVER_JUDGED20",
+    "random_expected_worst_loss": "MEAN_OVER_ALL_UNORDERED_PAIRS_OF_ONE_MINUS_MIN_Q",
+    "random_is_metric_only": true,
+    "secondary_descriptive_only": ["PAIRWISE_CONCORDANCE_ACTIVE_ONLY", "ACTIVE_RATE", "NULL_COUNT", "ACTIVE_COMPOSITION"]
+  },
+  "statistics": {
+    "unit": "USER",
+    "user_order": "USER_KEY_ASC",
+    "comparisons_per_cell": [
+      ["STRUCTURED", "RANDOM_EXPECTATION"],
+      ["E5", "RANDOM_EXPECTATION"],
+      ["AVAILABLE_HEAD_CONTENT_RRF", "RANDOM_EXPECTATION"],
+      ["E5", "STRUCTURED"],
+      ["AVAILABLE_HEAD_CONTENT_RRF", "E5"],
+      ["AVAILABLE_HEAD_CONTENT_RRF", "STRUCTURED"]
+    ],
+    "expected_contrasts": 72,
+    "bootstrap_repeats": 10000,
+    "seed": 20260925,
+    "numpy_version": "1.26.4",
+    "bit_generator": "PCG64",
+    "shared_resample_vector": true,
+    "sample_sd_ddof": 1,
+    "zero_se": "EXCLUDE_FROM_MAX_T_AND_SET_LOW_MEAN_HIGH_EQUAL",
+    "interval_label": "ADAPTIVE_STAGE1_DESCRIPTIVE_MAX_T_INTERVAL"
+  },
+  "decision": {
+    "q_definition": "Q(A,B,CELL)=UTILITY_LOW_GTE_0_005_AND_WORST_LOSS_HIGH_LTE_0_010",
+    "utility_margin": 0.005,
+    "worst_loss_margin": 0.01,
+    "forward_structured": "Q_STRUCTURED_RANDOM",
+    "forward_e5": "Q_E5_RANDOM_AND_Q_E5_STRUCTURED",
+    "forward_rrf": "Q_RRF_RANDOM_AND_Q_RRF_E5_AND_Q_RRF_STRUCTURED",
+    "forward_set": "ALL_HEAD_CELL_PAIRS_PASSING_EXACT_RULE_WITHOUT_POINT_RANKING_OR_CAP",
+    "status_signal": "PSEUDO_COLD_DEVELOPMENT_SIGNAL_IFF_FORWARD_SET_NONEMPTY",
+    "status_no_signal": "PSEUDO_COLD_DEVELOPMENT_NO_SIGNAL_IFF_FORWARD_SET_EMPTY",
+    "retune_after_result": false,
+    "champion": null
+  },
+  "korean_language_descriptive": {
+    "definition": "MASKED_COLD_ITEMS_WITH_ORIGINAL_LANGUAGE_EQ_KO_AMONG_THE_9520_STAGE1_COHORT",
+    "outputs": ["USERS_WITH_EXPOSURE", "USER_COUNT_DISTRIBUTION", "UNIQUE_ITEMS", "RATING_HISTOGRAM", "Q_EVAL_DISTRIBUTION"],
+    "forbidden_outputs": ["MODEL_HEAD", "RANK", "DELTA", "CI", "GATE", "FORWARD"],
+    "claim": "KOREAN_LANGUAGE_RATED_EXPOSURE_DESCRIPTION_ONLY_NOT_KOREAN_PRODUCTION_OR_USER_PERFORMANCE"
+  },
+  "claim_boundary": {
+    "allowed": "CURRENT_METADATA_SIGNAL_WITHIN_AN_INTERACTION_MASKED_ITEM_DISJOINT_RATED_JUDGED20_SLATE_FOR_PREVIOUSLY_SEEN_STAGE1_MOVIELENS_USERS",
+    "forbidden": [
+      "STRICT_COLD_START", "UNRATED_FULL_CATALOG_RETRIEVAL", "FUTURE_RELEASE_PERFORMANCE",
+      "RELEASE_TIME_FEATURE_AVAILABILITY", "KOREAN_PRODUCTION_TRANSFER", "KOREAN_USER_PERFORMANCE",
+      "SERVICE_USER_PERFORMANCE", "CHAMPION", "PRODUCT_POLICY"
+    ],
+    "selection_bias": "CONDITIONAL_ON_OBSERVED_RATINGS_AND_MINIMUM_WARM_COLD_ACTIVITY"
+  },
+  "output_root": "outputs/recommendation-evidence/rec-ev-023b",
+  "outputs": {
+    "protocol_lock": "protocol-lock.json",
+    "source_manifest": "source-manifest.json",
+    "progress": "run-progress.json",
+    "universe": "cache/universe.npz",
+    "train_prior": "cache/train-warm-prior.npz",
+    "structured_full": "cache/structured-full.npz",
+    "e5_aligned": "cache/e5-aligned.npy",
+    "score_input": "cache/score-input.parquet",
+    "score_prepared_integrity": "cache/score-prepared.integrity.json",
+    "label_source": "cache/label-source.parquet",
+    "label_source_integrity": "cache/label-source.integrity.json",
+    "rank_parts": "cache/rank-parts",
+    "score_rank": "score-rank.parquet",
+    "score_rank_integrity": "score-rank.integrity.json",
+    "evaluation_labels": "cache/evaluation-labels.parquet",
+    "evaluation_labels_integrity": "cache/evaluation-labels.integrity.json",
+    "user_metrics": "user-metrics.parquet",
+    "user_metrics_integrity": "user-metrics.integrity.json",
+    "selection": "development-screen-selection.json",
+    "result": "development-screen-result.json"
+  },
+  "resume": {
+    "required": true,
+    "drift": "FAIL_CLOSED",
+    "checkpoint_after_users": 100,
+    "source_and_implementation_sha_locked": true,
+    "derived_prior_and_prepared_artifacts_sealed_before_score": true,
+    "score_does_not_open_label_source": true,
+    "each_rank_part_sha_rows_user_slice_and_signature_verified": true,
+    "exact_rank_part_path_set": true,
+    "combined_rank_complete_before_label_join": true,
+    "evaluation_label_sha_verified": true,
+    "combined_user_metric_sha_verified": true
+  },
+  "invariants": {
+    "locked_test_opened": false,
+    "stage2_opened": false,
+    "final_reserve_opened": false,
+    "champion": null,
+    "product_policy_updated": false
+  }
+}
