@@ -1,0 +1,54 @@
+{
+  "audit_id": "rec-ev-029-membership-independent-audit-v1",
+  "status": "REC_EV_029_MEMBERSHIP_AUDIT_PASS",
+  "auditor_thread_id": "01a0751b-6621-7a61-94b2-4c401c7a3066",
+  "scope": [
+    "SELECTION_REPLICATION_AND_REC_EV_028_SPLIT_ISOLATION",
+    "MOVIE_ID_ONLY_PARSER",
+    "SEVEN_OUTER_TARGET_COUNTS_AND_GLOBAL_TARGET_UNION",
+    "PROFILE30_DISJOINTNESS_AND_CONTENT_COMPLETENESS",
+    "DONOR_BIJECTION",
+    "COVERAGE_RECOMPUTATION",
+    "ARTIFACT_HASH_ROW_AND_DUPLICATE_CHECKS"
+  ],
+  "findings": {
+    "membership_rows": 21904,
+    "selection_users": 2664,
+    "replication_users": 2706,
+    "cohort_user_intersection": 0,
+    "rec_ev_028_attribution_or_future_user_intersection": 0,
+    "profile_item_slots_checked": 657120,
+    "profile_global_target_intersection": 0,
+    "content_incomplete_profile_slots": 0,
+    "donor_cells_checked": 14,
+    "donor_self_maps": 0,
+    "coverage_cells_checked": 14,
+    "coverage_cells_passing": 14,
+    "rating_values_parsed": 0,
+    "timestamps_parsed": 0,
+    "tests": "4 passed"
+  },
+  "audited_artifacts": {
+    "design_contract": {
+      "path": "docs/recommendation/contracts/rec-ev-029-direct-profile-attribution.json",
+      "bytes": 12256,
+      "sha256": "25a74881685fd4eff48f16a9f927057c22e9f021f36602af2d51ed43afac5f07"
+    },
+    "membership_implementation": {
+      "path": "scripts/preflight_rec_ev_029_membership.py",
+      "bytes": 11971,
+      "sha256": "2c67157f35eb0af1892714e5616d6216ffc027246d6b78937278638258353a99"
+    },
+    "membership_preflight": {
+      "path": "outputs/recommendation-evidence/rec-ev-029/membership-preflight.json",
+      "bytes": 6333,
+      "sha256": "1a75f02e28530883bf16f8bd05804a0f75a6d308e345336f5806e99a90164304"
+    },
+    "membership": {
+      "path": "outputs/recommendation-evidence/rec-ev-029/cache/membership.parquet",
+      "bytes": 2884909,
+      "sha256": "d8998e94a7ec525b203e09c0f5665c81f875e0a14334d22cd5d486491327ef2d"
+    }
+  },
+  "authorization": "MAY_IMPLEMENT_PRELABEL_RUNNER_BUT_MUST_RECEIVE_A_SEPARATE_EXACT_IMPLEMENTATION_AUDIT_BEFORE_OPENING_PROFILE_RATING_VALUES"
+}

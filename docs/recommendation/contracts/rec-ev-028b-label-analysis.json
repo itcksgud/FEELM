@@ -1,0 +1,156 @@
+{
+  "schema_version": 1,
+  "contract_id": "rec-ev-028b-label-analysis-v1",
+  "status": "READY_FOR_INDEPENDENT_EXACT_AUDIT",
+  "purpose": "After a globally sealed and independently audited pre-label run, determine whether the evaluation user's own percentile-encoded profile contributes cold-slate Top-2 value beyond global item bias and a mismatched profile, under both equal-user and equal-movie estimands.",
+  "claim_boundary": {
+    "allowed": "ADAPTIVE_MOVIELENS_DEVELOPMENT_EVIDENCE_FOR_MASKED_RATED_MOVIES_WITH_TMDB_STRUCTURED_FEATURES",
+    "forbidden": [
+      "KOREAN_USER_PERFORMANCE",
+      "ACTUAL_POST_MOVIELENS_NEW_RELEASE_PERFORMANCE",
+      "FULL_CATALOG_RELEVANCE",
+      "UNRATED_IS_DISLIKE",
+      "PERCENTILE_K8_OPTIMALITY",
+      "MODEL_CHAMPION",
+      "PRODUCT_POLICY"
+    ]
+  },
+  "authorization": {
+    "attribution_evaluation_target_rating_access": true,
+    "full_allowed_attribution_user_history_rating_access": true,
+    "timestamp_access": false,
+    "future_model_evaluation_reserve_access": false,
+    "locked_test_access": false,
+    "final_reserve_access": false,
+    "product_policy_change": false,
+    "model_or_hyperparameter_selection": false
+  },
+  "base_contract": {
+    "path": "docs/recommendation/contracts/rec-ev-028-personalization-attribution.json",
+    "bytes": 18646,
+    "sha256": "025ed71d3bdcfab16e4a501e255d90bfda098c2ad353833e0fb724ace195bbde"
+  },
+  "a2_amendment": {
+    "path": "docs/recommendation/contracts/rec-ev-028a2-global-label-firewall-amendment.json",
+    "bytes": 7406,
+    "sha256": "312fde5d04f2232c957cc92c1352a8aa7dea3aa58ed976fce9b576d609c0b37f"
+  },
+  "prelabel_execution": {
+    "root": "outputs/recommendation-evidence/rec-ev-028a2/attribution",
+    "independent_audit_thread": "01a0751b-6621-7a61-94b2-4c401c7a3066",
+    "independent_audit_truth": "REC_EV_028A2_ACTUAL_PRELABEL_EXECUTION_PASS",
+    "protocol_lock": {
+      "path": "outputs/recommendation-evidence/rec-ev-028a2/attribution/protocol-lock.json",
+      "bytes": 4679,
+      "sha256": "20f5cf936df742474ef61ec727feb17772a3e011c7ce60d549bf999df86fad47"
+    },
+    "global_score_seal": {
+      "path": "outputs/recommendation-evidence/rec-ev-028a2/attribution/global-prelabel-score-seal.json",
+      "bytes": 2189,
+      "sha256": "5cbc94c5dab138806065ac3b90be393fc274071f4c711e204b6bd6ca7d85b21b"
+    },
+    "membership": {
+      "path": "outputs/recommendation-evidence/rec-ev-028a2/cache/membership.parquet",
+      "bytes": 1467114,
+      "sha256": "bf880bad82c034b43598d50e5f4b56feb91f3246ee5e9f36d08660c009c1d576"
+    },
+    "membership_preflight": {
+      "path": "outputs/recommendation-evidence/rec-ev-028a2/membership-preflight.json",
+      "bytes": 5848,
+      "sha256": "4be0fc33495cdeaf630768084d2466360265e3b8fea0d201abce53dc64aac1d3"
+    }
+  },
+  "movielens_archive": {
+    "path": "C:/higher/projects/MM/data/raw/ml-32m.zip",
+    "member": "ml-32m/ratings.csv",
+    "bytes": 238950008,
+    "sha256": "e4a68655d7386b8f95f2f2424b2ff975dfdd15ffd59e0d864a14dca43e99d6ee"
+  },
+  "implementations": [
+    {
+      "path": "scripts/run_rec_ev_028b_label_analysis.py",
+      "bytes": 48862,
+      "sha256": "1af89d329b6ba25da2947e7fb78833494ffd8f67656c78b59c04a58a9fa1431e"
+    },
+    {
+      "path": "scripts/rec_ev_028b_core.py",
+      "bytes": 12055,
+      "sha256": "0b6f978ee35636a008253d765817ae605dcdcfe5345cf71643233ddc5b632159"
+    },
+    {
+      "path": "scripts/validate_rec_ev_028b_contract.py",
+      "bytes": 6538,
+      "sha256": "4bf662dee599ca311d7281c692a3bb4918579e4d635baa06600731f57cb4899a"
+    },
+    {
+      "path": "scripts/rec_ev_027_core.py",
+      "bytes": 8143,
+      "sha256": "1ef6fa55ca781ed2d3f93c61a85b0afc673480cf58736d77f38ac7fcc4fc028f"
+    },
+    {
+      "path": "scripts/rec_ev_022a_core.py",
+      "bytes": 12686,
+      "sha256": "cdc0285e27b76bb16b286e015ca6b000fb2dc3ba128dc98c28e6cfc4b99d9475"
+    }
+  ],
+  "label_open": {
+    "reader": "ONE_GLOBAL_SEQUENTIAL_SCAN_AFTER_RECURSIVE_PRELABEL_SEAL_VERIFICATION",
+    "allowed_users": "ONLY_THE_3470_UNION_USERS_PRESENT_IN_A2_MEMBERSHIP",
+    "nonmember_row_policy": "PARSE_USER_ID_ONLY_THEN_DISCARD_RAW_ROW",
+    "allowed_rating_values": "ALL_RATINGS_FOR_ALLOWED_USERS_TO_BUILD_THEIR_FULL_HISTORY_HISTOGRAM_PLUS_FROZEN_TARGET_LABELS",
+    "q_formula": "FULL_HISTORY_MIDRANK_(N_LT_PLUS_0_5_N_EQ)_DIV_N",
+    "rating_bins": [0.5, 1.0, 1.5, 2.0, 2.5, 3.0, 3.5, 4.0, 4.5, 5.0],
+    "target_membership_or_order_change_after_label": false,
+    "timestamps_parsed": 0,
+    "future_membership_opened": false,
+    "raw_user_id_output": false
+  },
+  "metrics": {
+    "output_n": 2,
+    "primary_cell": "PERCENTILE_MAGNITUDE_K8",
+    "user": ["HARM20", "TOP2_MEAN_Q", "TOP2_MIN_Q"],
+    "item": ["ITEM_MACRO_UTILITY_CONTRIBUTION", "ITEM_MACRO_LOW_SLOT_CONTRIBUTION"],
+    "sensitivity_cells": ["BINARY_SIGN_K8", "PERCENTILE_MAGNITUDE_K4", "PERCENTILE_MAGNITUDE_K12"],
+    "sensitivity_role": "DESCRIPTIVE_ONLY_NOT_USED_FOR_GATE_SELECTION_OR_RETUNING",
+    "inactive": "USE_EXACT_ANALYTIC_RANDOM_USER_METRICS_AND_RANDOM_OCCURRENCE_CONTRIBUTIONS_WHILE_RETAINING_ACTIVE_FALSE",
+    "item_occurrence_utility": "TARGET_N_DIV_2_TIMES_TOP2_SELECTED_TIMES_Q_EVAL",
+    "item_occurrence_low": "TARGET_N_DIV_2_TIMES_TOP2_SELECTED_TIMES_INDICATOR_Q_LTE_0_20",
+    "item_macro": "MEAN_WITHIN_MOVIE_OCCURRENCES_THEN_EQUAL_MEAN_OVER_UNIQUE_MOVIES"
+  },
+  "inference": {
+    "confidence": 0.95,
+    "repeats": 5000,
+    "rng": "NUMPY_1_26_4_PCG64_EXPONENTIAL_MEAN_ONE",
+    "user_seed": 20261004,
+    "item_multiway_seed": 20261005,
+    "user_batch_size": 100,
+    "item_batch_size": 50,
+    "estimands": ["R0", "R1", "R2", "R3", "R4", "KR", "RECENT", "RANDOM_POOLED"],
+    "contrasts": [
+      "FULL_PERSONALIZED_VS_RANDOM_EXPECTATION",
+      "BIAS_ONLY_VS_RANDOM_EXPECTATION",
+      "PROFILE_SHUFFLE_VS_RANDOM_EXPECTATION",
+      "STRUCTURED_DIRECT_VS_RANDOM_EXPECTATION",
+      "FULL_PERSONALIZED_VS_BIAS_ONLY",
+      "FULL_PERSONALIZED_VS_PROFILE_SHUFFLE",
+      "FULL_PERSONALIZED_VS_STRUCTURED_DIRECT"
+    ],
+    "user_family_size": 168,
+    "item_family_size": 112,
+    "user_random_pooled": "AVERAGE_EACH_USERS_AVAILABLE_R0_TO_R4_CONTRASTS_THEN_EQUAL_USER_MEAN",
+    "item_random_pooled": "CONCATENATE_SINGLE_FOLD_MOVIE_OCCURRENCES_THEN_EQUAL_MOVIE_MEAN",
+    "shared_user_weights": true,
+    "shared_movie_weights": true,
+    "critical_quantile_method": "HIGHER",
+    "item_draw_order_per_repeat": "ALL_SORTED_UNION_USER_EXPONENTIALS_THEN_ALL_SORTED_UNION_MOVIE_EXPONENTIALS"
+  },
+  "segments": {
+    "user_history_count_bands": ["20_49", "50_99", "100_499", "500_PLUS"],
+    "movie_target_frequency_bands": ["1_SINGLETON", "2_4", "5_9", "10_PLUS"],
+    "role": "DESCRIPTIVE_HETEROGENEITY_ONLY"
+  },
+  "truth_table": "USE_EXACT_BASE_REC_EV_028_TRUTH_TABLE_WITHOUT_RELAXATION",
+  "resume_required": true,
+  "future_transition": "NEVER_OPEN_IN_THIS_RUN_REQUIRES_NEW_EXACT_AUDITED_CONTRACT_EVEN_IF_STAGE_PASS",
+  "output_root": "outputs/recommendation-evidence/rec-ev-028b"
+}

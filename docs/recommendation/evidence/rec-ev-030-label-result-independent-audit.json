@@ -1,0 +1,23 @@
+{
+  "schema_version": 1,
+  "audit_id": "rec-ev-030-label-result-independent-audit-v1",
+  "status": "REC_EV_030_LABEL_RESULT_AUDIT_PASS",
+  "auditor_thread_id": "01a0751b-6621-7a61-94b2-4c401c7a3066",
+  "checks": {
+    "contract_score_and_label_hash_identity": true,
+    "membership_rows": 13910,
+    "union_users": 3398,
+    "target_labels": 268136,
+    "raw_rows": 32000204,
+    "future_rating_values_parsed": 1025423,
+    "target_rating_values_parsed": 268136,
+    "timestamps_parsed": 0,
+    "score_label_user_and_target_identity": true,
+    "target_rating_index_range": [0, 9],
+    "histogram_length_and_count": true,
+    "midrank_q_max_absolute_error": 0.0,
+    "locked_test_opened": false,
+    "final_reserve_opened": false,
+    "product_policy_changed": false
+  }
+}

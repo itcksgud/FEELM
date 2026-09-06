@@ -1,0 +1,90 @@
+{
+  "schema_version": 1,
+  "contract_id": "rec-ev-028a1-balanced-target-amendment-v1",
+  "status": "PROPOSED_FOR_INDEPENDENT_EXACT_AUDIT",
+  "purpose": "Replace only REC-EV-028A's per-user hash-first target selection with a deterministic label-blind balanced allocation after the audited preflight showed that repeated popular targets fail every random-fold effective-item coverage gate.",
+  "base_contract": {
+    "path": "docs/recommendation/contracts/rec-ev-028-personalization-attribution.json",
+    "bytes": 18646,
+    "sha256": "025ed71d3bdcfab16e4a501e255d90bfda098c2ad353833e0fb724ace195bbde",
+    "audit_thread": "01a0739e-513f-7250-8862-3e2683a79f7f",
+    "audit_truth": "REC_EV_028A_EXACT_CONTRACT_PASS"
+  },
+  "triggering_rating_free_preflight": {
+    "summary": {
+      "path": "outputs/recommendation-evidence/rec-ev-028a/membership-preflight.json",
+      "bytes": 2881,
+      "sha256": "9af6fb3dd9732748b258d644e24013d18a021c25e7a7c2eff57e76e995e872bf"
+    },
+    "membership": {
+      "path": "outputs/recommendation-evidence/rec-ev-028a/cache/membership.parquet",
+      "bytes": 1431918,
+      "sha256": "2478eb4deae94e6c228c5a660b867ad1821326ab9aca903f3b9904a02d59753e"
+    },
+    "rating_values_parsed": false,
+    "timestamps_parsed": false,
+    "future_membership_materialized": false,
+    "finding": {
+      "R0_effective_items": 267.4775745699206,
+      "R1_effective_items": 318.90885041003446,
+      "R2_effective_items": 267.5228345396317,
+      "R3_effective_items": 273.1100966874671,
+      "R4_effective_items": 286.6213406014543,
+      "KR_effective_items": 23.097925077457514,
+      "RECENT_effective_items": 126.2036073114635
+    },
+    "interpretation": "THE_HASH_FIRST_NATURAL_RATED_SLATE_IS_TOO_ITEM_CONCENTRATED_FOR_THE_PREDECLARED_BROAD_ITEM_GATE; NO_RATING_LABEL_OR_MODEL_OUTCOME_INFORMED_THIS_AMENDMENT"
+  },
+  "override_scope": {
+    "only": [
+      "membership.target_selection",
+      "coverage_preflight_requirement",
+      "output_root"
+    ],
+    "all_unspecified_fields": "INHERIT_BASE_CONTRACT_BYTE_FOR_BYTE_SEMANTICS",
+    "models_metrics_inference_truth_thresholds_roles_firewalls": "UNCHANGED"
+  },
+  "balanced_target_selection": {
+    "applies_to": ["R0", "R1", "R2", "R3", "R4", "KR", "RECENT"],
+    "inputs_allowed": [
+      "ATTRIBUTION_USER_KEY",
+      "OUTER_TRACK_AND_FOLD_TOKEN",
+      "RATING_INDEPENDENT_WARM_COLD_ITEM_MEMBERSHIP",
+      "USER_MOVIE_INTERACTION_MEMBERSHIP_WITHOUT_RATING_OR_TIMESTAMP"
+    ],
+    "inputs_forbidden": [
+      "RATING_VALUE",
+      "TARGET_Q",
+      "TIMESTAMP",
+      "MODEL_SCORE",
+      "MOVIE_RATING_MEAN",
+      "ANY_FUTURE_RESERVE_MOVIE_MEMBERSHIP_OR_VALUE"
+    ],
+    "eligible_user": "ATTRIBUTION_PHASE_USER_WITH_AT_LEAST12_OUTER_WARM_ITEMS_AND_AT_LEAST_TARGET_N_OUTER_COLD_ITEMS",
+    "availability_A_i": "NUMBER_OF_ELIGIBLE_ATTRIBUTION_USERS_IN_THE_OUTER_WHO_HAVE_MOVIE_I_IN_THEIR_COLD_MEMBERSHIP_POOL",
+    "initial_selected_load_L_i": 0,
+    "user_order": "ASCENDING_COLD_POOL_CARDINALITY_THEN_USER_KEY_UTF8_ASC",
+    "selection_salt": "rec-ev-028a1-balanced-target-v1",
+    "selection_payload": "UTF8_SELECTION_SALT_PIPE_TRACK_TOKEN_PIPE_FOLD_OR_DOMAIN_TOKEN_PIPE_USER_KEY_PIPE_DECIMAL_MOVIE_ID_WITH_NO_WHITESPACE",
+    "per_user_selection": "ITERATE_USERS_IN_USER_ORDER; SORT_THAT_USERS_UNIQUE_COLD_POOL_BY_CURRENT_L_I_ASC_THEN_A_I_ASC_THEN_SHA256_PAYLOAD_DIGEST_BYTES_ASC_THEN_NUMERIC_MOVIE_ID_ASC; CHOOSE_FIRST_TARGET_N_DISTINCT_MOVIES; INCREMENT_L_I_BY_ONE_FOR_EACH_CHOSEN_MOVIE_BEFORE_NEXT_USER",
+    "stored_target_order": "AFTER_SET_SELECTION_SORT_THE_CHOSEN_TARGET_SET_BY_BASE_TARGET_ORDER_SALT_AND_BASE_PAYLOAD_DIGEST_BYTES_ASC_THEN_NUMERIC_MOVIE_ID_ASC",
+    "profile_selection": "UNCHANGED_BASE_PROFILE_FIRST12_HASH_ORDER_FROM_THE_USERS_WARM_POOL",
+    "profile_target_disjoint": "ASSERTED_BY_OUTER_WARM_COLD_DISJOINTNESS",
+    "global_determinism": "OUTER_ORDER_R0_R1_R2_R3_R4_KR_RECENT; EACH_OUTER_LOAD_STATE_IS_INDEPENDENT_AND_STARTS_AT_ZERO",
+    "availability_and_load_use": "EVALUATION_MEMBERSHIP_CONSTRUCTION_ONLY; NEVER_MODEL_FEATURE_PRIOR_WEIGHT_SCORE_OR_RERANK_INPUT"
+  },
+  "coverage_preflight": {
+    "must_complete_before_any_rating_value": true,
+    "thresholds": "INHERIT_BASE_CONTRACT",
+    "required": "R0_R1_R2_R3_R4_KR_AND_RECENT_EACH_BROAD_ITEM_ELIGIBLE_OR_STOP_BEFORE_FIT_AND_BEFORE_ANY_ATTRIBUTION_PROFILE_RATING_VALUE",
+    "natural_hash_first_panel": "PRESERVED_ONLY_AS_TRIGGERING_FAILED_PREFLIGHT_AND_NEVER_SCORED",
+    "membership_freeze": "BALANCED_MEMBERSHIP_PATH_BYTES_SHA256_AND_IMPLEMENTATION_PATH_BYTES_SHA256_ARE_LOCKED_BEFORE_ANY_RATING_VALUE",
+    "no_threshold_revision": true
+  },
+  "claim_boundary_addition": [
+    "THE_PRIMARY_EVALUATION_ESTIMAND_IS_A_LABEL_BLIND_ITEM_BALANCED_ALREADY_RATED_COLD_GRAPH_NOT_NATURAL_MOVIELENS_EXPOSURE",
+    "BALANCED_TARGET_ALLOCATION_IS_NOT_A_PRODUCTION_CANDIDATE_GENERATOR",
+    "PASS_DOES_NOT_ESTABLISH_FULL_CATALOG_RELEVANCE_OR_KOREAN_USER_OR_FUTURE_RELEASE_PERFORMANCE"
+  ],
+  "output_root": "outputs/recommendation-evidence/rec-ev-028a1"
+}

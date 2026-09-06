@@ -1,0 +1,16 @@
+{
+  "audit_id": "rec-ev-029-selection-result-independent-audit-v1",
+  "status": "REC_EV_029_SELECTION_RESULT_AUDIT_PASS",
+  "auditor_thread_id": "01a0751b-6621-7a61-94b2-4c401c7a3066",
+  "verified": {
+    "selection_rows": 10849,
+    "selection_users": 2664,
+    "selection_target_slots": 209652,
+    "stored_q_midrank_match": true,
+    "candidate_count": 90,
+    "eligible_count": 56,
+    "winner": "STRUCTURED_DIRECT|PERCENTILE_MAGNITUDE|K30",
+    "replication_label_artifact_absent_at_audit": true
+  },
+  "authorization": "MAY_OPEN_REPLICATION_LABELS_FOR_THE_FROZEN_WINNER_ONLY"
+}

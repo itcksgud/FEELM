@@ -1,0 +1,13 @@
+{
+  "schema_version": 1,
+  "status": "REC_EV_028B1_AMENDMENT_PASS",
+  "audit_thread": "01a0751b-6621-7a61-94b2-4c401c7a3066",
+  "runner_executed_by_auditor": false,
+  "ratings_reaccessed_by_auditor": false,
+  "files_modified_by_auditor": false,
+  "amendment": {
+    "path": "docs/recommendation/contracts/rec-ev-028b1-union-count-amendment.json",
+    "bytes": 3246,
+    "sha256": "5f2162e03b78589f501fd9c529c140e0255ff87172c932d7d6469418e5f14772"
+  }
+}

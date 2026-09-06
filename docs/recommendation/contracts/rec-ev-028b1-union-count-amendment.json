@@ -1,0 +1,81 @@
+{
+  "schema_version": 1,
+  "contract_id": "rec-ev-028b1-union-count-amendment-v1",
+  "status": "READY_FOR_INDEPENDENT_EXACT_AUDIT",
+  "purpose": "Correct a pre-outcome population-count statement after the one-time label scan while retaining the exact frozen A2 membership and preventing any label rescan or outcome-dependent membership change.",
+  "base_contract": {
+    "path": "docs/recommendation/contracts/rec-ev-028b-label-analysis.json",
+    "bytes": 6987,
+    "sha256": "901ba4fec9b9f02a328ef438e7faffef9d5d987add5640e7c9a68ae9fffec8bc"
+  },
+  "trigger": {
+    "declared_all_outer_union_users": 3470,
+    "actual_all_outer_union_users": 3517,
+    "cause": "3470_IS_RANDOM_R0_TO_R4_UNION_ONLY;_KR_OR_RECENT_ADD_47_PROXY_ONLY_USERS",
+    "detected_before_metrics_or_outcome_computation": true,
+    "outcome_values_inspected_before_amendment": false
+  },
+  "corrected_population": {
+    "membership_rows": 14889,
+    "all_outer_union_users": 3517,
+    "random_pooled_union_users": 3470,
+    "proxy_only_users": 47,
+    "target_labels": 288036,
+    "evaluation_user_rating_values_parsed": 977423
+  },
+  "observed_label_execution": {
+    "label_seal": {
+      "path": "outputs/recommendation-evidence/rec-ev-028b/labels/label-seal.json",
+      "bytes": 1281,
+      "sha256": "ddddd2f4f37f8acd5b40e9e8f74a635629603ddfcf32caa7dd7a1ec778c3ff80"
+    },
+    "labels": {
+      "path": "outputs/recommendation-evidence/rec-ev-028b/labels/target-labels.parquet",
+      "bytes": 1914518,
+      "sha256": "d1e19305a5893f30028b2e41d9c72b77d0d2c4631667c0d33e27bfd1e9600493"
+    },
+    "timestamps_parsed": 0,
+    "future_movie_membership_opened": 0,
+    "locked_test_opened": false,
+    "final_reserve_opened": false,
+    "product_policy_changed": false
+  },
+  "pre_metrics_lock": {
+    "path": "outputs/recommendation-evidence/rec-ev-028b/b1-pre-metrics-lock.json",
+    "bytes": 2453,
+    "sha256": "ccd2e76acc17dbddf906c4fef60eff2683bdcb8b217aa85de407cbf3d0512981"
+  },
+  "decision": {
+    "membership_changed": false,
+    "target_membership_or_order_changed": false,
+    "ratings_rescanned": false,
+    "model_scores_changed": false,
+    "metrics_may_continue_only_after_this_amendment_passes_independent_audit": true,
+    "interpretation": "CORRECT_NON_OUTCOME_POPULATION_COUNT_AND_RETAIN_ALL_FROZEN_A2_MEMBERSHIP_ROWS"
+  },
+  "implementations": [
+    {
+      "path": "scripts/run_rec_ev_028b1_continue.py",
+      "bytes": 7743,
+      "sha256": "513d2eb65dd19b6642869e9a03c11f896f74bb242e13ed5d60c0adc1ed8388f3"
+    },
+    {
+      "path": "scripts/validate_rec_ev_028b1_amendment.py",
+      "bytes": 6062,
+      "sha256": "1409d0bb4d27fba45ddec4ab964435712b88f314afaa4d4cdf7b103f7d85ba83"
+    },
+    {
+      "path": "scripts/run_rec_ev_028b_label_analysis.py",
+      "bytes": 48862,
+      "sha256": "1af89d329b6ba25da2947e7fb78833494ffd8f67656c78b59c04a58a9fa1431e"
+    },
+    {
+      "path": "scripts/rec_ev_028b_core.py",
+      "bytes": 12055,
+      "sha256": "0b6f978ee35636a008253d765817ae605dcdcfe5345cf71643233ddc5b632159"
+    }
+  ],
+  "audit_approval_path": "docs/recommendation/evidence/rec-ev-028b1-independent-audit.json",
+  "future_and_test_firewall": "UNCHANGED_AND_CLOSED",
+  "output_root": "outputs/recommendation-evidence/rec-ev-028b"
+}

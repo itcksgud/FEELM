@@ -1,0 +1,433 @@
+{
+  "schema_version": 1,
+  "contract_id": "rec-ev-027-strict-item-cold-model-screen-v1",
+  "status": "APPROVED_FOR_ADAPTIVE_STRICT_ITEM_COLD_EXECUTION",
+  "purpose": "Test whether TMDB structured features and pinned 384D E5 features can rank movies whose entire MovieLens interaction columns are removed before every learned fit, using a fixed Percentile K=8 onboarding profile and a Top-2 output.",
+  "question": "When a MovieLens movie is simulated as a zero-interaction new item, which content model best reconstructs the relative preferences of previously unseen evaluation users?",
+  "design_audit": {
+    "thread_id": "01a0720b-a67e-7db0-aa01-b3fe3c53c266",
+    "round_1": "REC_EV_027_DESIGN_FAIL",
+    "round_2": "REC_EV_027_ROUND2_FAIL",
+    "round_3": "REC_EV_027_ROUND3_FAIL",
+    "round_4": "REC_EV_027_ROUND4_FAIL",
+    "round_5": "REC_EV_027_DESIGN_PASS_EXACT_CONTRACT",
+    "round_6": "REC_EV_027_ROUND6_FAIL",
+    "round_7": "REC_EV_027_DESIGN_PASS_EXACT_CONTRACT",
+    "latest_pass": "REC_EV_027_DESIGN_PASS_EXACT_CONTRACT",
+    "audited_contract_sha256": "12cb3d0fd87bd71ddf1e42f6edd132408738d5cf7c3c673c53a873c15d4b82a5",
+    "required_next": "MATERIALIZE_MEMBERSHIP_WITHOUT_RATING_VALUES_THEN_IMPLEMENT_AND_SEAL_SCREEN"
+  },
+  "claim_boundary": {
+    "allowed": "ADAPTIVE_CURRENT_METADATA_RETROSPECTIVE_MOVIELENS_MECHANISM_EVIDENCE_FOR_SIMULATED_ZERO_FIT_INTERACTION_RELATIVE_RANKING_WITHIN_FEATURE_COMPLETE_ALREADY_RATED_COLD_SLATES_AMONG_HIGH_ACTIVITY_USERS_WITH_EIGHT_WARM_AND_TWENTY_OR_FOUR_COLD_RATINGS",
+    "forbidden": [
+      "KOREAN_USER_PERFORMANCE",
+      "POST_MOVIELENS_MOVIE_PERFORMANCE",
+      "ACTUAL_NEW_RELEASE_PERFORMANCE",
+      "UNRATED_IS_DISLIKE",
+      "FULL_CATALOG_RELEVANCE",
+      "PERCENTILE_K8_OPTIMALITY",
+      "MODEL_CHAMPION",
+      "PRODUCT_POLICY"
+    ],
+    "adaptive_limit": "The source data, PERCENTILE_K8 cell, and related labels were used in earlier development. REC-EV-027 is model-development and mechanism evidence, not independent confirmation.",
+    "target_domain_limit": "TMDB production-country-KR and 2020-2023 tracks are MovieLens-rater transfer proxies only. They are not Korean-user or future-film validation."
+  },
+  "authorization": {
+    "adaptive_development": true,
+    "rating_independent_catalog_build_before_exact_audit": true,
+    "rating_value_access_before_exact_contract_pass": false,
+    "locked_test_access": false,
+    "final_reserve_access": false,
+    "timestamp_access": false,
+    "champion_selection": false,
+    "product_policy_change": false
+  },
+  "research_basis": [
+    {
+      "paper": "Metadata Embeddings for User and Item Cold-start Recommendations",
+      "url": "https://arxiv.org/abs/1507.08439",
+      "use": "FEATURE_ONLY_LIGHTFM_REFERENCE"
+    },
+    {
+      "paper": "DropoutNet: Addressing Cold Start in Recommender Systems",
+      "url": "https://papers.neurips.cc/paper_files/paper/2017/hash/dbd22ba3bd0df8f385bdac3e9f8be207-Abstract.html",
+      "use": "EXPLICIT_MISSING_INTERACTION_TRAINING_REFERENCE"
+    },
+    {
+      "paper": "Contrastive Learning for Cold-Start Recommendation",
+      "url": "https://arxiv.org/abs/2107.05315",
+      "use": "CONTENT_COLLABORATIVE_CONTRASTIVE_REFERENCE"
+    },
+    {
+      "paper": "Sparse Contrastive Learning for Content-Based Cold Item Recommendation",
+      "url": "https://arxiv.org/abs/2604.12990",
+      "use": "PURE_CONTENT_PREFERENCE_SPACE_REFERENCE"
+    }
+  ],
+  "allowed_input_artifacts": {
+    "movielens_archive": {
+      "path": "C:/higher/projects/MM/data/raw/ml-32m.zip",
+      "member": "ml-32m/ratings.csv",
+      "bytes": 238950008,
+      "sha256": "e4a68655d7386b8f95f2f2424b2ff975dfdd15ffd59e0d864a14dca43e99d6ee"
+    },
+    "catalog_build_contract": {
+      "path": "docs/recommendation/contracts/rec-ev-027-catalog-build.json",
+      "bytes": 4296,
+      "sha256": "d5973f2de5fa5f92fa5f6ffc179dcc1568dcaa997e7d3de86071b1ccbb47dfc8"
+    },
+    "structured_feature_helper": {
+      "path": "scripts/rec_ev_022a_core.py",
+      "bytes": 12686,
+      "sha256": "cdc0285e27b76bb16b286e015ca6b000fb2dc3ba128dc98c28e6cfc4b99d9475"
+    }
+  },
+  "forbidden_input_artifacts": [
+    "outputs/recommendation-evidence/global-time-v1/test.parquet",
+    "outputs/recommendation-evidence/rec-ev-019a/locked-test-binary-prefixes.parquet",
+    "outputs/recommendation-evidence/rec-ev-019a/locked-test-evaluation-windows.parquet",
+    "outputs/recommendation-evidence/rec-ev-022a/final-reserve-input.parquet"
+  ],
+  "catalog_content_build": {
+    "immutable_build_contract": "allowed_input_artifacts.catalog_build_contract",
+    "membership_source": "MOVIELENS_MOVIES_CSV_LEFT_ONE_TO_ONE_LINKS_CSV_BY_MOVIE_ID",
+    "allowed_archive_members_before_exact_audit": ["ml-32m/movies.csv", "ml-32m/links.csv"],
+    "ratings_member_access": false,
+    "expected_catalog_movies": 87585,
+    "expected_catalog_links": 87585,
+    "expected_positive_tmdb_links": 87461,
+    "every_catalog_movie_attempted": true,
+    "tmdb_cache_reuse": "EVERY_CATALOG_ID_RUNS_THE_SAME_CURRENT_IDENTITY_AND_FEATURE_EXTRACTOR; REC_EV_019B_RAW_RESPONSE_CACHE_MAY_REPLACE_NETWORK_ONLY_WHEN_REQUEST_FIELDS_STATUS_AND_CANONICAL_BODY_SHA256_VALIDATE; CACHE_MEMBERSHIP_NEVER_DEFINES_PROCESSING_OR_THE_CATALOG",
+    "embedding_reuse": "EVERY_ELIGIBLE_ROW_REBUILDS_THE_PINNED_INPUT_TEXT; REC_EV_019B_VECTOR_MAY_REPLACE_REENCODING_ONLY_WHEN MOVIE_ID MODEL_ID REVISION INPUT_TEXT_SHA256 DIMENSION FINITE AND L2 ALL_VALIDATE",
+    "missing_or_drifted_embedding": "REENCODE_WITH_PINNED_E5",
+    "korean_origin_proxy": "TMDB_PRODUCTION_COUNTRIES_CONTAINS_ISO_3166_1_KR_FOR_SEGMENTATION_ONLY_NOT_A_PREFERENCE_FEATURE",
+    "outputs": {
+      "identity": "outputs/recommendation-evidence/rec-ev-027-catalog/movie-identity.parquet",
+      "structured": "outputs/recommendation-evidence/rec-ev-027-catalog/structured-features.parquet",
+      "embeddings": "outputs/recommendation-evidence/rec-ev-027-catalog/text-embeddings.parquet",
+      "domain_projection": "outputs/recommendation-evidence/rec-ev-027-catalog/domain-projection.parquet",
+      "summary": "outputs/recommendation-evidence/rec-ev-027-catalog/catalog-build-summary.json",
+      "manifest": "outputs/recommendation-evidence/rec-ev-027-catalog/catalog-build-manifest.json"
+    },
+    "artifact_pins": {
+      "identity": {
+        "path": "outputs/recommendation-evidence/rec-ev-027-catalog/movie-identity.parquet",
+        "bytes": 4963647,
+        "sha256": "35c5c4229e79a79959cbeb13ce53cfd045c37e658b3039b19a21fcbbf6ad3b79"
+      },
+      "structured": {
+        "path": "outputs/recommendation-evidence/rec-ev-027-catalog/structured-features.parquet",
+        "bytes": 3739308,
+        "sha256": "231fa0bc2628066ae2fdc2fa65c03b9068cd6a5d8dbcd86c385cadf4e50098b3"
+      },
+      "embeddings": {
+        "path": "outputs/recommendation-evidence/rec-ev-027-catalog/text-embeddings.parquet",
+        "bytes": 125720897,
+        "sha256": "d19ff51cd0e7af8fa6dab1f74de6fac5f90eb85993db494565de67a818529f7c"
+      },
+      "domain_projection": {
+        "path": "outputs/recommendation-evidence/rec-ev-027-catalog/domain-projection.parquet",
+        "bytes": 936743,
+        "sha256": "511d6e92efab16f5128eed8d2123fa71ba73fbae7090b01a4e62cb8ea2e513f0"
+      },
+      "summary": {
+        "path": "outputs/recommendation-evidence/rec-ev-027-catalog/catalog-build-summary.json",
+        "bytes": 1647,
+        "sha256": "a00bdccbf96dc4936571faa7e445055c4d030d05caab18ba5aed0b8ad4da7237"
+      },
+      "manifest": {
+        "path": "outputs/recommendation-evidence/rec-ev-027-catalog/catalog-build-manifest.json",
+        "bytes": 1926,
+        "sha256": "1e7fa6ee6319485653f43a45e42e189c5e27482f6fd222d0c2c7271e4cc24393"
+      }
+    },
+    "execution_input_requirement": "ALL_SIX_OUTPUTS_ARE_HASH_AND_BYTE_PINNED_IN_THIS_CONTRACT_AFTER_BUILD_AND_BEFORE_ANY_RATINGS_MEMBER_ACCESS"
+  },
+  "source_population": {
+    "old_bucket": "UINT64_BE_FIRST8_SHA256_UTF8_FEELM_REC_VNEXT_USER_SPLIT_V1_PIPE_DECIMAL_USER_ID_MOD_100",
+    "allowed_old_buckets_inclusive": [0, 59],
+    "excluded_old_buckets_inclusive": [60, 99],
+    "excluded_reader_policy": "PARSE_USER_ID_ONLY_THEN_DISCARD_RAW_LINE",
+    "user_key": "LOWERHEX_SHA256_UTF8_REC_EV_022A_USER_KEY_V1_PIPE_DECIMAL_USER_ID",
+    "role_bucket": "UINT256_BE_SHA256_UTF8_REC_EV_022A_USER_ROLE_V1_PIPE_DECIMAL_USER_ID_MOD_10000",
+    "model_train_role_inclusive": [0, 5999],
+    "evaluation_role_inclusive": [6000, 7999],
+    "forbidden_roles_inclusive": [8000, 9999],
+    "evaluation_phase_salt": "rec-ev-027-phase-user-v1",
+    "evaluation_phase_bucket": "UINT256_BE_SHA256_UTF8_PHASE_SALT_PIPE_DECIMAL_USER_ID_MOD_10000",
+    "screen_evaluation_phase_inclusive": [0, 1999],
+    "replication_and_transfer_phase_inclusive": [2000, 9999],
+    "phase_overlap": 0,
+    "raw_user_id_output": "FORBIDDEN"
+  },
+  "item_universe": {
+    "source": "INTERSECTION_OF_RATING_INDEPENDENT_87585_MOVIE_CATALOG_AND_REBUILT_STRUCTURED_AND_E5_ROWS_BY_MOVIE_ID_WITHOUT_INTERACTION_COUNT_FILTER",
+    "structured_gate": "FEATURE_ELIGIBLE_TRUE_AND_FINAL_STRUCTURED_ROW_NORM_POSITIVE",
+    "e5_gate": "FEATURE_ELIGIBLE_TRUE_AND_MODEL_REVISION_EXACT_AND_ALL_FINITE_AND_ABS_L2_MINUS_1_LTE_0_0001",
+    "e5_model_id": "intfloat/multilingual-e5-small",
+    "e5_revision": "614241f622f53c4eeff9890bdc4f31cfecc418b3",
+    "dimension": 384,
+    "structured_transform": "PINNED scripts/rec_ev_022a_core.py build_structured_full ON MOVIE_ID_ASC COMMON_SUPPORT: FOUR GROUPS GENRE; CONTEXT(original_language,release_decade=floor(year/10)*10,runtime30=floor(minutes/30)); PEOPLE(director,top5_cast); KEYWORD. WITHIN EACH GROUP BINARY TOKEN ROW L2, MULTIPLY EACH GROUP BY 0.25, HSTACK GROUP ORDER, FINAL ROW L2. EACH GROUP VOCABULARY IS UTF8 TOKEN LEXICOGRAPHIC ASC OVER COMMON_SUPPORT. NO RATING POPULARITY OR ITEM IDENTITY FEATURE",
+    "forbidden_membership_inputs": ["RATING", "RATING_COUNT", "POPULARITY", "TIMESTAMP", "BPR_FACTOR", "PRIOR_EXPERIMENT_CANDIDATE_MEMBERSHIP"],
+    "required_pins_before_rating_access": "CATALOG_BUILD_OUTPUTS_FROM_CATALOG_CONTENT_BUILD"
+  },
+  "strict_item_firewall": {
+    "fold_salt": "rec-ev-027-random-item-fold-v1",
+    "fold_formula": "UINT64_BE_FIRST8_SHA256_UTF8_FOLD_SALT_PIPE_DECIMAL_MOVIE_ID_MOD_5",
+    "screen_fold": 0,
+    "replication_folds": [1, 2, 3, 4],
+    "cold_definition": "THE_ENTIRE_MOVIE_ID_COLUMN_IS_EXCLUDED_FROM_ALL_PRE_RANK_INTERACTION_DERIVED_PRIORS_TRAINING_PAIRS_HYPERPARAMETER_SELECTION_AND_TEACHER_FITS; SEALED_FOLD0_LABELS_MAY_BE_USED_ONLY_FOR_THE_DECLARED_ADAPTIVE_ADVANCE_DECISION",
+    "feature_access_for_cold_items": ["TMDB_STRUCTURED", "PINNED_E5"],
+    "forbidden_cold_item_access": ["RATING_VALUE_BEFORE_RANK_SEAL", "INTERACTION_COUNT", "POPULARITY", "ITEM_ID_FEATURE", "LEARNED_ITEM_FACTOR", "COOCCURRENCE"],
+    "assertions": [
+      "NO_COLD_MOVIE_ID_IN_ANY_TRAIN_INTERACTION_MATRIX",
+      "NO_COLD_MOVIE_ID_IN_ANY_INNER_VALIDATION_TRAIN_MATRIX",
+      "NO_COLD_ITEM_IDENTITY_FEATURE",
+      "NO_COLD_ITEM_TEACHER_FACTOR_READ",
+      "ALL_PRIMARY_AND_BINARY_SENSITIVITY_TARGET_RANKS_FOR_A_PHASE_SEALED_BEFORE_ANY_TARGET_RATING_VALUES_FOR_THAT_PHASE_ARE_PARSED"
+    ]
+  },
+  "tracks": {
+    "RANDOM_ITEM_COLD": {
+      "screen": "FOLD_0_COLD_OTHER_FOLDS_WARM",
+      "replication": "EACH_OF_FOLDS_1_TO_4_COLD_WITH_MODEL_REFIT_ON_THE_OTHER_FOUR_FOLDS",
+      "profile_source": "WARM_ITEMS_ONLY",
+      "profile_n": 8,
+      "target_source": "COLD_ITEMS_RATED_BY_EVALUATION_USER_MEMBERSHIP_ONLY",
+      "target_n": 20,
+      "selection": "HASH_ORDER_INDEPENDENT_OF_RATING_VALUE_AND_TIMESTAMP",
+      "minimum_screen_users": 500,
+      "minimum_unique_cold_targets": 1000
+    },
+    "KOREAN_ORIGIN_COLD": {
+      "cold_items": "ALL_COMMON_SUPPORT_ITEMS_WITH_REBUILT_TMDB_PRODUCTION_COUNTRIES_CONTAINING_KR",
+      "warm_items": "ALL_OTHER_COMMON_SUPPORT_ITEMS",
+      "profile_source": "NON_KOREAN_WARM_ITEMS_ONLY",
+      "profile_n": 8,
+      "target_source": "KOREAN_COLD_ITEMS_RATED_BY_EVALUATION_USER_MEMBERSHIP_ONLY",
+      "target_n": 4,
+      "minimum_users": 60,
+      "minimum_unique_cold_targets": 60,
+      "status": "SECONDARY_TMDB_PRODUCTION_COUNTRY_KR_TRANSFER_PROXY"
+    },
+    "RELEASE_2020_2023_COLD": {
+      "cold_items": "COMMON_SUPPORT_RELEASE_YEAR_INCLUSIVE_2020_2023",
+      "warm_items": "COMMON_SUPPORT_RELEASE_YEAR_LTE_2019",
+      "profile_source": "PRE_2020_WARM_ITEMS_ONLY",
+      "profile_n": 8,
+      "target_source": "2020_2023_COLD_ITEMS_RATED_BY_EVALUATION_USER_MEMBERSHIP_ONLY",
+      "target_n": 4,
+      "minimum_users": 250,
+      "minimum_unique_cold_targets": 150,
+      "status": "SECONDARY_RETROSPECTIVE_TRANSFER_PROXY",
+      "metadata_limit": "CURRENT_TMDB_METADATA_WITHOUT_RELEASE_TIME_AVAILABILITY_TIMESTAMPS"
+    }
+  },
+  "membership": {
+    "rating_value_and_timestamp_access": false,
+    "evaluation_interaction_membership_exception": "USER_ID_AND_MOVIE_ID_ONLY_MAY_DEFINE_WHICH_ALREADY_RATED_COLD_ITEMS_ENTER_THE_JUDGED_SLATE; THIS MEMBERSHIP_IS NEVER_AVAILABLE_TO_MODEL_FIT_OR_SCORE_AS_A FEATURE",
+    "profile_order_salt": "rec-ev-027-profile-order-v1",
+    "target_order_salt": "rec-ev-027-target-order-v1",
+    "payload": "UTF8_SALT_PIPE_TRACK_PIPE_FOLD_OR_DOMAIN_PIPE_USER_KEY_PIPE_DECIMAL_MOVIE_ID",
+    "order": "SHA256_DIGEST_BYTES_ASC_THEN_MOVIE_ID_ASC_COLLISION_GUARD",
+    "selection_forbidden": ["RATING_VALUE", "Q", "TIMESTAMP", "POPULARITY", "INTERACTION_COUNT", "MODEL_SCORE"],
+    "profile_target_disjoint": true,
+    "duplicate_movie_within_list": "FATAL",
+    "raw_user_id_output": "FORBIDDEN"
+  },
+  "profile_policy": {
+    "primary": "PERCENTILE_MAGNITUDE",
+    "k": 8,
+    "rating_bins": [0.5, 1.0, 1.5, 2.0, 2.5, 3.0, 3.5, 4.0, 4.5, 5.0],
+    "prior_population": "FOR_EACH_FOLD_OR_TRACK_MODEL_TRAIN_USERS_WITH_AT_LEAST_ONE_WARM_RATING; NORMALIZE_EACH_USERS_10_BIN_WARM_HISTOGRAM_TO_SUM_ONE_THEN_EQUAL_USER_MEAN_AND_RENORMALIZE",
+    "prior_formula": "PI0_R=MEAN_USER_COUNT_USER_R_DIV_N_USER_WARM; G0_MID_R=CUMSUM_PI0_R_MINUS_0_5_TIMES_PI0_R",
+    "q_profile_formula": "FOR_THE_SELECTED_EIGHT_PROFILE_RATINGS_Q_K_R=(N_PROFILE_LT_R_PLUS_0_5_N_PROFILE_EQ_R_PLUS_5_TIMES_G0_MID_R)_DIV_13",
+    "weight": "TWO_TIMES_Q_PROFILE_MINUS_ONE",
+    "prior_dtype": "FLOAT64",
+    "prior_seal": "BEFORE_ANY_EVALUATION_TARGET_RATING_VALUE_IS_PARSED",
+    "sensitivity": "BINARY_SIGN_AT_K8_SCORES_AND_RANKS_SEALED_WITH_PRIMARY_BEFORE_ANY_PHASE_TARGET_LABEL_IS_OPENED; METRICS_COMPUTED_AFTER_LABEL_OPEN_AND_NEVER_USED_FOR_SELECTION",
+    "selection_status": "OUTCOME_INFORMED_FIXED_DEVELOPMENT_REFERENCE_NOT_AN_OPTIMALITY_CLAIM"
+  },
+  "evaluation_labels": {
+    "q_eval_reference": "ALL_RATINGS_FOR_THE_ALLOWED_PHASE_DISJOINT_EVALUATION_USER_IN_RATINGS_CSV_INCLUDING_ITEMS_OUTSIDE_COMMON_SUPPORT_AND_PROFILE_TARGET_AND_UNSELECTED_ITEMS; SCREEN USERS NEVER APPEAR_IN_REPLICATION_OR_TRANSFER",
+    "q_eval_formula": "Q_EVAL_R=(N_FULL_LT_R_PLUS_0_5_N_FULL_EQ_R)_DIV_N_FULL",
+    "target_rating_access": "ONLY_AFTER_ALL_MODEL_SCORE_AND_RANK_ARTIFACTS_FOR_THE_TRACK_AND_FOLD_ARE_SEALED",
+    "unrated_semantics": "UNKNOWN_NOT_NEGATIVE",
+    "judged_slate": "EXACTLY_TARGET_N_RATED_COLD_ITEMS_SELECTED_WITHOUT_RATING_VALUE_OR_TIMESTAMP",
+    "output_n": 2
+  },
+  "models": {
+    "RANDOM_EXPECTATION": {
+      "fit": false,
+      "score": "ANALYTIC_EXPECTATION_OVER_ALL_UNORDERED_PAIRS_IN_THE_FIXED_JUDGED_SLATE"
+    },
+    "STRUCTURED_DIRECT": {
+      "fit": false,
+      "representation": "FOUR_GROUP_EQUAL_WEIGHT_ROW_L2_TMBD_STRUCTURED_FEATURES",
+      "score": "SUM_FIRST8_WEIGHT_TIMES_ROW_COSINE_PROFILE_ITEM_TARGET_ITEM_DIV_SUM_ABS_FIRST8_WEIGHT"
+    },
+    "E5_DIRECT": {
+      "fit": false,
+      "representation": "PINNED_384D_ROW_L2_E5",
+      "score": "SUM_FIRST8_WEIGHT_TIMES_RAW_E5_COSINE_PROFILE_ITEM_TARGET_ITEM_DIV_SUM_ABS_FIRST8_WEIGHT_WITH_NEGATIVE_COSINE_PRESERVED"
+    },
+    "STRUCTURED_E5_RRF": {
+      "fit": false,
+      "score": "RECIPROCAL_RANK_FUSION_OF_ACTIVE_STRUCTURED_DIRECT_AND_ACTIVE_E5_DIRECT_WITH_C_10; ONE_ACTIVE_COMPONENT_EQUALS_THAT_COMPONENT_ORDER; BOTH_INACTIVE_MEANS_INACTIVE"
+    },
+    "FEATURE_ONLY_LIGHTFM": {
+      "fit": true,
+      "item_identity_features": false,
+      "interaction_source": "MODEL_TRAIN_USERS_WARM_ITEMS_ONLY; Q_U_R=(N_USER_WARM_LT_R+0.5*N_USER_WARM_EQ_R+5*FOLD_SPECIFIC_G0_MID_R)/(N_USER_WARM+5); VALUE=SIGN(2*Q_U_R-1); OMIT EXACT ZERO",
+      "item_features": "STRUCTURED_FEATURE_COLUMNS_NONZERO_IN_AT_LEAST_ONE_MODEL_TRAIN_INTERACTION_TOUCHED_WARM_ITEM_ONLY; NO_IDENTITY; PRUNE_THEN_ROW_L2; ZERO_COLD_ROW_INACTIVE",
+      "loss": "LIGHTFM_LOGISTIC_WITH_INTERACTION_MATRIX_VALUE_SIGN_TWO_Q_U_R_MINUS_ONE_IN_MINUS1_PLUS1_AND_NO_SEPARATE_SAMPLE_WEIGHT",
+      "parameters": {"dimension": 128, "epochs": 10, "learning_rate": 0.05, "item_alpha": 0.000001, "user_alpha": 0.000001, "threads": 1},
+      "dependency": {
+        "distribution": "lightfm-next",
+        "version": "1.19.0",
+        "python": "3.12",
+        "platform": "linux_amd64",
+        "learning_schedule": "adagrad",
+        "runtime_image": "python:3.12.5-slim-bookworm@sha256:c24c34b502635f1f7c4e99dc09a2cbd85d480b7dcfd077198c6b5af138906390",
+        "lockfile": {"path": "requirements-rec-ev-019c.lock", "bytes": 1360, "sha256": "408c04657ae78c3c16d8a87df03e365967e1b962951b102ee36c0950046577eb"}
+      },
+      "seeds": [17, 42, 73],
+      "index_and_rng": "ITEM_ROWS_MOVIE_ID_ASC_OVER_COMMON_SUPPORT; TRAIN_USER_ROWS_USER_KEY_ASC; STRUCTURED_FEATURE_COLUMNS_FROM_PINNED_HELPER_THEN TRAIN_TOUCHED_NONZERO_COLUMN_MASK_IN ORIGINAL_COLUMN_ASC; COO SORT USER_ROW_ASC_THEN_ITEM_ROW_ASC; NO_EXPLICIT_USER_FEATURE_MATRIX_SO_LIGHTFM_TRAIN_USER_IDENTITY_FEATURES_ONLY; NO_ITEM_IDENTITY_FEATURES; RANDOM_STATE=np.random.RandomState(SEED) PASSED_TO_LIGHTFM AND CONTROLS INITIALIZATION_AND_EPOCH_SHUFFLE",
+      "evaluation_user_fold_in": "OMIT EXACT-ZERO PROFILE WEIGHTS; IF NONE REMAIN SYSTEM INACTIVE; START ZERO FLOAT64 128D USER VECTOR AND NO USER BIAS; Y=SIGN_WEIGHT; C=ABS_WEIGHT_DIV_MEAN_NONZERO_ABS_WEIGHT; MINIMIZE SUM(C_I*SOFTPLUS(-Y_I*(FIXED_ITEM_BIAS_I+U_DOT_FIXED_ITEM_FACTOR_I)))/SUM(C_I) + USER_ALPHA/2*SUM(U_SQUARED); FULL-BATCH GRADIENT IN USER VECTOR ONLY FOR EXACTLY 80 STEPS WITH U=U-0.05*GRADIENT; FIXED MODEL PARAMETERS; FLOAT64 FOLD-IN",
+      "candidate_score": "FIXED_COLD_ITEM_BIAS_PLUS_FOLD_IN_USER_VECTOR_DOT_FIXED_COLD_ITEM_FACTOR",
+      "seed_aggregation": "AVERAGE_THREE_SEED_CANDIDATE_SCORES_BEFORE_RANK"
+    },
+    "E5_TO_WARM_BPR_RIDGE": {
+      "fit": true,
+      "teacher": "FOLD_SPECIFIC_OBSERVED_LIKE_OVER_DISLIKE_BPR_ON_MODEL_TRAIN_USERS_AND_WARM_ITEMS_ONLY",
+      "teacher_parameters": {"factors": 128, "regularization": 0.0001, "epochs": 30, "learning_rate": 0.05, "maximum_pairs_per_user_epoch": 16, "batch_size": 4096},
+      "teacher_seeds": [17, 42, 73],
+      "teacher_runtime": {"python": "3.12", "numpy": "1.26.4", "device": "CPU", "threads": 1, "rng": "PCG64"},
+      "teacher_initialization": "PCG64_SEED_NORMAL_MEAN_0_SD_0_01_FLOAT32_USER_AND_WARM_ITEM_FACTORS",
+      "teacher_optimizer": "NO_BIAS; WARM_ITEMS_MOVIE_ID_ASC; USERS_USER_KEY_ASC; FOR EACH SEQUENTIAL NO-SHUFFLE BATCH USE SNAPSHOT FLOAT64 U,I,J; M=CLIP(SUM(U*(I-J)),-35,35); C=1/(1+EXP(M)); GRAD_U=C*(I-J)-L2*U; GRAD_I=C*U-L2*I; GRAD_J=-C*U-L2*J; FOR EACH REPEATED TARGET INDEX SUM GRADIENTS THEN DIVIDE BY THAT INDEX COUNT; ADD LEARNING_RATE*AVERAGE_GRADIENT TO FLOAT32 PARAMETER; NP_UNIQUE_ASC; USER_KEY_ASC_PAIR_CONCATENATION; WITHIN_USER_FLAT_INDEX_ASC; NO_BATCH_SHUFFLE",
+      "teacher_label": "Q_U_R=(N_USER_WARM_LT_R+0.5*N_USER_WARM_EQ_R+5*FOLD_SPECIFIC_G0_MID_R)/(N_USER_WARM+5); LABEL=SIGN(2*Q_U_R-1); EXACT_ZERO_OMITTED",
+      "teacher_pairs": "LIKES_AND_DISLIKES_ARE_UNIQUE_MOVIE_ID_ASC; TOTAL=L_COUNT*D_COUNT; WANTED=MIN(TOTAL,16); STATE=UINT64_BE_FIRST8_SHA256_UTF8_REC_EV_027_BPR_PAIR_V2_PIPE_TRACK_PIPE_FOLD_PIPE_SEED_PIPE_EPOCH_PIPE_USER_KEY; REPEAT STATE=(STATE+0x9E3779B97F4A7C15)MOD2_64 THEN Z=STATE; Z=((Z XOR Z_SHIFT30)*0xBF58476D1CE4E5B9)MOD2_64; Z=((Z XOR Z_SHIFT27)*0x94D049BB133111EB)MOD2_64; Z=Z XOR Z_SHIFT31; ADD FLAT_INDEX=Z_MOD_TOTAL UNTIL WANTED_UNIQUE; OUTPUT FLAT_INDEX_ASC MAPPED TO LIKE_INDEX=FLAT_DIV_D_COUNT AND DISLIKE_INDEX=FLAT_MOD_D_COUNT; PAIR_TOUCHED_ITEM IS ANY ITEM APPEARING IN ANY SELECTED PAIR ACROSS ALL 30 EPOCHS",
+      "mapper": "FOR EACH SEED LET X BE FLOAT64 ROW-L2 E5 AND Y BE FLOAT64 ROW-L2 WARM BPR FACTORS FOR PAIR_TOUCHED_ITEMS_ONLY IN MOVIE_ID_ASC; NO INTERCEPT OR CENTERING; BETA=NP_LINALG_SOLVE(X_TRANSPOSE_X+ALPHA*IDENTITY_384,X_TRANSPOSE_Y); PREDICTION=X*BETA THEN ROW_L2; NONFINITE OR ZERO PREDICTION IS INELIGIBLE; RANDOM INITIAL FACTORS OF NEVER-TOUCHED ITEMS ARE FORBIDDEN",
+      "alpha_grid": [0.1, 1.0, 10.0, 100.0, 1000.0],
+      "inner_item_split": "UINT64_BE_FIRST8_SHA256_UTF8_REC_EV_027_RIDGE_INNER_PIPE_OUTER_TRACK_FOLD_PIPE_MOVIE_ID_MOD_5_EQ_0_FOR_VALIDATION_ELSE_MAPPER_TRAIN_SHARED_ALL_SEEDS",
+      "inner_support": "FOR EVERY SEED USE THAT SEEDS PAIR_TOUCHED ITEMS ONLY; REQUIRE AT_LEAST_1000 MAPPER_TRAIN ITEMS AND 200 VALIDATION ITEMS; OTHERWISE SYSTEM FIT FAILS",
+      "alpha_selection": "ONE_ALPHA_MAXIMIZING_EQUAL_MEAN_VALIDATION_COSINE_OVER_INNER_VALIDATION_ITEMS_AND_THREE_TEACHER_SEEDS; SMALLEST_ALPHA_EXACT_TIE",
+      "mapper_refit": "AFTER_ALPHA_SELECTION REFIT ONE MAPPER PER TEACHER SEED ON ALL AND ONLY THAT SEEDS OUTER_WARM_PAIR_TOUCHED_ITEMS",
+      "evaluation_score": "FOR EACH SEED USE ROW_L2 ACTUAL PAIR_TOUCHED WARM BPR PROFILE FACTORS AND ROW_L2 PREDICTED NONZERO COLD FACTORS; ANY PROFILE ITEM NOT PAIR_TOUCHED OR ANY REQUIRED ZERO OR NONFINITE FACTOR MAKES THAT USER-SYSTEM CELL INACTIVE; SUM_FIRST8_WEIGHT_TIMES_COSINE_DIV_SUM_ABS_WEIGHT; AVERAGE_THREE_SEED_SCORES_BEFORE_RANK"
+    },
+    "E5_EPISODIC_CONTENT": {
+      "fit": true,
+      "teacher": null,
+      "interaction_source": "MODEL_TRAIN_USERS_WARM_ITEMS_ONLY",
+      "architecture": "SHARED_E5_ENCODER_384_256_GELU_DROPOUT_0_3_128_ROW_L2",
+      "episode_eligibility": "MODEL_TRAIN_USER_HAS_AT_LEAST_TEN_OUTER_WARM_RATINGS_AND_AFTER_EIGHT_HASH_SELECTED_PROFILE_ITEMS_HAS_AT_LEAST_ONE DISJOINT Q_USER_WARM_GTE_0_80 POSITIVE_AND_ONE_DISJOINT Q_USER_WARM_LTE_0_20_NEGATIVE",
+      "episode_rating_semantics": "FOR EACH MODEL_TRAIN USER Q_USER_WARM_R=(N_USER_WARM_LT_R+0.5*N_USER_WARM_EQ_R+5*FOLD_SPECIFIC_G0_MID_R)/(N_USER_WARM+5); PROFILE_WEIGHT=2*Q_USER_WARM_R-1; POSITIVE Q_GTE_0.80; NEGATIVE Q_LTE_0.20",
+      "episode_selection": "PROFILE_FIRST8_BY_SHA256_REC_EV_027_EPISODE_PROFILE_V1_PIPE_TRACK_PIPE_FOLD_PIPE_SEED_PIPE_EPOCH_PIPE_USER_KEY_PIPE_MOVIE_ID; POSITIVE_FIRST_BY_SHA256_REC_EV_027_EPISODE_POSITIVE_V1_WITH_SAME_FIELDS; NEGATIVE_FIRST_BY_SHA256_REC_EV_027_EPISODE_NEGATIVE_V1_WITH_SAME_FIELDS; DIGEST_ASC_THEN_MOVIE_ID; RATING_AND_TIMESTAMP_FORBIDDEN_IN_PROFILE_ORDER",
+      "loss": "BPR_SOFTPLUS_ON_PROFILE_DOT_POSITIVE_MINUS_PROFILE_DOT_NEGATIVE",
+      "profile_and_score": "ENCODE_ITEMS_TO_ROW_L2; PROFILE_VECTOR_SUM_EIGHT_WEIGHT_TIMES_VECTOR_DIV_SUM_ABS_WEIGHT; CANDIDATE_SCORE_PROFILE_DOT_COLD_VECTOR",
+      "parameters": {"epochs": 10, "optimizer": "ADAMW", "betas": [0.9, 0.999], "epsilon": 1e-08, "learning_rate": 0.001, "weight_decay": 0.00001, "maximum_episodes_per_user_epoch": 1, "batch_size": 512, "early_stopping": false, "device": "CPU", "threads": 1, "torch_deterministic_algorithms": true},
+      "dependencies": {"python": "3.12", "torch": "2.6.0"},
+      "deterministic_execution": "FOR EACH SEED SET PYTHON_RANDOM_SEED NUMPY_PCG64_SEED TORCH_MANUAL_SEED TO SEED; TORCH_USE_DETERMINISTIC_ALGORITHMS_TRUE; TORCH_NUM_THREADS_1; TORCH_INTEROP_THREADS_1; CREATE LINEAR_384_256_WITH_BIAS THEN LINEAR_256_128_WITH_BIAS USING PYTORCH_2_6_DEFAULT_RESET_PARAMETERS AFTER SEED; FLOAT32; EACH EPOCH CREATE AT MOST ONE DECLARED EPISODE PER ELIGIBLE USER, CONCATENATE USER_KEY_ASC, SEQUENTIAL BATCHES, NO SHUFFLE; DROPOUT USES THE SEEDED TORCH RNG; LOSS IS BATCH_MEAN_SOFTPLUS(-(PROFILE_DOT_POSITIVE-PROFILE_DOT_NEGATIVE))",
+      "seeds": [17, 42, 73],
+      "seed_aggregation": "AVERAGE_THREE_SEED_CANDIDATE_SCORES_BEFORE_RANK"
+    }
+  },
+  "common_scoring": {
+    "systems_not_algorithms": "FEATURE_ONLY_LIGHTFM_USES_STRUCTURED_WHILE_RIDGE_AND_EPISODIC_USE_E5; REPORT_SYSTEM_CELL_EFFICACY_AND_DO_NOT_ATTRIBUTE_DIFFERENCES_TO_ALGORITHM_ALONE",
+    "denominator": "SUM_ABS_FIRST8_WEIGHT",
+    "active": "DENOMINATOR_GT_ZERO_AND_ALL_TARGET_SCORES_FINITE_AND_AT_LEAST_TWO_UNIQUE_TARGET_SCORES",
+    "inactive": "NO_RANK_AND_ANALYTIC_RANDOM_EXPECTATION_METRICS; REPORT_ACTIVE_RATE",
+    "tie_payload": "UTF8_REC_EV_027_SCORE_TIE_V1_PIPE_PHASE_PIPE_TRACK_PIPE_FOLD_PIPE_MODEL_PIPE_ENCODING_PIPE_SEED_AGGREGATED_PIPE_USER_KEY_PIPE_MOVIE_ID",
+    "tie_order": "SCORE_DESC_THEN_SHA256_DIGEST_BYTES_ASC_THEN_MOVIE_ID_ASC"
+  },
+  "screen_and_replication": {
+    "screen_models": ["STRUCTURED_DIRECT", "E5_DIRECT", "STRUCTURED_E5_RRF", "FEATURE_ONLY_LIGHTFM", "E5_TO_WARM_BPR_RIDGE", "E5_EPISODIC_CONTENT"],
+    "screen_track": "RANDOM_ITEM_COLD_FOLD_0",
+    "advance_cap": 2,
+    "selection_effect": "BENEFIT_ALWAYS_MEANS_THE_SIMULTANEOUS_95_PERCENT_LOWER_BENEFIT_BOUND_FROM_THE_45_CONTRAST_SCREEN_FAMILY; NEVER_POINT_ESTIMATE",
+    "reporting_order": ["STRUCTURED_DIRECT", "E5_DIRECT", "STRUCTURED_E5_RRF", "FEATURE_ONLY_LIGHTFM", "E5_TO_WARM_BPR_RIDGE", "E5_EPISODIC_CONTENT"],
+    "advance_rule": "A learned system may advance only if ACTIVE_RATE_GTE_0_95 and simultaneous lower benefit bounds versus RANDOM_EXPECTATION are GTE_0 for HARM20 and STRICTLY_GT_0 for both TOP2_MEAN_Q and TOP2_MIN_Q. Among eligible learned systems retain the nondominated set on HARM20 lower benefit bound and TOP2_MEAN_Q lower benefit bound. If more than two remain, order by higher HARM20 lower bound, then higher TOP2_MEAN_Q lower bound, then reporting_order; retain first two.",
+    "direct_reference_rule": "Among direct systems with ACTIVE_RATE_GTE_0_95, first restrict to systems passing the same three simultaneous-lower-bound gates versus RANDOM_EXPECTATION. If at least one passes, choose higher HARM20 lower benefit bound, then higher TOP2_MEAN_Q lower benefit bound, then reporting_order. If none passes but at least one is active-rate eligible, choose higher TOP2_MEAN_Q lower benefit bound, then higher HARM20 lower benefit bound, then reporting_order and mark FAILED_GATE_DESCRIPTIVE_REFERENCE. All learned-by-all-direct contrasts are in the 45-contrast family.",
+    "empty_direct": "IF_NO_DIRECT_SYSTEM_HAS_ACTIVE_RATE_GTE_0_95_STOP_AFTER_SCREEN_WITH_NO_VALID_DIRECT_REFERENCE_AND_DO_NOT_OPEN_OR_RUN_REPLICATION_OR_TRANSFER",
+    "replication": "Refit only advanced learned models plus the frozen direct reference on folds 1 through 4 and on both secondary transfer tracks. No hyperparameter retuning.",
+    "empty_advance": "STOP_WITH_NO_LEARNED_CONTENT_MODEL_SIGNAL"
+  },
+  "metrics": {
+    "unit": "EVALUATION_USER",
+    "primary": {
+      "HARM20": "INDICATOR_ANY_OF_TOP2_Q_EVAL_LTE_0_20_LOWER_BETTER",
+      "TOP2_MEAN_Q": "MEAN_Q_EVAL_OF_TOP2_HIGHER_BETTER",
+      "TOP2_MIN_Q": "MIN_Q_EVAL_OF_TOP2_HIGHER_BETTER"
+    },
+    "secondary": {
+      "GOOD80": "INDICATOR_ANY_OF_TOP2_Q_EVAL_GTE_0_80_HIGHER_BETTER",
+      "PAIRWISE_CONCORDANCE": "RATED_SLATE_PAIRWISE_CONCORDANCE_WITH_SCORE_TIES_HALF",
+      "ACTIVE_RATE": "FINITE_NONCONSTANT_MODEL_SCORE_RATE"
+    },
+    "random_expectations": "ANALYTIC_EXACT_WITHIN_EACH_USERS_FIXED_JUDGED_SLATE",
+    "catalog_diagnostics_only": ["UNIQUE_TOP2_ITEMS", "TOP10_ITEM_SHARE", "GINI", "KOREAN_ORIGIN_SHARE", "RELEASE_YEAR_DISTRIBUTION"],
+    "forbidden_catalog_metric_interpretation": "UNRATED_ITEMS_ARE_NOT_RELEVANCE_ZERO"
+  },
+  "statistics": {
+    "confidence": 0.95,
+    "screen_contrast_family": "FOR_EACH_OF_THREE_PRIMARY_METRICS_ALL_SIX_NONRANDOM_SYSTEMS_VERSUS_RANDOM_PLUS_ALL_THREE_LEARNED_SYSTEMS_BY_ALL_THREE_DIRECT_SYSTEMS_EQUALS_45 PREDECLARED CONTRASTS; HARM20 EFFECT_ORIENTED_AS_COMPARATOR_HARM_MINUS_MODEL_HARM_SO_HIGHER_IS_BETTER",
+    "screen": "PAIRED_EVALUATION_USER_BOOTSTRAP_WITH_SHARED_RESAMPLES; POINT_USER_MEAN; ORIGINAL_SAMPLE_SE_DDOF1_DIV_SQRT_N; BOOTSTRAP_T_EQUALS_BOOT_MINUS_POINT_DIV_ORIGINAL_SE; CRITICAL_IS_0_95_QUANTILE_OF_MAX_ABS_T_OVER_NONZERO_SE_CONTRASTS; INTERVAL_POINT_PLUS_OR_MINUS_CRITICAL_TIMES_ORIGINAL_SE",
+    "screen_repeats": 5000,
+    "screen_seed": 20261001,
+    "bootstrap_runtime": {"numpy": "1.26.4", "bit_generator": "PCG64", "unit_order": "USER_KEY_ASC", "resample_size": "NUMBER_OF_UNIQUE_USERS", "shared_resample_indices": true, "critical_quantile_method": "HIGHER"},
+    "zero_se": "EXCLUDE_FROM_MAX_T_AND_SET_INTERVAL_LOW_POINT_HIGH_POINT",
+    "no_harm_gate": "SIMULTANEOUS_LOWER_BOUND_OF_RANDOM_HARM20_MINUS_MODEL_HARM20_GTE_0",
+    "positive_gate": "SIMULTANEOUS_LOWER_BOUND_STRICTLY_GT_0_FOR_TOP2_MEAN_Q_AND_TOP2_MIN_Q",
+    "replication_contrast_family": "ADVANCED_LEARNED_AND_DIRECT_REFERENCE_VERSUS_RANDOM_FOR_THREE_PRIMARY_METRICS_PLUS_ADVANCED_LEARNED_VERSUS_DIRECT_REFERENCE_FOR_THREE_PRIMARY_METRICS_ACROSS_FOLDS1_TO4_POOLED",
+    "replication_repeats": 5000,
+    "replication_seed": 20261002,
+    "replication_pooled_estimator": "FOR EACH CONTRAST FIRST AVERAGE THAT USERS AVAILABLE FOLD1_TO4 CONTRAST VALUES SO EACH UNIQUE USER HAS AT MOST ONE VALUE; FORM ONE USER_KEY_ASC UNION OF USERS OVER ALL DECLARED REPLICATION CONTRASTS; POINT ESTIMATE FOR EACH CONTRAST IS THE EQUAL-USER MEAN OVER UNION USERS HAVING THAT CONTRAST; EACH REPLICATE DRAWS EXACTLY UNION_USER_COUNT INDICES WITH REPLACEMENT FROM THE UNION USING NUMPY_1_26_4_PCG64; THE SAME DRAW IS USED FOR ALL CONTRASTS AND EACH CONTRAST DROPS SAMPLED USERS WITHOUT ITS VALUE; EMPTY RESAMPLED CONTRAST IS FATAL; ORIGINAL_SE_IS_DDOF1_DIV_SQRT_N_CONTRAST_USERS; BOOTSTRAP_T=(BOOT_MEAN-POINT)/ORIGINAL_SE; ZERO_SE EXCLUDED FROM MAX; CRITICAL IS HIGHER 0.95 QUANTILE OF MAX_ABS_T; INTERVAL POINT_PLUS_OR_MINUS_CRITICAL_TIMES_ORIGINAL_SE",
+    "replication_active_gate": "EACH REQUIRED SYSTEM ACTIVE_RATE_GTE_0_95 IN EACH OF FOLDS1_TO4 AND POOLED_ACTIVE_USER_RATE_GTE_0_95; POOLED_ACTIVE_USER MEANS ACTIVE IN EVERY FOLD FOR WHICH THAT USER HAS A MEMBERSHIP ROW",
+    "replication_fold_direction": "FOR EACH SYSTEM-VERSUS-COMPARATOR CONTRAST AND EACH PRIMARY METRIC SEPARATELY, HARM20 BENEFIT POINT_GTE_0 AND Q BENEFIT POINT_GT_0 IN AT_LEAST_THREE_OF_FOUR_FOLDS",
+    "replication_system_truth_table": {
+      "PASS_RANDOM_REPLICATION": "REPLICATION_ACTIVE_GATE_PASSES_AND_POOLED_SIMULTANEOUS_LOWER_BENEFIT_BOUND_GTE_0_FOR_HARM20_AND_GT_0_FOR_BOTH_Q_METRICS_VERSUS_RANDOM_AND_REPLICATION_FOLD_DIRECTION_PASSES_FOR_ALL_THREE_METRICS",
+      "FAIL_RANDOM_REPLICATION": "REPLICATION_ACTIVE_GATE_FAILS_OR_ANY_POOLED_SIMULTANEOUS_UPPER_BENEFIT_BOUND_LT_0_FOR_HARM20_OR_LTE_0_FOR_EITHER_Q_METRIC_VERSUS_RANDOM",
+      "INCONCLUSIVE_RANDOM_REPLICATION": "NEITHER_PASS_NOR_FAIL",
+      "PASS_DIRECT_INCREMENT": "ADVANCED_LEARNED_ONLY; SAME ACTIVE_POOLED_LOWER_BOUND_AND_THREE_OF_FOUR_RULES_VERSUS_FROZEN_DIRECT_REFERENCE",
+      "FAIL_DIRECT_INCREMENT": "ADVANCED_LEARNED_ONLY; ANY_POOLED_SIMULTANEOUS_UPPER_BENEFIT_BOUND_LT_0_FOR_HARM20_OR_LTE_0_FOR_EITHER_Q_METRIC_VERSUS_FROZEN_DIRECT_REFERENCE",
+      "INCONCLUSIVE_DIRECT_INCREMENT": "ADVANCED_LEARNED_ONLY; NEITHER_PASS_NOR_FAIL"
+    },
+    "replication_track_truth_table": {
+      "LEARNED_INCREMENT_REPLICATED": "AT_LEAST_ONE_ADVANCED_LEARNED_SYSTEM_HAS_BOTH_PASS_RANDOM_REPLICATION_AND_PASS_DIRECT_INCREMENT",
+      "CONTENT_SIGNAL_WITHOUT_LEARNED_INCREMENT": "NO_ADVANCED_LEARNED_SYSTEM_HAS_BOTH_PASSES_AND_AT_LEAST_ONE_REQUIRED_SYSTEM_HAS_PASS_RANDOM_REPLICATION",
+      "NO_REPLICATION_SIGNAL": "ALL_REQUIRED_SYSTEMS_HAVE_FAIL_RANDOM_REPLICATION",
+      "INCONCLUSIVE_REPLICATION": "OTHERWISE"
+    },
+    "transfer_contrast_family": "JOINT_MAX_T_FAMILY_ACROSS_KOREAN_ORIGIN_COLD_AND_RELEASE_2020_2023_COLD; EACH_ADVANCED_SYSTEM_AND_DIRECT_REFERENCE_VERSUS_RANDOM_FOR_THREE_PRIMARY_METRICS_PLUS_EACH_ADVANCED_LEARNED_VERSUS_DIRECT_REFERENCE_FOR_THREE_PRIMARY_METRICS",
+    "transfer_repeats": 5000,
+    "transfer_seed": 20261003,
+    "transfer_bootstrap": "SORT THE UNION OF UNIQUE USER_KEYS ACROSS BOTH TRACKS; DRAW EXACTLY UNION_USER_COUNT INDICES WITH REPLACEMENT USING NUMPY_1_26_4_PCG64; APPLY THE SAME DRAW TO BOTH TRACKS AND ALL CONTRASTS, WITH EACH CONTRAST MEAN USING ONLY SAMPLED COPIES HAVING THAT CONTRAST; SAME CONFIDENCE STUDENTIZATION ZERO_SE AND HIGHER_QUANTILE RULE AS SCREEN",
+    "transfer_system_truth_table": {
+      "PASS_PROXY_SIGNAL": "ACTIVE_RATE_GTE_0_95_AND_SIMULTANEOUS_LOWER_BENEFIT_BOUND_GTE_0_FOR_HARM20_AND_GT_0_FOR_BOTH_Q_METRICS_VERSUS_RANDOM",
+      "FAIL_PROXY_SIGNAL": "ACTIVE_RATE_LT_0_95_OR_ANY_SIMULTANEOUS_UPPER_BENEFIT_BOUND_LT_0_FOR_HARM20_OR_LTE_0_FOR_EITHER_Q_METRIC",
+      "INCONCLUSIVE_PROXY_SIGNAL": "NEITHER_PASS_NOR_FAIL"
+    },
+    "transfer_track_truth_table": {
+      "PROXY_SIGNAL": "AT_LEAST_ONE_SYSTEM_PASS_PROXY_SIGNAL",
+      "NO_PROXY_SIGNAL": "ALL_SYSTEMS_FAIL_PROXY_SIGNAL",
+      "INCONCLUSIVE_PROXY_SIGNAL": "OTHERWISE"
+    },
+    "seed_aggregation": "AVERAGE_SEED_SCORES_BEFORE_RANKING; ALSO_REPORT_PER_SEED_RANK_STABILITY",
+    "active_rate_gate": 0.95,
+    "missing_or_inactive": "ANALYTIC_RANDOM_EXPECTATION_FOR_USER_MODEL_CELL_AND_REPORT_INACTIVE_RATE"
+  },
+  "execution_phases": [
+    "VALIDATE_CONTRACT",
+    "BUILD_RATING_INDEPENDENT_FULL_CATALOG_CONTENT",
+    "PIN_AND_VALIDATE_CATALOG_BUILD_OUTPUTS",
+    "INDEPENDENT_EXACT_CONTRACT_AUDIT",
+    "MATERIALIZE_MEMBERSHIP_WITHOUT_RATING_VALUES",
+    "FIT_SCREEN_MODELS_WITH_STRICT_ITEM_FIREWALL",
+    "SEAL_SCREEN_PRIMARY_AND_BINARY_SENSITIVITY_SCORES_AND_RANKS",
+    "OPEN_SCREEN_LABELS_AND_SELECT_ADVANCE_SET",
+    "REFIT_REPLICATION_AND_TRANSFER_MODELS_WITHOUT_RETUNING",
+    "SEAL_ALL_REPLICATION_AND_BOTH_TRANSFER_TRACK_PRIMARY_AND_BINARY_SENSITIVITY_SCORES_AND_RANKS",
+    "OPEN_ALL_REPLICATION_AND_TRANSFER_LABELS_ONCE_AND_REPORT"
+  ],
+  "output_root": "outputs/recommendation-evidence/rec-ev-027"
+}

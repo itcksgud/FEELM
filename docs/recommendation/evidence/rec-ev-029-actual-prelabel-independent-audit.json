@@ -1,0 +1,45 @@
+{
+  "audit_id": "rec-ev-029-actual-prelabel-independent-audit-v1",
+  "status": "REC_EV_029_ACTUAL_PRELABEL_AUDIT_PASS",
+  "auditor_thread_id": "01a0751b-6621-7a61-94b2-4c401c7a3066",
+  "findings": {
+    "membership_rows": 21904,
+    "profile_rating_slots": 657120,
+    "calibration_users": 46376,
+    "calibration_ratings": 7355439,
+    "raw_rating_rows": 32000204,
+    "target_rating_values_parsed": 0,
+    "timestamps_parsed": 0,
+    "rec_ev_028_attribution_or_future_opened": 0,
+    "score_cells": 14,
+    "own_candidates_per_cell": 90,
+    "shuffle_candidates_per_cell": 90,
+    "minimum_active_rate": 0.9997810618500274,
+    "independent_score_recalculation_cells": [
+      "SELECTION:R0",
+      "SELECTION:KR",
+      "REPLICATION:R0",
+      "REPLICATION:RECENT"
+    ],
+    "independent_score_recalculation_result": "ALL_OWN_AND_SHUFFLE_90_POLICY_TOP2_MATCHED_FOR_BOUNDARY_SAMPLES",
+    "resume_validation": "PASS"
+  },
+  "audited_artifacts": {
+    "execution_contract": {
+      "path": "docs/recommendation/contracts/rec-ev-029a-prelabel-execution.json",
+      "bytes": 5042,
+      "sha256": "d059a3676acbaa32721c7f1832f5466f591c4db6fc3b0d32e3f3c04160feb97c"
+    },
+    "prepare_seal": {
+      "path": "outputs/recommendation-evidence/rec-ev-029/prelabel/prepared/prepare-seal.json",
+      "bytes": 1648,
+      "sha256": "0ace868e8b01cc878493dc71452b5b6339c65f862f22d9ad2183b05ee2513662"
+    },
+    "global_score_seal": {
+      "path": "outputs/recommendation-evidence/rec-ev-029/prelabel/scores/global-score-seal.json",
+      "bytes": 3987,
+      "sha256": "10038d0a19d99895c0abadf2b81b0ac40cf4b71c3450dc91591c545b5f62a50c"
+    }
+  },
+  "authorization": "MAY_DESIGN_POSTLABEL_SELECTION_BUT_MUST_PASS_EXACT_POSTLABEL_DESIGN_AND_IMPLEMENTATION_AUDIT_BEFORE_OPENING_SELECTION_TARGET_RATINGS"
+}

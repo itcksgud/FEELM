@@ -1,0 +1,27 @@
+{
+  "schema_version": 1,
+  "audit_id": "rec-ev-030-confirmation-implementation-independent-audit-v1",
+  "status": "REC_EV_030_CONFIRMATION_IMPLEMENTATION_AUDIT_PASS",
+  "auditor_thread_id": "01a0751b-6621-7a61-94b2-4c401c7a3066",
+  "scope": "EXACT_CONFIRMATION_CONTRACT_RUNNER_VALIDATOR_AND_SYNTHETIC_TESTS_WITHOUT_RUNNING_CONFIRMATION_OR_OPENING_FUTURE_RATINGS",
+  "findings": {
+    "untouched_future_membership_only": true,
+    "profile_then_global_score_seal_then_target_label": true,
+    "frozen_structured_percentile_k30_top2": true,
+    "cyclic_shuffle_and_analytic_random": true,
+    "random_pooled_user6_item4_shared_multiplier_max_t": true,
+    "resume_upstream_identity_and_partial_state_fail_closed": true,
+    "timestamps_locked_test_final_reserve_and_product_policy_untouched": true
+  },
+  "revision": {
+    "initial_status": "REC_EV_030_CONFIRMATION_IMPLEMENTATION_AUDIT_REVISE",
+    "issue": "PARTIAL_ANALYSIS_ARTIFACTS_COULD_BE_OVERWRITTEN_WITHOUT_A_FINAL_SEAL",
+    "fix": "REJECT_ANY_PROTECTED_PARTIAL_ANALYSIS_STATE_BEFORE_ANALYSIS_WRITES_AND_COVER_USER_BOOTSTRAP_AND_METRIC_SEAL_WITH_REGRESSION_TESTS"
+  },
+  "verification": {
+    "contract_validator": "PASS",
+    "confirmation_tests": "5_PASSED",
+    "runner_executed_by_auditor": false,
+    "future_rating_or_target_label_opened_by_auditor": false
+  }
+}

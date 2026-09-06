@@ -1,0 +1,85 @@
+{
+  "schema_version": 1,
+  "contract_id": "rec-ev-030b-confirmation-execution-v1",
+  "status": "INDEPENDENT_EXACT_IMPLEMENTATION_AUDIT_REQUIRED",
+  "purpose": "Execute the frozen REC-EV-030 future-user confirmation with exact artifact identity, score-before-label firewalls, and resumable fail-closed phases.",
+  "inputs": {
+    "design_contract": {
+      "path": "docs/recommendation/contracts/rec-ev-030-untouched-future-confirmation.json",
+      "bytes": 6971,
+      "sha256": "7479015caf6c7671b9e20f93a74b68c74b04f5f3b142d37f582d14e98654bcdc"
+    },
+    "membership_execution_contract": {
+      "path": "docs/recommendation/contracts/rec-ev-030a-membership-execution.json",
+      "bytes": 2374,
+      "sha256": "e66baeb3854ed90e92902a82ac6e3395ff0115f672afb15fe488632c9a47d88e"
+    },
+    "membership_preflight": {
+      "path": "outputs/recommendation-evidence/rec-ev-030/membership-preflight.json",
+      "bytes": 3541,
+      "sha256": "0b0b3c58bcf0748fbf5100a29849a5ffe3bfdf3bb24114f99ce2caad5caf1936"
+    },
+    "membership": {
+      "path": "outputs/recommendation-evidence/rec-ev-030/cache/membership.parquet",
+      "bytes": 1871182,
+      "sha256": "897efca3540277bc95486504c7bebcd6aeebef22bc3ce400548413411130ea78"
+    },
+    "membership_audit": {
+      "path": "docs/recommendation/evidence/rec-ev-030-membership-result-independent-audit.json",
+      "bytes": 765,
+      "sha256": "34f47c010d7e3c36515d453c22649cb616fc50f9722058f36ff66752cd4e0c66"
+    },
+    "parent_contract": {
+      "path": "docs/recommendation/contracts/rec-ev-027-strict-item-cold-model-screen.json",
+      "bytes": 33789,
+      "sha256": "151b41ca52cb29edfada70eeb6b2f2bfba669612331c2d66e85d5dc63d7c80d7"
+    },
+    "movielens_archive": {
+      "path": "C:/higher/projects/MM/data/raw/ml-32m.zip",
+      "bytes": 238950008,
+      "sha256": "e4a68655d7386b8f95f2f2424b2ff975dfdd15ffd59e0d864a14dca43e99d6ee"
+    },
+    "calibration_prior": {
+      "path": "outputs/recommendation-evidence/rec-ev-029/prelabel/prepared/calibration-prior.npz",
+      "bytes": 979,
+      "sha256": "6e1856f4bcd6d9edcf644e1b2f5a8d9fdd112c0535f001574336e45ab32a6eae"
+    },
+    "implementation": {
+      "path": "scripts/run_rec_ev_030_confirmation.py",
+      "bytes": 46539,
+      "sha256": "c0dd6c3a2437d3208b6b0ff306776c003fecdac65897329c502dac234f096feb"
+    },
+    "validator": {
+      "path": "scripts/validate_rec_ev_030_confirmation.py",
+      "bytes": 5047,
+      "sha256": "040fa381415695cadd59c71113c5f7edd9f8805ed106f2a9af54fae93650a0ae"
+    },
+    "tests": {
+      "path": "scripts/tests/test_rec_ev_030_confirmation.py",
+      "bytes": 2512,
+      "sha256": "39449c4fc49d59e5a95c9cea6e6bbae8c33f2e1f453916e3e16da47adb3dffbc"
+    }
+  },
+  "execution": {
+    "membership_rows": 13910,
+    "union_users": 3398,
+    "profile_slots": 417300,
+    "target_slots": 268136,
+    "profile_then_score_then_label": true,
+    "resume": "CURRENT_UPSTREAM_IDENTITY_REQUIRED_AND_PARTIAL_STATES_FAIL_CLOSED"
+  },
+  "firewall": {
+    "implementation_audit_required_before_profile_ratings": true,
+    "target_ratings_before_global_score_seal": false,
+    "timestamps_opened": false,
+    "locked_test_opened": false,
+    "final_reserve_opened": false,
+    "product_policy_changed": false
+  },
+  "implementation_audit": {
+    "status": "REC_EV_030_CONFIRMATION_IMPLEMENTATION_AUDIT_PASS",
+    "auditor_thread_id": "01a0751b-6621-7a61-94b2-4c401c7a3066",
+    "evidence": "docs/recommendation/evidence/rec-ev-030-confirmation-implementation-independent-audit.json"
+  },
+  "output_root": "outputs/recommendation-evidence/rec-ev-030"
+}

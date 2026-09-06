@@ -1,0 +1,27 @@
+{
+  "audit_id": "rec-ev-029-replication-result-independent-audit-v1",
+  "status": "REC_EV_029_REPLICATION_RESULT_AUDIT_PASS",
+  "auditor_thread_id": "01a0751b-6621-7a61-94b2-4c401c7a3066",
+  "verified": {
+    "replication_rows": 11055,
+    "replication_users": 2706,
+    "replication_target_slots": 213036,
+    "winner": "STRUCTURED_DIRECT|PERCENTILE_MAGNITUDE|K30",
+    "user_bootstrap_shape": [5000, 72],
+    "item_bootstrap_shape": [5000, 48],
+    "random_pooled_truth": false,
+    "failure_reason": "OWN_VS_SHUFFLE_ITEM_MACRO_SIMULTANEOUS_LOWER_BOUNDS_CROSS_ZERO",
+    "own_vs_shuffle_item_utility": {
+      "point": 0.043382723823117086,
+      "low": -0.017935182178951646,
+      "high": 0.10470062982518583
+    },
+    "own_vs_shuffle_item_low": {
+      "point": 0.030770279974408316,
+      "low": -0.024614824534179916,
+      "high": 0.08615538448299655
+    },
+    "all_firewalls_false": true
+  },
+  "authorization": "MAY_DESIGN_A_NEW_EXACT_AUDITED_CONFIRMATION_ON_AN_UNTOUCHED_NON_LOCKED_COHORT;_MAY_NOT_REINTERPRET_THIS_FAILED_GATE"
+}

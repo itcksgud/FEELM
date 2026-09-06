@@ -1,0 +1,24 @@
+{
+  "schema_version": 1,
+  "audit_id": "rec-ev-030-actual-prelabel-independent-audit-v1",
+  "status": "REC_EV_030_ACTUAL_PRELABEL_AUDIT_PASS",
+  "auditor_thread_id": "01a0751b-6621-7a61-94b2-4c401c7a3066",
+  "checks": {
+    "contract_membership_prior_and_profile_hashes_match": true,
+    "membership_rows": 13910,
+    "union_users": 3398,
+    "profile_slots": 417300,
+    "profile_rating_index_range": [0, 9],
+    "membership_scalar_profile_and_target_identity": true,
+    "global_profile_target_intersection_pairs": 0,
+    "raw_rows": 32000204,
+    "target_rating_values_parsed": 0,
+    "timestamps_parsed": 0,
+    "resume_seal_revalidates_identity_and_firewall": true,
+    "locked_test_opened": false,
+    "final_reserve_opened": false,
+    "product_policy_changed": false
+  },
+  "auditor_runner_executed": false,
+  "auditor_target_labels_opened": false
+}

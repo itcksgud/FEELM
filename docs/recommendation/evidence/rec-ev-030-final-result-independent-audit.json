@@ -1,0 +1,37 @@
+{
+  "schema_version": 1,
+  "audit_id": "rec-ev-030-final-result-independent-audit-v1",
+  "status": "REC_EV_030_FINAL_RESULT_AUDIT_PASS",
+  "auditor_thread_id": "01a0751b-6621-7a61-94b2-4c401c7a3066",
+  "checks": {
+    "full_hash_chain_and_seven_outer_integrities": true,
+    "primary_random_outers_only": ["R0", "R1", "R2", "R3", "R4"],
+    "primary_users": 3345,
+    "primary_item_occurrences": 265620,
+    "primary_movies": 24167,
+    "primary_user_movie_duplicate_pairs": 0,
+    "kr_and_recent_descriptive_only": true,
+    "own_active_rate": 1.0,
+    "shuffle_active_rate": 1.0,
+    "user_family_size": 6,
+    "item_family_size": 4,
+    "bootstrap_repeats": 5000,
+    "user_bootstrap_shape": [5000, 6],
+    "item_bootstrap_shape": [5000, 4],
+    "user_critical": 2.460336483780577,
+    "item_critical": 2.471018433566172,
+    "minimum_user_lower_bound": 0.05068315211083937,
+    "minimum_item_lower_bound": 0.021667120497685807,
+    "primary_pass": true,
+    "timestamps_opened": false,
+    "locked_test_opened": false,
+    "final_reserve_opened": false,
+    "product_policy_changed": false
+  },
+  "allowed_claim": "CONFIRMATORY_MOVIELENS_EVIDENCE_FOR_FROZEN_BIAS_FREE_TOP2_CONTENT_PROFILE_PERSONALIZATION_ON_MASKED_RATED_ITEMS_FOR_UNTOUCHED_USERS",
+  "forbidden_claims": [
+    "KOREAN_USER_PERFORMANCE",
+    "ACTUAL_NEW_RELEASE_PERFORMANCE",
+    "PRODUCTION_CHAMPION_OR_POLICY"
+  ]
+}

@@ -1,0 +1,219 @@
+{
+  "schema_version": 1,
+  "contract_id": "rec-ev-029-direct-profile-attribution-v1",
+  "status": "PROPOSED_FOR_INDEPENDENT_EXACT_DESIGN_AUDIT",
+  "purpose": "Select and independently replicate a bias-free content-profile policy that uses the evaluation user's own ratings, comparing TMDB structured vectors, direct 384-dimensional E5 vectors, and rank-level structured-plus-E5 fusion over every even K from 2 through 30.",
+  "motivation": {
+    "rec_ev_028_result": "CONTENT_SIGNAL_WITHOUT_ATTRIBUTED_PERSONALIZATION",
+    "failure_mode": "FEATURE_ONLY_LIGHTFM_FULL_DID_NOT_BEAT_BIAS_ONLY_AND_ITEM_MACRO_PERSONALIZATION_INTERVALS_CROSSED_ZERO",
+    "design_response": "REMOVE_GLOBAL_ITEM_BIAS_AND_COMPARE_OWN_PROFILE_TO_A_BIJECTIVE_SHUFFLED_PROFILE_FOR_EACH_DIRECT_CONTENT_FAMILY",
+    "adaptive_boundary": "MODEL_FAMILIES_AND_GRID_ARE_MOTIVATED_BY_REC_EV_028_BUT_SELECTION_AND_REPLICATION_USERS_ARE_DISJOINT_FROM_REC_EV_028_ATTRIBUTION_USERS"
+  },
+  "claim_boundary": {
+    "allowed": "ADAPTIVE_MOVIELENS_EVIDENCE_THAT_A_BIAS_FREE_CONTENT_PROFILE_CAN_PERSONALIZE_MASKED_RATED_MOVIES_ON_A_DISJOINT_REPLICATION_USER_COHORT",
+    "forbidden": [
+      "KOREAN_USER_PERFORMANCE",
+      "ACTUAL_POST_MOVIELENS_NEW_RELEASE_PERFORMANCE",
+      "UNRATED_IS_DISLIKE",
+      "FULL_CATALOG_RELEVANCE",
+      "PRODUCTION_CHAMPION",
+      "PRODUCT_QUOTA_OR_RERANK_POLICY"
+    ]
+  },
+  "authorization": {
+    "adaptive_development": true,
+    "rec_ev_028_label_reuse_for_selection": false,
+    "rec_ev_028_future_reserve_access": false,
+    "timestamp_access": false,
+    "locked_test_access": false,
+    "final_reserve_access": false,
+    "product_policy_change": false
+  },
+  "inputs": {
+    "parent_contract": {
+      "path": "docs/recommendation/contracts/rec-ev-027-strict-item-cold-model-screen.json",
+      "bytes": 33789,
+      "sha256": "151b41ca52cb29edfada70eeb6b2f2bfba669612331c2d66e85d5dc63d7c80d7"
+    },
+    "rec_ev_028_base_contract": {
+      "path": "docs/recommendation/contracts/rec-ev-028-personalization-attribution.json",
+      "bytes": 18646,
+      "sha256": "025ed71d3bdcfab16e4a501e255d90bfda098c2ad353833e0fb724ace195bbde"
+    },
+    "movielens_archive": {
+      "path": "C:/higher/projects/MM/data/raw/ml-32m.zip",
+      "member": "ml-32m/ratings.csv",
+      "bytes": 238950008,
+      "sha256": "e4a68655d7386b8f95f2f2424b2ff975dfdd15ffd59e0d864a14dca43e99d6ee"
+    },
+    "catalog_manifest": {
+      "path": "outputs/recommendation-evidence/rec-ev-027-catalog/catalog-build-manifest.json",
+      "bytes": 1926,
+      "sha256": "1e7fa6ee6319485653f43a45e42e189c5e27482f6fd222d0c2c7271e4cc24393"
+    },
+    "structured_features": {
+      "path": "outputs/recommendation-evidence/rec-ev-027-catalog/structured-features.parquet",
+      "bytes": 3739308,
+      "sha256": "231fa0bc2628066ae2fdc2fa65c03b9068cd6a5d8dbcd86c385cadf4e50098b3"
+    },
+    "e5_embeddings": {
+      "path": "outputs/recommendation-evidence/rec-ev-027-catalog/text-embeddings.parquet",
+      "bytes": 125720897,
+      "sha256": "d19ff51cd0e7af8fa6dab1f74de6fac5f90eb85993db494565de67a818529f7c"
+    },
+    "domain_projection": {
+      "path": "outputs/recommendation-evidence/rec-ev-027-catalog/domain-projection.parquet",
+      "bytes": 936743,
+      "sha256": "511d6e92efab16f5128eed8d2123fa71ba73fbae7090b01a4e62cb8ea2e513f0"
+    },
+    "rec_ev_028_result": {
+      "path": "outputs/recommendation-evidence/rec-ev-028b/analysis/final-analysis.json",
+      "role": "MOTIVATION_ONLY_FORBIDDEN_FOR_MEMBERSHIP_SCORING_SELECTION_OR_REPLICATION_METRICS"
+    }
+  },
+  "population": {
+    "base_eligibility": "PARENT_OLD_BUCKET_0_TO_59_AND_PARENT_MODEL_TRAIN_ROLE_0_TO_5999_AND_REC_EV_028_PHASE_0_TO_7999",
+    "relationship_to_rec_ev_028": "THESE_USERS_WERE_A2_FIT_USERS_NOT_A2_ATTRIBUTION_OR_FUTURE_USERS; NO_A2_LIGHTFM_ARTIFACT_IS_USED",
+    "split_salt": "rec-ev-029-direct-user-split-v1",
+    "split_formula": "UINT256_BE_SHA256_UTF8_SPLIT_SALT_PIPE_DECIMAL_USER_ID_MOD_10000",
+    "calibration_inclusive": [0, 7999],
+    "selection_inclusive": [8000, 8999],
+    "replication_inclusive": [9000, 9999],
+    "role_overlap": 0,
+    "raw_user_id_output": false
+  },
+  "items_and_outers": {
+    "random_item_cold": {
+      "folds": [0, 1, 2, 3, 4],
+      "definition": "USE_EXACT_REC_EV_027_COMMON_SUPPORT_FOLD_SALT_AND_FORMULA",
+      "target_n": 20
+    },
+    "korean_origin_cold": {
+      "definition": "USE_EXACT_REC_EV_027_TMDB_KOREAN_ORIGIN_PROXY",
+      "target_n": 4
+    },
+    "release_2020_2023_cold": {
+      "definition": "USE_EXACT_REC_EV_027_RELEASE_2020_TO_2023_PROXY_WITH_FINITE_PRE2020_WARM",
+      "target_n": 4
+    }
+  },
+  "membership": {
+    "cohorts": ["SELECTION", "REPLICATION"],
+    "movie_id_only_preflight_before_any_selection_or_replication_rating_value": true,
+    "target_assignment": "APPLY_REC_EV_028A1_SEQUENTIAL_SELECTED_LOAD_THEN_AVAILABILITY_THEN_SHA256_THEN_MOVIE_ID_BALANCER_SEPARATELY_WITHIN_COHORT_AND_OUTER",
+    "target_assignment_salt": "rec-ev-029-balanced-target-v1",
+    "target_order_salt": "rec-ev-029-target-order-v1",
+    "global_target_union": "FREEZE_EACH_USERS_TARGET_UNION_ACROSS_ALL_SEVEN_OUTERS_BEFORE_PROFILE_SELECTION",
+    "profile_source": "OUTER_WARM_RATED_ITEMS_MINUS_THAT_USERS_GLOBAL_TARGET_UNION",
+    "content_complete_profile_item": "MOVIE_HAS_FINITE_ACTIVE_REC_EV_027_STRUCTURED_VECTOR_AND_FINITE_NONZERO_384D_E5_VECTOR",
+    "profile_order_salt": "rec-ev-029-profile-order-v1",
+    "profile_n": 30,
+    "insufficient_profile_rule": "AFTER_BALANCED_TARGETS_AND_GLOBAL_TARGET_UNION_ARE_FROZEN_DROP_THAT_COHORT_OUTER_ROW_IF_FEWER_THAN_30_CONTENT_COMPLETE_OUTER_WARM_GLOBAL_TARGET_DISJOINT_RATED_ITEMS; DO_NOT_REBALANCE_TARGETS_AFTER_DROP; REBUILD_DONORS_ON_RETAINED_ROWS; THEN_APPLY_COVERAGE_GATES",
+    "profile_prefix": "EVERY_K_USES_THE_FIRST_K_OF_THE_SAME_FROZEN_30_ITEM_PROFILE",
+    "donor": "USER_KEY_ASC_ONE_POSITION_CYCLIC_BIJECTION_WITHIN_COHORT_AND_OUTER_NO_SELF_NO_REUSE",
+    "profile_target_disjoint": true,
+    "rating_value_timestamp_popularity_model_score_forbidden": true
+  },
+  "calibration_and_profile_ratings": {
+    "calibration_prior": "USER_EQUAL_TEN_BIN_RATING_DISTRIBUTION_FROM_CALIBRATION_USERS_ONLY",
+    "tau": 5.0,
+    "prelabel_reader": "AFTER_MEMBERSHIP_SEAL_PARSE_ALL_CALIBRATION_RATINGS_FOR_PRIOR_AND_EXACTLY_FROZEN_SELECTION_AND_REPLICATION_PROFILE30_RATINGS; DO_NOT_PARSE_ANY_TARGET_RATING_OR_TIMESTAMP",
+    "calibration_prior_formula": "FOR_EACH_CALIBRATION_USER_WITH_NONZERO_ALLOWED_RATINGS_NORMALIZE_ITS_COUNTS_H_UJ_OVER_T_U; PI0_J_IS_THE_EQUAL_MEAN_OF_H_UJ_DIV_T_U_ACROSS_USERS; G0MID_J_EQUALS_SUM_L_LT_J_PI0_L_PLUS_0_5_PI0_J",
+    "profile_smoothed_q_formula": "FOR_FROZEN_K_PREFIX_COUNTS_H_J_AND_RATING_BIN_INDEX_J: Q=(SUM_L_LT_J_H_L_PLUS_0_5_H_J_PLUS_5.0_TIMES_G0MID_J)_DIV_(K_PLUS_5.0)",
+    "percentile_weight": "TWO_TIMES_PROFILE_SMOOTHED_Q_MINUS_ONE",
+    "binary_weight": "SIGN_OF_PERCENTILE_WEIGHT",
+    "zero_absolute_weight_sum": "INACTIVE"
+  },
+  "candidate_grid": {
+    "encodings": ["PERCENTILE_MAGNITUDE", "BINARY_SIGN"],
+    "even_k": [2, 4, 6, 8, 10, 12, 14, 16, 18, 20, 22, 24, 26, 28, 30],
+    "output_n": 2,
+    "own_systems": ["STRUCTURED_DIRECT_OWN", "E5_DIRECT_OWN", "STRUCTURED_E5_RRF_OWN"],
+    "shuffle_systems": ["STRUCTURED_DIRECT_SHUFFLE", "E5_DIRECT_SHUFFLE", "STRUCTURED_E5_RRF_SHUFFLE"],
+    "paired_systems": {
+      "STRUCTURED_DIRECT_OWN": "STRUCTURED_DIRECT_SHUFFLE",
+      "E5_DIRECT_OWN": "E5_DIRECT_SHUFFLE",
+      "STRUCTURED_E5_RRF_OWN": "STRUCTURED_E5_RRF_SHUFFLE"
+    },
+    "random": "ANALYTIC_RANDOM_EXPECTATION_POST_LABEL_ONLY",
+    "candidate_count": 90
+  },
+  "scoring": {
+    "structured_direct": "WEIGHTED_MEAN_OF_CANDIDATE_BY_PROFILE_COSINES_WITH_ABSOLUTE_WEIGHT_DENOMINATOR_AND_NEGATIVE_WEIGHTS_PRESERVED",
+    "e5_direct": "SAME_FORMULA_IN_PINNED_NORMALIZED_384D_E5_SPACE_WITH_NO_BPR_OR_COLLABORATIVE_ALIGNMENT",
+    "rrf": "RECIPROCAL_RANK_FUSION_OF_STRUCTURED_AND_E5_DIRECT_FULL_TARGET_RANKS_WITH_C_EQUALS_10",
+    "shuffle": "USE_DONOR_PROFILE_MOVIES_RATINGS_AND_WEIGHTS_WITH_RECIPIENT_TARGETS",
+    "tie_order": "SCORE_DESC_THEN_SHA256_DIGEST_BYTES_ASC_THEN_MOVIE_ID_ASC_USING_COHORT_OUTER_SYSTEM_ENCODING_K_USER_KEY",
+    "active": "FINITE_TARGET_SCORES_AND_AT_LEAST_TWO_UNIQUE_SCORES_AND_VALID_PROFILE_WEIGHT_DENOMINATOR_AND_REQUIRED_CONTENT_ROWS",
+    "global_item_bias": "FORBIDDEN",
+    "popularity": "FORBIDDEN"
+  },
+  "firewall_sequence": [
+    "1_SEAL_EXACT_CONTRACT_AND_IMPLEMENTATION",
+    "2_MATERIALIZE_AND_AUDIT_MOVIE_ID_ONLY_SELECTION_AND_REPLICATION_MEMBERSHIP",
+    "3_PARSE_CALIBRATION_AND_FROZEN_PROFILE_RATINGS_WITH_TARGET_RATING_COUNT_ZERO",
+    "4_SCORE_AND_SEAL_ALL_90_CANDIDATES_FOR_BOTH_SELECTION_AND_REPLICATION_ACROSS_ALL_OUTERS",
+    "5_OPEN_SELECTION_LABELS_ONLY_AND_SELECT_EXACTLY_ONE_POLICY_OR_NONE",
+    "6_SEAL_WINNER_ID_AND_SELECTION_EVIDENCE",
+    "7_ONLY_IF_WINNER_EXISTS_OPEN_REPLICATION_LABELS_ONCE",
+    "8_EVALUATE_ONLY_THE_FROZEN_WINNER_OWN_SHUFFLE_AND_RANDOM"
+  ],
+  "label_q": {
+    "reference": "EACH_USERS_FULL_ALLOWED_MOVIELENS_HISTORY_WITHIN_ITS_COHORT",
+    "formula": "MIDRANK_(N_LT_PLUS_0_5_N_EQ)_DIV_N",
+    "timestamps": false,
+    "unrated": "UNKNOWN_NOT_NEGATIVE"
+  },
+  "metrics": {
+    "priority": ["HARM20", "TOP2_MIN_Q", "TOP2_MEAN_Q"],
+    "HARM20": "INDICATOR_ANY_TOP2_Q_LTE_0_20_LOWER_BETTER",
+    "TOP2_MIN_Q": "MIN_TOP2_Q_HIGHER_BETTER",
+    "TOP2_MEAN_Q": "MEAN_TOP2_Q_HIGHER_BETTER",
+    "item_macro_utility": "TARGET_N_DIV_2_TIMES_SELECTED_TOP2_TIMES_Q_THEN_WITHIN_MOVIE_MEAN_THEN_EQUAL_MOVIE_MEAN",
+    "item_macro_low": "TARGET_N_DIV_2_TIMES_SELECTED_TOP2_TIMES_INDICATOR_Q_LTE_0_20_THEN_WITHIN_MOVIE_MEAN_THEN_EQUAL_MOVIE_MEAN"
+  },
+  "selection": {
+    "scope": "SELECTION_RANDOM_FOLDS_R0_TO_R4_ONLY_PROXIES_CANNOT_SELECT",
+    "eligible_candidate": "OWN_ACTIVE_GTE_0_95_AND_POOLED_POINT_BENEFIT_OWN_VS_RANDOM_AND_OWN_VS_PAIRED_SHUFFLE_IS_GTE_0_FOR_HARM20_AND_GT_0_FOR_BOTH_Q_METRICS_AND_ITEM_UTILITY_GT_0_AND_ITEM_LOW_GTE_0_VS_SHUFFLE_AND_USER_DIRECTIONS_PASS_IN_AT_LEAST_THREE_OF_FIVE_FOLDS",
+    "winner_key_ascending": [
+      "NEGATIVE_MINIMUM_FOLD_HARM20_BENEFIT_OWN_VS_RANDOM",
+      "NEGATIVE_MINIMUM_FOLD_HARM20_BENEFIT_OWN_VS_PAIRED_SHUFFLE",
+      "MAXIMUM_FOLD_ABSOLUTE_OWN_HARM20",
+      "NEGATIVE_MINIMUM_FOLD_TOP2_MIN_Q_BENEFIT_OWN_VS_RANDOM",
+      "NEGATIVE_RANDOM_POOLED_TOP2_MEAN_Q",
+      "K_ASC",
+      "MODEL_COMPLEXITY_STRUCTURED_THEN_E5_THEN_RRF",
+      "ENCODING_PERCENTILE_THEN_BINARY"
+    ],
+    "if_no_eligible": "NO_DIRECT_PERSONALIZATION_CANDIDATE_AND_DO_NOT_OPEN_REPLICATION_LABELS",
+    "selection_inference": "DESCRIPTIVE_SELECTION_ONLY_NO_CONFIRMATORY_CLAIM"
+  },
+  "replication": {
+    "systems": ["FROZEN_WINNER_OWN", "FROZEN_WINNER_PAIRED_SHUFFLE", "RANDOM_EXPECTATION"],
+    "estimands": ["R0", "R1", "R2", "R3", "R4", "KR", "RECENT", "RANDOM_POOLED"],
+    "contrasts": ["OWN_VS_RANDOM", "SHUFFLE_VS_RANDOM", "OWN_VS_SHUFFLE"],
+    "confidence": 0.95,
+    "repeats": 5000,
+    "user_seed": 20261006,
+    "item_multiway_seed": 20261007,
+    "user_family_size": 72,
+    "item_family_size": 48,
+    "method": "SAME_SHARED_USER_AND_USER_BY_MOVIE_EXPONENTIAL_MULTIPLIER_MAX_T_AS_REC_EV_028B",
+    "active_gate": 0.95,
+    "pass": "RANDOM_POOLED_AND_EACH_REPORTED_OUTER_REQUIRE_OWN_VS_RANDOM_AND_OWN_VS_SHUFFLE_USER_LOWER_GTE_0_HARM_AND_GT_0_BOTH_Q_PLUS_ITEM_LOWER_GT_0_UTILITY_AND_GTE_0_LOW_WITH_ACTIVE_GATE",
+    "proxy_role": "KR_AND_RECENT_REPORTED_BUT_NEVER_SELECT_OR_OVERRIDE_RANDOM_POOLED"
+  },
+  "coverage_gates": {
+    "minimum_users": {"EACH_RANDOM_FOLD": 500, "KR": 100, "RECENT": 250},
+    "minimum_unique_target_items": {"EACH_RANDOM_FOLD": 1000, "KR": 100, "RECENT": 250},
+    "minimum_effective_target_items": {"EACH_RANDOM_FOLD": 500, "KR": 50, "RECENT": 100},
+    "required_separately_for_selection_and_replication": true,
+    "failure": "STOP_BEFORE_ANY_PROFILE_OR_TARGET_RATING_VALUE"
+  },
+  "stage_transition": {
+    "success": "REPLICATION_RANDOM_POOLED_PASS_MEANS_BIAS_FREE_PERSONALIZED_CONTENT_SIGNAL_REPLICATED_ON_DISJOINT_USERS",
+    "failure": "DESIGN_A_WITHIN_USER_EPISODIC_CONTENT_METRIC_LEARNER_USING_CALIBRATION_USERS_ONLY",
+    "future_reserve": "REMAINS_CLOSED_IN_ALL_CASES_UNTIL_A_NEW_EXACT_AUDITED_CONTRACT"
+  },
+  "output_root": "outputs/recommendation-evidence/rec-ev-029"
+}

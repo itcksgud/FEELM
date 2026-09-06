@@ -1,0 +1,22 @@
+{
+  "schema_version": 1,
+  "audit_id": "rec-ev-030-global-prelabel-score-independent-audit-v1",
+  "status": "REC_EV_030_GLOBAL_PRELABEL_SCORE_AUDIT_PASS",
+  "auditor_thread_id": "01a0751b-6621-7a61-94b2-4c401c7a3066",
+  "checks": {
+    "exact_outer_set": ["R0", "R1", "R2", "R3", "R4", "KR", "RECENT"],
+    "each_outer_pinned_once": true,
+    "bundle_integrity_contract_and_prepare_identity": true,
+    "user_and_target_membership_identity": true,
+    "top2_shape_range_distinctness_and_inactive_semantics": true,
+    "own_active_rate_all_outers": 1.0,
+    "shuffle_active_rate_all_outers": 1.0,
+    "target_rating_values_opened": false,
+    "timestamps_opened": false,
+    "locked_test_opened": false,
+    "final_reserve_opened": false,
+    "product_policy_changed": false
+  },
+  "auditor_runner_executed": false,
+  "auditor_rating_archive_or_labels_opened": false
+}

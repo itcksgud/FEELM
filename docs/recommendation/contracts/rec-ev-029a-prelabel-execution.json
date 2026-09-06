@@ -1,0 +1,110 @@
+{
+  "schema_version": 1,
+  "contract_id": "rec-ev-029a-prelabel-execution-v1",
+  "status": "INDEPENDENT_EXACT_IMPLEMENTATION_AUDIT_REQUIRED",
+  "purpose": "Open only calibration and frozen profile ratings, then seal the deterministic Top2 sufficient statistic for every REC-EV-029 candidate on both selection and replication before any target label is opened.",
+  "inputs": {
+    "design_contract": {
+      "path": "docs/recommendation/contracts/rec-ev-029-direct-profile-attribution.json",
+      "bytes": 12256,
+      "sha256": "25a74881685fd4eff48f16a9f927057c22e9f021f36602af2d51ed43afac5f07"
+    },
+    "membership_implementation": {
+      "path": "scripts/preflight_rec_ev_029_membership.py",
+      "bytes": 11971,
+      "sha256": "2c67157f35eb0af1892714e5616d6216ffc027246d6b78937278638258353a99"
+    },
+    "membership_preflight": {
+      "path": "outputs/recommendation-evidence/rec-ev-029/membership-preflight.json",
+      "bytes": 6333,
+      "sha256": "1a75f02e28530883bf16f8bd05804a0f75a6d308e345336f5806e99a90164304"
+    },
+    "membership": {
+      "path": "outputs/recommendation-evidence/rec-ev-029/cache/membership.parquet",
+      "bytes": 2884909,
+      "sha256": "d8998e94a7ec525b203e09c0f5665c81f875e0a14334d22cd5d486491327ef2d"
+    },
+    "membership_independent_audit": {
+      "path": "docs/recommendation/evidence/rec-ev-029-membership-independent-audit.json",
+      "bytes": 2088,
+      "sha256": "25b24c8c9582b264742c3e471b75a56452074b2d28f6281f74e53e8389debee7"
+    },
+    "parent_contract": {
+      "path": "docs/recommendation/contracts/rec-ev-027-strict-item-cold-model-screen.json",
+      "bytes": 33789,
+      "sha256": "151b41ca52cb29edfada70eeb6b2f2bfba669612331c2d66e85d5dc63d7c80d7"
+    },
+    "movielens_archive": {
+      "path": "C:/higher/projects/MM/data/raw/ml-32m.zip",
+      "bytes": 238950008,
+      "sha256": "e4a68655d7386b8f95f2f2424b2ff975dfdd15ffd59e0d864a14dca43e99d6ee"
+    },
+    "structured_features": {
+      "path": "outputs/recommendation-evidence/rec-ev-027-catalog/structured-features.parquet",
+      "bytes": 3739308,
+      "sha256": "231fa0bc2628066ae2fdc2fa65c03b9068cd6a5d8dbcd86c385cadf4e50098b3"
+    },
+    "e5_embeddings": {
+      "path": "outputs/recommendation-evidence/rec-ev-027-catalog/text-embeddings.parquet",
+      "bytes": 125720897,
+      "sha256": "d19ff51cd0e7af8fa6dab1f74de6fac5f90eb85993db494565de67a818529f7c"
+    },
+    "core_implementation": {
+      "path": "scripts/rec_ev_029_core.py",
+      "bytes": 5996,
+      "sha256": "f83994d4c968d3cd88a1b12caa8808a98e438cbcbc70c4e28439dcc92a6ead60"
+    },
+    "runner_implementation": {
+      "path": "scripts/run_rec_ev_029_prelabel.py",
+      "bytes": 30249,
+      "sha256": "226fce26c76d154d075b28c88dd2e0cf15f9ab65b5b9687885a204f4bb0cc5c4"
+    },
+    "validator_implementation": {
+      "path": "scripts/validate_rec_ev_029_prelabel.py",
+      "bytes": 5567,
+      "sha256": "20a7c693b5bcf599ab8af65243e8806261c4305d9fc5d8bbd348c6529819f8cd"
+    },
+    "core_tests": {
+      "path": "scripts/tests/test_rec_ev_029_core.py",
+      "bytes": 5167,
+      "sha256": "90762d33c1c83f191a66081347cea8628f866fafc879f54844a4dd96fc553225"
+    },
+    "membership_tests": {
+      "path": "scripts/tests/test_rec_ev_029_membership.py",
+      "bytes": 4859,
+      "sha256": "71f231a95b84a2eadfe5f3ac1ab83075a967f651b085fbbaa50f55222a8ba79f"
+    }
+  },
+  "protocol": {
+    "split_salt": "rec-ev-029-direct-user-split-v1",
+    "calibration_rating_scope": "ALL_MOVIELENS_RATINGS_OF_USERS_PASSING_PARENT_OLD_0_59_PARENT_ROLE_0_5999_REC_EV_028_PHASE_0_7999_AND_NEW_SPLIT_0_7999",
+    "profile_rating_scope": "EXACT_FROZEN_PROFILE30_SLOTS_FOR_SELECTION_AND_REPLICATION_MEMBERSHIP_ROWS",
+    "target_rating_values_before_global_score_seal": "ZERO",
+    "timestamp_values": "ZERO",
+    "persisted_score_sufficient_statistic": "ACTIVE_FLAG_AND_DETERMINISTIC_TOP2_TARGET_INDICES_FOR_EACH_OF_90_OWN_POLICIES_AND_ITS_PAIRED_SHUFFLE",
+    "rrf_internal_rank_scope": "FULL_TARGET_LIST_WITH_C_10_BEFORE_PERSISTING_TOP2",
+    "resume": "ATOMIC_PER_COHORT_OUTER_BUNDLE_PLUS_INTEGRITY_AND_FAIL_CLOSED_ON_PARTIAL_OR_DRIFT"
+  },
+  "candidate_rows": {
+    "own_policy_count": 90,
+    "paired_shuffle_count": 90,
+    "cohort_outer_cells": 14,
+    "membership_rows": 21904
+  },
+  "firewall": {
+    "membership_audit_pass_required": true,
+    "exact_implementation_audit_pass_required_before_prepare": true,
+    "selection_target_labels_opened": false,
+    "replication_target_labels_opened": false,
+    "rec_ev_028_attribution_or_future_opened": false,
+    "locked_test_opened": false,
+    "final_reserve_opened": false,
+    "product_policy_changed": false
+  },
+  "implementation_audit": {
+    "status": "REC_EV_029_PRELABEL_IMPLEMENTATION_AUDIT_PASS",
+    "auditor_thread_id": "01a0751b-6621-7a61-94b2-4c401c7a3066",
+    "evidence": "THIRD_REVIEW_AFTER_MEMBERSHIP_PROFILE_RESUME_IDENTITY_AND_CELL_PREPARE_SEAL_IDENTITY_FIXES;_TEN_TESTS_PASSED_AND_ALL_INPUT_PINS_MATCHED"
+  },
+  "output_root": "outputs/recommendation-evidence/rec-ev-029/prelabel"
+}

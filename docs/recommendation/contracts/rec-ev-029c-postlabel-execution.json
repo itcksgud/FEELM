@@ -1,0 +1,99 @@
+{
+  "schema_version": 1,
+  "contract_id": "rec-ev-029c-postlabel-execution-v1",
+  "status": "INDEPENDENT_EXACT_IMPLEMENTATION_AUDIT_REQUIRED",
+  "purpose": "Execute the frozen REC-EV-029B label sequence, descriptive selection, and disjoint confirmatory replication without accessing any reserved test or changing product policy.",
+  "inputs": {
+    "postlabel_design": {
+      "path": "docs/recommendation/contracts/rec-ev-029b-postlabel-selection-replication.json",
+      "bytes": 7602,
+      "sha256": "4492c5c4e4b798b0ddeb90748d3d9ab03f7ef159eaa95fd2ac180367da963149"
+    },
+    "postlabel_design_audit": {
+      "path": "docs/recommendation/evidence/rec-ev-029b-postlabel-design-independent-audit.json",
+      "bytes": 1026,
+      "sha256": "a8c1aa531862288fcfabbde2c426d51157f7b178986e3fa67ef8035f3e3305bf"
+    },
+    "prelabel_execution_contract": {
+      "path": "docs/recommendation/contracts/rec-ev-029a-prelabel-execution.json",
+      "bytes": 5042,
+      "sha256": "d059a3676acbaa32721c7f1832f5466f591c4db6fc3b0d32e3f3c04160feb97c"
+    },
+    "actual_prelabel_audit": {
+      "path": "docs/recommendation/evidence/rec-ev-029-actual-prelabel-independent-audit.json",
+      "bytes": 1798,
+      "sha256": "f9ea553b74fa08c84f677992951c197ac45dc99546d40b49e266072d66ac3241"
+    },
+    "membership": {
+      "path": "outputs/recommendation-evidence/rec-ev-029/cache/membership.parquet",
+      "bytes": 2884909,
+      "sha256": "d8998e94a7ec525b203e09c0f5665c81f875e0a14334d22cd5d486491327ef2d"
+    },
+    "global_prelabel_score_seal": {
+      "path": "outputs/recommendation-evidence/rec-ev-029/prelabel/scores/global-score-seal.json",
+      "bytes": 3987,
+      "sha256": "10038d0a19d99895c0abadf2b81b0ac40cf4b71c3450dc91591c545b5f62a50c"
+    },
+    "movielens_archive": {
+      "path": "C:/higher/projects/MM/data/raw/ml-32m.zip",
+      "bytes": 238950008,
+      "sha256": "e4a68655d7386b8f95f2f2424b2ff975dfdd15ffd59e0d864a14dca43e99d6ee"
+    },
+    "analysis_core": {
+      "path": "scripts/rec_ev_029_analysis.py",
+      "bytes": 5173,
+      "sha256": "9ca490430acbf9b7b237ba592fd37fb07d9fa4ba951376fdfbe635b14703b3ee"
+    },
+    "postlabel_runner": {
+      "path": "scripts/run_rec_ev_029_postlabel.py",
+      "bytes": 50786,
+      "sha256": "6bfaf8385220179ff9aeaff2a6b5fb558c3d0b4f477c1f9c352ba3d39bbb8f8c"
+    },
+    "postlabel_validator": {
+      "path": "scripts/validate_rec_ev_029_postlabel.py",
+      "bytes": 5970,
+      "sha256": "5a8fb67ec452c8088cf14c8340eff58185bc2e7eb4f6cda83b7bf408ff39258b"
+    },
+    "analysis_tests": {
+      "path": "scripts/tests/test_rec_ev_029_analysis.py",
+      "bytes": 3548,
+      "sha256": "1625674ed8d1702d6e9e77870292529fe94783ada0f9ff6d170aa62d8f6f0eb8"
+    },
+    "scoring_tests": {
+      "path": "scripts/tests/test_rec_ev_029_core.py",
+      "bytes": 5167,
+      "sha256": "90762d33c1c83f191a66081347cea8628f866fafc879f54844a4dd96fc553225"
+    },
+    "membership_tests": {
+      "path": "scripts/tests/test_rec_ev_029_membership.py",
+      "bytes": 4859,
+      "sha256": "71f231a95b84a2eadfe5f3ac1ab83075a967f651b085fbbaa50f55222a8ba79f"
+    }
+  },
+  "execution": {
+    "selection_membership_rows": 10849,
+    "selection_target_slots": 209652,
+    "selection_union_users": 2664,
+    "replication_membership_rows": 11055,
+    "replication_target_slots": 213036,
+    "replication_union_users": 2706,
+    "candidate_count": 90,
+    "selection_then_winner_then_replication": true,
+    "no_winner_keeps_replication_closed": true,
+    "resume": "SEALED_ARTIFACTS_MUST_MATCH_CURRENT_UPSTREAM_IDENTITIES_AND_PARTIAL_STATES_FAIL_CLOSED"
+  },
+  "firewall": {
+    "implementation_audit_required_before_selection_labels": true,
+    "timestamps_opened": false,
+    "future_reserve_opened": false,
+    "locked_test_opened": false,
+    "final_reserve_opened": false,
+    "product_policy_changed": false
+  },
+  "implementation_audit": {
+    "status": "REC_EV_029_POSTLABEL_IMPLEMENTATION_AUDIT_PASS",
+    "auditor_thread_id": "01a0751b-6621-7a61-94b2-4c401c7a3066",
+    "evidence": "FIFTEEN_TESTS_PASS;_SELECTION_REPLICATION_READERS_WINNER_GATES_EQUAL_USER_EQUAL_MOVIE_AND_72_48_MAX_T_IMPLEMENTATION_AUDITED"
+  },
+  "output_root": "outputs/recommendation-evidence/rec-ev-029/postlabel"
+}

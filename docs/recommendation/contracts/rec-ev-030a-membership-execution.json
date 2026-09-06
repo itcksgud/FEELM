@@ -1,0 +1,57 @@
+{
+  "schema_version": 1,
+  "contract_id": "rec-ev-030a-membership-execution-v1",
+  "status": "INDEPENDENT_IMPLEMENTATION_AUDIT_REQUIRED",
+  "purpose": "Materialize only movie-ID membership for the untouched future-user confirmation and stop before ratings unless every coverage gate passes.",
+  "inputs": {
+    "design_contract": {
+      "path": "docs/recommendation/contracts/rec-ev-030-untouched-future-confirmation.json",
+      "bytes": 6971,
+      "sha256": "7479015caf6c7671b9e20f93a74b68c74b04f5f3b142d37f582d14e98654bcdc"
+    },
+    "design_audit": {
+      "path": "docs/recommendation/evidence/rec-ev-030-design-independent-audit.json",
+      "bytes": 885,
+      "sha256": "4d0666f6df305fb01248c152a8fb890f5298cd2207e31d024e9865a523fbe13a"
+    },
+    "parent_contract": {
+      "path": "docs/recommendation/contracts/rec-ev-027-strict-item-cold-model-screen.json",
+      "bytes": 33789,
+      "sha256": "151b41ca52cb29edfada70eeb6b2f2bfba669612331c2d66e85d5dc63d7c80d7"
+    },
+    "movielens_archive": {
+      "path": "C:/higher/projects/MM/data/raw/ml-32m.zip",
+      "bytes": 238950008,
+      "sha256": "e4a68655d7386b8f95f2f2424b2ff975dfdd15ffd59e0d864a14dca43e99d6ee"
+    },
+    "implementation": {
+      "path": "scripts/preflight_rec_ev_030_membership.py",
+      "bytes": 10717,
+      "sha256": "404f3886a9ac7d911985fc811bbef7f1b8b5060c80bbb871187719d73fbf458e"
+    },
+    "validator": {
+      "path": "scripts/validate_rec_ev_030_membership.py",
+      "bytes": 3442,
+      "sha256": "3338be4955f0f993c348bd8019b54ad1cca6066def161090b10c9b2b2e956d9a"
+    },
+    "tests": {
+      "path": "scripts/tests/test_rec_ev_030_membership.py",
+      "bytes": 1421,
+      "sha256": "cb55ea4e0cff8d5690f37e4880e5652c8b5b2e7e7abd00e0e89bef40b58b80d3"
+    }
+  },
+  "firewall": {
+    "rating_values_parsed": false,
+    "timestamps_parsed": false,
+    "rec_ev_028_attribution_or_fit_membership_opened": false,
+    "locked_test_opened": false,
+    "final_reserve_opened": false,
+    "product_policy_changed": false
+  },
+  "implementation_audit": {
+    "status": "REC_EV_030_MEMBERSHIP_IMPLEMENTATION_AUDIT_PASS",
+    "auditor_thread_id": "01a0751b-6621-7a61-94b2-4c401c7a3066",
+    "evidence": "FUTURE_PHASE_FILTER_MOVIE_ID_ONLY_PARSER_AND_SEVEN_OUTER_MEMBERSHIP_LOGIC_AUDITED;_SYNTHETIC_FIREWALL_TEST_PASS"
+  },
+  "output_root": "outputs/recommendation-evidence/rec-ev-030"
+}

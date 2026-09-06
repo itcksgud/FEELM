@@ -1,0 +1,91 @@
+{
+  "schema_version": 1,
+  "contract_id": "rec-ev-027-rating-independent-catalog-build-v1",
+  "status": "APPROVED_FOR_RATING_INDEPENDENT_CATALOG_BUILD",
+  "purpose": "Build current retrospective TMDB structured features, a TMDB production-country KR segmentation flag, and pinned 384D E5 embeddings for every MovieLens movies.csv row without opening ratings.csv.",
+  "sources": {
+    "movielens_archive": {
+      "path": "C:/higher/projects/MM/data/raw/ml-32m.zip",
+      "bytes": 238950008,
+      "sha256": "e4a68655d7386b8f95f2f2424b2ff975dfdd15ffd59e0d864a14dca43e99d6ee",
+      "allowed_members": ["ml-32m/movies.csv", "ml-32m/links.csv"],
+      "forbidden_member": "ml-32m/ratings.csv"
+    },
+    "rec_ev_019b_embedding_value_cache": {
+      "path": "outputs/recommendation-evidence/rec-ev-019b/text-embeddings.parquet",
+      "bytes": 99988968,
+      "sha256": "ff35381f231e6d2a1fe35b79b8b55f64744c16188f9b92ce74c1466930967bda"
+    },
+    "rec_ev_019b_contract": {
+      "path": "docs/recommendation/contracts/rec-ev-019b-artifacts.json",
+      "bytes": 11823,
+      "sha256": "a6a6240d31b36ac5587bc41fa0047587a88371b80f1bc31417076a055e722e9d"
+    },
+    "untrusted_raw_response_cache": "outputs/recommendation-evidence/rec-ev-019b/tmdb-cache"
+  },
+  "catalog": {
+    "join": "MOVIES_LEFT_ONE_TO_ONE_LINKS_BY_MOVIE_ID",
+    "expected_movies": 87585,
+    "expected_links": 87585,
+    "expected_positive_tmdb_links": 87461,
+    "membership_forbidden": ["RATING", "RATING_COUNT", "POPULARITY", "TIMESTAMP", "PRIOR_FEATURE_MEMBERSHIP"]
+  },
+  "canonical_processing": {
+    "every_catalog_id": "RUN_IDENTITY_VALIDATION_AND_CURRENT_FEATURE_EXTRACTION",
+    "raw_cache_acceptance": "REQUEST_KIND_IDENTITY_ENDPOINT_PARAMS_EXACT_AND_STATUS_2XX_OR_404_OR_410_AND_CANONICAL_BODY_SHA256_EXACT",
+    "raw_cache_miss": "FETCH_TMDB_WITH_REC_EV_019B_TRANSPORT_RULES",
+    "freeze_failure": "ANY_NONTERMINAL_HTTP_OR_TRANSPORT_FAILURE_IS_FATAL_AND_MUST_BE_RETRIED_WITH_RESUME_BEFORE_OUTPUT_FREEZE",
+    "structured_extractor": "EXACT_REC_EV_019B_EXTRACT_FEATURES",
+    "korean_proxy": "VERIFIED_PRIMARY_DETAILS_PRODUCTION_COUNTRIES_CONTAINS_ISO_3166_1_KR",
+    "korean_proxy_use": "SEGMENTATION_ONLY_NOT_PREFERENCE_FEATURE",
+    "embedding_input": "REBUILD_EXACT_REC_EV_019B_PINNED_TEMPLATE_FOR_EVERY_IDENTITY_ELIGIBLE_ROW",
+    "embedding_cache_acceptance": "MOVIE_ID_MODEL_ID_MODEL_REVISION_INPUT_TEXT_SHA256_DIMENSION_FINITE_AND_L2_TOLERANCE_ALL_EXACT",
+    "embedding_cache_miss": "REENCODE_PINNED_MULTILINGUAL_E5_SMALL_ONNX",
+    "current_metadata_semantics": "RETROSPECTIVE_WITHOUT_SOURCE_UPDATED_AT"
+  },
+  "transport": {
+    "maximum_concurrency": 8,
+    "embedding_batch_size": 32,
+    "maximum_attempts": 5,
+    "retry_schedule_seconds": [1, 2, 4, 8, 16],
+    "resume_required": true,
+    "token_output_forbidden": true
+  },
+  "implementation": {
+    "path": "scripts/build_rec_ev_027_catalog_features.py",
+    "bytes": 25622,
+    "sha256": "9d38ffc3a04b19e7f1269994f605c06179344071fbf6baf51e475ee0723b5dcb",
+    "transitive_helpers": [
+      {
+        "path": "scripts/build_rec_ev_019b_features.py",
+        "bytes": 36384,
+        "sha256": "dc04c1211c975f079a0172649d324db93e5b6a66312105678e098aca0faac44c"
+      }
+    ]
+  },
+  "runtime": {
+    "python": "3.12",
+    "numpy": "1.26.4",
+    "pandas": "2.2.3",
+    "pyarrow": "20.0.0",
+    "onnxruntime": "1.20.1",
+    "transformers": "4.49.0",
+    "huggingface_hub": "0.29.2"
+  },
+  "outputs": {
+    "root": "outputs/recommendation-evidence/rec-ev-027-catalog",
+    "identity": "outputs/recommendation-evidence/rec-ev-027-catalog/movie-identity.parquet",
+    "structured": "outputs/recommendation-evidence/rec-ev-027-catalog/structured-features.parquet",
+    "embeddings": "outputs/recommendation-evidence/rec-ev-027-catalog/text-embeddings.parquet",
+    "domain_projection": "outputs/recommendation-evidence/rec-ev-027-catalog/domain-projection.parquet",
+    "summary": "outputs/recommendation-evidence/rec-ev-027-catalog/catalog-build-summary.json",
+    "manifest": "outputs/recommendation-evidence/rec-ev-027-catalog/catalog-build-manifest.json"
+  },
+  "forbidden": {
+    "locked_test_access": true,
+    "final_reserve_access": true,
+    "ratings_member_access": true,
+    "rating_value_access": true,
+    "product_policy_change": true
+  }
+}

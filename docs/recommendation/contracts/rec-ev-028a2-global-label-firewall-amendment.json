@@ -1,0 +1,159 @@
+{
+  "schema_version": 1,
+  "contract_id": "rec-ev-028a2-global-label-firewall-amendment-v1",
+  "status": "PROPOSED_FOR_INDEPENDENT_EXACT_AUDIT",
+  "purpose": "Repair the REC-EV-028A1 cross-outer label leak by selecting every evaluation profile only after the user's complete seven-outer target union is frozen, while strengthening fail-closed lock and resume verification before any rating value is opened.",
+  "base_contract": {
+    "path": "docs/recommendation/contracts/rec-ev-028-personalization-attribution.json",
+    "bytes": 18646,
+    "sha256": "025ed71d3bdcfab16e4a501e255d90bfda098c2ad353833e0fb724ace195bbde",
+    "audit_truth": "REC_EV_028A_EXACT_CONTRACT_PASS"
+  },
+  "a1_amendment": {
+    "path": "docs/recommendation/contracts/rec-ev-028a1-balanced-target-amendment.json",
+    "bytes": 5033,
+    "sha256": "5a42336d6bec5ed6f609b4209be2e1b1e31a1b29047876964619e6a4cf64fb2d",
+    "audit_truth": "REC_EV_028A1_AMENDMENT_PASS"
+  },
+  "a1_balanced_membership": {
+    "summary": {
+      "path": "outputs/recommendation-evidence/rec-ev-028a1/membership-preflight.json",
+      "bytes": 3963,
+      "sha256": "ee8004c5a53344e94a53193003e9c8776d5fd40b0c8e075c669bffb9611911e1"
+    },
+    "membership": {
+      "path": "outputs/recommendation-evidence/rec-ev-028a1/cache/membership.parquet",
+      "bytes": 1516717,
+      "sha256": "bb787d0712023c0b9ecf09a5c6d93edb98837834c3c368cae157baf6c4d9fe43"
+    },
+    "audit_truth": "REC_EV_028A1_MEMBERSHIP_PASS",
+    "rating_values_parsed": false,
+    "timestamps_parsed": false,
+    "future_membership_materialized": false
+  },
+  "triggering_prelabel_implementation_audit": {
+    "thread": "01a0739e-513f-7250-8862-3e2683a79f7f",
+    "truth": "REC_EV_028A1_PRELABEL_IMPLEMENTATION_FAIL",
+    "failed_runner": {
+      "path": "scripts/run_rec_ev_028a1.py",
+      "bytes": 38618,
+      "sha256": "c55f590f92ea2af142e8bfb3ed7a35897737fdbf6facd555ea146cc3f4e1e675"
+    },
+    "rating_values_opened": false,
+    "finding": {
+      "cross_outer_profile_and_target_user_movie_pairs": 67505,
+      "affected_target_occurrences": 67793,
+      "cause": "BASE_PROFILE_SELECTION_WAS_ONLY_DISJOINT_WITH_ITS_OWN_OUTER_TARGET_WHILE_THE_BASE_CONTRACT_REQUIRES_ONE_GLOBAL_SEAL_BEFORE_ANY_SEVEN_OUTER_TARGET_RATING"
+    }
+  },
+  "override_scope": {
+    "only": [
+      "membership.profile_selection_and_row_retention_after_a1_targets",
+      "pre_rating_lock_verification",
+      "resume_verification",
+      "output_root"
+    ],
+    "target_allocator": "INHERIT_REC_EV_028A1_EXACTLY_WITHOUT_REBALANCING_AFTER_ROW_RETENTION",
+    "all_unspecified_fields": "INHERIT_BASE_CONTRACT_AND_A1_AMENDMENT_SEMANTICS",
+    "models_metrics_inference_truth_thresholds_roles_firewalls": "UNCHANGED"
+  },
+  "global_target_aware_profile_selection": {
+    "step_1": "REBUILD_THE_EXACT_A1_ELIGIBLE_USER_SET_AND_EXACT_A1_BALANCED_TARGET_SET_FOR_EACH_OF_R0_R1_R2_R3_R4_KR_RECENT",
+    "step_2": "FOR_EACH_ATTRIBUTION_USER_KEY_FORM_GLOBAL_TARGET_UNION_T_U_AS_THE_SET_UNION_OF_ALL_SELECTED_A1_TARGET_MOVIE_IDS_ACROSS_EVERY_A1_OUTER_IN_WHICH_THE_USER_APPEARS",
+    "step_3": "FOR_EACH_A1_USER_OUTER_ROW_FORM PROFILE_POOL_AS_THAT_USERS_RATING_INDEPENDENT_OUTER_WARM_MOVIE_MEMBERSHIP_MINUS_T_U",
+    "row_retention": "KEEP_THE_A1_USER_OUTER_ROW_IF_AND_ONLY_IF_PROFILE_POOL_CARDINALITY_GTE_12; DO_NOT_REALLOCATE_OR_REBALANCE_TARGETS_AFTER_DROPPING_A_ROW",
+    "profile_selection": "SORT_PROFILE_POOL_BY_THE_UNCHANGED_BASE_PROFILE_ORDER_SALT_PAYLOAD_DIGEST_BYTES_ASC_THEN_NUMERIC_MOVIE_ID_ASC_AND_SELECT_FIRST12",
+    "donor_rebuild": "AFTER_ROW_RETENTION_SORT_RETAINED_USER_KEY_ASC_WITHIN_EACH_OUTER_AND_REBUILD_THE_EXACT_BASE_ONE_POSITION_CYCLIC_DERANGEMENT",
+    "required_assertion": "FOR_EVERY_RETAINED_USER THE_UNION_OF_ALL_STORED_PROFILE_MOVIE_IDS_ACROSS_SEVEN_OUTERS_HAS_EMPTY_INTERSECTION_WITH_T_U",
+    "inputs_allowed": [
+      "ATTRIBUTION_USER_KEY",
+      "RATING_INDEPENDENT_USER_MOVIE_MEMBERSHIP",
+      "A1_SELECTED_TARGET_MOVIE_IDS",
+      "OUTER_WARM_COLD_MEMBERSHIP",
+      "PINNED_HASH_SALTS"
+    ],
+    "inputs_forbidden": [
+      "RATING_VALUE",
+      "TARGET_Q",
+      "TIMESTAMP",
+      "MODEL_SCORE",
+      "POPULARITY",
+      "FUTURE_RESERVE_MOVIE_MEMBERSHIP_OR_VALUE"
+    ]
+  },
+  "coverage_preflight": {
+    "must_recompute_on_retained_rows_before_any_rating_value": true,
+    "thresholds": "INHERIT_BASE_CONTRACT_WITHOUT_REVISION",
+    "required": "R0_R1_R2_R3_R4_KR_RECENT_EACH_BROAD_ITEM_ELIGIBLE_AND_GLOBAL_PROFILE_TARGET_INTERSECTION_COUNT_ZERO_OR_STOP",
+    "membership_freeze": "A2_MEMBERSHIP_PATH_BYTES_SHA256_AND_COMPLETE_TRANSITIVE_IMPLEMENTATION_PATH_BYTES_SHA256_ARE_LOCKED_BEFORE_ANY_RATING_VALUE"
+  },
+  "pre_rating_lock_verification": {
+    "output_root_must_equal": "outputs/recommendation-evidence/rec-ev-028a2",
+    "membership_path_must_equal": "outputs/recommendation-evidence/rec-ev-028a2/cache/membership.parquet",
+    "summary_flags_required_false": [
+      "rating_values_parsed",
+      "timestamps_parsed",
+      "future_membership_materialized",
+      "locked_test_opened",
+      "final_reserve_opened",
+      "product_policy_changed"
+    ],
+    "summary_pins_required": [
+      "A2_AMENDMENT",
+      "MEMBERSHIP_IMPLEMENTATION",
+      "TRANSITIVE_READER_AND_MEMBERSHIP_DEPENDENCIES"
+    ],
+    "recompute_from_membership": [
+      "EXACT_CANONICAL_SEVEN_OUTERS",
+      "ONE_ROW_PER_OUTER_USER_KEY",
+      "PROFILE12_AND_TRACK_TARGET_CARDINALITY",
+      "OUTER_PROFILE_TARGET_DISJOINTNESS",
+      "GLOBAL_USER_PROFILE_TARGET_DISJOINTNESS",
+      "DONOR_BIJECTION_AND_DERANGEMENT",
+      "USERS_TARGET_SLOTS_UNIQUE_EFFECTIVE_MAX_LOAD_TOP10_SHARE_AND_COVERAGE_TRUTH"
+    ]
+  },
+  "resume_verification": {
+    "principle": "NEVER_ACCEPT_EXISTENCE_OR_HASH_VALIDITY_ALONE_AS_SEMANTIC_COMPLETENESS",
+    "each_phase_requires": [
+      "EXACT_STATUS_TOKEN",
+      "EXACT_CANONICAL_OUTER_SET_AND_PATHS",
+      "EXACT_SEED_SET_WHERE_APPLICABLE",
+      "EXACT_SYSTEM_AND_CELL_CARTESIAN_WHERE_APPLICABLE",
+      "EXPECTED_ROW_COUNTS_AND_KEY_UNIQUENESS",
+      "ALL_TARGET_TIMESTAMP_FUTURE_LOCKED_FINAL_PRODUCT_FIREWALL_FLAGS_FALSE",
+      "RECURSIVE_PATH_BYTES_SHA256_VERIFICATION"
+    ],
+    "malformed_or_partial_state": "FAIL_CLOSED"
+  },
+  "prelabel_reader_required_assertion": "BEFORE_PARSING_ANY_EVALUATION_PROFILE_RATING_ASSERT_THE_USER_MOVIE_IS_NOT_IN_THAT_USERS_GLOBAL_TARGET_UNION; COUNT_AND_REQUIRE_ZERO",
+  "rating_free_feasibility_observation_not_a_result": {
+    "method": "READ_ONLY_SIMULATION_FROM_A1_MEMBERSHIP_AND_RATING_INDEPENDENT_MOVIE_MEMBERSHIP",
+    "retained_users": {
+      "R0": 3035,
+      "R1": 2776,
+      "R2": 2772,
+      "R3": 3030,
+      "R4": 2667,
+      "KR": 248,
+      "RECENT": 361
+    },
+    "effective_target_items": {
+      "R0": 903.4855584141965,
+      "R1": 1098.0047290351215,
+      "R2": 975.2046963234935,
+      "R3": 994.3469659956927,
+      "R4": 955.86644806687,
+      "KR": 55.03098087462253,
+      "RECENT": 557.2250133618386
+    },
+    "global_profile_target_intersection": 0,
+    "rating_values_parsed": false
+  },
+  "claim_boundary_addition": [
+    "A2_REPAIRS_EVALUATION_LABEL_ISOLATION_BUT_DOES_NOT_CREATE_NEW_GROUND_TRUTH",
+    "ROW_RETENTION_AND_BALANCED_TARGETS_DEFINE_A_LABEL_BLIND_DEVELOPMENT_PANEL_NOT_NATURAL_EXPOSURE",
+    "NO_RESULT_MAY_CLAIM_KOREAN_USERS_ACTUAL_NEW_RELEASES_FULL_CATALOG_RELEVANCE_OR_PRODUCT_READINESS"
+  ],
+  "output_root": "outputs/recommendation-evidence/rec-ev-028a2"
+}

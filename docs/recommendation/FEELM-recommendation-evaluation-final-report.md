@@ -1,12 +1,12 @@
 # FEELM 추천 설계·데이터 분석 최종 보고서
 
 > 문서 상태: `FINAL_RESEARCH_REPORT`
-> 작성 기준: 2026-09-05
+> 작성 기준: 2026-09-06
 > 제품 추천 정책: `APPROVED_C2A_INTERNAL_POPULARITY_ONLY` 유지
-> 핵심 결론: K별 256명 tuning panel을 제외해도 LightFM T003은 K5·K10 각각의 조건 안에서 B0
-> 인기도보다 높았다. K5와 K10은 사용자와 미래 구간이 달라 품질을 직접 비교하지 않는다. 양방향 신호는
-> 구현상 적용 전제이며 효과 검증이 아니다. 한국어 원어·저인기·2020년 이후·true cold item은 작은 표본
-> 또는 정답 부재로 미확정이다. `locked_test_used=false`, `champion=null`,
+> 핵심 결론: REC-EV-027~030은 MovieLens에서 평가한 영화를 가린 대리 과제에서 TMDB 구조 콘텐츠
+> profile의 사용자별 신호를 확인했다. untouched 사용자 3,345명에서 OWN은 SHUFFLE보다 Harm20을
+> 8.63%p 낮췄고, 사용자 6개·영화 4개 동시 신뢰구간이 모두 사전 Gate를 통과했다. 이는 실제 한국 사용자나
+> 수록 이후 신작 성능이 아니다. `locked_test_used=false`, `champion=null`,
 > `product_policy_updated=false`를 유지한다.
 
 ## 0. 이 작업의 목적
@@ -41,6 +41,17 @@ ItemKNN, 관측 BPR, TMDB 구조·텍스트 콘텐츠, LightFM과 RRF를 같은 
 실험은 아직 수행하지 않았으므로 시점 정책은 미결정으로 남긴다. MovieLens timestamp 자체를 실제 관람
 순서라고 주장하지 않는다.
 
+### 0.2 REC-EV-027~030이 추가로 결정한 것
+
+REC-EV-019 계열의 전체 카탈로그 비교만으로는 콘텐츠 모델이 개인화 신호를 내는지, 인기 영화의 쉬운
+순위를 재현하는지 분리할 수 없었다. 후속 실험은 사용자가 평가한 영화를 가린 후보 안에서 OWN profile,
+다른 사용자의 SHUFFLE profile, RANDOM을 비교했다.
+
+입력은 짝수 K=2~30과 Binary·사용자별 percentile을 비교했다. 모델은 TMDB 구조 direct, raw E5 direct,
+구조·E5 RRF를 포함했다. selection은 `STRUCTURED_DIRECT + PERCENTILE_MAGNITUDE + K=30 + Top2`를
+골랐다. 첫 replication의 영화 동일가중 동시 구간이 불충분해 실패로 남겼고, 이전에 열지 않은 future
+사용자와 더 좁게 사전등록한 10개 primary 지표로 REC-EV-030을 다시 실행했다.
+
 ## 1. 가장 먼저 볼 결론
 
 실제 FEELM 사용자의 추천–시청–평가 순환을 만들 수 없으므로 완벽한 “추천 정답” 데이터는 없다.
@@ -66,6 +77,15 @@ ItemKNN, 관측 BPR, TMDB 구조·텍스트 콘텐츠, LightFM과 RRF를 같은 
 | 적용 가능한 사용자만 K10으로 전환하면 되는가? | **POST-HOC PASS, 재확인 필요** | 019E ΔNDCG +0.013997, Harm upper 0.003799; 같은 1,053명 재사용 |
 | 전체 관측 범위까지 사용할 것인가? | **미결정** | 이번에는 cutoff 정책만 실행 |
 | 제품 정책이나 Locked Test를 열 수 있는가? | **NO** | champion `null`, Locked Test 미개봉, 제품 정책 유지 |
+
+후속 REC-EV-030의 가장 직접적인 수치는 다음과 같다.
+
+| 질문 | 판정 | 근거 |
+| --- | --- | --- |
+| TMDB 구조 profile이 사용자별 신호를 내는가? | **YES, 대리 과제 범위** | OWN 대 SHUFFLE Harm20 감소 +0.0863 [0.0718, 0.1008] |
+| item bias만으로 결과를 설명할 수 있는가? | **NO** | OWN 대 SHUFFLE 영화 utility +0.0638 [0.0217, 0.1058] |
+| K와 입력 정책은 무엇이 남았는가? | **Percentile, K=30** | K=2~30 selection winner. K=30은 탐색 상한이라 제품 최적값은 아님 |
+| 실제 한국 사용자·신작 성능인가? | **NO** | KR 247명과 RECENT 382명은 descriptive-only |
 
 ## 2. 왜 이전 평가가 부족했나
 
@@ -397,8 +417,8 @@ recall@500은 `-0.020893` 감소했고 benefit/neutral/harm은 `70/957/26`이었
 
 | 처음의 문제 | 이번에 얻은 답 | 남은 한계 |
 | --- | --- | --- |
-| MovieLens의 외국·인기 영화 편향과 수록 이후 영화 공백 | TMDB 구조·E5로 41,625편을 같은 공간에서 표현하고 콘텐츠·결합 모델을 비교할 수 있었다. | Q4 표본 교란이 크고 한국어 원어·2020년 이후·true cold item 정답이 부족하거나 없다. 문제는 미해결이다. |
-| 실사용 추천·시청·평가 순환 부재 | tuning panel을 제외해도 K5·K10 각각에서 LightFM T003의 B0 대비 우위를 확인했고, 019E 적용성 routing은 post-hoc Gate를 통과했다. | 019D 전체 K10 전환은 안전 실패했고, 019F 새 source-row/window 확인도 mean SESOI 미달 `INCONCLUSIVE`다. target-domain confirmation이 필요하다. |
+| MovieLens의 외국·인기 영화 편향과 수록 이후 영화 공백 | TMDB 구조·E5로 영화를 표현하고, masked rated item에서 구조 콘텐츠 profile의 개인화 신호를 untouched 사용자로 확증했다. | 실제 한국 사용자와 MovieLens 수록 이후 신작의 행동 정답은 없다. 후보화 근거는 생겼지만 목표 시장 성능은 미해결이다. |
+| 실사용 추천·시청·평가 순환 부재 | MovieLens를 대리 학습·평가·검증 환경으로 사용해 사용자별 percentile, K 탐색, Top2 harm와 귀속 대조군을 검증했다. | 오프라인 복원 결과는 FEELM 사용자의 실제 시청·만족을 증명하지 않는다. target-domain confirmation이 필요하다. |
 
 REC-EV-019F는 기존 019A episode를 지난 새 source row와 future window를 사용했지만 사용자는 독립이 아니다.
 structural 1,021명 중 strict 802명에서 ΔNDCG는 `+0.003617 [0.000291, 0.007239]`, Harm upper는
@@ -434,6 +454,8 @@ MovieLens 대리 평가로 바꾸고, 가능한 콘텐츠 보완책을 같은 �
 - `locked_test_used=false`를 유지한다.
 - `product_policy_updated=false`를 유지한다.
 - 한국 영화·신작 성능, 실제 사용자 만족, 온라인 성과를 주장하지 않는다.
+- REC-EV-030 결과는 콘텐츠 후보 생성과 후속 모델 개발 근거로 사용하되 제품 champion 승인으로 사용하지 않는다.
+- K=30은 탐색 상한 winner로 기록하고 실제 온보딩 입력 수는 사용자 부담 검증 전까지 확정하지 않는다.
 - 문제 1의 다음 유효한 검증은 목표 도메인 행동 데이터 수집 또는 독립적인 한국 영화 평가 표본 확보다.
 - REC-EV-021V는 그 평가 표본을 만들기 위한 인프라만 준비됐다. catalog/license·consent·privacy·budget·모집과
   frozen ranking이 승인되기 전에는 `INSUFFICIENT_TARGET_DOMAIN_EVIDENCE`를 유지한다.
@@ -462,6 +484,10 @@ MovieLens 대리 평가로 바꾸고, 가능한 콘텐츠 보완책을 같은 �
 | REC-EV-019F 2026-09-05 독립 재감사 | PASS | clean lock·격리 run·cohort/overlap/strata/metrics/1,604 rankings 재확인, 결과 변경 결함 없음 |
 | REC-EV-021V 모집 전 preflight | `PASS_INFRASTRUCTURE_READY` | catalog/schema/pool/import/analyzer/resume 검증; 실제 target evidence `NO` |
 | REC-EV-021V 실제 pooled judgment | `INSUFFICIENT_TARGET_DOMAIN_EVIDENCE` | valid 100명·4,000 judgment·target positive 300·mapping/dedup 95% 미수집 |
+| REC-EV-027 masked item-cold model screen | COMPLETE | 구조·E5·RRF·LightFM 후보 비교와 strict item-cold 경계 확인 |
+| REC-EV-028 personalization attribution | COMPLETE, ITEM BIAS FOUND | 높은 LightFM 점수를 사용자 신호로 귀속하지 않음 |
+| REC-EV-029 direct profile selection | `DIRECT_PROFILE_PERSONALIZATION_NOT_REPLICATED` | winner는 구조·Percentile·K30, 사용자 지표 재현, 48-family 영화 동시 구간 미통과 |
+| REC-EV-030 untouched confirmation | `REC_EV_030_FINAL_RESULT_AUDIT_PASS` | 사용자 3,345명·영화 24,167편, user6/item4 Gate 전부 통과 |
 | 새 개인화 champion | NOT SELECTED | `null`; 현재 제품 정책 유지 |
 | Locked Test | NOT USED | `locked_test_used=false` |
 
@@ -481,6 +507,11 @@ MovieLens 대리 평가로 바꾸고, 가능한 콘텐츠 보완책을 같은 �
 - 021V 사전등록: `docs/recommendation/evidence/REC-EV-021V-kr-recent-niche-preregistration.md`
 - 021V 모집 전 결과: `docs/recommendation/evidence/REC-EV-021V-kr-recent-niche-preflight.md`
 - 021V 검증: `npm run recommendation:021v:preflight:check`
+- REC-EV-027~030 최종 보고서: `docs/recommendation/evidence/REC-EV-027-030-masked-content-personalization-final-report.md`
+- REC-EV-030 설계: `docs/recommendation/contracts/rec-ev-030-untouched-future-confirmation.json`
+- REC-EV-030 실행 lock: `docs/recommendation/contracts/rec-ev-030b-confirmation-execution.json`
+- REC-EV-030 최종 독립 감사: `docs/recommendation/evidence/rec-ev-030-final-result-independent-audit.json`
+- REC-EV-030 결과 장표: `docs/presentation/FEELM-REC-EV-030-final-results.pptx`
 - 실행: `py -3 scripts/run_rec_ev_019c_validation.py --mode validation --role validation --resume`
 - Validation 검증: `py -3 scripts/verify_rec_ev_019c_validation.py --manifest docs/recommendation/evidence/manifests/rec-ev-019c-validation.json`
 - 분석: `py -3 scripts/analyze_rec_ev_019c_validation.py`

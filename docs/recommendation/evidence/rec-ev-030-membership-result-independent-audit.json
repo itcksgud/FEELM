@@ -1,0 +1,22 @@
+{
+  "audit_id": "rec-ev-030-membership-result-independent-audit-v1",
+  "status": "REC_EV_030_MEMBERSHIP_RESULT_AUDIT_PASS",
+  "auditor_thread_id": "01a0751b-6621-7a61-94b2-4c401c7a3066",
+  "verified": {
+    "rows": 13910,
+    "users": 3398,
+    "outer_cells": 7,
+    "target_cardinalities": true,
+    "coverage_recalculated": true,
+    "donor_bijection": true,
+    "profile_n": 30,
+    "content_complete": true,
+    "global_profile_target_intersection": 0,
+    "raw_rows": 32000204,
+    "rating_values_parsed": 0,
+    "timestamps_parsed": 0,
+    "rec_ev_028_attribution_or_fit_opened": 0,
+    "artifact_hashes_match": true
+  },
+  "authorization": "MAY_IMPLEMENT_FROZEN_PROFILE_SCORE_LABEL_CONFIRMATION;_EXACT_IMPLEMENTATION_AUDIT_REQUIRED_BEFORE_PROFILE_RATINGS"
+}
