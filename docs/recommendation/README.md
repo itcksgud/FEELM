@@ -47,6 +47,7 @@
 | Top-2 Validation 결과 | `evidence/REC-EV-020P-top2-v4-validation-preflight.md` | K별 평가 가능 사용자와 남은 paired-power blocker |
 | cold-item Validation 결과 | `evidence/REC-EV-021P-content-cold-v2-preflight.md` | 역할 충돌 수정·panel 표본·Validation pilot 준비 완료 |
 | 최종 쉬운 보고서 | `FEELM-recommendation-evaluation-final-report.md` | 설계·실행 결과·허용 주장·다음 순서 |
+| 실험 연대기 | `experiment-chronicle.md` · `experiment-chronicle.html` | 기존 기록만 서술 순서로 연결. 새 결과·주장을 추가하지 않음 |
 | 문제 해결·AI 활용 정리 | `portfolio-problem-solving-and-ai.md` | 포트폴리오·면접용 경험 서술 |
 | 데이터 인사이트 | `data-insights-summary.md` | K·예상 별점·한국 영화·cold 표본 요약 |
 | Jira 기록 원고 | `jira-recommendation-evaluation-summary.md` | Epic·하위 이슈·최종 댓글 복사본 |

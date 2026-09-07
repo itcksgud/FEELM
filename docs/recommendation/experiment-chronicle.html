@@ -1,0 +1,1286 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>FEELM 추천 실험 연대기</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Gowun+Batang:wght@400;700&family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans+KR:wght@300;400;500;600;700&display=swap">
+<style>
+:root{
+  --paper:#EFF0EB;
+  --surface:#FAFAF8;
+  --surface-2:#E7E9E2;
+  --ink:#15181A;
+  --ink-2:#474D51;
+  --ink-3:#767C80;
+  --rule:#D3D6CD;
+  --rule-strong:#B6BAB0;
+  --accent:#24418C;
+  --accent-soft:#E2E6F1;
+  --pass:#2E6B4C;
+  --fail:#9C382B;
+  --hold:#87610F;
+  --skip:#6B7073;
+  --font-display:"Gowun Batang",Georgia,serif;
+  --font-body:"IBM Plex Sans KR","Malgun Gothic",system-ui,-apple-system,sans-serif;
+  --font-mono:"IBM Plex Mono",Consolas,ui-monospace,monospace;
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){
+    --paper:#121517;
+    --surface:#1A1E21;
+    --surface-2:#22272A;
+    --ink:#E8EAE4;
+    --ink-2:#AFB5B8;
+    --ink-3:#828A8D;
+    --rule:#2C3235;
+    --rule-strong:#3E4649;
+    --accent:#93AAEA;
+    --accent-soft:#1D2640;
+    --pass:#6FBE92;
+    --fail:#E38571;
+    --hold:#D5B15D;
+    --skip:#8A9093;
+  }
+}
+:root[data-theme="dark"]{
+  --paper:#121517;
+  --surface:#1A1E21;
+  --surface-2:#22272A;
+  --ink:#E8EAE4;
+  --ink-2:#AFB5B8;
+  --ink-3:#828A8D;
+  --rule:#2C3235;
+  --rule-strong:#3E4649;
+  --accent:#93AAEA;
+  --accent-soft:#1D2640;
+  --pass:#6FBE92;
+  --fail:#E38571;
+  --hold:#D5B15D;
+  --skip:#8A9093;
+}
+
+html{color-scheme:light dark}
+body{
+  margin:0;
+  background:var(--paper);
+  color:var(--ink);
+  font-family:var(--font-body);
+  font-weight:400;
+  font-size:16px;
+  line-height:1.72;
+  -webkit-font-smoothing:antialiased;
+}
+*{box-sizing:border-box}
+a{color:var(--accent)}
+:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+
+.wrap{max-width:1000px;margin:0 auto;padding:0 28px}
+
+/* ---------- masthead ---------- */
+.masthead{border-bottom:1px solid var(--rule-strong);padding:56px 0 34px}
+.eyebrow{
+  font-family:var(--font-mono);font-size:11.5px;font-weight:500;
+  letter-spacing:.16em;text-transform:uppercase;color:var(--ink-3);
+}
+.masthead h1{
+  font-family:var(--font-display);font-weight:700;
+  font-size:clamp(34px,6vw,58px);line-height:1.12;letter-spacing:-.01em;
+  margin:14px 0 0;text-wrap:balance;
+}
+.standfirst{
+  max-width:62ch;margin:20px 0 0;font-size:17.5px;color:var(--ink-2);font-weight:300;
+}
+.standfirst em{font-style:normal;color:var(--ink);font-weight:500}
+.stamp-row{display:flex;flex-wrap:wrap;gap:10px;margin-top:28px}
+.stamp{
+  font-family:var(--font-mono);font-size:11.5px;font-weight:500;letter-spacing:.04em;
+  border:1px solid var(--rule-strong);padding:5px 10px;color:var(--ink-2);
+  background:var(--surface);
+}
+.stamp b{color:var(--ink);font-weight:600}
+
+/* ---------- generic band ---------- */
+.band{padding:52px 0;border-bottom:1px solid var(--rule)}
+.band-head{display:flex;flex-direction:column;gap:8px;margin-bottom:26px}
+.band h2{
+  font-family:var(--font-display);font-weight:700;
+  font-size:clamp(24px,3.4vw,33px);line-height:1.25;margin:0;text-wrap:balance;
+}
+.band p{margin:0 0 16px;max-width:66ch}
+.band p:last-child{margin-bottom:0}
+.lede{font-size:17px;color:var(--ink-2)}
+.band em{font-style:normal;color:var(--ink);font-weight:500}
+
+/* ---------- founding problems ---------- */
+.problems{display:grid;gap:24px;grid-template-columns:repeat(auto-fit,minmax(310px,1fr));margin-top:8px}
+.problem{border-left:3px solid var(--accent);padding:2px 0 2px 20px}
+.problem .pnum{
+  font-family:var(--font-mono);font-size:11.5px;letter-spacing:.14em;
+  text-transform:uppercase;color:var(--accent);font-weight:600;
+}
+.problem h3{font-size:18px;font-weight:600;margin:6px 0 8px;line-height:1.45}
+.problem p{font-size:15px;color:var(--ink-2);margin:0}
+.num{font-family:var(--font-mono);font-weight:500;color:var(--ink);font-size:14px;font-variant-numeric:tabular-nums}
+
+/* ---------- verdict vocabulary ---------- */
+.vocab{display:grid;gap:0;margin-top:6px;border-top:1px solid var(--rule)}
+.vocab-row{
+  display:grid;grid-template-columns:230px 1fr;gap:18px;
+  padding:13px 0;border-bottom:1px solid var(--rule);align-items:baseline;
+}
+.vocab-row span{font-size:15px;color:var(--ink-2)}
+.verdict{
+  font-family:var(--font-mono);font-size:11.5px;font-weight:600;letter-spacing:.05em;
+  display:inline-block;padding:3px 8px;border:1px solid currentColor;line-height:1.5;
+}
+.v-pass{color:var(--pass)}
+.v-fail{color:var(--fail)}
+.v-hold{color:var(--hold)}
+.v-skip{color:var(--skip)}
+
+/* ---------- chronicle ---------- */
+.phase{padding:48px 0 8px;border-bottom:1px solid var(--rule)}
+.phase-head{display:grid;grid-template-columns:96px 1fr;gap:24px;align-items:start;margin-bottom:30px}
+.phase-index{
+  font-family:var(--font-mono);font-size:12px;font-weight:600;letter-spacing:.12em;
+  color:var(--accent);text-transform:uppercase;padding-top:9px;
+}
+.phase-title{font-family:var(--font-display);font-weight:700;font-size:clamp(23px,3.2vw,31px);line-height:1.28;margin:0;text-wrap:balance}
+.phase-sub{margin:10px 0 0;color:var(--ink-2);font-size:16px;max-width:64ch}
+.phase-sub em{font-style:normal;color:var(--ink);font-weight:500}
+
+.runs{display:flex;flex-direction:column}
+.run{display:grid;grid-template-columns:96px 1fr;gap:24px;padding:0 0 30px}
+.run-gutter{position:relative;padding-top:4px}
+.run-gutter::before{
+  content:"";position:absolute;left:5px;top:22px;bottom:-30px;width:1px;background:var(--rule-strong);
+}
+.run:last-child .run-gutter::before{display:none}
+.run-node{
+  position:absolute;left:0;top:9px;width:11px;height:11px;border-radius:50%;
+  background:var(--paper);border:2px solid var(--rule-strong);
+}
+.run-node.is-pass{border-color:var(--pass);background:var(--pass)}
+.run-node.is-fail{border-color:var(--fail);background:var(--fail)}
+.run-node.is-hold{border-color:var(--hold);background:var(--hold)}
+.run-node.is-skip{border-color:var(--skip);background:var(--paper)}
+.run-id{
+  font-family:var(--font-mono);font-size:12px;font-weight:600;
+  color:var(--ink);padding-left:24px;display:block;line-height:1.5;
+}
+.run-date{
+  font-family:var(--font-mono);font-size:11px;color:var(--ink-3);
+  padding-left:24px;display:block;letter-spacing:.02em;line-height:1.5;
+}
+.run-body{background:var(--surface);border:1px solid var(--rule);padding:20px 22px}
+.run-body h4{font-size:18px;font-weight:600;margin:0 0 4px;line-height:1.45;text-wrap:balance}
+.run-verdict{margin:10px 0 16px}
+.slots{display:flex;flex-direction:column;gap:12px;margin:0}
+.slot{display:grid;grid-template-columns:78px 1fr;gap:16px;align-items:baseline}
+.slot dt{
+  font-family:var(--font-mono);font-size:10.5px;font-weight:600;letter-spacing:.1em;
+  text-transform:uppercase;color:var(--ink-3);padding-top:4px;
+}
+.slot dd{margin:0;font-size:15.2px;color:var(--ink-2);line-height:1.7}
+.slot dd em{font-style:normal;color:var(--ink);font-weight:500}
+.slot.next dd{color:var(--ink)}
+.slot.next dt{color:var(--accent)}
+.inline-code{font-family:var(--font-mono);font-size:12.5px;color:var(--ink)}
+
+/* ---------- figures ---------- */
+figure{margin:26px 0 6px;padding:0}
+.fig-shell{border:1px solid var(--rule);background:var(--surface);padding:18px 18px 12px;overflow-x:auto}
+.fig-shell svg{display:block;min-width:640px;width:100%;height:auto}
+figcaption{font-size:13.5px;color:var(--ink-3);margin-top:10px;max-width:68ch;line-height:1.65}
+figcaption b{color:var(--ink-2);font-weight:600}
+
+/* ---------- tables ---------- */
+.table-shell{overflow-x:auto;border:1px solid var(--rule);background:var(--surface)}
+table{border-collapse:collapse;width:100%;min-width:520px;font-size:14.5px}
+th,td{padding:11px 16px;text-align:left;border-bottom:1px solid var(--rule);vertical-align:top}
+thead th{
+  font-family:var(--font-mono);font-size:10.5px;font-weight:600;letter-spacing:.1em;
+  text-transform:uppercase;color:var(--ink-3);background:var(--surface-2);
+}
+tbody td{color:var(--ink-2)}
+tbody tr:last-child td{border-bottom:none}
+td.n{font-family:var(--font-mono);font-variant-numeric:tabular-nums;text-align:right;font-size:13.5px;color:var(--ink);white-space:nowrap}
+td.strong{font-weight:600;color:var(--ink)}
+
+/* ---------- closing ---------- */
+.holds{display:grid;gap:0;border-top:1px solid var(--rule);margin-top:8px}
+.hold-row{
+  display:grid;grid-template-columns:1fr auto;gap:20px;align-items:baseline;
+  padding:13px 0;border-bottom:1px solid var(--rule);
+}
+.hold-row span{font-size:15.5px;color:var(--ink-2)}
+.hold-row code{
+  font-family:var(--font-mono);font-size:12.5px;color:var(--ink);
+  background:var(--surface-2);padding:3px 8px;
+}
+.pull{
+  border-left:3px solid var(--accent);padding:4px 0 4px 22px;margin:30px 0 0;
+  font-family:var(--font-display);font-size:clamp(19px,2.6vw,24px);line-height:1.55;
+  color:var(--ink);max-width:56ch;text-wrap:balance;
+}
+.pull strong{font-weight:700}
+.sources{font-size:14.5px;color:var(--ink-3);line-height:2}
+.sources code{font-family:var(--font-mono);font-size:12.5px;color:var(--ink-2)}
+footer{padding:40px 0 64px;color:var(--ink-3);font-size:13.5px}
+
+@media (max-width:720px){
+  .wrap{padding:0 20px}
+  .phase-head,.run{grid-template-columns:1fr;gap:12px}
+  .run-gutter::before{display:none}
+  .run-node{position:static;display:inline-block;margin-right:8px;vertical-align:middle}
+  .run-id,.run-date{padding-left:0;display:inline-block;margin-right:10px}
+  .slot{grid-template-columns:1fr;gap:2px}
+  .slot dt{padding-top:6px}
+  .vocab-row,.hold-row{grid-template-columns:1fr;gap:6px}
+}
+</style>
+</head>
+<body>
+
+<header class="masthead">
+  <div class="wrap">
+    <div class="eyebrow">FEELM · 추천 / 예상 별점 · 2026-08-29 → 2026-09-06</div>
+    <h1>추천 실험 연대기</h1>
+    <p class="standfirst">
+      출시 전이라 실제 사용자 피드백이 없고, MovieLens는 유명 외국 영화에 쏠려 있다.
+      이 두 제약 안에서 무엇을 어디까지 말할 수 있는지 30여 개 실험으로 경계를 그은 기록이다.
+      각 실험이 <em>왜 그 다음 실험을 강제했는지</em> 순서대로 읽을 수 있게 정리했다.
+    </p>
+    <div class="stamp-row">
+      <span class="stamp">문서 상태 <b>FINAL_RESEARCH_REPORT</b></span>
+      <span class="stamp">제품 정책 <b>APPROVED_C2A_INTERNAL_POPULARITY_ONLY</b></span>
+      <span class="stamp">champion <b>null</b></span>
+      <span class="stamp">locked_test_used <b>false</b></span>
+    </div>
+  </div>
+</header>
+
+<section class="band">
+  <div class="wrap">
+    <div class="band-head">
+      <div class="eyebrow">출발점</div>
+      <h2>추천 모델을 만들려고 시작한 작업이 아니다</h2>
+    </div>
+    <p class="lede">
+      서비스 개발 중 막힌 두 가지 문제에 답하려고 시작했다. 모델 순위표를 만드는 것이 목적이 아니었기 때문에,
+      모든 실험의 판정은 “수치가 올랐는가”가 아니라 <em>“이 수치로 무엇을 주장할 수 있는가”</em>로 내렸다.
+    </p>
+    <div class="problems">
+      <div class="problem">
+        <div class="pnum">문제 1 — 데이터 쏠림</div>
+        <h3>MovieLens에는 한국 영화도, 최신 영화도 없다시피 하다</h3>
+        <p>
+          평점의 <span class="num">78.73%</span>가 유명 외국 영화 proxy에 몰려 있고 한국 제작 영화는
+          <span class="num">0.33%</span>뿐이다. TMDB 한국-origin 후보 <span class="num">11,680</span>편 중
+          MovieLens와 연결되는 영화는 <span class="num">1,056</span>편(1.21%), 그중 평점 1,000개 이상은
+          <span class="num">16</span>편이다. 데이터 수록 이후 영화에는 상호작용이 아예 없다.
+        </p>
+      </div>
+      <div class="problem">
+        <div class="pnum">문제 2 — 정답의 부재</div>
+        <h3>출시 전에는 추천–시청–평가 순환을 만들 수 없다</h3>
+        <p>
+          실제 사용자 만족을 직접 정답으로 쓸 수 없다. 그래서 MovieLens를 대리 실험 환경으로 쓰되,
+          그 대리성이 어디서 깨지는지를 매 실험마다 명시적으로 기록하는 방식을 택했다.
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="band">
+  <div class="wrap">
+    <div class="band-head">
+      <div class="eyebrow">읽는 법</div>
+      <h2>판정은 다섯 가지 상태로만 쓴다</h2>
+    </div>
+    <p>
+      “좋아졌다 / 나빠졌다”가 아니라 결과를 보기 전에 잠근 Gate 기준으로 상태를 찍는다.
+      결과를 본 뒤에 Gate나 손실 예산을 바꾸지 않는 것이 이 기록의 유일한 규칙이다.
+    </p>
+    <div class="vocab">
+      <div class="vocab-row"><span class="verdict v-pass">PASS</span><span>사전에 잠근 Gate를 그대로 통과했다. 그래도 champion 승인과는 별개다.</span></div>
+      <div class="vocab-row"><span class="verdict v-fail">FAIL</span><span>Gate를 넘지 못했다. 예산을 사후에 늘리지 않고 실패로 남긴다.</span></div>
+      <div class="vocab-row"><span class="verdict v-hold">INCONCLUSIVE</span><span>안전선은 넘지 않았지만 최소 유의미 효과(SESOI)에 못 미쳤다. 근거로 쓰지 않는다.</span></div>
+      <div class="vocab-row"><span class="verdict v-hold">POST-HOC PASS</span><span>같은 표본을 재사용해 통과했다. 새 표본 확인 전에는 증거로 승격하지 않는다.</span></div>
+      <div class="vocab-row"><span class="verdict v-skip">SKIPPED</span><span>선행 실험 결과가 사전 조건을 성립시키지 않아 실행하지 않았다. 숨긴 결과가 아니다.</span></div>
+    </div>
+  </div>
+</section>
+
+<section class="phase">
+  <div class="wrap">
+    <div class="phase-head">
+      <div class="phase-index">단계 1</div>
+      <div>
+        <h3 class="phase-title">모델을 만들기 전에 라벨부터 의심했다</h3>
+        <p class="phase-sub">
+          “4점 이상 = 좋아함”이라는 흔한 전제와 전역 시간 분할이 실제로 성립하는지부터 확인했다.
+          둘 다 성립하지 않았고, 이 두 결과가 이후 모든 실험의 평가 설계를 결정했다.
+        </p>
+      </div>
+    </div>
+    <div class="runs">
+
+      <div class="run">
+        <div class="run-gutter">
+          <span class="run-node is-pass"></span>
+          <span class="run-id">REC-EV-001</span>
+          <span class="run-date">global-time-v1</span>
+        </div>
+        <div class="run-body">
+          <h4>공통 4점 기준은 사람마다 다른 뜻이다</h4>
+          <div class="run-verdict"><span class="verdict v-pass">OBSERVED</span></div>
+          <dl class="slots">
+            <div class="slot"><dt>질문</dt><dd>모든 사용자에게 <span class="num">rating ≥ 4</span>를 “좋아함”으로 쓸 수 있는가.</dd></div>
+            <div class="slot"><dt>설계</dt><dd>Train 사용자 <span class="num">170,491</span>명을 평균 별점 4분위로 나누고 사용자별 raw 4+ 비율 분포를 봤다.</dd></div>
+            <div class="slot"><dt>결과</dt><dd>하위 4분위 중앙값 <span class="num">33.3%</span>, 상위 4분위 <span class="num">79.8%</span>. raw 4+가 한 번도 없는 사용자 <span class="num">230</span>명, 전부인 사용자 <span class="num">1,015</span>명.</dd></div>
+            <div class="slot next"><dt>다음 수</dt><dd>공통 threshold를 주 지표에서 내리고 <em>사용자별 Train ECDF 상대 효용</em>을 채택. raw 4+는 민감도 분석으로만 남긴다.</dd></div>
+          </dl>
+        </div>
+      </div>
+
+      <div class="run">
+        <div class="run-gutter">
+          <span class="run-node is-pass"></span>
+          <span class="run-id">REC-EV-001</span>
+          <span class="run-date">split 진단</span>
+        </div>
+        <div class="run-body">
+          <h4>전역 미래 평가는 cold-start fallback이 지배한다</h4>
+          <div class="run-verdict"><span class="verdict v-pass">OBSERVED</span></div>
+          <dl class="slots">
+            <div class="slot"><dt>질문</dt><dd>전역 시간 분할 하나로 개인화 모델의 능력을 판단할 수 있는가.</dd></div>
+            <div class="slot"><dt>결과</dt><dd>Train에 사용자와 영화가 모두 있는 row 비율이 Validation <span class="num">15.03%</span>, Test <span class="num">9.78%</span>. 나머지는 fallback이 답한다.</dd></div>
+            <div class="slot next"><dt>다음 수</dt><dd>전역 split은 제품 대표 평가로 유지하되, <em>warm-only 진단</em>을 별도 파이프라인으로 항상 나란히 산출한다.</dd></div>
+          </dl>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<section class="phase">
+  <div class="wrap">
+    <div class="phase-head">
+      <div class="phase-index">단계 2</div>
+      <div>
+        <h3 class="phase-title">예상 별점은 좋아졌는데 추천 순위는 그대로였다</h3>
+        <p class="phase-sub">
+          여기서 프로젝트의 방향이 한 번 꺾인다. 별점 예측과 Top-N 순위를 하나의 성과로 묶어 말할 수 없다는 것이
+          서로 다른 실험에서 반복 재현됐다.
+        </p>
+      </div>
+    </div>
+    <div class="runs">
+
+      <div class="run">
+        <div class="run-gutter">
+          <span class="run-node is-fail"></span>
+          <span class="run-id">REC-EV-002</span>
+          <span class="run-date">EXP-20260829-001</span>
+        </div>
+        <div class="run-body">
+          <h4>ALS는 warm 별점을 잘 맞혔지만 11.74%에만 답할 수 있었다</h4>
+          <div class="run-verdict"><span class="verdict v-fail">champion 채택 안 함</span></div>
+          <dl class="slots">
+            <div class="slot"><dt>설계</dt><dd>보정 ALS(rank 32, reg 0.1, seed 42) 대 regularized Bias + isotonic. 전체 <span class="num">25,600,163</span>행 학습 <span class="num">91.27</span>초.</dd></div>
+            <div class="slot"><dt>결과</dt><dd>warm MAE는 ALS <span class="num">0.6268</span> &lt; Bias <span class="num">0.6530</span>. 그러나 ALS가 직접 예측할 수 있는 행은 <span class="num">187,799 / 1,600,010 = 11.74%</span>였고, fallback을 합친 전체 MAE는 <span class="num">0.7345</span>였다.</dd></div>
+            <div class="slot next"><dt>다음 수</dt><dd>정확도와 <em>서비스 coverage를 분리해 보고</em>한다. Bias를 fallback 기준선으로 유지.</dd></div>
+          </dl>
+        </div>
+      </div>
+
+      <div class="run">
+        <div class="run-gutter">
+          <span class="run-node is-fail"></span>
+          <span class="run-id">REC-EV-002</span>
+          <span class="run-date">sampled ranking</span>
+        </div>
+        <div class="run-body">
+          <h4>같은 ALS가 순위에서는 단순 인기도에 졌다</h4>
+          <div class="run-verdict"><span class="verdict v-fail">개인 순위 모델 채택 안 함</span></div>
+          <dl class="slots">
+            <div class="slot"><dt>설계</dt><dd>positive 1편 + uniform 미평가 99편 후보, warm 사용자 <span class="num">3,553</span>명.</dd></div>
+            <div class="slot"><dt>결과</dt><dd>NDCG@10 — Popularity <span class="num">0.4727</span>, Bias <span class="num">0.4106</span>, ALS <span class="num">0.2595</span>. positive의 중앙 순위는 ALS 9위, Popularity 4위였다.</dd></div>
+            <div class="slot next"><dt>다음 수</dt><dd>결과를 숨기지 않고 Popularity를 <em>강한 기준선</em>으로 고정. 이후 모든 순위 실험은 이 기준선을 이겨야 한다.</dd></div>
+          </dl>
+        </div>
+      </div>
+
+      <div class="run">
+        <div class="run-gutter">
+          <span class="run-node is-pass"></span>
+          <span class="run-id">REC-EV-003</span>
+          <span class="run-date">EXP-20260829-002</span>
+        </div>
+        <div class="run-body">
+          <h4>cold-start 평가는 대상 사용자를 item factor에서도 빼야 한다</h4>
+          <div class="run-verdict"><span class="verdict v-pass">REPRODUCED — 방법론 교정</span></div>
+          <dl class="slots">
+            <div class="slot"><dt>질문</dt><dd>이력을 K개로 자르기만 하면 신규 사용자를 흉내 낼 수 있는가.</dd></div>
+            <div class="slot"><dt>결과</dt><dd>없다. 평가 대상 <span class="num">3,014</span>명의 Train <span class="num">1,954,040</span>행을 빼고 남은 <span class="num">23,646,123</span>행으로 item factor를 재학습해야 성능이 낙관되지 않는다. 재학습 <span class="num">146.34</span>초.</dd></div>
+            <div class="slot next"><dt>다음 수</dt><dd>이후 모든 cold / Fold-in 실험은 <em>cohort-excluded factor</em>만 유효한 근거로 인정.</dd></div>
+          </dl>
+        </div>
+      </div>
+
+      <div class="run">
+        <div class="run-gutter">
+          <span class="run-node is-hold"></span>
+          <span class="run-id">REC-EV-003B</span>
+          <span class="run-date">EXP-20260829-003</span>
+        </div>
+        <div class="run-body">
+          <h4>K10은 별점 Gate를 통과했지만 순위 가중치는 전 구간 0이었다</h4>
+          <div class="run-verdict"><span class="verdict v-hold">별점 PASS · 순위 효과 없음</span></div>
+          <dl class="slots">
+            <div class="slot"><dt>설계</dt><dd>선택 구간에서 α를 정하고 미래 구간에서만 평가. cohort 3,014명, 미래 <span class="num">167,194</span>행. 사전 잠금 Gate는 “3% 이상 실질 개선”.</dd></div>
+            <div class="slot"><dt>결과</dt><dd>K10 macro MAE <span class="num">−3.95%</span> (<span class="num">−0.0298 [−0.0348, −0.0244]</span>)로 첫 Gate 통과. K1은 <span class="num">1.66%</span>로 통계적으로는 유의미하지만 실질 Gate 미달.<br>반면 Popularity ↔ Fold-in 순위 α는 K1·K3·K5·K10·K20 <em>전부 0</em>이었고, 선택에 쓰지 않은 1,323명에서도 α=0의 NDCG <span class="num">0.4571</span>이 그대로 유지됐다.</dd></div>
+            <div class="slot next"><dt>다음 수</dt><dd>“입력을 받았다”는 사실이 순위 개인화의 근거가 아님을 확정. Fold-in 순위 가중치 0을 유지하고, 콘텐츠 Hybrid 전까지 개인 순위 개선을 주장하지 않는다.</dd></div>
+          </dl>
+        </div>
+      </div>
+
+      <div class="run">
+        <div class="run-gutter">
+          <span class="run-node is-fail"></span>
+          <span class="run-id">REC-EV-003C</span>
+          <span class="run-date">rating-scale-alignment-v1</span>
+        </div>
+        <div class="run-body">
+          <h4>0.5점 격자를 정수 척도로 옮기는 변환은 calibration이 아니다</h4>
+          <div class="run-verdict"><span class="verdict v-fail">clamp / round 기각 · affine 보류</span></div>
+          <dl class="slots">
+            <div class="slot"><dt>결과</dt><dd>실제값의 <span class="num">45.17%</span>가 half-star였고 <span class="num">1.83%</span>는 제품 최솟값 1점보다 낮았다. K10 round는 ECE를 <span class="num">0.0260 → 0.2165</span>로 악화시켰다.</dd></div>
+            <div class="slot next"><dt>다음 수</dt><dd>척도 정렬은 실제 제품 별점의 paired artifact가 생긴 뒤로 미룬다. 관련 제품 결정은 fail-closed로 둔다.</dd></div>
+          </dl>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<section class="phase">
+  <div class="wrap">
+    <div class="phase-head">
+      <div class="phase-index">단계 3</div>
+      <div>
+        <h3 class="phase-title">후보를 전체 카탈로그로 바꾸자 결론이 여러 개 뒤집혔다</h3>
+        <p class="phase-sub">
+          sampled 후보에서 얻은 좋은 숫자들이 <span class="num">50,977</span>편 전수 후보에서 그대로 남지 않았다.
+          이 단계는 대부분 “미승인”으로 끝나지만, 실패를 지운 것이 아니라 경계를 정한 결과다.
+        </p>
+      </div>
+    </div>
+    <div class="runs">
+
+      <div class="run">
+        <div class="run-gutter">
+          <span class="run-node is-fail"></span>
+          <span class="run-id">REC-EV-004</span>
+          <span class="run-date">exploration pareto</span>
+        </div>
+        <div class="run-body">
+          <h4>Validation에서 지킨 1% 탐험 손실 예산을 Test가 지키지 못했다</h4>
+          <div class="run-verdict"><span class="verdict v-fail">탐험 정책 미승인</span></div>
+          <dl class="slots">
+            <div class="slot"><dt>결과</dt><dd>Validation 손실 <span class="num">0.69%</span>로 예산 안이던 후보가 held-out Test에서 NDCG@10 <span class="num">0.3779 → 0.3719</span>, 상대 손실 <span class="num">1.59%</span>. paired CI <span class="num">[−0.0083, −0.0038]</span>.</dd></div>
+            <div class="slot next"><dt>다음 수</dt><dd>예산을 3%로 <em>사후에 늘리지 않는다.</em> 탐험 champion·가중치·2+1 구성 모두 미승인 유지.</dd></div>
+          </dl>
+        </div>
+      </div>
+
+      <div class="run">
+        <div class="run-gutter">
+          <span class="run-node is-pass"></span>
+          <span class="run-id">REC-EV-004B</span>
+          <span class="run-date">full-catalog</span>
+        </div>
+        <div class="run-body">
+          <h4>sampled NDCG 0.3779와 full-catalog NDCG 0.009382는 같은 숫자가 아니다</h4>
+          <div class="run-verdict"><span class="verdict v-pass">척도 경계 확정</span></div>
+          <dl class="slots">
+            <div class="slot"><dt>설계</dt><dd>Train-known <span class="num">50,977</span>편 전수를 positive 주입 없이 scan. Validation·Test 합계 <span class="num">510,789,540</span>회 점수 계산, peak RSS 약 <span class="num">1.77 GB</span>.</dd></div>
+            <div class="slot"><dt>결과</dt><dd>Popularity candidate recall@500 <span class="num">0.3080</span>, NDCG@10 <span class="num">0.009382</span>. Explore 5%는 <span class="num">0.005113</span>, paired CI <span class="num">[−0.006604, −0.002002]</span>.</dd></div>
+            <div class="slot next"><dt>다음 수</dt><dd><em>후보 생성 recall</em>과 <em>Top-10 순위 relevance</em>를 영구히 분리해 본다. 이후 모든 순위 결론은 full-catalog에서만 낸다.</dd></div>
+          </dl>
+        </div>
+      </div>
+
+      <div class="run">
+        <div class="run-gutter">
+          <span class="run-node is-fail"></span>
+          <span class="run-id">REC-EV-005</span>
+          <span class="run-date">EXP-20260829-005</span>
+        </div>
+        <div class="run-body">
+          <h4>파티 추천의 Balanced 집계는 Average를 이기지 못했다</h4>
+          <div class="run-verdict"><span class="verdict v-fail">party champion = null</span></div>
+          <dl class="slots">
+            <div class="slot"><dt>설계</dt><dd>2·3·4인 × 유사 / 중간 / 상이 취향 각 30개, 합성 Test party <span class="num">270</span>개.</dd></div>
+            <div class="slot"><dt>결과</dt><dd>평균 효용 <span class="num">−0.0013 [−0.0037, 0.0007]</span>, 최저 효용 <span class="num">+0.0005</span>, 격차 <span class="num">−0.0042</span> — 세 CI가 모두 0을 포함. 4인 Test 평가 가능 coverage는 <span class="num">0.69~1.02%</span>였다.</dd></div>
+            <div class="slot next"><dt>다음 수</dt><dd>공개 API·UI 미승인. 실제 파티 노출과 구성원별 사후 평가 로그가 생기기 전에는 재실험하지 않는다.</dd></div>
+          </dl>
+        </div>
+      </div>
+
+      <div class="run">
+        <div class="run-gutter">
+          <span class="run-node is-fail"></span>
+          <span class="run-id">REC-EV-006</span>
+          <span class="run-date">reason faithfulness</span>
+        </div>
+        <div class="run-body">
+          <h4>점수에 기여했다고 해서 순위를 바꾼 이유는 아니다</h4>
+          <div class="run-verdict"><span class="verdict v-fail">reason UI 미승인</span></div>
+          <dl class="slots">
+            <div class="slot"><dt>결과</dt><dd>추천 위치 <span class="num">40,000</span>개에서 novelty는 기여도가 100% 양수였지만 제거해도 위치가 바뀐 비율은 <span class="num">24.31%</span>. diversity는 양의 기여 <span class="num">78.86%</span> 중 위치 효과 <span class="num">59.98%</span>.</dd></div>
+            <div class="slot next"><dt>다음 수</dt><dd>설명 문구는 active feature · 양의 기여 · <em>rank effect</em> · provenance 버전 네 조건을 모두 요구하고 나머지는 typed BLOCKED로 남긴다.</dd></div>
+          </dl>
+        </div>
+      </div>
+
+      <div class="run">
+        <div class="run-gutter">
+          <span class="run-node is-pass"></span>
+          <span class="run-id">REC-EV-007</span>
+          <span class="run-date">EXP-20260829-004</span>
+        </div>
+        <div class="run-body">
+          <h4>실제 HTTP 경로와 Fold-in 코어 지연은 같은 경로가 아니다</h4>
+          <div class="run-verdict"><span class="verdict v-pass">local 후보값만 채택</span></div>
+          <dl class="slots">
+            <div class="slot"><dt>결과</dt><dd>실제 Uvicorn Popularity-only 최악 p95는 후보 100개 <span class="num">4.1012 ms</span>, 1000개 <span class="num">30.6875 ms</span>. 비활성 Fold-in 코어는 <span class="num">2.1281 ms</span>였지만 현재 성공 경로가 실행하지 않는 코드다.</dd></div>
+            <div class="slot next"><dt>다음 수</dt><dd>timeout 750 ms · freshness 3000 ms는 <em>local 후보</em>로만 두고 운영 SLA 확정은 배포 topology 부하 시험 뒤로 미룬다.</dd></div>
+          </dl>
+        </div>
+      </div>
+
+      <div class="run">
+        <div class="run-gutter">
+          <span class="run-node is-hold"></span>
+          <span class="run-id">REC-EV-011 / 012</span>
+          <span class="run-date">cold fold-in full-catalog</span>
+        </div>
+        <div class="run-body">
+          <h4>full-catalog에서는 K10 하나만 0을 확실히 넘었다</h4>
+          <div class="run-verdict"><span class="verdict v-hold">offline 후보로만 유지</span></div>
+          <dl class="slots">
+            <div class="slot"><dt>결과</dt><dd>α가 K1/3/5/10/20 = <span class="num">0.2 / 0.2 / 0.1 / 0.2 / 0.3</span>으로 잠겼고, paired NDCG CI가 명확히 0 위인 조건은 K10 <span class="num">[0.000253, 0.002783]</span>뿐이었다. K5는 하한 0.000016의 경계였다.</dd></div>
+            <div class="slot"><dt>기록</dt><dd>첫 42,299편 run은 후보 universe 계약 위반으로 <em>폐기</em>했다. 수정된 50,977편 protocol은 두 번의 독립 실행에서 canonical hash가 각각 일치했다.</dd></div>
+            <div class="slot next"><dt>다음 수</dt><dd>REC-EV-012는 “011이 전 K에서 α=0일 때만” 열리는 조건부 실험이었으므로 실행하지 않고 <span class="verdict v-skip">SKIPPED_BY_PREDECLARED_GATE</span>로 기록했다.</dd></div>
+          </dl>
+        </div>
+      </div>
+
+      <div class="run">
+        <div class="run-gutter">
+          <span class="run-node is-fail"></span>
+          <span class="run-id">REC-EV-013</span>
+          <span class="run-date">constrained 2+1</span>
+        </div>
+        <div class="run-body">
+          <h4>상위 2편을 고정하고 세 번째만 바꿔도 예산을 못 지켰다</h4>
+          <div class="run-verdict"><span class="verdict v-fail">two_plus_one = null</span></div>
+          <dl class="slots">
+            <div class="slot"><dt>결과</dt><dd>최소 손실 후보조차 NDCG@3 <span class="num">0.002846 → 0.002033</span>, <span class="num">−28.57%</span>로 1% · 3% · 5% 예산을 모두 실패.</dd></div>
+            <div class="slot next"><dt>다음 수</dt><dd>diversity·novelty 개선만으로 발견 정책을 열지 않는다.</dd></div>
+          </dl>
+        </div>
+      </div>
+
+      <div class="run">
+        <div class="run-gutter">
+          <span class="run-node is-pass"></span>
+          <span class="run-id">REC-EV-015</span>
+          <span class="run-date">EXP-20260830-006</span>
+        </div>
+        <div class="run-body">
+          <h4>연속 예측을 이산 평점 ECDF에 그대로 넣으면 경계 편향이 생긴다</h4>
+          <div class="run-verdict"><span class="verdict v-pass">로컬 실험 한정 채택</span></div>
+          <dl class="slots">
+            <div class="slot"><dt>결과</dt><dd>3.99 예측은 4.0과 사실상 같은데 right-inclusive ECDF에서는 4.0 동점 전체를 놓친다. 평점 격자로 양자화하고 동점 중간값을 쓰자 K10 utility MAE <span class="num">0.191921 → 0.147411 (−23.19%)</span>, 절대 bias <span class="num">−53.12%</span>, Spearman <span class="num">0.498314 → 0.581074</span>.</dd></div>
+            <div class="slot next"><dt>다음 수</dt><dd>로컬 실험 계산에만 채택하고 화면 노출은 계속 비활성(<span class="inline-code">displayEligible = false</span>).</dd></div>
+          </dl>
+        </div>
+      </div>
+
+      <div class="run">
+        <div class="run-gutter">
+          <span class="run-node is-hold"></span>
+          <span class="run-id">REC-EV-016</span>
+          <span class="run-date">user case A</span>
+        </div>
+        <div class="run-body">
+          <h4>결과를 보기 전에 해시로 고른 사용자 한 명을 끝까지 따라갔다</h4>
+          <div class="run-verdict"><span class="verdict v-hold">진단 전용 — 채택 권한 없음</span></div>
+          <dl class="slots">
+            <div class="slot"><dt>설계</dt><dd>집계 뒤에 알고리즘 행동을 숨기지 않기 위해, 선택 편향을 막는 고정 해시로 사용자 1명을 미리 지정하고 정책별 실제 Top-10 제목 diff를 기록했다.</dd></div>
+            <div class="slot"><dt>결과</dt><dd>Content · ALS · Explore의 Top-10은 Popularity와 <span class="num">0/10</span>, Hybrid는 <span class="num">1/10</span>만 겹쳤다. 전체 평균이 소폭 개선된 K10 Fold-in은 이 사람의 정답 순위를 <span class="num">3,979위 → 5,363위</span>로 <em>1,384계단 악화</em>시켰다.</dd></div>
+            <div class="slot next"><dt>다음 수</dt><dd>이후 모든 모델 후보는 집계 지표와 별개로 동일 고정 사용자의 제목 단위 diff를 자동 생성한다.</dd></div>
+          </dl>
+        </div>
+      </div>
+
+      <div class="run">
+        <div class="run-gutter">
+          <span class="run-node is-fail"></span>
+          <span class="run-id">REC-EV-017</span>
+          <span class="run-date">relational tag ablation</span>
+        </div>
+        <div class="run-body">
+          <h4>전체 NDCG는 올랐지만 그 상승분은 인기작 구간이 만들었다</h4>
+          <div class="run-verdict"><span class="verdict v-fail">일반 ranking 후보 채택 안 함</span></div>
+          <dl class="slots">
+            <div class="slot"><dt>결과</dt><dd>Tag α=0.1이 Test NDCG@10을 <span class="num">0.009382 → 0.016769</span> (<span class="num">+0.007386 [0.003948, 0.010696]</span>), recall@500을 <span class="num">0.3080 → 0.3275</span>로 올렸다.<br>그러나 인기도 P2 구간은 <span class="num">−0.011484 [−0.017592, −0.006182]</span>로 명확히 회귀했고 P1 long-tail NDCG는 두 정책 모두 0이었다. 상승은 P4 head <span class="num">+0.033664</span>가 주도했다. 태그 벡터가 있는 영화는 <span class="num">9,857 / 50,977</span>편뿐이다.</dd></div>
+            <div class="slot next"><dt>다음 수</dt><dd>자유 태그 대신 <em>TMDB 전수 feature</em>를 먼저 만들고 “장르 → 구조 → 텍스트 → 태그” ablation을 같은 split에서 다시 하기로 했다. 이 결정이 단계 4를 열었다.</dd></div>
+          </dl>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<section class="phase">
+  <div class="wrap">
+    <div class="phase-head">
+      <div class="phase-index">단계 4</div>
+      <div>
+        <h3 class="phase-title">평가 자체를 다시 설계하고, 실행 전에 세 번 막혔다</h3>
+        <p class="phase-sub">
+          “숨긴 영화가 추천 500개 안에 있는가”를 버리고, 서비스가 실제로 보여주는 <em>상위 2편</em>의 안전성을 1순위에 놓는
+          Top-2 Gate로 갈아탔다. 그리고 실제 실행 전에 누출 · 의미 충돌 · 계산량 문제가 차례로 걸렸다.
+        </p>
+      </div>
+    </div>
+    <div class="runs">
+
+      <div class="run">
+        <div class="run-gutter">
+          <span class="run-node is-pass"></span>
+          <span class="run-id">Top-2 v4</span>
+          <span class="run-date">평가 설계</span>
+        </div>
+        <div class="run-body">
+          <h4>안전 → 놓침 → 품질 순서의 사전 잠금 Gate</h4>
+          <div class="run-verdict"><span class="verdict v-pass">protocol 확정</span></div>
+          <dl class="slots">
+            <div class="slot"><dt>설계</dt><dd>사용자의 전체 평점 중 고정 해시로 20편을 평가판으로 떼고, 남은 것에서 K편만 모델에 준다. 두 정책이 같은 20편을 각각 정렬해 <em>상위 2편만</em> 채점한다. 정답이 좋은 영화만 골라 평가판을 만들지 않는다.</dd></div>
+            <div class="slot"><dt>지표</dt><dd><span class="num">Harm@2</span>(상위 2편에 BAD 포함) → <span class="num">Miss@2</span> → <span class="num">BothGood@2</span> → <span class="num">SafeHit@2</span> → <span class="num">NDCG@2</span>의 lexicographic 순서. 개인화 후보는 Harm이 기준선보다 <span class="num">0.5%p</span> 이상 나빠지지 않으면서 Miss를 최소 <span class="num">1%p</span> 개선해야 한다.</dd></div>
+            <div class="slot"><dt>표본</dt><dd>K0 <span class="num">20,271</span> · K5 <span class="num">18,242</span> · K10 <span class="num">16,795</span> · K20 <span class="num">14,644</span> · K30 <span class="num">12,902</span> · K50 <span class="num">10,367</span>명. 채점 가능 비율 <span class="num">97.99 ~ 98.92%</span>.</dd></div>
+          </dl>
+        </div>
+      </div>
+
+      <div class="run">
+        <div class="run-gutter">
+          <span class="run-node is-pass"></span>
+          <span class="run-id">REC-EV-019B</span>
+          <span class="run-date">TMDB feature build</span>
+        </div>
+        <div class="run-body">
+          <h4>69,603편 콘텐츠 특성 — 두 번의 실패를 계약에 환원했다</h4>
+          <div class="run-verdict"><span class="verdict v-pass">전 항목 Gate 통과</span></div>
+          <dl class="slots">
+            <div class="slot"><dt>사전검사</dt><dd>100편 시험의 <em>첫 실행은 100편 전부 401</em>이었고, 당시 검증기는 0% 결과도 통과시켰다. 인증 형식(JWT / v3 key)을 분리하고 검증기에 coverage 하한을 추가한 뒤 재실행했다.</dd></div>
+            <div class="slot"><dt>결과</dt><dd>TMDB 링크 <span class="num">69,508 / 69,603 (99.8635%)</span>, identity <span class="num">68,674 (98.8001%)</span>, 구조 특징 <span class="num">99.3112%</span>, 텍스트 특징 <span class="num">99.7961%</span>, 384차원 E5는 고정 revision·SHA-256 일치.<br>미확인은 TV 411편 · 미발견 357편 · 모호 161편으로 분리 격리. 최대 결측은 키워드 <span class="num">16,772편(24.42%)</span>이다.</dd></div>
+            <div class="slot"><dt>운영</dt><dd>수집 약 <span class="num">2시간 6분</span>, 응답 <span class="num">112,580</span>건 캐시. 임베딩이 <span class="num">93.2%</span>에서 중단돼 batch checkpoint를 추가했고, 최종 재실행은 network request <span class="num">0</span>회 · cache hit <span class="num">112,614</span>건으로 끝났다.</dd></div>
+            <div class="slot next"><dt>경계</dt><dd>69,603편은 “표현할 수 있는 영화 집합”이지 <em>시간 안전 추천 후보가 아니다.</em> 미래 시점에만 나타난 영화도 포함되므로 계약·검증기·장표에서 명시적으로 분리했다.</dd></div>
+          </dl>
+        </div>
+      </div>
+
+      <div class="run">
+        <div class="run-gutter">
+          <span class="run-node is-pass"></span>
+          <span class="run-id">REC-EV-019A</span>
+          <span class="run-date">binary cohort build</span>
+        </div>
+        <div class="run-body">
+          <h4>시간 안전 후보 41,625편과 역할별 사용자 분리</h4>
+          <div class="run-verdict"><span class="verdict v-pass">Gate 통과 · 예측은 열지 않음</span></div>
+          <dl class="slots">
+            <div class="slot"><dt>결과</dt><dd>cutoff 이전 Base Train은 <span class="num">68,161</span>명 · <span class="num">10,254,572</span>개 평점 · <span class="num">42,203</span>편. TMDB 링크 1차 후보 <span class="num">42,123</span>편 → 신원 확인을 통과한 최종 후보 <span class="num">41,625</span>편.<br>K10 적격 — Router Train <span class="num">1,530</span> · Validation <span class="num">1,479</span> · Locked Test <span class="num">5,476</span>명.</dd></div>
+            <div class="slot"><dt>교정</dt><dd>사용자 역할과 checksum은 맞았지만 <em>Validation과 Locked Test 행이 같은 물리 파일에 있었다.</em> 논리적 role 분리만으로는 누출을 막지 못한다고 보고, 역할별 파일 allowlist로 바꿔 혼합 파일은 open 단계에서 거부하게 했다.</dd></div>
+          </dl>
+        </div>
+      </div>
+
+      <div class="run">
+        <div class="run-gutter">
+          <span class="run-node is-fail"></span>
+          <span class="run-id">019C preflight</span>
+          <span class="run-date">LightFM 의미 충돌</span>
+        </div>
+        <div class="run-body">
+          <h4>이름이 같은 BPR이 다른 학습 문제였다</h4>
+          <div class="run-verdict"><span class="verdict v-fail">최초 B8 설계 폐기</span></div>
+          <dl class="slots">
+            <div class="slot"><dt>발견</dt><dd>LightFM의 BPR / WARP는 <em>미관측 항목을 negative로 샘플링</em>한다. 이 프로젝트의 “미평가는 UNKNOWN” 원칙, 그리고 “관측된 LIKE &gt; 관측된 DISLIKE” pair 정의와 충돌한다.</dd></div>
+            <div class="slot"><dt>교정</dt><dd>결과를 보기 전에 B8을 관측 LIKE / DISLIKE <span class="num">+1 / −1</span> logistic으로 교체하고 BPR·WARP를 금지했다. 신규 사용자는 item 표현을 고정한 채 사용자 벡터만 fold-in한다. 고정 Linux Docker에서 hash-locked <span class="num">lightfm-next 1.19.0</span>과 의존성 9개 검사를 통과했다.</dd></div>
+          </dl>
+        </div>
+      </div>
+
+      <div class="run">
+        <div class="run-gutter">
+          <span class="run-node is-fail"></span>
+          <span class="run-id">019C preflight</span>
+          <span class="run-date">resource dry-run</span>
+        </div>
+        <div class="run-body">
+          <h4>실행하기 전에 계산량부터 계산했다 — 75.5억 회</h4>
+          <div class="run-verdict"><span class="verdict v-fail">최초 실행 계약 폐기</span></div>
+          <dl class="slots">
+            <div class="slot"><dt>방법</dt><dd>실제 데이터 값은 한 줄도 읽지 않고, Parquet 7개의 footer metadata와 trial 계약만 결합해 상한을 계산했다.</dd></div>
+            <div class="slot"><dt>결과</dt><dd>그대로 실행하면 사용자 × 영화 점수 약 <span class="num">75.5억</span>회, LightFM 학습 update 최악 약 <span class="num">61.5억</span>회. 원인은 모든 설정을 seed 5개로 반복하고 매번 41,625편을 전수 scan하는 구조였다.</dd></div>
+            <div class="slot"><dt>교정</dt><dd>grid는 K별 <span class="num">256</span>명 tuning panel · seed 17에서만 비교하고, 선택된 설정만 5-seed 안정성을 확인하게 바꿨다. BPR은 사용자당 epoch 최대 16쌍으로 고정. 재점검 결과 약 <span class="num">15.8억</span> score · LightFM <span class="num">12.3억</span> update로 7개 예산을 전부 통과했다.</dd></div>
+            <div class="slot next"><dt>다음 수</dt><dd>이 상한을 강제하는 bounded runner를 구현·검토한 뒤에야 실제 Validation을 실행했다.</dd></div>
+          </dl>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<section class="phase">
+  <div class="wrap">
+    <div class="phase-head">
+      <div class="phase-index">단계 5</div>
+      <div>
+        <h3 class="phase-title">모델 비교는 통과했고, 그걸 제품에 넣으려던 세 번의 시도는 통과하지 못했다</h3>
+        <p class="phase-sub">
+          019C에서 LightFM이 인기도를 확실히 이겼다. 그런데 그 우위를 실제 입력 정책으로 옮기려 한
+          019D → 019E → 019F가 각각 안전 실패 · post-hoc · 효과 미달로 끝났다.
+        </p>
+      </div>
+    </div>
+    <div class="runs">
+
+      <div class="run">
+        <div class="run-gutter">
+          <span class="run-node is-pass"></span>
+          <span class="run-id">REC-EV-019C</span>
+          <span class="run-date">실제 Validation</span>
+        </div>
+        <div class="run-body">
+          <h4>7개 모델을 같은 조건에 놓았다</h4>
+          <div class="run-verdict"><span class="verdict v-pass">PASS_VALIDATION_SELECTION_LOCKED</span></div>
+          <dl class="slots">
+            <div class="slot"><dt>설계</dt><dd>후보 <span class="num">41,625</span>편, K5 <span class="num">1,614</span>명 · K10 <span class="num">1,479</span>명. 인기도(B0) · ItemKNN(B2) · 관측 BPR(B4) · TMDB 구조(B6) · TMDB 텍스트(B7) · LightFM(B8) · RRF(B9).</dd></div>
+            <div class="slot"><dt>결과</dt><dd>K5·K10 모두 LightFM T003이 단일 최고 NDCG@10. 모델 선택에 쓴 256명 panel을 <em>제외한</em> paired 비교에서 LightFM − B0은 K5 <span class="num">+0.03331 [0.02582, 0.04114]</span>(1,358명), K10 <span class="num">+0.04532 [0.03681, 0.05462]</span>(1,223명)였다. 사용자 단위 percentile bootstrap 2,000회.</dd></div>
+            <div class="slot"><dt>실행</dt><dd><span class="num">6,088.5</span>초, peak RSS 약 <span class="num">652 MiB</span>. 예측 <span class="num">11,662,500</span>행과 metric <span class="num">23,325</span>행을 독립 검증했다.</dd></div>
+          </dl>
+
+          <figure>
+            <div class="fig-shell">
+              <svg viewBox="0 0 720 300" role="img" aria-label="019C 모델별 NDCG@10 막대그래프. LightFM이 K5 0.0713, K10 0.0725로 최고이고 인기도 기준선은 각각 0.0402와 0.0291이다.">
+                <g font-family="IBM Plex Mono, monospace" font-size="11" fill="var(--ink-3)">
+                  <text x="56" y="234" text-anchor="end">0</text>
+                  <text x="56" y="182" text-anchor="end">0.02</text>
+                  <text x="56" y="129" text-anchor="end">0.04</text>
+                  <text x="56" y="77" text-anchor="end">0.06</text>
+                  <text x="56" y="44" text-anchor="end">0.08</text>
+                </g>
+                <g stroke="var(--rule)" stroke-width="1">
+                  <line x1="62" y1="177.5" x2="700" y2="177.5"></line>
+                  <line x1="62" y1="125" x2="700" y2="125"></line>
+                  <line x1="62" y1="72.5" x2="700" y2="72.5"></line>
+                  <line x1="62" y1="40" x2="700" y2="40"></line>
+                </g>
+                <line x1="62" y1="230" x2="700" y2="230" stroke="var(--rule-strong)" stroke-width="1"></line>
+                <g>
+                  <rect x="73" y="124.5" width="26" height="105.5" fill="var(--ink-3)"></rect>
+                  <rect x="105" y="153.6" width="26" height="76.4" fill="var(--accent)"></rect>
+                  <rect x="165" y="215.6" width="26" height="14.4" fill="var(--ink-3)"></rect>
+                  <rect x="197" y="224.2" width="26" height="5.8" fill="var(--accent)"></rect>
+                  <rect x="257" y="75.9" width="26" height="154.1" fill="var(--ink-3)"></rect>
+                  <rect x="289" y="77" width="26" height="153" fill="var(--accent)"></rect>
+                  <rect x="349" y="149.4" width="26" height="80.6" fill="var(--ink-3)"></rect>
+                  <rect x="381" y="172.8" width="26" height="57.2" fill="var(--accent)"></rect>
+                  <rect x="441" y="164.4" width="26" height="65.6" fill="var(--ink-3)"></rect>
+                  <rect x="473" y="195.6" width="26" height="34.4" fill="var(--accent)"></rect>
+                  <rect x="533" y="42.8" width="26" height="187.2" fill="var(--ink-3)"></rect>
+                  <rect x="565" y="39.7" width="26" height="190.3" fill="var(--accent)"></rect>
+                  <rect x="625" y="68.6" width="26" height="161.4" fill="var(--ink-3)"></rect>
+                  <rect x="657" y="66.7" width="26" height="163.3" fill="var(--accent)"></rect>
+                </g>
+                <g font-family="IBM Plex Sans KR, sans-serif" font-size="11.5" fill="var(--ink-2)" text-anchor="middle">
+                  <text x="102" y="252">인기도</text>
+                  <text x="194" y="252">ItemKNN</text>
+                  <text x="286" y="252">관측 BPR</text>
+                  <text x="378" y="252">TMDB 구조</text>
+                  <text x="470" y="252">TMDB 텍스트</text>
+                  <text x="562" y="252" font-weight="600" fill="var(--ink)">LightFM</text>
+                  <text x="654" y="252">RRF</text>
+                </g>
+                <g font-family="IBM Plex Mono, monospace" font-size="10" fill="var(--ink-3)" text-anchor="middle">
+                  <text x="102" y="268">B0</text>
+                  <text x="194" y="268">B2</text>
+                  <text x="286" y="268">B4</text>
+                  <text x="378" y="268">B6</text>
+                  <text x="470" y="268">B7</text>
+                  <text x="562" y="268">B8</text>
+                  <text x="654" y="268">B9</text>
+                </g>
+                <g>
+                  <rect x="62" y="12" width="11" height="11" fill="var(--ink-3)"></rect>
+                  <text x="79" y="22" font-family="IBM Plex Mono, monospace" font-size="11" fill="var(--ink-2)">K=5</text>
+                  <rect x="122" y="12" width="11" height="11" fill="var(--accent)"></rect>
+                  <text x="139" y="22" font-family="IBM Plex Mono, monospace" font-size="11" fill="var(--ink-2)">K=10</text>
+                  <text x="700" y="22" font-family="IBM Plex Mono, monospace" font-size="11" fill="var(--ink-3)" text-anchor="end">NDCG@10 · 전체 Validation</text>
+                </g>
+              </svg>
+            </div>
+            <figcaption>
+              <b>콘텐츠 단독 모델(B6 · B7)은 인기도를 이기지 못했다.</b> 영화를 표현할 수 있다는 사실만으로 관측 선호 복원력이 생기지는 않았다.
+              막대는 tuning panel을 포함한 전체 Validation 값이며, 공식 비교는 panel을 제외한 paired CI를 쓴다.
+            </figcaption>
+          </figure>
+        </div>
+      </div>
+
+      <div class="run">
+        <div class="run-gutter">
+          <span class="run-node is-hold"></span>
+          <span class="run-id">REC-EV-019C</span>
+          <span class="run-date">구간 분석</span>
+        </div>
+        <div class="run-body">
+          <h4>이긴 구간은 인기 상위 25%뿐이었다</h4>
+          <div class="run-verdict"><span class="verdict v-hold">PASS_VALIDATION_ANALYSIS_ONLY</span></div>
+          <dl class="slots">
+            <div class="slot"><dt>결과</dt><dd>인기도 Q1~Q3에서 두 모델 모두 Top-10 적중 <span class="num">0.00%</span>. Q4에서만 K10 기준 <span class="num">3.75% → 9.46%</span>. 애초에 관측 positive의 <span class="num">96.4%</span>가 Q4에 몰려 있었다.<br>한국어 원어 positive는 K5 <span class="num">21</span>건 · K10 <span class="num">23</span>건, Top-10 적중 0. Top-500에서는 오히려 B0 <span class="num">10</span> 대 LightFM <span class="num">6</span>으로 불리한 방향이었다.<br>최종 후보 중 <span class="num">release_year ≥ 2020</span>은 9편이고 해당 positive는 0건, true cold item은 0편이었다.</dd></div>
+            <div class="slot"><dt>경계</dt><dd>Q1~Q3의 0%는 실패 확정이 아니라 <em>검정력 부족을 포함한 미확정</em>이다. 한국어 열등도 표본이 작아 확정하지 않는다. 최신·cold 영화 성능은 성공도 실패도 측정하지 못했다.</dd></div>
+            <div class="slot"><dt>주의</dt><dd>K5와 K10은 적격 사용자와 미래 구간이 달라 <em>직접 비교할 수 없다.</em> 공통 1,253명에서 LightFM 절대 NDCG는 <span class="num">0.075359</span> 대 <span class="num">0.075348</span>로 사실상 동일했고, K10의 더 큰 차이는 B0가 <span class="num">0.038780 → 0.030512</span>로 떨어진 영향이었다.</dd></div>
+            <div class="slot next"><dt>다음 수</dt><dd>같은 사용자·같은 미래 구간을 고정한 prefix ablation(019D)으로 넘어간다.</dd></div>
+          </dl>
+        </div>
+      </div>
+
+      <div class="run">
+        <div class="run-gutter">
+          <span class="run-node is-fail"></span>
+          <span class="run-id">REC-EV-019D</span>
+          <span class="run-date">prefix ablation</span>
+        </div>
+        <div class="run-body">
+          <h4>NDCG는 올랐지만 안전 여유를 2.5배 초과했다</h4>
+          <div class="run-verdict"><span class="verdict v-fail">FAIL_SAFETY_MARGIN_EXCEEDED</span></div>
+          <dl class="slots">
+            <div class="slot"><dt>설계</dt><dd>동일 K10 Validation 1,479명, 동일 미래 10행에서 first5 대 first10 profile 비교. tuning panel 합집합 426명을 제외한 confirmatory <span class="num">1,053</span>명.</dd></div>
+            <div class="slot"><dt>결과</dt><dd>ΔNDCG <span class="num">+0.02656 [0.01784, 0.03520]</span> — 효능 기준은 통과. 그러나 Harm one-sided upper가 <span class="num">0.01235</span>로 사전 한계 <span class="num">0.005</span>를 초과했다.</dd></div>
+            <div class="slot next"><dt>다음 수</dt><dd>전체 K10 전환을 금지하고, Harm 분해를 본 뒤 <em>적용 가능한 사용자만</em> 전환하는 완화안을 설계했다.</dd></div>
+          </dl>
+        </div>
+      </div>
+
+      <div class="run">
+        <div class="run-gutter">
+          <span class="run-node is-hold"></span>
+          <span class="run-id">REC-EV-019E</span>
+          <span class="run-date">no-retune routing</span>
+        </div>
+        <div class="run-body">
+          <h4>Gate는 통과했지만 같은 1,053명을 다시 쓴 결과였다</h4>
+          <div class="run-verdict"><span class="verdict v-hold">POST-HOC PASS — 새 표본 확인 필요</span></div>
+          <dl class="slots">
+            <div class="slot"><dt>설계</dt><dd>재학습 없는 라우팅. 이미 K5에 적용 가능한 <span class="num">661</span>명은 K5 유지, K10에서 새로 적용 가능한 <span class="num">277</span>명만 전환, 나머지 <span class="num">115</span>명은 인기도 유지.</dd></div>
+            <div class="slot"><dt>결과</dt><dd>ΔNDCG <span class="num">+0.013997 [0.008433, 0.019758]</span>, Harm upper <span class="num">0.003799</span>로 Gate 통과. 다만 candidate recall@500은 <span class="num">−0.020893</span> 감소했고 benefit / neutral / harm은 <span class="num">70 / 957 / 26</span>이었다.</dd></div>
+            <div class="slot next"><dt>다음 수</dt><dd>같은 집단을 재사용한 결과이므로 새 confirmatory 증거가 아니다. <em>독립 표본에서 사전등록 재확인</em>을 하기 전에는 champion과 제품 정책을 바꾸지 않는다.</dd></div>
+          </dl>
+        </div>
+      </div>
+
+      <div class="run">
+        <div class="run-gutter">
+          <span class="run-node is-hold"></span>
+          <span class="run-id">REC-EV-019F</span>
+          <span class="run-date">independent temporal routing</span>
+        </div>
+        <div class="run-body">
+          <h4>독립 구간에서 효과가 SESOI 아래로 내려앉았다</h4>
+          <div class="run-verdict"><span class="verdict v-hold">INCONCLUSIVE</span></div>
+          <dl class="slots">
+            <div class="slot"><dt>설계</dt><dd>기존 episode를 지난 새 source row와 새 future window. structural 1,021명 중 strict <span class="num">802</span>명. 사용자 자체는 독립이 아니라는 한계를 판정문에 명시했다.</dd></div>
+            <div class="slot"><dt>결과</dt><dd>ΔNDCG <span class="num">+0.003617 [0.000291, 0.007239]</span> — 안전선(Harm upper <span class="num">0.003741</span>)은 넘지 않았지만 사전 SESOI <span class="num">0.005</span>에 미달. candidate recall@500 <span class="num">−0.012469</span>와 positive rank percentile <span class="num">+0.020316</span>도 악화했다.</dd></div>
+            <div class="slot"><dt>재감사</dt><dd>2026-09-05 독립 재감사에서 802명 전체의 K5 / K10 <span class="num">1,604</span>개 ranking을 다시 점수화해 cohort · overlap · strata · bootstrap을 재현했다. 잘못된 float 정밀도로 실행된 run은 별도 폴더로 격리했고, 결과를 바꾸는 결함은 없었다.</dd></div>
+            <div class="slot next"><dt>다음 수</dt><dd>019E 라우팅을 채택하지 않는다. 남은 선택지는 <em>목표 도메인 증거</em>를 직접 확보하거나, 별도 가설을 새로 사전등록하는 것이다.</dd></div>
+          </dl>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<section class="phase">
+  <div class="wrap">
+    <div class="phase-head">
+      <div class="phase-index">단계 6</div>
+      <div>
+        <h3 class="phase-title">입력을 바꿔도, 콘텐츠를 옮겨 심어도 한국 · 최신 구간은 열리지 않았다</h3>
+        <p class="phase-sub">
+          여기서는 목표 구간(한국 제작 영화, 2020~2023년 영화)에 직접 겨눈 네 갈래를 순서대로 시도했다.
+          모두 “목표 구간 신호 없음”으로 끝났고, 그 실패가 다음 단계의 질문 자체를 바꿨다.
+        </p>
+      </div>
+    </div>
+    <div class="runs">
+
+      <div class="run">
+        <div class="run-gutter">
+          <span class="run-node is-pass"></span>
+          <span class="run-id">REC-EV-022A / B</span>
+          <span class="run-date">입력 수와 인코딩</span>
+        </div>
+        <div class="run-body">
+          <h4>사용자별 별점 습관을 percentile로 보정하고 K를 0~30까지 훑었다</h4>
+          <div class="run-verdict"><span class="verdict v-pass">후보 6개 조합 확정 · 제품 K 미선택</span></div>
+          <dl class="slots">
+            <div class="slot"><dt>설계</dt><dd>고정 4점 기준 대신 프로필 내 midrank percentile을 shrinkage해 <span class="num">BINARY_SIGN</span> · <span class="num">PERCENTILE_MAGNITUDE</span> · <span class="num">ORDINAL_RANK</span>를 비교했다.</dd></div>
+            <div class="slot"><dt>결과</dt><dd>별도 확인 집합에서 <span class="num">K = {6, 8, 14} × {BINARY, PERCENTILE}</span> 여섯 조합이 살아남았다.</dd></div>
+            <div class="slot"><dt>경계</dt><dd>K=30까지 plateau를 확인하지 못했으므로 “K=14가 최적”이라고 말할 수 없다. 이건 성능 순위가 아니라 후속 비교에 남긴 정보량 구간이다.</dd></div>
+          </dl>
+        </div>
+      </div>
+
+      <div class="run">
+        <div class="run-gutter">
+          <span class="run-node is-fail"></span>
+          <span class="run-id">REC-EV-023A~F</span>
+          <span class="run-date">콘텐츠 조합과 목표 전이</span>
+        </div>
+        <div class="run-body">
+          <h4>구조 신호는 남았지만 목표 구간으로 옮겨가지 않았다</h4>
+          <div class="run-verdict"><span class="verdict v-fail">NO_ROBUST_TARGET_SIGNAL</span></div>
+          <dl class="slots">
+            <div class="slot"><dt>결과</dt><dd>masked pseudo-cold에서 TMDB 구조 신호는 유지됐으나 E5 · RRF · feature-only LightFM의 증분 근거는 없었다. 한국 제작 <span class="num">319</span>명, 2020~2023 <span class="num">686</span>명 각각에서 robust한 목표 신호가 나오지 않았다.</dd></div>
+            <div class="slot next"><dt>다음 수</dt><dd>“콘텐츠 표현을 조합하면 해결된다”는 가설을 접고, 입력 쪽을 건드려 본다.</dd></div>
+          </dl>
+        </div>
+      </div>
+
+      <div class="run">
+        <div class="run-gutter">
+          <span class="run-node is-fail"></span>
+          <span class="run-id">REC-EV-024A / B</span>
+          <span class="run-date">target anchor 주입</span>
+        </div>
+        <div class="run-body">
+          <h4>한국 · 최신 영화를 입력에 강제로 두 편 넣어도 부족했다</h4>
+          <div class="run-verdict"><span class="verdict v-fail">NO_SUFFICIENT_INPUT_REMEDY</span></div>
+          <dl class="slots">
+            <div class="slot"><dt>결과</dt><dd>입력 구성만 바꿔서는 모델의 목표 구간 한계를 해결하지 못했다.</dd></div>
+            <div class="slot next"><dt>다음 수</dt><dd>입력이 아니라 <em>콘텐츠 표현과 협업 표현 사이의 간극</em>을 직접 다루기로 한다.</dd></div>
+          </dl>
+        </div>
+      </div>
+
+      <div class="run">
+        <div class="run-gutter">
+          <span class="run-node is-fail"></span>
+          <span class="run-id">REC-EV-025 / 026</span>
+          <span class="run-date">feature transfer · ridge 정렬</span>
+        </div>
+        <div class="run-body">
+          <h4>E5 벡터를 협업 공간으로 옮겨 심는 마지막 시도</h4>
+          <div class="run-verdict"><span class="verdict v-fail">CONFIRMATORY_STOPPED_UNTIL_NEW_TARGET_EVIDENCE</span></div>
+          <dl class="slots">
+            <div class="slot"><dt>설계</dt><dd>384차원 E5를 다섯 BPR seed의 128차원 item-factor 공간에 각각 ridge 정렬했다. mapper는 비한국 또는 2020년 이전 source item으로만 학습하고 target·control은 mapper 선택에서 제외. 사용자별 profile 14편 · target 4편 · control 4편의 4개 panel.</dd></div>
+            <div class="slot"><dt>결과</dt><dd>한국 전이 <span class="num">181</span>명(target 136편) · 최근 전이 <span class="num">445</span>명(target 774편), 공동 max-T family <span class="num">312</span> contrasts, bootstrap <span class="num">4,000</span>회. mapper validation cosine은 <span class="num">0.04053 / 0.03970</span>으로 다섯 seed 모두 0을 넘었다.<br>한국 target 평균은 양수였지만 동시추론 정밀도가 부족했고, 최근 target은 사전 margin에 미달했다.</dd></div>
+            <div class="slot next"><dt>다음 수</dt><dd>목표 구간 확증을 <em>중단</em>한다. 대신 “애초에 콘텐츠 표현에 사용자별 신호가 있기는 한가”라는, 한 단계 더 앞선 질문으로 되돌아갔다.</dd></div>
+          </dl>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<section class="phase">
+  <div class="wrap">
+    <div class="phase-head">
+      <div class="phase-index">단계 7</div>
+      <div>
+        <h3 class="phase-title">질문을 되돌리자 처음으로 깨끗한 PASS가 나왔다</h3>
+        <p class="phase-sub">
+          “한국 영화를 잘 추천하는가”를 잠시 내려놓고, <em>콘텐츠 profile에 사용자별 신호가 존재하는가</em>만 분리해 물었다.
+          핵심은 대조군이다 — 내 profile(OWN)과 남의 profile(SHUFFLE)을 같은 후보에서 비교하면,
+          영화 자체가 쉬워서 생긴 점수를 개인화로 착각할 수 없다.
+        </p>
+      </div>
+    </div>
+    <div class="runs">
+
+      <div class="run">
+        <div class="run-gutter">
+          <span class="run-node is-fail"></span>
+          <span class="run-id">REC-EV-028</span>
+          <span class="run-date">personalization attribution</span>
+        </div>
+        <div class="run-body">
+          <h4>LightFM의 높은 점수는 개인화가 아니었다</h4>
+          <div class="run-verdict"><span class="verdict v-fail">ITEM BIAS FOUND</span></div>
+          <dl class="slots">
+            <div class="slot"><dt>결과</dt><dd>사용자 profile을 <em>다른 사용자 것으로 바꿔도</em> 이점이 남았다. 따라서 그 차이를 개인화 성능으로 귀속하지 않고 global item bias 가능성으로 분리했다.</dd></div>
+            <div class="slot next"><dt>다음 수</dt><dd>OWN / SHUFFLE / RANDOM 세 시스템을 같은 사용자·같은 가린 후보에서 비교하는 귀속 설계를 확정했다.</dd></div>
+          </dl>
+        </div>
+      </div>
+
+      <div class="run">
+        <div class="run-gutter">
+          <span class="run-node is-fail"></span>
+          <span class="run-id">REC-EV-029</span>
+          <span class="run-date">direct profile selection</span>
+        </div>
+        <div class="run-body">
+          <h4>사용자 지표는 재현됐지만 영화 동일가중 구간에서 걸렸다</h4>
+          <div class="run-verdict"><span class="verdict v-fail">NOT_REPLICATED</span></div>
+          <dl class="slots">
+            <div class="slot"><dt>결과</dt><dd>selection winner는 <span class="num">STRUCTURED_DIRECT + PERCENTILE_MAGNITUDE + K=30 + Top2</span>. 사용자 지표는 재현됐지만 48-family 영화 동시 신뢰구간이 불충분해 <em>실패로 남겼다.</em></dd></div>
+            <div class="slot next"><dt>다음 수</dt><dd>실패를 덮지 않고, 이전에 한 번도 열지 않은 future 사용자 구간과 더 좁게 사전등록한 10개 primary 지표로 다시 실행했다.</dd></div>
+          </dl>
+        </div>
+      </div>
+
+      <div class="run">
+        <div class="run-gutter">
+          <span class="run-node is-pass"></span>
+          <span class="run-id">REC-EV-030</span>
+          <span class="run-date">untouched confirmation</span>
+        </div>
+        <div class="run-body">
+          <h4>한 번도 열지 않은 3,345명에서 사전등록 Gate 10개 전부 통과</h4>
+          <div class="run-verdict"><span class="verdict v-pass">REC_EV_030_FINAL_RESULT_AUDIT_PASS</span></div>
+          <dl class="slots">
+            <div class="slot"><dt>설계</dt><dd>profile 평점을 읽고 일곱 outer의 OWN / SHUFFLE 순위를 <em>모두 봉인한 뒤에만</em> 가린 후보의 평점을 열었다. primary 사용자 <span class="num">3,345</span>명 · 고유 영화 <span class="num">24,167</span>편 · 후보 발생 <span class="num">265,620</span>건 · 사용자-영화 중복 <span class="num">0</span>건.</dd></div>
+            <div class="slot"><dt>결과</dt><dd>OWN은 무작위보다 하위 20% 영화를 상위 2편에 넣을 확률을 <span class="num">12.92%p</span> 낮췄고, <em>다른 사용자의 profile보다도</em> <span class="num">8.63%p</span> 낮췄다. 5,000회 shared-multiplier bootstrap으로 보정한 사용자 6개 · 영화 4개 동시 구간이 모두 통과했다.</dd></div>
+          </dl>
+
+          <figure>
+            <div class="fig-shell">
+              <svg viewBox="0 0 720 296" role="img" aria-label="REC-EV-030에서 OWN, SHUFFLE, RANDOM 세 시스템의 HARM20, TOP2_MIN_Q, TOP2_MEAN_Q 비교 막대그래프.">
+                <g font-family="IBM Plex Mono, monospace" font-size="11" fill="var(--ink-3)">
+                  <text x="56" y="240" text-anchor="end">0</text>
+                  <text x="56" y="191" text-anchor="end">0.15</text>
+                  <text x="56" y="142" text-anchor="end">0.30</text>
+                  <text x="56" y="93" text-anchor="end">0.45</text>
+                  <text x="56" y="48" text-anchor="end">0.60</text>
+                </g>
+                <g stroke="var(--rule)" stroke-width="1">
+                  <line x1="62" y1="187" x2="700" y2="187"></line>
+                  <line x1="62" y1="138" x2="700" y2="138"></line>
+                  <line x1="62" y1="89" x2="700" y2="89"></line>
+                  <line x1="62" y1="44" x2="700" y2="44"></line>
+                </g>
+                <line x1="62" y1="236" x2="700" y2="236" stroke="var(--rule-strong)" stroke-width="1"></line>
+                <g>
+                  <rect x="95" y="153.5" width="40" height="82.5" fill="var(--accent)"></rect>
+                  <rect x="143" y="125.3" width="40" height="110.7" fill="var(--ink-3)"></rect>
+                  <rect x="191" y="111.3" width="40" height="124.7" fill="var(--rule-strong)"></rect>
+                  <rect x="310" y="104.8" width="40" height="131.2" fill="var(--accent)"></rect>
+                  <rect x="358" y="125.4" width="40" height="110.6" fill="var(--ink-3)"></rect>
+                  <rect x="406" y="133.2" width="40" height="102.8" fill="var(--rule-strong)"></rect>
+                  <rect x="525" y="59" width="40" height="177" fill="var(--accent)"></rect>
+                  <rect x="573" y="77.7" width="40" height="158.3" fill="var(--ink-3)"></rect>
+                  <rect x="621" y="84.4" width="40" height="151.6" fill="var(--rule-strong)"></rect>
+                </g>
+                <g font-family="IBM Plex Mono, monospace" font-size="10.5" fill="var(--ink-2)" text-anchor="middle" font-weight="500">
+                  <text x="115" y="147">.2525</text>
+                  <text x="163" y="119">.3388</text>
+                  <text x="211" y="105">.3816</text>
+                  <text x="330" y="98">.4017</text>
+                  <text x="378" y="119">.3386</text>
+                  <text x="426" y="127">.3148</text>
+                  <text x="545" y="53">.5418</text>
+                  <text x="593" y="71">.4847</text>
+                  <text x="641" y="78">.4641</text>
+                </g>
+                <g font-family="IBM Plex Sans KR, sans-serif" font-size="12" fill="var(--ink)" text-anchor="middle" font-weight="600">
+                  <text x="163" y="258">HARM20</text>
+                  <text x="378" y="258">TOP2_MIN_Q</text>
+                  <text x="593" y="258">TOP2_MEAN_Q</text>
+                </g>
+                <g font-family="IBM Plex Sans KR, sans-serif" font-size="10.5" fill="var(--ink-3)" text-anchor="middle">
+                  <text x="163" y="275">낮을수록 좋음</text>
+                  <text x="378" y="275">높을수록 좋음</text>
+                  <text x="593" y="275">높을수록 좋음</text>
+                </g>
+                <g>
+                  <rect x="62" y="14" width="11" height="11" fill="var(--accent)"></rect>
+                  <text x="79" y="24" font-family="IBM Plex Mono, monospace" font-size="11" fill="var(--ink-2)">OWN</text>
+                  <rect x="132" y="14" width="11" height="11" fill="var(--ink-3)"></rect>
+                  <text x="149" y="24" font-family="IBM Plex Mono, monospace" font-size="11" fill="var(--ink-2)">SHUFFLE</text>
+                  <rect x="228" y="14" width="11" height="11" fill="var(--rule-strong)"></rect>
+                  <text x="245" y="24" font-family="IBM Plex Mono, monospace" font-size="11" fill="var(--ink-2)">RANDOM</text>
+                  <text x="700" y="24" font-family="IBM Plex Mono, monospace" font-size="11" fill="var(--ink-3)" text-anchor="end">사용자 3,345명 · 동일가중</text>
+                </g>
+              </svg>
+            </div>
+            <figcaption>
+              <b>OWN과 SHUFFLE의 간격이 이 실험의 전부다.</b> RANDOM과의 차이만 컸다면 “콘텐츠가 인기작을 잘 고른다”로도 설명될 수 있었다.
+              남의 profile을 쓴 SHUFFLE보다도 낮은 HARM20이 나왔기 때문에 사용자별 신호로 귀속할 수 있었다.
+            </figcaption>
+          </figure>
+
+          <div class="table-shell" style="margin-top:22px">
+            <table>
+              <thead>
+                <tr><th>집계</th><th>비교</th><th>지표</th><th style="text-align:right">차이</th><th style="text-align:right">동시 95% 구간</th></tr>
+              </thead>
+              <tbody>
+                <tr><td>사용자</td><td>OWN 대 SHUFFLE</td><td class="strong">HARM20 감소</td><td class="n">+0.0863</td><td class="n">[0.0718, 0.1008]</td></tr>
+                <tr><td>사용자</td><td>OWN 대 SHUFFLE</td><td>MIN_Q 증가</td><td class="n">+0.0631</td><td class="n">[0.0552, 0.0711]</td></tr>
+                <tr><td>사용자</td><td>OWN 대 SHUFFLE</td><td>MEAN_Q 증가</td><td class="n">+0.0571</td><td class="n">[0.0507, 0.0636]</td></tr>
+                <tr><td>영화</td><td>OWN 대 SHUFFLE</td><td class="strong">utility 증가</td><td class="n">+0.0638</td><td class="n">[0.0217, 0.1058]</td></tr>
+                <tr><td>영화</td><td>OWN 대 SHUFFLE</td><td>low-risk 감소</td><td class="n">+0.0638</td><td class="n">[0.0259, 0.1017]</td></tr>
+                <tr><td>사용자</td><td>OWN 대 RANDOM</td><td>HARM20 감소</td><td class="n">+0.1292</td><td class="n">[0.1188, 0.1395]</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <figcaption>사전등록 primary 10개 중 6개. 별도 작업이 저장된 5,000회 bootstrap 배열로 critical과 구간을 재계산해 같은 판정을 확인했다.</figcaption>
+
+          <dl class="slots" style="margin-top:20px">
+            <div class="slot"><dt>경계</dt><dd>이것은 <em>MovieLens 사용자가 이미 평가한 영화를 가린 대리 과제</em>의 결과다. 실제 한국 사용자 성능도, 수록 이후 신작 성능도 아니다. 표본 안의 KR 247명과 RECENT 382명은 descriptive-only로만 기록했다.</dd></div>
+            <div class="slot next"><dt>다음 수</dt><dd>콘텐츠 후보 생성과 후속 모델 개발의 근거로는 쓰되, 제품 champion 승인으로는 쓰지 않는다.</dd></div>
+          </dl>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<section class="phase">
+  <div class="wrap">
+    <div class="phase-head">
+      <div class="phase-index">단계 8</div>
+      <div>
+        <h3 class="phase-title">남은 하나는 오프라인으로 풀 수 없다</h3>
+        <p class="phase-sub">
+          MovieLens 안에서 할 수 있는 것은 여기까지다. 목표 도메인 증거는 사람에게 직접 물어야 얻어진다.
+        </p>
+      </div>
+    </div>
+    <div class="runs">
+      <div class="run">
+        <div class="run-gutter">
+          <span class="run-node is-hold"></span>
+          <span class="run-id">REC-EV-021V</span>
+          <span class="run-date">KR recent niche · 사전등록</span>
+        </div>
+        <div class="run-body">
+          <h4>인프라는 준비됐고 실제 평가자는 아직 0명이다</h4>
+          <div class="run-verdict"><span class="verdict v-hold">INSUFFICIENT_TARGET_DOMAIN_EVIDENCE</span></div>
+          <dl class="slots">
+            <div class="slot"><dt>사전등록</dt><dd>한국 거주 <span class="num">100</span>명, K10, mapped positive / negative 각 2개 이상, recent-Korean-low-pop target과 세 control stratum 각 12개, <span class="num">4 × 12</span> blind pool, B0 / B7 / B8 / B9 비교, paired NDCG@10과 Top-2 harm Gate, license · consent · PII · budget Gate를 결과 전에 모두 잠갔다.</dd></div>
+            <div class="slot"><dt>현재</dt><dd>4명 synthetic fixture에서 <span class="num">192</span>개 judgment 파이프라인만 검증했다(<span class="verdict v-pass" style="font-size:10.5px">PASS_INFRASTRUCTURE_READY</span>). 실제 100명 · 4,000 judgment · target positive 300건은 미수집이다.</dd></div>
+            <div class="slot next"><dt>다음 수</dt><dd>catalog / license · consent · privacy · budget · 모집 · frozen ranking이 승인되기 전에는 상태를 바꾸지 않는다.</dd></div>
+          </dl>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="band">
+  <div class="wrap">
+    <div class="band-head">
+      <div class="eyebrow">결론</div>
+      <h2>두 문제에 대한 최종 판정</h2>
+    </div>
+
+    <div class="table-shell">
+      <table>
+        <thead>
+          <tr><th>처음의 문제</th><th>이번에 얻은 답</th><th>남은 한계</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="strong">MovieLens의 외국 · 인기 영화 편향과 수록 이후 영화 공백</td>
+            <td>TMDB 구조 특징과 384차원 E5로 영화를 표현했고, 가린 평가 영화에서 구조 콘텐츠 profile의 개인화 신호를 untouched 사용자로 확증했다.</td>
+            <td>실제 한국 사용자와 신작의 행동 정답은 없다. 후보화 근거는 생겼지만 목표 시장 성능은 미해결이다.</td>
+          </tr>
+          <tr>
+            <td class="strong">실사용 추천 – 시청 – 평가 순환의 부재</td>
+            <td>MovieLens를 대리 학습 · 평가 환경으로 쓰고, 사용자별 percentile · K 탐색 · Top-2 harm · 귀속 대조군을 검증했다.</td>
+            <td>오프라인 복원 결과는 FEELM 사용자의 실제 시청 · 만족을 증명하지 않는다. 목표 도메인 확인이 필요하다.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <p class="pull">
+      이 작업의 성과는 “한국 영화 추천을 해결했다”가 아니다.
+      쓸 수 없는 실제 피드백을 대리 평가로 바꾸고, 가능한 보완책을 같은 조건에서 시험해
+      <strong>어디까지 유효하고 어디서 실패하는지 수치로 경계를 그은 것</strong>이다.
+    </p>
+  </div>
+</section>
+
+<section class="band">
+  <div class="wrap">
+    <div class="band-head">
+      <div class="eyebrow">지금 지키고 있는 것</div>
+      <h2>실험이 끝나도 바꾸지 않은 상태</h2>
+    </div>
+    <p>
+      30여 개 실험 중 어느 것도 제품 정책을 열지 못했다. 이건 실패가 아니라 사전에 정한 Gate의 정상 동작이다.
+    </p>
+    <div class="holds">
+      <div class="hold-row"><span>서비스 추천 정책</span><code>APPROVED_C2A_INTERNAL_POPULARITY_ONLY</code></div>
+      <div class="hold-row"><span>개인화 champion</span><code>null</code></div>
+      <div class="hold-row"><span>Locked Test 개봉 여부</span><code>locked_test_used = false</code></div>
+      <div class="hold-row"><span>제품 정책 변경 여부</span><code>product_policy_updated = false</code></div>
+      <div class="hold-row"><span>K = 30</span><code>탐색 상한 winner · 제품 입력 수 아님</code></div>
+      <div class="hold-row"><span>주장하지 않는 것</span><code>한국 영화 성능 · 신작 성능 · 실제 만족도</code></div>
+    </div>
+  </div>
+</section>
+
+<section class="band" style="border-bottom:none">
+  <div class="wrap">
+    <div class="band-head">
+      <div class="eyebrow">재현</div>
+      <h2>원본은 어디에 있나</h2>
+    </div>
+    <p class="sources">
+      기록 체계 <code>docs/recommendation/README.md</code><br>
+      최종 보고서 <code>docs/recommendation/FEELM-recommendation-evaluation-final-report.md</code><br>
+      통찰 로그 <code>docs/recommendation/insight-log.md</code><br>
+      실험별 근거 <code>docs/recommendation/evidence/REC-EV-*.md</code><br>
+      실행 계약 <code>docs/recommendation/contracts/*.json</code><br>
+      run 디렉터리 <code>docs/recommendation/experiments/&lt;run_id&gt;/</code> — run.yaml · metrics.json · comparison.md · insight.md · artifacts.json<br>
+      MovieLens 원본 SHA-256 <code>e4a68655d7386b8f95f2f2424b2ff975dfdd15ffd59e0d864a14dca43e99d6ee</code>
+    </p>
+    <p style="margin-top:20px;color:var(--ink-3);font-size:14.5px">
+      대용량 Parquet과 모델 artifact는 Git에 넣지 않고 manifest의 경로 · 크기 · SHA-256으로만 동일성을 확인한다.
+      현재 raw Parquet은 <code style="font-family:var(--font-mono);font-size:13px">outputs/</code> ignore 안에만 있고 외부 artifact URI가 없으므로,
+      <em>commit만으로는 제3자가 이 분석을 그대로 재현할 수 없다.</em> 이것도 한계로 기록해 뒀다.
+    </p>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    FEELM 추천 · 예상 별점 실험 기록 · 2026-08-29 → 2026-09-06 · 실패한 실험도 삭제하지 않는다.
+  </div>
+</footer>
+</body>
+</html>
