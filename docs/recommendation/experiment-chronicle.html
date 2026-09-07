@@ -242,6 +242,48 @@ footer{padding:40px 0 64px;color:var(--ink-3);font-size:13.5px}
   .slot dt{padding-top:6px}
   .vocab-row,.hold-row{grid-template-columns:1fr;gap:6px}
 }
+
+/* === GLOSSARY-LAYER:CSS START === */
+/* ---------- 용어 툴팁 ---------- */
+.gl{
+  border-bottom:1px dotted var(--rule-strong);
+  cursor:help;
+  transition:background-color .12s,border-color .12s;
+}
+.gl:hover,.gl.is-on,.gl:focus-visible{
+  background:var(--accent-soft);
+  border-bottom-color:var(--accent);
+  outline:none;
+}
+.gl.is-on{box-shadow:0 0 0 1px var(--accent) inset}
+
+#gl-tip{
+  position:fixed;z-index:999;max-width:360px;
+  background:var(--surface);
+  border:1px solid var(--rule-strong);
+  border-left:3px solid var(--accent);
+  box-shadow:0 6px 22px rgba(0,0,0,.13),0 1px 3px rgba(0,0,0,.08);
+  padding:13px 16px 14px;
+  opacity:0;transform:translateY(-3px);
+  transition:opacity .13s ease,transform .13s ease;
+  pointer-events:auto;
+}
+#gl-tip.on{opacity:1;transform:translateY(0)}
+.gl-tip-name{
+  font-family:var(--font-mono);font-size:11.5px;font-weight:600;
+  letter-spacing:.09em;text-transform:uppercase;color:var(--accent);
+  margin-bottom:6px;line-height:1.4;
+}
+.gl-tip-def{font-size:14.4px;line-height:1.7;color:var(--ink-2)}
+.gl-tip-def b{color:var(--ink);font-weight:600}
+.stamp.gl-hint{border-style:dashed;border-color:var(--accent);color:var(--ink-2)}
+.stamp.gl-hint b{color:var(--accent)}
+@media (max-width:720px){
+  #gl-tip{max-width:calc(100vw - 26px)}
+  .gl-tip-def{font-size:14px}
+}
+@media print{.gl{border-bottom:none;background:none}#gl-tip{display:none}}
+/* === GLOSSARY-LAYER:CSS END === */
 </style>
 </head>
 <body>
@@ -1282,5 +1324,293 @@ footer{padding:40px 0 64px;color:var(--ink-3);font-size:13.5px}
     FEELM 추천 · 예상 별점 실험 기록 · 2026-08-29 → 2026-09-06 · 실패한 실험도 삭제하지 않는다.
   </div>
 </footer>
+<!-- === GLOSSARY-LAYER:JS START === -->
+<script>
+/* ---------- 용어 툴팁 레이어 (문서 본문은 수정하지 않음) ---------- */
+(function () {
+  "use strict";
+
+  /* [표시명, 탐지 패턴(null이면 표시명 그대로), 설명] */
+  var G = [
+    /* --- 데이터를 나누고 세는 기본 개념 --- */
+    ["행", "[\\d,]{3,}\\s*행|\\brow\\b", "<b>(사용자, 영화, 실제 별점) 평가 기록 한 건.</b> 영화 한 편이 아니다. “160만 행”은 맞혀야 할 평가가 160만 건이라는 뜻."],
+    ["Train", null, "모델을 <b>학습시키는 데</b> 쓰는 과거 데이터."],
+    ["Validation", null, "설정값을 고르고 후보를 비교하는 <b>중간 점검용</b> 데이터. 여기서 튜닝한다."],
+    ["Test", null, "마지막에 딱 한 번만 열어보는 <b>최종 채점용</b> 데이터. 여기에 맞춰 튜닝하면 점수가 부풀려지므로 잠가 둔다."],
+    ["split", null, "데이터를 학습용·검증용·최종용으로 <b>나누는 방식</b>. 이 문서는 시간 순으로 잘라서 과거로 배우고 미래를 맞힌다."],
+    ["held-out", null, "선택 과정에서 <b>일부러 빼 둔</b> 데이터. 결론이 우연이 아닌지 확인할 때만 꺼내 쓴다."],
+    ["표본", null, "전체 중 실제로 관찰한 <b>일부</b>. 표본이 작으면 결과가 우연일 여지가 커진다."],
+    ["분포", null, "값들이 <b>어떻게 퍼져 있는지</b>의 모양."],
+    ["중앙값", null, "값을 크기순으로 줄 세웠을 때 <b>딱 한가운데</b> 값. 평균과 달리 극단값에 흔들리지 않는다."],
+    ["분위", "\\d분위|분위", "값을 크기순으로 줄 세워 <b>4등분</b>한 구간. 하위 4분위는 아래 25%, 상위 4분위는 위 25% 집단이다."],
+    ["percentile", "percentile|백분위", "백분위. <b>P10은 아래에서 10% 지점</b>, P90은 90% 지점의 값이다."],
+
+    /* --- 후보와 정답 --- */
+    ["uniform", null, "<b>무작위 균등 추출.</b> 인기도나 취향과 상관없이 <b>모든 후보를 똑같은 확률로</b> 뽑는다는 뜻. 여기서는 사용자가 평가하지 않은 영화 99편을 그렇게 골라 후보에 섞었다."],
+    ["positive", null, "<b>정답으로 치는 영화.</b> 그 사용자가 실제로 좋게 평가한 영화 한 편을 후보 속에 숨겨 두고, 모델이 그걸 위로 끌어올리는지 본다."],
+    ["negative", null, "정답이 아닌 영화. 보통 그 사용자가 <b>평가하지 않은</b> 영화를 쓴다."],
+    ["candidate", "candidate|후보", "순위를 매기기 전에 먼저 <b>추려 놓은 영화 목록</b>. 5만 편을 매번 줄 세울 수 없어서 몇 백 편으로 좁힌 뒤 그 안에서 순서를 정한다."],
+    ["sampled", null, "후보를 <b>표본으로만</b> 세운 방식 — 정답 1편 + 미평가 99편, 총 100편. 계산은 싸지만 실제 서비스보다 훨씬 쉬운 문제다."],
+    ["full-catalog", "full-catalog|전수", "후보를 <b>카탈로그 전체(50,977편)</b>로 세운 방식. 실제 서비스에 가깝고, 그래서 점수가 sampled보다 훨씬 낮게 나온다."],
+    ["Train-known", null, "학습 데이터에 <b>이미 등장한 적 있는</b> 영화. 그렇지 않은 영화는 모델이 아는 바가 없다."],
+    ["threshold", "threshold|기준선", "넘고 못 넘고를 가르는 <b>경계값</b>. “4점 이상이면 좋아함”에서 4점이 threshold다."],
+    ["raw", null, "보정 없이 <b>날것 그대로</b>의 값. 후하게 주는 사람과 박하게 주는 사람이 섞여 있어 raw 4점 기준은 사람마다 뜻이 달라진다."],
+
+    /* --- 척도 --- */
+    ["ECDF", null, "그 사용자 <b>본인의 별점 분포</b>에서 이 별점이 상위 몇 %인지로 바꾼 상대 척도. 후한 사람과 박한 사람을 같은 자로 잴 수 있게 해 준다."],
+    ["효용", "효용|utility", "그 사용자 기준으로 <b>이 영화가 얼마나 좋은 편인가</b>를 0~1로 나타낸 값. 남과 비교하지 않고 본인 기준으로만 잰다."],
+    ["격자", "격자|half-star", "별점이 놓일 수 있는 <b>눈금</b>. MovieLens는 0.5점 눈금(2.5점 가능), 제품은 정수 눈금이라 두 척도가 애초에 다르다."],
+    ["양자화", null, "연속된 예측값을 <b>실제 눈금 위로 맞춰 옮기는</b> 것. 3.99를 4.0에 붙이는 식."],
+
+    /* --- 지표 --- */
+    ["MAE", null, "예측 별점이 실제 별점에서 <b>평균 몇 점 빗나갔는지</b>. 단위가 “별점”이고 <b>낮을수록 좋다</b>. 0.63은 63%가 아니라 <b>평균 0.63점 오차</b>라는 뜻 — 확률이 아니다."],
+    ["macro", null, "사용자별로 먼저 계산한 뒤 <b>사용자끼리 평균</b>내는 방식. 평가를 수천 개 남긴 소수가 전체 수치를 좌우하지 못하게 막는다."],
+    ["ECE", null, "<b>보정 오차.</b> 예측이 실제 분포와 얼마나 어긋나 있는지. 0에 가까울수록 좋다."],
+    ["NDCG", "NDCG@\\d+|NDCG", "상위 몇 개 안에서 정답을 <b>얼마나 위쪽에 올렸는지</b>. 0~1이고 <b>1이 만점, 높을수록 좋다</b>(확률은 아님). 주의 — <b>후보가 많아지면 값 자체가 확 내려간다.</b> 100편 중 0.47과 5만 편 중 0.009는 같은 자로 잰 숫자가 아니다."],
+    ["recall", "recall@\\d+|recall", "후보를 추리는 단계에서 <b>정답이 그 안에 들어왔는지</b>의 비율. 순서는 보지 않는다. 후보 추리기가 할 일과 줄 세우기가 할 일을 나눠 보려고 쓴다."],
+    ["@k 지표", "SafeHit@\\d+|BothGood@\\d+|Hit@\\d+|Miss@\\d+", "<b>상위 k편만 놓고 세는 지표.</b> 상위 2편 안에 정답이 있었으면 Hit@2, 없으면 Miss@2, 둘 다 좋았으면 BothGood@2다. 몇 위인지는 따지지 않고 <b>들었는지 여부만</b> 센다."],
+    ["coverage", null, "그 모델이 <b>실제로 답할 수 있었던 대상의 비율</b>. 정확도가 아니라 <b>사정거리</b>다. 잘 맞히는지와, 답이라도 낼 수 있는지는 다른 문제."],
+    ["Spearman", null, "<b>순위 상관계수.</b> 1에 가까울수록 예측한 순서와 실제 순서가 일치한다."],
+    ["Top-N", "Top-N|Top-10|Top-2|Top-500|Top2", "점수 상위 N개만 뽑아 실제로 <b>사용자에게 보여 주는 목록</b>."],
+
+    /* --- 모델 --- */
+    ["ALS", null, "<b>행렬 분해</b> 모델. 사용자마다 벡터 하나, 영화마다 벡터 하나를 만들고 <b>두 벡터를 곱해</b> 별점을 예측한다. 그래서 사용자와 영화가 <b>둘 다 학습 데이터에 있어야만</b> 값이 나오고, 신규 대상에는 구조적으로 답을 못 한다."],
+    ["Bias", "Bias|편향", "<b>전역 평균 + 사용자 편향 + 영화 편향</b>으로 예측하는 아주 단순한 모델. “이 사람은 원래 후하다”, “이 영화는 원래 평이 좋다”만 더한다. 곱셈이 아니라 덧셈이라 <b>신규 대상에도 항상 답할 수 있어</b> fallback으로 쓴다."],
+    ["Popularity", "Popularity|인기도", "개인화 없이 <b>인기순</b>으로 세우는 기준선. 단순하지만 강해서, 이 문서의 순위 실험은 전부 이것을 이겨야 채택된다."],
+    ["fallback", null, "<b>모델이 계산할 수 없는 건을 대신 답해 주는 예비 모델.</b> 서비스는 누구에게든 뭔가 보여 줘야 하니까 뒤에 세워 둔다. 이 문서에서는 Bias가 그 역할이다."],
+    ["warm", null, "사용자와 영화가 <b>둘 다 학습 데이터에 있는</b> 구간. 개인화 모델이 직접 계산할 수 있는 “쉬운” 부분이다."],
+    ["cold-start", "cold-start|cold", "학습 데이터에 이력이 없어 개인화 모델이 <b>계산 자체를 못 하는</b> 신규 사용자·신규 영화 문제."],
+    ["Fold-in", "Fold-in|fold-in", "영화 벡터는 그대로 두고 <b>새 사용자 벡터만</b> 몇 개 안 되는 이력으로 즉석에서 추정하는 방식. 모델 전체를 다시 학습하지 않아도 된다."],
+    ["item factor", "item factor|item-factor|잠재 벡터|factor", "학습으로 얻은 <b>영화별 숨은 특징 벡터</b>. 장르처럼 사람이 정한 게 아니라, 평가 패턴에서 기계가 뽑아낸 축이다."],
+    ["LightFM", null, "<b>하이브리드 모델.</b> 평가 이력만 쓰는 게 아니라 장르·태그 같은 <b>콘텐츠 특징도 함께</b> 학습해서, 이력 없는 영화에도 답할 수 있다."],
+    ["ItemKNN", null, "<b>이웃 기반</b> 모델. “이 영화를 본 사람들이 같이 본 영화”처럼, 함께 평가된 패턴이 비슷한 영화를 추천한다."],
+    ["BPR", "BPR|WARP", "<b>순위 학습 손실 함수.</b> 별점을 맞히는 대신 “정답을 미평가 항목보다 위에 놓아라”를 직접 학습시킨다."],
+    ["RRF", null, "서로 다른 추천 목록을 <b>순위의 역수로 합치는</b> 방식. 점수 척도가 달라도 섞을 수 있다."],
+    ["E5", "\\bE5\\b|임베딩", "줄거리·설명 같은 <b>글을 숫자 벡터로 바꾼 것</b>. 평가 이력이 전혀 없는 영화도 내용만으로 표현할 수 있다."],
+    ["isotonic", null, "예측값의 <b>순서는 그대로 두고</b> 실제 분포에 맞게 눌러 앉히는 보정. 순위는 안 바뀌고 값만 현실적으로 바뀐다."],
+    ["regularized", "regularized|shrinkage", "<b>과하게 확신하지 않도록 눌러 주는</b> 장치. 데이터가 적은 사용자·영화의 추정치를 평균 쪽으로 당겨 과적합을 막는다."],
+    ["rank", "\\brank\\b", "잠재 벡터를 <b>몇 차원으로 만들지</b>. rank 32면 사용자·영화를 각각 32개 숫자로 표현한다는 뜻."],
+    ["seed", null, "무작위를 <b>재현 가능하게</b> 고정하는 값. 같은 seed면 몇 번을 돌려도 같은 결과가 나온다."],
+
+    /* --- 통계 판정 --- */
+    ["CI", "\\bCI\\b|신뢰구간", "<b>95% 신뢰구간.</b> 참값이 있을 법한 범위. 이 구간이 <b>0을 포함하면</b> “차이가 아예 없을 가능성”을 못 걸러낸 것이라 근거로 쓰지 않는다."],
+    ["paired", null, "<b>같은 사용자에게 두 방식을 나란히 붙여</b> 차이를 직접 잰 비교. 사람마다 다른 성향이 상쇄돼서 구간이 좁고 결론이 더 강하다."],
+    ["bootstrap", null, "가진 표본을 <b>반복해서 다시 뽑아</b> 구간을 추정하는 방법. 이론 가정 없이 불확실성을 재는 실용적인 방법이다."],
+    ["SESOI", "SESOI|최소 유의미", "<b>사전에 정해 둔 “이 정도는 되어야 의미 있다”는 최소 크기.</b> 통계적으로 0이 아니어도 여기 못 미치면 근거로 쓰지 않는다. 유의한 것과 쓸모 있는 것은 다르다."],
+    ["Gate", null, "<b>결과를 보기 전에 미리 잠근 합격 기준.</b> 결과를 본 뒤에 기준을 낮추지 않는 것이 이 기록의 규칙이다."],
+    ["Harm", "Harm upper|\\bHarm\\b|\\bharm\\b", "<b>나빠진 사용자 쪽 손실.</b> 평균이 올라도 손해 본 사람의 손실 상한이 사전 한계를 넘으면 탈락시킨다. 평균만 보면 소수의 피해가 가려지기 때문."],
+    ["one-sided", "one-sided|단측", "한쪽 방향만 보는 검정. “나빠지지만 않으면 된다”처럼 <b>한 방향의 위험만</b> 따질 때 쓴다."],
+    ["post-hoc", "post-hoc|POST-HOC|사후", "<b>결과를 본 뒤에</b> 한 분석. 같은 데이터를 다시 들여다본 것이라 새 표본으로 확인하기 전에는 증거로 승격하지 않는다."],
+    ["confirmatory", null, "<b>확인용 실험.</b> 미리 정한 가설과 기준으로, 독립된 데이터에서 한 번 더 검증하는 단계."],
+    ["ablation", null, "구성 요소를 <b>하나씩 빼 보면서</b> 성능이 실제로 어디서 나오는지 확인하는 실험."],
+    ["민감도", null, "기준이나 설정을 바꿔 봐도 <b>결론이 그대로인지</b> 확인하는 점검."],
+    ["cohort", null, "실험 대상으로 미리 정해 놓은 <b>사용자 집합</b>."],
+    ["strata", "strata|stratum|층화", "비슷한 성격끼리 <b>묶은 구간</b>. 구간별로 나눠 봐야 평균 뒤에 숨은 차이가 보인다."],
+    ["preflight", null, "본 실험 전에 돌리는 <b>사전 점검</b>. 데이터와 설정이 조건을 만족하는지 먼저 확인한다."],
+    ["fail-closed", null, "확실하지 않으면 <b>일단 막는</b> 기본값. 애매할 때 켜는 게 아니라 끈다."],
+    ["champion", null, "제품에 <b>실제로 넣기로 승인된 모델</b>. 이 문서 기준 champion은 아직 없다(null)."],
+    ["proxy", "proxy|대리", "진짜 대상 대신 쓰는 <b>대역</b>. 실제 사용자가 없어 MovieLens 사용자를 대신 썼고, 그 대역이 어디서 깨지는지를 매번 기록했다."],
+
+    /* --- 실험 대상·도메인 --- */
+    ["MovieLens", null, "공개 영화 평점 데이터셋. 이 프로젝트의 실험 환경이다. <b>유명 외국 영화에 크게 쏠려 있고</b> 한국·최신 영화가 거의 없다는 게 이 문서의 출발점."],
+    ["TMDB", null, "외부 영화 정보 사이트. 장르·태그·줄거리 같은 <b>콘텐츠 특징</b>을 여기서 가져온다."],
+    ["K10", "K\\d+", "신규 사용자에게 <b>받아 낸 온보딩 이력 개수</b>. K10은 가입할 때 영화 10편을 평가받은 조건이라는 뜻."],
+    ["α", "α", "두 점수를 <b>섞는 비율</b>. 결과를 보고 정하는 게 아니라 미리 정해 잠근다. <b>α=0은 “그 신호를 아예 안 쓰는 편이 가장 좋았다”</b>는 결과다."],
+    ["Δ", "Δ", "두 방식의 <b>같은 지표 차이</b>. 비율이 아니라 절대 점수 차다."],
+    ["long-tail", "long-tail|niche", "거의 안 보지만 <b>수가 아주 많은</b> 비인기 구간. 추천이 가장 어려운 영역이다."],
+    ["head", "\\bhead\\b", "평가가 몰려 있는 <b>인기 상위</b> 구간. P4가 head, P1이 long-tail이다."],
+    ["exploration", "exploration|탐험|Explore", "확실히 좋은 것만 보여 주지 않고 <b>새로운 것도 일부러 섞는</b> 전략. 발견은 늘지만 당장의 정확도는 조금 손해 본다."],
+    ["novelty", null, "사용자가 <b>이미 아는 것에서 얼마나 벗어났는지</b>. 정확도와 자주 상충한다."],
+    ["diversity", null, "추천 목록이 <b>서로 얼마나 다른지</b>. 비슷한 영화만 열 편 나오는 걸 막는 지표."],
+    ["OWN", "OWN|SHUFFLE", "<b>귀속 검사.</b> 같은 모델에 <b>본인 프로필</b>을 준 경우와 <b>남의 프로필로 바꿔 넣은</b> 경우를 비교한다. 두 점수가 같다면 그 성능은 개인화가 아니라 영화 자체의 인기에서 나온 것이다."],
+    ["profile", null, "그 사용자를 나타내는 <b>입력 묶음</b>. 어떤 영화를 어떻게 평가했는지의 모음."],
+    ["Locked", "Locked|locked_test_used|방화벽", "최종 Test를 <b>선택 과정에서 완전히 차단</b>해 둔 상태. 이 문서 기준 아직 열지 않았다(false)."],
+    ["artifact", "artifact|manifest|provenance", "실험 결과를 <b>나중에 그대로 재현할 수 있게</b> 남긴 파일과 그 출처 기록."],
+
+    /* --- 보정·변환 --- */
+    ["calibration", "calibration|보정", "예측한 숫자를 <b>실제 분포에 맞게 조정</b>하는 것. 순위는 그대로여도 “4.2점”이라는 값이 현실적이 되도록 만든다."],
+    ["clamp", null, "범위를 벗어난 값을 <b>경계에 붙여 잘라내는</b> 것. 0.7점 예측을 최소 1점으로 끌어올리는 식."],
+    ["round", "\\bround\\b|반올림", "가장 가까운 눈금으로 <b>반올림</b>하는 것. 순위 정보를 잃어버려 동점이 대량으로 생긴다."],
+    ["affine", null, "<b>a×x + b</b> 형태의 단순한 1차 변환. 전체를 늘리고 밀어 옮기기만 한다."],
+    ["ridge", "ridge|logistic", "결과를 예측하는 <b>기본적인 회귀 모델</b>. 복잡한 모델과 비교할 기준선으로 쓴다."],
+
+    /* --- 실험 운영 --- */
+    ["panel", null, "설정값을 <b>고르는 데 쓴 사용자 묶음</b>. 여기서 고른 뒤에는 같은 사람들로 성능을 주장하지 않는다."],
+    ["overlap", "overlap|겹", "두 집단이 <b>겹치는 부분</b>. 고를 때 쓴 사람과 채점할 때 쓴 사람이 겹치면 점수가 부풀려진다."],
+    ["anchor", null, "비교의 <b>기준점</b>으로 고정해 둔 값이나 대상."],
+    ["dry-run", null, "실제로 반영하지 않고 <b>돌려만 보는</b> 예행 연습."],
+    ["p95", null, "느린 쪽 상위 5%를 제외한 <b>응답 시간</b>. 평균보다 체감 속도에 가깝다."],
+    ["SHA-256", "SHA-256|checksum|hash", "파일이 <b>바뀌지 않았음을 확인하는 지문</b>. 같은 파일이면 같은 값이 나온다."],
+    ["Parquet", null, "큰 표 형태 데이터를 <b>압축해 저장하는 파일 형식</b>."],
+    ["PII", null, "이름·이메일처럼 <b>개인을 특정할 수 있는 정보</b>. 저장하지 않는 것이 원칙이다."],
+    ["Q4", "Q[1-4]", "인기도나 활동량으로 <b>4등분한 구간</b> 중 하나. Q4가 가장 위쪽 집단이다."],
+    ["KR", "\\bKR\\b|한국-origin", "한국에서 제작된 영화. 이 데이터에서는 비중이 <b>0.33%</b>뿐이라 결론을 내기 어려운 구간이다."],
+    ["RECENT", null, "데이터 수록 이후의 <b>최신 영화</b> 구간. 상호작용 기록이 아예 없다."]
+  ];
+
+  /* ---------- 매칭기 구성 ---------- */
+  var entries = G.map(function (e) {
+    return {
+      name: e[0],
+      src: e[1] || e[0].replace(/[.*+?^${}()|[\]\\]/g, "\\$&"),
+      def: e[2]
+    };
+  });
+  entries.forEach(function (e) {
+    e.src = "(?:" + e.src + ")";
+    e.solo = new RegExp("^" + e.src + "$");
+  });
+  entries.sort(function (a, b) { return b.src.length - a.src.length; });
+
+  var BIG = new RegExp(
+    "(?<![A-Za-z0-9_@.])(?:" + entries.map(function (e) { return e.src; }).join("|") + ")(?![A-Za-z0-9_])",
+    "g"
+  );
+
+  var SKIP = "script,style,summary,code,thead,h1,h2,h3,.run-id,.run-date,.eyebrow,.stamp,.pnum,.verdict,.sources,.gl,#gl-tip";
+
+  function lookup(txt) {
+    for (var i = 0; i < entries.length; i++) if (entries[i].solo.test(txt)) return entries[i];
+    return null;
+  }
+
+  /* ---------- 본문 텍스트 노드 감싸기 ---------- */
+  var walker = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT, {
+    acceptNode: function (n) {
+      if (!n.nodeValue || !n.nodeValue.trim()) return NodeFilter.FILTER_REJECT;
+      if (!n.parentElement || n.parentElement.closest(SKIP)) return NodeFilter.FILTER_REJECT;
+      return NodeFilter.FILTER_ACCEPT;
+    }
+  });
+  var targets = [], n;
+  while ((n = walker.nextNode())) targets.push(n);
+
+  var tagged = 0, seen = Object.create(null);
+  targets.forEach(function (node) {
+    var text = node.nodeValue;
+    BIG.lastIndex = 0;
+    if (!BIG.test(text)) return;
+    BIG.lastIndex = 0;
+    var frag = document.createDocumentFragment(), last = 0, m;
+    while ((m = BIG.exec(text))) {
+      var hit = lookup(m[0]);
+      if (!hit) continue;
+      if (m.index > last) frag.appendChild(document.createTextNode(text.slice(last, m.index)));
+      var el = document.createElement("span");
+      el.className = "gl";
+      el.tabIndex = 0;
+      el.setAttribute("role", "button");
+      el.setAttribute("aria-label", hit.name + " 뜻 보기");
+      el.dataset.term = hit.name;
+      el.dataset.def = hit.def;
+      el.textContent = m[0];
+      frag.appendChild(el);
+      last = m.index + m[0].length;
+      tagged++;
+      seen[hit.name] = 1;
+    }
+    if (!last) return;
+    if (last < text.length) frag.appendChild(document.createTextNode(text.slice(last)));
+    node.parentNode.replaceChild(frag, node);
+  });
+
+  /* ---------- 툴팁 ---------- */
+  var tip = document.createElement("div");
+  tip.id = "gl-tip";
+  tip.setAttribute("role", "tooltip");
+  tip.hidden = true;
+  tip.innerHTML = '<div class="gl-tip-name"></div><div class="gl-tip-def"></div>';
+  document.body.appendChild(tip);
+  var tName = tip.querySelector(".gl-tip-name");
+  var tDef = tip.querySelector(".gl-tip-def");
+  var current = null, showTimer = null, hideTimer = null, pinned = false;
+
+  function place(el) {
+    var r = el.getBoundingClientRect();
+    tip.hidden = false;
+    tip.style.left = "0px";
+    tip.style.top = "0px";
+    var t = tip.getBoundingClientRect();
+    var vw = document.documentElement.clientWidth;
+    var vh = document.documentElement.clientHeight;
+    var x = Math.min(Math.max(10, r.left - 14), Math.max(10, vw - t.width - 10));
+    var below = r.bottom + 9;
+    var above = r.top - t.height - 9;
+    var y = (below + t.height <= vh - 10 || above < 10) ? below : above;
+    tip.style.left = Math.round(x) + "px";
+    tip.style.top = Math.round(y) + "px";
+  }
+
+  function show(el) {
+    if (current && current !== el) current.classList.remove("is-on");
+    current = el;
+    tName.textContent = el.dataset.term;
+    tDef.innerHTML = el.dataset.def;
+    place(el);
+    tip.classList.add("on");
+    el.classList.add("is-on");
+  }
+
+  function hide() {
+    if (current) current.classList.remove("is-on");
+    tip.classList.remove("on");
+    tip.hidden = true;
+    current = null;
+    pinned = false;
+  }
+
+  document.addEventListener("mouseover", function (e) {
+    var el = e.target.closest && e.target.closest(".gl");
+    if (!el || pinned) return;
+    clearTimeout(hideTimer);
+    clearTimeout(showTimer);
+    showTimer = setTimeout(function () { show(el); }, 70);
+  });
+  document.addEventListener("mouseout", function (e) {
+    if (pinned) return;
+    if (!e.target.closest || !e.target.closest(".gl")) return;
+    clearTimeout(showTimer);
+    hideTimer = setTimeout(hide, 140);
+  });
+  document.addEventListener("focusin", function (e) {
+    var el = e.target.closest && e.target.closest(".gl");
+    if (el) { clearTimeout(hideTimer); show(el); }
+  });
+  document.addEventListener("focusout", function (e) {
+    if (e.target.closest && e.target.closest(".gl") && !pinned) hide();
+  });
+  document.addEventListener("click", function (e) {
+    var el = e.target.closest && e.target.closest(".gl");
+    if (el) {
+      e.preventDefault();
+      if (pinned && current === el) { hide(); return; }
+      pinned = false;
+      show(el);
+      pinned = true;
+    } else if (!e.target.closest || !e.target.closest("#gl-tip")) {
+      hide();
+    }
+  });
+  document.addEventListener("keydown", function (e) {
+    if (e.key === "Escape") hide();
+  });
+  tip.addEventListener("mouseenter", function () { clearTimeout(hideTimer); });
+  tip.addEventListener("mouseleave", function () {
+    if (!pinned) hideTimer = setTimeout(hide, 140);
+  });
+  window.addEventListener("scroll", function () { if (current) place(current); }, true);
+  window.addEventListener("resize", hide);
+
+  /* 안내 배지 */
+  var row = document.querySelector(".stamp-row");
+  if (row) {
+    var b = document.createElement("span");
+    b.className = "stamp gl-hint";
+    b.innerHTML = '용어 <b>' + Object.keys(seen).length + '</b>종 · 점선 밑줄에 <b>마우스를 올리면</b> 뜻이 나옵니다';
+    row.appendChild(b);
+  }
+})();
+</script>
+<!-- === GLOSSARY-LAYER:JS END === -->
 </body>
 </html>
