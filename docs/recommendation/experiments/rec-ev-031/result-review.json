@@ -1,0 +1,46 @@
+{
+  "status": "PASS",
+  "date": "2026-09-07",
+  "reviewer": "/root/review_rec031_results",
+  "independence": "fork_turns=none; no conversation inheritance; read-only review of documents, code and permitted completed artifacts",
+  "method": "Independent NumPy/pandas formulas without importing or calling the experiment runner",
+  "user_metric_rows": 32700,
+  "user_metric_columns_recomputed": 18,
+  "maximum_absolute_metric_error": 1.11e-16,
+  "nan_masks_match": true,
+  "primary_contrasts_recomputed": 4,
+  "diagnostic_contrasts_recomputed": 47,
+  "bootstrap": {"users": 1775, "repeats": 5000, "seed": 20260907, "primary_family": 4, "comparison_tolerance": 1e-14},
+  "positive_free_users_excluded_from_recall": 405,
+  "all_32700_lists_integrity": ["unique 500", "catalogue membership", "observed K seen exclusion", "user pairing", "target disjointness", "donor identity", "input standard deviation"],
+  "ranking_reconstruction": {
+    "bayes_count_all_lists": 13080,
+    "content_shuffle_union_spot_check_lists": 108,
+    "spot_check_users": 12,
+    "result": "exact match using pinned sparse operation path"
+  },
+  "case_outputs_checked": 135,
+  "report_case_outputs_checked": 36,
+  "case_checks": ["fixed hash selection", "movie ID", "target q", "UNKNOWN", "report matches saved output"],
+  "sealed_source_output_identities_match": true,
+  "report_metrics_copy_identical": true,
+  "decisions_match_frozen_rules": {
+    "CONTENT": "REJECT_AS_STANDALONE_CANDIDATE_GENERATOR",
+    "UNION": "REJECT_THIS_UNION_RULE"
+  },
+  "interpretation": "PASS; COUNT is a research operating proposal, not proven product quality; missing labels, selection reuse, UI/minimum response/full-history/clustering/discovery limitations and half-star/external-eight/official-contract boundaries retained",
+  "reviewed_document_sha256": {
+    "comparison.md": "3732707a6ba3d03c8b86cd53a253b5605a2a534024a984ed14647ec6f96e0381",
+    "insight.md": "ee2c7c59d9578a5b05587fa0187db3b089c1dc48536a44fe38244fd00da320d4",
+    "policy-proposal.md": "174c28d5febcd9225abe96da442b5411afac75fa222650f56eefaa5263c4f08a"
+  },
+  "limitations": [
+    "Did not reread raw ratings; calibration raw aggregation not independently recomputed in result review",
+    "Did not reread original archive movie titles; report titles were checked against saved cases",
+    "Only permitted already-opened SELECTION R0 label columns; no other outer, replication, locked test or reserve",
+    "Dense versus sparse summation produced up to 5.27e-16 numerical difference, changing near-tie order in 16 of 72 CONTENT/SHUFFLE sample lists and one boundary candidate; exact output is conditional on pinned sparse numerical path",
+    "Diagnostic improved_fraction means positive numeric difference; for known-bad exposure this is an increase in harm, not an improvement"
+  ],
+  "blocking_findings_remaining": 0,
+  "product_approval": false
+}

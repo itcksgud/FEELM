@@ -1,0 +1,240 @@
+{
+  "schema_version": 2,
+  "experiment_id": "REC-EV-031",
+  "status": "COMPLETED_CANDIDATE_DIAGNOSTIC_PRODUCT_POLICY_RETRACTED",
+  "root": "C:\\higher\\projects\\FEELM-standalone",
+  "inputs_as_frozen": {
+    "universe": {
+      "path": "outputs/recommendation-evidence/rec-ev-027/screen/prepared/universe.npz",
+      "bytes": 130999,
+      "sha256": "da1d11d858a6a5206ce396a43cdb2c7688a31eeef4a1a6db9efd14e88ad23247"
+    },
+    "structured": {
+      "path": "outputs/recommendation-evidence/rec-ev-027/screen/prepared/structured-common.npz",
+      "bytes": 3000693,
+      "sha256": "7e1b20075c5e021c967489f87d161d20322e34e1e2f74dbc24f651deb9ba3310"
+    },
+    "profiles": {
+      "path": "outputs/recommendation-evidence/rec-ev-029/prelabel/prepared/profile-ratings.parquet",
+      "bytes": 3219007,
+      "sha256": "6d80e57ad4b4b1c50a00bb0dbf524a277fe3f6c61d78b498b8cec1d4c435629e"
+    },
+    "prior": {
+      "path": "outputs/recommendation-evidence/rec-ev-029/prelabel/prepared/calibration-prior.npz",
+      "bytes": 979,
+      "sha256": "6e1856f4bcd6d9edcf644e1b2f5a8d9fdd112c0535f001574336e45ab32a6eae"
+    },
+    "membership": {
+      "path": "outputs/recommendation-evidence/rec-ev-029/cache/membership.parquet",
+      "bytes": 2884909,
+      "sha256": "d8998e94a7ec525b203e09c0f5665c81f875e0a14334d22cd5d486491327ef2d"
+    },
+    "labels": {
+      "path": "outputs/recommendation-evidence/rec-ev-029/postlabel/selection/labels.parquet",
+      "bytes": 1407356,
+      "sha256": "23e11f8bed63801e946cd475ecf3a34524827b4b741e80c4a89fe29cb2e6366c"
+    },
+    "archive": {
+      "path": "C:/higher/projects/MM/data/raw/ml-32m.zip",
+      "member": "ml-32m/ratings.csv",
+      "bytes": 238950008,
+      "sha256": "e4a68655d7386b8f95f2f2424b2ff975dfdd15ffd59e0d864a14dca43e99d6ee"
+    }
+  },
+  "artifacts": [
+    {
+      "path": "docs/recommendation/experiments/rec-ev-031/case-examples.md",
+      "bytes": 2651,
+      "sha256": "3b006b10ee43717873c989e3f20db0ba8f8d24efcefa0b94932c7616ef641a36"
+    },
+    {
+      "path": "docs/recommendation/experiments/rec-ev-031/comparison.md",
+      "bytes": 9106,
+      "sha256": "3732707a6ba3d03c8b86cd53a253b5605a2a534024a984ed14647ec6f96e0381"
+    },
+    {
+      "path": "docs/recommendation/experiments/rec-ev-031/config.json",
+      "bytes": 2672,
+      "sha256": "5e20c04beb2030edfe1b0701da65f89e3c28e692cb4872d71214d3a5fa98d6ce"
+    },
+    {
+      "path": "docs/recommendation/experiments/rec-ev-031/evidence-audit.md",
+      "bytes": 9551,
+      "sha256": "3745cff8601c2d7fa0e41640dd3f7261574dc66b605626ebfbe90e33b6959c75"
+    },
+    {
+      "path": "docs/recommendation/experiments/rec-ev-031/hypotheses.md",
+      "bytes": 2782,
+      "sha256": "83594ecfae0dfb60e322adae03413d1c00c1d88ca003919f44025b7606b411b5"
+    },
+    {
+      "path": "docs/recommendation/experiments/rec-ev-031/implementation-review.json",
+      "bytes": 864,
+      "sha256": "e3f63c65c8e1d1d484251defdd787a077d98f51caea41763ad1770cad4883780"
+    },
+    {
+      "path": "docs/recommendation/experiments/rec-ev-031/insight.md",
+      "bytes": 792,
+      "sha256": "4839b3a7c4849af58f37c4aacf241260f5237b07c9dcf148f5e978596d23c92e"
+    },
+    {
+      "path": "docs/recommendation/experiments/rec-ev-031/metrics.json",
+      "bytes": 40439,
+      "sha256": "e74872afce2b53a5912d380b935e1d0352d08aad94ad797f4a57cffbd1255657"
+    },
+    {
+      "path": "docs/recommendation/experiments/rec-ev-031/path-map.md",
+      "bytes": 2824,
+      "sha256": "3aebbf4bace6a0d54ad3a3ad3ddc6c7a2f3c7e9fc1cb915d357211101a1a5f32"
+    },
+    {
+      "path": "docs/recommendation/experiments/rec-ev-031/policy-proposal.md",
+      "bytes": 1133,
+      "sha256": "6c33b242cfa4126eb0df765cc1e66b1a9ceff42fbc6e9edf0ba94b89bf935aea"
+    },
+    {
+      "path": "docs/recommendation/experiments/rec-ev-031/POLICY-RETRACTION.md",
+      "bytes": 2271,
+      "sha256": "7bc807a97bf54639de9456277ef8a2188f7619a767f5e49ccc6fa8e679faf0a9"
+    },
+    {
+      "path": "docs/recommendation/experiments/rec-ev-031/README.md",
+      "bytes": 12776,
+      "sha256": "7ca491bc24b4a570194e5a5cc8a6807c23cf853cb4ee393097656b4b60444ee5"
+    },
+    {
+      "path": "docs/recommendation/experiments/rec-ev-031/reproduce.md",
+      "bytes": 3140,
+      "sha256": "ab84ef5d633372020a38d3576a1fa154662ce12c3fbdac2ad17d3a3ec75eb41c"
+    },
+    {
+      "path": "docs/recommendation/experiments/rec-ev-031/result-review-request.md",
+      "bytes": 2235,
+      "sha256": "917d76f2dcb21855e1b7d0a76b15d603d5356877471397abc33f7ebbd3cfa8bd"
+    },
+    {
+      "path": "docs/recommendation/experiments/rec-ev-031/result-review.json",
+      "bytes": 2881,
+      "sha256": "6555fd21922d3e163953b5b4a106788f36bc0fa7fea0dc50f792a40a8bd53f0a"
+    },
+    {
+      "path": "docs/recommendation/experiments/rec-ev-031/results.md",
+      "bytes": 1641,
+      "sha256": "d35f774a65f4ee34f486635b2be569296517b5fe7691b076e74ce5f2c83c0861"
+    },
+    {
+      "path": "docs/recommendation/experiments/rec-ev-031/review-log.md",
+      "bytes": 6354,
+      "sha256": "bde78deafb1d740da13deedb405458fa5e3c91da32452aa273db123ec1364040"
+    },
+    {
+      "path": "docs/recommendation/experiments/rec-ev-031/review-request.md",
+      "bytes": 2058,
+      "sha256": "8a2d19a3231109f72581cd7a0691d71ec4d399b674946bd903b79b91fa85def8"
+    },
+    {
+      "path": "docs/recommendation/experiments/rec-ev-031/reviewed-snapshot/artifacts.json",
+      "bytes": 8507,
+      "sha256": "cd3a64f44bdc85ae67bd2806481a39cb87848d8302f1fa4808e31f2d109f8c5a"
+    },
+    {
+      "path": "docs/recommendation/experiments/rec-ev-031/reviewed-snapshot/insight.md",
+      "bytes": 4475,
+      "sha256": "ee2c7c59d9578a5b05587fa0187db3b089c1dc48536a44fe38244fd00da320d4"
+    },
+    {
+      "path": "docs/recommendation/experiments/rec-ev-031/reviewed-snapshot/policy-proposal.md",
+      "bytes": 12052,
+      "sha256": "174c28d5febcd9225abe96da442b5411afac75fa222650f56eefaa5263c4f08a"
+    },
+    {
+      "path": "docs/recommendation/experiments/rec-ev-031/reviewed-snapshot/results.md",
+      "bytes": 1642,
+      "sha256": "84ded14c2682d15a6573f4f90dcee1eb40c511ca09e4b7b28a34b928cb6d8547"
+    },
+    {
+      "path": "docs/recommendation/experiments/rec-ev-031/run.yaml",
+      "bytes": 2721,
+      "sha256": "9b1d02abb53c6cfbd0e34dbe9e93a274fd7ca7ae74d6d06130d2c9c79b78dd75"
+    },
+    {
+      "path": "outputs/recommendation-evidence/rec-ev-031/cases.json",
+      "bytes": 25283,
+      "sha256": "e25dfe36a3a65250a7034ef85efe0f63edb18a6abdbd6b165886540398635956"
+    },
+    {
+      "path": "outputs/recommendation-evidence/rec-ev-031/evaluation-seal.json",
+      "bytes": 1190,
+      "sha256": "cf997240af2f1364fa6516d8af3e07196c53dc631353cc69e3505c6d84a5c10b"
+    },
+    {
+      "path": "outputs/recommendation-evidence/rec-ev-031/execution-budget.json",
+      "bytes": 393,
+      "sha256": "85d29e8ce729c1315b499b32ad20027dea032b252beac17a43120f4e06fd9013"
+    },
+    {
+      "path": "outputs/recommendation-evidence/rec-ev-031/metrics.json",
+      "bytes": 40439,
+      "sha256": "e74872afce2b53a5912d380b935e1d0352d08aad94ad797f4a57cffbd1255657"
+    },
+    {
+      "path": "outputs/recommendation-evidence/rec-ev-031/prepare-seal.json",
+      "bytes": 1444,
+      "sha256": "c7ea1815e349165a3b9cf66164b9d3cc01ce7c0dc09a11d245e542473dc7a145"
+    },
+    {
+      "path": "outputs/recommendation-evidence/rec-ev-031/prepared.npz",
+      "bytes": 406107,
+      "sha256": "ec8cfbf42b97ffad4e198415ddb98bff82001589d372d02ed1c7072e3c30c11f"
+    },
+    {
+      "path": "outputs/recommendation-evidence/rec-ev-031/profiles.parquet",
+      "bytes": 393783,
+      "sha256": "abc608a62aa4cce82aa2a88868bc62576a739b01db49b219d11211e42bd83702"
+    },
+    {
+      "path": "outputs/recommendation-evidence/rec-ev-031/progress.json",
+      "bytes": 193,
+      "sha256": "57f760d7f3a511edc8fba62e17d395db4a3dedf51b0c305442b79f7d01ca12c2"
+    },
+    {
+      "path": "outputs/recommendation-evidence/rec-ev-031/rankings.npz",
+      "bytes": 15248103,
+      "sha256": "bdd8389bd29270f30543e38b9f40ac2cbe225433458617e4eb93b9878aa90ba1"
+    },
+    {
+      "path": "outputs/recommendation-evidence/rec-ev-031/score-resources.json",
+      "bytes": 393,
+      "sha256": "64b8ec9349285d2ab9ee9ce2fbcbee3824d35fee3b898e491210f8bf1ccf0292"
+    },
+    {
+      "path": "outputs/recommendation-evidence/rec-ev-031/score-seal.json",
+      "bytes": 1051,
+      "sha256": "33048f5353bce2433f820ac6dc477728a38aae93abbd846867810284deee4088"
+    },
+    {
+      "path": "outputs/recommendation-evidence/rec-ev-031/user-metrics.parquet",
+      "bytes": 248439,
+      "sha256": "b5635f0a15bc4115bc79b75a83e86033eb55aeafa0beddb56d216289fbf79ced"
+    },
+    {
+      "path": "scripts/rec_ev_031_catalog_bridge.py",
+      "bytes": 34238,
+      "sha256": "a8a50219f89d73b2a323e09c0f72c4d01464955242afeff49f635afae4714d76"
+    },
+    {
+      "path": "scripts/tests/test_rec_ev_031_catalog_bridge.py",
+      "bytes": 7278,
+      "sha256": "f7bf0a430acdab535419eaa3c249a670844e437da69b8a2788f1a140c92c41d7"
+    }
+  ],
+  "manifest_excludes_itself": true,
+  "historical_review_document_paths": {
+    "policy-proposal.md": "reviewed-snapshot/policy-proposal.md",
+    "insight.md": "reviewed-snapshot/insight.md"
+  },
+  "prior_manifest": "reviewed-snapshot/artifacts.json",
+  "policy_correction": "POLICY-RETRACTION.md",
+  "current_design": "docs/recommendation/plans/service-policy-redesign",
+  "note": "Source code/config/design and all sealed experiment outputs unchanged. Historical policy interpretation retracted; reviewed originals preserved exactly."
+}

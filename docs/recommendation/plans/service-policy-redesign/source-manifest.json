@@ -1,0 +1,259 @@
+{
+  "status": "DRAFT_REQUIREMENTS_LED_DESIGN",
+  "date": "2026-09-07",
+  "team_local_head": "cb280bd1f360947646fc9ca22626ec988198ee2e",
+  "team_fetched_head": "72850315b91e2e70fb775aedd8f8f3dd3f99f3cb",
+  "prior_independent_source_audit_head": "2c8e96a9d065ccaf91783344773e5325b38109b1",
+  "source_audit_note": "Later remote changes are email signup/auth; all listed recommendation source bytes are unchanged. No checkout/pull/product edits.",
+  "research_head": "17600a8f42b2d07b94d70b5e5eaa086b24642599",
+  "sources": [
+    {
+      "repository": "C:\\higher\\projects\\S15P21E106",
+      "commit": "72850315b91e2e70fb775aedd8f8f3dd3f99f3cb",
+      "path": "AGENTS.md",
+      "bytes": 7309,
+      "sha256": "e5a17b3d8055fd8b6fb148157526021987767ad2f68bdbbc637e1f67989a1102",
+      "identical_to_prior_audit_commit": true,
+      "authority": "official source, interpreted with current user instructions"
+    },
+    {
+      "repository": "C:\\higher\\projects\\S15P21E106",
+      "commit": "72850315b91e2e70fb775aedd8f8f3dd3f99f3cb",
+      "path": "docs/README.md",
+      "bytes": 4510,
+      "sha256": "ed92bd81b52e5a7f9346fab0b2e2feaa7258a8bb788886713a2ec51cf6950199",
+      "identical_to_prior_audit_commit": true,
+      "authority": "official source, interpreted with current user instructions"
+    },
+    {
+      "repository": "C:\\higher\\projects\\S15P21E106",
+      "commit": "72850315b91e2e70fb775aedd8f8f3dd3f99f3cb",
+      "path": "docs/requirements.md",
+      "bytes": 30249,
+      "sha256": "b0e55f5881773fab5637f2e56f2ce73394cdab228d27ec69b2973390dab2c7b1",
+      "identical_to_prior_audit_commit": true,
+      "authority": "official source, interpreted with current user instructions"
+    },
+    {
+      "repository": "C:\\higher\\projects\\S15P21E106",
+      "commit": "72850315b91e2e70fb775aedd8f8f3dd3f99f3cb",
+      "path": "docs/api/recommendation.md",
+      "bytes": 15637,
+      "sha256": "9723d83b41a160ad5bfa7dabf896ff83624bf24d47e8187cf68e812463c8f69d",
+      "identical_to_prior_audit_commit": true,
+      "authority": "official source, interpreted with current user instructions"
+    },
+    {
+      "repository": "C:\\higher\\projects\\S15P21E106",
+      "commit": "72850315b91e2e70fb775aedd8f8f3dd3f99f3cb",
+      "path": "docs/api/taste.md",
+      "bytes": 8342,
+      "sha256": "02606630dfd9590480e0ae884a4efe563bcd3ab10747a15213582742a09575a8",
+      "identical_to_prior_audit_commit": true,
+      "authority": "official source, interpreted with current user instructions"
+    },
+    {
+      "repository": "C:\\higher\\projects\\S15P21E106",
+      "commit": "72850315b91e2e70fb775aedd8f8f3dd3f99f3cb",
+      "path": "docs/api/onboarding-ott.md",
+      "bytes": 6048,
+      "sha256": "51963f4aced333910985377fbc9a98ea2c257225c97833470263760bbde71ed5",
+      "identical_to_prior_audit_commit": true,
+      "authority": "official source, interpreted with current user instructions"
+    },
+    {
+      "repository": "C:\\higher\\projects\\S15P21E106",
+      "commit": "72850315b91e2e70fb775aedd8f8f3dd3f99f3cb",
+      "path": "docs/api/watch.md",
+      "bytes": 11760,
+      "sha256": "dc27f1a8b4274ea09f1da35aa196c256aaf535017094c852b6c010e9f6f5a911",
+      "identical_to_prior_audit_commit": true,
+      "authority": "official source, interpreted with current user instructions"
+    },
+    {
+      "repository": "C:\\higher\\projects\\S15P21E106",
+      "commit": "72850315b91e2e70fb775aedd8f8f3dd3f99f3cb",
+      "path": "docs/api/streaming-contract.md",
+      "bytes": 28777,
+      "sha256": "4d951a4495eb21dfda62a3408d94d16012111ae8f8148c67a965dab9d57f8f21",
+      "identical_to_prior_audit_commit": true,
+      "authority": "official source, interpreted with current user instructions"
+    },
+    {
+      "repository": "C:\\higher\\projects\\S15P21E106",
+      "commit": "72850315b91e2e70fb775aedd8f8f3dd3f99f3cb",
+      "path": "docs/api/internal.md",
+      "bytes": 13234,
+      "sha256": "93465847b4f13f866d6bb2a375ae3b73441a5c27c48fc94fb179d2f7c0395bd0",
+      "identical_to_prior_audit_commit": true,
+      "authority": "superseded historical draft only"
+    },
+    {
+      "repository": "C:\\higher\\projects\\S15P21E106",
+      "commit": "72850315b91e2e70fb775aedd8f8f3dd3f99f3cb",
+      "path": "docs/adr/0002-als-content-hybrid-recommendation.md",
+      "bytes": 1752,
+      "sha256": "6e277aa02c4be73f3c66773d16cf85d959d6b5fa71430d69b5d018ca3d9417b0",
+      "identical_to_prior_audit_commit": true,
+      "authority": "official source, interpreted with current user instructions"
+    },
+    {
+      "repository": "C:\\higher\\projects\\S15P21E106",
+      "commit": "72850315b91e2e70fb775aedd8f8f3dd3f99f3cb",
+      "path": "docs/adr/0007-tmdb-movielens-data-sources.md",
+      "bytes": 1529,
+      "sha256": "e2199b3fbf89e0f668f45730e20fa4a4ad9c699d33b6d0d6c52c694bd27723e7",
+      "identical_to_prior_audit_commit": true,
+      "authority": "official source, interpreted with current user instructions"
+    },
+    {
+      "repository": "C:\\higher\\projects\\S15P21E106",
+      "commit": "72850315b91e2e70fb775aedd8f8f3dd3f99f3cb",
+      "path": "docs/adr/0014-e5-pgvector-content-embedding.md",
+      "bytes": 2527,
+      "sha256": "26fdc7476997a3c551b53a0eae600b9ee582521665bf72bdd91ccdf422011d8f",
+      "identical_to_prior_audit_commit": true,
+      "authority": "official source, interpreted with current user instructions"
+    },
+    {
+      "repository": "C:\\higher\\projects\\S15P21E106",
+      "commit": "72850315b91e2e70fb775aedd8f8f3dd3f99f3cb",
+      "path": "docs/adr/0015-kmeans-ctfidf-taste-clusters.md",
+      "bytes": 2520,
+      "sha256": "b62a03606e78bbe95a622c707ca927dc07705906b768d1a3cdb9810a76a446fb",
+      "identical_to_prior_audit_commit": true,
+      "authority": "official source, interpreted with current user instructions"
+    },
+    {
+      "repository": "C:\\higher\\projects\\S15P21E106",
+      "commit": "72850315b91e2e70fb775aedd8f8f3dd3f99f3cb",
+      "path": "docs/adr/0017-python-foldin-spark-trending-split.md",
+      "bytes": 5642,
+      "sha256": "9941e0eaf6ac04f00dbdce0b6de77997f351b16d5d6bd86dc3a0fe3eec714611",
+      "identical_to_prior_audit_commit": true,
+      "authority": "official source, interpreted with current user instructions"
+    },
+    {
+      "repository": "C:\\higher\\projects\\S15P21E106",
+      "commit": "72850315b91e2e70fb775aedd8f8f3dd3f99f3cb",
+      "path": "frontend/docs/screens/screen-spec.md",
+      "bytes": 44205,
+      "sha256": "f395b74f194437d59e5dffea3e900cf3bb8edee9f81b1334128ce495bc48cc69",
+      "identical_to_prior_audit_commit": true,
+      "authority": "official source, interpreted with current user instructions"
+    },
+    {
+      "repository": "C:\\higher\\projects\\S15P21E106",
+      "commit": "72850315b91e2e70fb775aedd8f8f3dd3f99f3cb",
+      "path": "frontend/docs/screens/wireframe-change-requests.md",
+      "bytes": 17214,
+      "sha256": "ffe20d81708cb2da67616ef17b0a95d0dc6947da12023cdd609b37ae0252b70c",
+      "identical_to_prior_audit_commit": true,
+      "authority": "official source, interpreted with current user instructions"
+    },
+    {
+      "repository": "C:\\higher\\projects\\FEELM-standalone",
+      "path": "docs/recommendation/contracts/rec-ev-019a-artifacts.json",
+      "bytes": 13238,
+      "sha256": "3b57b92767fd30e3ed20b821019c4a4b6f126950a69841c430d8a4d4b84be015",
+      "authority": "research contract/evidence; not official product requirements"
+    },
+    {
+      "repository": "C:\\higher\\projects\\FEELM-standalone",
+      "path": "docs/recommendation/contracts/rec-ev-019c-validation-artifacts.json",
+      "bytes": 26567,
+      "sha256": "480f91704231684abf3e7ec54fd1092d0f120f21682e1d8bb9cb2120bc535069",
+      "authority": "research contract/evidence; not official product requirements"
+    },
+    {
+      "repository": "C:\\higher\\projects\\FEELM-standalone",
+      "path": "docs/recommendation/contracts/rec-ev-019f-independent-temporal-routing.json",
+      "bytes": 12316,
+      "sha256": "fd220fdfee43b4eeacd9c32f310929f254e41bdfab6e0f60bd7f0e2e2423877e",
+      "authority": "research contract/evidence; not official product requirements"
+    },
+    {
+      "repository": "C:\\higher\\projects\\FEELM-standalone",
+      "path": "docs/recommendation/contracts/rec-ev-026-content-cf-alignment-design.json",
+      "bytes": 28654,
+      "sha256": "098dfe6a45f6b6ca2226e1b699008e0c9c6de495d6006e586e21354252ac5af7",
+      "authority": "research contract/evidence; not official product requirements"
+    },
+    {
+      "repository": "C:\\higher\\projects\\FEELM-standalone",
+      "path": "docs/recommendation/contracts/rec-ev-028b-label-analysis.json",
+      "bytes": 6987,
+      "sha256": "901ba4fec9b9f02a328ef438e7faffef9d5d987add5640e7c9a68ae9fffec8bc",
+      "authority": "research contract/evidence; not official product requirements"
+    },
+    {
+      "repository": "C:\\higher\\projects\\FEELM-standalone",
+      "path": "docs/recommendation/evidence/manifests/rec-ev-019a.json",
+      "bytes": 3588,
+      "sha256": "2398042e84cd0319e1598ed95a49ea6c1a489b015bc4061649ff8290800277a9",
+      "authority": "research contract/evidence; not official product requirements"
+    },
+    {
+      "repository": "C:\\higher\\projects\\FEELM-standalone",
+      "path": "docs/recommendation/evidence/REC-DATA-001-temporal-feasibility.md",
+      "bytes": 4821,
+      "sha256": "66f3f711ce5fd126a110616486c29f27d1c8e1d8b0282e1a4291e08dc73723a9",
+      "authority": "research contract/evidence; not official product requirements"
+    },
+    {
+      "repository": "C:\\higher\\projects\\FEELM-standalone",
+      "path": "docs/recommendation/evidence/REC-EV-019P-binary-onboarding-preflight.md",
+      "bytes": 4766,
+      "sha256": "eead94fee435c971be6d0f18b0c871773a018066b16618477001f0967452dc1a",
+      "authority": "research contract/evidence; not official product requirements"
+    },
+    {
+      "repository": "C:\\higher\\projects\\FEELM-standalone",
+      "path": "docs/recommendation/evidence/REC-EV-008-ui-comparison.md",
+      "bytes": 8000,
+      "sha256": "ed8e1d7304b37c5c1a5d3f1de70e13eebf3c967b0050831161a6fd5b9a890f8b",
+      "authority": "research contract/evidence; not official product requirements"
+    },
+    {
+      "repository": "C:\\higher\\projects\\FEELM-standalone",
+      "path": "docs/recommendation/evidence/REC-EV-004-exploration-pareto.md",
+      "bytes": 8450,
+      "sha256": "0b1410a4f073d7fcbeb000e7cd0bd17437947afeabe6a40ed16987e69cfcae21",
+      "authority": "research contract/evidence; not official product requirements"
+    }
+  ],
+  "new_data_execution": false,
+  "protected_data_opened": false,
+  "review_status": "PASS_FOR_REQUIREMENTS_CLASSIFICATION_AND_DESIGN_NOT_EXECUTION",
+  "reviewed_document_sha256": {
+    "requirements-classification.md": "b678898e0b680a37926b509de7db191dc35885965698fd62526740c4e3f09832",
+    "experiment-design.md": "6922710f4512a0aba4b874fa60e02ec19c9344106a9680defa13d0534fe686ba"
+  },
+  "documents": [
+    {
+      "path": "docs/recommendation/plans/service-policy-redesign/data-readiness.md",
+      "bytes": 3984,
+      "sha256": "91463f1cd2ffb149f03ed8576713aaa6413f0b5d038ecd383221e2a2ec7d9d45"
+    },
+    {
+      "path": "docs/recommendation/plans/service-policy-redesign/experiment-design.md",
+      "bytes": 13688,
+      "sha256": "6922710f4512a0aba4b874fa60e02ec19c9344106a9680defa13d0534fe686ba"
+    },
+    {
+      "path": "docs/recommendation/plans/service-policy-redesign/README.md",
+      "bytes": 1536,
+      "sha256": "6906282aed9f9af1462b5957aa4058c88f3de1e2260a0d7a176c2009e77091f7"
+    },
+    {
+      "path": "docs/recommendation/plans/service-policy-redesign/requirements-classification.md",
+      "bytes": 11041,
+      "sha256": "b678898e0b680a37926b509de7db191dc35885965698fd62526740c4e3f09832"
+    },
+    {
+      "path": "docs/recommendation/plans/service-policy-redesign/review-log.md",
+      "bytes": 3452,
+      "sha256": "91662ed2b34d86f5ac982e96a155c6c5d04db7a5f1ce82e76af82f58b4dab13f"
+    }
+  ]
+}

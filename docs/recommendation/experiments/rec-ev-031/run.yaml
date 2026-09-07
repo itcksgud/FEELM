@@ -1,0 +1,67 @@
+{
+  "status": "COMPLETED_EXPLORATORY_NOT_PRODUCT_APPROVED",
+  "experiment_id": "REC-EV-031",
+  "date": "2026-09-07",
+  "working_directory": "C:\\higher\\projects\\FEELM-standalone",
+  "research_branch": "project/standalone-feelm",
+  "research_head": "17600a8f42b2d07b94d70b5e5eaa086b24642599",
+  "team_local_head": "cb280bd1f360947646fc9ca22626ec988198ee2e",
+  "team_fetched_origin_develop": "2c8e96a9d065ccaf91783344773e5325b38109b1",
+  "frozen_config_state_note": "config design-review label retained to preserve audited bytes; actual execution approval in implementation-review.json",
+  "design_fingerprint": {
+    "code_sha256": "a8a50219f89d73b2a323e09c0f72c4d01464955242afeff49f635afae4714d76",
+    "config_sha256": "5e20c04beb2030edfe1b0701da65f89e3c28e692cb4872d71214d3a5fa98d6ce",
+    "design_sha256": "7ca491bc24b4a570194e5a5cc8a6807c23cf853cb4ee393097656b4b60444ee5"
+  },
+  "commands": [
+    "python -m pytest scripts/tests/test_rec_ev_031_catalog_bridge.py -q",
+    "python scripts/rec_ev_031_catalog_bridge.py --phase prepare",
+    "python scripts/rec_ev_031_catalog_bridge.py --phase score",
+    "python scripts/rec_ev_031_catalog_bridge.py --phase evaluate"
+  ],
+  "tests": {
+    "root": "30 passed",
+    "independent_implementation_reviewer": "30 passed"
+  },
+  "real_data_phase_attempts": [
+    {
+      "phase": "prepare",
+      "attempt": 1,
+      "status": "SUCCESS",
+      "seconds": 31.218999999997322
+    },
+    {
+      "phase": "score",
+      "attempt": 1,
+      "status": "SUCCESS",
+      "seconds": 131.14099999999962
+    },
+    {
+      "phase": "evaluate",
+      "attempt": 1,
+      "status": "SUCCESS",
+      "seconds": 8.5
+    }
+  ],
+  "total_execution_seconds": 170.86,
+  "score_peak_resident_bytes": 324239360,
+  "evaluate_peak_resident_bytes": 306950144,
+  "libraries": {
+    "python": "3.12.10",
+    "numpy": "2.4.6",
+    "pandas": "2.2.3",
+    "scipy": "1.15.2",
+    "pyarrow": "20.0.0",
+    "pytest": "8.3.5"
+  },
+  "labels": "previously opened REC029 SELECTION R0; four projected columns; read after score seal",
+  "raw_reader": "calibration only; discard other users before movie/rating/timestamp parsing",
+  "fresh_confirmation": false,
+  "protected_data_opened": false,
+  "product_policy_changed": false,
+  "paid_external_api_calls": 0,
+  "failed_real_data_phase_attempts": 0,
+  "review_rejections": "first implementation review blocked resource and identity behavior; repaired before real data",
+  "postrun_inspection_issue": "initial cases display used Windows cp949 default and failed decoding; retried UTF-8 successfully, without modifying or rerunning experiment",
+  "result_review": "see result-review.json"
+}
