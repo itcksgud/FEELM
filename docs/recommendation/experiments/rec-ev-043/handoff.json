@@ -1,0 +1,25 @@
+{
+  "experiment": "REC043",
+  "status": "CYCLE_SHARED_AWAITING_HUMAN_REVIEW_AND_MERGE",
+  "jira": "S15P21E106-309",
+  "jira_status": "진행 중",
+  "mr": "https://lab.ssafy.com/s15-bigdata-dist-sub1/S15P21E106/-/merge_requests/130",
+  "branch": "feat/S15P21E106-309-preference-structure",
+  "commit": "bc175c67c50974fadd07f6d9f6397342368af887",
+  "remote_branch_and_MR_head_match": true,
+  "jira_comment_id": "226194",
+  "jira_remote_link_id": 212033,
+  "jira_readback_verified": true,
+  "team_handoff_verification": {
+    "bytes": 5597,
+    "sha256": "fc862a01d947005b357049326fa13f9cf18e2a27a7b4c3bc1e3ca56b1cf76950"
+  },
+  "source_result_review": {
+    "bytes": 10355,
+    "sha256": "05842633d2649f39d26b76c0b5f0e17c4d642964a5ff12f8c18c4faacaa9ee82"
+  },
+  "EC2_validated": false,
+  "external_data": "LOCAL_ONLY",
+  "personal_commit_or_push": false,
+  "CI_status": "NOT_VERIFIED"
+}

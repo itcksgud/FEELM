@@ -1,0 +1,182 @@
+{
+  "audit_scope": {
+    "assignment_rows": 171034,
+    "composition_rows": 304,
+    "contract_example_rows": 20,
+    "exact_matches": 171034,
+    "historical_master_snapshots": 5,
+    "movies": 85517,
+    "native_groups": 16,
+    "sealed_artifacts": 13,
+    "source_pins": 9,
+    "synthetic_tests": 9
+  },
+  "completed_at_utc": "2026-09-08 04:14:12 UTC",
+  "completed_reuse_observed": "VERIFIED_CANDIDATE_CONTRACT_NO_RECALCULATION",
+  "completion_seal": {
+    "bytes": 4816,
+    "sha256": "c90cbc3178fb840176d5165d2cf9c7b77c95612bc9b40ceb2f4eb912a1589fdc"
+  },
+  "date": "2026-09-08",
+  "final_eight_taste_adoption": false,
+  "final_report_pins": {
+    "docs/recommendation/experiments/rec-ev-039/RESULT.md": {
+      "bytes": 7049,
+      "sha256": "586bb6e3d70eff367db55d13b387df6cecc8623db64d5aac87c9f86998ad4985"
+    },
+    "docs/recommendation/experiments/rec-ev-039/review.json": {
+      "bytes": 1009,
+      "sha256": "6a341687509870f8e6c7a3331af7c20b3e701a6742c24d8e70eb9a09b5af20c8"
+    },
+    "docs/recommendation/plans/service-policy-redesign/README.md": {
+      "bytes": 15169,
+      "sha256": "aaf124257b6ccb42bbfa896e8bab055872b4955663f093cbbaed149d9585cfe8"
+    },
+    "docs/recommendation/plans/service-policy-redesign/data-readiness.md": {
+      "bytes": 14496,
+      "sha256": "151a1fb340f0f21b2c446ce606d5afa05190249c35c36d0cd3119ae9b2fa81da"
+    },
+    "docs/recommendation/plans/service-policy-redesign/experiment-design.md": {
+      "bytes": 36873,
+      "sha256": "a5969c7c7cdd94c02adf6faab36ad62d9a920d8d4a815bd8a38848337d57af80"
+    },
+    "docs/recommendation/plans/service-policy-redesign/review-log.md": {
+      "bytes": 69274,
+      "sha256": "709b04db635fe87770cc1173695df225384c6411cbe51cbe40b265ccd101398d"
+    },
+    "docs/runbook/local-development.md": {
+      "bytes": 51629,
+      "sha256": "1a6b223200a30b6270885c8357644e0646aeffc83da14c839d83e1e3f9097a7e"
+    }
+  },
+  "fingerprint": {
+    "adapter": "99639cdab892869875950e398928122c0f8e1512fadce0f52e073829e0f0f881",
+    "config": "96e3771be5a352fac457f80169435ebced03f9ab1354b3cb3868ab64ba44c370",
+    "design": "0538d0223bde7bb0e597609f57adb7604ad7d4280fdc34893ce2a170a9f244db",
+    "rec_ev_033_tastes.py": "380333cddba629abc27392d907c42771e24095da61f8ed29c489845a384b452f",
+    "rec_ev_038_clusters.py": "59a0c26021c97a84034b19e2c66b6137a11e123373628cfb8862196eb696c296",
+    "runner": "9baa1956b29b233e4aaee50713637656e413bb4b422b1c77520072d0dec51294",
+    "tests": "d8fcb71146401de13c8659d96f8e5c5868b734cdc92d52675d3dee963910edbd"
+  },
+  "future_movie_quality_evaluated": false,
+  "independently_verified_outputs": {
+    "GROUPS.md": {
+      "bytes": 3115,
+      "sha256": "4c21365c59eebc708b3c7af70fc98656ff180c3d8e1be4f9a22c0a78456dbf06"
+    },
+    "budget.json": {
+      "bytes": 712,
+      "sha256": "6714591c7916de070a21c8062f091b362d7aa2286cc9d9d3ed3f3a16d79dfb11"
+    },
+    "candidate-package.json": {
+      "bytes": 5996,
+      "sha256": "ec2a8843e4ee3ab6fa31e5952634b734fdfd46a1976ac63dca407cb3145ca894"
+    },
+    "conformance.json": {
+      "bytes": 835,
+      "sha256": "9a42652b23405a9e1fac591a5f31f64a8c4308005026c5349e3af6086560ceda"
+    },
+    "contract-examples.json": {
+      "bytes": 6943,
+      "sha256": "f388c091ffe96a5072effaa42ccab86fa7197de5b39761109670ed800d860d0d"
+    },
+    "genre-composition.json": {
+      "bytes": 120236,
+      "sha256": "1392bac0e26b9b58ef64bfcfaf0df09ef8dbcfc6ac70de84037cf8440c8c3176"
+    },
+    "master-before/docs/recommendation/plans/service-policy-redesign/README.md": {
+      "bytes": 14080,
+      "sha256": "112dd5d272904af66343308a19954f9c514bf1340a27fe5d51a43b3f968cc50b"
+    },
+    "master-before/docs/recommendation/plans/service-policy-redesign/data-readiness.md": {
+      "bytes": 13876,
+      "sha256": "d284f0174acd81b060f5d514379a9d31623323738111904d3a1d859f7144dd36"
+    },
+    "master-before/docs/recommendation/plans/service-policy-redesign/experiment-design.md": {
+      "bytes": 36298,
+      "sha256": "6e6cac8efc237f69128e40a5e19ccd5c9f2ae29ba604b44716120fddf96f71ca"
+    },
+    "master-before/docs/recommendation/plans/service-policy-redesign/review-log.md": {
+      "bytes": 67109,
+      "sha256": "765ba97ad9cff0320be42df640564d782c4cafc4ebccfa6fb1474fbb69a8df9b"
+    },
+    "master-before/docs/runbook/local-development.md": {
+      "bytes": 50168,
+      "sha256": "bb639027d3ee5879b846f23ae79036e210774f2519e14b2733bace94f68e10bb"
+    },
+    "master-before/index.json": {
+      "bytes": 1132,
+      "sha256": "c79cf80f75017114590912011d188bcad5e53738b0d90679e7d00bd308cea83e"
+    },
+    "native-assignments.parquet": {
+      "bytes": 867261,
+      "sha256": "b5331aeb53cfb15ae12784e4db6da595702d2f34550ef07137fbe8c984b25090"
+    }
+  },
+  "input_pins": {
+    "assignments038": {
+      "bytes": 1358120,
+      "path": "outputs/recommendation-evidence/rec-ev-038/assignments.npz",
+      "sha256": "a996e3475c32225e1572461f6887cf61ae03fe3e18584eeb84b164c5015ee3f6"
+    },
+    "config033": {
+      "bytes": 4964,
+      "path": "docs/recommendation/experiments/rec-ev-033/config.json",
+      "sha256": "e8840419a7846960c0042d0827cc071d0cfe97bca71dc872c0a701194df29cf5"
+    },
+    "config038": {
+      "bytes": 3832,
+      "path": "docs/recommendation/experiments/rec-ev-038/config.json",
+      "sha256": "554ea418d20128f4749e8c128d705284b45bbcae68b335bcf9f4ed48d2f6a681"
+    },
+    "feature_index038": {
+      "bytes": 259676,
+      "path": "outputs/recommendation-evidence/rec-ev-038/feature-index.npz",
+      "sha256": "8de48564a3bea6c411b8b6b94ddf96aa4d3b65bc3f39d190e5487c4d672caa94"
+    },
+    "metadata": {
+      "bytes": 13443836,
+      "path": "outputs/recommendation-evidence/rec-ev-033/metadata.parquet",
+      "sha256": "86e2e4eb087bbdbf2500b9b8a7e50abf1ef09b52ea6110c62d41581e7d45d016"
+    },
+    "model038": {
+      "bytes": 243262,
+      "path": "outputs/recommendation-evidence/rec-ev-038/model-KM_GENRE-20260909.npz",
+      "sha256": "adeaab918f1161338752aa564c667b114d624442c500b7980ce4f78b7ac2b036"
+    },
+    "numeric_seal038": {
+      "bytes": 9464,
+      "path": "outputs/recommendation-evidence/rec-ev-038/numeric-seal.json",
+      "sha256": "de24cabaae5612a17db13e9a937f0af7930fcd357bee1e66b874520a979751fa"
+    },
+    "result_review038": {
+      "bytes": 6610,
+      "path": "docs/recommendation/experiments/rec-ev-038/result-review.json",
+      "sha256": "f174d92aa8e8b1138e735994e4360220b308b61060f9b01bf98844ba45ba6ecb"
+    },
+    "terms": {
+      "bytes": 224510,
+      "path": "outputs/recommendation-evidence/rec-ev-033/terms.parquet",
+      "sha256": "93cca8c01a2a2b2590e4aea36f7e412ee08e285de2f52e3dcd8f4957f2f9d6dd"
+    }
+  },
+  "new_encoding": 0,
+  "new_fits": 0,
+  "next_step": "Handoff of the fixed native-group interface to a separately frozen Stage4 supply comparison.",
+  "official_flavor_mapping": false,
+  "post_review_edits": [
+    "Completion status and review-complete past tense only.",
+    "Final review record and link; review-log completion."
+  ],
+  "previous_128_rescored": false,
+  "provisional_candidates": [
+    "RULE_GENRE",
+    "KM_GENRE"
+  ],
+  "ratings_decoded": false,
+  "recommendation_quality_evaluated": false,
+  "recommendation_slots_executed": false,
+  "remaining_required_corrections": 0,
+  "reviewer": "rec039_next_step_review",
+  "status": "PASS_AUDIT_COMPLETE"
+}

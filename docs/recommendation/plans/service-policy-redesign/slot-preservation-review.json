@@ -1,0 +1,25 @@
+{
+  "status": "PASS",
+  "reviewer": "/root/stage3_assets_audit",
+  "date": "2026-09-08",
+  "scope": "research preparation only; no real ranking adapter, service integration or quality approval",
+  "files": {
+    "docs/recommendation/plans/service-policy-redesign/slot-preservation-proposal.md": {
+      "bytes": 3602,
+      "sha256": "46b695d5d0803b451a0d59f0e7f2948321078f47c3535fbdb805211c1dddba0c"
+    },
+    "scripts/feelm_slot_preservation.py": {
+      "bytes": 1293,
+      "sha256": "898084bd6c052ba1764a428bedbbd0c1c92cc71e9edc73b9827b1a8ca5019ae0"
+    },
+    "scripts/tests/test_feelm_slot_preservation.py": {
+      "bytes": 2728,
+      "sha256": "ed5171194ab24ce6ffc532127b053ee619a99ede01835e2537337badfde56e9b"
+    }
+  },
+  "unittest_count": 6,
+  "additional_independent_synthetic_cases": 250,
+  "mandatory_findings_remaining": 0,
+  "actual_data_access": false,
+  "service_contract_changed": false
+}

@@ -1,0 +1,53 @@
+{
+  "all_source_sufficient": true,
+  "artifacts": {
+    "judgment-seal.json": {
+      "bytes": 1450,
+      "sha256": "49ca8de23eb064294838d611a0a2444e968495a965c76e2da740a8f95256437f"
+    },
+    "judgments-draft.json": {
+      "bytes": 242562,
+      "sha256": "2748c2ba90ab5f40464bbf3ea0c4c9a57d2744b6760a24abfbb7d21a74550502"
+    },
+    "judgments-part-a.json": {
+      "bytes": 55331,
+      "sha256": "1b62b3e6e1b50557d8d1701b1d24e7b81ed8cfd32f205a69fb219165bc5d613b"
+    },
+    "judgments-part-b.json": {
+      "bytes": 52570,
+      "sha256": "24c714bca0f63d6f57fe9a768ec4508b17c86d09b53ea7c73abef6311a99770c"
+    },
+    "judgments-part-c.json": {
+      "bytes": 54260,
+      "sha256": "b33e816ea97b02d45bf693659799b48d73b574366e5db91161dcea7c6513bec7"
+    },
+    "judgments.json": {
+      "bytes": 242562,
+      "sha256": "2748c2ba90ab5f40464bbf3ea0c4c9a57d2744b6760a24abfbb7d21a74550502"
+    }
+  },
+  "assignment_and_method_keys_hidden_until_judgment_seal": true,
+  "cards_by_reviewer": [
+    43,
+    43,
+    42
+  ],
+  "date": "2026-09-08",
+  "first_pass_only": true,
+  "judgments_by_reviewer": [
+    344,
+    344,
+    336
+  ],
+  "reviewers": [
+    "rec038_blind_a",
+    "rec038_blind_b",
+    "rec038_blind_c"
+  ],
+  "root_verified_all_reported_hashes": true,
+  "root_wrote_during_agent_handoff": false,
+  "saved_runtime_equality_verified_by_reviewers": true,
+  "sequential_exclusive_write_handoff": true,
+  "status": "PASS_BLIND_JUDGMENT_PERSISTENCE",
+  "unavailable_description_acceptances": 0
+}

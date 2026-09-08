@@ -1,0 +1,21 @@
+{
+  "date": "2026-09-08",
+  "fingerprint": {
+    "base": "58206af0646fa70a8693a2e60b06da1884fbbdfb9b8c16657eeb8fc1e3676d8d",
+    "budget_helper": "380333cddba629abc27392d907c42771e24095da61f8ed29c489845a384b452f",
+    "conditional": "6c2580b910802c5c4127c916a0d980b7daa39754d715745b552bc03e0dd15c53",
+    "config": "0c7c1c7b72fe1f129500f2afea56fe10f9ce43bf0fe1e8f69ea2bbfdba256b73",
+    "design": "e079b4dbf51c4bf750afbb0d83e0545871d1056dd87637370da42593de56b7d8",
+    "runner": "3d31ccc419a6b4261aa8351f6a1f927eed55a1fad485c7924cf670c0fb72e907",
+    "tests": "499d7b2a686c241db1ed3aec2aa8e7240120afa5d05d63351ebbbe284542c8c5"
+  },
+  "independent_reviewers": {
+    "rec033_design_review": "Whole execution review; 9 unit tests, 2 independent score fixtures, independent 27-family bootstrap, source16/ancestor10/output39/link12 checks PASS. Latest document header included.",
+    "stage3_assets_audit": "Runtime/lineage PASS: hash-only source checks, NPZ headers, 100 dtype prior fixtures, 24 raw scorer fixtures.",
+    "stage3_contract_audit": "Design and evaluation/statistics/label-boundary PASS. Only subsequent README edit is DRAFT research-status header; covered by final execution review."
+  },
+  "raw_payload_opened_before_execution": false,
+  "status": "PASS",
+  "synthetic_tests": 9,
+  "user_authorization": "Compare the three results and explain intuitively; one B fit, A/C raw factor reuse."
+}

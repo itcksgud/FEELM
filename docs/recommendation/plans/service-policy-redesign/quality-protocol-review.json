@@ -1,0 +1,21 @@
+{
+  "status": "PASS",
+  "reviewer": "/root/stage3_contract_audit",
+  "date": "2026-09-08",
+  "scope": "research preparation only; no real ranking adapter, service integration or quality approval",
+  "files": {
+    "docs/recommendation/plans/service-policy-redesign/quality-judgment-protocol.md": {
+      "bytes": 6763,
+      "sha256": "f69f81ba8268dc2ddeea80f87e6936dde21de9e096abde9e3d71e72d5c6b90b1"
+    }
+  },
+  "unittest_count": 0,
+  "additional_independent_synthetic_cases": 0,
+  "mandatory_findings_remaining": 0,
+  "actual_data_access": false,
+  "service_contract_changed": false,
+  "fixed_findings": [
+    "policy-specific discovery judgments for same movie",
+    "shortage and fallback question branching"
+  ]
+}

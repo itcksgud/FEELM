@@ -1,0 +1,168 @@
+{
+  "completion_reuse": "VERIFIED_EXISTING_COMPLETION_NO_FIT_OR_SCORING",
+  "conclusion": {
+    "B_vs_A_and_C": "All 18 simultaneous comparisons unfavorable in this fixed configuration",
+    "C_vs_A": "All 9 simultaneous intervals include zero; equivalence not established",
+    "actual_onboarding_validated": false,
+    "additional_grid_search": false,
+    "baseline": "A_RAW",
+    "service_K_selected": false
+  },
+  "date": "2026-09-08",
+  "documentation": {
+    "docs\\recommendation\\plans\\service-policy-redesign\\README.md": {
+      "bytes": 10617,
+      "sha256": "34de96f9ed0a1890342965fcb4559f6d99d92275f91437d875215bc6f44064cc"
+    },
+    "docs\\recommendation\\plans\\service-policy-redesign\\data-readiness.md": {
+      "bytes": 11507,
+      "sha256": "213c48d2e1a8514d34bfc467eb1b409bfc40431cafc6a51b20564456126e3f3e"
+    },
+    "docs\\recommendation\\plans\\service-policy-redesign\\experiment-design.md": {
+      "bytes": 34227,
+      "sha256": "4157eac0c78f7db7832acd4ea3bdb1c3a9ef3afddd1d0669cd76e752e5de7e4e"
+    },
+    "docs\\recommendation\\plans\\service-policy-redesign\\morning-brief.md": {
+      "bytes": 5356,
+      "sha256": "342fbb3063e68adb7fcc278a912f79e4b265f4ed7689a8117098d3e04767a661"
+    },
+    "docs\\recommendation\\plans\\service-policy-redesign\\overnight-progress.md": {
+      "bytes": 8415,
+      "sha256": "8ee7f62751a922831e89db842d6f25ed32013821efac6fd1a262ecd6f0441e84"
+    },
+    "docs\\recommendation\\plans\\service-policy-redesign\\review-log.md": {
+      "bytes": 55675,
+      "sha256": "a008a73888d6fe0c72afe721ba8ac23d684c05054524331f2261f54a941e8ab3"
+    },
+    "docs\\runbook\\local-development.md": {
+      "bytes": 43116,
+      "sha256": "51f46eca5adcea86c33f7b6b8b8eb76cb099b126455671cb094e2612023508c5"
+    }
+  },
+  "execution_fingerprint": {
+    "base": "58206af0646fa70a8693a2e60b06da1884fbbdfb9b8c16657eeb8fc1e3676d8d",
+    "budget_helper": "380333cddba629abc27392d907c42771e24095da61f8ed29c489845a384b452f",
+    "conditional": "6c2580b910802c5c4127c916a0d980b7daa39754d715745b552bc03e0dd15c53",
+    "config": "0c7c1c7b72fe1f129500f2afea56fe10f9ce43bf0fe1e8f69ea2bbfdba256b73",
+    "design": "e079b4dbf51c4bf750afbb0d83e0545871d1056dd87637370da42593de56b7d8",
+    "runner": "3d31ccc419a6b4261aa8351f6a1f927eed55a1fad485c7924cf670c0fb72e907",
+    "tests": "499d7b2a686c241db1ed3aec2aa8e7240120afa5d05d63351ebbbe284542c8c5"
+  },
+  "independent_audits": {
+    "rec033_design_review_full_scoring": {
+      "A_original_states_exact": [
+        2180,
+        2180,
+        2180,
+        2180
+      ],
+      "E_pairs": 191933,
+      "cells": 26160,
+      "conditional_and_global_top2_exact": true,
+      "evaluation_labels_read": false,
+      "new_fits": 0,
+      "order_digests_matched": 12,
+      "peak_rss_bytes": 301252608,
+      "score_digests_matched": 12,
+      "seconds": 146.83,
+      "status": "PASS",
+      "supply_exact": true
+    },
+    "stage3_assets_audit_prepare_train": {
+      "duplicate_interactions": 0,
+      "evaluation_labels_read": false,
+      "evaluation_users": 2180,
+      "finite_factor_values": 3471168,
+      "float32_transformation_mismatches": 0,
+      "max_sse_objective_reduction_difference": 7.45e-09,
+      "rmse_difference": 0,
+      "status": "PASS",
+      "train_role_graph_prior_rms_mapper_exact": true,
+      "training_evaluation_overlap": 0,
+      "training_rows": 7355439,
+      "training_users": 46376
+    },
+    "stage3_assets_audit_report_and_chart": {
+      "body_reviewed_sha256": "fc44cfda8084aa49f5b8316992173b6d6157a5a4e23ffd16474e0fed6c1edd05",
+      "chart_values": 27,
+      "comparison_rows": 27,
+      "final_report_status_recheck": "PASS; only status and review paragraph changed; final 11364 bytes/e7905618edf0eece59e9de149c6aad95e7f475a8571a159c2789e195f97573c7 independently confirmed",
+      "n30_table_values": 12,
+      "n_table_values": 18,
+      "status": "PASS",
+      "subsequent_changes": "Completion status and review paragraph only; no numeric or interpretation change.",
+      "visual_qa": "PNG inspected: no clipping/overlap; SVG structure and labels verified"
+    },
+    "stage3_contract_audit_statistics": {
+      "aggregate_rows": 12,
+      "bootstrap_repeats": 20000,
+      "fixed_Q_values": 191933,
+      "independent_algorithm": "shared user draw frequency matrix; integer Q numerators; no runner statistical helpers",
+      "max_aggregate_difference": 1.89e-15,
+      "max_ci_difference": 1.25e-16,
+      "paired_comparisons": 27,
+      "selected_slots": 52320,
+      "status": "PASS",
+      "user_metric_difference": 0,
+      "user_metric_rows": 26160,
+      "user_metric_values": 104640,
+      "win_tie_loss_or_direction_mismatches": 0
+    },
+    "stage3_contract_audit_summaries": {
+      "files": [
+        "README.md",
+        "experiment-design.md",
+        "overnight-progress.md",
+        "morning-brief.md",
+        "data-readiness.md"
+      ],
+      "minor_recommendations_applied": [
+        "100-point Q scale explicit",
+        "REC035 added to historical access list"
+      ],
+      "status": "PASS"
+    }
+  },
+  "report_artifacts": {
+    "RESULT.md": {
+      "bytes": 11364,
+      "sha256": "e7905618edf0eece59e9de149c6aad95e7f475a8571a159c2789e195f97573c7"
+    },
+    "comparison.png": {
+      "bytes": 122478,
+      "sha256": "099a30ddab8f710490bb1aef20649f810fd0bfecf44c58404716fdd74b77fb24"
+    },
+    "comparison.svg": {
+      "bytes": 141872,
+      "sha256": "1a2356f982ce4696ca45ccbb8f534082c1487ad0c94f5da8d9abe43cfad1c402"
+    }
+  },
+  "report_generator": {
+    "bytes": 2956,
+    "sha256": "23d60e40b892af1267368bc5fb71ad7d25e23dd4d99ff00c8757735d0167dc9b"
+  },
+  "seals": {
+    "completion-seal.json": {
+      "bytes": 8023,
+      "sha256": "84a55453382af62b82b074c679a41d3b0e69ce1aa7af654c0ffd225edc725e54"
+    },
+    "evaluate-seal.json": {
+      "bytes": 1333,
+      "sha256": "dad97b97034d12ab1c122d5e5df15be6c1aec2e62238a6455f408391f38acdfe"
+    },
+    "prepare-seal.json": {
+      "bytes": 6088,
+      "sha256": "300f4c8fd01bd02f550f3267386984fe8166a3a49e2b35afe3fab9c56a17a823"
+    },
+    "score-seal.json": {
+      "bytes": 7138,
+      "sha256": "e9bd288ae05a599a75644324259de81a6a264469086c5dd122a5fb3f0d4856f6"
+    },
+    "train-seal.json": {
+      "bytes": 1107,
+      "sha256": "91ba3782370ca7670e72c0befd914d36b17543cebb21c28c0d95c210b8e8aca5"
+    }
+  },
+  "source_pins_preserved": true,
+  "status": "PASS"
+}

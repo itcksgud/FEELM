@@ -1,0 +1,59 @@
+{
+  "experiment": "REC036_KMEANS_READINESS",
+  "inputs": {
+    "completion": {
+      "path": "outputs/recommendation-evidence/rec-ev-033/completion-seal.json",
+      "bytes": 5298,
+      "sha256": "554180ebd422532ccfd0180d484ef8336e34e3d30fe0a8be34ef8031a818948d"
+    },
+    "metadata": {
+      "path": "outputs/recommendation-evidence/rec-ev-033/metadata.parquet",
+      "bytes": 13443836,
+      "sha256": "86e2e4eb087bbdbf2500b9b8a7e50abf1ef09b52ea6110c62d41581e7d45d016"
+    },
+    "cache_ledger": {
+      "path": "outputs/recommendation-evidence/rec-ev-033/cache-ledger.parquet",
+      "bytes": 12341017,
+      "sha256": "e807e5a959bc0e57593b168db634a3fe86e032f1b51a88e6fff3cb061f6b0a63"
+    },
+    "centroids": {
+      "path": "outputs/recommendation-evidence/rec-ev-033/centroids.npz",
+      "bytes": 1560988,
+      "sha256": "77ea5c0f4473a7cd8da477c11960050e4142f68912417e40ceccc6a0a346bbd7"
+    },
+    "assignments": {
+      "path": "outputs/recommendation-evidence/rec-ev-033/assignments.parquet",
+      "bytes": 1494535,
+      "sha256": "6cbb193c9e0f33a55d67db51e2aa6c3ecb80bbed2253c4f8003e9827dcea4ade"
+    },
+    "summary": {
+      "path": "outputs/recommendation-evidence/rec-ev-033/taste-summary.json",
+      "bytes": 93746,
+      "sha256": "5ed81338c18340284bfd37639db6114df778169a21e98212f7b6f57626c72d86"
+    },
+    "embeddings": {
+      "path": "outputs/recommendation-evidence/rec-ev-027-catalog/text-embeddings.parquet",
+      "bytes": 125720897,
+      "sha256": "d19ff51cd0e7af8fa6dab1f74de6fac5f90eb85993db494565de67a818529f7c"
+    },
+    "source_config": {
+      "path": "docs/recommendation/experiments/rec-ev-033/config.json",
+      "bytes": 4964,
+      "sha256": "e8840419a7846960c0042d0827cc071d0cfe97bca71dc872c0a701194df29cf5"
+    },
+    "catalog_manifest": {
+      "path": "outputs/recommendation-evidence/rec-ev-027-catalog/catalog-build-manifest.json",
+      "bytes": 1926,
+      "sha256": "1e7fa6ee6319485653f43a45e42e189c5e27482f6fd222d0c2c7271e4cc24393"
+    }
+  },
+  "expected_movies": 85517,
+  "nearest_count": 5,
+  "hash_count": 5,
+  "boundary_count": 5,
+  "hash_prefix": "rec033-example-v1|",
+  "card_prefix": "rec036-card-v1|",
+  "max_seconds": 1800,
+  "max_process_tree_bytes": 12884901888,
+  "output_root": "outputs/recommendation-evidence/rec-ev-036"
+}

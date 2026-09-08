@@ -1,0 +1,34 @@
+{
+  "status": "PASS",
+  "reviewer": "/root/rec032_result_review",
+  "mandatory_findings": 0,
+  "scope": "OUTPUT_CALCULATION_AND_REPORT_CONSISTENCY_NOT_QUALITY_SUPERIORITY",
+  "reviewed_report_draft_sha256": "df7ef37dbcd2cfe083074f01f85a08a82e1fff5385beb5fad25469f8e5d1de38",
+  "final_report_sha256": "cef0d3d70e155753c7d739e7b009873f5fa1c71904302d87a055ca959a38e7f0",
+  "final_report_changes": "Only completion status, this review record, and its scope/link added; numerical results and conclusions unchanged.",
+  "verified": {
+    "user_metric_rows": 17440,
+    "users": 2180,
+    "coverage_cells": 8,
+    "paired_comparisons": 9,
+    "bootstrap_repeats": 5000,
+    "max_interval_error": 4.440892098500626e-16,
+    "all_quality_comparisons_undecided": true,
+    "rankings_metrics_diagnostics_consistent": true,
+    "output_hashes_and_seal_dependencies_match": true
+  },
+  "artifact_sha256": {
+    "metrics": "6960fb89fae4d19d63bb1d432b12126f4de590b49db931e4bbd7637d8cde5e76",
+    "score_seal": "bfa8be83983ad21f667a09d852f6f4110330f4e3bb2eaaee09899f516286ef5d",
+    "evaluate_seal": "473f338131f1fdd49926873eb68d64a7e01c575d2b672ec3aa0e1ddb29059387"
+  },
+  "not_independently_recreated": [
+    "original H/Q and full 191933 user/movie label union",
+    "full-catalogue score digest",
+    "individual phase durations"
+  ],
+  "execution_seconds_verified": 355.593,
+  "peak_tree_rss_bytes": 1943638016,
+  "protected_data_opened": false,
+  "product_adoption": false
+}

@@ -1,0 +1,109 @@
+{
+  "experiment": "REC043",
+  "jira": "S15P21E106-309",
+  "methods": [
+    "RULE_GENRE_SET",
+    "KM_GENRE",
+    "TMDB_GENRES"
+  ],
+  "groups": [
+    8,
+    8,
+    18
+  ],
+  "input_n": 30,
+  "users": 2180,
+  "E_original": 191933,
+  "E_common": 191932,
+  "ALS_filter": false,
+  "prior_strength": 5.0,
+  "descriptive_min_mass": 5.0,
+  "bootstrap": {
+    "repeats": 20000,
+    "seed": 20260909,
+    "rng": "PCG64",
+    "dtype": "int64",
+    "family": 3,
+    "tails": [
+      0.008333333333333333,
+      0.9916666666666667
+    ],
+    "quantile": "linear"
+  },
+  "max_seconds": 900,
+  "max_process_tree_bytes": 4294967296,
+  "donor": "SHA256_REC043-DONOR|user_key_SORT_CYCLIC_NEXT_DESCRIPTIVE_ONLY",
+  "input_Q_H_used": false,
+  "claim": "EXPLORATORY_OBSERVED_RATINGS_FIXED_PROBE_NOT_SERVICE_OR_CAUSAL",
+  "inputs": {
+    "profiles": {
+      "path": "outputs/recommendation-evidence/rec-ev-032/profiles.parquet",
+      "bytes": 300295,
+      "sha256": "42cb1f81a028359662375fc79f3484208aa58386cabad5006fb94dd29c5bd8b4"
+    },
+    "prepared": {
+      "path": "outputs/recommendation-evidence/rec-ev-032/prepared.npz",
+      "bytes": 477520,
+      "sha256": "4b91394997206f4cd78886b8d995ccb8d8393640d0cfd13a6be5179a003dfc4a"
+    },
+    "prepare_seal": {
+      "path": "outputs/recommendation-evidence/rec-ev-032/prepare-seal.json",
+      "bytes": 2721,
+      "sha256": "e4ae13c2921ce823d785c4c02c600b7b9849319cae540c686f353c970a75eee3"
+    },
+    "targets": {
+      "path": "outputs/recommendation-evidence/rec-ev-032/conditional-ranking/targets.parquet",
+      "bytes": 599158,
+      "sha256": "739eda8ad3cf864b4c42a85e583f393f7e2ce64cba81b6cc41786adad40beb1a"
+    },
+    "labels": {
+      "path": "outputs/recommendation-evidence/rec-ev-032/conditional-ranking/evaluation-labels.parquet",
+      "bytes": 1074120,
+      "sha256": "46c7696fa363b5c7ecd94f9d6a9d14dbd5da3b66038026215cbf898864b9f85b"
+    },
+    "metadata": {
+      "path": "outputs/recommendation-evidence/rec-ev-033/metadata.parquet",
+      "bytes": 13443836,
+      "sha256": "86e2e4eb087bbdbf2500b9b8a7e50abf1ef09b52ea6110c62d41581e7d45d016"
+    },
+    "assignments_km": {
+      "path": "outputs/recommendation-evidence/rec-ev-039/native-assignments.parquet",
+      "bytes": 867261,
+      "sha256": "b5331aeb53cfb15ae12784e4db6da595702d2f34550ef07137fbe8c984b25090"
+    },
+    "assignments_rule": {
+      "path": "outputs/recommendation-evidence/rec-ev-040/native-assignments.parquet",
+      "bytes": 1066175,
+      "sha256": "f2166e40bdfc29dba5e6360793d559c9f55ab3a34f58cf2b234d68a779237c90"
+    },
+    "conditional_completion": {
+      "path": "outputs/recommendation-evidence/rec-ev-032/conditional-ranking/completion-seal.json",
+      "bytes": 2624,
+      "sha256": "8a12c94ed301a93a3b29e396a0af29f68a7a0f44d2caa48b03cf5536d8d5f0d9"
+    },
+    "review_km": {
+      "path": "docs/recommendation/experiments/rec-ev-039/result-review.json",
+      "bytes": 7479,
+      "sha256": "e69489fb34c6c0086940686751a359e103cd7da323561c971142e6f93143ac89"
+    },
+    "review_rule": {
+      "path": "docs/recommendation/experiments/rec-ev-040/result-review.json",
+      "bytes": 7898,
+      "sha256": "8a862940480665b7e1c52baf14441f61d4d2468fa7fccff1ac8c6ca03dc28ea2"
+    },
+    "review_E": {
+      "path": "docs/recommendation/experiments/rec-ev-032/conditional-ranking/result-review.json",
+      "bytes": 2695,
+      "sha256": "a6425c4ecce979b54fe82954c94b655a9d0f72fd601a001a06688f541812c454"
+    }
+  },
+  "output_root": "outputs/recommendation-evidence/rec-ev-043",
+  "numeric_tolerance": 1e-12,
+  "seen_strata": [
+    "ALL_UNSEEN",
+    "PARTIAL_SEEN",
+    "ALL_SEEN"
+  ],
+  "SD": "FRACTIONAL_MASS_WEIGHTED_POPULATION",
+  "numerical_zero_effect_and_primary_delta": 1e-12
+}

@@ -1,0 +1,96 @@
+{
+  "experiment": "REC-EV-032",
+  "status": "DRAFT_RESEARCH_EXECUTION",
+  "purpose": "EXPLORATORY_BASIC_RANK_TOP2_NOT_PRODUCT_ADOPTION",
+  "inputs": {
+    "universe": {
+      "path": "outputs/recommendation-evidence/rec-ev-027/screen/prepared/universe.npz",
+      "bytes": 130999,
+      "sha256": "da1d11d858a6a5206ce396a43cdb2c7688a31eeef4a1a6db9efd14e88ad23247"
+    },
+    "structured": {
+      "path": "outputs/recommendation-evidence/rec-ev-027/screen/prepared/structured-common.npz",
+      "bytes": 3000693,
+      "sha256": "7e1b20075c5e021c967489f87d161d20322e34e1e2f74dbc24f651deb9ba3310"
+    },
+    "profiles": {
+      "path": "outputs/recommendation-evidence/rec-ev-029/prelabel/prepared/profile-ratings.parquet",
+      "bytes": 3219007,
+      "sha256": "6d80e57ad4b4b1c50a00bb0dbf524a277fe3f6c61d78b498b8cec1d4c435629e"
+    },
+    "prior": {
+      "path": "outputs/recommendation-evidence/rec-ev-029/prelabel/prepared/calibration-prior.npz",
+      "bytes": 979,
+      "sha256": "6e1856f4bcd6d9edcf644e1b2f5a8d9fdd112c0535f001574336e45ab32a6eae"
+    },
+    "membership": {
+      "path": "outputs/recommendation-evidence/rec-ev-029/cache/membership.parquet",
+      "bytes": 2884909,
+      "sha256": "d8998e94a7ec525b203e09c0f5665c81f875e0a14334d22cd5d486491327ef2d"
+    },
+    "labels": {
+      "path": "outputs/recommendation-evidence/rec-ev-029/postlabel/selection/labels.parquet",
+      "bytes": 1407356,
+      "sha256": "23e11f8bed63801e946cd475ecf3a34524827b4b741e80c4a89fe29cb2e6366c"
+    },
+    "archive": {
+      "path": "C:/higher/projects/MM/data/raw/ml-32m.zip",
+      "member": "ml-32m/ratings.csv",
+      "bytes": 238950008,
+      "sha256": "e4a68655d7386b8f95f2f2424b2ff975dfdd15ffd59e0d864a14dca43e99d6ee"
+    }
+  },
+  "cohort": "SELECTION",
+  "outer": "R0",
+  "allowed_label_outers": [
+    "R0",
+    "R1",
+    "R2",
+    "R3",
+    "R4",
+    "KR",
+    "RECENT"
+  ],
+  "expected_users": 2180,
+  "expected_items": 85517,
+  "expected_train_users": 46376,
+  "expected_train_ratings": 7355439,
+  "expected_raw_rows": 32000204,
+  "max_user_id": 200948,
+  "max_movie_id": 300000,
+  "ns": [
+    0,
+    5,
+    10,
+    30
+  ],
+  "policies": [
+    "P0",
+    "M0_RAW_ALS_STRUCTURED_RRF60"
+  ],
+  "top_n": 2,
+  "popularity_prior": 50,
+  "input_prior": 5,
+  "als": {
+    "rank": 32,
+    "reg": 0.1,
+    "iterations": 10,
+    "seed": 42,
+    "implicit": false,
+    "centering": "none",
+    "train_scope": "ALL_CALIBRATION_ROWS_BEFORE_CATALOG_FILTER",
+    "master": "local[4]",
+    "driver_memory": "4g",
+    "shuffle_partitions": 32,
+    "num_user_blocks": 10,
+    "num_item_blocks": 10
+  },
+  "rrf_c": 60,
+  "bootstrap_repeats": 5000,
+  "bootstrap_seed": 20260907,
+  "family_size": 9,
+  "alpha": 0.05,
+  "max_seconds": 1800,
+  "max_process_tree_bytes": 12884901888,
+  "output_root": "outputs/recommendation-evidence/rec-ev-032"
+}

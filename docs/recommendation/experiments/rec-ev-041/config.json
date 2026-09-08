@@ -1,0 +1,103 @@
+{
+  "candidate_size": 500,
+  "experiment": "REC041_TWO_MAPPINGS_TWO_DISCOVERY_POLICIES",
+  "inputs": {
+    "assignments039": {
+      "bytes": 867261,
+      "path": "outputs/recommendation-evidence/rec-ev-039/native-assignments.parquet",
+      "sha256": "b5331aeb53cfb15ae12784e4db6da595702d2f34550ef07137fbe8c984b25090"
+    },
+    "assignments040": {
+      "bytes": 1066175,
+      "path": "outputs/recommendation-evidence/rec-ev-040/native-assignments.parquet",
+      "sha256": "f2166e40bdfc29dba5e6360793d559c9f55ab3a34f58cf2b234d68a779237c90"
+    },
+    "factors": {
+      "bytes": 7504871,
+      "path": "outputs/recommendation-evidence/rec-ev-032/factors.npz",
+      "sha256": "3feb554a5af6469fcb5ffbde46010e032d2134ee983bd5f87b14aef7754dcdba"
+    },
+    "histogramsE": {
+      "bytes": 130443,
+      "path": "outputs/recommendation-evidence/rec-ev-032/conditional-ranking/histograms.npz",
+      "sha256": "444059c0c155d8151ee24011dc3ef4610e8b9c03b181864b5b66d6bb3042b2c5"
+    },
+    "labelsE": {
+      "bytes": 1074120,
+      "path": "outputs/recommendation-evidence/rec-ev-032/conditional-ranking/evaluation-labels.parquet",
+      "sha256": "46c7696fa363b5c7ecd94f9d6a9d14dbd5da3b66038026215cbf898864b9f85b"
+    },
+    "metadata": {
+      "bytes": 13443836,
+      "path": "outputs/recommendation-evidence/rec-ev-033/metadata.parquet",
+      "sha256": "86e2e4eb087bbdbf2500b9b8a7e50abf1ef09b52ea6110c62d41581e7d45d016"
+    },
+    "prepare_seal": {
+      "bytes": 2721,
+      "path": "outputs/recommendation-evidence/rec-ev-032/prepare-seal.json",
+      "sha256": "e4ae13c2921ce823d785c4c02c600b7b9849319cae540c686f353c970a75eee3"
+    },
+    "prepared": {
+      "bytes": 477520,
+      "path": "outputs/recommendation-evidence/rec-ev-032/prepared.npz",
+      "sha256": "4b91394997206f4cd78886b8d995ccb8d8393640d0cfd13a6be5179a003dfc4a"
+    },
+    "profiles": {
+      "bytes": 300295,
+      "path": "outputs/recommendation-evidence/rec-ev-032/profiles.parquet",
+      "sha256": "42cb1f81a028359662375fc79f3484208aa58386cabad5006fb94dd29c5bd8b4"
+    },
+    "raw500": {
+      "bytes": 7612675,
+      "path": "outputs/recommendation-evidence/rec-ev-034/ranking-prefixes.npz",
+      "sha256": "d5d5825fd2444f7430239adeb1e9f055360d48788200f56efa60aeb15f9af1cb"
+    },
+    "review034": {
+      "bytes": 1969,
+      "path": "docs/recommendation/experiments/rec-ev-034/result-review.json",
+      "sha256": "a62e134597277e53a0ed81a22488581f911c1a030721634173fb3f3fa2ce6067"
+    },
+    "review040": {
+      "bytes": 7898,
+      "path": "docs/recommendation/experiments/rec-ev-040/result-review.json",
+      "sha256": "8a862940480665b7e1c52baf14441f61d4d2468fa7fccff1ac8c6ca03dc28ea2"
+    },
+    "reviewE": {
+      "bytes": 2695,
+      "path": "docs/recommendation/experiments/rec-ev-032/conditional-ranking/result-review.json",
+      "sha256": "a6425c4ecce979b54fe82954c94b655a9d0f72fd601a001a06688f541812c454"
+    },
+    "seal034": {
+      "bytes": 4454,
+      "path": "outputs/recommendation-evidence/rec-ev-034/completion-seal.json",
+      "sha256": "ea089f8d41df0d3b4ec16d94f5a9a598169c831d1256f0f0dc89a07f6db8b94d"
+    },
+    "seal040": {
+      "bytes": 4821,
+      "path": "outputs/recommendation-evidence/rec-ev-040/completion-seal.json",
+      "sha256": "107dc51d825d557c891948a437475f1dc835836fdfe90496f195fe29fc30a462"
+    },
+    "sealE": {
+      "bytes": 2624,
+      "path": "outputs/recommendation-evidence/rec-ev-032/conditional-ranking/completion-seal.json",
+      "sha256": "8a12c94ed301a93a3b29e396a0af29f68a7a0f44d2caa48b03cf5536d8d5f0d9"
+    },
+    "structured": {
+      "bytes": 3739308,
+      "path": "outputs/recommendation-evidence/rec-ev-027-catalog/structured-features.parquet",
+      "sha256": "231fa0bc2628066ae2fdc2fa65c03b9068cd6a5d8dbcd86c385cadf4e50098b3"
+    },
+    "train_seal": {
+      "bytes": 941,
+      "path": "outputs/recommendation-evidence/rec-ev-032/train-seal.json",
+      "sha256": "e571b86d78afba9e0c1ad2cb940f4a8b1ed9909fda32c0803b26d238804c68e3"
+    }
+  },
+  "items": 85517,
+  "max_process_tree_bytes": 12884901888,
+  "max_seconds": 1800,
+  "n": 30,
+  "output_root": "outputs/recommendation-evidence/rec-ev-041",
+  "topn_size": 100,
+  "users": 2180
+}

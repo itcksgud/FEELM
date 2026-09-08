@@ -1,0 +1,166 @@
+{
+  "additional_search_or_rescoring_started": false,
+  "algorithm_general_winner_claimed": false,
+  "audit_scope": {
+    "assignment_values": 1368272,
+    "cache_pins": 344,
+    "comparison_rows": 24,
+    "description_packets": 64,
+    "description_slots": 256,
+    "description_unique_movies": 85,
+    "evaluation_description_links": 8192,
+    "evaluation_unique_movies": 128,
+    "input_pins": 12,
+    "native_display_fallback_success_excluded": {
+      "KM_TAG": 5,
+      "NMF_TAG": 3
+    },
+    "numeric_artifacts": 39,
+    "paired_rows": 168,
+    "repeated_judgments": 1024,
+    "scopes": [
+      128,
+      128,
+      86
+    ],
+    "sufficiency_disagreement_movies": 0,
+    "unavailable_description_acceptances": 0
+  },
+  "completed_at_utc": "2026-09-08 03:58:47 UTC",
+  "completed_reuse_observed": [
+    "VERIFIED_NUMERIC_COMPLETION_NO_FIT",
+    "VERIFIED_DESCRIPTIONS",
+    "VERIFIED_JUDGMENTS",
+    "VERIFIED_EVALUATION_COMPLETION"
+  ],
+  "date": "2026-09-08",
+  "final_eight_taste_adoption": false,
+  "final_report_pins": {
+    "docs/recommendation/experiments/rec-ev-038/GROUPS.md": {
+      "bytes": 40721,
+      "sha256": "0f580c7ef052ecaa774162ad583b2a24fef3bbdcfd7bfe1afa71e23b48f592ad"
+    },
+    "docs/recommendation/experiments/rec-ev-038/RESULT.md": {
+      "bytes": 15583,
+      "sha256": "c226e6cac170f1c791d8d1f1d32cad33b62cd4241691eba3a55c6f167d53dd4a"
+    },
+    "docs/recommendation/experiments/rec-ev-038/description-review.json": {
+      "bytes": 1607,
+      "sha256": "d6d1665ce938ce53eeadd21152059b0f0e4acfe7fe0adf81eb5afa5b727c48e4"
+    },
+    "docs/recommendation/experiments/rec-ev-038/judgment-review.json": {
+      "bytes": 1556,
+      "sha256": "6b44a8a6414ff3374fc573c573dfb6a297645d7c1ed8fabd577ea4f82496a54d"
+    },
+    "docs/recommendation/experiments/rec-ev-038/numeric-review.json": {
+      "bytes": 1540,
+      "sha256": "fdc6f924d6fb4964eccd9e236fa12da0721f526c414d2e29464f5e5213bf6502"
+    },
+    "docs/recommendation/experiments/rec-ev-038/review.json": {
+      "bytes": 1883,
+      "sha256": "4c3f3a948df7e42338dcfef548bf2f7d68669eae5535067c7728572f23e06236"
+    },
+    "docs/recommendation/plans/service-policy-redesign/README.md": {
+      "bytes": 14080,
+      "sha256": "112dd5d272904af66343308a19954f9c514bf1340a27fe5d51a43b3f968cc50b"
+    },
+    "docs/recommendation/plans/service-policy-redesign/data-readiness.md": {
+      "bytes": 13876,
+      "sha256": "d284f0174acd81b060f5d514379a9d31623323738111904d3a1d859f7144dd36"
+    },
+    "docs/recommendation/plans/service-policy-redesign/experiment-design.md": {
+      "bytes": 36298,
+      "sha256": "6e6cac8efc237f69128e40a5e19ccd5c9f2ae29ba604b44716120fddf96f71ca"
+    },
+    "docs/recommendation/plans/service-policy-redesign/review-log.md": {
+      "bytes": 67109,
+      "sha256": "765ba97ad9cff0320be42df640564d782c4cafc4ebccfa6fb1474fbb69a8df9b"
+    },
+    "docs/runbook/local-development.md": {
+      "bytes": 50168,
+      "sha256": "bb639027d3ee5879b846f23ae79036e210774f2519e14b2733bace94f68e10bb"
+    },
+    "outputs/recommendation-evidence/rec-ev-038/JUDGMENTS.md": {
+      "bytes": 209524,
+      "sha256": "8e0fb01c97b68dc873efbeaaa514e02d72f4fbf239b4c51262ac6c6fafbbeee7"
+    },
+    "scripts/rec_ev_038_report.py": {
+      "bytes": 5933,
+      "sha256": "e52e6e33b9d19697000568e117d406b6920d45f11b41487c27e1ccdf2a0bb987"
+    }
+  },
+  "fingerprint": {
+    "build_rec_ev_019b_features.py": "dc04c1211c975f079a0172649d324db93e5b6a66312105678e098aca0faac44c",
+    "config": "554ea418d20128f4749e8c128d705284b45bbcae68b335bcf9f4ed48d2f6a681",
+    "design": "b92f641a078aebd93266b378aec03b6f8b7822e570e8e026ebea5f3ee379e527",
+    "evaluation_runner": "3ba4218f691e0ec264351f9043632a42e64d55bc1f00c36c2d80db251c13cfbf",
+    "rec_ev_033_tastes.py": "380333cddba629abc27392d907c42771e24095da61f8ed29c489845a384b452f",
+    "rec_ev_036_readiness.py": "6e46cc81902c7ba4b19f8dcf61bfe00fc1b351c3a5fee99d4b981e37e2eab71c",
+    "rec_ev_037_descriptions.py": "8242260ae86811719e989ed11c9b2f07f94d5ae2aca0ccaba47265dd9f4db687",
+    "recommendation_protocol_v4.py": "cc4a260f0fe5579bf3cbaa1d9365c5b313ccf2ec86cda4d1445839377442d36c",
+    "runner": "59a0c26021c97a84034b19e2c66b6137a11e123373628cfb8862196eb696c296",
+    "tests": "9839898054b0a66ac18b1f489319b14d3350efa19f1199ae4f144cfefe66ba28"
+  },
+  "fixed_findings": [
+    "Limited overview-only wording to blind judgment stage; E5 also used overview.",
+    "Corrected all-movies-fit wording: input-zero rows excluded and rule has nofit.",
+    "Renderer now requires all four phase seals before verification."
+  ],
+  "human_ground_truth": false,
+  "independently_verified_outputs": {
+    "evaluation-comparison.csv": {
+      "bytes": 2713,
+      "sha256": "2e02a1e7895a97c3a48a0248c805d2e1c53c6fc4c62857717440dd51a08ab28c"
+    },
+    "evaluation-linked.parquet": {
+      "bytes": 71108,
+      "sha256": "53b877cb1e58ef7d93ad0521a272d971a86e061a75d25c2083146f678cb8b9fc"
+    },
+    "evaluation-seal.json": {
+      "bytes": 1986,
+      "sha256": "a7cdfaa70361a397e0860e8da28613763280eae118a05ef858f182aa472bd553"
+    },
+    "evaluation-summary.json": {
+      "bytes": 92483,
+      "sha256": "1ac947eb8d3e4381b8dcad416cdb28bbc88acd8f3efe56045bfa95886ff5d3de"
+    },
+    "judgments.json": {
+      "bytes": 242562,
+      "sha256": "2748c2ba90ab5f40464bbf3ea0c4c9a57d2744b6760a24abfbb7d21a74550502"
+    }
+  },
+  "new_encoding": 0,
+  "new_fits": 12,
+  "numerical_reviewer": "rec033_design_review",
+  "phase_seals": {
+    "description-seal.json": {
+      "bytes": 1885,
+      "sha256": "5b4faac70df369b44a52f4dc1b3e53d3a714147b3b3d30e23e2208a294a9481e"
+    },
+    "evaluation-seal.json": {
+      "bytes": 1986,
+      "sha256": "a7cdfaa70361a397e0860e8da28613763280eae118a05ef858f182aa472bd553"
+    },
+    "judgment-seal.json": {
+      "bytes": 1450,
+      "sha256": "49ca8de23eb064294838d611a0a2444e968495a965c76e2da740a8f95256437f"
+    },
+    "numeric-seal.json": {
+      "bytes": 9464,
+      "sha256": "de24cabaae5612a17db13e9a937f0af7930fcd357bee1e66b874520a979751fa"
+    }
+  },
+  "post_review_edits": [
+    "Completion status and past-tense statements only.",
+    "Final independent review links/record and review-log completion added."
+  ],
+  "provisional_candidates": [
+    "RULE_GENRE",
+    "KM_GENRE"
+  ],
+  "recommendation_quality_evaluated": false,
+  "remaining_required_corrections": 0,
+  "reviewer": "rec038_result_audit",
+  "status": "PASS_AUDIT_COMPLETE",
+  "user_ratings_accessed": false
+}

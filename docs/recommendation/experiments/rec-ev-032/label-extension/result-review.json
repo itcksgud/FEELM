@@ -1,0 +1,60 @@
+{
+  "status": "PASS",
+  "scope": "SEALED_DERIVED_RESULT_RECALCULATION_AND_REPORT_INTERPRETATION",
+  "reviewer": "/root/rec032_extension_result_review",
+  "mandatory_findings": 0,
+  "users": 2180,
+  "user_metric_rows": 17440,
+  "aggregate_cells": 8,
+  "paired_comparisons": 9,
+  "requested_pairs": 15248,
+  "matched_pairs": 2646,
+  "old_pairs": 402,
+  "new_pairs": 2244,
+  "synthetic_tests_passed": 10,
+  "checks": [
+    "original and extension seal hashes and dependency links",
+    "exact all-condition top2 union minus O30",
+    "matched labels subset of requested pairs",
+    "original raw ratings and Q preserved",
+    "0.5 to 5.0 ratings with 0.5 steps",
+    "Q recomputed from frozen derived H",
+    "four label states and fixed denominators",
+    "all individual and paired bounds nested within original bounds",
+    "all aggregates and paired differences independently recomputed",
+    "all nine decisions UNDECIDED",
+    "report quantities and interpretation"
+  ],
+  "bootstrap": {
+    "repeats": 5000,
+    "seed": 20260907,
+    "family_size": 9,
+    "unit": "equal-weight paired user",
+    "independent_implementation": "same user draws converted to bincount-weighted means",
+    "max_ci_abs_error": 1.4432899320127035e-15,
+    "max_aggregate_abs_error": 5.551115123125783e-16
+  },
+  "fingerprints": {
+    "reviewed_report_draft": "79a620a4a64970950d534cab2f37e6ecefb82e6d1efc4c9bd49707998bad9b67",
+    "final_report": "97b66f285dce459ecf0c5741adc042f67392d8fe11824e97be0e4797524814a4",
+    "completion_seal": "6130f6083a699fa19ae2aad982f8a900adb7ff8b67e7647f5f882ce7019c7e82",
+    "metrics": "ead08d8c425b892114a625a5660e5e6e651c055b24a06479d7534f9d34a5c202",
+    "user_metrics": "3dd43e518e95c25393aad1832c662a6a5d793c86c98cf4898880697d15793aee",
+    "matched_labels": "85f36346f5e01d5e89fe0591e1016148ffcbbe49669f55d14f54fdade839f75d"
+  },
+  "final_report_changes": "Only review-completed status, reviewer-confirmed scope/errors/limits, and result-review link added after draft PASS; no numeric result or decision changed.",
+  "limitations": {
+    "original_archive_reopened": false,
+    "original_selection_labels_reopened": false,
+    "original_histogram_rebuilt": false,
+    "source_absence_independently_rescanned": false,
+    "model_or_protected_payload_opened": false,
+    "H_check": "Derived histogram Q and original observed-label consistency only",
+    "no_rating_and_raw_row_counts": "Supported by reviewed execution contract and scan records, not independent raw rescan",
+    "subsequent_stage_sequence": "Existing plan consistency checked by root, not reread by result reviewer"
+  },
+  "original_recommendations_preserved": true,
+  "additional_training_runs": 0,
+  "additional_recommendation_runs": 0,
+  "root_completion_reuse_check": "VERIFIED_EXISTING_COMPLETION_NO_NEW_LOOKUP"
+}

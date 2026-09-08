@@ -1,0 +1,31 @@
+{
+  "status": "DESIGN_PASS_IMPLEMENTATION_REVIEW_PENDING",
+  "reviewer": "rec042_design_review",
+  "data_readiness_reviewer": "rec042_data_readiness",
+  "required_corrections": 0,
+  "fingerprint": {
+    "README.md": {
+      "bytes": 8851,
+      "sha256": "0fcaa831b93d45850ae369bdc0190b295749d0f874979cbdd308adeb5f2b4062"
+    },
+    "config.json": {
+      "bytes": 5248,
+      "sha256": "1923c2e0757b687c0bb98fd29d28db3cda1840edbd54abbc2527806bd717f94b"
+    },
+    "data-readiness.json": {
+      "bytes": 4380,
+      "sha256": "8e6ed89fc09096c774103ac42c97ffe3cc0ca18033ad523d37ebb66c607e7951"
+    }
+  },
+  "source_pins_verified": 14,
+  "label_payload_decoded": false,
+  "new_recommendation_selected": false,
+  "experiment_executed": false,
+  "implementation_review_required": true,
+  "implementation_checks": [
+    "Exact treatment of Q ties and paired differences",
+    "Pin RNG algorithm and quantile calculation",
+    "Seal selections before opening labels or histograms",
+    "Preserve common denominators, shortages and third-slot roles"
+  ]
+}

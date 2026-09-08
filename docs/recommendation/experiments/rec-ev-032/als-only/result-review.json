@@ -1,0 +1,74 @@
+{
+  "status": "PASS",
+  "scope": "FIXED_CHECKPOINT_E_SCORES_RANKINGS_AND_PAIRED_STATISTICS_WITH_SAMPLED_GLOBAL_ORDER",
+  "numeric_reviewer": "/root/als_rationale_check",
+  "report_reviewer": "/root/conditional_execution_review",
+  "mandatory_findings": 0,
+  "report": {
+    "bytes": 9898,
+    "sha256": "a7536a41823167dc913ecbb07481dc5bc3e81cf30f2d5d277be541b640d4bf98"
+  },
+  "completion_seal": {
+    "bytes": 2144,
+    "sha256": "1a4c4c79f71a1ec8f6b5b77609a4b1a665423695187a7110dd8552bf4a4d32d2"
+  },
+  "score_seal": {
+    "bytes": 2278,
+    "sha256": "02d6b9927b0e904c3e6144e7b6c653f3e29d98cdb029c2957e04d55868f122cc"
+  },
+  "counts": {
+    "users": 2180,
+    "unique_E_pairs": 191933,
+    "E_score_positions": 767732,
+    "ALS_top2_lists": 8720,
+    "all_policy_user_metric_rows": 26160,
+    "paired_comparisons": 18,
+    "global_order_sample_users": 20,
+    "sample_global_E_rank_positions": 6816,
+    "input_files": 22,
+    "required_output_files": 9
+  },
+  "sample_rule": "np.linspace(0, 2179, 20, dtype=int) over sorted user keys; fixed before result payload access",
+  "max_errors": {
+    "E_scores": 8.881784197001252e-16,
+    "sample_global_E_scores": 0,
+    "sample_global_E_ranks": 0,
+    "Q_H": 0,
+    "user_metrics": 0,
+    "paired_differences": 0,
+    "aggregate": 1.2212453270876722e-15,
+    "bootstrap_CI": 1.6653345369377348e-16,
+    "bootstrap_CI_width": 2.498001805406602e-16
+  },
+  "bootstrap": {
+    "repeats": 5000,
+    "seed": 20260907,
+    "family_size": 18,
+    "alpha": 0.05,
+    "independent_method": "shared user draws with bincount weighted sums"
+  },
+  "decisions": {
+    "ALS_minus_P0": {
+      "BETTER_DIRECTION": 6,
+      "UNDECIDED": 3,
+      "WORSE_DIRECTION": 0
+    },
+    "ALS_minus_M0": {
+      "BETTER_DIRECTION": 9,
+      "UNDECIDED": 0,
+      "WORSE_DIRECTION": 0
+    }
+  },
+  "all_ALS_top2_match": true,
+  "all_reference_rankings_match": true,
+  "all_factor_support_and_fallback_match": true,
+  "all_sealed_hashes_match": true,
+  "full_catalogue_for_all_users_reexecuted": false,
+  "all_user_cumulative_full_score_hash_reproduced": false,
+  "original_training_or_original_H_rating_source_reopened": false,
+  "content_scores_reexecuted": false,
+  "report_review_basis_before_final_audit_section": "87ebe73dee35a06dc6ef7e95101fe17fad0582f270b0233aa65e9d32131a5f8a",
+  "final_report_hash_confirmation": "PASS_BY_INDEPENDENT_NUMERIC_REVIEWER",
+  "reviewer_file_changes": false,
+  "completion_reuse": "VERIFIED_EXISTING_COMPLETION_NO_RESCORING"
+}

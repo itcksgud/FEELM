@@ -1,0 +1,26 @@
+{
+  "status": "PASS",
+  "reviewer": "/root/stage3_contract_audit",
+  "date": "2026-09-08",
+  "files": {
+    "README.md": {
+      "bytes": 9572,
+      "sha256": "76dad846a736c1ed0f53cd965d598bdbe30e499ca89d0acc020773d4dec37a61"
+    },
+    "experiment-design.md": {
+      "bytes": 30812,
+      "sha256": "b3b69620986a780d59dc5156b2781a38f65796335215d0c2128b62cd77d34909"
+    },
+    "data-readiness.md": {
+      "bytes": 11022,
+      "sha256": "844deace06fe504d0f775fc90ac03efd7f1f2a08bb6ab634758496a3c17abc49"
+    },
+    "morning-brief.md": {
+      "bytes": 5097,
+      "sha256": "cac0ce387e62eb6c5b800699a1e66b106af7b81f47ec571c9dda49d635922283"
+    }
+  },
+  "mandatory_findings_remaining": 0,
+  "scope": "past/current scope, results and limits, next decision order; no service adoption or quality approval",
+  "snapshot_note": "Historical snapshot before the subsequent user request to compare ALS absolute/relative/binary input representations; master documents have since advanced. Original reviewed hashes are retained."
+}

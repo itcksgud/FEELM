@@ -1,0 +1,18 @@
+{
+  "actual_calculation_before_review": false,
+  "date": "2026-09-08",
+  "fingerprint": {
+    "config": "975589ef0ae76eea87be8138b99a70ec12ff56004fe10efb82bb06fb8e92bb04",
+    "design": "0f0176d9485f58eca365572a95442c792c0d5f1b4df8d9578df8817f07bcec7d",
+    "helper": "380333cddba629abc27392d907c42771e24095da61f8ed29c489845a384b452f",
+    "runner": "8242260ae86811719e989ed11c9b2f07f94d5ae2aca0ccaba47265dd9f4db687",
+    "tests": "e17cd089eba94e7e641a4202ddea0881d40638ebbfecdcca2a917fb27f17771b"
+  },
+  "independent_reviewers": {
+    "rec033_design_review": "Bounded design rubric advice; wholecatalogue keywordstats separated from120case synopsis extraction.",
+    "stage3_assets_audit": "Read-only asset/runtime preflight PASS; fullkeyword counts and120synopsis available; no POS models installed.",
+    "stage3_contract_audit": "Exact design+execution PASS; unittest4 and independent synthetic33 passed; no real calculations before review."
+  },
+  "status": "PASS",
+  "user_authorization": "Separate genre and detailed keyword descriptions and inspect synopsis key passages; preserve all movie assignments."
+}

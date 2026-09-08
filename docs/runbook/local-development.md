@@ -565,3 +565,336 @@ Remove-Item Env:PYTHONPATH
 | 오래된 cursor | catalogVersion·filter 변경 후 첫 page부터 다시 요청 |
 | OTT 없음 혼동 | latest success와 serveUntil로 NONE_LISTED/UNKNOWN 계산 확인 |
 | Windows에서 `5173`이 잠시 연결 거부 | `docker compose ps`로 frontend health를 확인하고 `docker compose restart frontend` 후 다시 요청 |
+
+## 7. REC-EV-032 기본 추천의 연구용 비교
+
+설계와 접근 범위는 [REC-EV-032](../recommendation/experiments/rec-ev-032/README.md)를 따른다.
+공식 서비스 모델 채택이나 최종 전환 K 선택을 수행하는 명령이 아니다.
+
+```powershell
+cd C:\higher\projects\FEELM-standalone
+py -3.12 -m unittest discover -s scripts/tests -p test_rec_ev_032_basic.py -v
+py -3.12 scripts/rec_ev_032_basic.py prepare
+py -3.12 scripts/rec_ev_032_basic.py train
+py -3.12 scripts/rec_ev_032_basic.py score
+py -3.12 scripts/rec_ev_032_basic.py evaluate
+```
+
+실데이터 명령은 독립 검토 PASS와 현재 코드·설계·설정·테스트 hash가 일치할 때만 실행된다.
+각 단계의 완료 seal이 있으면 무결성을 확인해 재사용하고 부분 파일은 자동 덮어쓰지 않는다.
+evaluate는 모든 정책·입력량의 추천 봉인 뒤 이미 개봉된 SELECTION 정답만 읽는다.
+입력 원천과 산출물은 config의 고정 경로를 사용하며 새 데이터·모델을 commit하지 않는다.
+
+### 7.1 같은 봉인 추천의 정답 보충
+
+[정답 보충 설계](../recommendation/experiments/rec-ev-032/label-extension/README.md)는 원래 추천을
+다시 생성하지 않고 같은 사용자·추천 영화의 원평점만 제한 조회한다. 별도의 독립 검토 PASS와
+현재 보충 코드/설정/테스트 hash가 맞아야 실행된다.
+
+```powershell
+py -3.12 -m unittest discover -s scripts/tests -p test_rec_ev_032_label_extension.py -v
+py -3.12 scripts/rec_ev_032_label_extension.py
+```
+
+결과는 `outputs/recommendation-evidence/rec-ev-032/label-extension`에 저장한다.
+원래 모델·추천·평가 산출물을 바꾸지 않으며, 완료 봉인이 있는 경우 hash만 확인해 재사용한다.
+[보충 결과](../recommendation/experiments/rec-ev-032/label-extension/RESULT.md): 실행 완료.
+같은 추천의 추가 원본 조회는 종료했으며 모델·추천을 다시 실행할 필요가 없다.
+
+### 7.2 기존 평가 영화 안에서 고정 순서 비교
+
+[조건부 진단 계약](../recommendation/experiments/rec-ev-032/conditional-ranking/README.md)은
+기존 전체 점수와 상위2편을 재현한 뒤 평가 영화의 부분순서를 채점한다.
+7.1의 추가 정답 보충과는 별도 과제이며 원래 모델/산출물은 그대로 보존한다.
+
+```powershell
+py -3.12 -m unittest discover -s scripts/tests -p test_rec_ev_032_conditional.py -v
+py -3.12 scripts/rec_ev_032_conditional.py
+```
+
+독립 검토 PASS와 현재5파일 hash가 맞아야 실행된다. 새 학습은 수행하지 않는다.
+출력은 `outputs/recommendation-evidence/rec-ev-032/conditional-ranking`이다.
+부분 실행은 자동 재시도하지 않고, 완료본은 hash 검증 후 점수 재계산 없이 재사용한다.
+[조건부 비교 결과](../recommendation/experiments/rec-ev-032/conditional-ranking/RESULT.md): 실행 완료.
+완료본 재사용 명령은 VERIFIED_EXISTING_COMPLETION_NO_RESCORING으로 확인했다.
+
+### 7.3 기존 ALS 단독의 조건부 비교
+
+[ALS 단독 설계](../recommendation/experiments/rec-ev-032/als-only/README.md)는 같은 학습 factor와
+원별점 입력을 유지하고 콘텐츠 순위 결합만 제거한다. P0/M0는7.2의 완료 결과를 재사용한다.
+P0는 MovieLens 보정 평균 별점 기준이며 TMDB popularity 또는 평가 수 순위가 아니다.
+
+```powershell
+py -3.12 -m unittest discover -s scripts/tests -p test_rec_ev_032_als_only.py -v
+py -3.12 scripts/rec_ev_032_als_only.py
+```
+
+독립 설계·실행 검토 PASS와 현재6파일 hash가 맞아야 실행된다. 새 학습이나 원본 평점 조회는 없다.
+출력은 `outputs/recommendation-evidence/rec-ev-032/als-only`다. 기존 산출물은 보존한다.
+부분 실행은 자동 재시도하지 않고, 완료본은 필수 출력과 의존 봉인 검증 후 점수 재계산 없이 재사용한다.
+고정 관측 영화 안의 탐색 비교이며 실제 서비스 품질·학습 수렴·최종 K를 결정하지 않는다.
+[ALS 단독 결과](../recommendation/experiments/rec-ev-032/als-only/RESULT.md): 실행·독립 검산 완료.
+완료본 재사용은 VERIFIED_EXISTING_COMPLETION_NO_RESCORING으로 확인했으며 새 점수 계산은 없었다.
+
+### 7.4 사용자 분할 3개를 바꾼 ALS 비교
+
+[사용자 분할 반복 설계](../recommendation/experiments/rec-ev-032/user-resplits/README.md)는
+회차별 학습자 46,376명과 평가자 2,180명을 고정 seed 3개로 다시 구성한다.
+각 회차의 ALS를 새로 학습하고 같은 학습자의 평점으로 P0를 재계산한다.
+원별점 입력 0/5/10/30개, 모델 설정, 개인별 관측 영화와 평가 규칙은 유지한다.
+
+```powershell
+py -3.12 -m unittest discover -s scripts/tests -p test_rec_ev_032_user_resplits.py -v
+py -3.12 scripts/rec_ev_032_user_resplits.py
+```
+
+설계·실행 독립 검토 PASS와 현재 7개 파일 hash가 맞아야 실데이터 명령을 실행할 수 있다.
+출력은 `outputs/recommendation-evidence/rec-ev-032/user-resplits`다.
+각 회차의 학습 평점 전체 행에서 해당 회차 평가자 유입이 없는지 확인한다.
+회차 사이 역할 변경은 허용한다. 세 회차 점수를 모두 봉인한 뒤 기존 평가 정답 파일을 읽는다.
+30분·프로세스 트리 12GiB 상한, 부분 실행 보존과 자동 재시도 금지를 적용한다.
+완료본은 필수 출력·원천·봉인 연결을 검증하고 학습·점수 계산 없이 재사용한다.
+개발 자료 안의 분할 안정성 점검이며 새 독립 자료의 확증이나 서비스 전환 K 결정은 아니다.
+[분할 반복 결과](../recommendation/experiments/rec-ev-032/user-resplits/RESULT.md): 고정3회 새 학습·채점·독립 결과 검산 완료.
+완료본 재사용은 VERIFIED_EXISTING_COMPLETION_NO_RETRAINING_OR_RESCORING으로 확인했다.
+재사용 확인에서 추가 학습·점수 계산은 수행하지 않았다.
+
+## 8. REC033 — 비교할 두 8맛 분류안 준비
+
+[단계3 계약](../recommendation/experiments/rec-ev-033/README.md)은 기존 평점 독립 공통 영화85,517편에
+TMDB 첫 내용 장르8그룹과 E5-small384 K-means8을 적용한다. 사용자 평점·H·평가 정답·raw archive는 읽지 않는다.
+
+```powershell
+py -3.12 -m unittest discover -s scripts/tests -p test_rec_ev_033_tastes.py -v
+py -3.12 scripts/rec_ev_033_tastes.py
+```
+
+독립 설계·실행 검토 PASS와 README/config/runner/tests의 현재4개 hash가 맞아야 실제 실행할 수 있다.
+출력은 `outputs/recommendation-evidence/rec-ev-033`이다. 한국어 TMDB 기존 캐시를 원천 body hash와 대조한다.
+주 seed와 초기화 민감도용 seed의 KMeans 호출2회(n_init=10씩)로 종료한다. 새 다운로드·재인코딩·다른 k 탐색은 없다.
+30분·프로세스 트리12GiB 상한을 적용하고 부분 실행은 보존한다. 완료본은 원천·캐시·필수출력·연결봉인 확인 후
+`VERIFIED_EXISTING_COMPLETION_NO_FIT_OR_ASSIGNMENT`로 재사용한다. 추천 품질 승자·공식 맛·전환 K를 결정하는 명령이 아니다.
+
+## 9. 단계4 역할·상태 합성 검증
+
+[역할 제안](../recommendation/plans/service-policy-redesign/stage-4-policy-proposal.md)과
+`stage-4-state-review.json`에 독립 검토한 파일 hash와 범위를 기록했다.
+
+```powershell
+py -3.12 -m unittest discover -s scripts/tests -p test_feelm_policy_states.py -v
+```
+
+합성 영화와 주어진 점수로13개 상태·역할 검사를 수행한다. 원별점0.5단위, 온보딩/감상량 분리,
+삭제 후 경험·제외 유지, T/D 자격, 미배정·후보부족, 동일타입 교체를 확인한다.
+실제 영화/사용자 자료를 읽거나 ALS를 호출하지 않는다. 주어진 순위를 쓰는 강제 진단 모드이며 K1 전환 정책이 아니다.
+PostgreSQL20편 세트 버퍼·Redis500/100·이벤트의 실제 통합 테스트도 아니다.
+
+## 10. REC034 — 두 분류안의 n30 후보 공급 진단
+
+[REC034 계약](../recommendation/experiments/rec-ev-034/README.md)은 같은 기존 ALS factor와2,180명의 관측 입력30개를 유지한다.
+독립 설계·실행 검토와8개 코드/문서 fingerprint가 일치해야 실행할 수 있다.
+
+```powershell
+py -3.12 -m unittest discover -s scripts/tests -p test_rec_ev_034_supply.py -v
+py -3.12 scripts/rec_ev_034_supply.py
+```
+
+출력은 `outputs/recommendation-evidence/rec-ev-034`다. 새 ALS/K-means 학습·평가 E/H·raw archive·네트워크 접근은 없다.
+제외 전 raw500→타입적격→100→관측입력 제외→T2/D1을 계산한다. 30분/12GiB 감시와 실패/부분 실행 보존을 적용한다.
+완료본은 `VERIFIED_EXISTING_COMPLETION_NO_SCORING`으로 재사용한다. 관측 입력 내 미경험 proxy의 공급 진단이며
+실제 전체 감상 이력·발견 성공률·분류 품질 우승·전환 K30을 검증하는 명령이 아니다.
+
+### 10.1 평균 자격 조건에 대한 대안 하나
+
+[gating-repair 계약](../recommendation/experiments/rec-ev-034/gating-repair/README.md)은 같은 저장된 raw500에서
+원안을 먼저 재현·봉인한 뒤 양수 관측이 있는 맛/영화 근거를 쓰는 대안 하나를 비교한다.
+
+```powershell
+py -3.12 -m unittest discover -s scripts/tests -p test_rec_ev_034_gating_repair.py -v
+py -3.12 scripts/rec_ev_034_gating_repair.py
+```
+
+독립 설계·실행 PASS와7파일 hash·원천17개가 맞아야 실행된다. 새 ALS 점수·학습·평가 E/H 접근은 없다.
+출력은 `outputs/recommendation-evidence/rec-ev-034/gating-repair`, 완료 재사용은
+`VERIFIED_EXISTING_COMPLETION_NO_RECALCULATION`이다.30분/12GiB 감시와 부분 실패 보존을 유지한다.
+원안·대안 ×A/B의 전원 회복/회귀를 남긴 뒤 이 공급 비교를 종료하며 임계치·후보수·새 규칙을 추가 탐색하지 않는다.
+
+원안과 후속 대안 모두 실행·독립 결과 검산·완료 재사용 검증을 마쳤다. 같은 명령은 봉인 재사용 경로로만 끝나야 한다.
+실행 전 README의 DRAFT 표기는 fingerprint 보존을 위한 원문이며 현재 상태는 RESULT와 review/result-review.json을 따른다.
+
+## 11. 입력 타입·슬롯 보존 합성 준비
+
+```powershell
+py -3.12 -m unittest discover -s scripts/tests -p test_feelm_input_packets.py -v
+py -3.12 -m unittest discover -s scripts/tests -p test_feelm_slot_preservation.py -v
+```
+
+각각9개/6개 합성검사다. 실제 데이터·모델·DB·Redis·네트워크를 사용하지 않는다.
+입력의 반별점/이진타입·직접packet검증·중복/삭제/현재값 처리를 확인하며 binary/mixed ranking 구현은 아니다.
+슬롯 보존은 같은500/100에서 제외전T3/D1만 포함하는 연구제안과 최신제외후 보장불가 반례를 확인한다.
+실제 추가 공급실험이나 공식정책 변경을 수행하지 않는다. 자세한 범위와 핀은
+`docs/recommendation/plans/service-policy-redesign`의 `input-adapter-review.json`과 `slot-preservation-review.json`에 있다.
+실제 품질 평가 준비는 같은 디렉터리의 `quality-judgment-protocol.md`/`quality-protocol-review.json`을 따른다.
+모집·노출·응답 수집은 이 명령에 포함하지 않는다.
+
+## 12. REC035 원별점·상대값·이진 응답 환산 비교
+
+[사전 고정 연구 계약](../recommendation/experiments/rec-ev-035/README.md)과 독립 실행 검토의7파일 fingerprint가 일치해야 실행한다.
+프로젝트 루트 `C:\higher\projects\FEELM-standalone`에서 다음 명령을 사용한다.
+
+```powershell
+py -3.12 -X utf8 -m unittest discover -s tests -p test_rec_ev_035_inputs.py -v
+py -3.12 -X utf8 scripts/rec_ev_035_inputs.py
+py -3.12 -X utf8 scripts/rec_ev_035_report.py
+```
+
+첫 명령은9개 합성검사다. 실행 명령은 기존 REC032 자료에서 상대값 ALS를1회 학습하고 A 원별점/B 상대값/C 이진환산을 비교한다.
+C는 A와 같은 기존 raw factor를 사용하며 이진 ALS를 새로 학습하지 않는다. 세 경로의 전체 점수 봉인 뒤 기존 E/H로 채점한다.
+출력은 `outputs/recommendation-evidence/rec-ev-035`이며30분/프로세스 트리12GiB 한도를 감시한다.
+부분 실패는 보존하고 자동 재시도/덮어쓰기를 금지한다. 완료본 재실행은 원천·의존·필수출력을 검사한 뒤
+`VERIFIED_EXISTING_COMPLETION_NO_FIT_OR_SCORING`으로 종료한다. 마지막 명령은 집계만으로 PNG/SVG를 만든다.
+관측 영화 안의 조건부 진단이며 실제 온보딩·전체 새 추천 품질·서비스 K·8맛/슬롯 정책 채택을 검증하지 않는다.
+
+REC035는 실제 실행·독립 전수 검산·보고서/차트 검토와 완료 재사용을 마쳤다. 위 실행 명령은 현재 봉인을 검사해 재사용한다.
+
+## 13. REC036 현재 K-means 후보의 내용 설명 준비도
+
+[REC036 진단 계약](../recommendation/experiments/rec-ev-036/README.md)의 독립 설계·실행 검토 뒤 실행한다.
+기존 임베딩과 중심으로 배정·거리·표본·입력 문자열만 점검한다. 새 fit·인코딩·평점 접근은 없다.
+
+```powershell
+py -3.12 -X utf8 -m unittest discover -s scripts/tests -p test_rec_ev_036_readiness.py
+py -3.12 -X utf8 scripts/rec_ev_036_readiness.py
+```
+
+review.json의7파일 fingerprint가 일치해야 실행하며 출력은 `outputs/recommendation-evidence/rec-ev-036`이다.
+완료 재실행은 봉인 검사만 한다. 30분/프로세스 트리12GiB, 실패·부분 실행은 보존한다.
+정량 산출 뒤 가린 카드의 AI 내용 기술을 봉인하고, 군집 연결 검수와 독립 결과 검산을 수행한다.
+
+
+REC036 진단·가린 카드 기술120건·독립 전수 검산과 연결 내용 검수를 완료했다. 현재 명령은 봉인 재사용만 한다.
+계산/출처는PASS이나8맛 설명 준비도는INCONCLUSIVE이며, [결과와 실제 영화 사례](../recommendation/experiments/rec-ev-036/RESULT.md)를 따른다.
+README의 DRAFT는 연구 계약 원문의 상태이며 실행 완료·제품 준비도는 RESULT와 result-review.json에서 구분한다.
+
+## 14. REC037 장르·세부 키워드 분리와 줄거리 근거
+
+[REC037 계약](../recommendation/experiments/rec-ev-037/README.md)의 독립 설계·실행 검토 후 실행한다.
+같은85,517편의 고정 배정으로 장르/키워드 c-TF-IDF를 각각 재계산하고, 기존120편 줄거리의 AI 구절 검수를 연결한다.
+
+```powershell
+py -3.12 -X utf8 -m unittest discover -s scripts/tests -p test_rec_ev_037_descriptions.py
+py -3.12 -X utf8 scripts/rec_ev_037_descriptions.py
+py -3.12 -X utf8 scripts/rec_ev_037_descriptions.py --validate-excerpts
+```
+
+review.json의5파일 fingerprint가 맞아야 실행한다. 출력은 `outputs/recommendation-evidence/rec-ev-037`이며
+새 fit·인코딩·평점·네트워크는0회,30분/프로세스 트리12GiB 한도다. 부분 실패는 보존한다.
+마지막 명령은 가린 원문 추출을 `synopsis-excerpts-draft.json`에 모은 뒤 실행한다. 각카드의
+card/excerpts/theme/note 형식과1~2개·각180codepoint 이하의 정확한 substring을 검증·봉인하며 AI 해석의 참값 검증은 아니다.
+모든 카드의 구절 봉인 전에는 새 키워드/군집과 연결한 의미 검토를 시작하지 않는다. 완료 재실행은 해당 봉인만 검사한다.
+
+REC037의 실제 집계·128개 구절 봉인·독립 수치/연결/보고서 검수를 완료했다. 위 두 실행 명령은 현재
+각각 VERIFIED_EXISTING_COMPLETION_NO_RECALCULATION, VERIFIED_EXISTING_EXCERPTS로 봉인 재사용만 한다.
+01/02/04의 설명은 일부 보강됐지만 현재8맛 준비도는INCONCLUSIVE다. [결과](../recommendation/experiments/rec-ev-037/RESULT.md)와
+같은 폴더의 result-review.json을 완료 상태의 기준으로 삼는다. 기존 수치 completion-seal의 검수 대기는 당시 단계 기록으로 보존한다.
+
+## 15. REC038 장르·태그와 8개 군집 방법 비교
+
+[REC038 계약](../recommendation/experiments/rec-ev-038/README.md)의 독립 설계·실행 검토 뒤 실행한다.
+기존 두 기준안과 장르/태그/결합×K-means/NMF의6개 새 안을 같은85,517편에서 비교한다.
+새 안은 각2개 초기화로12회fit하며 새 임베딩·평점 접근·설치는 없다. 모든 실행은 연구 저장소 루트에서 한다.
+
+```powershell
+py -3.12 -X utf8 -m unittest discover -s scripts/tests -p test_rec_ev_038_clusters.py -v
+py -3.12 -X utf8 scripts/rec_ev_038_clusters.py
+py -3.12 -X utf8 scripts/rec_ev_038_clusters.py --seal-descriptions
+py -3.12 -X utf8 scripts/rec_ev_038_clusters.py --seal-judgments
+```
+
+단순 python은 다른 sklearn 환경일 수 있으므로 py -3.12/sklearn1.9.0을 고정한다. review.json의10파일
+fingerprint가 맞아야 실행한다. 출력은 `outputs/recommendation-evidence/rec-ev-038`,4threads·30분/12GiB 제한이다.
+수치 완료 뒤 description-packets의 가린 원문4편씩을 읽어 descriptions-draft.json에 기록하고 봉인한다.
+그전에는 평가용 설명 패킷을 만들지 않는다. 이후 별도 검수자가 evaluation-packets의128편×8안 판정을
+judgments-draft.json에 모아 마지막 명령으로 봉인한 뒤 실제 배정과 연결한다. 원문·배정키는ignored outputs에 둔다.
+설명과 판단의 구체 JSON schema는 runner validator를 따른다. 완료 재실행은 각단계의 봉인만 검사한다.
+태그누락·임시표시·native8점유실패·수렴상한을 그대로 공개하며 이 비교가 추천성능/최종K를 판정하지 않는다.
+
+평가 봉인 뒤 `py -3.12 -X utf8 scripts/rec_ev_038_evaluation.py`로 실제 배정에 연결한다.
+공통128편의 반복1,024건이며 전체/공통원문충분/공통태그지원 분모와 영화별 짝차이를 보고한다.
+추가fit·설명수정·재채점은 없고 완료 재실행은 evaluation-seal을 검사한다.
+
+REC038의 실제 12fit·64설명 봉인·128편×8안 판정 봉인·연결을 완료했다. 각 명령의 완료 재사용 상태는
+VERIFIED_NUMERIC_COMPLETION_NO_FIT, VERIFIED_DESCRIPTIONS, VERIFIED_JUDGMENTS,
+VERIFIED_EVALUATION_COMPLETION이다. 수치 단계의 SEMANTICS_PENDING 문구는 당시 상태로 보존하며
+전체 완료와 최종 검토 상태는 [결과](../recommendation/experiments/rec-ev-038/RESULT.md) 및 result-review.json을 따른다.
+
+```powershell
+py -3.12 -X utf8 scripts/rec_ev_038_report.py
+```
+
+위 보고서 명령은 봉인된 연결 결과를 검증한 뒤 GROUPS.md의64군집·256설명영화 연결과 ignored outputs의
+JUDGMENTS.md128편×8안 색인을 재생성한다. 모델·설명·판정은 바꾸지 않는다.
+판정 파일은3검수자가43/43/42편을 맡아 확정했고, 한 번에 한 명만 지정 파일에 쓰도록 소유권을 순서대로 인계했다.
+단순 장르 규칙과 장르 K-means는 연구의 잠정 후보이며 최종8맛·추천 품질·K는 보류한다.
+새 장르 K-means에 REC034의 기존 전체 텍스트 공급 결과를 전용하지 않는다.
+
+## 16. REC039 장르 후보의 추론 전용 계약
+
+[REC039 계약](../recommendation/experiments/rec-ev-039/README.md)과 exact fingerprint PASS 뒤 실행한다.
+원천9개 pin·REC038 봉인·당시 보고서 지문을 확인하고, 상위 문서5개를 수정 전에 master-before에 보존한다.
+연구 저장소 루트에서 다음을 실행한다.
+
+```powershell
+py -3.12 -X utf8 -m unittest discover -s scripts/tests -p test_feelm_genre_candidates.py -v
+py -3.12 -X utf8 scripts/rec_ev_039_candidate_contract.py
+py -3.12 -X utf8 scripts/feelm_genre_candidates.py --package outputs/recommendation-evidence/rec-ev-039/candidate-package.json --genres '[35,18]'
+```
+
+출력은 outputs/recommendation-evidence/rec-ev-039다. 실제 adapter171,034배정 일치·304구성행·10입력×2예시를 생성했다.
+새 fit·평점·128재채점·slot계산은 없다. 완료 재실행은 VERIFIED_CANDIDATE_CONTRACT_NO_RECALCULATION으로
+패키지·원천·snapshot·필수출력만 확인한다. source/current master가 아니라 저장된 당시 master snapshot을 검사하므로
+이 실행문서를 최신화해도 과거 REC038의 검토 기록을 바꿀 필요가 없다.
+CLI는 연구 패키지용이며 공식 맛명·색상·공개 API가 아니다. 미지원 code=null/native=-1과 format_only를 소비자가 보존해야 한다.
+단계4는 각 원천 pin과 이 completion-seal을 기록하고 새 후보의 공급을 독립 실행해야 한다.
+
+## 17. REC040 전체 장르 개선 규칙 적용
+
+[REC040 고정 계약](../recommendation/experiments/rec-ev-040/README.md)의 독립 설계·코드 fingerprint PASS 뒤 실행한다.
+기존8개 장르 묶음을 유지한 binary cosine 규칙 ONE이다. 순서·중복을 제거하고 정확 동점과 미지원 상태를 반환한다.
+연구 저장소 루트의 기존 py -3.12 환경을 사용한다.
+
+```powershell
+py -3.12 -X utf8 -m unittest discover -s scripts/tests -p test_feelm_genre_set_rule.py -v
+py -3.12 -X utf8 scripts/rec_ev_040_set_rule.py
+py -3.12 -X utf8 scripts/feelm_genre_set_rule.py --package outputs/recommendation-evidence/rec-ev-040/rule-package.json --genres '[18,80,53]'
+```
+
+실제85,517배정,3방법의456구성행·192대응표행·삭제변형72,996가중기록·합성42결과를 생성했다.
+원천6개 pin·과거 봉인·master snapshot5개·출력16개를 확인하며 완료 재실행은
+VERIFIED_SET_RULE_COMPLETION_NO_RECALCULATION으로 계산 없이 검증한다. 부분 실행은 덮어쓰지 않는다.
+출력은 outputs/recommendation-evidence/rec-ev-040, 계산30분/12GiB 상한이다. 공식 API나 맛 매핑에 반영하지 않는다.
+그룹 크기·동점·삭제 민감도·ARI는 품질 순위가 아니다. 이전128편 재채점·fit·평점·slot은 이번 범위에 없다.
+[결과](../recommendation/experiments/rec-ev-040/RESULT.md)와 같은 폴더의 result-review.json에서 최종 독립 검토 상태를 확인한다.
+
+## 18. REC041 분류·발견 정책과 채점 가능한 기회
+
+[REC041 고정 계약](../recommendation/experiments/rec-ev-041/README.md)의 두 독립 검토자 PASS 이후
+분류2안×발견 정책2안을 실행했다. 입력은 기존2,180명·n30·raw ALS500이며 새 학습·fold-in은 없다.
+연구 저장소 루트에서 기존 py -3.12 환경을 사용한다.
+
+```powershell
+py -3.12 -B -X utf8 -m unittest discover -s scripts/tests -p test_feelm_discovery_policies.py -v
+py -3.12 -B -X utf8 scripts/rec_ev_041_discovery.py
+```
+
+최초 실행은 exact14지문·18입력 pin과 이전 봉인을 확인하고 당시 master5개를 원 해시로 복사한다.
+자격·순위·선택 슬롯5파일을 score-seal에 봉인한 뒤에만 기존 E/H를 디코딩한다. E와O30 교집합0·Q·반별점 격자를 확인한다.
+총17출력은 outputs/recommendation-evidence/rec-ev-041에 보존했다. 부분 실행은 덮어쓰지 않고 failure.json을 남긴다.
+완료 재사용은 VERIFIED_DISCOVERY_DIAGNOSTIC_NO_RECALCULATION으로 원천·지문·snapshot·출력을 검증한다.
+현재 master를 갱신해도 과거 result-review를 수정하지 않는다. 계산 상한30분/12GiB, 실제121.375초/835.8MiB였다.
+
+원별점 ALS는 유지하고 맛은 T/D 자격에 사용했다. TV-only는 두 분류 모두 역할에서 제외하며 개별 긍정 관측을 보존한다.
+최종100의 발견 제공률은 개선 규칙97.2%→77.1%, 장르KM94.3%→58.9%였고 전 셀3편 공급은100%였다.
+선택 슬롯의 기존 E 정답은 모두0개여서 실제 품질·불호 감소는 미판정이다. 원본 전체의 무평점을 판정한 것이 아니다.
+입력량·영화 선정은 설계만 했고 실행하지 않았다. n30을 최종K나 온보딩 권장량으로 사용하지 않는다.
+[결과와 해석 범위](../recommendation/experiments/rec-ev-041/RESULT.md) 및 같은 폴더의 result-review.json에서 최종 검토를 확인한다.

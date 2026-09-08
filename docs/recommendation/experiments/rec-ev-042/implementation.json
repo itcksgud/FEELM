@@ -1,0 +1,12 @@
+{
+  "status": "IMPLEMENTATION_FOR_INDEPENDENT_REVIEW",
+  "rng": "numpy.random.Generator(numpy.random.PCG64(20260908))",
+  "draws": "20000 row-major int64 user index rows; same rows for all nine metrics; blocks of 128",
+  "quantiles": "numpy.quantile(method=linear), tails 1/360 and 359/360",
+  "arithmetic": "integer Q numerator and paired integer differences before float64 division; low iff 5*numerator <= denominator",
+  "selection": "cached n30 global rank; no new training or fold-in; identical E/factor/format exclusions",
+  "bundle_boundary": "candidates.npz and selection-seal.json precede reading E/H; labels.npz created afterward",
+  "reproduction": "NumPy-only core can replay normalized candidate and label NPZ bundles; pandas adapter remains research-local",
+  "resource_guard": "process-tree RSS and wall time checked every 0.25 seconds by watchdog; 900 seconds / 4 GiB; partial files preserved on failure",
+  "original_design_unchanged": true
+}

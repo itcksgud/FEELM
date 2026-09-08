@@ -1,0 +1,159 @@
+{
+  "experiment": "REC042_OBSERVED_CANDIDATE_CLASSIFIED_RECOMMENDATION",
+  "jira": "S15P21E106-300",
+  "stage": "DESIGN_ONLY_NOT_EXECUTION_APPROVED",
+  "methods": [
+    "ALS_ONLY",
+    "RULE_GENRE_SET",
+    "KM_GENRE"
+  ],
+  "policy": "CONNECTED",
+  "n": 30,
+  "n_axis": [
+    0,
+    5,
+    10,
+    30
+  ],
+  "n_axis_index": 3,
+  "users": 2180,
+  "catalog_items": 85517,
+  "observed_pairs": 191933,
+  "candidate_scope": "EXISTING_E_INTERSECT_FACTOR_SUPPORTED_EXCLUDING_FORMAT_ONLY",
+  "sort": [
+    "global_rank_ascending"
+  ],
+  "format_only_excluded_for_all_methods": true,
+  "new_training": false,
+  "new_fold_in": false,
+  "baseline_third_role": "GENERAL3",
+  "primary": {
+    "panel": "FIRST_TWO_ALL_METHODS_COMMON_USERS",
+    "metrics": [
+      "MEAN_Q",
+      "MIN_Q",
+      "ANY_LOW_Q"
+    ],
+    "pairs": [
+      [
+        "RULE_GENRE_SET",
+        "ALS_ONLY"
+      ],
+      [
+        "KM_GENRE",
+        "ALS_ONLY"
+      ],
+      [
+        "KM_GENRE",
+        "RULE_GENRE_SET"
+      ]
+    ],
+    "low_q_threshold": 0.2,
+    "bootstrap_repeats": 20000,
+    "bootstrap_seed": 20260908,
+    "family_size": 9,
+    "family_alpha": 0.05,
+    "unit": "USER_PAIRED",
+    "shared_resample_indices": true,
+    "interval": "PERCENTILE_BONFERRONI",
+    "direction_threshold": 0,
+    "practical_adoption_margin": null,
+    "minimum_users_for_interval": 2
+  },
+  "secondary": "DESCRIPTIVE_ONLY_FULL3_DISCOVERY_FALLBACK_REPLACEMENT",
+  "claim_scope": "EXPLORATORY_CONDITIONAL_OBSERVED_PREFERENCES_NOT_LIVE_SERVICE_QUALITY",
+  "input_access": {
+    "selection": [
+      "order",
+      "eligibility",
+      "targets",
+      "profiles"
+    ],
+    "evaluation_after_selection_seal": [
+      "labels",
+      "histograms"
+    ]
+  },
+  "inputs": {
+    "order": {
+      "path": "outputs/recommendation-evidence/rec-ev-032/als-only/target-order.npz",
+      "bytes": 8313454,
+      "sha256": "aaf175457520f232455219116e961890339f7d5d1683c42f353ffa674836b939"
+    },
+    "eligibility": {
+      "path": "outputs/recommendation-evidence/rec-ev-041/eligibility.npz",
+      "bytes": 63038637,
+      "sha256": "cd91d64f07428fc57d2c7ae852375d29c7037a97dcd1d21eae7494ef01cb330b"
+    },
+    "targets": {
+      "path": "outputs/recommendation-evidence/rec-ev-032/conditional-ranking/targets.parquet",
+      "bytes": 599158,
+      "sha256": "739eda8ad3cf864b4c42a85e583f393f7e2ce64cba81b6cc41786adad40beb1a"
+    },
+    "profiles": {
+      "path": "outputs/recommendation-evidence/rec-ev-032/profiles.parquet",
+      "bytes": 300295,
+      "sha256": "42cb1f81a028359662375fc79f3484208aa58386cabad5006fb94dd29c5bd8b4"
+    },
+    "labels": {
+      "path": "outputs/recommendation-evidence/rec-ev-032/conditional-ranking/evaluation-labels.parquet",
+      "bytes": 1074120,
+      "sha256": "46c7696fa363b5c7ecd94f9d6a9d14dbd5da3b66038026215cbf898864b9f85b"
+    },
+    "histograms": {
+      "path": "outputs/recommendation-evidence/rec-ev-032/conditional-ranking/histograms.npz",
+      "bytes": 130443,
+      "sha256": "444059c0c155d8151ee24011dc3ef4610e8b9c03b181864b5b66d6bb3042b2c5"
+    },
+    "als_score_seal": {
+      "path": "outputs/recommendation-evidence/rec-ev-032/als-only/score-seal.json",
+      "bytes": 2278,
+      "sha256": "02d6b9927b0e904c3e6144e7b6c653f3e29d98cdb029c2957e04d55868f122cc"
+    },
+    "als_completion": {
+      "path": "outputs/recommendation-evidence/rec-ev-032/als-only/completion-seal.json",
+      "bytes": 2144,
+      "sha256": "1a4c4c79f71a1ec8f6b5b77609a4b1a665423695187a7110dd8552bf4a4d32d2"
+    },
+    "als_review": {
+      "path": "docs/recommendation/experiments/rec-ev-032/als-only/result-review.json",
+      "bytes": 2560,
+      "sha256": "55407c4d10687371330fa75869f1fe83babe93410782af7cddaf9d744e030f72"
+    },
+    "roles_score_seal": {
+      "path": "outputs/recommendation-evidence/rec-ev-041/score-seal.json",
+      "bytes": 6153,
+      "sha256": "537ce4b21feb494997d0dc3811ec939a6aff8c3277af8844c43704426a7d6972"
+    },
+    "roles_completion": {
+      "path": "outputs/recommendation-evidence/rec-ev-041/completion-seal.json",
+      "bytes": 8132,
+      "sha256": "648384ba65cd080cf59965e2bccd49f38dba6ec05c0f3a85ce4648d32af6dc7a"
+    },
+    "roles_review": {
+      "path": "docs/recommendation/experiments/rec-ev-041/result-review.json",
+      "bytes": 11781,
+      "sha256": "6b529588ddf8620b454296a392d8ae962c89a5afd14bf24c36c3f8c88174b927"
+    },
+    "prepare_seal": {
+      "path": "outputs/recommendation-evidence/rec-ev-032/prepare-seal.json",
+      "bytes": 2721,
+      "sha256": "e4ae13c2921ce823d785c4c02c600b7b9849319cae540c686f353c970a75eee3"
+    },
+    "train_seal": {
+      "path": "outputs/recommendation-evidence/rec-ev-032/train-seal.json",
+      "bytes": 941,
+      "sha256": "e571b86d78afba9e0c1ad2cb940f4a8b1ed9909fda32c0803b26d238804c68e3"
+    }
+  },
+  "output_root": "outputs/recommendation-evidence/rec-ev-042",
+  "max_seconds": 900,
+  "max_process_tree_bytes": 4294967296,
+  "stop_rules": [
+    "STALE_INPUT_OR_REVIEW",
+    "AXIS_OR_O_E_OVERLAP",
+    "UNSEALED_RATING_ACCESS",
+    "PRIMARY_COMMON_USERS_LT_2",
+    "RESOURCE_BUDGET_EXCEEDED"
+  ]
+}

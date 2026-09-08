@@ -1,0 +1,120 @@
+{
+  "status": "PASS_READ_ONLY_DATA_AVAILABILITY",
+  "reviewer": "rec042_data_readiness",
+  "e_h_rating_q_payload_decoded": false,
+  "new_selection_executed": false,
+  "observed_pairs": 191933,
+  "factor_unsupported_pairs": 779,
+  "format_only_supported_pairs": 1,
+  "common_candidate_pairs": 191153,
+  "candidate_count_per_user_range": [
+    18,
+    106
+  ],
+  "users": 2180,
+  "common_first_two_users": 2180,
+  "common_full_three_users": 2180,
+  "methods": {
+    "ALS_ONLY": {
+      "full_three_users": 2180
+    },
+    "RULE_GENRE_SET": {
+      "taste2_users": 2180,
+      "taste3_users": 2180,
+      "discovery_users": 1795,
+      "fallback_taste3_users": 385
+    },
+    "KM_GENRE": {
+      "taste2_users": 2180,
+      "taste3_users": 2180,
+      "discovery_users": 1448,
+      "fallback_taste3_users": 732
+    }
+  },
+  "both_mapping_discovery_users": 1283,
+  "either_mapping_discovery_users": 1960,
+  "checks": [
+    "user_axes_equal",
+    "E_targets_identical",
+    "O30_E_disjoint",
+    "rank_support_equal",
+    "finite_supported_scores",
+    "rank_equals_score_id_order",
+    "original_A0_top2_equal",
+    "T_D_disjoint",
+    "format_only_role_excluded",
+    "seal_hashes_match"
+  ],
+  "inputs": {
+    "order": {
+      "path": "outputs/recommendation-evidence/rec-ev-032/als-only/target-order.npz",
+      "bytes": 8313454,
+      "sha256": "aaf175457520f232455219116e961890339f7d5d1683c42f353ffa674836b939"
+    },
+    "eligibility": {
+      "path": "outputs/recommendation-evidence/rec-ev-041/eligibility.npz",
+      "bytes": 63038637,
+      "sha256": "cd91d64f07428fc57d2c7ae852375d29c7037a97dcd1d21eae7494ef01cb330b"
+    },
+    "targets": {
+      "path": "outputs/recommendation-evidence/rec-ev-032/conditional-ranking/targets.parquet",
+      "bytes": 599158,
+      "sha256": "739eda8ad3cf864b4c42a85e583f393f7e2ce64cba81b6cc41786adad40beb1a"
+    },
+    "profiles": {
+      "path": "outputs/recommendation-evidence/rec-ev-032/profiles.parquet",
+      "bytes": 300295,
+      "sha256": "42cb1f81a028359662375fc79f3484208aa58386cabad5006fb94dd29c5bd8b4"
+    },
+    "labels": {
+      "path": "outputs/recommendation-evidence/rec-ev-032/conditional-ranking/evaluation-labels.parquet",
+      "bytes": 1074120,
+      "sha256": "46c7696fa363b5c7ecd94f9d6a9d14dbd5da3b66038026215cbf898864b9f85b"
+    },
+    "histograms": {
+      "path": "outputs/recommendation-evidence/rec-ev-032/conditional-ranking/histograms.npz",
+      "bytes": 130443,
+      "sha256": "444059c0c155d8151ee24011dc3ef4610e8b9c03b181864b5b66d6bb3042b2c5"
+    },
+    "als_score_seal": {
+      "path": "outputs/recommendation-evidence/rec-ev-032/als-only/score-seal.json",
+      "bytes": 2278,
+      "sha256": "02d6b9927b0e904c3e6144e7b6c653f3e29d98cdb029c2957e04d55868f122cc"
+    },
+    "als_completion": {
+      "path": "outputs/recommendation-evidence/rec-ev-032/als-only/completion-seal.json",
+      "bytes": 2144,
+      "sha256": "1a4c4c79f71a1ec8f6b5b77609a4b1a665423695187a7110dd8552bf4a4d32d2"
+    },
+    "als_review": {
+      "path": "docs/recommendation/experiments/rec-ev-032/als-only/result-review.json",
+      "bytes": 2560,
+      "sha256": "55407c4d10687371330fa75869f1fe83babe93410782af7cddaf9d744e030f72"
+    },
+    "roles_score_seal": {
+      "path": "outputs/recommendation-evidence/rec-ev-041/score-seal.json",
+      "bytes": 6153,
+      "sha256": "537ce4b21feb494997d0dc3811ec939a6aff8c3277af8844c43704426a7d6972"
+    },
+    "roles_completion": {
+      "path": "outputs/recommendation-evidence/rec-ev-041/completion-seal.json",
+      "bytes": 8132,
+      "sha256": "648384ba65cd080cf59965e2bccd49f38dba6ec05c0f3a85ce4648d32af6dc7a"
+    },
+    "roles_review": {
+      "path": "docs/recommendation/experiments/rec-ev-041/result-review.json",
+      "bytes": 11781,
+      "sha256": "6b529588ddf8620b454296a392d8ae962c89a5afd14bf24c36c3f8c88174b927"
+    },
+    "prepare_seal": {
+      "path": "outputs/recommendation-evidence/rec-ev-032/prepare-seal.json",
+      "bytes": 2721,
+      "sha256": "e4ae13c2921ce823d785c4c02c600b7b9849319cae540c686f353c970a75eee3"
+    },
+    "train_seal": {
+      "path": "outputs/recommendation-evidence/rec-ev-032/train-seal.json",
+      "bytes": 941,
+      "sha256": "e571b86d78afba9e0c1ad2cb940f4a8b1ed9909fda32c0803b26d238804c68e3"
+    }
+  }
+}

@@ -1,0 +1,34 @@
+{
+  "status": "PASS",
+  "scope": "DESIGN_AND_EXECUTION_CODE_NOT_RESULT_QUALITY",
+  "design_reviewer": "/root/rec032_design_review",
+  "execution_reviewer": "/root/rec032_execution_review",
+  "fingerprint": {
+    "design": "1497aef22ede7a3da72a0d1b8797b695e1a3b8c39918e0ec185e66d403ec640c",
+    "config": "1141a8df775e29d75bc40d9b6c18ba11c8b0228b59a72ef363f88642c2a1e195",
+    "runner": "58206af0646fa70a8693a2e60b06da1884fbbdfb9b8c16657eeb8fc1e3676d8d",
+    "tests": "397f99d036afde930ef2d79b7d828562d7c09b6dfd4845e27e21a51ac7c63d1e"
+  },
+  "history": [
+    {
+      "result": "DESIGN_PASS",
+      "mandatory_findings": 0
+    },
+    {
+      "result": "CODE_REVISION_REQUIRED",
+      "finding": "P2 resource limit did not persist consumed aggregate budget"
+    },
+    {
+      "result": "CODE_REVISION_REQUIRED",
+      "finding": "Same P2 remained in synchronous guard path"
+    },
+    {
+      "result": "CODE_FINAL_PASS",
+      "mandatory_findings": 0,
+      "synthetic_tests": 18,
+      "resource_failure_paths_checked": 4
+    }
+  ],
+  "prior_extra_unknown_combinations_checked": 13176,
+  "raw_data_opened_by_reviewers": false
+}

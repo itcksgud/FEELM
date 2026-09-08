@@ -1,0 +1,76 @@
+{
+  "status": "PASS_AUDIT_COMPLETE",
+  "reviewers": [
+    "rec042_implementation_review",
+    "rec042_stats_review"
+  ],
+  "blocking_findings": 0,
+  "source_field_mismatches": 0,
+  "selected_slots_independently_verified": 19620,
+  "aggregate_max_error": 0,
+  "bootstrap_recomputed_draws": 20000,
+  "bootstrap_max_error": 1.5612511283791264e-17,
+  "interval_max_error": 6.938893903907228e-18,
+  "primary_directions": [
+    "UNDECIDED",
+    "UNDECIDED",
+    "UNDECIDED",
+    "UNDECIDED",
+    "UNDECIDED",
+    "UNDECIDED",
+    "UNDECIDED",
+    "UNDECIDED",
+    "UNDECIDED"
+  ],
+  "scope": "observed-candidate conditional exploratory; no equivalence or product-winner conclusion",
+  "outputs": {
+    "request-seal.json": {
+      "bytes": 4998,
+      "sha256": "80d419b9b0836d40296646e469472212e5a18d2a3248083e2fde7d22de850133"
+    },
+    "candidates.npz": {
+      "bytes": 2728372,
+      "sha256": "106cdea6334dcdeff538fbc9f45d0f8a3e2592ec419e0c9e52cdff4ed2dc356a"
+    },
+    "labels.npz": {
+      "bytes": 948898,
+      "sha256": "b3c57607b1aede42e416305535e4b326db747d7ac8e91a98dad7f406081c5922"
+    },
+    "run/selection-seal.json": {
+      "bytes": 457,
+      "sha256": "42dc523c6f384e918f67c0900e89d3e6a268e14e4642307a6171c08bd9a89c3d"
+    },
+    "run/selection.npz": {
+      "bytes": 145673,
+      "sha256": "1acdd4228f03e2ad1ce21e56ee3809b5760b5e6b58b7915b5af7a336d549c46e"
+    },
+    "run/summary.json": {
+      "bytes": 9686,
+      "sha256": "39b7a1c7af14f8681051fb9d9619e784e3f07dac834551a72cebbdabd55d71a5"
+    },
+    "run/evaluation.npz": {
+      "bytes": 1255041,
+      "sha256": "3f0c788a64f279faa6789cbc90df9cf1059960b25909ba67dc320b93f240f4f0"
+    },
+    "run/evaluation-seal.json": {
+      "bytes": 540,
+      "sha256": "3aa9c76c410041b3dda7ce09310c77b770500327c1a21910bd46b4ea89c65e0f"
+    },
+    "completion-seal.json": {
+      "bytes": 884,
+      "sha256": "70f056edcac68286a4eb80527b32270dbd1aedaefc5e55cf8ffa06ee189e0afa"
+    }
+  },
+  "execution_review": {
+    "bytes": 2077,
+    "sha256": "0f15a843466b2ca215cbe4065c063e04908abe4c781ac4c09158eaefd4ff85fc"
+  },
+  "result_document_review": {
+    "reviewer": "rec042_stats_review",
+    "status": "PASS",
+    "result": {
+      "bytes": 8210,
+      "sha256": "c4d2e676842246c14b6eb4719c9b905cc416a264fb5e4aafeec52a15e39efec8"
+    }
+  }
+}

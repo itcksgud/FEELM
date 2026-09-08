@@ -1,0 +1,31 @@
+{
+  "status": "PASS_KEY_ONLY_DATA_READINESS",
+  "reviewer": "rec043_data_readiness",
+  "E_H_new_value_analysis": false,
+  "users": 2180,
+  "O_pairs": 65400,
+  "E_original": 191933,
+  "E_common": 191932,
+  "TV_only_E_removed": 1,
+  "O_E_overlap": 0,
+  "training_users": 46376,
+  "training_ratings": 7355439,
+  "train_evaluation_overlap": 0,
+  "no_train_rating_pairs": {
+    "O": 8,
+    "E": 779
+  },
+  "content_genres": 18,
+  "multi_genre_pairs": {
+    "O": 59957,
+    "E": 166868
+  },
+  "E_seen_group_pairs": {
+    "KM_GENRE": 182167,
+    "RULE_GENRE_SET": 182221
+  },
+  "O_all_8_groups_users": {
+    "KM_GENRE": 119,
+    "RULE_GENRE_SET": 31
+  }
+}

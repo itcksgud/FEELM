@@ -1,0 +1,206 @@
+{
+  "artifact_availability": "Large/source/excerpt evidence remains in ignored local outputs; Git documents alone do not distribute the complete underlying dataset.",
+  "candidate_approved_as_8_tastes": false,
+  "cause_identified": false,
+  "changed_movie_assignments": 0,
+  "cluster_decisions": {
+    "SEMANTIC_01": "LIMITED_DESCRIPTION_ENRICHMENT",
+    "SEMANTIC_02": "LIMITED_DESCRIPTION_ENRICHMENT",
+    "SEMANTIC_03": "PREVIOUS_CONCERN_REMAINS",
+    "SEMANTIC_04": "LIMITED_DESCRIPTION_ENRICHMENT",
+    "SEMANTIC_05": "PREVIOUS_CONCERN_REMAINS",
+    "SEMANTIC_06": "PREVIOUS_CONCERN_REMAINS",
+    "SEMANTIC_07": "PREVIOUS_CONCERN_REMAINS",
+    "SEMANTIC_08": "PREVIOUS_CONCERN_REMAINS"
+  },
+  "completion_reuse": "VERIFIED_EXISTING_COMPLETION_NO_RECALCULATION",
+  "current_document_snapshot": {
+    "docs/recommendation/plans/service-policy-redesign/README.md": {
+      "bytes": 12541,
+      "sha256": "512f67d35b46bebe4002c495ee05b2c05f0a3c3d0d2e71329cf4fce2f692348c"
+    },
+    "docs/recommendation/plans/service-policy-redesign/data-readiness.md": {
+      "bytes": 12825,
+      "sha256": "11d6bf2144e4ebc32f20eeeb9d12644aed8a17b345c4b9939a35574b9ddcb2ee"
+    },
+    "docs/recommendation/plans/service-policy-redesign/experiment-design.md": {
+      "bytes": 35500,
+      "sha256": "aa304ad47d8ebb73746a1a6b55b64ba334219b48dd2813add8d03282930d101c"
+    },
+    "docs/recommendation/plans/service-policy-redesign/review-log.md": {
+      "bytes": 61159,
+      "sha256": "11969e5d82a37eff3538c7f99a897161d9694868a30c49f306bd7045ba6e41a0"
+    },
+    "docs/runbook/local-development.md": {
+      "bytes": 47040,
+      "sha256": "f840aa36fbb9fd67da2755438dc490a5d3d6a10c44bf2654d154a7e99a4cdae3"
+    }
+  },
+  "date": "2026-09-08",
+  "description_decision": "Keep separate-channel c-TF-IDF as supporting explanation and inspection material. Some descriptions are more concrete, but current eight clusters are not established as differentiated user tastes. End this diagnostic without automatic refitting or search.",
+  "excerpt_reuse": "VERIFIED_EXISTING_EXCERPTS",
+  "excerpt_seal": {
+    "bytes": 951,
+    "sha256": "9c1835c13e9dab5ed65be34d308637a5bc5f7b52b6293e0d523e30503a31d965"
+  },
+  "execution_fingerprint": {
+    "config": "975589ef0ae76eea87be8138b99a70ec12ff56004fe10efb82bb06fb8e92bb04",
+    "design": "0f0176d9485f58eca365572a95442c792c0d5f1b4df8d9578df8817f07bcec7d",
+    "helper": "380333cddba629abc27392d907c42771e24095da61f8ed29c489845a384b452f",
+    "runner": "8242260ae86811719e989ed11c9b2f07f94d5ae2aca0ccaba47265dd9f4db687",
+    "tests": "e17cd089eba94e7e641a4202ddea0881d40638ebbfecdcca2a917fb27f17771b"
+  },
+  "final_K_selected": false,
+  "fit_count": 0,
+  "full_catalogue_synopsis_ctfidf": false,
+  "human_preference_validation": false,
+  "independent_reviews": {
+    "rec033_design_review": {
+      "numerical_scope": "Rebuilt all85517 movie token counts (10837 vocabulary:19genre+10818keyword), exact three-channel c-TF-IDF matrices and360 top rows with in/out prevalence;192 pair cosines max error3.39e-14,192 overlap cells and120 sample keyword maps; source/ancestor/fingerprint pins.",
+      "post_review_change": "Only RESULT completion status and completed-review tense were changed; exact prior report reconstruction hash verified. Review log/runbook later append the completed status.",
+      "reviewed_result_sha256": "29150ce1e9bea72ab454847942c03f51cd94e4f1361cd94f6b0c2da024ab4bdb",
+      "semantic_scope": "Read all120 complete synopses with40 cases per sampling role. Verified128 exact excerpts,120 SYNOPSIS identities/codes/roles/titles/themes/nine notes/rivals; all120 keyword display rows,16 mixed/genre lists and8coverage summaries. RESULT and three current summary documents passed after two source-bounded wording corrections.",
+      "status": "PASS_FULL_NUMERICAL_LINKED_SEMANTIC_AND_REPORT"
+    },
+    "rec037_synopsis_a": {
+      "scope": "Fresh fork_turns=none reviewer read masked C001-C060; 63 source ranges/themes/notes transcribed exactly; subsequent independent recheck of all60 SYNOPSIS rows passed.",
+      "status": "PASS_FIRST_EXTRACTION_AND_TRANSCRIPTION"
+    },
+    "rec037_synopsis_b": {
+      "scope": "Fresh fork_turns=none reviewer read masked C061-C120; 65 ranges/themes/notes independently validated against source by the linked reviewer.",
+      "status": "FIRST_EXTRACTION_COMPLETE_TRANSCRIPTION_VERIFIED"
+    },
+    "stage3_assets_audit": {
+      "scope": "Read-only source/runtime availability; no new NLP dependency installed.",
+      "status": "PASS_SOURCE_RUNTIME_PREFLIGHT"
+    },
+    "stage3_contract_audit": {
+      "scope": "Exact five-file fingerprint, four unit tests and 33 independent synthetic cases before real execution; archived in review.json.",
+      "status": "PASS_DESIGN_AND_EXECUTION"
+    }
+  },
+  "independently_reviewed_document_snapshot": {
+    "docs/recommendation/experiments/rec-ev-037/KEYWORDS.md": {
+      "bytes": 17316,
+      "sha256": "7a89cbb7bf375c27eb26348801dc939c8651df2d4e34e71cc89c47ce30030ff6"
+    },
+    "docs/recommendation/experiments/rec-ev-037/SYNOPSIS.md": {
+      "bytes": 20259,
+      "sha256": "d87a84fe3c1493e5b7f62c8cacbabc7475ab4e222a395ecda31d923e14061265"
+    },
+    "docs/recommendation/plans/service-policy-redesign/README.md": {
+      "bytes": 12541,
+      "sha256": "512f67d35b46bebe4002c495ee05b2c05f0a3c3d0d2e71329cf4fce2f692348c"
+    },
+    "docs/recommendation/plans/service-policy-redesign/data-readiness.md": {
+      "bytes": 12825,
+      "sha256": "11d6bf2144e4ebc32f20eeeb9d12644aed8a17b345c4b9939a35574b9ddcb2ee"
+    },
+    "docs/recommendation/plans/service-policy-redesign/experiment-design.md": {
+      "bytes": 35500,
+      "sha256": "aa304ad47d8ebb73746a1a6b55b64ba334219b48dd2813add8d03282930d101c"
+    }
+  },
+  "local_evidence_files": {
+    "budget.json": {
+      "bytes": 514,
+      "sha256": "5d7d65f4c18873439a362ba1387e45ca68e690d9084322c2f849fdeda374ddfb"
+    },
+    "channel-counts.npz": {
+      "bytes": 650486,
+      "sha256": "06e4f81f9126601656e96ee814323e6fecae6a6394d7160e99936026e4f8c29e"
+    },
+    "completion-seal.json": {
+      "bytes": 3359,
+      "sha256": "a6e327d1ca05bb6af236b33d58a304fa215157478de22bee17efc8eeda9b12da"
+    },
+    "diagnostics.json": {
+      "bytes": 12940,
+      "sha256": "b79e9e82d91d152e9cc4b70953c8a040fa2b14bbf057b6382a17c968ff4acd38"
+    },
+    "sample-keyword-evidence.json": {
+      "bytes": 43379,
+      "sha256": "d213fd68c672038cfd05b815ac46b399d7eaa6a725a983568c754c23357dcaaa"
+    },
+    "synopsis-excerpts-draft.json": {
+      "bytes": 44282,
+      "sha256": "4ddd3e996e939e174d9e0e3dd37974d76a4265f45eda029ebfb51df3ad01062b"
+    },
+    "synopsis-excerpts-seal.json": {
+      "bytes": 951,
+      "sha256": "9c1835c13e9dab5ed65be34d308637a5bc5f7b52b6293e0d523e30503a31d965"
+    },
+    "synopsis-excerpts.json": {
+      "bytes": 44282,
+      "sha256": "4ddd3e996e939e174d9e0e3dd37974d76a4265f45eda029ebfb51df3ad01062b"
+    },
+    "synopsis-only-cards.json": {
+      "bytes": 65198,
+      "sha256": "533c8db2031b4e72d410ee7881ad1054f6af45529319cfa23468957bf5373762"
+    },
+    "synopsis-provenance.json": {
+      "bytes": 1565,
+      "sha256": "4d7698be8836bbfa1c161ce899237dacc06a7fdfdf2975dd201b2a9da1cd54fb"
+    },
+    "synopsis-ranges-a.json": {
+      "bytes": 8257,
+      "sha256": "94c11e5cca3c31af0b42dfa6649a5ba36a9096a382d06e73c1ebbb4390a4db71"
+    },
+    "synopsis-ranges-b.json": {
+      "bytes": 8344,
+      "sha256": "6ea5a1ddaea3d4165b43fec6352c9a10e984c7007725a143a9f23a33dc40de81"
+    },
+    "top-terms.json": {
+      "bytes": 150103,
+      "sha256": "c579654a97eab5ed3558252857517f051519ebf3ad5e5f94beb9c3f319d91e3c"
+    }
+  },
+  "movielens_rating_access": false,
+  "network_data_collection_requests": 0,
+  "new_encoding_count": 0,
+  "numeric_completion_seal": {
+    "bytes": 3359,
+    "sha256": "a6e327d1ca05bb6af236b33d58a304fa215157478de22bee17efc8eeda9b12da"
+  },
+  "package_installations": 0,
+  "phase_note": "The immutable numerical completion seal records NUMERIC_COMPLETE_SYNOPSIS_REVIEW_PENDING at the end of numerical execution. All 120 first synopsis annotations and 128 exact source substrings were then sealed before linked review. This result review records the subsequently completed independent numerical, linked semantic and report inspections without changing either earlier phase seal.",
+  "product_contract_changed": false,
+  "readiness_decision": "INCONCLUSIVE",
+  "recommendation_quality_improvement_established": false,
+  "report_review_corrections": [
+    "Narrowed C064 from assumed co-parenting to two women connected by their ex-husband child; no plot beyond source asserted.",
+    "Separated full synopsis source filename from excerpt and range files."
+  ],
+  "result_files": {
+    "KEYWORDS.md": {
+      "bytes": 17316,
+      "sha256": "7a89cbb7bf375c27eb26348801dc939c8651df2d4e34e71cc89c47ce30030ff6"
+    },
+    "README.md": {
+      "bytes": 6872,
+      "sha256": "0f0176d9485f58eca365572a95442c792c0d5f1b4df8d9578df8817f07bcec7d"
+    },
+    "RESULT.md": {
+      "bytes": 15019,
+      "sha256": "e3353dcec0014922ad9c601275b47de72475e389eef2e43f8a7bcea8346532b4"
+    },
+    "SYNOPSIS.md": {
+      "bytes": 20259,
+      "sha256": "d87a84fe3c1493e5b7f62c8cacbabc7475ab4e222a395ecda31d923e14061265"
+    },
+    "config.json": {
+      "bytes": 2402,
+      "sha256": "975589ef0ae76eea87be8138b99a70ec12ff56004fe10efb82bb06fb8e92bb04"
+    },
+    "review.json": {
+      "bytes": 1133,
+      "sha256": "a27ce51307201b7ba98e78bdb50c83ce93983a2a5a6fefb1ba98b47a5d40a88c"
+    }
+  },
+  "status": "PASS_AUDIT_COMPLETE",
+  "synopsis_first_review_semantic_truth_validated": false,
+  "synthetic_tests": {
+    "independent_synthetic": 33,
+    "local_unittest": 4
+  }
+}

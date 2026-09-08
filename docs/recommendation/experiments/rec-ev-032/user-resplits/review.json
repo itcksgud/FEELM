@@ -1,0 +1,61 @@
+{
+  "status": "PASS",
+  "date": "2026-09-08",
+  "fingerprint": {
+    "design": "04be50a5237a46ace6e9c91a35831cd9cc5a3e396b9f8034b6ac2124dc4dacc0",
+    "config": "1b53c255cd143853483a192c54f3073922a657129c7a6667b176ca0416af3f27",
+    "runner": "0d17158e6f45a162a2106f1dc09ec430e9bfdd3855095f97d59ab5c3b8664a1f",
+    "tests": "c648882888ccc25abdd2ed1f9c0a611be3d0af866fb114e313ebe37dd8ac1f15",
+    "base_runner": "58206af0646fa70a8693a2e60b06da1884fbbdfb9b8c16657eeb8fc1e3676d8d",
+    "conditional_runner": "6c2580b910802c5c4127c916a0d980b7daa39754d715745b552bc03e0dd15c53",
+    "als_runner": "8fb465992389bcdd0e0fb40ed2d6d0ee9ee790393793f6b78e524295f1f3b200"
+  },
+  "files": {
+    "design": {
+      "bytes": 8171,
+      "sha256": "04be50a5237a46ace6e9c91a35831cd9cc5a3e396b9f8034b6ac2124dc4dacc0"
+    },
+    "config": {
+      "bytes": 3897,
+      "sha256": "1b53c255cd143853483a192c54f3073922a657129c7a6667b176ca0416af3f27"
+    },
+    "runner": {
+      "bytes": 35119,
+      "sha256": "0d17158e6f45a162a2106f1dc09ec430e9bfdd3855095f97d59ab5c3b8664a1f"
+    },
+    "tests": {
+      "bytes": 10408,
+      "sha256": "c648882888ccc25abdd2ed1f9c0a611be3d0af866fb114e313ebe37dd8ac1f15"
+    },
+    "base_runner": {
+      "bytes": 34577,
+      "sha256": "58206af0646fa70a8693a2e60b06da1884fbbdfb9b8c16657eeb8fc1e3676d8d"
+    },
+    "conditional_runner": {
+      "bytes": 29494,
+      "sha256": "6c2580b910802c5c4127c916a0d980b7daa39754d715745b552bc03e0dd15c53"
+    },
+    "als_runner": {
+      "bytes": 24046,
+      "sha256": "8fb465992389bcdd0e0fb40ed2d6d0ee9ee790393793f6b78e524295f1f3b200"
+    }
+  },
+  "design_reviewer": "als_rationale_check",
+  "execution_reviewer": "conditional_execution_review",
+  "mandatory_findings": 0,
+  "synthetic_unittests_passed": 15,
+  "additional_independent_checks": [
+    "round-specific role exclusion and raw-rating P0 arithmetic",
+    "27 comparison family and 20000 draw bootstrap",
+    "three fresh ALS fit call paths, no model warm start",
+    "all scores sealed before evaluation label files",
+    "partial execution refusal and complete output/dependency hash verification",
+    "synthetic process-tree 13 GiB and 1800.001 second limit failure persistence"
+  ],
+  "review_payload_reads": false,
+  "review_actual_training_runs": 0,
+  "nonblocking_limitations": [
+    "Initial input hashing precedes Budget creation; final completion hashing follows watchdog close. The final guard rejects elapsed-time excess after completion hashing; immediate watchdog interruption does not cover these local hash intervals."
+  ],
+  "approval_scope": "The fixed experiment may run; this review does not assert successful real training or favorable quality results."
+}

@@ -1,0 +1,63 @@
+{
+  "status": "PASS",
+  "scope": "SEALED_CONDITIONAL_RESULTS_AND_FINAL_REPORT",
+  "reviewer": "/root/conditional_result_review",
+  "mandatory_findings": 0,
+  "users": 2180,
+  "lists": 17440,
+  "slots": 34880,
+  "aggregate_cells": 8,
+  "paired_comparisons": 9,
+  "target_union_pairs": 191933,
+  "membership_rows": 9972,
+  "label_slots_before_union": 193104,
+  "profile_target_overlap": 0,
+  "supply_coverage": 1,
+  "label_coverage": 1,
+  "all_target_cell_supports": 1535464,
+  "conditional_top2_reproduced": true,
+  "worse_direction_comparisons": 8,
+  "undecided_comparisons": 1,
+  "checks": [
+    "original and conditional fingerprint/dependency/provenance links",
+    "12 mandatory completion file hashes",
+    "fixed E identical to original membership union",
+    "O30 disjoint from E",
+    "all conditional top2 reproduced from sealed target global ranks",
+    "raw half-star grid and Q from derived H",
+    "exact integer metric and paired difference checks",
+    "8 aggregate cells and 9 decisions",
+    "independent bincount user bootstrap",
+    "report units, numbers, interpretation and limitations"
+  ],
+  "bootstrap": {
+    "repeats": 5000,
+    "seed": 20260907,
+    "family_size": 9,
+    "quantile_tail": 0.002777777777777778,
+    "max_q_error": 0,
+    "max_individual_metric_error": 0,
+    "max_paired_difference_error": 0,
+    "max_aggregate_error": 1.2212453270876722e-15,
+    "max_ci_error": 1.8041124150158794e-16,
+    "max_ci_width_error": 2.0122792321330962e-16
+  },
+  "fingerprints": {
+    "final_report": "f0021a20b9de6181a67abe4ab8aacc51f5269f647ce259a19413e0b78843d12f",
+    "completion_seal": "8a12c94ed301a93a3b29e396a0af29f68a7a0f44d2caa48b03cf5536d8d5f0d9",
+    "metrics": "afc4285658bd7039b93d362e6a97d3d442ab791887b506e66df98bae1d1d0913",
+    "score_seal": "cf904db96eadc72a971d737de4dafea3a36309980602bc69d04e9fb747a67ae6",
+    "request_seal": "d18c2a2776bfacf33c76087a86514eee27bbaf9fb03189efd08baec86c0724b7"
+  },
+  "report_clarification": "Replaced ambiguous original 91% missing-label phrasing with original full-catalog high missingness; no numeric result or decision changed.",
+  "limitations": {
+    "original_full_catalog_scores_recomputed": false,
+    "original_full_order_recomputed": false,
+    "original_top2_and_diagnostics_independently_regenerated": false,
+    "original_histogram_source_reopened": false,
+    "original_rating_source_reopened": false,
+    "model_feature_raw_protected_payload_opened": false,
+    "basis": "Sealed derived ratings/H/target ranks, original membership/profile ID columns, matching recorded score digests, metadata, and reviewed code."
+  },
+  "root_verified_completed_reuse": "VERIFIED_EXISTING_COMPLETION_NO_RESCORING"
+}

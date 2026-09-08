@@ -1,0 +1,35 @@
+{
+  "actual_catalogue_fit_before_review": false,
+  "date": "2026-09-08",
+  "fingerprint": {
+    "build_rec_ev_019b_features.py": "dc04c1211c975f079a0172649d324db93e5b6a66312105678e098aca0faac44c",
+    "config": "554ea418d20128f4749e8c128d705284b45bbcae68b335bcf9f4ed48d2f6a681",
+    "design": "b92f641a078aebd93266b378aec03b6f8b7822e570e8e026ebea5f3ee379e527",
+    "evaluation_runner": "3ba4218f691e0ec264351f9043632a42e64d55bc1f00c36c2d80db251c13cfbf",
+    "rec_ev_033_tastes.py": "380333cddba629abc27392d907c42771e24095da61f8ed29c489845a384b452f",
+    "rec_ev_036_readiness.py": "6e46cc81902c7ba4b19f8dcf61bfe00fc1b351c3a5fee99d4b981e37e2eab71c",
+    "rec_ev_037_descriptions.py": "8242260ae86811719e989ed11c9b2f07f94d5ae2aca0ccaba47265dd9f4db687",
+    "recommendation_protocol_v4.py": "cc4a260f0fe5579bf3cbaa1d9365c5b313ccf2ec86cda4d1445839377442d36c",
+    "runner": "59a0c26021c97a84034b19e2c66b6137a11e123373628cfb8862196eb696c296",
+    "tests": "9839898054b0a66ac18b1f489319b14d3350efa19f1199ae4f144cfefe66ba28"
+  },
+  "independent_reviews": {
+    "rec033_design_review": {
+      "description_counterexamples": 8,
+      "input_pins": 12,
+      "seal_normal_and_tampered_cases": 23,
+      "status": "PASS_DESIGN_EXECUTION_AND_EVALUATION_LINK",
+      "synthetic_link": "8methods x8movies,64classifications,3scopes,168pairwise summaries; all independently exact",
+      "unittest": 9
+    },
+    "rec037_synopsis_a": {
+      "cache_files_preflight": 209,
+      "evaluation_movies_cache_preflight": 128,
+      "no_actual_catalogue_fit": true,
+      "status": "PASS_SOURCE_NUMERICS_AND_SYNTHETIC_FITS",
+      "synthetic_fits": 8
+    }
+  },
+  "scope": "Eight fixed methods; six new methods x two seeds; no parameter search; same128movie blinded cluster+description evaluation; native evidence separated from display fallback.",
+  "status": "PASS"
+}

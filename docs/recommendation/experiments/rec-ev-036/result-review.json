@@ -1,0 +1,96 @@
+{
+  "candidate_approved_as_8_tastes": false,
+  "cause_identified": false,
+  "completion_reuse": "VERIFIED_EXISTING_COMPLETION_NO_CALCULATION",
+  "completion_seal": {
+    "bytes": 3815,
+    "sha256": "75d6fc588e3939ae03758a51fbc7e1c44c5e440cc034b7ef5523d94b0bada350"
+  },
+  "current_document_snapshot": {
+    "docs/recommendation/plans/service-policy-redesign/README.md": {
+      "bytes": 11640,
+      "sha256": "3fda597c39542a280e7e3011afe67ba2c3714a54142488dd6ecd38d6cbde4995"
+    },
+    "docs/recommendation/plans/service-policy-redesign/data-readiness.md": {
+      "bytes": 12099,
+      "sha256": "c84691606f51d0ab06c2393e0c656a07e2b304db01f030c017c66b3571de4e9f"
+    },
+    "docs/recommendation/plans/service-policy-redesign/experiment-design.md": {
+      "bytes": 35108,
+      "sha256": "617389f23e89526078f0574247457892960f457e7fd8cd8edf7bb617bcfcad13"
+    },
+    "docs/recommendation/plans/service-policy-redesign/review-log.md": {
+      "bytes": 57762,
+      "sha256": "094e775901ef78963b9273240d5b3ff7052a2204ec9edb551cd44d8d2cb734ab"
+    },
+    "docs/runbook/local-development.md": {
+      "bytes": 45206,
+      "sha256": "19472b4b6e33a407ae972fc14b42e93f8902b10cc5615c28d72f1bd28ee09a0b"
+    }
+  },
+  "date": "2026-09-08",
+  "decision": "Keep raw ALS and external8 constraints. Freeze current audit as insufficient evidence of differentiated taste semantics; investigate one input-representation question before any cause-linked repair. No new search grid or quality run performed.",
+  "execution_fingerprint": {
+    "config": "1dea19229d745f37c04d8c6fc50bb9674699101146df9ac2e97c95fb72c32f1a",
+    "design": "4045ac348c4718c607fe5e4ce7b134b43dcf60b05ec090c8c804185097e366bc",
+    "helper": "380333cddba629abc27392d907c42771e24095da61f8ed29c489845a384b452f",
+    "runner": "6e46cc81902c7ba4b19f8dcf61bfe00fc1b351c3a5fee99d4b981e37e2eab71c",
+    "tests": "ab52df7fca87852a52c230b8686c7956425aca45d6634806144131a91d99dfab",
+    "text_dependency": "cc4a260f0fe5579bf3cbaa1d9365c5b313ccf2ec86cda4d1445839377442d36c",
+    "text_helper": "dc04c1211c975f079a0172649d324db93e5b6a66312105678e098aca0faac44c"
+  },
+  "final_K_selected": false,
+  "fit_count": 0,
+  "human_preference_validation": false,
+  "independent_reviews": {
+    "rec033_design_review": {
+      "scope": "120 complete masked metadata cards read and annotated without linked cluster outputs; 120 themes/14 ambiguity notes; transcription and first-review seal verified.",
+      "status": "PASS_FIRST_ANNOTATION_TRANSCRIPTION"
+    },
+    "stage3_assets_audit": {
+      "maximum_independent_distance_error": 3.886e-16,
+      "maximum_independent_margin_error": 9.437e-16,
+      "scope": "All 684136 distances, 85517 first/second assignments, margins, 112 quantiles, 152 genre cells, 64 cosine/64 center distances, language/rival counts, 120 samples and exact pre-encoding text hashes; 194 cache files (120 ko/74 en); source/output/fingerprint hashes.",
+      "status": "PASS"
+    },
+    "stage3_contract_audit": {
+      "scope": "Independent linked inspection all120; INCONCLUSIVE; all report numbers and full sample-index order/IDs/roles verified. Final source RESULT hash54c7a583824b1f92fd3073bc1cd04f4fac7fa2b8d49709f1a52b92fc43abf72e. Afterwards only sample-index ID clarification (MovieLens movie_id, not TMDB ID) added per reviewer suggestion.",
+      "status": "PASS_LINKED_SEMANTICS_AND_REPORT"
+    }
+  },
+  "movielens_rating_access": false,
+  "network_requests": 0,
+  "new_encoding_count": 0,
+  "phase_note": "The immutable completion seal records the end of numerical execution as semantic review pending. This result review records the later completed semantic review without modifying that seal.",
+  "product_contract_changed": false,
+  "readiness_decision": "INCONCLUSIVE",
+  "repair_fitted": false,
+  "result_files": {
+    "RESULT.md": {
+      "bytes": 10139,
+      "sha256": "54c7a583824b1f92fd3073bc1cd04f4fac7fa2b8d49709f1a52b92fc43abf72e"
+    },
+    "first-review-seal.json": {
+      "bytes": 439,
+      "sha256": "5ec14d55728ae16ea81267f0e5e86f97420dc9c7d61e348bce934b80a0dd400e"
+    },
+    "first-review.md": {
+      "bytes": 10359,
+      "sha256": "17c57bf0fbdcd35118d72b32a6cd6726187d9fa4ea0e4856c353183f9797955c"
+    },
+    "review.json": {
+      "bytes": 1353,
+      "sha256": "8a268974f8b49d3482d36626dfee9d05a787a74f64762e92f61b05c0fa968081"
+    },
+    "sample-index.md": {
+      "bytes": 5341,
+      "sha256": "c589a892ae6f045939ebafff05e45a9d158ad9c18f72af17519ecd835a3496ae"
+    }
+  },
+  "status": "PASS_AUDIT_COMPLETE",
+  "synthetic_tests": {
+    "independent_cache": 5,
+    "independent_geometry": 40,
+    "local_unittest": 4
+  }
+}

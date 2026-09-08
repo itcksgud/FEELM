@@ -1,0 +1,115 @@
+{
+  "experiment": "REC035_INPUTS",
+  "inputs": {
+    "training": {
+      "path": "outputs/recommendation-evidence/rec-ev-032/training.parquet",
+      "bytes": 20006204,
+      "sha256": "3c343eb5caf18cd433d40a04ee1e0a547e9bb9554ce5eb839e1498933d9db6a5"
+    },
+    "prepared": {
+      "path": "outputs/recommendation-evidence/rec-ev-032/prepared.npz",
+      "bytes": 477520,
+      "sha256": "4b91394997206f4cd78886b8d995ccb8d8393640d0cfd13a6be5179a003dfc4a"
+    },
+    "profiles": {
+      "path": "outputs/recommendation-evidence/rec-ev-032/profiles.parquet",
+      "bytes": 300295,
+      "sha256": "42cb1f81a028359662375fc79f3484208aa58386cabad5006fb94dd29c5bd8b4"
+    },
+    "raw_factors": {
+      "path": "outputs/recommendation-evidence/rec-ev-032/factors.npz",
+      "bytes": 7504871,
+      "sha256": "3feb554a5af6469fcb5ffbde46010e032d2134ee983bd5f87b14aef7754dcdba"
+    },
+    "prepare_seal": {
+      "path": "outputs/recommendation-evidence/rec-ev-032/prepare-seal.json",
+      "bytes": 2721,
+      "sha256": "e4ae13c2921ce823d785c4c02c600b7b9849319cae540c686f353c970a75eee3"
+    },
+    "raw_train_seal": {
+      "path": "outputs/recommendation-evidence/rec-ev-032/train-seal.json",
+      "bytes": 941,
+      "sha256": "e571b86d78afba9e0c1ad2cb940f4a8b1ed9909fda32c0803b26d238804c68e3"
+    },
+    "conditional_completion": {
+      "path": "outputs/recommendation-evidence/rec-ev-032/conditional-ranking/completion-seal.json",
+      "bytes": 2624,
+      "sha256": "8a12c94ed301a93a3b29e396a0af29f68a7a0f44d2caa48b03cf5536d8d5f0d9"
+    },
+    "conditional_request": {
+      "path": "outputs/recommendation-evidence/rec-ev-032/conditional-ranking/request-seal.json",
+      "bytes": 938,
+      "sha256": "d18c2a2776bfacf33c76087a86514eee27bbaf9fb03189efd08baec86c0724b7"
+    },
+    "conditional_score": {
+      "path": "outputs/recommendation-evidence/rec-ev-032/conditional-ranking/score-seal.json",
+      "bytes": 2664,
+      "sha256": "cf904db96eadc72a971d737de4dafea3a36309980602bc69d04e9fb747a67ae6"
+    },
+    "targets": {
+      "path": "outputs/recommendation-evidence/rec-ev-032/conditional-ranking/targets.parquet",
+      "bytes": 599158,
+      "sha256": "739eda8ad3cf864b4c42a85e583f393f7e2ce64cba81b6cc41786adad40beb1a"
+    },
+    "labels": {
+      "path": "outputs/recommendation-evidence/rec-ev-032/conditional-ranking/evaluation-labels.parquet",
+      "bytes": 1074120,
+      "sha256": "46c7696fa363b5c7ecd94f9d6a9d14dbd5da3b66038026215cbf898864b9f85b"
+    },
+    "histograms": {
+      "path": "outputs/recommendation-evidence/rec-ev-032/conditional-ranking/histograms.npz",
+      "bytes": 130443,
+      "sha256": "444059c0c155d8151ee24011dc3ef4610e8b9c03b181864b5b66d6bb3042b2c5"
+    },
+    "als_completion": {
+      "path": "outputs/recommendation-evidence/rec-ev-032/als-only/completion-seal.json",
+      "bytes": 2144,
+      "sha256": "1a4c4c79f71a1ec8f6b5b77609a4b1a665423695187a7110dd8552bf4a4d32d2"
+    },
+    "als_score": {
+      "path": "outputs/recommendation-evidence/rec-ev-032/als-only/score-seal.json",
+      "bytes": 2278,
+      "sha256": "02d6b9927b0e904c3e6144e7b6c653f3e29d98cdb029c2957e04d55868f122cc"
+    },
+    "als_rankings": {
+      "path": "outputs/recommendation-evidence/rec-ev-032/als-only/rankings.npz",
+      "bytes": 167952,
+      "sha256": "c90adad225769994504469c15a16d430409083dd094bbc510f3c70a5abf61bed"
+    },
+    "als_target_order": {
+      "path": "outputs/recommendation-evidence/rec-ev-032/als-only/target-order.npz",
+      "bytes": 8313454,
+      "sha256": "aaf175457520f232455219116e961890339f7d5d1683c42f353ffa674836b939"
+    }
+  },
+  "expected_users": 2180,
+  "expected_items": 85517,
+  "expected_training_rows": 7355439,
+  "expected_training_users": 46376,
+  "expected_targets": 191933,
+  "max_user_id": 200948,
+  "max_movie_id": 300000,
+  "ns": [
+    0,
+    5,
+    10,
+    30
+  ],
+  "policies": [
+    "A_RAW",
+    "B_RELATIVE",
+    "C_BINARY_BRIDGE"
+  ],
+  "rank": 32,
+  "iterations": 10,
+  "seed": 42,
+  "reg": 0.1,
+  "prior_strength": 5,
+  "bootstrap_repeats": 20000,
+  "bootstrap_seed": 20260908,
+  "alpha": 0.05,
+  "family_size": 27,
+  "max_seconds": 1800,
+  "max_process_tree_bytes": 12884901888,
+  "output_root": "outputs/recommendation-evidence/rec-ev-035"
+}

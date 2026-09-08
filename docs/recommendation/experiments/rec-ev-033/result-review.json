@@ -1,0 +1,100 @@
+{
+  "status": "PASS",
+  "reviewer": "/root/stage3_assets_audit",
+  "scope": "Independent full catalogue verification, no fit",
+  "completion": {
+    "bytes": 5298,
+    "sha256": "554180ebd422532ccfd0180d484ef8336e34e3d30fe0a8be34ef8031a818948d"
+  },
+  "outputs": {
+    "assignments.parquet": {
+      "bytes": 1494535,
+      "sha256": "6cbb193c9e0f33a55d67db51e2aa6c3ecb80bbed2253c4f8003e9827dcea4ade"
+    },
+    "budget.json": {
+      "bytes": 432,
+      "sha256": "7f02da8a8e5e9c2dd5dcabfe39534a75db9ecc10bcee7008a63eb30b6fe3e1d4"
+    },
+    "cache-ledger.parquet": {
+      "bytes": 12341017,
+      "sha256": "e807e5a959bc0e57593b168db634a3fe86e032f1b51a88e6fff3cb061f6b0a63"
+    },
+    "catalog-scope.parquet": {
+      "bytes": 1164993,
+      "sha256": "da8001cd13321edbb7648535069bde3ccd47f565386e0b151b5723ee7342704c"
+    },
+    "centroids.npz": {
+      "bytes": 1560988,
+      "sha256": "77ea5c0f4473a7cd8da477c11960050e4142f68912417e40ceccc6a0a346bbd7"
+    },
+    "class-term-counts.npz": {
+      "bytes": 517364,
+      "sha256": "6876cb1473e0553a47d277119020cb23f2ea9f734c49df4d08d2e94174b33a88"
+    },
+    "common-ids.npz": {
+      "bytes": 130161,
+      "sha256": "26546f7efb850e0af13903bb9ea4f3b21f55d3f195f4c371bd0c9d7a43733d1f"
+    },
+    "description-seal.json": {
+      "bytes": 965,
+      "sha256": "cf74292f6ea0226a2b8aa6b8e21f4d7d5a04ab5c9511c266dc8ab3184128bb00"
+    },
+    "input-report.json": {
+      "bytes": 1142,
+      "sha256": "85d718a023dccb8ca19adbb836da054b5d175b0227b1e7f948813c62ea7eff55"
+    },
+    "metadata.parquet": {
+      "bytes": 13443836,
+      "sha256": "86e2e4eb087bbdbf2500b9b8a7e50abf1ef09b52ea6110c62d41581e7d45d016"
+    },
+    "model-seal.json": {
+      "bytes": 963,
+      "sha256": "986e6bdc5085048c259afc7aca7bb90d4a16e5e145668c8baf1f178f9b0648db"
+    },
+    "prepare-seal.json": {
+      "bytes": 3456,
+      "sha256": "96abe7e9303dd206daae6b54479aa5791ac7a1d76e19289f4a55f2d639a8ada7"
+    },
+    "role-seal.json": {
+      "bytes": 3252,
+      "sha256": "69b791a82fa2c2eca7bc2e0a48a8e909e49406d4a55edc22b1c04e31ed996238"
+    },
+    "stability.json": {
+      "bytes": 2016,
+      "sha256": "fd06f8395cbee736e60a004b8a3c1213c2ec8817e11f8c218e2d4804c9667aeb"
+    },
+    "taste-summary.json": {
+      "bytes": 93746,
+      "sha256": "5ed81338c18340284bfd37639db6114df778169a21e98212f7b6f57626c72d86"
+    },
+    "terms.parquet": {
+      "bytes": 224510,
+      "sha256": "93cca8c01a2a2b2590e4aea36f7e412ee08e285de2f52e3dcd8f4957f2f9d6dd"
+    }
+  },
+  "input_files_verified": 11,
+  "output_files_verified": 16,
+  "stage_dependencies_verified": 4,
+  "cache_files_verified": 85517,
+  "model_assignments_verified": 171034,
+  "assignment_mismatches": 0,
+  "distance_max_abs_error": 2.498001805406602e-16,
+  "ctfidf_max_abs_error": 2.7755575615628914e-17,
+  "ARI_max_abs_error": 1.1102230246251565e-16,
+  "ctfidf_vocabulary": 10837,
+  "top_terms_verified": 240,
+  "examples_verified": 120,
+  "language_assignments_verified": 171022,
+  "permutations_checked": 40320,
+  "aligned_agreement_numerator": 85277,
+  "new_fits": 0,
+  "user_rating_or_label_access": false,
+  "network_calls": 0,
+  "mandatory_findings": 0,
+  "final_report_review": {
+    "status": "PASS",
+    "reviewer": "/root/stage3_contract_audit",
+    "bytes": 7439,
+    "sha256": "6f27c5701b8fe539f90bb6f1f0383480a1c69f4577fc325811c632869db7aafd"
+  }
+}

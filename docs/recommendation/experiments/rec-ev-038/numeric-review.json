@@ -1,0 +1,37 @@
+{
+  "code_fingerprint_files": 10,
+  "ctfidf_cosine_max_abs_error": 1.56e-15,
+  "date": "2026-09-08",
+  "dense_full_reconstruction_created": false,
+  "description_groups": 64,
+  "description_slots": 256,
+  "description_unique_movies": 85,
+  "english_fallback_files": 131,
+  "evaluation_movies": 128,
+  "evaluation_tag_supported_movies": 86,
+  "feature_max_abs_error": 2.22e-16,
+  "independently_reproduced_assignment_rows": 1368272,
+  "input_pins": 12,
+  "kmeans_objective_max_abs_error": 1.81e-09,
+  "nmf_reconstruction_max_abs_error": 1.97e-12,
+  "no_findings": true,
+  "notes": [
+    "All native/display/canonical labels and primary/diagnostic stability reproduced from stored models.",
+    "E/D selection, disjointness, masked packet keys and original full input text hashes reproduced.",
+    "NMF iterations29/15/29 for genre/tag/both; both seeds same counts, no convergence warnings. Saved factors independently reproduce objectives.",
+    "KM_TAG native largest share88.84%;display including fallback91.92%. Some E groups have one film;8occupied groups does not prove semantic readiness."
+  ],
+  "numeric_output_pins": 39,
+  "numeric_seal": {
+    "bytes": 9464,
+    "sha256": "de24cabaae5612a17db13e9a937f0af7930fcd357bee1e66b874520a979751fa"
+  },
+  "positive_top_term_rows": 956,
+  "primary_cache_files": 213,
+  "refit_count": 0,
+  "reviewer": "rec033_design_review",
+  "semantic_review_performed": false,
+  "source_cache_files": 344,
+  "source_movies": 213,
+  "status": "PASS_NUMERICAL_AUDIT"
+}

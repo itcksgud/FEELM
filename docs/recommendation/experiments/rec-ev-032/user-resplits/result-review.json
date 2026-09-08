@@ -1,0 +1,114 @@
+{
+  "status": "PASS",
+  "date": "2026-09-08",
+  "mandatory_findings": 0,
+  "experiment_fingerprint": {
+    "design": "04be50a5237a46ace6e9c91a35831cd9cc5a3e396b9f8034b6ac2124dc4dacc0",
+    "config": "1b53c255cd143853483a192c54f3073922a657129c7a6667b176ca0416af3f27",
+    "runner": "0d17158e6f45a162a2106f1dc09ec430e9bfdd3855095f97d59ab5c3b8664a1f",
+    "tests": "c648882888ccc25abdd2ed1f9c0a611be3d0af866fb114e313ebe37dd8ac1f15",
+    "base_runner": "58206af0646fa70a8693a2e60b06da1884fbbdfb9b8c16657eeb8fc1e3676d8d",
+    "conditional_runner": "6c2580b910802c5c4127c916a0d980b7daa39754d715745b552bc03e0dd15c53",
+    "als_runner": "8fb465992389bcdd0e0fb40ed2d6d0ee9ee790393793f6b78e524295f1f3b200"
+  },
+  "result_report": {
+    "bytes": 15032,
+    "sha256": "41d2444b95df279bd194fd139431cd80ff6ca4ef0445187099cbf60eac58db4c"
+  },
+  "result_report_initial_review_sha256": "dc0dc2744ba9f01c5bce7ec6ae0a60adf58c60770ec045496aea612fe171f9a5",
+  "reviewers": {
+    "roles_training_p0_scores": "als_rationale_check",
+    "statistics": "als_rationale_check/resplit_statistics_audit",
+    "report": "rec032_execution_review"
+  },
+  "training_audit": {
+    "rows": 21108386,
+    "round_rows": [
+      7048575,
+      7036056,
+      7023755
+    ],
+    "training_users_each": 46376,
+    "evaluation_training_rows_each": [
+      0,
+      0,
+      0
+    ],
+    "p0_all_aggregates_and_scores_max_error": 0,
+    "roles_split_hash_and_overlap_summary_match": true
+  },
+  "score_audit": {
+    "E_policy_scores": 4620408,
+    "max_score_error": 1.7763568394002505e-15,
+    "matching_top2_lists": 52320,
+    "support_fallback_match": true,
+    "prespecified_global_user_round_samples": 60,
+    "prespecified_E_global_ranks": 40032,
+    "prespecified_full_computation_score_error": 0,
+    "extra_targeted_full_catalogue_cells": 4,
+    "extra_targeted_E_global_ranks": 418,
+    "extra_targeted_score_error": 0,
+    "near_tie_small_matrix_error_range": [
+      4.440892098500626e-16,
+      8.881784197001252e-16
+    ],
+    "near_tie_top2_affected": false,
+    "near_tie_resolution": "Reduced-E and full-catalogue floating-point paths differed on one internal pair in each of four cells. All four full-catalogue probes exactly matched saved E scores and global ranks; saved outputs were not changed.",
+    "all_users_full_catalogue_digest_recreated": false
+  },
+  "statistics_audit": {
+    "checks": 493,
+    "derived_E_labels": 337359,
+    "user_metric_rows": 52320,
+    "individual_metric_values": 156960,
+    "aggregate_values": 72,
+    "Q_and_individual_metric_max_error": 0,
+    "aggregate_max_error": 2.1094237467877974e-15,
+    "paired_point_max_error": 6.938893903907228e-17,
+    "ci_and_width_max_error": 1.1102230246251565e-16,
+    "bootstrap_repeats": 20000,
+    "bootstrap_seed_each_round": 20260908,
+    "family_size": 27,
+    "method": "Independent integer H metric arithmetic and bincount weighted paired bootstrap",
+    "statuses": {
+      "BETTER_DIRECTION": 13,
+      "UNDECIDED": 14,
+      "WORSE_DIRECTION": 0
+    },
+    "across_split_statuses_match": 9
+  },
+  "hash_audit": {
+    "reviewed_files": 7,
+    "independent_sources_excluding_archive": 10,
+    "required_outputs": 31,
+    "dependency_chain_match": true,
+    "archive_hash_checked_by": "Root runner source validation and completed-run reuse verification"
+  },
+  "report_audit": {
+    "comparison_table_rows": 27,
+    "metric_table_rows": 12,
+    "aggregate_difference_max_error": 1.457167719820518e-16,
+    "scope": "Aggregate report values, provenance, overlap, support and interpretation; independent individual/CI recomputation is recorded under statistics audit."
+  },
+  "limits": [
+    "No independent original-archive or original rating/H payload reread",
+    "No independent rebuilding of E/H from original source payload",
+    "No model retraining during audit",
+    "No all-user full-catalogue digest regeneration",
+    "Three overlapping previously used development resplits, not new untouched confirmation or independent 6540 users",
+    "No service adoption, learning-convergence or final-K claim"
+  ],
+  "completion_reuse": "VERIFIED_EXISTING_COMPLETION_NO_RETRAINING_OR_RESCORING",
+  "completion_seal": {
+    "bytes": 7843,
+    "sha256": "48ecafa2bc5ce243e75e2c2770bdf1c386f6feb4adb0f745dd571f09c1f235f3"
+  },
+  "final_report_hash_confirmation": {
+    "status": "PASS",
+    "reviewer": "rec032_execution_review",
+    "mandatory_findings": 0,
+    "bytes": 15032,
+    "sha256": "41d2444b95df279bd194fd139431cd80ff6ca4ef0445187099cbf60eac58db4c",
+    "scope": "Final verification paragraphs and supplied independent audit evidence; no new payload reads."
+  }
+}

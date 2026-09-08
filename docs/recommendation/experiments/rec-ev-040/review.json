@@ -1,0 +1,25 @@
+{
+  "date": "2026-09-08",
+  "fingerprint": {
+    "adapter": "1084f93e4d8857499c84c290783107d702872946d492b4f177df622f173b10ad",
+    "config": "e676ed541a62b9f3d82e4e7e75d66e71eacf3729e4c525a9b3382e1e329ed362",
+    "design": "990d6dfa7f3fbef2c70b9c00bc00fe73cf108c523cfa5a85f8a48df95a8b5af2",
+    "feelm_genre_candidates.py": "99639cdab892869875950e398928122c0f8e1512fadce0f52e073829e0f0f881",
+    "rec_ev_033_tastes.py": "380333cddba629abc27392d907c42771e24095da61f8ed29c489845a384b452f",
+    "rec_ev_038_clusters.py": "59a0c26021c97a84034b19e2c66b6137a11e123373628cfb8862196eb696c296",
+    "rec_ev_039_candidate_contract.py": "9baa1956b29b233e4aaee50713637656e413bb4b422b1c77520072d0dec51294",
+    "runner": "06af59d85607465f98b79662238233b097d48360e681817a90a0f16178a1c4ec",
+    "tests": "5628bac19baa4a863c1b5438b334b2a393fa19f075bad29f79e6e6cba1c2f296"
+  },
+  "full_adapter_execution_performed": false,
+  "historical_master_snapshots": 5,
+  "independent_synthetic_tests": 9,
+  "new_output_existed_at_review": false,
+  "planned_sealed_artifacts": 16,
+  "predecessor_artifacts_verified": 13,
+  "required_corrections": 0,
+  "reviewer": "rec040_rule_review",
+  "scope": "design, exact implementation, synthetic contracts, provenance, snapshot lineage, weighted diagnostic denominators and scope limits",
+  "source_pins": 6,
+  "status": "PASS"
+}

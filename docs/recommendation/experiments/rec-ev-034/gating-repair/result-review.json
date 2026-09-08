@@ -1,0 +1,69 @@
+{
+  "status": "PASS",
+  "reviewer": "/root/stage3_assets_audit",
+  "completion": {
+    "bytes": 5770,
+    "sha256": "b17e08985f8297cead1918e37341a18ed552689decd3f7c301f404d4a772ab32"
+  },
+  "outputs": {
+    "baseline-check.json": {
+      "bytes": 164,
+      "sha256": "44cb6a7be43beeb0d6f2c902e9878769a837bf9b59740ce80aa733146b0e9507"
+    },
+    "baseline-seal.json": {
+      "bytes": 4707,
+      "sha256": "6d708846e8602293b9abc11c67a541c35cc9aa5661cff6b5a17f5c19821730b4"
+    },
+    "budget.json": {
+      "bytes": 703,
+      "sha256": "3cc5808696453aaa1b7b43cec937c1370114834625b14d33ee2d020cc948f0b0"
+    },
+    "comparison-seal.json": {
+      "bytes": 5147,
+      "sha256": "e36d2dbed4e4860c4aa718e55b5b05d06af6795a1cfec178695f4628f8f01ae1"
+    },
+    "comparison.parquet": {
+      "bytes": 195829,
+      "sha256": "29a2b15876756aff092c26a170f7e9c886e9666e0459bba764aab9d0ee6fc420"
+    },
+    "eligibility-diagnostic.parquet": {
+      "bytes": 219830,
+      "sha256": "2d386dea79a9b921b02cda5576bf42ced4e232565fb90a598fe6186e991325bb"
+    },
+    "role-seal.json": {
+      "bytes": 4573,
+      "sha256": "bd771b239044dad329406a3456d55cf6af84f3d054fc9279d0da8fcbfbab85db"
+    },
+    "slots.parquet": {
+      "bytes": 440614,
+      "sha256": "3fc87dfcbe2f771d7d5640d23eb636d513e1597249c996362022063a620b81fc"
+    },
+    "summary.json": {
+      "bytes": 2212,
+      "sha256": "b0bad8ab08eb45c35de850289f8df37b6ee74586cb13bf3eaaa20239f3eef803"
+    }
+  },
+  "users_verified": 2180,
+  "baseline_rows_verified": 8720,
+  "eligibility_cells_verified": 4360,
+  "eligibility_values_verified": 47960,
+  "comparison_rows_verified": 17440,
+  "slot_rows_verified": 17440,
+  "D_connection_facts_verified": 70426,
+  "input_files_verified": 17,
+  "output_files_verified": 9,
+  "stage_seals_verified": 3,
+  "upstream_outputs_verified": 23,
+  "mismatches": 0,
+  "new_ALS_calculation": false,
+  "factor_array_decoding": false,
+  "E_H_label_archive_access": false,
+  "independent_audit_seconds": 47.52,
+  "mandatory_findings": 0,
+  "final_report_review": {
+    "status": "PASS",
+    "reviewer": "/root/stage3_contract_audit",
+    "bytes": 5847,
+    "sha256": "f6e2949f732b6b945429865ff1a8cdbd85ba8f4a9c87212ed4a98c9073ea387e"
+  }
+}

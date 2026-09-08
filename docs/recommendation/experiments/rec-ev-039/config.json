@@ -1,0 +1,119 @@
+{
+  "examples": [
+    [
+      "action_adventure",
+      [
+        28,
+        12
+      ]
+    ],
+    [
+      "comedy_drama",
+      [
+        35,
+        18
+      ]
+    ],
+    [
+      "drama_comedy",
+      [
+        18,
+        35
+      ]
+    ],
+    [
+      "animation_family",
+      [
+        16,
+        10751
+      ]
+    ],
+    [
+      "documentary",
+      [
+        99
+      ]
+    ],
+    [
+      "tv_only",
+      [
+        10770
+      ]
+    ],
+    [
+      "no_genre",
+      []
+    ],
+    [
+      "unknown_only",
+      [
+        999999
+      ]
+    ],
+    [
+      "unknown_then_action",
+      [
+        999999,
+        28
+      ]
+    ],
+    [
+      "tv_then_action",
+      [
+        10770,
+        28
+      ]
+    ]
+  ],
+  "experiment": "REC039_GENRE_CANDIDATE_CONTRACT",
+  "inputs": {
+    "assignments038": {
+      "bytes": 1358120,
+      "path": "outputs/recommendation-evidence/rec-ev-038/assignments.npz",
+      "sha256": "a996e3475c32225e1572461f6887cf61ae03fe3e18584eeb84b164c5015ee3f6"
+    },
+    "config033": {
+      "bytes": 4964,
+      "path": "docs/recommendation/experiments/rec-ev-033/config.json",
+      "sha256": "e8840419a7846960c0042d0827cc071d0cfe97bca71dc872c0a701194df29cf5"
+    },
+    "config038": {
+      "bytes": 3832,
+      "path": "docs/recommendation/experiments/rec-ev-038/config.json",
+      "sha256": "554ea418d20128f4749e8c128d705284b45bbcae68b335bcf9f4ed48d2f6a681"
+    },
+    "feature_index038": {
+      "bytes": 259676,
+      "path": "outputs/recommendation-evidence/rec-ev-038/feature-index.npz",
+      "sha256": "8de48564a3bea6c411b8b6b94ddf96aa4d3b65bc3f39d190e5487c4d672caa94"
+    },
+    "metadata": {
+      "bytes": 13443836,
+      "path": "outputs/recommendation-evidence/rec-ev-033/metadata.parquet",
+      "sha256": "86e2e4eb087bbdbf2500b9b8a7e50abf1ef09b52ea6110c62d41581e7d45d016"
+    },
+    "model038": {
+      "bytes": 243262,
+      "path": "outputs/recommendation-evidence/rec-ev-038/model-KM_GENRE-20260909.npz",
+      "sha256": "adeaab918f1161338752aa564c667b114d624442c500b7980ce4f78b7ac2b036"
+    },
+    "numeric_seal038": {
+      "bytes": 9464,
+      "path": "outputs/recommendation-evidence/rec-ev-038/numeric-seal.json",
+      "sha256": "de24cabaae5612a17db13e9a937f0af7930fcd357bee1e66b874520a979751fa"
+    },
+    "result_review038": {
+      "bytes": 6610,
+      "path": "docs/recommendation/experiments/rec-ev-038/result-review.json",
+      "sha256": "f174d92aa8e8b1138e735994e4360220b308b61060f9b01bf98844ba45ba6ecb"
+    },
+    "terms": {
+      "bytes": 224510,
+      "path": "outputs/recommendation-evidence/rec-ev-033/terms.parquet",
+      "sha256": "93cca8c01a2a2b2590e4aea36f7e412ee08e285de2f52e3dcd8f4957f2f9d6dd"
+    }
+  },
+  "max_process_tree_bytes": 12884901888,
+  "max_seconds": 1800,
+  "output_root": "outputs/recommendation-evidence/rec-ev-039"
+}

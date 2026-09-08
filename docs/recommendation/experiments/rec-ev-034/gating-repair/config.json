@@ -1,0 +1,125 @@
+{
+  "experiment": "REC034_GATING_REPAIR",
+  "inputs": {
+    "prepared": {
+      "path": "outputs/recommendation-evidence/rec-ev-032/prepared.npz",
+      "bytes": 477520,
+      "sha256": "4b91394997206f4cd78886b8d995ccb8d8393640d0cfd13a6be5179a003dfc4a"
+    },
+    "profiles": {
+      "path": "outputs/recommendation-evidence/rec-ev-032/profiles.parquet",
+      "bytes": 300295,
+      "sha256": "42cb1f81a028359662375fc79f3484208aa58386cabad5006fb94dd29c5bd8b4"
+    },
+    "factors": {
+      "path": "outputs/recommendation-evidence/rec-ev-032/factors.npz",
+      "bytes": 7504871,
+      "sha256": "3feb554a5af6469fcb5ffbde46010e032d2134ee983bd5f87b14aef7754dcdba"
+    },
+    "prepare_seal": {
+      "path": "outputs/recommendation-evidence/rec-ev-032/prepare-seal.json",
+      "bytes": 2721,
+      "sha256": "e4ae13c2921ce823d785c4c02c600b7b9849319cae540c686f353c970a75eee3"
+    },
+    "train_seal": {
+      "path": "outputs/recommendation-evidence/rec-ev-032/train-seal.json",
+      "bytes": 941,
+      "sha256": "e571b86d78afba9e0c1ad2cb940f4a8b1ed9909fda32c0803b26d238804c68e3"
+    },
+    "als_score_seal": {
+      "path": "outputs/recommendation-evidence/rec-ev-032/als-only/score-seal.json",
+      "bytes": 2278,
+      "sha256": "02d6b9927b0e904c3e6144e7b6c653f3e29d98cdb029c2957e04d55868f122cc"
+    },
+    "taste_completion": {
+      "path": "outputs/recommendation-evidence/rec-ev-033/completion-seal.json",
+      "bytes": 5298,
+      "sha256": "554180ebd422532ccfd0180d484ef8336e34e3d30fe0a8be34ef8031a818948d"
+    },
+    "assignments": {
+      "path": "outputs/recommendation-evidence/rec-ev-033/assignments.parquet",
+      "bytes": 1494535,
+      "sha256": "6cbb193c9e0f33a55d67db51e2aa6c3ecb80bbed2253c4f8003e9827dcea4ade"
+    },
+    "taste_metadata": {
+      "path": "outputs/recommendation-evidence/rec-ev-033/metadata.parquet",
+      "bytes": 13443836,
+      "sha256": "86e2e4eb087bbdbf2500b9b8a7e50abf1ef09b52ea6110c62d41581e7d45d016"
+    },
+    "taste_audit": {
+      "path": "docs/recommendation/experiments/rec-ev-033/result-review.json",
+      "bytes": 3449,
+      "sha256": "7961306d74b25bd3896a0e554acac2740f10264936fb161b51b0630d06bd423d"
+    },
+    "state_review": {
+      "path": "docs/recommendation/plans/service-policy-redesign/stage-4-state-review.json",
+      "bytes": 1154,
+      "sha256": "b8395f9a9f49de11d8d7a4c4d70edf3339200eabb4862525541daf4de66c4fa3"
+    },
+    "structured": {
+      "path": "outputs/recommendation-evidence/rec-ev-027-catalog/structured-features.parquet",
+      "bytes": 3739308,
+      "sha256": "231fa0bc2628066ae2fdc2fa65c03b9068cd6a5d8dbcd86c385cadf4e50098b3"
+    },
+    "baseline_completion": {
+      "path": "outputs/recommendation-evidence/rec-ev-034/completion-seal.json",
+      "bytes": 4454,
+      "sha256": "ea089f8d41df0d3b4ec16d94f5a9a598169c831d1256f0f0dc89a07f6db8b94d"
+    },
+    "baseline_audit": {
+      "path": "docs/recommendation/experiments/rec-ev-034/result-review.json",
+      "bytes": 1969,
+      "sha256": "a62e134597277e53a0ed81a22488581f911c1a030721634173fb3f3fa2ce6067"
+    },
+    "baseline_supply": {
+      "path": "outputs/recommendation-evidence/rec-ev-034/user-supply.parquet",
+      "bytes": 329707,
+      "sha256": "19a62ac0b478906600bdbd8d07b59621bcabca364001831133166e99ddfcda26"
+    },
+    "baseline_slots": {
+      "path": "outputs/recommendation-evidence/rec-ev-034/slots.parquet",
+      "bytes": 310395,
+      "sha256": "09a44544d250e6d72907d7311d3b3c5b28a311c3bd5c860bb628c4c0196a3994"
+    },
+    "baseline_prefixes": {
+      "path": "outputs/recommendation-evidence/rec-ev-034/ranking-prefixes.npz",
+      "bytes": 7612675,
+      "sha256": "d5d5825fd2444f7430239adeb1e9f055360d48788200f56efa60aeb15f9af1cb"
+    }
+  },
+  "expected_users": 2180,
+  "expected_items": 85517,
+  "n": 30,
+  "candidate_size": 500,
+  "topn_size": 100,
+  "rank": 32,
+  "reg": 0.1,
+  "threads": 1,
+  "A_codes": [
+    "ADRENALINE",
+    "WONDER",
+    "JOY",
+    "HEART",
+    "SHADOW",
+    "REAL",
+    "LEGACY",
+    "RHYTHM"
+  ],
+  "B_codes": [
+    "SEMANTIC_01",
+    "SEMANTIC_02",
+    "SEMANTIC_03",
+    "SEMANTIC_04",
+    "SEMANTIC_05",
+    "SEMANTIC_06",
+    "SEMANTIC_07",
+    "SEMANTIC_08"
+  ],
+  "max_seconds": 1800,
+  "max_process_tree_bytes": 12884901888,
+  "output_root": "outputs/recommendation-evidence/rec-ev-034/gating-repair",
+  "variants": [
+    "MEAN",
+    "POSITIVE_OBSERVATION"
+  ]
+}

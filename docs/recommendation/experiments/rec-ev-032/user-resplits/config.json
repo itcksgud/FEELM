@@ -1,0 +1,113 @@
+{
+  "experiment": "REC032_USER_RESPLITS",
+  "inputs": {
+    "archive": {
+      "path": "C:/higher/projects/MM/data/raw/ml-32m.zip",
+      "member": "ml-32m/ratings.csv",
+      "bytes": 238950008,
+      "sha256": "e4a68655d7386b8f95f2f2424b2ff975dfdd15ffd59e0d864a14dca43e99d6ee"
+    },
+    "profiles": {
+      "path": "outputs/recommendation-evidence/rec-ev-029/prelabel/prepared/profile-ratings.parquet",
+      "bytes": 3219007,
+      "sha256": "6d80e57ad4b4b1c50a00bb0dbf524a277fe3f6c61d78b498b8cec1d4c435629e"
+    },
+    "membership": {
+      "path": "outputs/recommendation-evidence/rec-ev-029/cache/membership.parquet",
+      "bytes": 2884909,
+      "sha256": "d8998e94a7ec525b203e09c0f5665c81f875e0a14334d22cd5d486491327ef2d"
+    },
+    "universe": {
+      "path": "outputs/recommendation-evidence/rec-ev-027/screen/prepared/universe.npz",
+      "bytes": 130999,
+      "sha256": "da1d11d858a6a5206ce396a43cdb2c7688a31eeef4a1a6db9efd14e88ad23247"
+    },
+    "selection_labels": {
+      "path": "outputs/recommendation-evidence/rec-ev-029/postlabel/selection/labels.parquet",
+      "bytes": 1407356,
+      "sha256": "23e11f8bed63801e946cd475ecf3a34524827b4b741e80c4a89fe29cb2e6366c"
+    },
+    "replication_labels": {
+      "path": "outputs/recommendation-evidence/rec-ev-029/postlabel/replication/labels.parquet",
+      "bytes": 1435355,
+      "sha256": "8afee421277897acd059ac4d68a223e696864bab4e0608a4707db2c812352955"
+    },
+    "selection_label_seal": {
+      "path": "outputs/recommendation-evidence/rec-ev-029/postlabel/selection/label-seal.json",
+      "bytes": 1297,
+      "sha256": "9f5592a395fc4fb486862fc635bd0f4ae5aa6db948d8b2b5b5eb96aa40085d0b"
+    },
+    "replication_label_seal": {
+      "path": "outputs/recommendation-evidence/rec-ev-029/postlabel/replication/label-seal.json",
+      "bytes": 1500,
+      "sha256": "46498280000c463e14880073e8872c3615e9e2c1fcab71bd80a7345f74245532"
+    },
+    "replication_audit": {
+      "path": "docs/recommendation/evidence/rec-ev-029-replication-result-independent-audit.json",
+      "bytes": 1043,
+      "sha256": "5776d0f0ee67bd30a0e6e31d7f52d7780bced1a6093c5f0a4135912f7c423f31"
+    },
+    "original_profiles": {
+      "path": "outputs/recommendation-evidence/rec-ev-032/profiles.parquet",
+      "bytes": 300295,
+      "sha256": "42cb1f81a028359662375fc79f3484208aa58386cabad5006fb94dd29c5bd8b4"
+    },
+    "original_prepared": {
+      "path": "outputs/recommendation-evidence/rec-ev-032/prepared.npz",
+      "bytes": 477520,
+      "sha256": "4b91394997206f4cd78886b8d995ccb8d8393640d0cfd13a6be5179a003dfc4a"
+    }
+  },
+  "split_seeds": [
+    20260908,
+    20260909,
+    20260910
+  ],
+  "expected_development_users": 58014,
+  "expected_evaluation_pool_users": 4380,
+  "expected_evaluation_cohorts": {
+    "SELECTION": 2180,
+    "REPLICATION": 2200
+  },
+  "train_users_per_round": 46376,
+  "evaluation_users_per_round": 2180,
+  "expected_items": 85517,
+  "expected_raw_rows": 32000204,
+  "max_user_id": 200948,
+  "max_movie_id": 300000,
+  "ns": [
+    0,
+    5,
+    10,
+    30
+  ],
+  "top_n": 2,
+  "policies": [
+    "P0",
+    "A0_RAW_ALS_ONLY"
+  ],
+  "als": {
+    "rank": 32,
+    "reg": 0.1,
+    "iterations": 10,
+    "seed": 42,
+    "implicit": false,
+    "centering": "none",
+    "train_scope": "ROUND_TRAIN_USERS_ALL_RATINGS_BEFORE_CATALOG_FILTER",
+    "master": "local[4]",
+    "driver_memory": "4g",
+    "shuffle_partitions": 32,
+    "num_user_blocks": 10,
+    "num_item_blocks": 10
+  },
+  "popularity_prior": 50,
+  "bootstrap_repeats": 20000,
+  "bootstrap_seed": 20260908,
+  "alpha": 0.05,
+  "family_size": 27,
+  "direction_threshold": 0,
+  "practical_adoption_margin": null,
+  "max_seconds": 1800,
+  "max_process_tree_bytes": 12884901888,
+  "output_root": "outputs/recommendation-evidence/rec-ev-032/user-resplits"
+}

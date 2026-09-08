@@ -1,0 +1,65 @@
+{
+  "experiment": "REC037_SEPARATE_TASTE_DESCRIPTIONS",
+  "inputs": {
+    "completion033": {
+      "path": "outputs/recommendation-evidence/rec-ev-033/completion-seal.json",
+      "bytes": 5298,
+      "sha256": "554180ebd422532ccfd0180d484ef8336e34e3d30fe0a8be34ef8031a818948d"
+    },
+    "terms": {
+      "path": "outputs/recommendation-evidence/rec-ev-033/terms.parquet",
+      "bytes": 224510,
+      "sha256": "93cca8c01a2a2b2590e4aea36f7e412ee08e285de2f52e3dcd8f4957f2f9d6dd"
+    },
+    "class_terms": {
+      "path": "outputs/recommendation-evidence/rec-ev-033/class-term-counts.npz",
+      "bytes": 517364,
+      "sha256": "6876cb1473e0553a47d277119020cb23f2ea9f734c49df4d08d2e94174b33a88"
+    },
+    "metadata": {
+      "path": "outputs/recommendation-evidence/rec-ev-033/metadata.parquet",
+      "bytes": 13443836,
+      "sha256": "86e2e4eb087bbdbf2500b9b8a7e50abf1ef09b52ea6110c62d41581e7d45d016"
+    },
+    "assignments": {
+      "path": "outputs/recommendation-evidence/rec-ev-033/assignments.parquet",
+      "bytes": 1494535,
+      "sha256": "6cbb193c9e0f33a55d67db51e2aa6c3ecb80bbed2253c4f8003e9827dcea4ade"
+    },
+    "old_summary": {
+      "path": "outputs/recommendation-evidence/rec-ev-033/taste-summary.json",
+      "bytes": 93746,
+      "sha256": "5ed81338c18340284bfd37639db6114df778169a21e98212f7b6f57626c72d86"
+    },
+    "completion036": {
+      "path": "outputs/recommendation-evidence/rec-ev-036/completion-seal.json",
+      "bytes": 3815,
+      "sha256": "75d6fc588e3939ae03758a51fbc7e1c44c5e440cc034b7ef5523d94b0bada350"
+    },
+    "cards": {
+      "path": "outputs/recommendation-evidence/rec-ev-036/selected-cards.json",
+      "bytes": 157087,
+      "sha256": "ae09b2f32c7f52e19358dce4f195bbf00081a1860d61d37a56e5bccf9657b1ab"
+    },
+    "review036": {
+      "path": "docs/recommendation/experiments/rec-ev-036/result-review.json",
+      "bytes": 4725,
+      "sha256": "e4519052d6c5af8e890b57671d34a074a10356c08274c97f408fe4b3b41ea323"
+    }
+  },
+  "expected_movies": 85517,
+  "expected_cards": 120,
+  "min_df": 5,
+  "top_terms": 15,
+  "channels": [
+    "mixed",
+    "genre",
+    "keyword"
+  ],
+  "max_seconds": 1800,
+  "max_process_tree_bytes": 12884901888,
+  "output_root": "outputs/recommendation-evidence/rec-ev-037",
+  "excerpt_min_count": 1,
+  "excerpt_max_count": 2,
+  "excerpt_max_characters": 180
+}

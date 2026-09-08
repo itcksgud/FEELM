@@ -1,0 +1,61 @@
+{
+  "artifacts": {
+    "description-seal.json": {
+      "bytes": 1885,
+      "sha256": "5b4faac70df369b44a52f4dc1b3e53d3a714147b3b3d30e23e2208a294a9481e"
+    },
+    "descriptions-draft.json": {
+      "bytes": 81150,
+      "sha256": "2d9e5a3dc9864c7019fe2e40cc56675292f9d758d615c1f54c6b55fe38c41432"
+    },
+    "descriptions-part-1-ranges.json": {
+      "bytes": 27174,
+      "sha256": "6937cbb62adc344ac58f4f5aa9111b9775054ed778aa8ec3ec547eb5a04f37a1"
+    },
+    "descriptions-part-2-ranges.json": {
+      "bytes": 27011,
+      "sha256": "b7c0fd1e13a9cc4fba60bed7ec24e40d023b835fbf50e677e9e0cf2852ed961b"
+    }
+  },
+  "blind_evaluators": {
+    "rec038_blind_a": [
+      0,
+      43
+    ],
+    "rec038_blind_b": [
+      43,
+      86
+    ],
+    "rec038_blind_c": [
+      86,
+      128
+    ]
+  },
+  "coherence_counts": {
+    "BROAD": 22,
+    "COHERENT": 1,
+    "INSUFFICIENT": 0,
+    "MIXED": 41
+  },
+  "date": "2026-09-08",
+  "evaluation_started_only_after_description_seal": true,
+  "human_ground_truth": false,
+  "range_notation": "zero-based half-open evaluation-packets record slices",
+  "reviewers": {
+    "rec037_synopsis_a": {
+      "packets": "P033-P064",
+      "ranges": 128,
+      "records": 32,
+      "submission_differences": 0
+    },
+    "rec037_synopsis_b": {
+      "packets": "P001-P032",
+      "ranges": 128,
+      "records": 32,
+      "submission_differences": 0
+    }
+  },
+  "root_validator": "PASS_64_RECORDS_256_SOURCE_EXCERPTS",
+  "status": "PASS_DESCRIPTION_TRANSCRIPTION_AND_SOURCE_RANGES",
+  "unavailable_descriptions": 5
+}

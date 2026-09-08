@@ -1,0 +1,14 @@
+{
+  "cards": 120,
+  "cluster_key_read_by_first_reviewer": false,
+  "first_review": {
+    "bytes": 10359,
+    "sha256": "17c57bf0fbdcd35118d72b32a6cd6726187d9fa4ea0e4856c353183f9797955c"
+  },
+  "masked_cards": {
+    "bytes": 95696,
+    "sha256": "9c0fc87425b71f05e8a6ca3d52b4732123f9b1c4bf6eb9f2c565928af7d68108"
+  },
+  "reviewer": "rec033_design_review",
+  "status": "FIRST_ANNOTATION_SEALED_BEFORE_LINKED_SEMANTIC_REVIEW"
+}

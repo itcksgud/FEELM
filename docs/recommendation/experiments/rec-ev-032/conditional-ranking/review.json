@@ -1,0 +1,30 @@
+{
+  "status": "PASS",
+  "scope": "CONDITIONAL_DESIGN_AND_EXECUTION_CODE_NOT_RESULT_QUALITY",
+  "design_auditor": "/root/conditional_design_audit",
+  "execution_reviewer": "/root/conditional_execution_review",
+  "fingerprint": {
+    "design": "9d595e0a9840d62baa328a6aecca97b49ef5a045990c33bce7feaeac059e868b",
+    "config": "de4516f2ecaa951f0bed2a457acda95b4208fa5b3f380670e574e6e5bf9f0456",
+    "runner": "6c2580b910802c5c4127c916a0d980b7daa39754d715745b552bc03e0dd15c53",
+    "tests": "c867d34a2f923e8a9fa22cb7c55fb7f156d22d25ef93010e461a05333add974c",
+    "base_runner": "58206af0646fa70a8693a2e60b06da1884fbbdfb9b8c16657eeb8fc1e3676d8d"
+  },
+  "history": [
+    {
+      "result": "REVISION_REQUIRED",
+      "findings": [
+        "P2 incomplete completion-output map accepted as reusable success; request targets also needed verification",
+        "P2 floating-point cancellation could label exact mean ties as better direction"
+      ]
+    },
+    {
+      "result": "FINAL_PASS",
+      "mandatory_findings": 0,
+      "synthetic_tests": 20,
+      "independent_fraction_reference_cases": 20000
+    }
+  ],
+  "raw_model_or_label_payload_opened_by_reviewers": false,
+  "original_base_runner_preserved": true
+}

@@ -1,0 +1,43 @@
+{
+  "status": "PASS_EXECUTION",
+  "reviewers": [
+    "rec043_design_review",
+    "rec043_stats_review",
+    "rec043_data_readiness"
+  ],
+  "blocking_findings_remaining": 0,
+  "resolved_finding": "synthetic mathematical null incorrectly signed from floating arithmetic; effects and primary deltas within 1e-12 fixed to zero before E access",
+  "synthetic_tests": 15,
+  "source_pins": 12,
+  "E_new_value_analysis_before_review": false,
+  "fingerprint": {
+    "scripts/feelm_preference_structure.py": {
+      "bytes": 18743,
+      "sha256": "07d86e029b68ae407726ebde7442cc0be7f47bf599f263d28d985b0c11c8aae1"
+    },
+    "scripts/rec_ev_043_structure.py": {
+      "bytes": 11799,
+      "sha256": "15a58c42da70282fc2e5394b698cf0fdb179b5ccebdb522f903379ad847d80de"
+    },
+    "scripts/test_feelm_preference_structure.py": {
+      "bytes": 7367,
+      "sha256": "389712785af36bc1924d0f357ba945bdee811c6be0215896791222fa369d14b7"
+    },
+    "scripts/test_rec_ev_043_adapter.py": {
+      "bytes": 1304,
+      "sha256": "a26c5a687c164431bc74457e195a804a04e3f91d7b10a28869a0cd79fa354eca"
+    },
+    "docs/recommendation/experiments/rec-ev-043/README.md": {
+      "bytes": 8206,
+      "sha256": "06f968f962e2f6f020cbc127155fea8b207c35df9d72b26879b63da650d6eb7b"
+    },
+    "docs/recommendation/experiments/rec-ev-043/config.json": {
+      "bytes": 3725,
+      "sha256": "6b9103af111a085b75b8c7b93029037d57ad1368c5d35d6dcd95de8332b51341"
+    },
+    "docs/recommendation/experiments/rec-ev-043/data-readiness.json": {
+      "bytes": 649,
+      "sha256": "5ece2810ff85dfabc8d86c957e6393c3f607c293234953ce851fcb00c990ac77"
+    }
+  }
+}

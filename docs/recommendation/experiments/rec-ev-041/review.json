@@ -1,0 +1,38 @@
+{
+  "E_H_values_decoded_at_review": false,
+  "date": "2026-09-08",
+  "fingerprint": {
+    "config": "547153ff04350cba8ce0e76f3c313b4bd35db33ba52db94332dcb0b7d583fd93",
+    "design": "6cf7a898effe9d829ee618acb9cc57b47282ad2d4a24920894758a98cc0220e6",
+    "feelm_genre_candidates.py": "99639cdab892869875950e398928122c0f8e1512fadce0f52e073829e0f0f881",
+    "feelm_genre_set_rule.py": "1084f93e4d8857499c84c290783107d702872946d492b4f177df622f173b10ad",
+    "feelm_policy_states.py": "49fc6333d666732aab4370bb75364ec725515eba0df0ae814e5febec63ef721b",
+    "helper": "067fabcb585a513d32f30bb5c28997214b4d61bef5eaa553687c736cd0c0d118",
+    "rec_ev_033_tastes.py": "380333cddba629abc27392d907c42771e24095da61f8ed29c489845a384b452f",
+    "rec_ev_034_gating_repair.py": "bf8ea8dc510efbb555967421dd95dc28c98a97ac4f6e0a4f084ff8a1621d73e3",
+    "rec_ev_034_supply.py": "ae66f2584c64e87a5ec6a767de7d3d5a2ed8c34c9b46dd8d3324168dfa526b82",
+    "rec_ev_038_clusters.py": "59a0c26021c97a84034b19e2c66b6137a11e123373628cfb8862196eb696c296",
+    "rec_ev_039_candidate_contract.py": "9baa1956b29b233e4aaee50713637656e413bb4b422b1c77520072d0dec51294",
+    "rec_ev_040_set_rule.py": "06af59d85607465f98b79662238233b097d48360e681817a90a0f16178a1c4ec",
+    "runner": "dc69d123d011d42a67ef6eb5b0e8fcb38c4e8c1ce6f8b51ac3537857a335d8f4",
+    "tests": "bf88d1a76e4fc370875520461d7f346ea80a4a39805c5798f69419536010dd98"
+  },
+  "fixed_findings": [
+    "Stage-specific D absence reasons stop at the reported candidate stage.",
+    "Undefined T3 reference is distinct from no eligible opportunity."
+  ],
+  "full_execution_performed": false,
+  "historical_master_snapshots": 5,
+  "independent_missing_label_bound_cases": 42,
+  "independent_selection_property_cases": 18662,
+  "new_output_existed_at_review": false,
+  "planned_sealed_artifacts": 17,
+  "required_corrections_remaining": 0,
+  "reviewers": [
+    "rec041_scoring_review",
+    "rec041_policy_review"
+  ],
+  "source_pins": 18,
+  "status": "PASS",
+  "synthetic_tests": 12
+}

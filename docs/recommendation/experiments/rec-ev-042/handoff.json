@@ -1,0 +1,13 @@
+{
+  "status": "SHARED_REVIEW_PENDING",
+  "jira": "https://ssafy.atlassian.net/browse/S15P21E106-300",
+  "jira_comment_id": "226162",
+  "mr": "https://lab.ssafy.com/s15-bigdata-dist-sub1/S15P21E106/-/merge_requests/129",
+  "commit": "77e3e286f4a3ebc92075ea696d696e5c187c4713",
+  "branch": "feat/S15P21E106-300-classified-recommendation",
+  "remote_branch_and_mr_head_verified": true,
+  "jira_readback_verified": true,
+  "human_merge_pending": true,
+  "external_artifacts": "LOCAL_ONLY",
+  "ec2_verified": false
+}

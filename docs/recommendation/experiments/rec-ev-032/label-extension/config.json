@@ -1,0 +1,77 @@
+{
+  "amendment": "REC032_LABEL_EXTENSION",
+  "purpose": "POSTHOC_LABEL_COMPLETION_ON_IDENTICAL_SEALED_OUTPUTS",
+  "inputs": {
+    "profiles": {
+      "path": "outputs/recommendation-evidence/rec-ev-032/profiles.parquet",
+      "bytes": 300295,
+      "sha256": "42cb1f81a028359662375fc79f3484208aa58386cabad5006fb94dd29c5bd8b4"
+    },
+    "rankings": {
+      "path": "outputs/recommendation-evidence/rec-ev-032/rankings.npz",
+      "bytes": 140623,
+      "sha256": "de75d80008ad54ec6f16dc52d7597f253a635873c89293e38372ca3e2dbf23a2"
+    },
+    "old_user_metrics": {
+      "path": "outputs/recommendation-evidence/rec-ev-032/user-metrics.parquet",
+      "bytes": 227952,
+      "sha256": "8926f9ccace963ca8b2d5f411fe267f2f982018416b92d401227981f6d0dbaf1"
+    },
+    "old_metrics": {
+      "path": "outputs/recommendation-evidence/rec-ev-032/metrics.json",
+      "bytes": 8927,
+      "sha256": "6960fb89fae4d19d63bb1d432b12126f4de590b49db931e4bbd7637d8cde5e76"
+    },
+    "prepare_seal": {
+      "path": "outputs/recommendation-evidence/rec-ev-032/prepare-seal.json",
+      "bytes": 2721,
+      "sha256": "e4ae13c2921ce823d785c4c02c600b7b9849319cae540c686f353c970a75eee3"
+    },
+    "train_seal": {
+      "path": "outputs/recommendation-evidence/rec-ev-032/train-seal.json",
+      "bytes": 941,
+      "sha256": "e571b86d78afba9e0c1ad2cb940f4a8b1ed9909fda32c0803b26d238804c68e3"
+    },
+    "score_seal": {
+      "path": "outputs/recommendation-evidence/rec-ev-032/score-seal.json",
+      "bytes": 1712,
+      "sha256": "bfa8be83983ad21f667a09d852f6f4110330f4e3bb2eaaee09899f516286ef5d"
+    },
+    "evaluate_seal": {
+      "path": "outputs/recommendation-evidence/rec-ev-032/evaluate-seal.json",
+      "bytes": 1133,
+      "sha256": "473f338131f1fdd49926873eb68d64a7e01c575d2b672ec3aa0e1ddb29059387"
+    },
+    "archive": {
+      "path": "C:/higher/projects/MM/data/raw/ml-32m.zip",
+      "member": "ml-32m/ratings.csv",
+      "bytes": 238950008,
+      "sha256": "e4a68655d7386b8f95f2f2424b2ff975dfdd15ffd59e0d864a14dca43e99d6ee"
+    },
+    "reference_histograms": {
+      "path": "outputs/recommendation-evidence/rec-ev-029/postlabel/selection/labels.parquet",
+      "bytes": 1407356,
+      "sha256": "23e11f8bed63801e946cd475ecf3a34524827b4b741e80c4a89fe29cb2e6366c"
+    }
+  },
+  "expected_users": 2180,
+  "expected_raw_rows": 32000204,
+  "max_user_id": 200948,
+  "max_movie_id": 300000,
+  "ns": [
+    0,
+    5,
+    10,
+    30
+  ],
+  "policies": [
+    "P0",
+    "M0_RAW_ALS_STRUCTURED_RRF60"
+  ],
+  "bootstrap_repeats": 5000,
+  "bootstrap_seed": 20260907,
+  "alpha": 0.05,
+  "family_size": 9,
+  "timeout_seconds": 300,
+  "output_root": "outputs/recommendation-evidence/rec-ev-032/label-extension"
+}

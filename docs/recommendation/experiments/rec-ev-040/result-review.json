@@ -1,0 +1,191 @@
+{
+  "algorithm_general_winner_claimed": false,
+  "audit_scope": {
+    "all_new_support_tie_score_fields": true,
+    "catalogue_example_rows": 32,
+    "catalogue_unique_example_movies": 27,
+    "composition_rows": 456,
+    "contingency_rows": 192,
+    "deletion_target_movies_per_method": 55200,
+    "deletion_variants_per_method": 143152,
+    "historical_master_snapshots": 5,
+    "independent_ari_pairs": 3,
+    "movies": 85517,
+    "new_assignment_rows": 85517,
+    "original_assignments_reproduced": 171034,
+    "sealed_artifacts": 16,
+    "source_pins": 6,
+    "synthetic_example_rows": 42,
+    "synthetic_tests": 9,
+    "weighted_perturbation_rows": 72996
+  },
+  "completed_at_utc": "2026-09-08 05:29:49 UTC",
+  "completed_reuse_observed": "VERIFIED_SET_RULE_COMPLETION_NO_RECALCULATION",
+  "completion_seal": {
+    "bytes": 4821,
+    "sha256": "107dc51d825d557c891948a437475f1dc835836fdfe90496f195fe29fc30a462"
+  },
+  "date": "2026-09-08",
+  "final_eight_taste_adoption": false,
+  "final_report_pins": {
+    "docs/recommendation/experiments/rec-ev-040/RESULT.md": {
+      "bytes": 7758,
+      "sha256": "42d5dd1d20918a7d2451923e251bdde2d6996a2f0d677d11b7dfe0b722b300b4"
+    },
+    "docs/recommendation/experiments/rec-ev-040/review.json": {
+      "bytes": 1370,
+      "sha256": "aa290c4086a52415d21e8fec8c33ae9aa65210a673a35588fd892d4d9aff29c8"
+    },
+    "docs/recommendation/plans/service-policy-redesign/README.md": {
+      "bytes": 16494,
+      "sha256": "1fa62e9b297359a9e9de03a8385a99bf916fa07c3458c4fbabd297f456d8fb78"
+    },
+    "docs/recommendation/plans/service-policy-redesign/data-readiness.md": {
+      "bytes": 15182,
+      "sha256": "65f7b8071b1374f9182eff34994801d9e1bfc2bd4391336ded063a48b01846d1"
+    },
+    "docs/recommendation/plans/service-policy-redesign/experiment-design.md": {
+      "bytes": 37574,
+      "sha256": "67aeaf1b63af3d3b3c4a4b31cee54967c3b75df97216cd1a1b0a6fd2c311b65f"
+    },
+    "docs/recommendation/plans/service-policy-redesign/review-log.md": {
+      "bytes": 71652,
+      "sha256": "24f6142e809ff7d2ae75f444f59117dba29bea3cf517fa059171479a8e4d66fe"
+    },
+    "docs/runbook/local-development.md": {
+      "bytes": 53114,
+      "sha256": "3e364ed46cfc10d70d3057bbccb5c5c95be77a62f94a1ecbf4aa118ceb25a280"
+    }
+  },
+  "fingerprint": {
+    "adapter": "1084f93e4d8857499c84c290783107d702872946d492b4f177df622f173b10ad",
+    "config": "e676ed541a62b9f3d82e4e7e75d66e71eacf3729e4c525a9b3382e1e329ed362",
+    "design": "990d6dfa7f3fbef2c70b9c00bc00fe73cf108c523cfa5a85f8a48df95a8b5af2",
+    "feelm_genre_candidates.py": "99639cdab892869875950e398928122c0f8e1512fadce0f52e073829e0f0f881",
+    "rec_ev_033_tastes.py": "380333cddba629abc27392d907c42771e24095da61f8ed29c489845a384b452f",
+    "rec_ev_038_clusters.py": "59a0c26021c97a84034b19e2c66b6137a11e123373628cfb8862196eb696c296",
+    "rec_ev_039_candidate_contract.py": "9baa1956b29b233e4aaee50713637656e413bb4b422b1c77520072d0dec51294",
+    "runner": "06af59d85607465f98b79662238233b097d48360e681817a90a0f16178a1c4ec",
+    "tests": "5628bac19baa4a863c1b5438b334b2a393fa19f075bad29f79e6e6cba1c2f296"
+  },
+  "independently_verified_outputs": {
+    "GROUPS.md": {
+      "bytes": 5849,
+      "sha256": "e71c085a31253da67da7cd4c34a983e5d569b79f3342fc669083513a06c42389"
+    },
+    "budget.json": {
+      "bytes": 923,
+      "sha256": "c81240c7ddbd44f4bb9a673fc148bdf5dbcdd35516f259aff826156ceb2c60cb"
+    },
+    "catalogue-examples.json": {
+      "bytes": 49729,
+      "sha256": "30ac10b8bcd5121a357a4dc759b1c7c1a94d07c89b51d75e4b976b792a9b7790"
+    },
+    "comparison.json": {
+      "bytes": 3547,
+      "sha256": "dd9c6c58faacfb184ae49b7b75d4f6664829f9d786e48e4ceeac07a3fb5e6b59"
+    },
+    "contingencies.json": {
+      "bytes": 25142,
+      "sha256": "59fa87f6dd52f593861b17ff4ec62928335c0b4de0b299689cd8db284aa93d06"
+    },
+    "contract-examples.json": {
+      "bytes": 20068,
+      "sha256": "f973d10a74666244dcb9a4ec33988ceb96d7d4cecfb809598d2ad319304b75ea"
+    },
+    "genre-composition.json": {
+      "bytes": 150172,
+      "sha256": "f03353f610fd085cf0a40aba195acf4a1d23e026f65dedf88453d30b3882bb4f"
+    },
+    "master-before/docs/recommendation/plans/service-policy-redesign/README.md": {
+      "bytes": 15169,
+      "sha256": "aaf124257b6ccb42bbfa896e8bab055872b4955663f093cbbaed149d9585cfe8"
+    },
+    "master-before/docs/recommendation/plans/service-policy-redesign/data-readiness.md": {
+      "bytes": 14496,
+      "sha256": "151a1fb340f0f21b2c446ce606d5afa05190249c35c36d0cd3119ae9b2fa81da"
+    },
+    "master-before/docs/recommendation/plans/service-policy-redesign/experiment-design.md": {
+      "bytes": 36873,
+      "sha256": "a5969c7c7cdd94c02adf6faab36ad62d9a920d8d4a815bd8a38848337d57af80"
+    },
+    "master-before/docs/recommendation/plans/service-policy-redesign/review-log.md": {
+      "bytes": 69274,
+      "sha256": "709b04db635fe87770cc1173695df225384c6411cbe51cbe40b265ccd101398d"
+    },
+    "master-before/docs/runbook/local-development.md": {
+      "bytes": 51629,
+      "sha256": "1a6b223200a30b6270885c8357644e0646aeffc83da14c839d83e1e3f9097a7e"
+    },
+    "master-before/index.json": {
+      "bytes": 1132,
+      "sha256": "5d0780644a653760511294f40c227754918b88e5aff929dcff13fa9ebd65f089"
+    },
+    "native-assignments.parquet": {
+      "bytes": 1066175,
+      "sha256": "f2166e40bdfc29dba5e6360793d559c9f55ab3a34f58cf2b234d68a779237c90"
+    },
+    "perturbations.parquet": {
+      "bytes": 345867,
+      "sha256": "a85b494722e5e7f35268940289b26df45ab3a2cf006a03426da5040908886c2b"
+    },
+    "rule-package.json": {
+      "bytes": 861,
+      "sha256": "b581c616d26448f6295ccdf7c0a2cdba8dc0c00f626ca7700b4d57e21e4b67d8"
+    }
+  },
+  "input_pins": {
+    "assignments039": {
+      "bytes": 867261,
+      "path": "outputs/recommendation-evidence/rec-ev-039/native-assignments.parquet",
+      "sha256": "b5331aeb53cfb15ae12784e4db6da595702d2f34550ef07137fbe8c984b25090"
+    },
+    "metadata": {
+      "bytes": 13443836,
+      "path": "outputs/recommendation-evidence/rec-ev-033/metadata.parquet",
+      "sha256": "86e2e4eb087bbdbf2500b9b8a7e50abf1ef09b52ea6110c62d41581e7d45d016"
+    },
+    "package039": {
+      "bytes": 5996,
+      "path": "outputs/recommendation-evidence/rec-ev-039/candidate-package.json",
+      "sha256": "ec2a8843e4ee3ab6fa31e5952634b734fdfd46a1976ac63dca407cb3145ca894"
+    },
+    "review039": {
+      "bytes": 7479,
+      "path": "docs/recommendation/experiments/rec-ev-039/result-review.json",
+      "sha256": "e69489fb34c6c0086940686751a359e103cd7da323561c971142e6f93143ac89"
+    },
+    "seal039": {
+      "bytes": 4816,
+      "path": "outputs/recommendation-evidence/rec-ev-039/completion-seal.json",
+      "sha256": "c90cbc3178fb840176d5165d2cf9c7b77c95612bc9b40ceb2f4eb912a1589fdc"
+    },
+    "terms": {
+      "bytes": 224510,
+      "path": "outputs/recommendation-evidence/rec-ev-033/terms.parquet",
+      "sha256": "93cca8c01a2a2b2590e4aea36f7e412ee08e285de2f52e3dcd8f4957f2f9d6dd"
+    }
+  },
+  "new_fits": 0,
+  "new_rule": "RULE_GENRE_SET",
+  "next_comparison_candidates": [
+    "RULE_GENRE_SET",
+    "KM_GENRE"
+  ],
+  "official_flavor_mapping": false,
+  "optimal_rule_claimed": false,
+  "original_rule_retained_for_diagnosis": true,
+  "post_review_edits": [
+    "Completion status and past-tense statements only.",
+    "Final review record/link and review-log completion."
+  ],
+  "preexecution_reviewer": "rec040_rule_review",
+  "previous_128_rescored": false,
+  "provenance_reviewer": "rec040_result_audit/provenance",
+  "ratings_decoded": false,
+  "recommendation_quality_evaluated": false,
+  "recommendation_slots_executed": false,
+  "remaining_required_corrections": 0,
+  "reviewer": "rec040_result_audit",
+  "status": "PASS_AUDIT_COMPLETE"
+}

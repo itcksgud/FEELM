@@ -1,0 +1,27 @@
+{
+  "status": "DESIGN_REVIEW_PASS",
+  "date": "2026-09-08",
+  "code_audit_reviewer": "/root/rec033_design_review",
+  "independent_design_advice": "/root/stage3_assets_audit",
+  "final_design_reviewer": "/root/stage3_contract_audit",
+  "files": {
+    "als-input-representation-design.md": {
+      "bytes": 11245,
+      "sha256": "7ff841af4f93a58d7ca963ce346c812c7fa31e3ddc67611d34fe245c23814cc5"
+    },
+    "README.md": {
+      "bytes": 10147,
+      "sha256": "3838c3d2cc2aefcd3d207abd85f9d424c20599832c57695dbc0743639f54df5e"
+    },
+    "experiment-design.md": {
+      "bytes": 31899,
+      "sha256": "f538f9ca4e639ce5819f91243557b2761d33b17c0f4895d63a567ac0ca6066ac"
+    }
+  },
+  "mandatory_findings_remaining": 0,
+  "new_training_runs": 0,
+  "new_real_data_scoring": false,
+  "scope": "Study design only. Execution contract, source pins, code tests and independent execution review remain required.",
+  "snapshot_note": "Historical design review before the user clarified that the service retains star ratings. Original reviewed hashes are retained; this is not current execution approval.",
+  "superseded_by": "onboarding-rating-bridge.md"
+}

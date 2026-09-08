@@ -1,0 +1,56 @@
+{
+  "status": "PASS_EXECUTION",
+  "reviewers": [
+    "rec042_implementation_review",
+    "rec042_stats_review"
+  ],
+  "blocking_findings": 0,
+  "synthetic_tests": 16,
+  "source_pins_verified": 14,
+  "actual_E_H_payload_decoded_before_review": false,
+  "selection_executed_before_review": false,
+  "checks": [
+    "source_lineage_and_axes",
+    "same_candidate_support_format_and_O_E_separation",
+    "sealed_selection_before_label_decoders",
+    "GENERAL3_T2D1_T3_and_shortage_semantics",
+    "integer_Q_and_paired_differences",
+    "all_method_common_users_and_null_D",
+    "shared_PCG64_int64_20000_linear_9_family_CI",
+    "resource_watchdog"
+  ],
+  "fingerprint": {
+    "scripts/feelm_classified_evaluation.py": {
+      "bytes": 16898,
+      "sha256": "5a3e5f520d76079f20f28d5d9490ee423a9819db25f6fb7d6db22863f0f3df10"
+    },
+    "scripts/rec_ev_042_classified.py": {
+      "bytes": 12932,
+      "sha256": "c7b6d7346ccf3b1dae9dcaf9265277e1a50617702e90d0ee5ad24996781b1bd7"
+    },
+    "scripts/test_feelm_classified_evaluation.py": {
+      "bytes": 8333,
+      "sha256": "309dc9cc278a9816609d440b1d7babf15170581420d7e0ef71a49942695f23b5"
+    },
+    "scripts/test_rec_ev_042_adapter.py": {
+      "bytes": 2896,
+      "sha256": "ac79ea972c7dbee9a435757d9f2bc91cf4ce7f15b9f5e94bb187f2400ee6a51d"
+    },
+    "docs/recommendation/experiments/rec-ev-042/README.md": {
+      "bytes": 8851,
+      "sha256": "0fcaa831b93d45850ae369bdc0190b295749d0f874979cbdd308adeb5f2b4062"
+    },
+    "docs/recommendation/experiments/rec-ev-042/config.json": {
+      "bytes": 5248,
+      "sha256": "1923c2e0757b687c0bb98fd29d28db3cda1840edbd54abbc2527806bd717f94b"
+    },
+    "docs/recommendation/experiments/rec-ev-042/data-readiness.json": {
+      "bytes": 4380,
+      "sha256": "8e6ed89fc09096c774103ac42c97ffe3cc0ca18033ad523d37ebb66c607e7951"
+    },
+    "docs/recommendation/experiments/rec-ev-042/implementation.json": {
+      "bytes": 960,
+      "sha256": "c9376cf0a9d04d7894e71aa54a5648f2a3e8cd0ab0ed7083108b73ef3ee87ff3"
+    }
+  }
+}

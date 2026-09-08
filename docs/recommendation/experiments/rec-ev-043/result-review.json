@@ -1,0 +1,313 @@
+{
+  "experiment": "REC043",
+  "jira": "S15P21E106-309",
+  "date": "2026-09-08",
+  "status": "PASS_RESULT_AUDIT",
+  "blocking_findings_remaining": 0,
+  "execution_review": {
+    "source_path": "docs/recommendation/experiments/rec-ev-043/execution-review.json",
+    "bytes": 1618,
+    "sha256": "fae97042748ad319b50011a66f42afed103de025de41d3821e5feed10d8a5e62",
+    "status": "PASS_EXECUTION",
+    "synthetic_tests": 15,
+    "fixed_before_E": "NUMERICAL_NULL_EFFECT_AND_PRIMARY_DELTA_ABS_LE_1e-12_TO_ZERO"
+  },
+  "independent_reviewers": [
+    {
+      "reviewer": "rec043_data_readiness",
+      "status": "PASS",
+      "scope": "INPUT_PROVENANCE_TRAIN_EVAL_DISJOINT_O_ONLY_PREDICTIONS",
+      "core_or_adapter_reused": false,
+      "source_pins": 12,
+      "training_rows_reaggregated": 7355439,
+      "training_users": 46376,
+      "evaluation_users": 2180,
+      "user_overlap": 0,
+      "O_E_pair_overlap": 0,
+      "bayes_and_counts_reaggregated_bitwise_equal": true,
+      "max_prediction_abs_difference": 1.777e-15,
+      "max_effect_abs_difference": 4.441e-16
+    },
+    {
+      "reviewer": "rec043_stats_review",
+      "status": "PASS",
+      "scope": "PRIMARY_USER_MSE_DELTAS_BOOTSTRAP_CI_DONOR_COVARIANCE",
+      "core_reused": false,
+      "bootstrap_replayed": 20000,
+      "independent_chunk": 257,
+      "all_bootstrap_means_exact": true,
+      "all_intervals_and_verdicts_match": true,
+      "max_prediction_abs_difference": 8.88e-16,
+      "max_metric_abs_difference": 7.11e-15
+    },
+    {
+      "reviewer": "rec043_design_review",
+      "status": "PASS",
+      "scope": "FULL_DESCRIPTIVE_GROUP_COUNTS_STARS_TIES_MIXTURE_SD_SEEN_STRATA_AND_REPORT_CLAIMS",
+      "core_describe_reused": false,
+      "all_integer_counts_exact": true,
+      "independent_SD_formula": "WEIGHTED_CENTERED_SQUARES",
+      "implementation_SD_formula": "WEIGHTED_MEAN_SQUARE_MINUS_SQUARED_MEAN",
+      "max_SD_abs_difference": 1.9157575525952097e-10,
+      "max_SD_field": "TMDB_GENRES.groups[11].mean_within_group_star_sd",
+      "SD_independent_audit_absolute_tolerance": 1e-08,
+      "note": "Independent formula rounding difference; no result rewrite and no replay tolerance change."
+    }
+  ],
+  "denominators": {
+    "users": 2180,
+    "O_pairs": 65400,
+    "E_pairs": 191932,
+    "E_per_user_min": 20,
+    "E_per_user_max": 108,
+    "E_excluded_TV_only_pairs": 1,
+    "no_training_rating_pairs": {
+      "O": 8,
+      "E": 779
+    }
+  },
+  "primary": [
+    {
+      "method": "RULE_GENRE_SET",
+      "users": 2180,
+      "adjusted_baseline_mse": 0.8181146569509613,
+      "adjusted_own_mse": 0.8167003859007298,
+      "adjusted_gain": 0.0014142710502314543,
+      "interval": [
+        -0.002631519611562886,
+        0.005752502054003894
+      ],
+      "direction": "UNDECIDED",
+      "width": 0.00838402166556678,
+      "users_with_positive_gain": 1002,
+      "raw_baseline_mse": 1.0333021842621029,
+      "raw_own_mse": 1.0304998976719488,
+      "raw_gain_descriptive": 0.0028022865901538474,
+      "adjusted_covariance_descriptive": 0.01234923518907735,
+      "donor_mse_descriptive": 0.8487071336851321,
+      "own_vs_donor_gain_descriptive": 0.03200674778440229,
+      "seen_conditioned": [
+        {
+          "state": "ALL_UNSEEN",
+          "pairs": 9711,
+          "users": 1854,
+          "baseline_mse": 0.861338014845737,
+          "own_mse": 0.861338014845737,
+          "gain": 0.0
+        },
+        {
+          "state": "PARTIAL_SEEN",
+          "pairs": 0,
+          "users": 0,
+          "baseline_mse": null,
+          "own_mse": null,
+          "gain": null
+        },
+        {
+          "state": "ALL_SEEN",
+          "pairs": 182221,
+          "users": 2180,
+          "baseline_mse": 0.8161520518250507,
+          "own_mse": 0.8146924209117548,
+          "gain": 0.0014596309132960188
+        }
+      ]
+    },
+    {
+      "method": "KM_GENRE",
+      "users": 2180,
+      "adjusted_baseline_mse": 0.8181146569509613,
+      "adjusted_own_mse": 0.8180261511942939,
+      "adjusted_gain": 8.850575666725389e-05,
+      "interval": [
+        -0.0039852966410704425,
+        0.004241464130119657
+      ],
+      "direction": "UNDECIDED",
+      "width": 0.0082267607711901,
+      "users_with_positive_gain": 992,
+      "raw_baseline_mse": 1.0333021842621029,
+      "raw_own_mse": 1.0325806154516541,
+      "raw_gain_descriptive": 0.0007215688104486302,
+      "adjusted_covariance_descriptive": 0.013219524821821918,
+      "donor_mse_descriptive": 0.8488725756029694,
+      "own_vs_donor_gain_descriptive": 0.03084642440867537,
+      "seen_conditioned": [
+        {
+          "state": "ALL_UNSEEN",
+          "pairs": 9765,
+          "users": 1549,
+          "baseline_mse": 0.9867132475223186,
+          "own_mse": 0.9867132475223186,
+          "gain": 0.0
+        },
+        {
+          "state": "PARTIAL_SEEN",
+          "pairs": 0,
+          "users": 0,
+          "baseline_mse": null,
+          "own_mse": null,
+          "gain": null
+        },
+        {
+          "state": "ALL_SEEN",
+          "pairs": 182167,
+          "users": 2180,
+          "baseline_mse": 0.8111732015451051,
+          "own_mse": 0.8111389719288549,
+          "gain": 3.422961625031957e-05
+        }
+      ]
+    },
+    {
+      "method": "TMDB_GENRES",
+      "users": 2180,
+      "adjusted_baseline_mse": 0.8181146569509613,
+      "adjusted_own_mse": 0.8041872645201192,
+      "adjusted_gain": 0.013927392430842069,
+      "interval": [
+        0.011466649842175847,
+        0.016599779496228168
+      ],
+      "direction": "IMPROVED",
+      "width": 0.005133129654052321,
+      "users_with_positive_gain": 1391,
+      "raw_baseline_mse": 1.0333021842621029,
+      "raw_own_mse": 1.0168390914431595,
+      "raw_gain_descriptive": 0.016463092818943276,
+      "adjusted_covariance_descriptive": 0.007899187251322926,
+      "donor_mse_descriptive": 0.8241441808808058,
+      "own_vs_donor_gain_descriptive": 0.019956916360686656,
+      "seen_conditioned": [
+        {
+          "state": "ALL_UNSEEN",
+          "pairs": 2612,
+          "users": 1003,
+          "baseline_mse": 0.9296680413568738,
+          "own_mse": 0.9296680413568738,
+          "gain": 0.0
+        },
+        {
+          "state": "PARTIAL_SEEN",
+          "pairs": 14887,
+          "users": 1978,
+          "baseline_mse": 0.8600915234689178,
+          "own_mse": 0.8506335354889801,
+          "gain": 0.009457987979937688
+        },
+        {
+          "state": "ALL_SEEN",
+          "pairs": 174433,
+          "users": 2180,
+          "baseline_mse": 0.8126264235988148,
+          "own_mse": 0.7979833012018269,
+          "gain": 0.014643122396987857
+        }
+      ]
+    }
+  ],
+  "mixed_user_group_numerators_denominators": {
+    "RULE_GENRE_SET": [
+      9748,
+      10024
+    ],
+    "KM_GENRE": [
+      12570,
+      12967
+    ],
+    "TMDB_GENRES": [
+      16416,
+      16503
+    ]
+  },
+  "original_output_fingerprints": {
+    "input.npz": {
+      "bytes": 1356908,
+      "sha256": "1790c114425cc71ed0b6722c5acc88b3f38fd68d2ed9c16eba0a99cb51182903"
+    },
+    "labels.npz": {
+      "bytes": 655723,
+      "sha256": "58868d11e68efd92fdbcad2fa5c2501f4deccbc8a618815272c0ad116c313a37"
+    },
+    "request-seal.json": {
+      "bytes": 3989,
+      "sha256": "6d08ca6e95cf832b3a7cb3a2ca8d00b7bfdcfb843a312e87d80e2e15b8fdbc93"
+    },
+    "run/predictions.npz": {
+      "bytes": 12139138,
+      "sha256": "61c75a971b39f94369a89a703003f20761988ec97ca88ac3dd1cdefecebea2d5"
+    },
+    "run/prediction-seal.json": {
+      "bytes": 439,
+      "sha256": "be17489d6373da8d7310ba4fb4317551087545c66e8caa2f54045ed172148e63"
+    },
+    "run/evaluation.npz": {
+      "bytes": 735853,
+      "sha256": "0404684f0670d44deae4cacce00e4330237f7a364ec27c3861b24a0c302c75c2"
+    },
+    "run/summary.json": {
+      "bytes": 37343,
+      "sha256": "5a9d226e6934b37c412301097728d2ec01bfc2764df92a1fae9488e21b63b4c4"
+    },
+    "run/evaluation-seal.json": {
+      "bytes": 522,
+      "sha256": "08f4cc0eb1b852072ded410c5faef5e84aa6a3af5d96e87958c1c71a6eef5a2e"
+    },
+    "completion-seal.json": {
+      "bytes": 846,
+      "sha256": "0ebe1159846816a6c062082a6cef0168db036c72890bc9829f82628d1674ea97"
+    }
+  },
+  "source_execution_fingerprints": {
+    "scripts/feelm_preference_structure.py": {
+      "bytes": 18743,
+      "sha256": "07d86e029b68ae407726ebde7442cc0be7f47bf599f263d28d985b0c11c8aae1"
+    },
+    "scripts/rec_ev_043_structure.py": {
+      "bytes": 11799,
+      "sha256": "15a58c42da70282fc2e5394b698cf0fdb179b5ccebdb522f903379ad847d80de"
+    },
+    "scripts/test_feelm_preference_structure.py": {
+      "bytes": 7367,
+      "sha256": "389712785af36bc1924d0f357ba945bdee811c6be0215896791222fa369d14b7"
+    },
+    "scripts/test_rec_ev_043_adapter.py": {
+      "bytes": 1304,
+      "sha256": "a26c5a687c164431bc74457e195a804a04e3f91d7b10a28869a0cd79fa354eca"
+    },
+    "docs/recommendation/experiments/rec-ev-043/README.md": {
+      "bytes": 8206,
+      "sha256": "06f968f962e2f6f020cbc127155fea8b207c35df9d72b26879b63da650d6eb7b"
+    },
+    "docs/recommendation/experiments/rec-ev-043/config.json": {
+      "bytes": 3725,
+      "sha256": "6b9103af111a085b75b8c7b93029037d57ad1368c5d35d6dcd95de8332b51341"
+    },
+    "docs/recommendation/experiments/rec-ev-043/data-readiness.json": {
+      "bytes": 649,
+      "sha256": "5ece2810ff85dfabc8d86c957e6393c3f607c293234953ce851fcb00c990ac77"
+    }
+  },
+  "reviewed_team_documents": {
+    "docs/preference-structure.md": {
+      "bytes": 6072,
+      "sha256": "b9fb86400435eadb22d606dc0ea47f664bec550046c12e07a3e693adba488d24"
+    },
+    "docs/preference-reproduction.md": {
+      "bytes": 7290,
+      "sha256": "913e2b3ebbdfc1efd7527909b2932d2453dab78c9bd6d010c0955b2e6b78bedc"
+    }
+  },
+  "allowed_claim": "Small additional hidden-rating signal over the movie-mean-adjusted baseline for original TMDB genres under fixed O30 probe; improvement unconfirmed for the current two eight-way representations.",
+  "limitations": [
+    "REUSED_DEVELOPMENT_USERS_AND_OBSERVED_LABELS",
+    "NO_NEW_CONFIRMATORY_SAMPLE",
+    "NO_PAIRWISE_REPRESENTATION_SIGNIFICANCE_TEST",
+    "18_MULTI_VS_8_SINGLE_DIFFERENT_CAPACITY_AND_SHRINKAGE",
+    "DONOR_DESCRIPTIVE_ONLY",
+    "NO_CAUSAL_IDENTIFICATION",
+    "NO_SERVICE_RECOMMENDATION_OR_ONBOARDING_MEASUREMENT",
+    "NO_OPTIMAL_K_OR_OFFICIAL_TASTE_MAPPING",
+    "SEAL_CODE_AND_FILE_CHAIN_NOT_EXTERNAL_IMMUTABLE_TIME_PROOF"
+  ]
+}

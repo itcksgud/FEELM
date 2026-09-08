@@ -1,0 +1,28 @@
+{
+  "status": "SCOPE_REVIEW_PASS",
+  "reviewer": "/root/stage3_contract_audit",
+  "independent_advice": "/root/rec033_design_review",
+  "date": "2026-09-08",
+  "files": {
+    "onboarding-rating-bridge.md": {
+      "bytes": 6479,
+      "sha256": "482019f12c5a4a7f63c7a318d8522190b81f8743df922d73a7d78a641f37eaba"
+    },
+    "README.md": {
+      "bytes": 10288,
+      "sha256": "d9fd81f1406d3583625b0e8577819683d36245f2a2ab721f1ede2a4fda74f4c8"
+    },
+    "experiment-design.md": {
+      "bytes": 32790,
+      "sha256": "2d5c0489cf1f72e48a4cf7c0525280eccd524ced0bdf577c9910b0467da0b4aa"
+    },
+    "als-input-representation-design.md": {
+      "bytes": 11489,
+      "sha256": "498a394bb6cea0aaf1f6d7138655e4758dbbcf21b927684236f2bffd0db93a50"
+    }
+  },
+  "mandatory_findings_remaining": 0,
+  "scope": "service condition and research priority only; no conversion values, weights, product adoption or new execution approval",
+  "new_model_fits": 0,
+  "real_data_scoring": false
+}

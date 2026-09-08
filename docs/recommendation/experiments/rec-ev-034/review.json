@@ -1,0 +1,21 @@
+{
+  "status": "PASS",
+  "fingerprint": {
+    "design": "a385a47b804b55b77d7c986ada6e70f1ecd8eb88f693fa1670d94d9eb5193294",
+    "config": "7fc2b890b0cac612d6c593b5c0481bb35704c4c653c997884f0a5557bf3a0ede",
+    "runner": "ae66f2584c64e87a5ec6a767de7d3d5a2ed8c34c9b46dd8d3324168dfa526b82",
+    "tests": "f4e7415fdd636bca24fa82fd26fe681147be6ffe97233306c565e8fcd56923ff",
+    "state_runner": "49fc6333d666732aab4370bb75364ec725515eba0df0ae814e5febec63ef721b",
+    "role_design": "0c4e4a2716a5f533ee88c5feb217bd76ac3eef44d552f7ef1d52492a9cc0b370",
+    "supply_design": "82fcbcd18c2b37b6039c0875ec8a12b01c38d903faf940f179c64b59fd21c071",
+    "helpers": "380333cddba629abc27392d907c42771e24095da61f8ed29c489845a384b452f"
+  },
+  "design_reviewer": "/root/stage3_contract_audit",
+  "execution_reviewer": "/root/stage3_assets_audit",
+  "mandatory_findings": 0,
+  "root_and_independent_unittests": 7,
+  "additional_independent_synthetic_checks": 6,
+  "real_profile_or_factor_values_read_before_review": false,
+  "scope": "OBSERVED_INPUT_N30_PROXY_SUPPLY_ONLY",
+  "product_adoption_approved": false
+}

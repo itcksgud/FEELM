@@ -1,0 +1,25 @@
+{
+  "status": "PASS",
+  "fingerprint": {
+    "design": "c328c14fd513bab00276d83b06b8842a5d068bddb17ff88f55fcd8d2e48a7727",
+    "config": "d8ede0b5aa84e184083645801a2a8a6ee2764b576ef3b2822125cf41a119dfc8",
+    "runner": "bf8ea8dc510efbb555967421dd95dc28c98a97ac4f6e0a4f084ff8a1621d73e3",
+    "tests": "b79559b00a8741c5db4f13004477d199aa49beb59061fc797d9a3398fa924b09",
+    "supply_helper": "ae66f2584c64e87a5ec6a767de7d3d5a2ed8c34c9b46dd8d3324168dfa526b82",
+    "state_helper": "49fc6333d666732aab4370bb75364ec725515eba0df0ae814e5febec63ef721b",
+    "resource_helper": "380333cddba629abc27392d907c42771e24095da61f8ed29c489845a384b452f"
+  },
+  "design_reviewer": "/root/rec033_design_review",
+  "execution_reviewer": "/root/stage3_assets_audit",
+  "root_and_independent_unittests": 7,
+  "independent_direct_synthetic_cases": 240,
+  "independent_paired_transition_test": "PASS",
+  "mandatory_findings_fixed": [
+    "Negative relative weight distinguished from raw positive half-star rating"
+  ],
+  "mandatory_findings_remaining": 0,
+  "source_pins_verified": 17,
+  "real_payload_or_ALS_score_access_before_review": false,
+  "scope": "ONE_POST_RESULT_ELIGIBILITY_ALTERNATIVE_SUPPLY_ONLY",
+  "product_adoption_approved": false
+}

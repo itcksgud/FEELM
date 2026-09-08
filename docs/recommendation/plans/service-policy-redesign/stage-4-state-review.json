@@ -1,0 +1,34 @@
+{
+  "status": "PASS",
+  "scope": "SYNTHETIC_ROLE_AND_STATE_VALIDATION_ONLY",
+  "reviewed_files": {
+    "proposal": {
+      "bytes": 11291,
+      "sha256": "0c4e4a2716a5f533ee88c5feb217bd76ac3eef44d552f7ef1d52492a9cc0b370"
+    },
+    "simulator": {
+      "bytes": 8533,
+      "sha256": "49fc6333d666732aab4370bb75364ec725515eba0df0ae814e5febec63ef721b"
+    },
+    "tests": {
+      "bytes": 10265,
+      "sha256": "88ae7e01d931046af14a441b2e66e73a7e7e942146e55ade1753b317c709df19"
+    }
+  },
+  "design_reviewer": "/root/stage3_contract_audit",
+  "execution_reviewer": "/root/rec033_design_review",
+  "root_and_independent_tests_passed": 13,
+  "mandatory_findings_fixed": [
+    "Official RATED state name",
+    "Keep established buffer generation contract",
+    "PostgreSQL buffer20 versus Redis500/100",
+    "Observed input versus full experience scope",
+    "Unassigned popular movies not force-labeled",
+    "Single-pass iterable exclusions normalized"
+  ],
+  "real_user_data_access": false,
+  "real_model_calls": 0,
+  "ranking_adapter_approved": false,
+  "product_policy_approved": false,
+  "final_K_selected": false
+}

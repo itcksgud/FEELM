@@ -1,0 +1,150 @@
+{
+  "experiment": "REC033_TASTE_PREPARATION",
+  "inputs": {
+    "identity": {
+      "path": "outputs/recommendation-evidence/rec-ev-027-catalog/movie-identity.parquet",
+      "bytes": 4963647,
+      "sha256": "35c5c4229e79a79959cbeb13ce53cfd045c37e658b3039b19a21fcbbf6ad3b79"
+    },
+    "structured": {
+      "path": "outputs/recommendation-evidence/rec-ev-027-catalog/structured-features.parquet",
+      "bytes": 3739308,
+      "sha256": "231fa0bc2628066ae2fdc2fa65c03b9068cd6a5d8dbcd86c385cadf4e50098b3"
+    },
+    "embeddings": {
+      "path": "outputs/recommendation-evidence/rec-ev-027-catalog/text-embeddings.parquet",
+      "bytes": 125720897,
+      "sha256": "d19ff51cd0e7af8fa6dab1f74de6fac5f90eb85993db494565de67a818529f7c"
+    },
+    "universe": {
+      "path": "outputs/recommendation-evidence/rec-ev-027/screen/prepared/universe.npz",
+      "bytes": 130999,
+      "sha256": "da1d11d858a6a5206ce396a43cdb2c7688a31eeef4a1a6db9efd14e88ad23247"
+    },
+    "catalog_manifest": {
+      "path": "outputs/recommendation-evidence/rec-ev-027-catalog/catalog-build-manifest.json",
+      "bytes": 1926,
+      "sha256": "1e7fa6ee6319485653f43a45e42e189c5e27482f6fd222d0c2c7271e4cc24393"
+    },
+    "catalog_summary": {
+      "path": "outputs/recommendation-evidence/rec-ev-027-catalog/catalog-build-summary.json",
+      "bytes": 1647,
+      "sha256": "a00bdccbf96dc4936571faa7e445055c4d030d05caab18ba5aed0b8ad4da7237"
+    },
+    "catalog_contract": {
+      "path": "docs/recommendation/contracts/rec-ev-027-catalog-build.json",
+      "bytes": 4296,
+      "sha256": "d5973f2de5fa5f92fa5f6ffc179dcc1568dcaa997e7d3de86071b1ccbb47dfc8"
+    },
+    "embedding_contract": {
+      "path": "docs/recommendation/contracts/rec-ev-019b-artifacts.json",
+      "bytes": 11823,
+      "sha256": "a6a6240d31b36ac5587bc41fa0047587a88371b80f1bc31417076a055e722e9d"
+    },
+    "catalog_builder": {
+      "path": "scripts/build_rec_ev_027_catalog_features.py",
+      "bytes": 25622,
+      "sha256": "9d38ffc3a04b19e7f1269994f605c06179344071fbf6baf51e475ee0723b5dcb"
+    },
+    "feature_builder": {
+      "path": "scripts/build_rec_ev_019b_features.py",
+      "bytes": 36384,
+      "sha256": "dc04c1211c975f079a0172649d324db93e5b6a66312105678e098aca0faac44c"
+    },
+    "legacy_mapping": {
+      "path": "backend/src/main/resources/db/migration/V2__c1_rating_film_foundation.sql",
+      "bytes": 16435,
+      "sha256": "d92a08a2d41294b85003c6e302fbe587d7b148e664f58bf48abc5379b9718b4c"
+    }
+  },
+  "cache_roots": [
+    "outputs/recommendation-evidence/rec-ev-027-catalog/tmdb-cache",
+    "outputs/recommendation-evidence/rec-ev-019b/tmdb-cache"
+  ],
+  "expected_catalog": 87585,
+  "expected_identity_eligible": 86456,
+  "expected_structured_eligible": 85733,
+  "expected_text_eligible": 86209,
+  "expected_common": 85517,
+  "embedding": {
+    "model_id": "intfloat/multilingual-e5-small",
+    "model_revision": "614241f622f53c4eeff9890bdc4f31cfecc418b3",
+    "runtime": "onnxruntime CPUExecutionProvider",
+    "model_artifact": "onnx/model.onnx",
+    "model_artifact_sha256": "ca456c06b3a9505ddfd9131408916dd79290368331e7d76bb621f1cba6bc8665",
+    "dimension": 384,
+    "input_prefix": "passage: ",
+    "input_template": "{display_title} [SEP] {overview_fallback} [SEP] genres: {genre_names} [SEP] directors: {director_names} [SEP] cast: {top5_cast_names} [SEP] keywords: {keyword_names}",
+    "maximum_tokens": 512,
+    "batching": "stable sort by input character length, encode, then restore movie_id order; batching must not change tokenization or vectors beyond floating point tolerance",
+    "pooling": "attention-mask mean pooling",
+    "normalization": "L2",
+    "dtype": "float32"
+  },
+  "genre_groups": {
+    "ADRENALINE": [
+      28,
+      12
+    ],
+    "WONDER": [
+      16,
+      14,
+      878
+    ],
+    "JOY": [
+      35,
+      10751
+    ],
+    "HEART": [
+      18,
+      10749
+    ],
+    "SHADOW": [
+      80,
+      27,
+      9648,
+      53
+    ],
+    "REAL": [
+      99
+    ],
+    "LEGACY": [
+      36,
+      10752,
+      37
+    ],
+    "RHYTHM": [
+      10402
+    ]
+  },
+  "format_only_genres": [
+    10770
+  ],
+  "kmeans": {
+    "n_clusters": 8,
+    "init": "k-means++",
+    "n_init": 10,
+    "max_iter": 300,
+    "tol": 0.0001,
+    "algorithm": "lloyd",
+    "primary_seed": 20260908,
+    "diagnostic_seed": 20260909,
+    "threads": 4,
+    "dtype": "float64",
+    "sklearn_version": "1.9.0"
+  },
+  "ctfidf": {
+    "min_document_frequency": 5,
+    "top_terms": 15,
+    "average_class_length": "floor",
+    "token_unit": "unique movie-level TMDB genre/keyword ID phrases"
+  },
+  "examples": {
+    "closest_movies": 5,
+    "hash_sample_movies": 5,
+    "hash_prefix": "rec033-example-v1|"
+  },
+  "max_seconds": 1800,
+  "max_process_tree_bytes": 12884901888,
+  "output_root": "outputs/recommendation-evidence/rec-ev-033"
+}

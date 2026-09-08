@@ -1,0 +1,20 @@
+{
+  "status": "PASS",
+  "scope": "ALS_ONLY_DESIGN_AND_EXECUTION_CODE_NOT_RESULT_QUALITY",
+  "design_reviewer": "/root/als_only_design_review",
+  "execution_reviewer": "/root/conditional_execution_review",
+  "fingerprint": {
+    "design": "c7efcc3ead330369fb585c0355669848a3eabb02fcac8bcf22e097577f7bedbe",
+    "config": "5cce0cb6b27226a4359488c2eab9861dc4ea435b5edf2d65bdf7f5b3b7587b7a",
+    "runner": "8fb465992389bcdd0e0fb40ed2d6d0ee9ee790393793f6b78e524295f1f3b200",
+    "tests": "c5d2454009998939244c9b5a35875d17b1977a1b83009d279cda89d444a1f5ce",
+    "base_runner": "58206af0646fa70a8693a2e60b06da1884fbbdfb9b8c16657eeb8fc1e3676d8d",
+    "conditional_runner": "6c2580b910802c5c4127c916a0d980b7daa39754d715745b552bc03e0dd15c53"
+  },
+  "mandatory_findings": 0,
+  "synthetic_tests": 15,
+  "independent_synthetic_foldin_order_conditions": 256,
+  "independent_simultaneous_ci_comparisons": 18,
+  "raw_model_or_label_payload_opened_by_reviewers": false,
+  "original_base_and_conditional_files_preserved": true
+}
