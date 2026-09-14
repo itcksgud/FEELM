@@ -1,0 +1,55 @@
+{
+  "source_root": "C:/higher/projects/FEELM-standalone",
+  "origin": 1672531200,
+  "catalog_snapshot_timestamp": 1788998400,
+  "expected_movies": 85517,
+  "expected_contexts": 270,
+  "expected_nonempty": 186,
+  "k_values": [
+    16,
+    32,
+    64
+  ],
+  "seeds": [
+    20260911,
+    20260912,
+    20260913
+  ],
+  "n_init": 10,
+  "max_iter": 300,
+  "tol": 0.0001,
+  "min_group_size": 100,
+  "max_group_share": 0.35,
+  "min_ari": 0.7,
+  "threads": 1,
+  "rss_limit_gib": 2,
+  "start_free_gib": 3,
+  "stop_free_gib": 1,
+  "timeouts": {
+    "prepare": 1200,
+    "fit": 7200,
+    "profiles": 1800
+  },
+  "sources": {
+    "rec-ev-033/metadata.parquet": {
+      "bytes": 13443836,
+      "sha256": "86e2e4eb087bbdbf2500b9b8a7e50abf1ef09b52ea6110c62d41581e7d45d016"
+    },
+    "rec-ev-045/metadata.parquet": {
+      "bytes": 6891831,
+      "sha256": "4d838874938115be7a4b1f629a920dd196e082b655b75d559d71039e52eb7d8d"
+    },
+    "text339/catalog.parquet": {
+      "bytes": 728100,
+      "sha256": "0bde668e0e26f5f82b5c41d90d62c7569fd350bf2a2fd4b59bb4402f438c5947"
+    },
+    "text339/texts.parquet": {
+      "bytes": 253422812,
+      "sha256": "a152f9e41db680aa0567d9befe0e71d9709e57d2ea925d3d61448550d884aa57"
+    },
+    "text339/contexts.json": {
+      "bytes": 12290713,
+      "sha256": "951fc2464bd3aea25ea486c79c33084f6241f7846a3ed626e9d5fc3907a7aab7"
+    }
+  }
+}

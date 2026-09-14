@@ -1,0 +1,66 @@
+{
+  "status": "PAUSED_BY_USER",
+  "scope": "MODEL_FREE_GROUP_PREPARATION",
+  "date": "2026-09-11",
+  "execution_authorized": false,
+  "authorized_stages": [],
+  "pause_reason": "User: 아직 실험은 하지 말아봐. Stop further preparation, audits, fitting and profiles until a new instruction.",
+  "completed_before_pause": ["prepare", "11 synthetic tests"],
+  "not_started": ["fit", "profiles", "preference model or recommendation evaluation"],
+  "code_approved_stages": [
+    "prepare",
+    "fit",
+    "profiles"
+  ],
+  "stage_result_gates_required": true,
+  "fingerprint": {
+    "docs/recommendation/experiments/group-discovery-preparation/EXECUTION.md": {
+      "bytes": 8083,
+      "sha256": "9feeb310b94d8ce8f4d77a6d21780652bb0b7f54e383e2dbf3789d76cfe666ee"
+    },
+    "docs/recommendation/experiments/group-discovery-preparation/config.json": {
+      "bytes": 1360,
+      "sha256": "9953cbca05b9f7879227d66af41b999409985d645026d141f75b140198f92409"
+    },
+    "scripts/group_discovery_geometry.py": {
+      "bytes": 9476,
+      "sha256": "e54963c9edeedccc360322a7010b31f349e95a3ea4f9f37f5b966515d5a5b84e"
+    },
+    "scripts/group_discovery_prepare.py": {
+      "bytes": 19914,
+      "sha256": "d30f0085ad15c848620f802f66f2b444bc28147f65e9f25e8dc715a2536efc46"
+    },
+    "scripts/test_group_discovery_geometry.py": {
+      "bytes": 6940,
+      "sha256": "8fca14727e620093fd0fb996326cb97422082592164ee5ec11c390ed2a19980d"
+    }
+  },
+  "reviewers": [
+    {
+      "id": "/root/discovery_review",
+      "status": "PASS",
+      "synthetic_tests_passed": 11
+    },
+    {
+      "id": "/root/reuse_clusters",
+      "status": "PASS",
+      "synthetic_tests_passed": 11
+    },
+    {
+      "id": "/root/reuse_text_data",
+      "status": "PASS",
+      "synthetic_tests_passed": 11
+    }
+  ],
+  "prohibited": [
+    "FM or other preference model fitting/inference",
+    "Future target-rating evaluation",
+    "Q training-rating aggregation",
+    "Service API or production changes"
+  ],
+  "conditions": {
+    "fit": "Independent prepare result PASS",
+    "profiles": "Independent fit result PASS and GROUPS_READY",
+    "append": "Frozen feature space, centers, reference groups and CDFs; latest registry required"
+  }
+}

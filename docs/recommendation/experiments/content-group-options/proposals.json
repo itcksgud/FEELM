@@ -1,0 +1,69 @@
+{
+  "id": "content-group-options-20260911",
+  "status": "DESIGN_PROPOSALS",
+  "execution_authorized": false,
+  "db_write_authorized": false,
+  "scope": "Compare content groupings; no flavor display names or UI limits; no model experiment or movie assignment generation.",
+  "base_taxonomy": {
+    "path": "../single-flavor-taxonomy/taxonomy.json",
+    "sha256": "ac63366d4048173eb314c9e2249ca68363d673c58974fe0d5fabc35e9f1ae9a9",
+    "use": "Reuse validation, ordered genre-to-code resolver and pending policies only; ignore flavor display names and front-end policy."
+  },
+  "resolver": "Resolve one base code first; then select the unique option group containing that base code. Never reorder genre priorities per option.",
+  "output_cardinality": "exactly_one_for_READY; null_for_PENDING_METADATA",
+  "pending_policy": "Inherit base policy: unknown ID, empty input or TV Movie only remains PENDING_METADATA in every option; not an extra group.",
+  "new_movie_policy": "Apply frozen selected option and base resolver to the new movie only; no reassignment of existing movies.",
+  "metadata_update_policy": "Keep active assignment; stage corrections for review; no automatic overwrite.",
+  "option_change_policy": "Changing between options changes membership semantics and requires a separate adoption/migration decision.",
+  "feature_policy": "Keep all original genres and other recommendation features independently of the one representative group.",
+  "options": [
+    {
+      "id": "CONTENT_12",
+      "group_count": 12,
+      "groups": [
+        {"code": "DOCUMENTARY", "label": "다큐멘터리", "base_codes": ["DOCUMENTARY"]},
+        {"code": "MUSIC", "label": "음악", "base_codes": ["MUSIC"]},
+        {"code": "HISTORY_WAR", "label": "역사·전쟁", "base_codes": ["HISTORY", "WAR"]},
+        {"code": "ACTION_ADVENTURE", "label": "액션·모험", "base_codes": ["ACTION_ADVENTURE"]},
+        {"code": "WESTERN", "label": "서부", "base_codes": ["WESTERN"]},
+        {"code": "DRAMA_ROMANCE", "label": "드라마·로맨스", "base_codes": ["DRAMA", "ROMANCE"]},
+        {"code": "FAMILY", "label": "가족", "base_codes": ["FAMILY"]},
+        {"code": "COMEDY", "label": "코미디", "base_codes": ["COMEDY"]},
+        {"code": "HORROR", "label": "공포", "base_codes": ["HORROR"]},
+        {"code": "CASE", "label": "범죄·미스터리·스릴러", "base_codes": ["CASE"]},
+        {"code": "ANIMATION", "label": "애니메이션", "base_codes": ["ANIMATION"]},
+        {"code": "WORLDS", "label": "SF·판타지", "base_codes": ["WORLDS"]}
+      ]
+    },
+    {
+      "id": "CONTENT_10",
+      "group_count": 10,
+      "groups": [
+        {"code": "DOCUMENTARY", "label": "다큐멘터리", "base_codes": ["DOCUMENTARY"]},
+        {"code": "MUSIC", "label": "음악", "base_codes": ["MUSIC"]},
+        {"code": "HISTORY_WAR", "label": "역사·전쟁", "base_codes": ["HISTORY", "WAR"]},
+        {"code": "ACTION_ADVENTURE_WESTERN", "label": "액션·모험·서부", "base_codes": ["ACTION_ADVENTURE", "WESTERN"]},
+        {"code": "DRAMA_ROMANCE_FAMILY", "label": "드라마·로맨스·가족", "base_codes": ["DRAMA", "ROMANCE", "FAMILY"]},
+        {"code": "COMEDY", "label": "코미디", "base_codes": ["COMEDY"]},
+        {"code": "HORROR", "label": "공포", "base_codes": ["HORROR"]},
+        {"code": "CASE", "label": "범죄·미스터리·스릴러", "base_codes": ["CASE"]},
+        {"code": "ANIMATION", "label": "애니메이션", "base_codes": ["ANIMATION"]},
+        {"code": "WORLDS", "label": "SF·판타지", "base_codes": ["WORLDS"]}
+      ]
+    },
+    {
+      "id": "CONTENT_8",
+      "group_count": 8,
+      "groups": [
+        {"code": "DOCUMENTARY", "label": "다큐멘터리", "base_codes": ["DOCUMENTARY"]},
+        {"code": "MUSIC", "label": "음악", "base_codes": ["MUSIC"]},
+        {"code": "HISTORY_WAR", "label": "역사·전쟁", "base_codes": ["HISTORY", "WAR"]},
+        {"code": "ACTION_ADVENTURE_WESTERN", "label": "액션·모험·서부", "base_codes": ["ACTION_ADVENTURE", "WESTERN"]},
+        {"code": "DRAMA_ROMANCE_FAMILY", "label": "드라마·로맨스·가족", "base_codes": ["DRAMA", "ROMANCE", "FAMILY"]},
+        {"code": "COMEDY", "label": "코미디", "base_codes": ["COMEDY"]},
+        {"code": "HORROR_CASE", "label": "공포·범죄·미스터리·스릴러", "base_codes": ["HORROR", "CASE"]},
+        {"code": "ANIMATION_WORLDS", "label": "애니메이션·SF·판타지", "base_codes": ["ANIMATION", "WORLDS"]}
+      ]
+    }
+  ]
+}

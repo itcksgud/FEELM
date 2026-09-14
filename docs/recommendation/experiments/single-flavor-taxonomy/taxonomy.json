@@ -1,0 +1,202 @@
+{
+  "status": "DRAFT_DESIGN_REVIEW",
+  "id": "single-flavor-v1-proposal",
+  "execution_authorized": false,
+  "db_write_authorized": false,
+  "source_basis": "Existing general_export_matched aggregate in popcorn-tmdb-audit/full-audit.json; no new model experiment.",
+  "output_cardinality": "exactly_one_for_READY; null_for_PENDING_METADATA",
+  "resolver": "first matching entry in priority order after validating IDs and deduplicating input genre IDs",
+  "flavors": [
+    {
+      "priority": 1,
+      "code": "DOCUMENTARY",
+      "display_name_proposal": "콘소메",
+      "subtitle": "다큐멘터리",
+      "genre_ids": [
+        99
+      ],
+      "genre_names": [
+        "Documentary"
+      ]
+    },
+    {
+      "priority": 2,
+      "code": "ANIMATION",
+      "display_name_proposal": "딸기",
+      "subtitle": "애니메이션",
+      "genre_ids": [
+        16
+      ],
+      "genre_names": [
+        "Animation"
+      ]
+    },
+    {
+      "priority": 3,
+      "code": "MUSIC",
+      "display_name_proposal": "초콜릿",
+      "subtitle": "음악",
+      "genre_ids": [
+        10402
+      ],
+      "genre_names": [
+        "Music"
+      ]
+    },
+    {
+      "priority": 4,
+      "code": "WAR",
+      "display_name_proposal": "머스터드",
+      "subtitle": "전쟁",
+      "genre_ids": [
+        10752
+      ],
+      "genre_names": [
+        "War"
+      ]
+    },
+    {
+      "priority": 5,
+      "code": "WESTERN",
+      "display_name_proposal": "바비큐",
+      "subtitle": "서부",
+      "genre_ids": [
+        37
+      ],
+      "genre_names": [
+        "Western"
+      ]
+    },
+    {
+      "priority": 6,
+      "code": "HISTORY",
+      "display_name_proposal": "갈릭",
+      "subtitle": "역사",
+      "genre_ids": [
+        36
+      ],
+      "genre_names": [
+        "History"
+      ]
+    },
+    {
+      "priority": 7,
+      "code": "HORROR",
+      "display_name_proposal": "와사비",
+      "subtitle": "공포",
+      "genre_ids": [
+        27
+      ],
+      "genre_names": [
+        "Horror"
+      ]
+    },
+    {
+      "priority": 8,
+      "code": "WORLDS",
+      "display_name_proposal": "소다",
+      "subtitle": "SF·판타지",
+      "genre_ids": [
+        878,
+        14
+      ],
+      "genre_names": [
+        "Science Fiction",
+        "Fantasy"
+      ]
+    },
+    {
+      "priority": 9,
+      "code": "FAMILY",
+      "display_name_proposal": "허니",
+      "subtitle": "가족",
+      "genre_ids": [
+        10751
+      ],
+      "genre_names": [
+        "Family"
+      ]
+    },
+    {
+      "priority": 10,
+      "code": "CASE",
+      "display_name_proposal": "블랙페퍼",
+      "subtitle": "범죄·미스터리·스릴러",
+      "genre_ids": [
+        80,
+        9648,
+        53
+      ],
+      "genre_names": [
+        "Crime",
+        "Mystery",
+        "Thriller"
+      ]
+    },
+    {
+      "priority": 11,
+      "code": "ACTION_ADVENTURE",
+      "display_name_proposal": "칠리",
+      "subtitle": "액션·모험",
+      "genre_ids": [
+        28,
+        12
+      ],
+      "genre_names": [
+        "Action",
+        "Adventure"
+      ]
+    },
+    {
+      "priority": 12,
+      "code": "ROMANCE",
+      "display_name_proposal": "카라멜",
+      "subtitle": "로맨스",
+      "genre_ids": [
+        10749
+      ],
+      "genre_names": [
+        "Romance"
+      ]
+    },
+    {
+      "priority": 13,
+      "code": "COMEDY",
+      "display_name_proposal": "치즈",
+      "subtitle": "코미디",
+      "genre_ids": [
+        35
+      ],
+      "genre_names": [
+        "Comedy"
+      ]
+    },
+    {
+      "priority": 14,
+      "code": "DRAMA",
+      "display_name_proposal": "버터",
+      "subtitle": "드라마",
+      "genre_ids": [
+        18
+      ],
+      "genre_names": [
+        "Drama"
+      ]
+    }
+  ],
+  "non_content_genres": [
+    {
+      "id": 10770,
+      "name": "TV Movie",
+      "when_with_content": "retain original flag, choose by content genres",
+      "when_only": "PENDING_METADATA: refresh canonical genre details or human-verified content-genre annotation, then apply same resolver"
+    }
+  ],
+  "unknown_genre_policy": "PENDING_METADATA; never silently ignore a new ID",
+  "empty_genre_policy": "PENDING_METADATA",
+  "front_end_policy": "one flavor badge and subtitle per READY movie; pending is a neutral status, never a 15th flavor or a member of discovery groups",
+  "new_movie_policy": "apply frozen taxonomy to only the new item; never recompute existing assignments on insertion",
+  "metadata_update_policy": "keep active assignment; stage any proposed correction for explicit review; no automatic overwrite",
+  "display_rename_policy": "code and membership unchanged; display name is independently editable",
+  "preference_classifier_contract": "separate future classifier operating on original multi-genre features within selected flavor group; no fit in this task"
+}
