@@ -1,0 +1,67 @@
+{
+  "status": "SCOPED_PASS_WITH_CHECK_AUDIT_COVERAGE_GAPS",
+  "reviewed_on": "2026-09-13",
+  "reviewer": "/root/asset_audit",
+  "scope": "Independent static cross-review of profile/E_u/retrieval/request/selection reconstruction, plus report canonical paired-cost interpretation; no stage output audit rerun",
+  "files": {
+    "C:/higher/projects/FEELM-standalone/.codex-tmp/discovery-v2-result-audit-20260913/scripts/audit_dv2_retrieval_results.py": {
+      "bytes": 34843,
+      "sha256": "f6cdf1146abe2510fd5be581b30a88c0006004d418f167883a2017c5502945e0"
+    },
+    "C:/higher/projects/FEELM-standalone/.codex-tmp/discovery-v2-result-audit-20260913/scripts/test_audit_dv2_retrieval_results.py": {
+      "bytes": 3297,
+      "sha256": "c59e8e219876d60d375f381413c3bae19d07c4d182db7c83a2c0910e10aab790"
+    },
+    "C:/higher/projects/FEELM-standalone/.codex-tmp/fixed-k8-discovery-v2-20260913/scripts/dv2_experiment.py": {
+      "bytes": 31308,
+      "sha256": "20ce383c1d94b85008e0f8b1f0417fb99bfc6a57a0e0a2bc878f173c4fabffac"
+    },
+    "C:/higher/projects/FEELM-standalone/.codex-tmp/fixed-k8-discovery-v2-20260913/scripts/dv2_retrieve.py": {
+      "bytes": 7637,
+      "sha256": "5601266ffb37ecad46aa92f21c861c537c46002569b11eeb3de0b34b4a8e3465"
+    },
+    "C:/higher/projects/FEELM-standalone/.codex-tmp/fixed-k8-discovery-v2-20260913/scripts/dv2_report.py": {
+      "bytes": 23993,
+      "sha256": "651fe41eac442208639e2199765b39e72658344f1582217081e573aea912aa48"
+    }
+  },
+  "synthetic_execution": {
+    "tests": 6,
+    "passed": 6,
+    "model_predictions": 0,
+    "source_outputs_modified": 0
+  },
+  "verified": [
+    "Profile anchor uses original capped stars before mapping; signed/two-branch support, tiny/empty states match frozen constants.",
+    "Each hierarchy rebuilds its own underseen E_u from full viewed counts with count<=2 and share<=.2; actualQprefix removes seen first and then appliesquota.",
+    "Actualcandidate traversal, next-group exhaustion, nofill, count and modelhead rows are reconstructed.",
+    "Empty reference/candidate comparisons are undefined; nonempty prefix overlap denominator is actual reference size, not fixedbudget.",
+    "Usermacro aggregates, p95, frozenPareto and priority selection are independently reconstructed without futurequality metrics.",
+    "Report canonical keys collapse globalfull bykind, globalflat bybudget, and sameE fullpredictor byhierarchy; perpolicy/canonical asserts one UID once."
+  ],
+  "check_audit_gaps_sent_to_owner": [
+    {
+      "priority": "required_for_claiming_reference_link_semantics_checked",
+      "finding": "check_links only validates existence and9referencekindcounts, not expected hierarchy/space/profile_mode/B/Q or reference_reused_for_comparison. Samekind wrongE_u links could pass.",
+      "requested": "Reconstruct expected canonical cachekeys and per-finalist references with actual execution/reuse flags before CHECK audit, preserving completed sweep audit snapshot."
+    },
+    {
+      "priority": "coverage_limit",
+      "finding": "prefix-drift.parquet values and row inventory are sealed but not independently recomputed by this audit code.",
+      "requested": "Recompute in CHECK audit or explicitly exclude prefix-drift numeric validation from coverage."
+    },
+    {
+      "priority": "coverage_limit",
+      "finding": "descriptive_metrics checks known/unknown/negative/recall/NDCG/top8, but omits genre_new_fraction, keyword_seen_overlap and seen_collection_slots.",
+      "requested": "Recompute those metadata metrics or explicitly narrow claims."
+    }
+  ],
+  "interpretation_limits": [
+    "SameE_u approximation gap is defined within a hierarchy. Cross-hierarchy E_u changes; lowergap or cheap16groups is not universal recommendation or semantic superiority.",
+    "Canonical baseline latencies are actual saved executions reused in multiple policy comparisons. Withinpolicy comparisons do not doublecountUIDs, but summing acrosspolicies must not be called new measuredtotal executioncost.",
+    "Top10 overlap is intersection divided by actual reference returnedcount and only defined if both returned; report comparable_returned_users and slots alongside it.",
+    "Mean predicted-score deltas are model-score diagnostics, not observed rating improvements or human satisfaction.",
+    "No actual saved timing was rerun; measured costs rely on reviewed selected-only execution code."
+  ],
+  "required_main_experiment_code_corrections": []
+}

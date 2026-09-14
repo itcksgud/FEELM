@@ -1,0 +1,29 @@
+{
+  "status": "PASS",
+  "reviewed_on": "2026-09-13",
+  "independent_reviewer": "/root/asset_audit/predictor_source_pins",
+  "scope": "Bounded four-scenario actual trained-head and route parity only; main selection predictions, future-label metrics and policy selection excluded",
+  "authorization": "Parent /root explicitly authorized independent review followed by this bounded trained-model parity execution on 2026-09-13",
+  "fingerprint": {
+    "dv2_predictor_parity.py": {"bytes": 19171, "sha256": "d16902be0ec99d7ab1d52270b55f6b9a3a2b7ad8d3dc4c4124e152869ade018d"},
+    "dv2_predictor.py": {"bytes": 19085, "sha256": "db3c1c92278fdfc889e8e951c1aa53495c631772dcf2f07bc6644d545ecc4086"},
+    "test_dv2_predictor.py": {"bytes": 24918, "sha256": "d23981256e5b7cc1ab19ec0e3670f8ca4b8f107f81317f26d5ef7fe79fa9c996"}
+  },
+  "prepare_seal_sha256": "42de5a1343e33fb6ce600d567248def48f6eb9a9c95dddfeb41d91cf408e3c76",
+  "checks": [
+    "Independent scalar traversal of pinned native GBT nodes",
+    "Independent batch RH230 and source-ID ALS fold-in",
+    "Independent cap-affine coefficients parsed from pinned calibration JSON",
+    "Deterministic metadata/support candidate sampling without future target selection",
+    "Future ratings arrays redacted before JSON decoding",
+    "Old metadata, fresh service IDs, current full service axis and unmatched fresh metadata scenarios",
+    "Raw heads, calibrated heads, all four routes, head-call subsets, candidate ordering and chunk parity",
+    "Startup reference assets and review pins preserved and fully reverified before outputs"
+  ],
+  "required_corrections_resolved": [
+    "Reference affine calibration no longer uses adapter calibration objects",
+    "Reference assets and review/source pins are reverified before writing results"
+  ],
+  "reviewer_execution": "Fingerprint invocation only; no --run or trained prediction",
+  "remaining_required_corrections": []
+}

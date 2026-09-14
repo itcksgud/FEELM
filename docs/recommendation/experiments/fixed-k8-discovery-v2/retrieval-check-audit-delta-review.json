@@ -1,0 +1,31 @@
+{
+  "status": "PASS",
+  "reviewer": "/root/asset_audit",
+  "reviewed_on": "2026-09-13",
+  "scope": "CHECK audit exact-delta static cross-review and independent8synthetic execution",
+  "files": {
+    "C:\\higher\\projects\\FEELM-standalone\\.codex-tmp\\discovery-v2-result-audit-20260913\\scripts\\audit_dv2_retrieval_results.py": {
+      "bytes": 39483,
+      "sha256": "49a1449ff836aaf90ac2f13f0052d6537c124db84b77a84a414c701929b3ba4e"
+    },
+    "C:\\higher\\projects\\FEELM-standalone\\.codex-tmp\\discovery-v2-result-audit-20260913\\scripts\\test_audit_dv2_retrieval_results.py": {
+      "bytes": 6319,
+      "sha256": "697e946368ada5fc32097f67226a74793f60e9921739259cca5e8f386b29f29a"
+    }
+  },
+  "synthetic_tests": 8,
+  "synthetic_passed": 8,
+  "actual_model_calls": 0,
+  "prior_coverage_gaps_all_resolved": [
+    "Exact preparedcontext/finalistrotation referencepolicy inventory, per-hierarchy/space/profile/B/Q/seed semantics, canonicalcachekeys and firstactual/reusedflags.",
+    "Allprofile-state prefix-drift rowinventory/counts/whole/fixed/actualmeans and distances/dots.",
+    "genre_new_fraction, keyword_seen_overlap and seen_collection_slots with missingevidence exclusions."
+  ],
+  "previous_ledger": "retrieval-audit-code-cross-review.json",
+  "preserved_previous_sweep_audit": true,
+  "limits": [
+    "Uses saved prediction/time values while independently replaying ordering/accounting and sameE_u references.",
+    "Original prepared metadata/support provenance still additionally relies on prior independent sourceaudits."
+  ],
+  "required_corrections": []
+}

@@ -1,0 +1,106 @@
+{
+  "status": "PASS",
+  "reviewed_on": "2026-09-13",
+  "scope": "DEVELOPMENT_ONLY adapter source reuse, candidate-only formulas, synthetic edge cases, and sealed real feature-only parity; not service-scale model quality",
+  "reviewer": "/root/asset_audit/predictor_source_pins",
+  "implementation_owner": "/root/asset_audit",
+  "worktree": "C:/higher/projects/FEELM-standalone/.codex-tmp/discovery-v2-predictor-20260913",
+  "branch": "research/discovery-v2-predictor-20260913",
+  "base_commit": "e38d662e6be65949f99ab40bbaab137fc5e1218f",
+  "code": {
+    "scripts/dv2_predictor.py": {
+      "bytes": 19085,
+      "sha256": "db3c1c92278fdfc889e8e951c1aa53495c631772dcf2f07bc6644d545ecc4086"
+    },
+    "scripts/test_dv2_predictor.py": {
+      "bytes": 24918,
+      "sha256": "d23981256e5b7cc1ab19ec0e3670f8ca4b8f107f81317f26d5ef7fe79fa9c996"
+    }
+  },
+  "reproduce": {
+    "runtime": "C:/higher/projects/FEELM-standalone/outputs/recommendation-evidence/text339-runtime/venv/Scripts/python.exe",
+    "cwd": "C:/higher/projects/FEELM-standalone/.codex-tmp/discovery-v2-predictor-20260913",
+    "argv": [
+      "-B",
+      "scripts/test_dv2_predictor.py",
+      "--reference-root",
+      "C:/higher/projects/FEELM-standalone",
+      "--source-audit",
+      "--feature-parity"
+    ],
+    "default_without_optional_flags": "Synthetic checks and independently vectorized synthetic RH230 parity only",
+    "writes": "No output files; unittest and JSON evidence are printed"
+  },
+  "independent_execution": {
+    "exit_code": 0,
+    "tests_run": 11,
+    "skipped": 0,
+    "unittest_seconds": 2.75,
+    "original_independent_synthetic_checks": 51,
+    "additional_invalid_requests_rejected": 25,
+    "source_entries_verified": 12,
+    "synthetic_rh_max_abs_error": 5.960464477539063e-8,
+    "real_feature_parity": {
+      "contexts": 15,
+      "caps": [0, 1, 5, 10, 30],
+      "selection": "First three original contexts per cap; positive actual history for nonzero caps; first ten available target indices per context",
+      "candidate_rows": 109,
+      "feature_values": 25070,
+      "max_abs_error": 0.0,
+      "score_columns_read": "row_id and x000 through x229 only",
+      "comparison": "All float32 feature values exactly equal sealed foundation340 RH/score.parquet"
+    },
+    "hashes_identical_before_and_after": true,
+    "trained_model_predictions": 0,
+    "future_label_columns_read": 0,
+    "reviewer_files_edited": 0
+  },
+  "source_review": {
+    "gbt_sealed_checks": "41/41 fit-file, execution and native inventory checks passed",
+    "hybrid_provenance_checks": "12/12 relevant evaluation/calibration/selection source links passed",
+    "factor_inventory": {
+      "files": 18,
+      "rows": 45074,
+      "dimensions": 32,
+      "id_namespace": "MovieLens movie_id",
+      "canonical_inventory_sha256": "4631e4a9ba5ecff72a0e66063bc819b3fe41a0acd364165c71af75e09f9d4f4e",
+      "canonicalization": "UTF-8 compact sorted JSON of combination340-relative file path to bytes/sha256"
+    },
+    "training_support": {
+      "catalog_rows": 85517,
+      "positive_train_count": 45074,
+      "blocked_and_positive_train_count": 0,
+      "factor_ids_equal_positive_train_ids": true
+    },
+    "rh_prior": {
+      "mean_tmdb_0_to_10": 6.173088067675869,
+      "mass": 48.0,
+      "training_movies": 44920,
+      "feature_count": 230,
+      "support_strength": 5.0
+    },
+    "independent_batch_code": {
+      "path": "C:/higher/projects/FEELM-standalone/scripts/foundation340_features.py",
+      "sha256": "83e2586d9acc8bfb8aec8dc47b8133f4bc0da8678ba0d82bdd295b5c7bf13cf9"
+    },
+    "remaining_source_anchors": "SOURCE_SHA256 and REFERENCE_CODE_SHA256 in the hash-bound adapter; verified by load_assets/reference_classes"
+  },
+  "verified_behavior": [
+    "Service IDs are metadata identities, never model features or MovieLens factor IDs",
+    "Only unambiguous MATCHED service rows inherit MovieLens train count and factors",
+    "Requested cap determines calibration; mapped/supported history length does not replace it",
+    "Cap zero ALS calibration remains unavailable; GBT handles the complete candidate set",
+    "Original, shrink20, shrink100 and min20 use separate declared formulas",
+    "Only required candidate heads are computed, including warm-only and empty skips",
+    "Ranking preserves affine unclipped values; rating_clipped is separate for error/display",
+    "Viewed/history movies and invalid/duplicate indices are rejected",
+    "Metadata additions and row reordering preserve existing feature and prediction values"
+  ],
+  "required_corrections": [],
+  "limits": [
+    "Current 237817-service-film raw normalization and service-axis feature parity are covered separately by the completed prepare-input-audit.json, not by this component review",
+    "No real trained-model service prediction, timing benchmark, quality evaluation or model selection was executed by this review",
+    "Previously used development users and current metadata do not establish fresh-test, historical-only, Korean-user or discovery-satisfaction performance",
+    "Caller must cap original latest-first inputs before mapping and enforce past-time and candidate-eligibility gates"
+  ]
+}

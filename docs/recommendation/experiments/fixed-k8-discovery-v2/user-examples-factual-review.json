@@ -1,0 +1,1438 @@
+{
+  "status": "PASS",
+  "scope": "Factual exported metadata/history/rank/source-row and descriptive connection audit; no new model or target-quality evaluation",
+  "code": {
+    "bytes": 10406,
+    "sha256": "b9a9763dffd2820ce4c743d94b0f4134e8191f36e6392af1a35e922fde292033"
+  },
+  "report_inputs": {
+    "user-examples.json": {
+      "bytes": 273294,
+      "sha256": "caece2423a05c5f94479a53fe95012b749f39cd9334014b2968c0d6684bbd3a5"
+    },
+    "korean-familiar-movies.json": {
+      "bytes": 55369,
+      "sha256": "452fb63c54602a156b96ecc35c88340bbd82e97c0ed6a3f04fa7c6cf18881907"
+    }
+  },
+  "source_seals": {
+    "prepare": {
+      "bytes": 1997,
+      "sha256": "42de5a1343e33fb6ce600d567248def48f6eb9a9c95dddfeb41d91cf408e3c76"
+    },
+    "cluster": {
+      "bytes": 2881,
+      "sha256": "49d0a5e53bbb66d2278d7e1e49500654794e596670fe86d5a7482fda2d681c43"
+    },
+    "check": {
+      "bytes": 116668,
+      "sha256": "e308b45c19199aca393a60a2dc47d7bb20bdda80005957b1bbef61cd8a6048bb"
+    },
+    "final": {
+      "bytes": 1095,
+      "sha256": "84916471ba353e29e82948dca977b59195fd0d31bab5e99cbd6ceab1070b7730"
+    }
+  },
+  "name_source": {
+    "bytes": 1631391,
+    "sha256": "dc6cdbda79de10bd732ef796ecbb06cce81784c8e4694944377f36f46180751d"
+  },
+  "users": 3,
+  "familiar_movies": 33,
+  "movie_row_instances_verified": 153,
+  "distinct_service_films_verified": 140,
+  "recommendations_verified": 90,
+  "user_facts": [
+    {
+      "uid": 5831,
+      "history_count": 10,
+      "anchor": 3.166666666666667,
+      "negative_history_stars": [
+        [
+          "페리스의 해방",
+          0.5
+        ],
+        [
+          "나이트 레이더스",
+          2.0
+        ],
+        [
+          "기생충",
+          1.0
+        ]
+      ],
+      "policy_summaries": [
+        {
+          "policy": "v1-fixed16:group:mean:B50:Q25",
+          "returned": 10,
+          "train_count_zero": 2,
+          "train_count_le20": 2,
+          "release_after_2022": 2,
+          "genre_missing": 0,
+          "overview_missing": 0
+        },
+        {
+          "policy": "GKT-K128:group:mean:B100:Q25",
+          "returned": 10,
+          "train_count_zero": 4,
+          "train_count_le20": 6,
+          "release_after_2022": 2,
+          "genre_missing": 0,
+          "overview_missing": 1
+        },
+        {
+          "policy": "GKT-K256:group:mean:B50:Q25",
+          "returned": 10,
+          "train_count_zero": 5,
+          "train_count_le20": 5,
+          "release_after_2022": 1,
+          "genre_missing": 0,
+          "overview_missing": 7
+        }
+      ]
+    },
+    {
+      "uid": 2834,
+      "history_count": 10,
+      "anchor": 3.3166666666666664,
+      "negative_history_stars": [
+        [
+          "겨울왕국",
+          3.0
+        ],
+        [
+          "할로윈",
+          3.0
+        ]
+      ],
+      "policy_summaries": [
+        {
+          "policy": "v1-fixed16:group:mean:B50:Q25",
+          "returned": 10,
+          "train_count_zero": 7,
+          "train_count_le20": 10,
+          "release_after_2022": 0,
+          "genre_missing": 0,
+          "overview_missing": 5
+        },
+        {
+          "policy": "GKT-K128:group:mean:B100:Q25",
+          "returned": 10,
+          "train_count_zero": 4,
+          "train_count_le20": 10,
+          "release_after_2022": 1,
+          "genre_missing": 0,
+          "overview_missing": 4
+        },
+        {
+          "policy": "GKT-K256:group:mean:B50:Q25",
+          "returned": 10,
+          "train_count_zero": 5,
+          "train_count_le20": 10,
+          "release_after_2022": 3,
+          "genre_missing": 0,
+          "overview_missing": 5
+        }
+      ]
+    },
+    {
+      "uid": 16044,
+      "history_count": 10,
+      "anchor": 3.15,
+      "negative_history_stars": [
+        [
+          "나 홀로 집에 2: 뉴욕을 헤매다",
+          2.5
+        ],
+        [
+          "나 홀로 집에",
+          3.0
+        ],
+        [
+          "호스텔",
+          2.5
+        ],
+        [
+          "타이타닉",
+          3.0
+        ],
+        [
+          "블레어 위치",
+          2.5
+        ]
+      ],
+      "policy_summaries": [
+        {
+          "policy": "v1-fixed16:group:mean:B50:Q25",
+          "returned": 10,
+          "train_count_zero": 4,
+          "train_count_le20": 4,
+          "release_after_2022": 1,
+          "genre_missing": 0,
+          "overview_missing": 0
+        },
+        {
+          "policy": "GKT-K128:group:mean:B100:Q25",
+          "returned": 10,
+          "train_count_zero": 2,
+          "train_count_le20": 9,
+          "release_after_2022": 0,
+          "genre_missing": 0,
+          "overview_missing": 2
+        },
+        {
+          "policy": "GKT-K256:group:mean:B50:Q25",
+          "returned": 10,
+          "train_count_zero": 6,
+          "train_count_le20": 10,
+          "release_after_2022": 4,
+          "genre_missing": 0,
+          "overview_missing": 7
+        }
+      ]
+    }
+  ],
+  "connections_to_below_anchor_history": [
+    {
+      "uid": 2834,
+      "policy": "v1-fixed16:group:mean:B50:Q25",
+      "recommendation": "Mientras el lobo no está",
+      "history": "할로윈",
+      "history_stars": 3.0,
+      "anchor": 3.3166666666666664,
+      "content_dot": 0.2886751345948129,
+      "shared_keywords": []
+    },
+    {
+      "uid": 2834,
+      "policy": "GKT-K256:group:mean:B50:Q25",
+      "recommendation": "니코: 오로라 원정대의 모험",
+      "history": "겨울왕국",
+      "history_stars": 3.0,
+      "anchor": 3.3166666666666664,
+      "content_dot": 0.49129527654320715,
+      "shared_keywords": [
+        "reindeer"
+      ]
+    },
+    {
+      "uid": 16044,
+      "policy": "v1-fixed16:group:mean:B50:Q25",
+      "recommendation": "서커스",
+      "history": "타이타닉",
+      "history_stars": 3.0,
+      "anchor": 3.15,
+      "content_dot": 0.4558557987952334,
+      "shared_keywords": []
+    },
+    {
+      "uid": 16044,
+      "policy": "v1-fixed16:group:mean:B50:Q25",
+      "recommendation": "음성메시지가 도착했습니다",
+      "history": "타이타닉",
+      "history_stars": 3.0,
+      "anchor": 3.15,
+      "content_dot": 0.4293942315412121,
+      "shared_keywords": []
+    },
+    {
+      "uid": 16044,
+      "policy": "v1-fixed16:group:mean:B50:Q25",
+      "recommendation": "악령들",
+      "history": "타이타닉",
+      "history_stars": 3.0,
+      "anchor": 3.15,
+      "content_dot": 0.42565598754236816,
+      "shared_keywords": [
+        "based on true story"
+      ]
+    },
+    {
+      "uid": 16044,
+      "policy": "v1-fixed16:group:mean:B50:Q25",
+      "recommendation": "포레스트 검프",
+      "history": "타이타닉",
+      "history_stars": 3.0,
+      "anchor": 3.15,
+      "content_dot": 0.4830725943290723,
+      "shared_keywords": []
+    },
+    {
+      "uid": 16044,
+      "policy": "v1-fixed16:group:mean:B50:Q25",
+      "recommendation": "포레스트 검프",
+      "history": "나 홀로 집에",
+      "history_stars": 3.0,
+      "anchor": 3.15,
+      "content_dot": 0.2776801880805133,
+      "shared_keywords": [
+        "family relationships"
+      ]
+    },
+    {
+      "uid": 16044,
+      "policy": "v1-fixed16:group:mean:B50:Q25",
+      "recommendation": "모던 타임즈",
+      "history": "타이타닉",
+      "history_stars": 3.0,
+      "anchor": 3.15,
+      "content_dot": 0.4433309692565588,
+      "shared_keywords": []
+    },
+    {
+      "uid": 16044,
+      "policy": "v1-fixed16:group:mean:B50:Q25",
+      "recommendation": "시티 라이트",
+      "history": "타이타닉",
+      "history_stars": 3.0,
+      "anchor": 3.15,
+      "content_dot": 0.45178529444958787,
+      "shared_keywords": []
+    },
+    {
+      "uid": 16044,
+      "policy": "v1-fixed16:group:mean:B50:Q25",
+      "recommendation": "일 포스티노",
+      "history": "타이타닉",
+      "history_stars": 3.0,
+      "anchor": 3.15,
+      "content_dot": 0.46373381772063166,
+      "shared_keywords": []
+    },
+    {
+      "uid": 16044,
+      "policy": "v1-fixed16:group:mean:B50:Q25",
+      "recommendation": "싱 스트리트",
+      "history": "타이타닉",
+      "history_stars": 3.0,
+      "anchor": 3.15,
+      "content_dot": 0.44934191951802815,
+      "shared_keywords": []
+    },
+    {
+      "uid": 16044,
+      "policy": "v1-fixed16:group:mean:B50:Q25",
+      "recommendation": "싱 스트리트",
+      "history": "나 홀로 집에 2: 뉴욕을 헤매다",
+      "history_stars": 2.5,
+      "anchor": 3.15,
+      "content_dot": 0.2958522458818542,
+      "shared_keywords": [
+        "family"
+      ]
+    },
+    {
+      "uid": 16044,
+      "policy": "v1-fixed16:group:mean:B50:Q25",
+      "recommendation": "졸업",
+      "history": "타이타닉",
+      "history_stars": 3.0,
+      "anchor": 3.15,
+      "content_dot": 0.4671833253674571,
+      "shared_keywords": []
+    },
+    {
+      "uid": 16044,
+      "policy": "GKT-K128:group:mean:B100:Q25",
+      "recommendation": "소원",
+      "history": "타이타닉",
+      "history_stars": 3.0,
+      "anchor": 3.15,
+      "content_dot": 0.7133684046380998,
+      "shared_keywords": [
+        "based on true story"
+      ]
+    },
+    {
+      "uid": 16044,
+      "policy": "GKT-K128:group:mean:B100:Q25",
+      "recommendation": "클라우즈",
+      "history": "타이타닉",
+      "history_stars": 3.0,
+      "anchor": 3.15,
+      "content_dot": 0.6350884542125571,
+      "shared_keywords": [
+        "based on true story"
+      ]
+    },
+    {
+      "uid": 16044,
+      "policy": "GKT-K128:group:mean:B100:Q25",
+      "recommendation": "신의 은총으로",
+      "history": "타이타닉",
+      "history_stars": 3.0,
+      "anchor": 3.15,
+      "content_dot": 0.7367707109125398,
+      "shared_keywords": [
+        "based on true story"
+      ]
+    },
+    {
+      "uid": 16044,
+      "policy": "GKT-K128:group:mean:B100:Q25",
+      "recommendation": "위대한 구조",
+      "history": "타이타닉",
+      "history_stars": 3.0,
+      "anchor": 3.15,
+      "content_dot": 0.6021963888142694,
+      "shared_keywords": [
+        "based on true story"
+      ]
+    },
+    {
+      "uid": 16044,
+      "policy": "GKT-K128:group:mean:B100:Q25",
+      "recommendation": "Divaldo: O Mensageiro da Paz",
+      "history": "타이타닉",
+      "history_stars": 3.0,
+      "anchor": 3.15,
+      "content_dot": 0.5000000000000001,
+      "shared_keywords": []
+    },
+    {
+      "uid": 16044,
+      "policy": "GKT-K128:group:mean:B100:Q25",
+      "recommendation": "어린 의뢰인",
+      "history": "타이타닉",
+      "history_stars": 3.0,
+      "anchor": 3.15,
+      "content_dot": 0.7092836101350875,
+      "shared_keywords": [
+        "based on true story"
+      ]
+    },
+    {
+      "uid": 16044,
+      "policy": "GKT-K128:group:mean:B100:Q25",
+      "recommendation": "La delgada línea amarilla",
+      "history": "타이타닉",
+      "history_stars": 3.0,
+      "anchor": 3.15,
+      "content_dot": 0.5000000000000001,
+      "shared_keywords": []
+    },
+    {
+      "uid": 16044,
+      "policy": "GKT-K128:group:mean:B100:Q25",
+      "recommendation": "도가니",
+      "history": "타이타닉",
+      "history_stars": 3.0,
+      "anchor": 3.15,
+      "content_dot": 0.6149442375901369,
+      "shared_keywords": [
+        "based on true story"
+      ]
+    },
+    {
+      "uid": 16044,
+      "policy": "GKT-K256:group:mean:B50:Q25",
+      "recommendation": "Il caso Mattei",
+      "history": "타이타닉",
+      "history_stars": 3.0,
+      "anchor": 3.15,
+      "content_dot": 0.3535533905932738,
+      "shared_keywords": []
+    },
+    {
+      "uid": 16044,
+      "policy": "GKT-K256:group:mean:B50:Q25",
+      "recommendation": "드골 2",
+      "history": "타이타닉",
+      "history_stars": 3.0,
+      "anchor": 3.15,
+      "content_dot": 0.3535533905932738,
+      "shared_keywords": []
+    },
+    {
+      "uid": 16044,
+      "policy": "GKT-K256:group:mean:B50:Q25",
+      "recommendation": "Ευτυχία",
+      "history": "타이타닉",
+      "history_stars": 3.0,
+      "anchor": 3.15,
+      "content_dot": 0.3535533905932738,
+      "shared_keywords": []
+    },
+    {
+      "uid": 16044,
+      "policy": "GKT-K256:group:mean:B50:Q25",
+      "recommendation": "Les Rayons et les Ombres",
+      "history": "타이타닉",
+      "history_stars": 3.0,
+      "anchor": 3.15,
+      "content_dot": 0.3535533905932738,
+      "shared_keywords": []
+    },
+    {
+      "uid": 16044,
+      "policy": "GKT-K256:group:mean:B50:Q25",
+      "recommendation": "Semmelweis",
+      "history": "타이타닉",
+      "history_stars": 3.0,
+      "anchor": 3.15,
+      "content_dot": 0.3535533905932738,
+      "shared_keywords": []
+    },
+    {
+      "uid": 16044,
+      "policy": "GKT-K256:group:mean:B50:Q25",
+      "recommendation": "Die andere Heimat - Chronik einer Sehnsucht",
+      "history": "타이타닉",
+      "history_stars": 3.0,
+      "anchor": 3.15,
+      "content_dot": 0.3535533905932738,
+      "shared_keywords": []
+    },
+    {
+      "uid": 16044,
+      "policy": "GKT-K256:group:mean:B50:Q25",
+      "recommendation": "Zaferin Rengi",
+      "history": "타이타닉",
+      "history_stars": 3.0,
+      "anchor": 3.15,
+      "content_dot": 0.3535533905932738,
+      "shared_keywords": []
+    }
+  ],
+  "group_descriptors": [
+    {
+      "hierarchy": "v1-fixed16",
+      "group_id": 13,
+      "members": 4439,
+      "genre_missing": 0,
+      "genre_counts": [
+        [
+          "애니메이션",
+          4439
+        ],
+        [
+          "코미디",
+          3006
+        ],
+        [
+          "가족",
+          2540
+        ],
+        [
+          "모험",
+          1104
+        ],
+        [
+          "판타지",
+          932
+        ]
+      ],
+      "supported_gkt_rows": 4439
+    },
+    {
+      "hierarchy": "v1-fixed16",
+      "group_id": 9,
+      "members": 15472,
+      "genre_missing": 0,
+      "genre_counts": [
+        [
+          "스릴러",
+          15472
+        ],
+        [
+          "공포",
+          6024
+        ],
+        [
+          "범죄",
+          3203
+        ],
+        [
+          "액션",
+          3182
+        ],
+        [
+          "미스터리",
+          3146
+        ]
+      ],
+      "supported_gkt_rows": 15472
+    },
+    {
+      "hierarchy": "v1-fixed16",
+      "group_id": 11,
+      "members": 26002,
+      "genre_missing": 0,
+      "genre_counts": [
+        [
+          "코미디",
+          26002
+        ],
+        [
+          "공포",
+          3014
+        ],
+        [
+          "액션",
+          2034
+        ],
+        [
+          "범죄",
+          1659
+        ],
+        [
+          "가족",
+          1542
+        ]
+      ],
+      "supported_gkt_rows": 26002
+    },
+    {
+      "hierarchy": "v1-fixed16",
+      "group_id": 2,
+      "members": 2193,
+      "genre_missing": 0,
+      "genre_counts": [
+        [
+          "드라마",
+          2193
+        ],
+        [
+          "공포",
+          2193
+        ],
+        [
+          "미스터리",
+          340
+        ],
+        [
+          "판타지",
+          285
+        ],
+        [
+          "SF",
+          170
+        ]
+      ],
+      "supported_gkt_rows": 2193
+    },
+    {
+      "hierarchy": "v1-fixed16",
+      "group_id": 4,
+      "members": 3135,
+      "genre_missing": 0,
+      "genre_counts": [
+        [
+          "드라마",
+          3135
+        ],
+        [
+          "코미디",
+          3135
+        ],
+        [
+          "로맨스",
+          3135
+        ],
+        [
+          "TV 영화",
+          177
+        ],
+        [
+          "가족",
+          105
+        ]
+      ],
+      "supported_gkt_rows": 3135
+    },
+    {
+      "hierarchy": "v1-fixed16",
+      "group_id": 8,
+      "members": 9440,
+      "genre_missing": 0,
+      "genre_counts": [
+        [
+          "드라마",
+          9440
+        ],
+        [
+          "스릴러",
+          9440
+        ],
+        [
+          "범죄",
+          2513
+        ],
+        [
+          "미스터리",
+          1596
+        ],
+        [
+          "공포",
+          1388
+        ]
+      ],
+      "supported_gkt_rows": 9440
+    },
+    {
+      "hierarchy": "v1-fixed16",
+      "group_id": 15,
+      "members": 44414,
+      "genre_missing": 30577,
+      "genre_counts": [
+        [
+          "액션",
+          4777
+        ],
+        [
+          "모험",
+          3694
+        ],
+        [
+          "SF",
+          3020
+        ],
+        [
+          "판타지",
+          2512
+        ],
+        [
+          "로맨스",
+          2296
+        ]
+      ],
+      "supported_gkt_rows": 16052
+    },
+    {
+      "hierarchy": "v1-fixed16",
+      "group_id": 1,
+      "members": 36737,
+      "genre_missing": 0,
+      "genre_counts": [
+        [
+          "다큐멘터리",
+          36737
+        ],
+        [
+          "역사",
+          1437
+        ],
+        [
+          "TV 영화",
+          781
+        ],
+        [
+          "범죄",
+          445
+        ],
+        [
+          "전쟁",
+          407
+        ]
+      ],
+      "supported_gkt_rows": 36737
+    },
+    {
+      "hierarchy": "v1-fixed16",
+      "group_id": 7,
+      "members": 49861,
+      "genre_missing": 0,
+      "genre_counts": [
+        [
+          "드라마",
+          49861
+        ],
+        [
+          "로맨스",
+          7735
+        ],
+        [
+          "역사",
+          2800
+        ],
+        [
+          "가족",
+          2355
+        ],
+        [
+          "액션",
+          2110
+        ]
+      ],
+      "supported_gkt_rows": 49861
+    },
+    {
+      "hierarchy": "v1-fixed16",
+      "group_id": 3,
+      "members": 10865,
+      "genre_missing": 0,
+      "genre_counts": [
+        [
+          "공포",
+          10865
+        ],
+        [
+          "SF",
+          1231
+        ],
+        [
+          "미스터리",
+          1152
+        ],
+        [
+          "판타지",
+          711
+        ],
+        [
+          "액션",
+          507
+        ]
+      ],
+      "supported_gkt_rows": 10865
+    },
+    {
+      "hierarchy": "v1-fixed16",
+      "group_id": 5,
+      "members": 11183,
+      "genre_missing": 0,
+      "genre_counts": [
+        [
+          "드라마",
+          11183
+        ],
+        [
+          "코미디",
+          11183
+        ],
+        [
+          "가족",
+          654
+        ],
+        [
+          "범죄",
+          585
+        ],
+        [
+          "판타지",
+          441
+        ]
+      ],
+      "supported_gkt_rows": 11183
+    },
+    {
+      "hierarchy": "v1-fixed16",
+      "group_id": 0,
+      "members": 2860,
+      "genre_missing": 0,
+      "genre_counts": [
+        [
+          "다큐멘터리",
+          2860
+        ],
+        [
+          "음악",
+          2860
+        ],
+        [
+          "역사",
+          82
+        ],
+        [
+          "TV 영화",
+          53
+        ],
+        [
+          "가족",
+          21
+        ]
+      ],
+      "supported_gkt_rows": 2860
+    },
+    {
+      "hierarchy": "v1-fixed16",
+      "group_id": 6,
+      "members": 3478,
+      "genre_missing": 0,
+      "genre_counts": [
+        [
+          "드라마",
+          3478
+        ],
+        [
+          "범죄",
+          3478
+        ],
+        [
+          "액션",
+          600
+        ],
+        [
+          "미스터리",
+          361
+        ],
+        [
+          "로맨스",
+          269
+        ]
+      ],
+      "supported_gkt_rows": 3478
+    },
+    {
+      "hierarchy": "v1-fixed16",
+      "group_id": 12,
+      "members": 8654,
+      "genre_missing": 0,
+      "genre_counts": [
+        [
+          "애니메이션",
+          8654
+        ],
+        [
+          "드라마",
+          996
+        ],
+        [
+          "판타지",
+          987
+        ],
+        [
+          "SF",
+          652
+        ],
+        [
+          "다큐멘터리",
+          556
+        ]
+      ],
+      "supported_gkt_rows": 8654
+    },
+    {
+      "hierarchy": "GKT-K128",
+      "group_id": 1016,
+      "members": 137,
+      "genre_missing": 0,
+      "genre_counts": [
+        [
+          "모험",
+          137
+        ],
+        [
+          "액션",
+          137
+        ],
+        [
+          "전쟁",
+          10
+        ],
+        [
+          "범죄",
+          8
+        ],
+        [
+          "TV 영화",
+          8
+        ]
+      ],
+      "supported_gkt_rows": 137
+    },
+    {
+      "hierarchy": "GKT-K128",
+      "group_id": 895,
+      "members": 76,
+      "genre_missing": 0,
+      "genre_counts": [
+        [
+          "모험",
+          76
+        ],
+        [
+          "애니메이션",
+          76
+        ],
+        [
+          "역사",
+          2
+        ],
+        [
+          "미스터리",
+          2
+        ],
+        [
+          "TV 영화",
+          2
+        ]
+      ],
+      "supported_gkt_rows": 76
+    },
+    {
+      "hierarchy": "GKT-K128",
+      "group_id": 1023,
+      "members": 397,
+      "genre_missing": 0,
+      "genre_counts": [
+        [
+          "모험",
+          397
+        ],
+        [
+          "범죄",
+          12
+        ],
+        [
+          "TV 영화",
+          7
+        ],
+        [
+          "음악",
+          6
+        ],
+        [
+          "스릴러",
+          1
+        ]
+      ],
+      "supported_gkt_rows": 397
+    },
+    {
+      "hierarchy": "GKT-K128",
+      "group_id": 894,
+      "members": 74,
+      "genre_missing": 0,
+      "genre_counts": [
+        [
+          "모험",
+          74
+        ],
+        [
+          "애니메이션",
+          74
+        ],
+        [
+          "가족",
+          74
+        ],
+        [
+          "액션",
+          3
+        ],
+        [
+          "SF",
+          1
+        ]
+      ],
+      "supported_gkt_rows": 74
+    },
+    {
+      "hierarchy": "GKT-K256",
+      "group_id": 2040,
+      "members": 55,
+      "genre_missing": 0,
+      "genre_counts": [
+        [
+          "모험",
+          55
+        ],
+        [
+          "역사",
+          55
+        ],
+        [
+          "전쟁",
+          10
+        ],
+        [
+          "로맨스",
+          5
+        ],
+        [
+          "TV 영화",
+          1
+        ]
+      ],
+      "supported_gkt_rows": 55
+    },
+    {
+      "hierarchy": "GKT-K256",
+      "group_id": 1790,
+      "members": 61,
+      "genre_missing": 0,
+      "genre_counts": [
+        [
+          "모험",
+          61
+        ],
+        [
+          "애니메이션",
+          61
+        ],
+        [
+          "가족",
+          61
+        ],
+        [
+          "로맨스",
+          2
+        ],
+        [
+          "미스터리",
+          1
+        ]
+      ],
+      "supported_gkt_rows": 61
+    },
+    {
+      "hierarchy": "v1-fixed16",
+      "group_id": 14,
+      "members": 3866,
+      "genre_missing": 0,
+      "genre_counts": [
+        [
+          "음악",
+          3866
+        ],
+        [
+          "로맨스",
+          185
+        ],
+        [
+          "판타지",
+          156
+        ],
+        [
+          "가족",
+          148
+        ],
+        [
+          "TV 영화",
+          99
+        ]
+      ],
+      "supported_gkt_rows": 3866
+    },
+    {
+      "hierarchy": "GKT-K128",
+      "group_id": 765,
+      "members": 188,
+      "genre_missing": 0,
+      "genre_counts": [
+        [
+          "모험",
+          188
+        ],
+        [
+          "액션",
+          188
+        ],
+        [
+          "코미디",
+          188
+        ],
+        [
+          "공포",
+          7
+        ],
+        [
+          "TV 영화",
+          4
+        ]
+      ],
+      "supported_gkt_rows": 188
+    },
+    {
+      "hierarchy": "GKT-K128",
+      "group_id": 767,
+      "members": 210,
+      "genre_missing": 0,
+      "genre_counts": [
+        [
+          "모험",
+          210
+        ],
+        [
+          "코미디",
+          210
+        ],
+        [
+          "공포",
+          10
+        ],
+        [
+          "서부",
+          4
+        ],
+        [
+          "TV 영화",
+          4
+        ]
+      ],
+      "supported_gkt_rows": 210
+    },
+    {
+      "hierarchy": "GKT-K128",
+      "group_id": 879,
+      "members": 51,
+      "genre_missing": 0,
+      "genre_counts": [
+        [
+          "애니메이션",
+          51
+        ],
+        [
+          "가족",
+          47
+        ],
+        [
+          "모험",
+          42
+        ],
+        [
+          "판타지",
+          18
+        ],
+        [
+          "코미디",
+          15
+        ]
+      ],
+      "supported_gkt_rows": 51
+    },
+    {
+      "hierarchy": "GKT-K128",
+      "group_id": 762,
+      "members": 107,
+      "genre_missing": 0,
+      "genre_counts": [
+        [
+          "모험",
+          107
+        ],
+        [
+          "판타지",
+          107
+        ],
+        [
+          "코미디",
+          107
+        ],
+        [
+          "스릴러",
+          5
+        ],
+        [
+          "미스터리",
+          3
+        ]
+      ],
+      "supported_gkt_rows": 107
+    },
+    {
+      "hierarchy": "GKT-K256",
+      "group_id": 1530,
+      "members": 151,
+      "genre_missing": 0,
+      "genre_counts": [
+        [
+          "모험",
+          151
+        ],
+        [
+          "액션",
+          151
+        ],
+        [
+          "코미디",
+          151
+        ],
+        [
+          "TV 영화",
+          3
+        ],
+        [
+          "전쟁",
+          2
+        ]
+      ],
+      "supported_gkt_rows": 151
+    },
+    {
+      "hierarchy": "GKT-K256",
+      "group_id": 1535,
+      "members": 202,
+      "genre_missing": 0,
+      "genre_counts": [
+        [
+          "모험",
+          202
+        ],
+        [
+          "코미디",
+          202
+        ],
+        [
+          "로맨스",
+          13
+        ],
+        [
+          "전쟁",
+          2
+        ]
+      ],
+      "supported_gkt_rows": 202
+    },
+    {
+      "hierarchy": "GKT-K256",
+      "group_id": 1747,
+      "members": 18,
+      "genre_missing": 0,
+      "genre_counts": [
+        [
+          "판타지",
+          18
+        ],
+        [
+          "애니메이션",
+          18
+        ],
+        [
+          "가족",
+          16
+        ],
+        [
+          "모험",
+          15
+        ],
+        [
+          "코미디",
+          5
+        ]
+      ],
+      "supported_gkt_rows": 18
+    },
+    {
+      "hierarchy": "GKT-K128",
+      "group_id": 488,
+      "members": 312,
+      "genre_missing": 0,
+      "genre_counts": [
+        [
+          "드라마",
+          312
+        ],
+        [
+          "TV 영화",
+          31
+        ],
+        [
+          "로맨스",
+          20
+        ],
+        [
+          "가족",
+          17
+        ],
+        [
+          "모험",
+          11
+        ]
+      ],
+      "supported_gkt_rows": 312
+    },
+    {
+      "hierarchy": "GKT-K128",
+      "group_id": 404,
+      "members": 17317,
+      "genre_missing": 0,
+      "genre_counts": [
+        [
+          "드라마",
+          17317
+        ]
+      ],
+      "supported_gkt_rows": 17317
+    },
+    {
+      "hierarchy": "GKT-K128",
+      "group_id": 435,
+      "members": 282,
+      "genre_missing": 0,
+      "genre_counts": [
+        [
+          "드라마",
+          282
+        ],
+        [
+          "역사",
+          9
+        ],
+        [
+          "판타지",
+          7
+        ],
+        [
+          "다큐멘터리",
+          5
+        ],
+        [
+          "가족",
+          5
+        ]
+      ],
+      "supported_gkt_rows": 282
+    },
+    {
+      "hierarchy": "GKT-K256",
+      "group_id": 818,
+      "members": 429,
+      "genre_missing": 0,
+      "genre_counts": [
+        [
+          "드라마",
+          429
+        ],
+        [
+          "역사",
+          429
+        ],
+        [
+          "SF",
+          2
+        ]
+      ],
+      "supported_gkt_rows": 429
+    },
+    {
+      "hierarchy": "GKT-K256",
+      "group_id": 907,
+      "members": 266,
+      "genre_missing": 0,
+      "genre_counts": [
+        [
+          "드라마",
+          266
+        ],
+        [
+          "역사",
+          8
+        ],
+        [
+          "판타지",
+          6
+        ],
+        [
+          "가족",
+          5
+        ],
+        [
+          "범죄",
+          4
+        ]
+      ],
+      "supported_gkt_rows": 266
+    }
+  ],
+  "future_numeric_rating_arrays_redacted_before_parse": 1350,
+  "predictor_calls": 0,
+  "limits": [
+    "TMDB metadata are a snapshot, not independently verified real-world film facts.",
+    "history_connections are unsigned film-content similarities, not causal explanations of positive preference.",
+    "Current service catalog contains post-2022 films, so these examples are developmental and not historical 2023 availability reconstruction.",
+    "ML train count zero is a support fact, not proof of rating or recommendation quality.",
+    "Group genre labels omit counts; use group_descriptors denominators when interpreting them.",
+    "The audit uses prior full prepare source audits for raw-to-normalized catalog provenance."
+  ]
+}

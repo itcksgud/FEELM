@@ -1,0 +1,103 @@
+{
+  "status": "PASS",
+  "review_kind": "Same-author separately implemented numerical recomputation; independent root code/synthetic prior review is in execution-review ledger",
+  "code": {
+    "bytes": 9751,
+    "sha256": "1503e0ac9bb2ccf0aebeed9c39e64b1b66b5e48e100c62a3ea7662eda065407a"
+  },
+  "inputs": {
+    "report.json": {
+      "bytes": 6249,
+      "sha256": "e91509760b77f75cb0326e50de657d2a5343b03bee5e7484b3732361f4d9580a"
+    },
+    "records.json": {
+      "bytes": 109076,
+      "sha256": "74377eda9146fc8b22f8b490e324c16218a3273b0e6b882d72ec9b3bdac5ca49"
+    },
+    "seal.json": {
+      "bytes": 318,
+      "sha256": "833379df7473b18c831aeb0ad455eaefd8f43fdecf447f4afad51be63645b2d3"
+    }
+  },
+  "source_seals": {
+    "prepare": {
+      "bytes": 1997,
+      "sha256": "42de5a1343e33fb6ce600d567248def48f6eb9a9c95dddfeb41d91cf408e3c76"
+    },
+    "cluster": {
+      "bytes": 2881,
+      "sha256": "49d0a5e53bbb66d2278d7e1e49500654794e596670fe86d5a7482fda2d681c43"
+    },
+    "final": {
+      "bytes": 1095,
+      "sha256": "84916471ba353e29e82948dca977b59195fd0d31bab5e99cbd6ceab1070b7730"
+    }
+  },
+  "checked_users": 20,
+  "checked_variant_records": 80,
+  "first20_eligible_uids_match": true,
+  "seeds": {
+    "1215": 2128,
+    "2607": 3520,
+    "2834": 3747,
+    "4192": 5105,
+    "4484": 5397,
+    "5217": 6130,
+    "5246": 6159,
+    "5831": 6744,
+    "11187": 12100,
+    "14002": 14915,
+    "15811": 16724,
+    "15917": 16830,
+    "16019": 16932,
+    "16044": 16957,
+    "16784": 17697,
+    "17035": 17948,
+    "18804": 19717,
+    "20878": 21791,
+    "23765": 24678,
+    "24549": 25462
+  },
+  "max_profile_scalar_delta": 1.6653345369377348e-16,
+  "legal_group_count_histogram": {
+    "5": 5,
+    "6": 5,
+    "1": 3,
+    "4": 2,
+    "13": 1,
+    "3": 2,
+    "12": 1,
+    "2": 1
+  },
+  "minus_direction_top1_unchanged_cases": [
+    {
+      "uid": 5217,
+      "legal_group_count": 1,
+      "top5": [
+        14
+      ]
+    },
+    {
+      "uid": 15917,
+      "legal_group_count": 1,
+      "top5": [
+        14
+      ]
+    },
+    {
+      "uid": 17035,
+      "legal_group_count": 1,
+      "top5": [
+        14
+      ]
+    }
+  ],
+  "predictor_calls": 0,
+  "future_numeric_rating_arrays_redacted_before_parse": 1350,
+  "future_numeric_rating_values_parsed": false,
+  "limits": [
+    "Control diagnostic measures representative-rank input sensitivity, not preference accuracy or satisfaction.",
+    "Small recipient legal sets can make top5 overlap high even when directions change.",
+    "Unused future target IDs may remain parsed; numeric future ratings were redacted before JSON parsing."
+  ]
+}

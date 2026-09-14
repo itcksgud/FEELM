@@ -1,0 +1,91 @@
+{
+  "status": "PASS",
+  "reviewed_on": "2026-09-13",
+  "reviewer": "/root/asset_audit/predictor_source_pins",
+  "implementation_owner": "/root/asset_audit",
+  "scope": "Independent validation of bounded actual trained-head and route parity; prerequisite to main predictor diagnostics, not an evaluation of recommendation quality",
+  "files": {
+    "C:/higher/projects/FEELM-standalone/.codex-tmp/discovery-v2-predictor-20260913/scripts/dv2_predictor.py": {
+      "bytes": 19085,
+      "sha256": "db3c1c92278fdfc889e8e951c1aa53495c631772dcf2f07bc6644d545ecc4086"
+    },
+    "C:/higher/projects/FEELM-standalone/.codex-tmp/discovery-v2-predictor-20260913/scripts/test_dv2_predictor.py": {
+      "bytes": 24918,
+      "sha256": "d23981256e5b7cc1ab19ec0e3670f8ca4b8f107f81317f26d5ef7fe79fa9c996"
+    },
+    "C:/higher/projects/FEELM-standalone/.codex-tmp/discovery-v2-predictor-20260913/scripts/dv2_predictor_parity.py": {
+      "bytes": 19171,
+      "sha256": "d16902be0ec99d7ab1d52270b55f6b9a3a2b7ad8d3dc4c4124e152869ade018d"
+    },
+    "C:/higher/projects/FEELM-standalone/.codex-tmp/discovery-v2-predictor-20260913/docs/recommendation/experiments/fixed-k8-discovery-v2/predictor-parity-code-review.json": {
+      "bytes": 1919,
+      "sha256": "694fb2c595513c3bc2672ea83d4c6a58488589ab172477ae32ecb89b419950c2"
+    },
+    "C:/higher/projects/FEELM-standalone/.codex-tmp/discovery-v2-predictor-20260913/outputs/dv2-predictor-parity-r2/report.json": {
+      "bytes": 5926,
+      "sha256": "984a4f60b50bd6e78f2c1d9d347411929b3e41d17de416230075b01532164d8f"
+    },
+    "C:/higher/projects/FEELM-standalone/.codex-tmp/discovery-v2-predictor-20260913/outputs/dv2-predictor-parity-r2/parity-rows.parquet": {
+      "bytes": 27321,
+      "sha256": "75615635be04bb08a5c89957b6bb4dfd4549f0bdcb1444d138c39c05853b895a"
+    },
+    "C:/higher/projects/FEELM-standalone/.codex-tmp/discovery-v2-predictor-20260913/outputs/dv2-predictor-parity-r2/parity-seal.json": {
+      "bytes": 324,
+      "sha256": "2ffb4d6fb92038471df0ae7ef64204ccbb1d0d1a1717acd2a86d481eaa7c96ab"
+    },
+    "C:/higher/projects/FEELM-standalone/.codex-tmp/fixed-k8-discovery-v2-20260913/scripts/dv2_predictor.py": {
+      "bytes": 19085,
+      "sha256": "db3c1c92278fdfc889e8e951c1aa53495c631772dcf2f07bc6644d545ecc4086"
+    },
+    "C:/higher/projects/FEELM-standalone/.codex-tmp/fixed-k8-discovery-v2-20260913/outputs/fixed-k8-discovery-v2/feelm-discovery-v2-r2/prepare-seal.json": {
+      "bytes": 1997,
+      "sha256": "42de5a1343e33fb6ce600d567248def48f6eb9a9c95dddfeb41d91cf408e3c76"
+    }
+  },
+  "independent_result_checks": {
+    "parity_rows": 1296,
+    "candidate_context_pairs": 324,
+    "four_variants": [
+      "original",
+      "shrink20",
+      "shrink100",
+      "min20"
+    ],
+    "current_service_index_rows": 237817,
+    "raw_gbt_max_abs_error": 0.0,
+    "raw_als_max_abs_error": 8.881784197001252e-16,
+    "recomputed_final_route_max_abs_error": 8.881784197001252e-16,
+    "absolute_tolerance": 1e-08,
+    "source_train_count_and_factor_support_recomputed": true,
+    "independent_source_calibration_recomputed": true,
+    "unused_heads_all_nan": true,
+    "fresh_service_ids_bit_exact": true,
+    "unmatched_clones_all_gbt": true,
+    "scene_counts_and_actual_calls_recomputed": true,
+    "all_reference_model_and_code_pins_reverified": true,
+    "all_prepared_future_rating_arrays_redacted_before_json_parse": 1350,
+    "future_label_values_parsed": false,
+    "future_label_metrics_or_selection": false,
+    "main_outputs_read": false,
+    "new_model_predictions_by_result_reviewer": 0,
+    "reviewer_file_edits": 0
+  },
+  "implementation_execution": {
+    "seconds": 46.37524489999487,
+    "max_feature_abs_error": 1.1920928955078125e-07,
+    "actual_predict_calls": 332,
+    "scenarios": [
+      "old_metadata",
+      "old_metadata_fresh_service_ids",
+      "current_full_service_axis",
+      "fresh_unmatched_metadata_clones"
+    ]
+  },
+  "limits": [
+    "This verifies bounded actual predictions using a complete service-axis feature index, not predictions for every service film.",
+    "Independent native-node GBT traversal and source-factor ALS formulas are the numeric oracle; no future-rating quality metric or model selection was performed.",
+    "This current parity run and result audit parsed no future numeric labels. Earlier r1/r2 input equality audits incidentally parsed those JSON arrays without inspecting individual values or using metrics; see prepare-input-audit.json and prepare-r2-lineage-audit.json.",
+    "Historical/current metadata, reused development users and model calibration provenance retain their predeclared experimental limitations."
+  ],
+  "required_corrections": []
+}
