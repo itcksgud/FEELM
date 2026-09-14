@@ -1,0 +1,1558 @@
+{
+  "document_date": "2026-09-12",
+  "source_experiment": "REC038",
+  "source_experiment_date": "2026-09-08",
+  "interpretation_kind": "posthoc_documentary_case_commentary_not_blind_evaluation",
+  "fixed_eight_reassessment": "fixed_k8_discover_meanings_then_freeze_no_new_evaluation",
+  "selected_movie_count": 37,
+  "new_fit": false,
+  "new_predict": false,
+  "source_files": [
+    {
+      "path": "C:\\higher\\projects\\FEELM-standalone\\outputs\\recommendation-evidence\\rec-ev-038\\assignments.npz",
+      "sha256": "a996e3475c32225e1572461f6887cf61ae03fe3e18584eeb84b164c5015ee3f6"
+    },
+    {
+      "path": "C:\\higher\\projects\\FEELM-standalone\\outputs\\recommendation-evidence\\rec-ev-038\\feature-index.npz",
+      "sha256": "8de48564a3bea6c411b8b6b94ddf96aa4d3b65bc3f39d190e5487c4d672caa94"
+    },
+    {
+      "path": "C:\\higher\\projects\\FEELM-standalone\\outputs\\recommendation-evidence\\rec-ev-033\\metadata.parquet",
+      "sha256": "86e2e4eb087bbdbf2500b9b8a7e50abf1ef09b52ea6110c62d41581e7d45d016"
+    },
+    {
+      "path": "C:\\higher\\projects\\FEELM-standalone\\outputs\\recommendation-evidence\\rec-ev-038\\JUDGMENTS.md",
+      "sha256": "8e0fb01c97b68dc873efbeaaa514e02d72f4fbf239b4c51262ac6c6fafbbeee7"
+    },
+    {
+      "path": "C:\\higher\\projects\\FEELM-standalone\\.codex-tmp\\rec038-korean-movie-guide-20260911\\docs\\recommendation\\experiments\\rec-ev-038\\GROUPS.md",
+      "sha256": "0f580c7ef052ecaa774162ad583b2a24fef3bbdcfd7bfe1afa71e23b48f592ad"
+    },
+    {
+      "path": "C:\\higher\\projects\\FEELM-standalone\\.codex-tmp\\rec038-korean-movie-guide-20260911\\docs\\recommendation\\experiments\\rec-ev-038\\RESULT.md",
+      "sha256": "ce6ce901461e543e2606f183cac982e152a1625a6e2ff09384c44cf177684ac5"
+    },
+    {
+      "path": "C:\\higher\\projects\\FEELM-standalone\\docs\\recommendation\\experiments\\rec-ev-033\\RESULT.md",
+      "sha256": "6f27c5701b8fe539f90bb6f1f0383480a1c69f4577fc325811c632869db7aafd"
+    },
+    {
+      "path": "C:\\higher\\projects\\FEELM-standalone\\docs\\recommendation\\experiments\\rec-ev-039\\RESULT.md",
+      "sha256": "586bb6e3d70eff367db55d13b387df6cecc8623db64d5aac87c9f86998ad4985"
+    },
+    {
+      "path": "C:\\higher\\projects\\FEELM-standalone\\docs\\recommendation\\experiments\\rec-ev-040\\RESULT.md",
+      "sha256": "42d5dd1d20918a7d2451923e251bdde2d6996a2f0d677d11b7dfe0b722b300b4"
+    },
+    {
+      "path": "C:\\higher\\projects\\FEELM-standalone\\docs\\c1-draft\\01-glossary-and-policies.md",
+      "sha256": "1135cf7a8429831ba78926211a938a28eea968e0ec0b2e4683d512dea193a098"
+    },
+    {
+      "path": "C:\\higher\\projects\\S15P21E106\\docs\\adr\\0015-kmeans-ctfidf-taste-clusters.md",
+      "sha256": "44f8984e8ff19d38e6d2fde4f2e95295e1c029c2a8e3e456a81586d3be0af3a7"
+    }
+  ],
+  "movies": [
+    {
+      "movie_id": 1,
+      "tmdb_id": 862,
+      "title": "토이 스토리",
+      "release_date": "1995-11-22",
+      "genres": [
+        "가족",
+        "코미디",
+        "애니메이션",
+        "모험"
+      ],
+      "assignments": {
+        "KM_TEXT": {
+          "native_group": 5,
+          "display_group": 5,
+          "native_zero_based": 4
+        },
+        "KM_GENRE": {
+          "native_group": 1,
+          "display_group": 1,
+          "native_zero_based": 0
+        },
+        "KM_TAG": {
+          "native_group": 1,
+          "display_group": 1,
+          "native_zero_based": 0
+        },
+        "KM_BOTH": {
+          "native_group": 1,
+          "display_group": 1,
+          "native_zero_based": 0
+        }
+      },
+      "in_evaluation_128": false,
+      "description_sample": [],
+      "comment_label": "직접 연결",
+      "comment": "우디와 장난감들이 버즈를 구하려고 협력한다. 팀을 이루어 힘을 합친다는 문장과 연결된다.",
+      "cache_path": "outputs/recommendation-evidence/rec-ev-019b/tmdb-cache/movie-862-ko_KR.json",
+      "cache_sha256": "f98119547c99cb19c899ab17eaa9b6f84c3431e74669e629cd03daf64b980832"
+    },
+    {
+      "movie_id": 106696,
+      "tmdb_id": 109445,
+      "title": "겨울왕국",
+      "release_date": "2013-11-20",
+      "genres": [
+        "애니메이션",
+        "가족",
+        "모험",
+        "판타지"
+      ],
+      "assignments": {
+        "KM_TEXT": {
+          "native_group": 5,
+          "display_group": 5,
+          "native_zero_based": 4
+        },
+        "KM_GENRE": {
+          "native_group": 1,
+          "display_group": 1,
+          "native_zero_based": 0
+        },
+        "KM_TAG": {
+          "native_group": 1,
+          "display_group": 1,
+          "native_zero_based": 0
+        },
+        "KM_BOTH": {
+          "native_group": 1,
+          "display_group": 1,
+          "native_zero_based": 0
+        }
+      },
+      "in_evaluation_128": false,
+      "description_sample": [],
+      "comment_label": "직접 연결",
+      "comment": "안나와 크리스토프가 함께 얼어붙은 왕국을 구하려 한다. 다만 자매 관계와 엘사가 자신의 힘을 두려워하는 문제도 중요한 축이다.",
+      "cache_path": "outputs/recommendation-evidence/rec-ev-019b/tmdb-cache/movie-109445-ko_KR.json",
+      "cache_sha256": "6730083fb3421d488200653c5b9001b10be38c5f20c1ffc8529b2790510f0472"
+    },
+    {
+      "movie_id": 134853,
+      "tmdb_id": 150540,
+      "title": "인사이드 아웃",
+      "release_date": "2015-06-17",
+      "genres": [
+        "애니메이션",
+        "가족",
+        "모험",
+        "드라마",
+        "코미디"
+      ],
+      "assignments": {
+        "KM_TEXT": {
+          "native_group": 5,
+          "display_group": 5,
+          "native_zero_based": 4
+        },
+        "KM_GENRE": {
+          "native_group": 1,
+          "display_group": 1,
+          "native_zero_based": 0
+        },
+        "KM_TAG": {
+          "native_group": 1,
+          "display_group": 1,
+          "native_zero_based": 0
+        },
+        "KM_BOTH": {
+          "native_group": 1,
+          "display_group": 1,
+          "native_zero_based": 0
+        }
+      },
+      "in_evaluation_128": false,
+      "description_sample": [],
+      "comment_label": "일부 연결",
+      "comment": "기쁨과 슬픔이 본부로 돌아가는 협력은 맞지만, 감정의 역할과 아이의 적응을 팀 활동만으로 설명하기는 좁다.",
+      "cache_path": "outputs/recommendation-evidence/rec-ev-019b/tmdb-cache/movie-150540-ko_KR.json",
+      "cache_sha256": "722428b8e6f9f832668414ca388198bf768d814e397335838df2d6048576dae2"
+    },
+    {
+      "movie_id": 177765,
+      "tmdb_id": 354912,
+      "title": "코코",
+      "release_date": "2017-10-27",
+      "genres": [
+        "가족",
+        "애니메이션",
+        "음악",
+        "모험"
+      ],
+      "assignments": {
+        "KM_TEXT": {
+          "native_group": 5,
+          "display_group": 5,
+          "native_zero_based": 4
+        },
+        "KM_GENRE": {
+          "native_group": 1,
+          "display_group": 1,
+          "native_zero_based": 0
+        },
+        "KM_TAG": {
+          "native_group": 1,
+          "display_group": 1,
+          "native_zero_based": 0
+        },
+        "KM_BOTH": {
+          "native_group": 1,
+          "display_group": 1,
+          "native_zero_based": 0
+        }
+      },
+      "in_evaluation_128": false,
+      "description_sample": [],
+      "comment_label": "일부 연결",
+      "comment": "미구엘과 헥터의 동행은 연결된다. 음악을 향한 꿈과 가족의 비밀이라는 핵심은 별도로 남는다.",
+      "cache_path": "outputs/recommendation-evidence/rec-ev-019b/tmdb-cache/movie-354912-ko_KR.json",
+      "cache_sha256": "20c22edb5ded38cde688f36e16382bf11c9f18fb17a51cc002b48a4fa3bf1a3d"
+    },
+    {
+      "movie_id": 27523,
+      "tmdb_id": 11178,
+      "title": "엽기적인 그녀",
+      "release_date": "2001-07-27",
+      "genres": [
+        "드라마",
+        "코미디",
+        "로맨스"
+      ],
+      "assignments": {
+        "KM_TEXT": {
+          "native_group": 6,
+          "display_group": 6,
+          "native_zero_based": 5
+        },
+        "KM_GENRE": {
+          "native_group": 2,
+          "display_group": 2,
+          "native_zero_based": 1
+        },
+        "KM_TAG": {
+          "native_group": 1,
+          "display_group": 1,
+          "native_zero_based": 0
+        },
+        "KM_BOTH": {
+          "native_group": 2,
+          "display_group": 2,
+          "native_zero_based": 1
+        }
+      },
+      "in_evaluation_128": false,
+      "description_sample": [],
+      "comment_label": "연결 약함",
+      "comment": "기이한 만남에서 시작되는 연애의 소동이다. 가족이나 동거인의 관계라는 기존 문장에는 정확히 들어맞지 않는다.",
+      "cache_path": "outputs/recommendation-evidence/rec-ev-019b/tmdb-cache/movie-11178-ko_KR.json",
+      "cache_sha256": "99744868d4f43756cec0635f97fd91d31174101aacba92557fd54fe0ea84256b"
+    },
+    {
+      "movie_id": 1721,
+      "tmdb_id": 597,
+      "title": "타이타닉",
+      "release_date": "1997-12-18",
+      "genres": [
+        "드라마",
+        "로맨스"
+      ],
+      "assignments": {
+        "KM_TEXT": {
+          "native_group": 5,
+          "display_group": 5,
+          "native_zero_based": 4
+        },
+        "KM_GENRE": {
+          "native_group": 2,
+          "display_group": 2,
+          "native_zero_based": 1
+        },
+        "KM_TAG": {
+          "native_group": 1,
+          "display_group": 1,
+          "native_zero_based": 0
+        },
+        "KM_BOTH": {
+          "native_group": 2,
+          "display_group": 2,
+          "native_zero_based": 1
+        }
+      },
+      "in_evaluation_128": false,
+      "description_sample": [],
+      "comment_label": "연결 약함",
+      "comment": "잭과 로즈가 새롭게 사랑에 빠지는 이야기가 중심이다. 가족이나 동거인의 일상 갈등이라는 문장은 로맨스 전체를 포괄하지 못한다.",
+      "cache_path": "outputs/recommendation-evidence/rec-ev-019b/tmdb-cache/movie-597-ko_KR.json",
+      "cache_sha256": "b75029dc0464737c0efd032955f49c4180439795cc2cb1186d47fc1fbb00fe4c"
+    },
+    {
+      "movie_id": 164909,
+      "tmdb_id": 313369,
+      "title": "라라랜드",
+      "release_date": "2016-12-01",
+      "genres": [
+        "코미디",
+        "드라마",
+        "로맨스"
+      ],
+      "assignments": {
+        "KM_TEXT": {
+          "native_group": 3,
+          "display_group": 3,
+          "native_zero_based": 2
+        },
+        "KM_GENRE": {
+          "native_group": 2,
+          "display_group": 2,
+          "native_zero_based": 1
+        },
+        "KM_TAG": {
+          "native_group": 1,
+          "display_group": 1,
+          "native_zero_based": 0
+        },
+        "KM_BOTH": {
+          "native_group": 2,
+          "display_group": 2,
+          "native_zero_based": 1
+        }
+      },
+      "in_evaluation_128": false,
+      "description_sample": [],
+      "comment_label": "연결 약함",
+      "comment": "음악과 연기 활동을 하는 두 사람의 만남이 중심이다. 가족이나 동거인의 관계라는 기존 문장은 이 만남을 충분히 설명하지 못한다.",
+      "cache_path": "outputs/recommendation-evidence/rec-ev-019b/tmdb-cache/movie-313369-ko_KR.json",
+      "cache_sha256": "d140f43aa911597065e28496212e30fc3b727c7da8474686255aeeb8999bc20e"
+    },
+    {
+      "movie_id": 158783,
+      "tmdb_id": 290098,
+      "title": "아가씨",
+      "release_date": "2016-06-01",
+      "genres": [
+        "스릴러",
+        "드라마",
+        "로맨스"
+      ],
+      "assignments": {
+        "KM_TEXT": {
+          "native_group": 5,
+          "display_group": 5,
+          "native_zero_based": 4
+        },
+        "KM_GENRE": {
+          "native_group": 2,
+          "display_group": 2,
+          "native_zero_based": 1
+        },
+        "KM_TAG": {
+          "native_group": 1,
+          "display_group": 1,
+          "native_zero_based": 0
+        },
+        "KM_BOTH": {
+          "native_group": 2,
+          "display_group": 2,
+          "native_zero_based": 1
+        }
+      },
+      "in_evaluation_128": false,
+      "description_sample": [],
+      "comment_label": "일부 연결",
+      "comment": "한 집에서 형성되는 아가씨와 하녀의 관계는 연결된다. 사기 계획과 권력관계까지 가족이나 동거 문제로 줄일 수는 없다.",
+      "cache_path": "outputs/recommendation-evidence/rec-ev-019b/tmdb-cache/movie-290098-ko_KR.json",
+      "cache_sha256": "08a0917486f6999b49d89d2d4c619beca464da6e989909792af24457f3694c0b"
+    },
+    {
+      "movie_id": 148693,
+      "tmdb_id": 107235,
+      "title": "건축학개론",
+      "release_date": "2012-03-22",
+      "genres": [
+        "코미디",
+        "로맨스"
+      ],
+      "assignments": {
+        "KM_TEXT": {
+          "native_group": 5,
+          "display_group": 5,
+          "native_zero_based": 4
+        },
+        "KM_GENRE": {
+          "native_group": 2,
+          "display_group": 2,
+          "native_zero_based": 1
+        },
+        "KM_TAG": {
+          "native_group": 1,
+          "display_group": 1,
+          "native_zero_based": 0
+        },
+        "KM_BOTH": {
+          "native_group": 2,
+          "display_group": 2,
+          "native_zero_based": 1
+        }
+      },
+      "in_evaluation_128": false,
+      "description_sample": [],
+      "comment_label": "연결 약함",
+      "comment": "첫사랑과 15년 뒤 재회가 중심이다. 연애와 재회를 가족이나 동거인의 관계로 해석하면 설명이 과도하게 넓어진다.",
+      "cache_path": "outputs/recommendation-evidence/rec-ev-019b/tmdb-cache/movie-107235-ko_KR.json",
+      "cache_sha256": "b38a4e8dc48a0dffa654986268b9a75fe4d49e4dd4185f33c88b1c4ee88262c5"
+    },
+    {
+      "movie_id": 31364,
+      "tmdb_id": 11423,
+      "title": "살인의 추억",
+      "release_date": "2003-04-25",
+      "genres": [
+        "범죄",
+        "드라마",
+        "스릴러"
+      ],
+      "assignments": {
+        "KM_TEXT": {
+          "native_group": 5,
+          "display_group": 5,
+          "native_zero_based": 4
+        },
+        "KM_GENRE": {
+          "native_group": 3,
+          "display_group": 3,
+          "native_zero_based": 2
+        },
+        "KM_TAG": {
+          "native_group": 1,
+          "display_group": 1,
+          "native_zero_based": 0
+        },
+        "KM_BOTH": {
+          "native_group": 5,
+          "display_group": 5,
+          "native_zero_based": 4
+        }
+      },
+      "in_evaluation_128": false,
+      "description_sample": [],
+      "comment_label": "직접 연결",
+      "comment": "연쇄살인 사건을 형사들이 수사하며 충돌한다. 범죄 수사와 대립이라는 문장에 직접 연결된다.",
+      "cache_path": "outputs/recommendation-evidence/rec-ev-019b/tmdb-cache/movie-11423-ko_KR.json",
+      "cache_sha256": "4be0c88ee7acd18f6a1343f40dc84ec023b99de9b0b32514cf53ad32ad075ef3"
+    },
+    {
+      "movie_id": 199992,
+      "tmdb_id": 567646,
+      "title": "극한직업",
+      "release_date": "2019-01-23",
+      "genres": [
+        "액션",
+        "코미디",
+        "범죄"
+      ],
+      "assignments": {
+        "KM_TEXT": {
+          "native_group": 5,
+          "display_group": 5,
+          "native_zero_based": 4
+        },
+        "KM_GENRE": {
+          "native_group": 3,
+          "display_group": 3,
+          "native_zero_based": 2
+        },
+        "KM_TAG": {
+          "native_group": 1,
+          "display_group": 1,
+          "native_zero_based": 0
+        },
+        "KM_BOTH": {
+          "native_group": 3,
+          "display_group": 3,
+          "native_zero_based": 2
+        }
+      },
+      "in_evaluation_128": false,
+      "description_sample": [],
+      "comment_label": "직접 연결",
+      "comment": "마약반의 잠복 수사와 위장 치킨집 운영이 핵심이다. 코미디가 강해도 범죄 수사라는 축이 분명하다.",
+      "cache_path": "outputs/recommendation-evidence/rec-ev-019b/tmdb-cache/movie-567646-ko_KR.json",
+      "cache_sha256": "959b1aa838d5089762e51400b5dd462cb149cf1e3ac32ae24da1fb7f2096d43f"
+    },
+    {
+      "movie_id": 202439,
+      "tmdb_id": 496243,
+      "title": "기생충",
+      "release_date": "2019-05-30",
+      "genres": [
+        "코미디",
+        "스릴러",
+        "드라마"
+      ],
+      "assignments": {
+        "KM_TEXT": {
+          "native_group": 5,
+          "display_group": 5,
+          "native_zero_based": 4
+        },
+        "KM_GENRE": {
+          "native_group": 3,
+          "display_group": 3,
+          "native_zero_based": 2
+        },
+        "KM_TAG": {
+          "native_group": 1,
+          "display_group": 1,
+          "native_zero_based": 0
+        },
+        "KM_BOTH": {
+          "native_group": 5,
+          "display_group": 5,
+          "native_zero_based": 4
+        }
+      },
+      "in_evaluation_128": false,
+      "description_sample": [],
+      "comment_label": "연결 약함",
+      "comment": "두 가족의 만남과 계층 차이가 중심이다. 스릴러 성격은 있지만 범죄 수사물이라는 설명을 그대로 붙이기는 어렵다.",
+      "cache_path": "outputs/recommendation-evidence/rec-ev-019b/tmdb-cache/movie-496243-ko_KR.json",
+      "cache_sha256": "a8c1a17cb3675b756a2dbf7676dccfa86cead1e35ca87221f81a3538eb5cbb38"
+    },
+    {
+      "movie_id": 112552,
+      "tmdb_id": 244786,
+      "title": "위플래쉬",
+      "release_date": "2014-10-10",
+      "genres": [
+        "드라마",
+        "음악",
+        "스릴러"
+      ],
+      "assignments": {
+        "KM_TEXT": {
+          "native_group": 5,
+          "display_group": 5,
+          "native_zero_based": 4
+        },
+        "KM_GENRE": {
+          "native_group": 3,
+          "display_group": 3,
+          "native_zero_based": 2
+        },
+        "KM_TAG": {
+          "native_group": 1,
+          "display_group": 1,
+          "native_zero_based": 0
+        },
+        "KM_BOTH": {
+          "native_group": 5,
+          "display_group": 5,
+          "native_zero_based": 4
+        }
+      },
+      "in_evaluation_128": false,
+      "description_sample": [],
+      "comment_label": "연결 약함",
+      "comment": "음악 교육과 성취 집착이 중심이다. 당시 자료에 스릴러 장르도 있지만 범죄 수사나 수사자의 위험을 다루는 이야기는 아니다.",
+      "cache_path": "outputs/recommendation-evidence/rec-ev-019b/tmdb-cache/movie-244786-ko_KR.json",
+      "cache_sha256": "01479d0fdd2a57e0ebd8041079f522d26532970c1dee2c714d32e8fe47bc492c"
+    },
+    {
+      "movie_id": 104590,
+      "tmdb_id": 33196,
+      "title": "해운대",
+      "release_date": "2009-07-22",
+      "genres": [
+        "액션",
+        "드라마",
+        "스릴러"
+      ],
+      "assignments": {
+        "KM_TEXT": {
+          "native_group": 3,
+          "display_group": 3,
+          "native_zero_based": 2
+        },
+        "KM_GENRE": {
+          "native_group": 3,
+          "display_group": 3,
+          "native_zero_based": 2
+        },
+        "KM_TAG": {
+          "native_group": 1,
+          "display_group": 1,
+          "native_zero_based": 0
+        },
+        "KM_BOTH": {
+          "native_group": 3,
+          "display_group": 3,
+          "native_zero_based": 2
+        }
+      },
+      "in_evaluation_128": false,
+      "description_sample": [],
+      "comment_label": "연결 약함",
+      "comment": "쓰나미가 닥치는 재난과 생존이 중심이다. 당시 자료의 스릴러 장르와 범죄 수사라는 내용 설명은 구분해야 한다.",
+      "cache_path": "outputs/recommendation-evidence/rec-ev-019b/tmdb-cache/movie-33196-ko_KR.json",
+      "cache_sha256": "05c18a87aeeb54df36fdb167d4fb6a6503bc986df133be04a6eaa50aaacdb460"
+    },
+    {
+      "movie_id": 109487,
+      "tmdb_id": 157336,
+      "title": "인터스텔라",
+      "release_date": "2014-11-05",
+      "genres": [
+        "모험",
+        "드라마",
+        "SF"
+      ],
+      "assignments": {
+        "KM_TEXT": {
+          "native_group": 5,
+          "display_group": 5,
+          "native_zero_based": 4
+        },
+        "KM_GENRE": {
+          "native_group": 4,
+          "display_group": 4,
+          "native_zero_based": 3
+        },
+        "KM_TAG": {
+          "native_group": 1,
+          "display_group": 1,
+          "native_zero_based": 0
+        },
+        "KM_BOTH": {
+          "native_group": 1,
+          "display_group": 1,
+          "native_zero_based": 0
+        }
+      },
+      "in_evaluation_128": false,
+      "description_sample": [],
+      "comment_label": "직접 연결",
+      "comment": "식량난에 처한 인류가 살 수 있는 행성을 찾는다. 극한 환경에서의 생존이라는 넓은 설명에 연결된다.",
+      "cache_path": "outputs/recommendation-evidence/rec-ev-019b/tmdb-cache/movie-157336-ko_KR.json",
+      "cache_sha256": "34f7e875d138b66fb398dd6df5fb236c0e2245429f4ba8cef57716e002d9573f"
+    },
+    {
+      "movie_id": 480,
+      "tmdb_id": 329,
+      "title": "쥬라기 공원",
+      "release_date": "1993-06-11",
+      "genres": [
+        "모험",
+        "SF"
+      ],
+      "assignments": {
+        "KM_TEXT": {
+          "native_group": 5,
+          "display_group": 5,
+          "native_zero_based": 4
+        },
+        "KM_GENRE": {
+          "native_group": 4,
+          "display_group": 4,
+          "native_zero_based": 3
+        },
+        "KM_TAG": {
+          "native_group": 1,
+          "display_group": 1,
+          "native_zero_based": 0
+        },
+        "KM_BOTH": {
+          "native_group": 1,
+          "display_group": 1,
+          "native_zero_based": 0
+        }
+      },
+      "in_evaluation_128": false,
+      "description_sample": [],
+      "comment_label": "직접 연결",
+      "comment": "통제에서 벗어난 공룡과 태풍 때문에 투어가 생존을 위한 사투로 바뀐다.",
+      "cache_path": "outputs/recommendation-evidence/rec-ev-019b/tmdb-cache/movie-329-ko_KR.json",
+      "cache_sha256": "da85008bdeb30c23026dd90cdda248f6e16f145311b71a717e2941d569be8540"
+    },
+    {
+      "movie_id": 122914,
+      "tmdb_id": 299534,
+      "title": "어벤져스: 엔드게임",
+      "release_date": "2019-04-24",
+      "genres": [
+        "모험",
+        "SF",
+        "액션"
+      ],
+      "assignments": {
+        "KM_TEXT": {
+          "native_group": 5,
+          "display_group": 5,
+          "native_zero_based": 4
+        },
+        "KM_GENRE": {
+          "native_group": 4,
+          "display_group": 4,
+          "native_zero_based": 3
+        },
+        "KM_TAG": {
+          "native_group": 2,
+          "display_group": 2,
+          "native_zero_based": 1
+        },
+        "KM_BOTH": {
+          "native_group": 3,
+          "display_group": 3,
+          "native_zero_based": 2
+        }
+      },
+      "in_evaluation_128": false,
+      "description_sample": [],
+      "comment_label": "일부 연결",
+      "comment": "패배 뒤 살아남은 영웅들과 상실의 상황은 연결된다. 흩어진 영웅들과 상실 뒤의 삶까지 생존 하나로 요약하기에는 넓은 이야기다.",
+      "cache_path": "outputs/recommendation-evidence/rec-ev-019b/tmdb-cache/movie-299534-ko_KR.json",
+      "cache_sha256": "fb11b38858d32c3496bd49882d23bb51bbbe3e87573947912e18625649d79723"
+    },
+    {
+      "movie_id": 79132,
+      "tmdb_id": 27205,
+      "title": "인셉션",
+      "release_date": "2010-07-15",
+      "genres": [
+        "액션",
+        "SF",
+        "모험"
+      ],
+      "assignments": {
+        "KM_TEXT": {
+          "native_group": 5,
+          "display_group": 5,
+          "native_zero_based": 4
+        },
+        "KM_GENRE": {
+          "native_group": 4,
+          "display_group": 4,
+          "native_zero_based": 3
+        },
+        "KM_TAG": {
+          "native_group": 1,
+          "display_group": 1,
+          "native_zero_based": 0
+        },
+        "KM_BOTH": {
+          "native_group": 3,
+          "display_group": 3,
+          "native_zero_based": 2
+        }
+      },
+      "in_evaluation_128": false,
+      "description_sample": [],
+      "comment_label": "일부 연결",
+      "comment": "위험한 작전과 예기치 못한 사건은 생존과 닿아 있다. 핵심 목표는 생각을 심는 임무와 가족에게 돌아가는 것이다.",
+      "cache_path": "outputs/recommendation-evidence/rec-ev-019b/tmdb-cache/movie-27205-ko_KR.json",
+      "cache_sha256": "87ae1ecb18828ef1b810fe0470a8e021915c5bccc8c3cd19c3433b08b8f18fef"
+    },
+    {
+      "movie_id": 4896,
+      "tmdb_id": 671,
+      "title": "해리 포터와 마법사의 돌",
+      "release_date": "2001-11-16",
+      "genres": [
+        "모험",
+        "판타지"
+      ],
+      "assignments": {
+        "KM_TEXT": {
+          "native_group": 3,
+          "display_group": 3,
+          "native_zero_based": 2
+        },
+        "KM_GENRE": {
+          "native_group": 4,
+          "display_group": 4,
+          "native_zero_based": 3
+        },
+        "KM_TAG": {
+          "native_group": 1,
+          "display_group": 1,
+          "native_zero_based": 0
+        },
+        "KM_BOTH": {
+          "native_group": 1,
+          "display_group": 1,
+          "native_zero_based": 0
+        }
+      },
+      "in_evaluation_128": false,
+      "description_sample": [],
+      "comment_label": "연결 약함",
+      "comment": "저장된 줄거리는 구박받던 아이의 호그와트 입학과 정체성 발견에 초점이 있다. 극한 생존 설명만으로는 이 진입 이야기가 잘 드러나지 않는다.",
+      "cache_path": "outputs/recommendation-evidence/rec-ev-019b/tmdb-cache/movie-671-ko_KR.json",
+      "cache_sha256": "c39de982f96f2cdc3d763155a5a52df4b10b5c8034d9d32a1876bc5374e6eb7d"
+    },
+    {
+      "movie_id": 159061,
+      "tmdb_id": 293670,
+      "title": "곡성",
+      "release_date": "2016-05-12",
+      "genres": [
+        "공포",
+        "미스터리"
+      ],
+      "assignments": {
+        "KM_TEXT": {
+          "native_group": 5,
+          "display_group": 5,
+          "native_zero_based": 4
+        },
+        "KM_GENRE": {
+          "native_group": 5,
+          "display_group": 5,
+          "native_zero_based": 4
+        },
+        "KM_TAG": {
+          "native_group": 1,
+          "display_group": 1,
+          "native_zero_based": 0
+        },
+        "KM_BOTH": {
+          "native_group": 4,
+          "display_group": 4,
+          "native_zero_based": 3
+        }
+      },
+      "in_evaluation_128": false,
+      "description_sample": [],
+      "comment_label": "직접 연결",
+      "comment": "경찰이 의문의 사건과 외지인에 대한 의심을 좇는다. 기괴한 사건의 배후를 파헤친다는 문장과 직접 연결된다.",
+      "cache_path": "outputs/recommendation-evidence/rec-ev-019b/tmdb-cache/movie-293670-ko_KR.json",
+      "cache_sha256": "e0e2bd9218676e06bdcad60ee04e868b8facf1ae608f207ee8562db88140b5df"
+    },
+    {
+      "movie_id": 103688,
+      "tmdb_id": 138843,
+      "title": "컨저링",
+      "release_date": "2013-07-18",
+      "genres": [
+        "공포",
+        "스릴러"
+      ],
+      "assignments": {
+        "KM_TEXT": {
+          "native_group": 5,
+          "display_group": 5,
+          "native_zero_based": 4
+        },
+        "KM_GENRE": {
+          "native_group": 5,
+          "display_group": 5,
+          "native_zero_based": 4
+        },
+        "KM_TAG": {
+          "native_group": 1,
+          "display_group": 1,
+          "native_zero_based": 0
+        },
+        "KM_BOTH": {
+          "native_group": 4,
+          "display_group": 4,
+          "native_zero_based": 3
+        }
+      },
+      "in_evaluation_128": false,
+      "description_sample": [],
+      "comment_label": "일부 연결",
+      "comment": "집에서 벌어진 과거 살인과 무서운 현상은 연결된다. 저장된 줄거리만으로 수사나 배후 조사 과정까지 모두 확인되지는 않는다.",
+      "cache_path": "outputs/recommendation-evidence/rec-ev-019b/tmdb-cache/movie-138843-ko_KR.json",
+      "cache_sha256": "b7154284e187ef79163656c64ce9d0d2117910bf57b4d96e4fc11c5731b94130"
+    },
+    {
+      "movie_id": 162082,
+      "tmdb_id": 396535,
+      "title": "부산행",
+      "release_date": "2016-07-20",
+      "genres": [
+        "액션",
+        "공포",
+        "스릴러"
+      ],
+      "assignments": {
+        "KM_TEXT": {
+          "native_group": 5,
+          "display_group": 5,
+          "native_zero_based": 4
+        },
+        "KM_GENRE": {
+          "native_group": 5,
+          "display_group": 5,
+          "native_zero_based": 4
+        },
+        "KM_TAG": {
+          "native_group": 1,
+          "display_group": 1,
+          "native_zero_based": 0
+        },
+        "KM_BOTH": {
+          "native_group": 4,
+          "display_group": 4,
+          "native_zero_based": 3
+        }
+      },
+      "in_evaluation_128": false,
+      "description_sample": [],
+      "comment_label": "연결 약함",
+      "comment": "감염된 열차에서 살아남아 부산에 도착하는 것이 핵심이다. 좀비는 대표 키워드와 맞지만 사건의 배후를 파헤치는 이야기와는 다르다.",
+      "cache_path": "outputs/recommendation-evidence/rec-ev-019b/tmdb-cache/movie-396535-ko_KR.json",
+      "cache_sha256": "e366d6b4689480014b7e5ec821c7be27915b29df6064a2c6a0f2a40fa4c49e4a"
+    },
+    {
+      "movie_id": 168250,
+      "tmdb_id": 419430,
+      "title": "겟 아웃",
+      "release_date": "2017-02-24",
+      "genres": [
+        "미스터리",
+        "스릴러",
+        "공포"
+      ],
+      "assignments": {
+        "KM_TEXT": {
+          "native_group": 5,
+          "display_group": 5,
+          "native_zero_based": 4
+        },
+        "KM_GENRE": {
+          "native_group": 5,
+          "display_group": 5,
+          "native_zero_based": 4
+        },
+        "KM_TAG": {
+          "native_group": 1,
+          "display_group": 1,
+          "native_zero_based": 0
+        },
+        "KM_BOTH": {
+          "native_group": 4,
+          "display_group": 4,
+          "native_zero_based": 3
+        }
+      },
+      "in_evaluation_128": false,
+      "description_sample": [],
+      "comment_label": "일부 연결",
+      "comment": "여자친구 가족의 집에서 이상한 점을 발견하고 숨은 진실에 접근한다. 미스터리와는 연결되지만 죽음과 실종이라는 조건은 더 좁다.",
+      "cache_path": "outputs/recommendation-evidence/rec-ev-019b/tmdb-cache/movie-419430-ko_KR.json",
+      "cache_sha256": "86e13a5c735cb6373e85ca866c06c23cb414120495c603eaf642ab7a6b8e241a"
+    },
+    {
+      "movie_id": 51709,
+      "tmdb_id": 1255,
+      "title": "괴물",
+      "release_date": "2006-07-27",
+      "genres": [
+        "공포",
+        "드라마",
+        "SF"
+      ],
+      "assignments": {
+        "KM_TEXT": {
+          "native_group": 5,
+          "display_group": 5,
+          "native_zero_based": 4
+        },
+        "KM_GENRE": {
+          "native_group": 5,
+          "display_group": 5,
+          "native_zero_based": 4
+        },
+        "KM_TAG": {
+          "native_group": 1,
+          "display_group": 1,
+          "native_zero_based": 0
+        },
+        "KM_BOTH": {
+          "native_group": 4,
+          "display_group": 4,
+          "native_zero_based": 3
+        }
+      },
+      "in_evaluation_128": false,
+      "description_sample": [],
+      "comment_label": "일부 연결",
+      "comment": "괴물과 사라진 딸을 찾는 과정은 연결된다. 중심 행동은 배후 조사보다 딸의 구출에 가깝다.",
+      "cache_path": "outputs/recommendation-evidence/rec-ev-019b/tmdb-cache/movie-1255-ko_KR.json",
+      "cache_sha256": "57c699fbb64ba078f9f558d6f45711cbfa49cd49ce3adb22bf0039a67a34fc42"
+    },
+    {
+      "movie_id": 152846,
+      "tmdb_id": 313108,
+      "title": "국제시장",
+      "release_date": "2014-12-17",
+      "genres": [
+        "드라마"
+      ],
+      "assignments": {
+        "KM_TEXT": {
+          "native_group": 5,
+          "display_group": 5,
+          "native_zero_based": 4
+        },
+        "KM_GENRE": {
+          "native_group": 6,
+          "display_group": 6,
+          "native_zero_based": 5
+        },
+        "KM_TAG": {
+          "native_group": 1,
+          "display_group": 1,
+          "native_zero_based": 0
+        },
+        "KM_BOTH": {
+          "native_group": 7,
+          "display_group": 7,
+          "native_zero_based": 6
+        }
+      },
+      "in_evaluation_128": false,
+      "description_sample": [],
+      "comment_label": "일부 연결",
+      "comment": "가족을 위해 살아온 아버지의 삶은 가족관계라는 축과 연결된다. 상실과 소외만으로 그 삶 전체를 줄여 설명하기는 어렵다.",
+      "cache_path": "outputs/recommendation-evidence/rec-ev-019b/tmdb-cache/movie-313108-ko_KR.json",
+      "cache_sha256": "d63e93ab731555447e34daa5ce3fdbe4df5cd122845f1be2578c58200dc14faa"
+    },
+    {
+      "movie_id": 121316,
+      "tmdb_id": 242452,
+      "title": "변호인",
+      "release_date": "2013-12-18",
+      "genres": [
+        "역사",
+        "드라마"
+      ],
+      "assignments": {
+        "KM_TEXT": {
+          "native_group": 5,
+          "display_group": 5,
+          "native_zero_based": 4
+        },
+        "KM_GENRE": {
+          "native_group": 6,
+          "display_group": 6,
+          "native_zero_based": 5
+        },
+        "KM_TAG": {
+          "native_group": 1,
+          "display_group": 1,
+          "native_zero_based": 0
+        },
+        "KM_BOTH": {
+          "native_group": 1,
+          "display_group": 1,
+          "native_zero_based": 0
+        }
+      },
+      "in_evaluation_128": false,
+      "description_sample": [],
+      "comment_label": "연결 약함",
+      "comment": "변호사가 사건의 변호를 맡는 결심과 법정 대응이 중심이다. 가족의 상실이나 소외라는 문장이 중심 행동을 충분히 담지 못한다.",
+      "cache_path": "outputs/recommendation-evidence/rec-ev-019b/tmdb-cache/movie-242452-ko_KR.json",
+      "cache_sha256": "97df584eb90a7be89fbc11c211ac07b9cd8bf6d0e58436c0f21a4947e3bab393"
+    },
+    {
+      "movie_id": 151583,
+      "tmdb_id": 220176,
+      "title": "관상",
+      "release_date": "2013-09-11",
+      "genres": [
+        "드라마",
+        "역사"
+      ],
+      "assignments": {
+        "KM_TEXT": {
+          "native_group": 5,
+          "display_group": 5,
+          "native_zero_based": 4
+        },
+        "KM_GENRE": {
+          "native_group": 6,
+          "display_group": 6,
+          "native_zero_based": 5
+        },
+        "KM_TAG": {
+          "native_group": 1,
+          "display_group": 1,
+          "native_zero_based": 0
+        },
+        "KM_BOTH": {
+          "native_group": 1,
+          "display_group": 1,
+          "native_zero_based": 0
+        }
+      },
+      "in_evaluation_128": false,
+      "description_sample": [],
+      "comment_label": "연결 약함",
+      "comment": "관상가가 역모와 조선의 정치적 위기에 관여한다. 가족이 등장하더라도 정치와 권력의 이야기를 가족 문제로만 설명하기는 어렵다.",
+      "cache_path": "outputs/recommendation-evidence/rec-ev-019b/tmdb-cache/movie-220176-ko_KR.json",
+      "cache_sha256": "f4e95befaaa438ff0dd34a0f76594a8ca522d31e6361920b5151e7e7f4757cc0"
+    },
+    {
+      "movie_id": 192803,
+      "tmdb_id": 424694,
+      "title": "보헤미안 랩소디",
+      "release_date": "2018-10-24",
+      "genres": [
+        "음악",
+        "드라마"
+      ],
+      "assignments": {
+        "KM_TEXT": {
+          "native_group": 5,
+          "display_group": 5,
+          "native_zero_based": 4
+        },
+        "KM_GENRE": {
+          "native_group": 6,
+          "display_group": 6,
+          "native_zero_based": 5
+        },
+        "KM_TAG": {
+          "native_group": 1,
+          "display_group": 1,
+          "native_zero_based": 0
+        },
+        "KM_BOTH": {
+          "native_group": 1,
+          "display_group": 1,
+          "native_zero_based": 0
+        }
+      },
+      "in_evaluation_128": false,
+      "description_sample": [],
+      "comment_label": "연결 약함",
+      "comment": "프레디 머큐리와 퀸의 음악적 성공, 솔로 활동과 밴드의 결별이 중심이다. 가족의 상실과 소외에 한정된 설명은 좁다.",
+      "cache_path": "outputs/recommendation-evidence/rec-ev-019b/tmdb-cache/movie-424694-ko_KR.json",
+      "cache_sha256": "2e7408ac782eefb749d5651f2fe036ca1d8b59fdb408267ad0dbf859ed815e49"
+    },
+    {
+      "movie_id": 105340,
+      "tmdb_id": 158445,
+      "title": "7번방의 선물",
+      "release_date": "2013-01-23",
+      "genres": [
+        "드라마",
+        "코미디"
+      ],
+      "assignments": {
+        "KM_TEXT": {
+          "native_group": 5,
+          "display_group": 5,
+          "native_zero_based": 4
+        },
+        "KM_GENRE": {
+          "native_group": 7,
+          "display_group": 7,
+          "native_zero_based": 6
+        },
+        "KM_TAG": {
+          "native_group": 1,
+          "display_group": 1,
+          "native_zero_based": 0
+        },
+        "KM_BOTH": {
+          "native_group": 6,
+          "display_group": 6,
+          "native_zero_based": 5
+        }
+      },
+      "in_evaluation_128": false,
+      "description_sample": [],
+      "comment_label": "설명 없음",
+      "comment": "교도소 동료들이 아버지와 딸의 만남을 위해 협력하는 코미디 드라마다. 당시 07번에는 비교할 공통 내용 설명이 없었다.",
+      "cache_path": "outputs/recommendation-evidence/rec-ev-019b/tmdb-cache/movie-158445-ko_KR.json",
+      "cache_sha256": "38735206ac384680dc0851d0ed6cbeb869dac72cf3849e0e17b94bfdf3fb4b8e"
+    },
+    {
+      "movie_id": 100060,
+      "tmdb_id": 77117,
+      "title": "써니",
+      "release_date": "2011-05-04",
+      "genres": [
+        "드라마",
+        "코미디"
+      ],
+      "assignments": {
+        "KM_TEXT": {
+          "native_group": 3,
+          "display_group": 3,
+          "native_zero_based": 2
+        },
+        "KM_GENRE": {
+          "native_group": 7,
+          "display_group": 7,
+          "native_zero_based": 6
+        },
+        "KM_TAG": {
+          "native_group": 1,
+          "display_group": 1,
+          "native_zero_based": 0
+        },
+        "KM_BOTH": {
+          "native_group": 6,
+          "display_group": 6,
+          "native_zero_based": 5
+        }
+      },
+      "in_evaluation_128": false,
+      "description_sample": [],
+      "comment_label": "설명 없음",
+      "comment": "학창 시절 친구들의 우정과 갈등을 다룬다. 같은 코미디 드라마 묶음이지만 7번방의 선물과 중심 상황은 다르다.",
+      "cache_path": "outputs/recommendation-evidence/rec-ev-019b/tmdb-cache/movie-77117-ko_KR.json",
+      "cache_sha256": "86b58c433e77380de81f178d2cba81cd095fb1c2acb1cba8930c523cc5ea6e25"
+    },
+    {
+      "movie_id": 72178,
+      "tmdb_id": 14968,
+      "title": "웰컴 투 동막골",
+      "release_date": "2005-08-04",
+      "genres": [
+        "코미디",
+        "드라마",
+        "전쟁"
+      ],
+      "assignments": {
+        "KM_TEXT": {
+          "native_group": 5,
+          "display_group": 5,
+          "native_zero_based": 4
+        },
+        "KM_GENRE": {
+          "native_group": 7,
+          "display_group": 7,
+          "native_zero_based": 6
+        },
+        "KM_TAG": {
+          "native_group": 1,
+          "display_group": 1,
+          "native_zero_based": 0
+        },
+        "KM_BOTH": {
+          "native_group": 1,
+          "display_group": 1,
+          "native_zero_based": 0
+        }
+      },
+      "in_evaluation_128": false,
+      "description_sample": [],
+      "comment_label": "설명 없음",
+      "comment": "한국전쟁 중 서로 다른 군인들이 한 마을에 모인다. 코미디와 드라마 외에 전쟁과 공존이라는 축이 있다.",
+      "cache_path": "outputs/recommendation-evidence/rec-ev-019b/tmdb-cache/movie-14968-ko_KR.json",
+      "cache_sha256": "7db3e23131d3263abc2302460ed641d55a790a5154504463243aa9b67e5feb22"
+    },
+    {
+      "movie_id": 120301,
+      "tmdb_id": 253065,
+      "title": "수상한 그녀",
+      "release_date": "2014-01-22",
+      "genres": [
+        "드라마",
+        "코미디",
+        "음악"
+      ],
+      "assignments": {
+        "KM_TEXT": {
+          "native_group": 5,
+          "display_group": 5,
+          "native_zero_based": 4
+        },
+        "KM_GENRE": {
+          "native_group": 7,
+          "display_group": 7,
+          "native_zero_based": 6
+        },
+        "KM_TAG": {
+          "native_group": 1,
+          "display_group": 1,
+          "native_zero_based": 0
+        },
+        "KM_BOTH": {
+          "native_group": 1,
+          "display_group": 1,
+          "native_zero_based": 0
+        }
+      },
+      "in_evaluation_128": false,
+      "description_sample": [],
+      "comment_label": "설명 없음",
+      "comment": "노인이 젊은 몸을 얻고 새 삶을 경험한다. 가족과 음악, 변신의 이야기를 한 가지 코미디 소재로 좁히기 어렵다.",
+      "cache_path": "outputs/recommendation-evidence/rec-ev-019b/tmdb-cache/movie-253065-ko_KR.json",
+      "cache_sha256": "ca415b98ee54edc40d276093d475e8f94572c25aa97cac4892581f003232e3a7"
+    },
+    {
+      "movie_id": 197159,
+      "tmdb_id": 548352,
+      "title": "완벽한 타인",
+      "release_date": "2018-10-31",
+      "genres": [
+        "드라마",
+        "코미디"
+      ],
+      "assignments": {
+        "KM_TEXT": {
+          "native_group": 5,
+          "display_group": 5,
+          "native_zero_based": 4
+        },
+        "KM_GENRE": {
+          "native_group": 7,
+          "display_group": 7,
+          "native_zero_based": 6
+        },
+        "KM_TAG": {
+          "native_group": 1,
+          "display_group": 1,
+          "native_zero_based": 0
+        },
+        "KM_BOTH": {
+          "native_group": 6,
+          "display_group": 6,
+          "native_zero_based": 5
+        }
+      },
+      "in_evaluation_128": false,
+      "description_sample": [],
+      "comment_label": "설명 없음",
+      "comment": "모임에서 휴대전화 내용을 공유하며 비밀이 드러난다. 가까운 관계의 불신과 소동이 다른 07번 작품들과 다르게 작동한다.",
+      "cache_path": "outputs/recommendation-evidence/rec-ev-019b/tmdb-cache/movie-548352-ko_KR.json",
+      "cache_sha256": "6f86aee90c2e2786ccabfd02cf51e719a0bbd164dc81016e40a5ce43095e4895"
+    },
+    {
+      "movie_id": 157348,
+      "tmdb_id": 306598,
+      "title": "님아, 그 강을 건너지 마오",
+      "release_date": "2014-11-27",
+      "genres": [
+        "다큐멘터리"
+      ],
+      "assignments": {
+        "KM_TEXT": {
+          "native_group": 5,
+          "display_group": 5,
+          "native_zero_based": 4
+        },
+        "KM_GENRE": {
+          "native_group": 8,
+          "display_group": 8,
+          "native_zero_based": 7
+        },
+        "KM_TAG": {
+          "native_group": 1,
+          "display_group": 1,
+          "native_zero_based": 0
+        },
+        "KM_BOTH": {
+          "native_group": 8,
+          "display_group": 8,
+          "native_zero_based": 7
+        }
+      },
+      "in_evaluation_128": false,
+      "description_sample": [],
+      "comment_label": "직접 연결",
+      "comment": "노부부의 일상과 다가오는 이별을 관찰한다. 실제 사람의 삶을 기록한다는 문장과 연결된다.",
+      "cache_path": "outputs/recommendation-evidence/rec-ev-019b/tmdb-cache/movie-306598-ko_KR.json",
+      "cache_sha256": "c233e033c002e1f041f76e957fa9fb5ae978003e6bcda0287cad2162fd1ec49a"
+    },
+    {
+      "movie_id": 168918,
+      "tmdb_id": 47748,
+      "title": "워낭소리",
+      "release_date": "2009-01-15",
+      "genres": [
+        "다큐멘터리"
+      ],
+      "assignments": {
+        "KM_TEXT": {
+          "native_group": 5,
+          "display_group": 5,
+          "native_zero_based": 4
+        },
+        "KM_GENRE": {
+          "native_group": 8,
+          "display_group": 8,
+          "native_zero_based": 7
+        },
+        "KM_TAG": {
+          "native_group": null,
+          "display_group": 1,
+          "native_zero_based": -1
+        },
+        "KM_BOTH": {
+          "native_group": 8,
+          "display_group": 8,
+          "native_zero_based": 7
+        }
+      },
+      "in_evaluation_128": false,
+      "description_sample": [],
+      "comment_label": "직접 연결",
+      "comment": "농부와 늙은 소가 함께 살아가는 일상을 기록한다. 태그 K-means에서는 입력 근거가 없지만 장르 K-means 배정은 확인된다.",
+      "cache_path": "outputs/recommendation-evidence/rec-ev-019b/tmdb-cache/movie-47748-ko_KR.json",
+      "cache_sha256": "68c14524ab6ebfc1e5148c2f390860232e59ca28d8121dd76e3a4662fe2ec5a0"
+    },
+    {
+      "movie_id": 68522,
+      "tmdb_id": 10946,
+      "title": "지구",
+      "release_date": "2007-10-10",
+      "genres": [
+        "다큐멘터리"
+      ],
+      "assignments": {
+        "KM_TEXT": {
+          "native_group": 5,
+          "display_group": 5,
+          "native_zero_based": 4
+        },
+        "KM_GENRE": {
+          "native_group": 8,
+          "display_group": 8,
+          "native_zero_based": 7
+        },
+        "KM_TAG": {
+          "native_group": 1,
+          "display_group": 1,
+          "native_zero_based": 0
+        },
+        "KM_BOTH": {
+          "native_group": 8,
+          "display_group": 8,
+          "native_zero_based": 7
+        }
+      },
+      "in_evaluation_128": false,
+      "description_sample": [],
+      "comment_label": "직접 연결",
+      "comment": "여러 동물 가족이 환경 변화 속에서 이동하고 생존하는 모습을 다룬다. 자연과 환경의 관찰이라는 형식으로 연결된다.",
+      "cache_path": "outputs/recommendation-evidence/rec-ev-019b/tmdb-cache/movie-10946-ko_KR.json",
+      "cache_sha256": "c006dc930462e9ca4a8b2eff9afbdba17cb448fee383d7e9a25a644fbb45d6c5"
+    },
+    {
+      "movie_id": 34072,
+      "tmdb_id": 1667,
+      "title": "펭귄 - 위대한 모험",
+      "release_date": "2005-01-26",
+      "genres": [
+        "다큐멘터리",
+        "가족"
+      ],
+      "assignments": {
+        "KM_TEXT": {
+          "native_group": 3,
+          "display_group": 3,
+          "native_zero_based": 2
+        },
+        "KM_GENRE": {
+          "native_group": 8,
+          "display_group": 8,
+          "native_zero_based": 7
+        },
+        "KM_TAG": {
+          "native_group": 1,
+          "display_group": 1,
+          "native_zero_based": 0
+        },
+        "KM_BOTH": {
+          "native_group": 8,
+          "display_group": 8,
+          "native_zero_based": 7
+        }
+      },
+      "in_evaluation_128": false,
+      "description_sample": [],
+      "comment_label": "직접 연결",
+      "comment": "황제펭귄의 번식과 이동 과정을 따라간다. 주제는 노부부나 농촌 생활과 달라도 관찰과 기록이라는 형식이 공통된다.",
+      "cache_path": "outputs/recommendation-evidence/rec-ev-019b/tmdb-cache/movie-1667-ko_KR.json",
+      "cache_sha256": "049c1af0c058982f219327e978b23ee2a4e1d3261f57c16418acb3c450eb88f7"
+    }
+  ],
+  "web_sources": [
+    {
+      "key": "R1",
+      "title": "REC038 결과 보고서",
+      "url": "https://github.com/itcksgud/FEELM/blob/project/standalone-feelm/docs/recommendation/experiments/rec-ev-038/RESULT.md"
+    },
+    {
+      "key": "R2",
+      "title": "REC038 군집별 대표어와 당시 설명",
+      "url": "https://github.com/itcksgud/FEELM/blob/project/standalone-feelm/docs/recommendation/experiments/rec-ev-038/GROUPS.md"
+    },
+    {
+      "key": "K1",
+      "title": "KOFIC 국내 누적 박스오피스",
+      "url": "https://www.koreanfilm.or.kr/eng/news/boxOffice_AllTime.jsp?mode=BOXOFFICE_ALLTIME"
+    },
+    {
+      "key": "K2",
+      "title": "KOFIC 님아 그 강을 건너지 마오의 독립영화 흥행 기록",
+      "date": "2014-12-26",
+      "url": "https://www.koreanfilm.or.kr/eng/news/news.jsp?blbdComCd=601006&mode=VIEW&seq=3279"
+    },
+    {
+      "key": "K3",
+      "title": "KOFIC 인셉션 10주년 재개봉 보도",
+      "date": "2020-02-03",
+      "url": "https://www.koreanfilm.or.kr/eng/news/reports.jsp?blbdComCd=601008&mode=VIEW&seq=575"
+    },
+    {
+      "key": "K4",
+      "title": "KOFIC 라라랜드 국내 흥행 보도",
+      "date": "2017-03-20",
+      "url": "https://www.koreanfilm.or.kr/eng/news/reports.jsp?blbdComCd=601008&mode=VIEW&seq=417"
+    },
+    {
+      "key": "K5",
+      "title": "영화진흥위원회 2023년 2월 한국 영화산업 결산",
+      "date": "2023-03-15",
+      "url": "https://www.kofic.or.kr/kofic/business/board/selectBoardDetail.do?boardNumber=181&boardSeqNumber=55309"
+    },
+    {
+      "key": "M1",
+      "title": "scikit-learn 군집 평가: Silhouette Coefficient 및 Adjusted Rand Index",
+      "url": "https://scikit-learn.org/stable/modules/clustering.html#clustering-performance-evaluation",
+      "accessed": "2026-09-12"
+    },
+    {
+      "key": "F2",
+      "title": "개인 C1 승인 문서: Popcorn flavor v1",
+      "url": "https://github.com/itcksgud/FEELM/blob/project/standalone-feelm/docs/c1-draft/01-glossary-and-policies.md",
+      "local_path": "C:\\higher\\projects\\FEELM-standalone\\docs\\c1-draft\\01-glossary-and-policies.md"
+    },
+    {
+      "key": "R3",
+      "title": "REC039: 기존 장르 군집과 고정 추론",
+      "url": "https://github.com/itcksgud/FEELM/blob/project/standalone-feelm/docs/recommendation/experiments/rec-ev-039/RESULT.md"
+    },
+    {
+      "key": "R4",
+      "title": "REC040: 전체 장르 규칙 결과",
+      "url": "https://github.com/itcksgud/FEELM/blob/project/standalone-feelm/docs/recommendation/experiments/rec-ev-040/RESULT.md"
+    },
+    {
+      "key": "M2",
+      "title": "scikit-learn KMeans.predict",
+      "url": "https://scikit-learn.org/stable/modules/generated/sklearn.cluster.KMeans.html#sklearn.cluster.KMeans.predict"
+    },
+    {
+      "key": "M3",
+      "title": "scikit-learn TfidfTransformer: fit과 transform",
+      "url": "https://scikit-learn.org/stable/modules/generated/sklearn.feature_extraction.text.TfidfTransformer.html"
+    }
+  ]
+}
