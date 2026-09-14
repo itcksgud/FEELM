@@ -1,0 +1,418 @@
+{
+  "experiment": "REC044",
+  "scope": "EXPLORATORY_REUSED_OBSERVED_COHORT",
+  "users": 2180,
+  "O_pairs": 65400,
+  "E_pairs": 191932,
+  "methods": [
+    "BASE",
+    "RULE8",
+    "KMEANS8",
+    "GENRES",
+    "KEYWORDS",
+    "GENRES_KEYWORDS"
+  ],
+  "mse": [
+    0.8181146569509613,
+    0.816700385900731,
+    0.8180261511942946,
+    0.8014166188836704,
+    0.8136400144316603,
+    0.8001561683761379
+  ],
+  "mae": [
+    0.6921138585203988,
+    0.6904040872176265,
+    0.6905568959503263,
+    0.6836306882941144,
+    0.6900513159418493,
+    0.6835818499017934
+  ],
+  "comparisons": [
+    {
+      "name": "BASE_vs_RULE8",
+      "gain": 0.0014142710502314491,
+      "interval": [
+        -0.0032697438465201,
+        0.006523124297556391
+      ],
+      "direction": "UNDECIDED"
+    },
+    {
+      "name": "BASE_vs_KMEANS8",
+      "gain": 8.850575666724971e-05,
+      "interval": [
+        -0.0046131043509763095,
+        0.004904957637318048
+      ],
+      "direction": "UNDECIDED"
+    },
+    {
+      "name": "BASE_vs_GENRES",
+      "gain": 0.016698038067291886,
+      "interval": [
+        0.011776671033472798,
+        0.02199437251348712
+      ],
+      "direction": "IMPROVED"
+    },
+    {
+      "name": "BASE_vs_KEYWORDS",
+      "gain": 0.004474642519301067,
+      "interval": [
+        0.0036632361818482503,
+        0.0054840516393976
+      ],
+      "direction": "IMPROVED"
+    },
+    {
+      "name": "BASE_vs_GENRES_KEYWORDS",
+      "gain": 0.017958488574824495,
+      "interval": [
+        0.014578316008976371,
+        0.021743398953253636
+      ],
+      "direction": "IMPROVED"
+    },
+    {
+      "name": "GENRES_vs_COMBINED",
+      "gain": 0.001260450507532607,
+      "interval": [
+        -0.0004526132437530949,
+        0.0028849799430234048
+      ],
+      "direction": "UNDECIDED"
+    },
+    {
+      "name": "KEYWORDS_vs_COMBINED",
+      "gain": 0.013483846055523427,
+      "interval": [
+        0.010480284670580419,
+        0.01683655232936124
+      ],
+      "direction": "IMPROVED"
+    },
+    {
+      "name": "RULE8_vs_GENRES",
+      "gain": 0.01528376701706044,
+      "interval": [
+        0.011748188325411132,
+        0.019156302029134716
+      ],
+      "direction": "IMPROVED"
+    },
+    {
+      "name": "KMEANS8_vs_GENRES",
+      "gain": 0.016609532310624637,
+      "interval": [
+        0.013227799283331457,
+        0.020201738363160263
+      ],
+      "direction": "IMPROVED"
+    }
+  ],
+  "donor_mse_descriptive": [
+    0.8487071336851327,
+    0.8488725756029699,
+    0.8430475582879652,
+    0.8184663841834259,
+    0.8271528780199036
+  ],
+  "own_vs_donor_gain_descriptive": [
+    0.03200674778440233,
+    0.03084642440867536,
+    0.04163093940429438,
+    0.004826369751767005,
+    0.02699670964376711
+  ],
+  "simple_baselines_descriptive": {
+    "user_O_mean_mse": 1.0333021842621029,
+    "movie_train_mean_mse": 0.9643875375704567
+  },
+  "coverage_columns": [
+    "O_zero_features",
+    "E_zero_features",
+    "E_no_O_feature_overlap",
+    "E_pairs"
+  ],
+  "coverage": [
+    [
+      0,
+      0,
+      9711,
+      191932
+    ],
+    [
+      0,
+      0,
+      9765,
+      191932
+    ],
+    [
+      0,
+      0,
+      2612,
+      191932
+    ],
+    [
+      72,
+      3432,
+      22875,
+      191932
+    ],
+    [
+      0,
+      0,
+      1074,
+      191932
+    ]
+  ],
+  "donor_O_recipient_E_overlap": 1369,
+  "keyword_strata_descriptive": [
+    {
+      "state": "NO_KEYWORDS",
+      "pairs": 3432,
+      "users": 892,
+      "mse_BASE_KEYWORDS_COMBINED": [
+        1.1373513975548495,
+        1.1373513975548495,
+        1.1178896585038078
+      ]
+    },
+    {
+      "state": "NO_O_OVERLAP",
+      "pairs": 19443,
+      "users": 2023,
+      "mse_BASE_KEYWORDS_COMBINED": [
+        0.865013798442582,
+        0.865013798442582,
+        0.8553243987506731
+      ]
+    },
+    {
+      "state": "O_OVERLAP",
+      "pairs": 169057,
+      "users": 2180,
+      "mse_BASE_KEYWORDS_COMBINED": [
+        0.8086473914637662,
+        0.8037933012713773,
+        0.7900894524616728
+      ]
+    }
+  ],
+  "genre_repetition_descriptive": [
+    {
+      "genre_code": "TMDB_12",
+      "users": 881,
+      "O_E_pearson_descriptive": 0.34839309631382936,
+      "nonzero_users": 881,
+      "same_sign_users": 540,
+      "O_positive_users": 489,
+      "O_negative_users": 392,
+      "E_mean_for_O_positive": 0.0558652791209034,
+      "E_mean_for_O_negative": -0.06865150746440102
+    },
+    {
+      "genre_code": "TMDB_14",
+      "users": 189,
+      "O_E_pearson_descriptive": 0.4654696111554659,
+      "nonzero_users": 189,
+      "same_sign_users": 127,
+      "O_positive_users": 117,
+      "O_negative_users": 72,
+      "E_mean_for_O_positive": 0.10787571658095237,
+      "E_mean_for_O_negative": -0.054888573828814916
+    },
+    {
+      "genre_code": "TMDB_16",
+      "users": 31,
+      "O_E_pearson_descriptive": 0.5250614578051926,
+      "nonzero_users": 31,
+      "same_sign_users": 25,
+      "O_positive_users": 21,
+      "O_negative_users": 10,
+      "E_mean_for_O_positive": 0.19843552884131985,
+      "E_mean_for_O_negative": -0.08354814487836819
+    },
+    {
+      "genre_code": "TMDB_18",
+      "users": 1958,
+      "O_E_pearson_descriptive": 0.37333270083011116,
+      "nonzero_users": 1958,
+      "same_sign_users": 1203,
+      "O_positive_users": 1006,
+      "O_negative_users": 952,
+      "E_mean_for_O_positive": 0.07082899152019743,
+      "E_mean_for_O_negative": -0.03655712742099416
+    },
+    {
+      "genre_code": "TMDB_27",
+      "users": 111,
+      "O_E_pearson_descriptive": 0.2776249668425088,
+      "nonzero_users": 111,
+      "same_sign_users": 61,
+      "O_positive_users": 70,
+      "O_negative_users": 41,
+      "E_mean_for_O_positive": 0.02496940048582598,
+      "E_mean_for_O_negative": -0.12986339694382154
+    },
+    {
+      "genre_code": "TMDB_28",
+      "users": 1125,
+      "O_E_pearson_descriptive": 0.40759413538614203,
+      "nonzero_users": 1125,
+      "same_sign_users": 684,
+      "O_positive_users": 638,
+      "O_negative_users": 487,
+      "E_mean_for_O_positive": 0.042729945797839876,
+      "E_mean_for_O_negative": -0.09616342499444941
+    },
+    {
+      "genre_code": "TMDB_35",
+      "users": 1756,
+      "O_E_pearson_descriptive": 0.2908924983855681,
+      "nonzero_users": 1756,
+      "same_sign_users": 1021,
+      "O_positive_users": 945,
+      "O_negative_users": 811,
+      "E_mean_for_O_positive": 0.017182326862229837,
+      "E_mean_for_O_negative": -0.061833766571161
+    },
+    {
+      "genre_code": "TMDB_36",
+      "users": 7,
+      "O_E_pearson_descriptive": -0.12871503577239646,
+      "nonzero_users": 7,
+      "same_sign_users": 5,
+      "O_positive_users": 7,
+      "O_negative_users": 0,
+      "E_mean_for_O_positive": 0.14031232673972288,
+      "E_mean_for_O_negative": null
+    },
+    {
+      "genre_code": "TMDB_37",
+      "users": 4,
+      "O_E_pearson_descriptive": -0.025493426514058344,
+      "nonzero_users": 4,
+      "same_sign_users": 2,
+      "O_positive_users": 2,
+      "O_negative_users": 2,
+      "E_mean_for_O_positive": 0.6663073776429688,
+      "E_mean_for_O_negative": 0.4622402564264526
+    },
+    {
+      "genre_code": "TMDB_53",
+      "users": 1147,
+      "O_E_pearson_descriptive": 0.16806745814022142,
+      "nonzero_users": 1147,
+      "same_sign_users": 666,
+      "O_positive_users": 606,
+      "O_negative_users": 541,
+      "E_mean_for_O_positive": 0.01859804517673225,
+      "E_mean_for_O_negative": -0.03565685923271668
+    },
+    {
+      "genre_code": "TMDB_80",
+      "users": 703,
+      "O_E_pearson_descriptive": 0.1344666587569795,
+      "nonzero_users": 703,
+      "same_sign_users": 387,
+      "O_positive_users": 384,
+      "O_negative_users": 319,
+      "E_mean_for_O_positive": 0.04517544790482045,
+      "E_mean_for_O_negative": 0.00011031390908523289
+    },
+    {
+      "genre_code": "TMDB_99",
+      "users": 14,
+      "O_E_pearson_descriptive": 0.3228503803550525,
+      "nonzero_users": 14,
+      "same_sign_users": 11,
+      "O_positive_users": 10,
+      "O_negative_users": 4,
+      "E_mean_for_O_positive": 0.29943474643169926,
+      "E_mean_for_O_negative": 0.08942870916536068
+    },
+    {
+      "genre_code": "TMDB_878",
+      "users": 576,
+      "O_E_pearson_descriptive": 0.27458678219447735,
+      "nonzero_users": 576,
+      "same_sign_users": 328,
+      "O_positive_users": 322,
+      "O_negative_users": 254,
+      "E_mean_for_O_positive": 0.029122919060664203,
+      "E_mean_for_O_negative": -0.06595700145032671
+    },
+    {
+      "genre_code": "TMDB_9648",
+      "users": 18,
+      "O_E_pearson_descriptive": -0.02827800033064904,
+      "nonzero_users": 18,
+      "same_sign_users": 13,
+      "O_positive_users": 9,
+      "O_negative_users": 9,
+      "E_mean_for_O_positive": 0.13792736962747013,
+      "E_mean_for_O_negative": 0.0947843478929778
+    },
+    {
+      "genre_code": "TMDB_10402",
+      "users": 0,
+      "O_E_pearson_descriptive": null,
+      "nonzero_users": 0,
+      "same_sign_users": 0,
+      "O_positive_users": 0,
+      "O_negative_users": 0,
+      "E_mean_for_O_positive": null,
+      "E_mean_for_O_negative": null
+    },
+    {
+      "genre_code": "TMDB_10749",
+      "users": 522,
+      "O_E_pearson_descriptive": 0.26307859459123356,
+      "nonzero_users": 522,
+      "same_sign_users": 300,
+      "O_positive_users": 286,
+      "O_negative_users": 236,
+      "E_mean_for_O_positive": 0.04793431660838741,
+      "E_mean_for_O_negative": -0.0318155281527741
+    },
+    {
+      "genre_code": "TMDB_10751",
+      "users": 118,
+      "O_E_pearson_descriptive": 0.3628436233537468,
+      "nonzero_users": 118,
+      "same_sign_users": 70,
+      "O_positive_users": 62,
+      "O_negative_users": 56,
+      "E_mean_for_O_positive": 0.05925631782712948,
+      "E_mean_for_O_negative": -0.08119027214678567
+    },
+    {
+      "genre_code": "TMDB_10752",
+      "users": 4,
+      "O_E_pearson_descriptive": -0.9254014612899616,
+      "nonzero_users": 4,
+      "same_sign_users": 0,
+      "O_positive_users": 1,
+      "O_negative_users": 3,
+      "E_mean_for_O_positive": -0.0506314162409208,
+      "E_mean_for_O_negative": 0.13036144920080306
+    }
+  ],
+  "bootstrap": {
+    "repeats": 20000,
+    "seed": 20260910,
+    "family": 9,
+    "tails": [
+      0.002777777777777778,
+      0.9972222222222222
+    ]
+  },
+  "no_training_rating_pairs": {
+    "O": 8,
+    "E": 779
+  },
+  "service_quality_measured": false,
+  "independent_confirmation": false
+}

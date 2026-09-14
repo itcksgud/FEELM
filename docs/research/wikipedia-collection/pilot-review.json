@@ -1,0 +1,56 @@
+{
+  "checks": [
+    "V2 full pilot independent source/page/content review inherited",
+    "V3 transport independently reviewed with actual cached response",
+    "Five catalog/mapping/pages/coverage/strata files byte-identical to v2 independently reviewed pilot; no new network in v3 pilot"
+  ],
+  "feature_ready": false,
+  "fingerprint": {
+    "docs\\research\\wikipedia-collection\\PLAN.md": "4e2b2b21aaa893a629d8761bbb13557c11999b34b8cf3be7296dcf7808882666",
+    "scripts\\collect_wikipedia_plots.py": "5ff2bc6dfb16c2123229ebc7b922e69575cd0ca10c961815a729b9d1b6e15af4",
+    "scripts\\test_wikipedia_plots.py": "49dc9ffc53a7178a1b701e47c89e6fb97a9377fb359cf55625fec7a945cfc107"
+  },
+  "pilot_files": {
+    "outputs\\recommendation-evidence\\wikipedia-plots-v3\\pilot-snapshot\\catalog.parquet": {
+      "bytes": 10698643,
+      "sha256": "9f07ff1fcec2e4d12d7426c1418b6609c3c82219dc6d8d657e0f35267274fcc6"
+    },
+    "outputs\\recommendation-evidence\\wikipedia-plots-v3\\pilot-snapshot\\coverage-strata.csv": {
+      "bytes": 5281,
+      "sha256": "c133c788b5a1c9cf791603ec8522eb87c26c91299219ba7aadefbc652b4e6c66"
+    },
+    "outputs\\recommendation-evidence\\wikipedia-plots-v3\\pilot-snapshot\\coverage.parquet": {
+      "bytes": 10793910,
+      "sha256": "4a904258b8abc2886d5755f3cb725ace6211fc4f590f5cfb918ea317ed6ed4b6"
+    },
+    "outputs\\recommendation-evidence\\wikipedia-plots-v3\\pilot-snapshot\\manifest.json": {
+      "bytes": 1219,
+      "sha256": "753cda88feb8394108804b2e2e29d32c03b0d76722ee45add698f0b9d60a897b"
+    },
+    "outputs\\recommendation-evidence\\wikipedia-plots-v3\\pilot-snapshot\\mappings.parquet": {
+      "bytes": 19989,
+      "sha256": "395e18033ef4ffc334b5164de8a2762323e8f8d3441855b39b2709642185a61e"
+    },
+    "outputs\\recommendation-evidence\\wikipedia-plots-v3\\pilot-snapshot\\pages.parquet": {
+      "bytes": 228874,
+      "sha256": "8e5c9bb2ee7e60d5293f2f16e38efb38a1b20e3fe1ae04eba56de26579eb06d3"
+    },
+    "outputs\\recommendation-evidence\\wikipedia-plots-v3\\pilot-snapshot\\summary.json": {
+      "bytes": 669,
+      "sha256": "743ca9a7c8600f2418565dc149e50aeb10a8eafbf5560eafdd2f25d99f4b020d"
+    },
+    "outputs\\recommendation-evidence\\wikipedia-plots-v3\\pilot-snapshot\\table-seal.json": {
+      "bytes": 674,
+      "sha256": "0f5dcb745d3b89ec0348bbbc66aac27432d3b5c4cd3f385677e33b20b4b67cb9"
+    }
+  },
+  "prior_fingerprint": {
+    "docs\\research\\wikipedia-collection\\PLAN.md": "4d137915f9dc000e46d02926e1a487d13e0a702671161073114920c5776f6aa5",
+    "scripts\\collect_wikipedia_plots.py": "af81b6d1d3101fa8dacffb3cc4739fc65257783affbbb41fb4c90817347728c0",
+    "scripts\\test_wikipedia_plots.py": "3bfabc1e647ac608dd62e12057259c276c479b41ea739ae70f9b03304a305982"
+  },
+  "reviewed_at": "2026-09-10T00:56:00.941412+00:00",
+  "reviewer": "/root/github_research_scope_audit + /root/wiki_report_review",
+  "scope": "V3 transport-only full collection; matching/extraction pilot byte-identical to independently reviewed v2",
+  "status": "PASS"
+}

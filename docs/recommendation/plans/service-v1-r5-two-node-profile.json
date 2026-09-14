@@ -1,0 +1,115 @@
+{
+  "schemaVersion": "feelm-service-v1-r5-two-node-plan/1",
+  "status": "DRAFT_BLOCKED_PENDING_INDEPENDENT_REVIEW_AND_TEAM_CONTRACT",
+  "jira": "S15P21E106-399",
+  "planId": "service-v1-r5-two-node-spark-hdfs",
+  "supersedesForExecution": "service-v1-b1-r4-server-fit-recovery",
+  "serverExecutionAuthorized": false,
+  "authoritySnapshot": {
+    "teamWorkingRevision": "96a4b27d0c5c0d4e4fe0348b6c01de0b06f6f7e",
+    "lastFetchedOriginDevelopRevision": "0f0983c691386a285dae3401d5d7358f4c347404",
+    "remoteCurrentVerified": false,
+    "adoptedAdrs": ["ADR-0001", "ADR-0002", "ADR-0006", "ADR-0017"]
+  },
+  "cluster": {
+    "master": "spark://spark-master:7077",
+    "deployMode": "client",
+    "submitContainer": "feelm-spark-master",
+    "sparkImage": "feelm-spark-ml:4.1.3-numpy2.2.6",
+    "expectedSparkVersion": "4.1.3",
+    "expectedPythonVersion": "3.10.12",
+    "expectedNumpyVersion": "2.2.6",
+    "workers": [
+      {"name": "spark-worker-1", "roleHost": "service-node", "advertisedCores": 2, "advertisedMemory": "4g"},
+      {"name": "spark-worker-2", "roleHost": "distributed-node", "advertisedCores": 2, "advertisedMemory": "4g"}
+    ],
+    "currentVerifiedSubmission": {
+      "totalExecutorCores": 4,
+      "executorCores": 2,
+      "executorMemory": "2g",
+      "driverPort": 7079,
+      "driverBlockManagerPort": 7080,
+      "executorBlockManagerPort": 7081
+    },
+    "resourceReconfigurationAuthorized": false,
+    "resourceContractMismatchOpen": true
+  },
+  "hdfs": {
+    "defaultFs": "hdfs://hdfs-namenode:8020",
+    "dataNodes": 2,
+    "replication": 2,
+    "explicitSparkConf": "spark.hadoop.dfs.replication=2",
+    "runRootTemplate": "<HDFS_ROOT>/recommendation/service-v1/r5/<run-id>",
+    "noOverwrite": true
+  },
+  "distributedBenchmark": {
+    "datasets": ["MovieLens32M-nested-1000000", "MovieLens32M-nested-10000000", "MovieLens32M-full-32000204"],
+    "workerCounts": [1, 2],
+    "warmup": {"dataset": "MovieLens-1M", "runs": 1, "includedInMetrics": false},
+    "measuredRunsPerCell": 3,
+    "orderSeed": 399,
+    "subsetPolicy": "stable-row-key-hash-sort-then-first-N; generation excluded from benchmark",
+    "workload": "read-validate-id-join-user-movie-aggregate-parquet-write",
+    "metrics": [
+      "wallClockSeconds",
+      "throughputRowsPerSecond",
+      "medianSpeedup",
+      "efficiency",
+      "executorHosts",
+      "taskAndPartitionCounts",
+      "shuffleReadWriteBytes",
+      "spillBytes",
+      "gcTime",
+      "failedAndRetriedTasks",
+      "hostAndServiceBeforeDuringAfter"
+    ],
+    "minimumSpeedupThreshold": null,
+    "partialCellDecision": "INCOMPLETE"
+  },
+  "modelTracks": {
+    "officialBaseline": {
+      "model": "ALS",
+      "source": "S15P21E106-119",
+      "input": "MovieLens-32M immutable HDFS snapshot",
+      "state": "PENDING_CLUSTER_PILOT"
+    },
+    "serviceBaseCandidate": {
+      "model": "per-user-content-profile-with-market-prior",
+      "requiresCrossUserTraining": false,
+      "state": "DESIGN_REVIEW_PENDING"
+    },
+    "developmentCandidate": {
+      "model": "GBT-B1-230",
+      "sourceRows": 4997069,
+      "logicalRows": 19988276,
+      "featureCount": 230,
+      "state": "BLOCKED_NEEDS_CLUSTER_JOB_AND_ARTIFACT_CONTRACT",
+      "serviceActivationAllowed": false
+    },
+    "serviceTarget": {
+      "models": ["GBT-B3-245", "FM-B3-245"],
+      "featureCount": 245,
+      "state": "NOT_BUILT",
+      "blockers": ["KOBIS-crosswalk", "q99", "row-lineage", "evaluation-intersection", "team-ADR-and-consumer-contract"]
+    }
+  },
+  "gates": [
+    "independent-design-review-pass",
+    "actual-host-and-compose-resource-confirmed",
+    "same-approved-revision-and-image-on-both-nodes",
+    "maintenance-window-approved",
+    "hdfs-and-two-worker-preflight-pass",
+    "immutable-input-manifest-pass",
+    "representative-benchmark-oracle-pass",
+    "model-specific-contract-pass"
+  ],
+  "forbidden": [
+    "r4-server-transfer",
+    "r4-eight-hour-fit",
+    "local-master-as-distributed-evidence",
+    "four-view-rows-as-movielens-32m-scaling-evidence",
+    "resource-compose-change-without-team-decision",
+    "b1-as-b3-or-service-model",
+    "gitlab-or-notion-write"
+  ]
+}

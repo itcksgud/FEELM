@@ -1,0 +1,4 @@
+group,queried_top200_movies,title_country_year_matched_movies,tk_positive_valid_movies,unmatched_or_invalid_movies,tk_pair_share_of_query_movies,tk_pair_share_of_query_audience,query_min_audience,tk_ml_positive_movies,tk_without_ml_positive_movies
+ALL,400,371,371,29,0.9275,0.9329431981671916,2141199,338,33
+K,200,181,181,19,0.905,0.9186898182348711,2472174,163,18
+F,200,190,190,10,0.95,0.9510345288402794,2141199,175,15

@@ -1,0 +1,8 @@
+{
+  "source_command": "py -3.12 -B -X utf8 scripts/text339_text.py sources",
+  "reviewed_source_code_sha256": "e92ee77396712195e21af3f6c05024ae28fcff5f260e5ef2b38950b83662d9cd",
+  "status": "completed",
+  "no_rating_decoder_used": true,
+  "dependency_note": "text339_common.py gained unused context guards and FILES entries while the source command was running. Its source-used paths/config function and rec046 require/pin/write_json implementations were unchanged. Report execution_sources are end-of-run file hashes, not proof of initial in-memory module versions. The source command itself stayed at the reviewed hash throughout. Independent output/source QA remains required.",
+  "later_encoder_change": "After sources completed, Encoder special-token packing was corrected for the installed tokenizer. A later English-cache resolver change also added lookup in both approved existing cache folders; the three affected empty overviews are handled by a separately reviewed repair with a preserved before snapshot."
+}

@@ -1,0 +1,41 @@
+{
+  "status": "PASS",
+  "reviewer": "Rawls",
+  "fingerprint": {
+    "scripts/combination340_common.py": {
+      "bytes": 3899,
+      "sha256": "9fac21ea088da34957e2e1b21492a9e07863ac6942f83feb185e60f6fccea239"
+    },
+    "scripts/combination340_models.py": {
+      "bytes": 4025,
+      "sha256": "a519586b25d81574a96e1847dc6a4d8d08d3ded276deff64c5d82ff0bcdecd25"
+    },
+    "scripts/combination340_worker.py": {
+      "bytes": 5302,
+      "sha256": "075f1f1721a392ceb45d3e523c47d92dd77d606dec3075227854f1a9bad4a673"
+    },
+    "scripts/combination340_run.py": {
+      "bytes": 7440,
+      "sha256": "6740441dfbc4fed154ad294ae261913fb1baa30276b03c28c46a42e51e78420a"
+    },
+    "docs/recommendation/experiments/combination340/EXECUTION.md": {
+      "bytes": 6549,
+      "sha256": "d1fd59a01ed2aeb17c2e5018302ca6c2f216893febfb8eb783f1dc331a7a03c2"
+    },
+    "docs/recommendation/experiments/combination340/config.json": {
+      "bytes": 559,
+      "sha256": "6a1c8e433a6c352d6110771c7dbf6bcd371b6bf3facbbb96a129ec1fdefec6ae"
+    }
+  },
+  "checks": [
+    "sixteen cross-stage gate fixtures including old evaluation/new model or catalog mismatch",
+    "required parent/evaluation code fields",
+    "stage-one evaluation code and contract identity",
+    "current evaluator and PASS code review identity",
+    "model training AST unchanged outside metrics",
+    "six cgroup measurement fixtures",
+    "exclusive failed-log preservation"
+  ],
+  "initial_review_limitation": "Initial PASS omitted cross-stage evaluation-to-model linkage; preserved in execution-review-initial.json and corrected before any Stage2 fit.",
+  "scope": "Code only, no new Stage2 results reviewed"
+}

@@ -1,0 +1,45 @@
+{
+  "status": "PASS_FEATURE_MATH_AND_CAPPED_HISTORY_INTEGRATION",
+  "reviewer": "/root/github_research_scope_audit",
+  "checks": {
+    "independent_scalar_rows": 192,
+    "dimensions_per_text": 108,
+    "feature_max_abs_error_float32": 0,
+    "pca_basis_vs_independent_svd_max_error": 1.21e-14,
+    "projection_max_error": 2.98e-08,
+    "pca_unchanged_when_excluded_movies_changed": true,
+    "permutation_invariance": true,
+    "missing_candidate_entire_block_zero": true
+  },
+  "dimensions": {
+    "T0": 230,
+    "T1": 338,
+    "T2": 446,
+    "T3": 446
+  },
+  "scope": "Pure feature math only; full execution review separate",
+  "code_before_capped_adapter": {
+    "bytes": 3795,
+    "sha256": "6d4f44e7161d7f0631199cf73408f99d46e2f334dc4a3565adee2d0ab5f9ae7c"
+  },
+  "code": {
+    "text339_features.py": {
+      "bytes": 3896,
+      "sha256": "122e2146e3f0fb71109e5598454f870cbb1b55494115dac3543acc9230b70574"
+    },
+    "text339_relations.py": {
+      "bytes": 3117,
+      "sha256": "fdc970a6506cfd27dcc2df15cd2785ce5f221f76bd74eaeb24aa6d73c5ccd4d6"
+    }
+  },
+  "integration": {
+    "actual_history_lengths": "0..30",
+    "candidate_rows": 744,
+    "total_features": 554,
+    "values_checked": 412176,
+    "legacy_exact_K_T0_bit_exact": true,
+    "missing_text_blocks_zero": true,
+    "history31_rejected": true,
+    "adapter_ast_difference": "only actual-history length guard"
+  }
+}

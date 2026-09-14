@@ -1,0 +1,197 @@
+{
+  "schema_version": 1,
+  "status": "PASS",
+  "date": "2026-09-12",
+  "kind": "independent_result_audit_code_review",
+  "experiment": "hybrid345",
+  "scope": "DEVELOPMENT_ONLY",
+  "labels_opened_during_review": false,
+  "fingerprint": {
+    "scripts/audit_hybrid345_results.py": {
+      "bytes": 94315,
+      "sha256": "4c50635523566ce3c0d4791c542b70e6fc7e28595b395a0677d34aa9e0c1717b"
+    },
+    "scripts/test_audit_hybrid345_results.py": {
+      "bytes": 16156,
+      "sha256": "298c9bcfbd094dc10cf929d8a47ca168db8d2c55d2dc815008ee8eba7bc1f001"
+    },
+    "scripts/hybrid345_evaluate.py": {
+      "bytes": 70337,
+      "sha256": "146bd0dc4fa8fde49182528205b7f787edc5f5d55becb04e4a62b09060e9d1c9"
+    },
+    "scripts/test_hybrid345_evaluate.py": {
+      "bytes": 14271,
+      "sha256": "abe67769529a171f9e7c38a5bbdb4f8fcb21803ec77288dc85684abf271084d1"
+    },
+    "scripts/hybrid345_catalog.py": {
+      "bytes": 32261,
+      "sha256": "7aa2b2123d291d4849c9c8984a237b59b2f30ec96d971f2553fb3afe44017796"
+    },
+    "scripts/test_hybrid345_catalog.py": {
+      "bytes": 5656,
+      "sha256": "af2ff2c8707fd3a68b4f9b0f4b0f1f3adcf7c1d53416404e55ee1613f7881f77"
+    },
+    "scripts/report_hybrid345.py": {
+      "bytes": 20447,
+      "sha256": "06856ad5108950adc3e0ef65385f1e39f18271f57a45f1ea4da023bcdcefbc06"
+    },
+    "docs/recommendation/experiments/hybrid345/DESIGN.md": {
+      "bytes": 16289,
+      "sha256": "18ca3c22ffacaace55ca6483620ff36d76230902bb38557d7b2a34aaf1906884"
+    },
+    "docs/recommendation/experiments/hybrid345/config.json": {
+      "bytes": 22142,
+      "sha256": "f975cd83b179c8b61dac09e0a3a527c4f2c4794389e88b0be4fd3c69d0679506"
+    },
+    "docs/recommendation/experiments/hybrid345/prelabel-code-review.json": {
+      "bytes": 11985,
+      "sha256": "be590bd5f5831582c0b7311f6b754a27f6b5557f699e26f04673a92c0469f5dc"
+    },
+    "docs/recommendation/experiments/hybrid345/evaluation-code-review.json": {
+      "bytes": 8692,
+      "sha256": "d7d651c3766207e920df93a6d25c8e27083d62f4d2fdef8cdff2c9d286214010"
+    },
+    "docs/recommendation/experiments/hybrid345/catalog-code-review.json": {
+      "bytes": 8500,
+      "sha256": "c7c24976a1f5dbd51e5624621455d9a1b35ef35880b4628d901b7a9bf00bef0e"
+    }
+  },
+  "audits": {
+    "independence": {
+      "status": "PASS",
+      "imports_evaluator": false,
+      "imports_catalog_producer": false,
+      "metric_and_bootstrap_implementation_is_local": true
+    },
+    "label_boundary": {
+      "status": "PASS",
+      "labels_opened_during_review": false,
+      "all_lineage_gates_run_before_label_or_result_table_reads": true,
+      "frozen_label_pin_rechecked_after_audit": true
+    },
+    "evaluation_input_lineage": {
+      "status": "PASS",
+      "exact_input_inventory": 11,
+      "inputs": [
+        "catalog",
+        "contexts",
+        "labels",
+        "roles",
+        "partition",
+        "rec033_metadata",
+        "texts",
+        "final344_input_lock",
+        "tmdb_vote_metadata",
+        "final344_calibration_seal",
+        "final344_calibration"
+      ],
+      "tmdb_vote_source": "outputs/recommendation-evidence/rec-ev-045/metadata.parquet",
+      "tmdb_vote_pin_followed_through_final344_input_lock": true,
+      "tmdb_vote_catalog_axis_and_integer_domain_checked": true,
+      "final344_calibration_bound_to_input_lock": true,
+      "final344_calibration_seal_exact_file_inventory": [
+        "final-calibration.json"
+      ],
+      "final344_calibration_execution_pins_verified": true
+    },
+    "user_macro_metrics": {
+      "status": "PASS",
+      "row_errors_joined_exactly_to_frozen_labels": true,
+      "row_axis_reconstructed_from_comparison_contexts": true,
+      "metrics_recomputed_from_row_errors": [
+        "MSE",
+        "MAE",
+        "bias",
+        "pairwise_accuracy",
+        "NDCG@1/2/4/6",
+        "stars@1/2/4/6",
+        "good@1/2/4/6",
+        "low@1/2/4/6",
+        "any_low@1/2/4/6",
+        "both_low@1/2/4/6"
+      ],
+      "seed_mean_recomputed_from_three_per_user_metric_rows": true,
+      "user_metric_summary_and_denominators_recomputed": true,
+      "two_item_page_metrics_and_summary_recomputed": true,
+      "diagnostic_summary_recomputed_from_locked_rec045_votes": true
+    },
+    "selection_and_decisions": {
+      "status": "PASS",
+      "selection_common_uid_markers_recomputed": true,
+      "pareto_safety_and_tie_break_recomputed": true,
+      "comparison_labels_used_for_selection": false,
+      "decision_precedence_and_safety_recomputed": true
+    },
+    "formal_contrasts": {
+      "status": "PASS",
+      "total": 14,
+      "families": {
+        "warm": 2,
+        "cold": 8,
+        "router": 4
+      },
+      "common_finite_uid_pairing_recomputed": true,
+      "paired_rows_recomputed": true,
+      "bootstrap_samples": 20000,
+      "configured_seed": 346,
+      "generator": "numpy.random.Generator(PCG64)",
+      "independent_sha256_seed_per_contrast_metric": true
+    },
+    "catalog": {
+      "status": "PASS",
+      "models": 5,
+      "top_n": [
+        2,
+        4,
+        6
+      ],
+      "summary_rows": 15,
+      "final344_ei_reconstructed_and_seen_exclusion_checked": true,
+      "supply_user_model_grid_checked": true,
+      "rank_and_movie_uniqueness_checked": true,
+      "unknown_membership_rederived_from_labels": true,
+      "support_and_als_availability_rederived_from_catalog": true,
+      "eligible_union_denominator_recomputed": true,
+      "summary_values_recomputed": true
+    },
+    "report": {
+      "status": "PASS",
+      "development_only_scope_checked": true,
+      "service_and_statistical_limitations_checked": true,
+      "model_metric_tables_checked": true,
+      "page_denominator_catalog_diagnostic_and_contrast_tables_checked": true,
+      "selection_reasons_and_verdict_counts_checked": true
+    },
+    "fail_closed_lineage": {
+      "status": "PASS",
+      "producer_evaluator_catalog_report_config_reviews_and_auditor_directly_fingerprinted": true,
+      "prediction_evaluation_catalog_and_report_seals_recursively_verified": true,
+      "exact_evaluation_input_inventory_verified_before_labels": true,
+      "all_gates_and_code_review_fingerprints_rechecked_after_audit": true,
+      "existing_audit_preserved_without_explicit_overwrite": true
+    },
+    "synthetic_tests": {
+      "status": "PASS",
+      "command": "outputs/recommendation-evidence/text339-runtime/venv/Scripts/python.exe -m unittest test_audit_hybrid345_results.py -v (working directory: scripts)",
+      "tests": 11,
+      "failures": 0,
+      "errors": 0,
+      "py_compile": "PASS"
+    }
+  },
+  "resolved_blockers": [
+    "The selection artifact schema check now matches the producer contract: cap and movie group remain fixed by selection.json and are intentionally absent from selection-user-metrics.parquet; all persisted per-user fields are still required and rechecked.",
+    "The auditor follows the config-pinned final344 input lock to the exact REC-045 TMDB vote metadata and re-derives every vote diagnostic from that source.",
+    "The final344 calibration reference is accepted only through its input-lock-bound seal, exact one-file manifest, and verified execution pins.",
+    "The evaluation manifest must contain exactly the eleven independently resolved inputs before any evaluation label or result table is opened.",
+    "All previous independent metric, selection, contrast, catalogue, report, and recursive post-audit lineage checks remain enforced."
+  ],
+  "blocking_findings": [],
+  "not_claimed": [
+    "evaluation results",
+    "catalog result correctness before the separate result audit executes",
+    "fresh unused test-set validity",
+    "2026 Korean service satisfaction",
+    "service adoption or deployment"
+  ]
+}

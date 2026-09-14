@@ -1,0 +1,63 @@
+{
+  "status": "PASS_RESULT_AND_REPORT",
+  "reviewer": "/root/rec044_design_audit",
+  "review_date": "2026-09-09",
+  "scope": "Full observation-count audit and report interpretation; no raw rating values or E labels used, no model training or scoring",
+  "independent_method": "Arrow CSV selecting userId, movieId, timestamp; independent full-dataset aggregation against pandas execution",
+  "verified_counts": {
+    "ratings": 32000204,
+    "movies": 87585,
+    "users": 200948
+  },
+  "exact_matches": [
+    "all movie rating counts",
+    "all release-year unique-rater counts",
+    "every release-year by rating-entry-year matrix cell"
+  ],
+  "numeric_comparisons": 3192,
+  "maximum_numeric_difference": 1.44e-14,
+  "independent_output_pins": {
+    "completion-seal.json": {
+      "bytes": 1414,
+      "sha256": "0138624530d467152faca9030ec9173852d6b96744a930b709fb4a9c05218702"
+    },
+    "summary.json": {
+      "bytes": 149012,
+      "sha256": "0c4a826a6f622acf05f8b632e742e63c98b5b6d9df4e7dae651077477adfd752"
+    }
+  },
+  "reviewed_report": {
+    "bytes": 10224,
+    "sha256": "6de59f70af3f0e1ecfe0da0c6ce413268185761898ebedf647253cfaabd517cd"
+  },
+  "presentation_pins": {
+    "docs/research/movielens-release-distribution/BY_YEAR.md": {
+      "bytes": 9791,
+      "sha256": "d918412b0a1892ae5b615cb110f885a7fb266192a86d7ccc0cb362666251bd27"
+    },
+    "docs/research/movielens-release-distribution/release-distribution.png": {
+      "bytes": 257700,
+      "sha256": "d1cb024505aca66d59074e9af1cdc470cc55eeb398d35bbfe1f17289167b2247"
+    },
+    "scripts/render_movielens_release_distribution.py": {
+      "bytes": 6855,
+      "sha256": "08c78142877ca2c6adda64a3933d99a40bc3f2d3096990cdf1d412cde9632e9c"
+    }
+  },
+  "root_verification": [
+    "All execution script/design/output seal hashes match",
+    "Annual movie and observation counts reconcile",
+    "REC045 metric weights sum to 1",
+    "Ruff check and format pass",
+    "Markdown table column counts match",
+    "Rendered PNG visually inspected"
+  ],
+  "interpretation": [
+    "Dataset concentration is established; mismatch against a real target market is not quantified",
+    "REC045 recent-movie relative weight is higher than raw MovieLens but service representativeness is unproven",
+    "Metric averaging weight is not observed error contribution",
+    "No observations for movies released in 2024 through 2026",
+    "Future support strata must use training-available counts, not whole-data counts"
+  ],
+  "publication": "LOCAL_ONLY"
+}

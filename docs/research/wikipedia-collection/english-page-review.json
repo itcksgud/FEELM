@@ -1,0 +1,57 @@
+{
+  "status": "PASS_IDENTITY_AND_SECTION_AUDIT_WITH_RAW_EXCERPT_LIMIT",
+  "reviewer": "/root/github_research_scope_audit",
+  "scope": "English raw responses only; final Parquet comparison pending",
+  "expected_pages": 62078,
+  "cache_files": 1242,
+  "cache_bytes": 287996993,
+  "valid_revisions_independently_parsed": 61606,
+  "independent_checks": [
+    "HTTP, request and response hashes",
+    "Requested QID, aliases, namespace and revision metadata",
+    "Revision timestamp not after collection timestamp",
+    "Section boundaries from independent token-state and line parser"
+  ],
+  "status_counts": {
+    "PLOT_COLLECTED": 51102,
+    "NO_PLOT_SECTION": 9663,
+    "EMPTY_PLOT_AFTER_CLEANING": 841,
+    "REVIEW_PAGE_QID_MISMATCH": 466,
+    "REVIEW_NON_FILM_PAGE": 4,
+    "NO_PAGE": 2
+  },
+  "raw_excerpt_leading_ref_or_empty_literal_omissions": [
+    {
+      "qid": "Q11486176",
+      "title": "Zatoichi and the Chess Expert",
+      "omitted_chars": 234,
+      "clean_chars": 2353
+    },
+    {
+      "qid": "Q18444173",
+      "title": "Tinker Ticker",
+      "omitted_chars": 730,
+      "clean_chars": 0
+    },
+    {
+      "qid": "Q6917179",
+      "title": "The Bag Man",
+      "omitted_chars": 19,
+      "clean_chars": 4425
+    }
+  ],
+  "heading_normalization_only": {
+    "qid": "Q99512537",
+    "title": "The Lost Okoroshi",
+    "clean_chars": 322
+  },
+  "boundary_difference_cases_clean_text_equal": true,
+  "cause": "Heading regex trailing whitespace can consume masked following ref/literal lines",
+  "whole_api_response_preserved": true,
+  "cleaning_independently_reimplemented": false,
+  "semantic_manual_review": "Four boundary differences and earlier pilot sample only",
+  "cache_ledger_canonical_sha256": "735448c2f8dce9adbcad15cd5be2b9696548ba2d76b1f9af0543519d891df637",
+  "new_api_calls": 0,
+  "rating_values_read": 0,
+  "feature_use_approved": false
+}

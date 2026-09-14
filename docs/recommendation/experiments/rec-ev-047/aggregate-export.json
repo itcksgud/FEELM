@@ -1,0 +1,46 @@
+{
+  "status": "DESCRIPTIVE_AGGREGATES_EXPORTED",
+  "completion": {
+    "bytes": 3409,
+    "sha256": "a840be08a01a62794e3b922d6e105173cda372b7cd102aca1f6fe0c00f3bd18a"
+  },
+  "source_user_metrics": {
+    "bytes": 1144268,
+    "sha256": "85580ccd69809bfee079a65f35131e6a36bb918c619736c11e1ea2b51b3a32b9"
+  },
+  "export_script": {
+    "bytes": 4554,
+    "sha256": "f74e6f151ef590cf04da161b67dcc87a66c05bffc77cafa34659a6ceb0bfc8d3"
+  },
+  "files": {
+    "metrics.csv": {
+      "bytes": 91623,
+      "sha256": "273c5976cd562e2d4f5fcda8656f3219fa04b856021b27a202a686e8011113a8"
+    },
+    "contrasts.csv": {
+      "bytes": 3282,
+      "sha256": "0ce7274edfa3777e8f453453c7bc89dccb9cbf45f8dc939c389193a107a12357"
+    },
+    "strata.csv": {
+      "bytes": 222498,
+      "sha256": "5a4d42df1d91a48b763e0484a9f2fe05d633aaa6fa93b2824efb7b507c469bbb"
+    },
+    "training-composition.csv": {
+      "bytes": 1956,
+      "sha256": "af0424d53826099c84dc952b9ff51ba40d60fb09af00224143dfa4d57820b4a4"
+    },
+    "support-summary.csv": {
+      "bytes": 14052,
+      "sha256": "96cf29cf81a9e723182d557ded4fb75172baf7f26d76223a91f1a1ad56be405b"
+    },
+    "runtime.csv": {
+      "bytes": 1968,
+      "sha256": "84c4eb37bf023852be7a91a12396c5d98743d6d787375e37b94263984b9a58b8"
+    },
+    "population.csv": {
+      "bytes": 1390,
+      "sha256": "e146649f770ed831bbd58b5b167b436e4ae020c5c64e83745ab6da00a378fc90"
+    }
+  },
+  "claim": "No new fits, tuning, confidence tests or target-label opening. Support means are user-weighted within each movie-support group; groups can share users."
+}

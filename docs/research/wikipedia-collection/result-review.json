@@ -1,0 +1,160 @@
+{
+  "status": "PASS_COLLECTION_AND_AGGREGATES_WITH_DOCUMENTED_CONTENT_LIMITS",
+  "reviewed_at_utc": "2026-09-10T01:47:05.586448+00:00",
+  "reviewers": [
+    "/root/github_research_scope_audit",
+    "/root/wiki_report_review"
+  ],
+  "feature_use_approved": false,
+  "new_model_training": false,
+  "rating_values_read_during_collection_and_audit": 0,
+  "source_pins": {
+    "outputs\\recommendation-evidence\\wikipedia-plots-v3\\catalog.parquet": {
+      "bytes": 10698643,
+      "sha256": "9f07ff1fcec2e4d12d7426c1418b6609c3c82219dc6d8d657e0f35267274fcc6"
+    },
+    "outputs\\recommendation-evidence\\wikipedia-plots-v3\\coverage-strata.csv": {
+      "bytes": 5826,
+      "sha256": "b821c1f626f92cbebb4ed87ef0570323a826fb0bf00fa1c10b200635dc2f4e18"
+    },
+    "outputs\\recommendation-evidence\\wikipedia-plots-v3\\coverage.parquet": {
+      "bytes": 13530742,
+      "sha256": "d1ff0b396161f9135d99fdf2a6867f68444d88e7c153aab928df56e0ca28cf9b"
+    },
+    "outputs\\recommendation-evidence\\wikipedia-plots-v3\\manifest.json": {
+      "bytes": 1219,
+      "sha256": "753cda88feb8394108804b2e2e29d32c03b0d76722ee45add698f0b9d60a897b"
+    },
+    "outputs\\recommendation-evidence\\wikipedia-plots-v3\\mappings.parquet": {
+      "bytes": 5170820,
+      "sha256": "d25f5239a83a6e5478340751ad6d61446d894c025505cf3305ae2885013cf20c"
+    },
+    "outputs\\recommendation-evidence\\wikipedia-plots-v3\\pages.parquet": {
+      "bytes": 181058337,
+      "sha256": "b4b5fd8793461495e09c22313eb6b71cb5f8fac068ff3751bb4290bc34909dcb"
+    },
+    "outputs\\recommendation-evidence\\wikipedia-plots-v3\\summary.json": {
+      "bytes": 904,
+      "sha256": "55214bf7779e1781994f71852d6cd2b56426d9660d4d6a7d591645add984b95d"
+    },
+    "outputs\\recommendation-evidence\\wikipedia-plots-v3\\table-seal.json": {
+      "bytes": 679,
+      "sha256": "ac5e2b0a763c9ce8a98bdbe8c3d7a364de110c3a9e21459a3f8fc0e4de885cbb"
+    }
+  },
+  "report_output_pins": {
+    "docs\\research\\wikipedia-collection\\RESULT.md": {
+      "bytes": 5711,
+      "sha256": "b566741747a3c3db212ba1454a9522ec66ec20ef030fe44cbeea4a9e7feffca2"
+    },
+    "docs\\research\\wikipedia-collection\\collection-summary.json": {
+      "bytes": 904,
+      "sha256": "55214bf7779e1781994f71852d6cd2b56426d9660d4d6a7d591645add984b95d"
+    },
+    "docs\\research\\wikipedia-collection\\coverage-strata.csv": {
+      "bytes": 5826,
+      "sha256": "b821c1f626f92cbebb4ed87ef0570323a826fb0bf00fa1c10b200635dc2f4e18"
+    },
+    "docs\\research\\wikipedia-collection\\raw-clean-coverage.json": {
+      "bytes": 378,
+      "sha256": "db218bd5c0262c1659c4922c453ac2d91c2936371e0c45fee47c9752d1cec84d"
+    }
+  },
+  "additional_pins": {
+    "scripts/collect_wikipedia_plots.py": {
+      "bytes": 26995,
+      "sha256": "5ff2bc6dfb16c2123229ebc7b922e69575cd0ca10c961815a729b9d1b6e15af4"
+    },
+    "scripts/report_wikipedia_collection.py": {
+      "bytes": 15334,
+      "sha256": "36bd8a1d44c2ee95ec608cfcf3e465093ff64d17fb0139a45a01e80d6f3a62b0"
+    },
+    "scripts/test_wikipedia_plots.py": {
+      "bytes": 5384,
+      "sha256": "49dc9ffc53a7178a1b701e47c89e6fb97a9377fb359cf55625fec7a945cfc107"
+    },
+    "docs/research/wikipedia-collection/PLAN.md": {
+      "bytes": 6005,
+      "sha256": "4e2b2b21aaa893a629d8761bbb13557c11999b34b8cf3be7296dcf7808882666"
+    },
+    "docs/research/wikipedia-collection/QUALITY.md": {
+      "bytes": 2413,
+      "sha256": "6caf909edab232d0a15440b06724eb5441593dd2e9a60de97500ccec5fd6f49b"
+    },
+    "docs/research/wikipedia-collection/content-review-cases.json": {
+      "bytes": 461,
+      "sha256": "7259451aede7e05f8fa4a4adcc453acc22b3bccbe64cdd7d95f8cee30d818945"
+    },
+    "docs/research/wikipedia-collection/mapping-review.json": {
+      "bytes": 993,
+      "sha256": "e2839876788d465fa577bdca463da511d5daf22bed6dc036a9c54aabbbf43056"
+    },
+    "docs/research/wikipedia-collection/english-page-review.json": {
+      "bytes": 1928,
+      "sha256": "001298f59842a2af550f0640f7ed361a9fb0abd8d7b261af71618de3c2a8fc72"
+    },
+    "docs/research/wikipedia-collection/korean-page-review.json": {
+      "bytes": 1481,
+      "sha256": "a7d3355d3740bdb7a83d4feef833a572e9f10e7888ef39c165c0ba5e482939f9"
+    },
+    "docs/research/wikipedia-collection/report-code-review.json": {
+      "bytes": 2855,
+      "sha256": "7c9e8186156b09d7b8db43ac3082402fedbafb1f4beabecd0aca926d6f371e29"
+    },
+    "docs/research/wikipedia-collection/report-seal.json": {
+      "bytes": 2465,
+      "sha256": "340ab10f81f56f7a70ac6495421067077a2dc62279190ca28b1b83a90173b6ff"
+    },
+    "outputs/recommendation-evidence/wikipedia-plots-v3/mapping-cache-ledger.json": {
+      "bytes": 428849,
+      "sha256": "718cf292e29756e343430fe1fac5b6392370f5d5c930f0275e498f5ec3850972"
+    },
+    "outputs/recommendation-evidence/wikipedia-plots-v3/mapping-cache-ledger-seal.json": {
+      "bytes": 348,
+      "sha256": "218dcccb5e9e571eb672a6b2a5e52d9845275627215e75e267a1859debfed3b8"
+    }
+  },
+  "raw_cache_audit": {
+    "pages": 80322,
+    "fields_per_page": 29,
+    "valid_revisions_with_independent_section_parser": 79837,
+    "rejected_or_missing_records_checked": 485,
+    "cache_files": 1607,
+    "cache_hashes_unchanged_before_after": true,
+    "english_ledger_sha256": "735448c2f8dce9adbcad15cd5be2b9696548ba2d76b1f9af0543519d891df637",
+    "korean_ledger_sha256": "f549506787ce65836965497d615214d7bda87fa79a178abb01762ec2b3d124f7",
+    "known_raw_excerpt_differences": 3,
+    "clean_text_equal_for_known_boundary_differences": true,
+    "collector_helpers_used": [
+      "plain_plot for output consistency only",
+      "fingerprint"
+    ],
+    "collector_page_record_collect_pages_summarize_used": false,
+    "independent_cleaner_reimplementation": false,
+    "exhaustive_semantic_review": false
+  },
+  "independent_aggregate_audit": {
+    "catalog_movies": 85517,
+    "pages": 80322,
+    "strata_rows": 148,
+    "strata_numeric_values": 888,
+    "raw_clean_counts": 10,
+    "text_hashes": 159674,
+    "file_pin_checks": 22,
+    "distinct_pinned_files": 16,
+    "pending_records": 0,
+    "all_feature_ready_false": true,
+    "english_only_movies": 44819,
+    "korean_only_movies": 251,
+    "both_language_movies": 6283,
+    "any_plot_movies": 51353,
+    "missing_plot_movies": 34164
+  },
+  "limits": [
+    "Current Wikipedia/TMDB are not historical MovieLens snapshots or evidence of 2026 Korean recommendation quality",
+    "Template removal can lose part or all of meaningful text; transclusions are not expanded",
+    "Three extracted blocks omit leading refs/empty literals; full API responses remain intact",
+    "Q2449985 has a wider entity scope and is excluded pending review; known cases are not an exhaustive list",
+    "Availability and matching do not establish model readiness or ending completeness"
+  ]
+}

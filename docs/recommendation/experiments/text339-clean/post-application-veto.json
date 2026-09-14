@@ -1,0 +1,20 @@
+{
+  "reviewer": "Rawls",
+  "decision": "RETAIN_ORIGINAL",
+  "veto_ordinals": [
+    1134,
+    1371,
+    1382,
+    1385,
+    1422
+  ],
+  "audit": {
+    "bytes": 706,
+    "sha256": "ee2bec1a749354e2c23ab2e57de2e6860d35c89397776ee0809a176bf96f8d89"
+  },
+  "initial_clean_seal": {
+    "bytes": 915,
+    "sha256": "aae01ab01deca7c59a6c6e4ed4b27d9ebe52832a918883d42d5bf1bee712e183"
+  },
+  "reason": "Preserve documentary format and sole adaptation/remake identity. Correction before encoding or new model predictions."
+}

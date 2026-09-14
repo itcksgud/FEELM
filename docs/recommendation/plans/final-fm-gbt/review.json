@@ -1,0 +1,174 @@
+{
+  "status": "DESIGN_PASS",
+  "execution_ready": false,
+  "recorded_at_utc": "2026-09-11T03:25:54.699427+00:00",
+  "scope": "Review of complete experiment history relevant to FM/GBT, primary literature, and the proposed bounded design. No new training, evaluation, or held-out star access.",
+  "documents": {
+    "README.md": {
+      "path": "docs/recommendation/plans/final-fm-gbt/README.md",
+      "bytes": 3298,
+      "sha256": "f5f2b2dbfdbb85fcefc84957e41feab5f181066a46ed92aacb09fef35f22a63e"
+    },
+    "DESIGN.md": {
+      "path": "docs/recommendation/plans/final-fm-gbt/DESIGN.md",
+      "bytes": 20959,
+      "sha256": "721d765dd78c89b60320da90e4eee2fc6446202aed8221692e4d7ad421bb5ea4"
+    },
+    "EVIDENCE.md": {
+      "path": "docs/recommendation/plans/final-fm-gbt/EVIDENCE.md",
+      "bytes": 11254,
+      "sha256": "30ab877230928ff7bceb69219aff365478fdfc6926c2a6876877e1053a0e04e4"
+    },
+    "config.json": {
+      "path": "docs/recommendation/plans/final-fm-gbt/config.json",
+      "bytes": 2155,
+      "sha256": "7ac43a357a2788a900d5e291ea2381e28a8cd63dc21568d6a7b951ea752477bb"
+    }
+  },
+  "reviewers": [
+    {
+      "agent": "Rawls /root/github_research_scope_audit",
+      "status": "DESIGN_PASS",
+      "focus": "Historical evidence, matched RH inputs, C/ALL scope, selection and stop rules"
+    },
+    {
+      "agent": "Hubble /root/text339_eval_review",
+      "status": "DESIGN_PASS",
+      "focus": "Actual feature/episode implementation, Spark parameters and unsupported weighting, parent manifests and role reuse"
+    },
+    {
+      "agent": "Dewey /root/wiki_report_review",
+      "status": "DESIGN_PASS",
+      "focus": "Primary literature, calibration and seed estimand, paired comparison and final claims; final README status/link delta also PASS"
+    }
+  ],
+  "rounds": [
+    {
+      "round": 1,
+      "status": "REVISION_REQUIRED",
+      "findings": [
+        "Require all three fixed paired seeds for formal mean/CI; incomplete seeds must not yield asymmetric means",
+        "Define baseline failure, unavailable calibration/metrics, and larger-budget failure selection branches",
+        "C MovieLens training/aggregate prohibition must not forbid permitted external TMDB aggregates or already supplied evaluation inputs",
+        "Limit the historical mismatch claim to FM_RH versus GBT_B, since matched B and R comparisons already exist",
+        "Preserve GBT maxMemoryInMB=128 and cacheNodeIds=false and compare resolved native parameters",
+        "Connect actual result-review records and state execution_ready=false"
+      ]
+    },
+    {
+      "round": 2,
+      "status": "DESIGN_PASS",
+      "resolution": "All three independent reviewers verified the corrections in DESIGN, EVIDENCE, config and the summary. No remaining blocking design findings."
+    },
+    {
+      "round": 3,
+      "status": "PRESENTATION_DELTA_PASS",
+      "reviewer": "Dewey",
+      "resolution": "README changed only from review-in-progress to completed design review and added review.json link; exact previous-content hash reconstructed. No experimental design change."
+    }
+  ],
+  "input_basis": {
+    "small_current_sources": [
+      {
+        "path": "docs/recommendation/experiments/text339/cohort-history-review.json",
+        "bytes": 1483,
+        "sha256": "02d6314864ad77dd7a1959f89f33b30142379fb7e9aa36af68ea59a6ea98d262"
+      },
+      {
+        "path": "docs/recommendation/experiments/foundation340/EXECUTION.md",
+        "bytes": 8601,
+        "sha256": "572c0aca1b1cbf06dbf75312d0d711689d94d08bc24d1e9bf312caba12783c38"
+      },
+      {
+        "path": "docs/recommendation/experiments/foundation340/result-review.json",
+        "bytes": 1262,
+        "sha256": "4894168cdd686e315aa2c3e828f186487cf01daf0ef3c0bb01787e5bc6b4a43e"
+      },
+      {
+        "path": "docs/recommendation/experiments/combination340/EXECUTION.md",
+        "bytes": 6549,
+        "sha256": "d1fd59a01ed2aeb17c2e5018302ca6c2f216893febfb8eb783f1dc331a7a03c2"
+      },
+      {
+        "path": "docs/recommendation/experiments/combination340/result-review.json",
+        "bytes": 1431,
+        "sha256": "91ae310f8b870b15d30330d68850ace9bde8c924bbea91a142b3d4e5da683d69"
+      },
+      {
+        "path": "docs/recommendation/experiments/research343/RESULT.md",
+        "bytes": 16444,
+        "sha256": "46e0520445d65f4cb456608b86a2feb2ef5058f29bfac7075365d52f7cdb030c"
+      },
+      {
+        "path": "docs/recommendation/experiments/research343/result-review.json",
+        "bytes": 8052,
+        "sha256": "f34ed793155d5a05c6b1ff6abb5986decccce4c7e02812aed13d9d816f71b3a1"
+      },
+      {
+        "path": "outputs/recommendation-evidence/foundation340/prepared-seal.json",
+        "bytes": 4711,
+        "sha256": "9f0550e38566512fc2dad084d3f9381a7197ea3bab05fd0428eef76878acb62e"
+      },
+      {
+        "path": "outputs/recommendation-evidence/foundation340/RH/feature-info.json",
+        "bytes": 11646,
+        "sha256": "8b871f51b027b5ae3fb8c52ac4fa2b67bee7b3e819d06c3f4389a425e9549094"
+      },
+      {
+        "path": "outputs/recommendation-evidence/text339/prepared-seal.json",
+        "bytes": 5024,
+        "sha256": "d27709a42bd0d5511a36f3740365637325d59b521c7f62eae04850523782fdd8"
+      },
+      {
+        "path": "outputs/recommendation-evidence/research343/roles.csv",
+        "bytes": 5806,
+        "sha256": "466b7cede9cb2d67f2bd7fca4fcdada770943bdd9d5924c35ccfdbe6a4cf2cc9"
+      },
+      {
+        "path": "scripts/foundation340_features.py",
+        "bytes": 7264,
+        "sha256": "83e2586d9acc8bfb8aec8dc47b8133f4bc0da8678ba0d82bdd295b5c7bf13cf9"
+      },
+      {
+        "path": "scripts/combination340_worker.py",
+        "bytes": 5302,
+        "sha256": "075f1f1721a392ceb45d3e523c47d92dd77d606dec3075227854f1a9bad4a673"
+      }
+    ],
+    "rh_data_pins_from_existing_prepared_seal": {
+      "RH/train.parquet": {
+        "bytes": 832717601,
+        "sha256": "9d8d33a252991c032704d4072003b4fb9f400136f3c411a2698ae5fee592fa45"
+      },
+      "RH/score.parquet": {
+        "bytes": 2985357,
+        "sha256": "9832425537943823f524ae6730aa1059b77d2c0464664f1dc29357bf95078f9b"
+      },
+      "RH/feature-info.json": {
+        "bytes": 11646,
+        "sha256": "8b871f51b027b5ae3fb8c52ac4fa2b67bee7b3e819d06c3f4389a425e9549094"
+      }
+    },
+    "note": "Large RH feature/label tables were not recomputed in this design turn. Exact input validation remains an execution gate; existing independently reviewed artifacts are the planned source."
+  },
+  "root_checks": [
+    "JSON syntax and proposal consistency",
+    "Max8 fits and 12h aggregate fit ceiling",
+    "Four primary contrasts and98.75% intervals",
+    "Version-pinned runtime and matching legacy FM/GBT settings",
+    "Current reviewer document fingerprints and local links"
+  ],
+  "not_performed": [
+    "New model training or inference",
+    "Opening fresh evaluation star values",
+    "Proof that an untouched final cohort exists",
+    "New execution code or adapter tests",
+    "Jira/GitLab/GitHub/commit/push/deployment"
+  ],
+  "next_execution_gates": [
+    "Usage and availability audit; explicit development-only fallback",
+    "Exact execution-code review and synthetic tests",
+    "Actual input/parent and native/portable validation",
+    "Only then bounded fits and scoring according to frozen design"
+  ]
+}

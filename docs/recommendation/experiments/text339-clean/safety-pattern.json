@@ -1,0 +1,5 @@
+{
+  "pattern": "\\b(?:docu(?:mentary|[- ]drama)?|documentaries|animat(?:ion|ed)|silent|short|feature|music video|concert|stand[- ]up|comedy|drama|thriller|horror|fantasy|sci[- ]fi|science fiction|western|musical|live[- ]action|experimental|biograph(?:ical|y)|romantic|romance|adventure|one[- ]hour|two[- ]hour|three[- ]hour|3[- ]?D|2[- ]?D|English|French|Japanese|Korean|German|Hindi|Tamil|Telugu|Kannada|Marathi|Malayalam|Bengali|Russian|Spanish|Italian|Chinese|Cantonese|Mandarin|Swedish|Danish|Norwegian|Finnish|Hungarian|Polish|Portuguese|Urdu|Persian|Arabic|Turkish|based on|adapted from|remake|sequel|prequel|anthology)\\b|뮤직.?비디오|다큐|애니|장편|단편|무성|서부|스릴러|코미디|뮤지컬|공포|판타지|실사|멜로|로맨스|범죄|드라마|실험영화|독립영화|공연실황|한국어|일본어|중국어|영어|프랑스어|스페인어|실화|시리즈|리메이크|원작|각색|\\b(?:SF|adapt(?:ation|ed)|television|TV|rockumentary|mockumentary|docudrama|35mm)\\b|옴니버스",
+  "flags": "IGNORECASE",
+  "scope": "KEEP_ONLY: conservative retention of possible format, genre, language or adaptation identity; false-positive retention allowed; adds zero deletions"
+}

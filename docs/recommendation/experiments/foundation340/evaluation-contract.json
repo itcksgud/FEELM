@@ -1,0 +1,9 @@
+{
+  "status": "DRAFT",
+  "primary": "H10 h>0 J>=2 IDCG>0 NDCG@2",
+  "formal_family": "Five primary contrasts in EXECUTION.md; other intervals descriptive only",
+  "parents": {
+    "outputs/recommendation-evidence/text339/labels.parquet": {"bytes": 75490, "sha256": "e3bf301a6e2ea7885b59bcab7fe83c2d3ad84f93f2f1bbb2d54d943b9a658db8"},
+    "outputs/recommendation-evidence/text339/evaluation-seal.json": {"bytes": 4890, "sha256": "0ab420fb3e50cf770d9dd7a24d64e5ce8896a4c17b38a7ba5df73398ad6fb9c7"}
+  }
+}

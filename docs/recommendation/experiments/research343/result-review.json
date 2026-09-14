@@ -1,0 +1,169 @@
+{
+  "status": "PASS",
+  "recorded_at_utc": "2026-09-11T03:00:28.819728+00:00",
+  "scope": "Local research343 design, three actual fits, matched development comparison, independent arithmetic and final report review. No deployment or model adoption.",
+  "pre_execution_reviews": [
+    {
+      "path": "docs/recommendation/experiments/research343/gbt-review.json",
+      "bytes": 1631,
+      "sha256": "64b062342fc0ad20cef77488a6fce1ee9f59ec24bdc8d388ac923e685e91e157"
+    },
+    {
+      "path": "docs/recommendation/experiments/research343/lgb-review.json",
+      "bytes": 2689,
+      "sha256": "3230c070c1ef269b35827545fb24744a4cea8421ef86290281775d0046cdae98"
+    },
+    {
+      "path": "docs/recommendation/experiments/research343/evaluation-review.json",
+      "bytes": 2740,
+      "sha256": "7f2f3a6023e2492623d0d932fb007df568a1bd7abfbdb4cbe6bcad73159704c4"
+    },
+    {
+      "path": "docs/recommendation/experiments/research343/report-code-review.json",
+      "bytes": 753,
+      "sha256": "403b97106817ad03bd0547d2ca6c03e74f4204496e9819c62036f3cbfb0659eb"
+    }
+  ],
+  "actual_fit_seals": [
+    {
+      "path": "outputs/recommendation-evidence/research343/gbt-fit-seal.json",
+      "bytes": 5324,
+      "sha256": "aa21757a019fa358d2d0064cc304da824c9a948d6cb53cc7f89209121fde7eab"
+    },
+    {
+      "path": "outputs/recommendation-evidence/research343/LGBM_REG_R-fit-seal.json",
+      "bytes": 4067,
+      "sha256": "fcb0a5c6eb49f9039220547b6ec0fe9cec4a140eed92e1ed9aff945c0a003473"
+    },
+    {
+      "path": "outputs/recommendation-evidence/research343/LGBM_RANK_R-fit-seal.json",
+      "bytes": 4082,
+      "sha256": "3be9c2a151b87c21c5610f0d49f9d295f1e5a358b82e57857bc238ba8f0d5892"
+    }
+  ],
+  "evaluation_seals": [
+    {
+      "path": "outputs/recommendation-evidence/research343/query-seal.json",
+      "bytes": 1741,
+      "sha256": "db8e135540f1aea2dcc0b3e4dd46d92a47802541217b0e05ba16a4178a7c827f"
+    },
+    {
+      "path": "outputs/recommendation-evidence/research343/calibration-seal.json",
+      "bytes": 2531,
+      "sha256": "198e71510ff6effb5dc3692a66fa9d8b5497578f23efc90042bdf97d4aa917ca"
+    },
+    {
+      "path": "outputs/recommendation-evidence/research343/evaluation-seal.json",
+      "bytes": 3438,
+      "sha256": "1102bc3172e26c43984b24cd40b96bba077e73ed869d5315fbe508caf2ab95fe"
+    },
+    {
+      "path": "outputs/recommendation-evidence/research343/catalog-seal.json",
+      "bytes": 30516,
+      "sha256": "317a7804d7b2ff273874d3d11365b277e6c1818300379108b4d61b5e6bb53bf8"
+    }
+  ],
+  "independent_model_review": {
+    "reviewer": "Hubble /root/text339_eval_review",
+    "status": "PASS",
+    "result": {
+      "path": "outputs/recommendation-evidence/research343-model-audit/result.json",
+      "bytes": 15499,
+      "sha256": "4914f18aad6566aa9d51be54ceeaebc65d8d241f1655b8f44c74fb7a5e8eb897"
+    },
+    "manifest": {
+      "path": "outputs/recommendation-evidence/research343-model-audit/manifest.json",
+      "bytes": 469,
+      "sha256": "c6b1f70c2c26cc364234396eb790a2adebe7cb97a3e7f566076e1d48ad866454"
+    },
+    "checks": [
+      "Three models: 93230 predictions and 180 root-threshold fixtures per model",
+      "4997069 training rows: query/user/row identity, partition assignment and order",
+      "Both LightGBM models: all 60 trees use all 4997069 rows; native rank truncation 6",
+      "No new fit or held-out quality label access during model audit"
+    ]
+  },
+  "independent_arithmetic_review": {
+    "reviewer": "Rawls /root/github_research_scope_audit",
+    "status": "PASS",
+    "result": {
+      "path": "outputs/recommendation-evidence/research343-audit/actual-audit.json",
+      "bytes": 154363,
+      "sha256": "008a072a68ed288f5ea96dbdad9a5b3e6a6f2147e9e209b2ab3ea157ab464b10"
+    },
+    "numeric_cells": 8393582,
+    "max_absolute_error": 2.6645352591003757e-14,
+    "checks": [
+      "Calibration, user/page/rating/movie summaries and all four predeclared contrasts",
+      "Full candidate 180 users, 15301337 rows, Top10 and exposure/UNKNOWN",
+      "No production evaluation/calibration/bootstrap helpers imported"
+    ],
+    "caveats": [
+      "Query seal uses original preparation code preserved in reg-driver-classpath-01; its PASS review and actual source hashes verified. Current REG/RANK fit executions use the later identical launcher version. Query preparation AST unchanged.",
+      "Query ID/episode/row/user mapping checked; no training rating values needed; native fit arithmetic audited separately.",
+      "common_j6 applies predicted>=6 separately by model/group. It is shared for full-scoring models and fixed W_DIRECT comparisons; ALS ALL/support error cohorts can be smaller and must not be described as the same cross-model cohort.",
+      "FM_R/FM_RH catalog ranks checked against sealed original Top10 only: their historical full score arrays were not saved. All three new models and FM_B/GBT_B/ALS/FM_ALS25 reranked from full saved candidates. No new inference.",
+      "Fixed fitted models/calibration conditional bootstrap; previous development cohort reuse; not fresh final inference.",
+      "Native ranker MSE intentionally NA. UNKNOWN is not a negative label. No operating model adoption inferred."
+    ]
+  },
+  "independent_final_report_review": {
+    "reviewer": "Dewey /root/wiki_report_review",
+    "status": "PASS",
+    "artifacts": [
+      {
+        "path": "docs/recommendation/experiments/research343/RESULT.md",
+        "bytes": 16444,
+        "sha256": "46e0520445d65f4cb456608b86a2feb2ef5058f29bfac7075365d52f7cdb030c"
+      },
+      {
+        "path": "docs/recommendation/experiments/research343/CONCLUSION.md",
+        "bytes": 3764,
+        "sha256": "4ccb4b9714ef68e4dcbd90340092f26b607d01f11c0fda86217253339ec48b8c"
+      },
+      {
+        "path": "docs/recommendation/experiments/research343/report-manifest.json",
+        "bytes": 768,
+        "sha256": "4e0f7479ef3084315c870f76e47bb46e1b5f5a3f378c98ac6a89cf449190842b"
+      },
+      {
+        "path": "docs/recommendation/experiments/research343/comparison.png",
+        "bytes": 110707,
+        "sha256": "53599668214dbba46b9c354209c57795352e8eec5d636b5cab9adc0b1b3cdf3d"
+      }
+    ],
+    "tables": 9,
+    "cells": 537,
+    "numeric_cells": 406,
+    "na_cells": 25,
+    "primary_ci_recalculation_max_error": 9.71e-17,
+    "checks": [
+      "All tables checked against source aggregates",
+      "Native/calibrated MSE and W_DIRECT-only ALS direct comparison",
+      "124/117/91, W_DIRECT 122/109, natural unsupported 40/23 denominators",
+      "UNKNOWN and one-vote-ten flags independently checked against original label IDs and TMDB metadata",
+      "PNG labels, axes and readability PASS; links checked with result-review pending until this record"
+    ],
+    "resolved_finding": "Replaced unmeasured actual exposure quality claim with observed-candidate quality and full-candidate exposure concentration."
+  },
+  "root_visual_review": {
+    "status": "PASS",
+    "figure": {
+      "path": "docs/recommendation/experiments/research343/comparison.png",
+      "bytes": 110707,
+      "sha256": "53599668214dbba46b9c354209c57795352e8eec5d636b5cab9adc0b1b3cdf3d"
+    },
+    "checks": [
+      "Three aligned panels readable, no clipping or overlap",
+      "Different sample counts and conditional comparison-CI caption explicit"
+    ]
+  },
+  "limits": [
+    "Previously opened development cohort: calibration 90/comparison 180, not a fresh final test or Korean 2026 service truth",
+    "Observed ranking measures only rated candidates; full-catalog UNKNOWN is neither negative feedback nor proven satisfaction",
+    "One bounded fit per new model; no hyperparameter/convergence or multi-node scaling claim",
+    "Stored resource counters are audited, not independently remeasured",
+    "No universal winner, no post-hoc metric weights, no new service policy or external publication"
+  ],
+  "completed_new_fits": 3
+}

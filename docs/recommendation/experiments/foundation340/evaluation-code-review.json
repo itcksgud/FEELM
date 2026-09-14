@@ -1,0 +1,26 @@
+{
+  "status": "PASS",
+  "reviewer": "Dewey",
+  "fingerprint": {
+    "foundation340_evaluate.py": {
+      "bytes": 7880,
+      "sha256": "5fcd8eb3d181e1a42a2d1a92b6d0f1047622de1db05adc61476b5608c27c734d"
+    },
+    "text339_evaluate.py": {
+      "bytes": 12441,
+      "sha256": "5d5e8f165faa944b5ab211f94c80fa076dbe55ab8bd0e0abe0eded4b51a8d192"
+    },
+    "evaluation-contract.json": {
+      "bytes": 502,
+      "sha256": "7d424f1939064b9087b307d4a66a568303f658872685abce44e1f7519cc6f25b"
+    }
+  },
+  "scope": "Predeclared statistics/UNKNOWN/selection and label-opening gates; no actual results reviewed",
+  "checks": [
+    "five contrasts and 99 percent primary intervals",
+    "actual h and descriptive interaction",
+    "label identity checked before decoding",
+    "synthetic IDCG and denominators",
+    "five-file preservation"
+  ]
+}

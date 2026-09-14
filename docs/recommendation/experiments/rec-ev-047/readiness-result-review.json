@@ -1,0 +1,18 @@
+{
+  "status": "PASS",
+  "reviewers": [
+    "service_next_step_check / Confucius",
+    "target_domain_review / Euler"
+  ],
+  "completion": {
+    "bytes": 2665,
+    "sha256": "dbd3ef81197192051c0fa496b289609a4a6ea07fd7dc0a224eec7a644a125ba6"
+  },
+  "raw_three_column_rows_verified": 32000204,
+  "catalog_metadata_rows_verified": 9212216,
+  "user_origin_count_values_verified": 1392336,
+  "availability_rows_verified": 630,
+  "maximum_mean_difference": 2.27e-13,
+  "rating_values_decoded": 0,
+  "scope": "Readiness result only; not actual fit approval"
+}

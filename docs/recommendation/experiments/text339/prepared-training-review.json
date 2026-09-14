@@ -1,0 +1,37 @@
+{
+  "status": "PASS",
+  "reviewer": "/root/github_research_scope_audit",
+  "prepared_seal": {
+    "bytes": 5024,
+    "sha256": "d27709a42bd0d5511a36f3740365637325d59b521c7f62eae04850523782fdd8"
+  },
+  "training_history_support": {
+    "bytes": 1194,
+    "sha256": "98a5889a21238b23d2584c34a9e8fcc43734bf9edc813e8a531159581dda061f"
+  },
+  "checks": {
+    "original_rows": 6261195,
+    "removed_C_rows": 1264126,
+    "remaining_rows": 4997069,
+    "train_users": 39859,
+    "episodes": 73771,
+    "tied_timestamp_pairs_ordered": 767762,
+    "all_row_id_uid_labels_exact": true,
+    "pca_overview_fit_movies": 45074,
+    "pca_wiki_fit_movies": 31528,
+    "pca_C_movies": 0,
+    "pca_max_basis_error": 8.04e-15,
+    "actual_feature_sample_values": 15512,
+    "feature_error_same_environment": 0
+  },
+  "diagnostics": {
+    "feature_Blas1_error": 1.19209e-07,
+    "same_Blas4_reproduction_error": 0,
+    "h0_target_rows": 4114737,
+    "positive_h_target_rows": 882332,
+    "positive_h_users": 8245
+  },
+  "claim_limit": "Controlled comparison under this fixed training distribution only; do not equate overall improvement with personalization improvement",
+  "pca_clarification": "C and zero-training-support movies excluded; supported W movies may also occur in evaluation J; evaluation rating values not used",
+  "future_rating_values_read": 0
+}

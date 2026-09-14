@@ -1,0 +1,26 @@
+{
+  "report_code": {
+    "bytes": 15639,
+    "sha256": "81960d9d34eea14c9f5c458620c919f4b39a14b1ebf1049d927b939e68314db5"
+  },
+  "result": {
+    "bytes": 16444,
+    "sha256": "46e0520445d65f4cb456608b86a2feb2ef5058f29bfac7075365d52f7cdb030c"
+  },
+  "figure": {
+    "bytes": 110707,
+    "sha256": "53599668214dbba46b9c354209c57795352e8eec5d636b5cab9adc0b1b3cdf3d"
+  },
+  "evaluation_seal": {
+    "bytes": 3438,
+    "sha256": "1102bc3172e26c43984b24cd40b96bba077e73ed869d5315fbe508caf2ab95fe"
+  },
+  "catalog_seal": {
+    "bytes": 30516,
+    "sha256": "317a7804d7b2ff273874d3d11365b277e6c1818300379108b4d61b5e6bb53bf8"
+  },
+  "resources": {
+    "bytes": 595,
+    "sha256": "ca7a61de826e6bedc46affb512e28579dbe28d3319e1e28d440d465f48eb79c1"
+  }
+}

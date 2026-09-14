@@ -1,0 +1,31 @@
+{
+  "catalog_movies": 85517,
+  "expected_pages_among_processed_mappings": 80322,
+  "feature_ready": false,
+  "generated_at": "2026-09-10T01:41:45.649054+00:00",
+  "mapping_movies_processed": 85517,
+  "mapping_status": {
+    "MATCH_BOTH_IDS": 74964,
+    "MATCH_SINGLE_ID": 67,
+    "NO_ID_MATCH": 10301,
+    "REVIEW_CONFLICTING_IDS": 114,
+    "REVIEW_MULTIPLE_QIDS": 71
+  },
+  "movies_with_any_plot": 51353,
+  "movies_with_both_plots": 6283,
+  "movies_with_en_plot": 51102,
+  "movies_with_ko_plot": 6534,
+  "no_model_training": true,
+  "no_user_ratings_read": true,
+  "page_status": {
+    "EMPTY_PLOT_AFTER_CLEANING": 932,
+    "NO_PAGE": 2,
+    "NO_PLOT_SECTION": 21269,
+    "PLOT_COLLECTED": 57636,
+    "REVIEW_NON_FILM_PAGE": 6,
+    "REVIEW_PAGE_QID_MISMATCH": 477
+  },
+  "pages_processed": 80322,
+  "pages_with_quality_flags": 67,
+  "status": "COLLECTED_PENDING_REVIEW"
+}

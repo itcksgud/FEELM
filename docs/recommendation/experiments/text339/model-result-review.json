@@ -1,0 +1,151 @@
+{
+  "status": "PASS_ALL_FOUR_NUMERICAL_MODELS_WITH_T3_RESOURCE_EXCEPTION",
+  "reviewer": "/root/github_research_scope_audit",
+  "future_evaluation_rating_values_read": 0,
+  "new_spark_sessions_or_fits": 0,
+  "models": {
+    "T0": {
+      "status": "PASS_ACTUAL_MODEL",
+      "model_seal": {
+        "bytes": 7176,
+        "sha256": "6b14545ca60bb37d651af07f8012ee38d76d39cad1e920af506a453defc0c65c"
+      },
+      "verified_code_pins": 21,
+      "verified_model_files": 21,
+      "extra_or_missing_files": 0,
+      "native_portable_parameters_bit_exact": true,
+      "prediction_rows": 93230,
+      "row_id_uid_and_aligned_order_exact": true,
+      "independent_factor_formula_max_error": 6.217248937900877e-15,
+      "independent_feature_pair_formula_rows": 32,
+      "independent_feature_pair_formula_max_error": 5.329070518200751e-15,
+      "parity_tolerance": 1e-08,
+      "raw_prediction_min": 0.8775987175,
+      "raw_prediction_max": 4.9741757215,
+      "outside_half_to_five": 0,
+      "nonfinite": 0,
+      "fit_seconds": 1123.7980114250022,
+      "peak_bytes": 10794692608,
+      "blas_threads": 1
+    },
+    "T1": {
+      "status": "PASS_ACTUAL_MODEL",
+      "model_seal": {
+        "bytes": 7176,
+        "sha256": "2ff40962691b9b6fd5304dcd9fc465e18ce32165fb1825c250ad21eeaa388c38"
+      },
+      "verified_code_pins": 21,
+      "verified_model_files": 21,
+      "extra_or_missing_files": 0,
+      "native_portable_parameters_bit_exact": true,
+      "prediction_rows": 93230,
+      "row_id_uid_and_aligned_order_exact": true,
+      "independent_factor_formula_max_error": 5.329070518200751e-15,
+      "independent_feature_pair_formula_rows": 32,
+      "independent_feature_pair_formula_max_error": 4.440892098500626e-15,
+      "parity_tolerance": 1e-08,
+      "raw_prediction_min": 0.7011630798518587,
+      "raw_prediction_max": 5.021911979762493,
+      "outside_half_to_five": 1,
+      "outside_scale_context": "One row above5: cap1, h1, W, training support50+; no row below0.5",
+      "nonfinite": 0,
+      "fit_seconds": 2446.2989650960008,
+      "peak_bytes": 12461551616,
+      "blas_threads": 1
+    },
+    "T2": {
+      "status": "PASS_ACTUAL_MODEL_MEMORY_CAP_REACHED",
+      "model_seal": {
+        "bytes": 7176,
+        "sha256": "840c4e286870c71da555f6830169385704cb63d2bb5c6655aefc6efb05ab6e86"
+      },
+      "verified_code_pins": 21,
+      "verified_model_files": 21,
+      "extra_or_missing_files": 0,
+      "native_portable_parameters_bit_exact": true,
+      "prediction_rows": 93230,
+      "row_id_uid_and_aligned_order_exact": true,
+      "independent_factor_formula_max_error": 7.993605777301127e-15,
+      "independent_feature_pair_formula_rows": 32,
+      "independent_feature_pair_formula_max_error": 6.217248937900877e-15,
+      "parity_tolerance": 1e-08,
+      "raw_prediction_min": 0.8157992358800031,
+      "raw_prediction_max": 5.044542494412208,
+      "outside_half_to_five": 1,
+      "outside_scale_context": "One row above5: cap1, h1, W, training support50+; no row below0.5",
+      "nonfinite": 0,
+      "fit_seconds": 3744.196090993999,
+      "peak_bytes": 12884901888,
+      "memory_cap_bytes": 12884901888,
+      "auxiliary_strict_headroom_check": "FAILED: peak is not strictly below12GiB",
+      "contract_memory_cap_exceeded": false,
+      "memory_headroom_established": false,
+      "blas_threads": 1
+    },
+    "T3": {
+      "status": "PASS_ACTUAL_NUMERICAL_MODEL_RESOURCE_EXCEPTION",
+      "model_seal": {
+        "bytes": 7176,
+        "sha256": "0873c3001cad3b3f30906d7a2219e3125c63bfd6579be95ecf2c71686df09bad"
+      },
+      "verified_code_pins": 21,
+      "verified_model_files": 21,
+      "extra_or_missing_files": 0,
+      "native_portable_parameters_bit_exact": true,
+      "prediction_rows": 93230,
+      "row_id_uid_and_aligned_order_exact": true,
+      "independent_factor_formula_max_error": 7.993605777301127e-15,
+      "independent_factor_formula_mean_error": 8.433943831377759e-16,
+      "independent_feature_pair_formula_rows": 32,
+      "independent_feature_pair_formula_max_error": 6.217248937900877e-15,
+      "parity_tolerance": 1e-08,
+      "raw_prediction_min": 0.795768094716491,
+      "raw_prediction_max": 5.020920368075691,
+      "outside_half_to_five": 1,
+      "outside_scale_context": "One row above5: cap1, h1, W, training support50+; no row below0.5",
+      "nonfinite": 0,
+      "fit_seconds": 3617.894636480003,
+      "worker_seconds": 3740.0050842439996,
+      "peak_bytes": 12884905984,
+      "configured_memory_cap_bytes": 12884901888,
+      "observed_peak_excess_bytes": 4096,
+      "strict_peak_cap_check": "FAIL: observed peak exceeds12GiB by4096bytes",
+      "memory_headroom_established": false,
+      "memory_source": "worker reads cgroup memory.peak first, with memory.max_usage_in_bytes fallback",
+      "resource_interpretation": "Completed with Docker configured12GiB; successful completion is not strict measured-peak compliance. Numerical checks continue separately; no threshold relaxation or retraining.",
+      "blas_threads": 1
+    }
+  },
+  "limits": [
+    "Prediction parity is not recommendation-quality evidence.",
+    "Optimization trace was not saved; convergence was not independently established.",
+    "Unbounded raw regression predictions are preserved; predeclared ranking and raw/clipped error rules remain unchanged.",
+    "Stored training RMSE was inspected but not independently recomputed over all training rows."
+  ],
+  "stacked_predictions": {
+    "status": "PASS_ALL_FOUR_STACKED_PREDICTIONS",
+    "shape": [
+      93230,
+      4
+    ],
+    "names": [
+      "T0",
+      "T1",
+      "T2",
+      "T3"
+    ],
+    "all_columns_bit_exact_to_aligned": true,
+    "all_finite": true,
+    "actual_model_artifact_hashes_verified": 84,
+    "fit_seal": {
+      "bytes": 4195,
+      "sha256": "447c00df9cb888bbc0272bd03abd87f751b951954244e0e113bd1171d086c25d"
+    },
+    "predictions": {
+      "bytes": 1623043,
+      "sha256": "629eb1e4a4ed0192782400e3dc59759158e9654ea397a5e4e9682a142f47775e"
+    },
+    "prepared_and_code_parents_exact": true,
+    "target_stars_decoded": 0
+  }
+}

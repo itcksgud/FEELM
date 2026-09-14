@@ -1,0 +1,135 @@
+{
+  "status": "PASS",
+  "fingerprint": {
+    "scripts/text339_common.py": {
+      "bytes": 4611,
+      "sha256": "92376fd3c8c9085e975d864fe5122694f0ada539551c646d24edd5f32eb0b2a6"
+    },
+    "scripts/text339_text.py": {
+      "bytes": 16392,
+      "sha256": "c6cbe0875bddbeb49b905c54d1737fcac83a8ae04cda73baf1fa4324e71f02e2"
+    },
+    "scripts/text339_features.py": {
+      "bytes": 3896,
+      "sha256": "122e2146e3f0fb71109e5598454f870cbb1b55494115dac3543acc9230b70574"
+    },
+    "scripts/text339_encode.py": {
+      "bytes": 7646,
+      "sha256": "682d1015e2b0a135ea1e45a58861d836e2c309cbf6b71db2ca3c877c7a653383"
+    },
+    "scripts/text339_repair_overviews.py": {
+      "bytes": 4243,
+      "sha256": "bbdc2d66d3c078ce08389e5586af9c1fd831b848b7b6e927318ffd7f4d6923b5"
+    },
+    "scripts/text339_apply_usage_review.py": {
+      "bytes": 5012,
+      "sha256": "5fb058e7875d55dc197cae279f7fe246f8271ce97266a1335cc3c849f4a59b83"
+    },
+    "scripts/report_text339.py": {
+      "bytes": 9846,
+      "sha256": "6d25ab18929d04bc3eedba35355b2a53bedf6165b03767bfed01da4451b8e067"
+    },
+    "scripts/text339_relations.py": {
+      "bytes": 3117,
+      "sha256": "fdc970a6506cfd27dcc2df15cd2785ce5f221f76bd74eaeb24aa6d73c5ccd4d6"
+    },
+    "scripts/text339_prepare.py": {
+      "bytes": 13203,
+      "sha256": "03283cfcea35de152a7e619cba38094aa7287ab917d253902f45719abbc4ddb7"
+    },
+    "scripts/text339_worker.py": {
+      "bytes": 2862,
+      "sha256": "0f8bdb2c005443b0b8bf69239a3726dc3038ed538f1461477226c1260ae8ac7e"
+    },
+    "scripts/text339_run.py": {
+      "bytes": 6840,
+      "sha256": "6c15122694b932ca3be4fb38c699505adee4916a634bb4d6cf94b3cdf1782dd7"
+    },
+    "scripts/text339_evaluate.py": {
+      "bytes": 12441,
+      "sha256": "5d5e8f165faa944b5ab211f94c80fa076dbe55ab8bd0e0abe0eded4b51a8d192"
+    },
+    "scripts/test_text339.py": {
+      "bytes": 5951,
+      "sha256": "071a59c586cef09e7fe488bd75ab464908dd1dd0a6e2d7151d5e9e204d5556b4"
+    },
+    "scripts/cold_item_features.py": {
+      "bytes": 4838,
+      "sha256": "78ed5bbea151dc12d7a8bb144fa389333c779550fcfdff66d28d90c6900a4cec"
+    },
+    "scripts/rec047_features.py": {
+      "bytes": 5791,
+      "sha256": "a6f3fdc26cc88cceea2f6b1fe1244285bd9e29f7175874f7ab2eb8fae5904268"
+    },
+    "scripts/rec046_common.py": {
+      "bytes": 8001,
+      "sha256": "42dd14e83ecbee0c02c5e4233abb4b6a8d807ad2213c24a22cfb82350bc47848"
+    },
+    "scripts/rec047_common.py": {
+      "bytes": 5855,
+      "sha256": "a51d5c4fe9d487caf5c45606ead4cc244654c83fbe39339c40c56c165e792c16"
+    },
+    "scripts/rec047_readiness.py": {
+      "bytes": 8271,
+      "sha256": "eb5a6a46655975e9f2923947ff16400ab400c47238217c90bf73104afaeac8b7"
+    },
+    "scripts/collect_wikipedia_plots.py": {
+      "bytes": 26995,
+      "sha256": "5ff2bc6dfb16c2123229ebc7b922e69575cd0ca10c961815a729b9d1b6e15af4"
+    },
+    "docs/recommendation/experiments/text339/EXECUTION.md": {
+      "bytes": 11239,
+      "sha256": "737ef26c3e5469008072541186aab2a92f2bd8d5181fc02568eeda7b19c92f21"
+    },
+    "docs/recommendation/experiments/text339/config.json": {
+      "bytes": 5771,
+      "sha256": "2f7ca5a235b514bec07a7b1fb9648d1ed05849f6e83cfea81af6b6bd6851a4e3"
+    }
+  },
+  "canonical_fingerprint_sha256": "1233f3672f06399578b83c51ca55eb3dae05a634408f8a185d2531129ce06c9b",
+  "reviewers": {
+    "execution_core": "/root/github_research_scope_audit",
+    "statistics_and_report": "/root/text339_eval_review",
+    "source_semantics_and_application": "/root/wiki_report_review"
+  },
+  "evidence": {
+    "cohort-history-review.json": {
+      "bytes": 1483,
+      "sha256": "02d6314864ad77dd7a1959f89f33b30142379fb7e9aa36af68ea59a6ea98d262"
+    },
+    "feature-math-review.json": {
+      "bytes": 1432,
+      "sha256": "094955290858988e1c722b9cbd505d582a431807496645e03144f3319e09bdad"
+    },
+    "text-quality-review.json": {
+      "bytes": 1922,
+      "sha256": "8eb3a3c19969f53551ed096b17cbbfb4dda449280218d6964e058e6cb3994d58"
+    },
+    "encoder-review.json": {
+      "bytes": 4511,
+      "sha256": "6907fc59f839c28260d58a84167db6aec83e38809d1347eb05cc902fc66a6c37"
+    },
+    "evaluation-code-review.json": {
+      "bytes": 1132,
+      "sha256": "76bf3758fa6269f3e3b19828d051f774fec71dc74c011584a3b2b522ece45e85"
+    },
+    "wiki-usage-decisions.json": {
+      "bytes": 18008,
+      "sha256": "ab0d1f39f46b4b6197fd0bafcdfe34c955e9df7e2d041ad244e743113fd8ec88"
+    }
+  },
+  "preflight": {
+    "bytes": 3397,
+    "sha256": "b30005b3c62910f1400d2315a036511329aa79b6665621d2bb43c46f2da4d7b3"
+  },
+  "validation": [
+    "13 focused unit tests pass after final code changes",
+    "744 by 554 full capped-history features finite; original K values bit-exact",
+    "C excluded from all train targets, episode inputs, aggregates and PCA fit",
+    "four-condition FM pairwise formula max error 2.065e-14; eight malformed contexts rejected",
+    "31-user evaluation mock and report render with no actual future labels",
+    "complete source and encoder resume audits recorded separately"
+  ],
+  "scope": "local development comparison only; actual encoded artifacts must complete and be independently checked before preparing model rows",
+  "target_labels_opened_for_this_run": false
+}

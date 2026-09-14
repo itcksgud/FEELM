@@ -1,0 +1,32 @@
+{
+  "status": "PASS_IDENTITY_AND_SECTION_AUDIT",
+  "reviewer": "/root/github_research_scope_audit",
+  "recorded_at_utc": "2026-09-10T01:45:15.668704+00:00",
+  "scope": "Korean raw requests/responses; final Parquet comparison recorded separately in result-review.json",
+  "expected_pages": 18244,
+  "cache_files": 365,
+  "cache_bytes": 27960067,
+  "http_method": "GET",
+  "valid_revisions_independently_parsed": 18231,
+  "independent_checks": [
+    "HTTP, request and response hashes",
+    "Requested QID, aliases, namespace and revision metadata",
+    "Revision timestamp not after collection timestamp",
+    "Section boundaries from independent token-state and line parser"
+  ],
+  "status_counts": {
+    "PLOT_COLLECTED": 6534,
+    "NO_PLOT_SECTION": 11606,
+    "EMPTY_PLOT_AFTER_CLEANING": 91,
+    "REVIEW_PAGE_QID_MISMATCH": 11,
+    "REVIEW_NON_FILM_PAGE": 2
+  },
+  "independent_boundary_differences": 0,
+  "audit_parser_correction": "An inline ref in the heading of 동감 (2022년 영화) initially remained in the independent parser heading; independently normalized the heading and verified the collector correctly retained 210 plot characters. Collector unchanged.",
+  "cache_ledger_canonical_sha256": "f549506787ce65836965497d615214d7bda87fa79a178abb01762ec2b3d124f7",
+  "cleaning_independently_reimplemented": false,
+  "semantic_exhaustive_review": false,
+  "new_api_calls": 0,
+  "rating_values_read": 0,
+  "feature_use_approved": false
+}

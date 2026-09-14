@@ -1,0 +1,58 @@
+{
+  "exporter": {
+    "bytes": 10810,
+    "sha256": "0beea8067814562ae7b5eb91b20e15b10415f948414f876435fd991c65c7939d"
+  },
+  "source_completion": {
+    "bytes": 3159,
+    "sha256": "62210daa9fc259fbe0da151c2b9d24f922c0fdf55c6753571f855d9745891cd4"
+  },
+  "diagnostic_seal": {
+    "bytes": 2666,
+    "sha256": "3f647df461f0a2a0992f4422dbf2e7bcbc4aa04fbabd588202285a5454c0efcf"
+  },
+  "files": {
+    "RESULT.md": {
+      "bytes": 11010,
+      "sha256": "9af8da9b2d506c87d802cc1167aa1c1139d5db14588acb27f5e74b9fbd523d18"
+    },
+    "comparison.png": {
+      "bytes": 251665,
+      "sha256": "4dbdaea20dacd75dcbeb2000fefaee1c3207de8ba7219f34de7b4c1873b9f5ae"
+    },
+    "metrics.csv": {
+      "bytes": 89997,
+      "sha256": "8db4094a8c49875351df69ac71e5ea81673d6edc41cf2c7c7fbb01e611da4a01"
+    },
+    "contrasts.csv": {
+      "bytes": 8983,
+      "sha256": "9fea0d6b9cf72cd633131f0168fefc315598b22336c01093816739775ce6b460"
+    },
+    "strata.csv": {
+      "bytes": 307273,
+      "sha256": "1a4737627fb9f43f98eee4262b47617eae7bc633f2158a6aa22aa66d88c2bb27"
+    },
+    "training-resources.csv": {
+      "bytes": 1272,
+      "sha256": "30590bbda387441b73325a011e433b4e53bfdcdd38ecc4f2323cd2972e218782"
+    },
+    "training-composition.csv": {
+      "bytes": 243,
+      "sha256": "8e293ca5215546a19e2f7686b287a4eca567c72faa0f57274bc599956590f715"
+    },
+    "feature-availability.csv": {
+      "bytes": 1779,
+      "sha256": "02f4f2db566ce27469fb785c071ee580cee74542c859bea94fd6c2908f36e9bd"
+    }
+  },
+  "editorial_revision": {
+    "kind": "reviewed human-readable summary and interpretation",
+    "reviewer": "service_next_step_check",
+    "data_and_figure_unchanged": true,
+    "changes": [
+      "conclusion table and candidate decision",
+      "sampling and target-cold scope",
+      "independent-review completion status and links"
+    ]
+  }
+}

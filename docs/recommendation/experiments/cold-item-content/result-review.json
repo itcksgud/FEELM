@@ -1,0 +1,218 @@
+{
+  "status": "PASS",
+  "completed_date": "2026-09-10",
+  "scope": "Local exploratory synthetic target-cold comparison; previously opened MovieLens development ratings and 2026 TMDB snapshot",
+  "fingerprint": {
+    "scripts/cold_item_common.py": {
+      "bytes": 4622,
+      "sha256": "94d5a2c0823c0e54e20c3c577751a1b6e88d1b3cec0f0314df2769b898b5aab2"
+    },
+    "scripts/cold_item_features.py": {
+      "bytes": 4838,
+      "sha256": "78ed5bbea151dc12d7a8bb144fa389333c779550fcfdff66d28d90c6900a4cec"
+    },
+    "scripts/cold_item_prepare.py": {
+      "bytes": 9554,
+      "sha256": "e1fc97fd475d1d87af9135d6f84f32e62312fd33a5d9aa63fe91b6e84eba3881"
+    },
+    "scripts/cold_item_worker.py": {
+      "bytes": 4272,
+      "sha256": "b3b78b332fde524b868deb51dc2ec87d82b8046793f152d4b073cfc09f81b1d5"
+    },
+    "scripts/cold_item_run.py": {
+      "bytes": 6244,
+      "sha256": "62df960f951e6255f3ba6c42786559f8cc615e23ad7d2e5da3079fa90f36422c"
+    },
+    "scripts/cold_item_evaluate.py": {
+      "bytes": 7289,
+      "sha256": "5af3305eef64a8170a7f04b5e42e432b258badfae8a7d4c7e2039fc4a3a08635"
+    },
+    "scripts/test_cold_item.py": {
+      "bytes": 4207,
+      "sha256": "38e5579deb4fd10ad6fa9dbf0e02d2d1e1afcc049f7f79fd4442c3e7d469f490"
+    },
+    "scripts/rec047_features.py": {
+      "bytes": 5791,
+      "sha256": "a6f3fdc26cc88cceea2f6b1fe1244285bd9e29f7175874f7ab2eb8fae5904268"
+    },
+    "scripts/rec046_common.py": {
+      "bytes": 8001,
+      "sha256": "42dd14e83ecbee0c02c5e4233abb4b6a8d807ad2213c24a22cfb82350bc47848"
+    },
+    "scripts/rec047_common.py": {
+      "bytes": 5855,
+      "sha256": "a51d5c4fe9d487caf5c45606ead4cc244654c83fbe39339c40c56c165e792c16"
+    },
+    "scripts/rec047_readiness.py": {
+      "bytes": 8271,
+      "sha256": "eb5a6a46655975e9f2923947ff16400ab400c47238217c90bf73104afaeac8b7"
+    },
+    "docs/recommendation/experiments/cold-item-content/EXECUTION.md": {
+      "bytes": 9950,
+      "sha256": "d152e7a13a22779ccfd28e82a1876dd8699a2b254db09e06628ffbdb3d478f8f"
+    },
+    "docs/recommendation/experiments/cold-item-content/config.json": {
+      "bytes": 3113,
+      "sha256": "6300e727a82165ffdcc56c0874c1829513bdec89dd62fe506164225d7a4fde16"
+    }
+  },
+  "reviewers": {
+    "target_domain_review": {
+      "status": "PASS",
+      "scope": "Original selected target ratings and every user-level metric",
+      "original_archive_rows_scanned": 32000204,
+      "selected_target_ratings_decoded": 482,
+      "other_target_ratings_decoded": 0,
+      "unique_users": 118,
+      "unique_movies": 317,
+      "contexts": 465,
+      "prediction_rows": 1854,
+      "models_including_reference": 13,
+      "user_metric_rows": 15054,
+      "numeric_values_checked": 90324,
+      "mse_maximum_absolute_difference": 1.7763568394002505e-15,
+      "other_metrics_maximum_absolute_difference": 0,
+      "elapsed_seconds": 21.7,
+      "peak_rss_mib": 133
+    },
+    "service_next_step_check": {
+      "status": "PASS",
+      "scope": "Final ALS vector; aggregates, paired differences, confidence intervals, report and export",
+      "main_rows": 624,
+      "strata_rows": 3744,
+      "contrast_rows": 84,
+      "bootstrap_intervals_checked": 708,
+      "resamples_per_interval": 20000,
+      "independent_method": "bootstrap frequency matrices and manual linear quantiles",
+      "numeric_values_checked": 51896,
+      "maximum_absolute_difference": 1.14e-13,
+      "report_table_values_checked": 172,
+      "plot_visually_checked": true,
+      "training_composition_rows": 5,
+      "feature_availability_rows": 20,
+      "resource_rows": 12,
+      "aggregate_csv_copies": 5
+    },
+    "github_research_scope_audit": {
+      "status": "PASS",
+      "scope": "Native FM parameters and predictions; all model seals and final assembled predictions",
+      "sealed_fit_files": 205,
+      "content_columns_vs_aligned_maximum_difference": 0,
+      "als_svd_maximum_absolute_difference": 1.64313e-14
+    }
+  },
+  "reviews_read_only": true,
+  "actual_pa_denominators": {
+    "k": [
+      1,
+      5,
+      10,
+      30
+    ],
+    "valid_users": [
+      72,
+      71,
+      71,
+      68
+    ],
+    "comparable_pairs": [
+      1804,
+      1664,
+      1664,
+      1651
+    ]
+  },
+  "als_order_valid_users": [
+    78,
+    77,
+    77,
+    74
+  ],
+  "planned_comparison_families": {
+    "increment": 36,
+    "reference": 48
+  },
+  "comparisons_whose_adjusted_interval_excludes_zero": [
+    {
+      "family": "increment",
+      "k": 10,
+      "new": "CROWD_RESPONSE__FM",
+      "reference": "CROWD_ITEM__FM",
+      "metric": "pa",
+      "users": 71,
+      "difference": 0.0616226449346945,
+      "ci_low": 0.0013863301482232,
+      "ci_high": 0.1425686176236642
+    },
+    {
+      "family": "increment",
+      "k": 30,
+      "new": "SUPPORT__RIDGE",
+      "reference": "BASE__RIDGE",
+      "metric": "mse",
+      "users": 113,
+      "difference": 0.0265618575771291,
+      "ci_low": 0.0060370156897594,
+      "ci_high": 0.0532368562839135
+    }
+  ],
+  "confirmed_reference_differences": 0,
+  "interpretation": [
+    "FM crowd-response addition improved PA at K10 under the prespecified comparison rule; 71 valid users and a lower endpoint close to zero limit the strength of the evidence.",
+    "Ridge SUPPORT increased MSE at K30; the tested shrinkage/support bundle is not a required adopted policy.",
+    "Crowd-item additions have favorable point estimates in the main comparisons but no confirmed adjusted improvement.",
+    "No confirmed ALS difference is not equivalence; FM versus GBT was not a prespecified paired contrast.",
+    "Inputs were reference-supported W movies; only target movies were synthetically cold for content training.",
+    "No 2026 Korean service quality, full-catalog Top-N, individual causal effects, or optimal convergence claim.",
+    "FM and GBT with the tested response bundle remain comparison candidates; final service model, K and policy are not adopted."
+  ],
+  "integrity": {
+    "source_completion": {
+      "bytes": 3159,
+      "sha256": "62210daa9fc259fbe0da151c2b9d24f922c0fdf55c6753571f855d9745891cd4"
+    },
+    "fit_seal": {
+      "bytes": 40852,
+      "sha256": "d13afab1b4fcebeda710cb12d310b73e8bcde8848fa98dcce94079efa90c459d"
+    },
+    "predictions": {
+      "bytes": 179954,
+      "sha256": "601ec79a259bbf12af26fd9fa2cc10a2bfc9a16755b11cb32a2ff668c286c655"
+    },
+    "labels": {
+      "bytes": 5563,
+      "sha256": "f50d9d34a20217e53d98c925418b9edee08bdae35b22b97257417223ec172534"
+    },
+    "user_metrics": {
+      "bytes": 367115,
+      "sha256": "eb041fcdd8ae9d727872af16daea38b75952298c1363a139079febd130fdb367"
+    },
+    "prepared_data_review": {
+      "bytes": 3101,
+      "sha256": "44bac2cc865c1af1cec3d506db87b3c71351d2d86d626ac71f5a71b6bf75a1de"
+    },
+    "model_review": {
+      "bytes": 6120,
+      "sha256": "ce539f5eea7ec9e1098f8558a8ecabe1c412168b36f4f16e4fbaa92c68f47da1"
+    },
+    "report_code_review": {
+      "bytes": 629,
+      "sha256": "2b8b9bebe675404d2ece54026f88c9ff66d2a9d4bdb85f009e6e5cf51ecf2f6d"
+    },
+    "aggregate_export": {
+      "bytes": 1902,
+      "sha256": "844422bab47f4d5563c5251caea742cb922b6d5f993238b1844d137f4e129eb2"
+    },
+    "result_document": {
+      "bytes": 11010,
+      "sha256": "9af8da9b2d506c87d802cc1167aa1c1139d5db14588acb27f5e74b9fbd523d18"
+    },
+    "figure": {
+      "bytes": 251665,
+      "sha256": "4dbdaea20dacd75dcbeb2000fefaee1c3207de8ba7219f34de7b4c1873b9f5ae"
+    }
+  },
+  "visual_qa": "Readable Korean labels and all four panels checked; figure point estimates are distinct from adjusted inference.",
+  "calculation_seals_preserved": true,
+  "external_publication": "LOCAL_ONLY; no commit, push, Jira, MR or deployment performed"
+}

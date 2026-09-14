@@ -1,0 +1,56 @@
+{
+  "status": "PASS",
+  "reviewer": "Hubble",
+  "fit_seal": {
+    "bytes": 3701,
+    "sha256": "9790dd15f77adf292ed15244ddb0b594d69ad2de553baf0a1ee14114dd99af2a"
+  },
+  "catalog_seal": {
+    "bytes": 3119,
+    "sha256": "29ef52e6dddb00d4c5a361b614e57a9ee8d6fbf37548ad6a5cc122e2e8a6b287"
+  },
+  "model_reviews": {
+    "B": {
+      "bytes": 656,
+      "sha256": "242c6d25afa96e9e76e2a5a4d66b437c6e0c433dad47284434193b078350dff3"
+    },
+    "R": {
+      "bytes": 656,
+      "sha256": "5edd553e8fdd416a829e1b23e36d7fbcb0fe7c136a5e07e4880952fc3f91db3a"
+    },
+    "H": {
+      "bytes": 820,
+      "sha256": "41b16dd98ecef0b4e28e6d30e2546e743cf03d4771c873508863c3a4a25ae1ce"
+    },
+    "RH": {
+      "bytes": 791,
+      "sha256": "4f5795a927deb76cd8f09062d34b73e205b26306735ff5b693f032bf719bd8b2"
+    }
+  },
+  "fit_review": {
+    "bytes": 628,
+    "sha256": "52e573711bdce397c5449ef568eede29af023b9f2c4dae44f7fc31bff232e8e6"
+  },
+  "catalog_audit": {
+    "users": 270,
+    "allowed_candidate_rows": 22963869,
+    "models": 4,
+    "recomputed_scores": 91855476,
+    "original_4096_chunks": 5666,
+    "actual_pins_checked": 159,
+    "user_model_top10_lists": 1080,
+    "rank_mismatches": 0,
+    "stored_predictions_compared": 10800,
+    "independent_max_error": 4.440892098500626e-15,
+    "full_recomputation_original_vs_independent_max_error": 4.440892098500626e-15,
+    "method": "Recompute all allowed candidates using original 4096 chunks, compare original kernel with independent einsum, rerank all and compare stored Top10. NonTop10 original scores were not stored.",
+    "metadata_id_date_viewed_counts_duplicates_pass": true
+  },
+  "resource_status": {
+    "B": "UNKNOWN",
+    "R": "PASS",
+    "H": "STRICT_RESOURCE_EXCEPTION",
+    "RH": "STRICT_RESOURCE_EXCEPTION"
+  },
+  "evaluation_labels_read": false
+}

@@ -1,0 +1,33 @@
+{
+  "status": "PASS",
+  "reviewer": "Rawls",
+  "fingerprint": {
+    "scripts/foundation340_worker.py": {
+      "bytes": 3435,
+      "sha256": "225003b1661925a572f80dad96b86f7fdf0e8feda5d044e67d067711eb7a00b4"
+    },
+    "scripts/foundation340_worker_v2.py": {
+      "bytes": 3846,
+      "sha256": "89be4fb8c13fe261aa713484e7294ab0bc4abe9ad3757466a4aa7a51f543738c"
+    },
+    "scripts/foundation340_resume.py": {
+      "bytes": 6619,
+      "sha256": "55496bf1e6fa7b85df78b580af7d5e5c02cda1ff7de0553c81197a134cba1bae"
+    },
+    "docs/recommendation/experiments/foundation340/RUNTIME-RECOVERY.md": {
+      "bytes": 2132,
+      "sha256": "2b7bf592cb8babdfcd99f4031724e6c77c868f90eed0fd1ef7ee1deb1447f7aa"
+    }
+  },
+  "checks": [
+    "main training AST and imports unchanged after normalizing memory diagnostics",
+    "six cgroup v1/v2/missing/limit fixtures",
+    "twelve recovery gate tests",
+    "no B refit",
+    "same R/H/RH data params seed partitions",
+    "prior failed logs preserved",
+    "runtime source and B independent audit copied into model seals"
+  ],
+  "B_measurement_status": "UNKNOWN",
+  "actual_environment_probe": "v1 memory.max_usage_in_bytes exists; probe is not a model measurement"
+}

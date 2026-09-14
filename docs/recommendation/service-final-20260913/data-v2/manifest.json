@@ -1,0 +1,49 @@
+{
+  "status": "RENDERED_FROM_INDEPENDENTLY_AUDITED_VALUES",
+  "script": {
+    "path": "C:\\higher\\projects\\FEELM-standalone\\scripts\\render_service_kobis_report.py",
+    "bytes": 6499,
+    "sha256": "9373da0cd2b2078dc0a0142062d5a0d792af129a3313d76f0f80ebe2ff788e2a"
+  },
+  "inputs": [
+    {
+      "path": "C:\\higher\\projects\\FEELM-standalone\\outputs\\recommendation-evidence\\kobis-service-final-20260913\\movie-comparison.csv",
+      "bytes": 203322,
+      "sha256": "0b2cab5b96da30cceb5852ed4a03a4cb232f64f83c5cff006159ecb6e765a8b6"
+    },
+    {
+      "path": "C:\\higher\\projects\\FEELM-standalone\\outputs\\recommendation-evidence\\kobis-service-final-audit-20260913\\exclude-release-after-ml-cutoff-statistics.csv",
+      "bytes": 2537,
+      "sha256": "08f662a44c711d9c84eb87f467172029edc5e50e6ab5cf86f4bf38fb8fc2517d"
+    },
+    {
+      "path": "C:\\higher\\projects\\FEELM-standalone\\outputs\\recommendation-evidence\\kobis-service-final-audit-20260913\\result-review.json",
+      "bytes": 5734,
+      "sha256": "8db52c1076f22cba7521a407d43863fdc67b018bdd6369944116d3ec6d1fd3b5"
+    },
+    {
+      "path": "C:\\higher\\projects\\FEELM-standalone\\outputs\\recommendation-evidence\\kobis-service-final-audit-20260913\\sensitivity-b.json",
+      "bytes": 15184,
+      "sha256": "31fdd74502dfe8bd0068f4e4d39a9676165d5182ed7a0460de21452d914824a4"
+    }
+  ],
+  "outputs": [
+    {
+      "path": "C:\\higher\\projects\\FEELM-standalone\\docs\\recommendation\\service-final-20260913\\data-v2\\counts-per-audience.png",
+      "bytes": 79865,
+      "sha256": "da734715ec796ef29a52929efcd12d91664f4b49001e0e5eece67ec8e19a7c7d"
+    },
+    {
+      "path": "C:\\higher\\projects\\FEELM-standalone\\docs\\recommendation\\service-final-20260913\\data-v2\\movie-examples.csv",
+      "bytes": 1114,
+      "sha256": "f0c0e38b270d4ebab94b78bcb90d00f692d424356eff593467cff9a2c00c3ebc"
+    },
+    {
+      "path": "C:\\higher\\projects\\FEELM-standalone\\docs\\recommendation\\service-final-20260913\\data-v2\\movie-examples.png",
+      "bytes": 121716,
+      "sha256": "14545277654aa1fa1029b7e317777919296d6cc8700b34a20c80c31ff296fd62"
+    }
+  ],
+  "new_network_requests": 0,
+  "new_model_training": false
+}

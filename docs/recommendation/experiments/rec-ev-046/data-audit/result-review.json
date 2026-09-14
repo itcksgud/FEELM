@@ -1,0 +1,45 @@
+{
+  "status": "PASS_INDEPENDENT_RESULT_REVIEW",
+  "reviewer": "service_next_step_check / Confucius",
+  "completion_sha256": "460957e2a5cb28ac1f132d7494cdb8899cad710be8677d562c4f4e4b2fde4241",
+  "scope": "Fixed-model post-result descriptive activity by support cells; no model selection or new raw labels",
+  "method": "Independent Kendall tau-b tie correction; production pair_accuracy not called; brute-force all-pair cross-check of 250 small cells",
+  "user_round_rows": 163200,
+  "user_averaged_rows": 70325,
+  "final_grid_rows": 1500,
+  "metric_cells": 6000,
+  "confidence_intervals_verified": 2500,
+  "under_30_user_metric_cells": 500,
+  "no_data_metric_cells": 3000,
+  "weighting_summary_rows": 200,
+  "direct_als_rating_instances_verified": 1149165,
+  "max_user_mse_difference": 6.22e-15,
+  "max_pair_accuracy_difference": 3.33e-16,
+  "max_cell_mean_difference": 4.44e-16,
+  "max_ci_difference": 8.88e-16,
+  "max_weighting_difference": 4.44e-16,
+  "same_model_denominators": true,
+  "original_ALL_metrics_reproduced": true,
+  "limitations": [
+    "Pointwise intervals; no new multiple-comparison winner claim",
+    "Equal-cell pair accuracy excludes cross-cell pairs and is a different estimand",
+    "Empty and small cells do not establish low-activity-user performance"
+  ],
+  "data_composition_review": "data-review.json",
+  "publication": "LOCAL_ONLY",
+  "report_review": {
+    "reviewers": [
+      "target_domain_review / Euler",
+      "service_next_step_check / Confucius"
+    ],
+    "status": "PASS_WITH_WORDING_CLARIFICATIONS_APPLIED",
+    "clarifications": [
+      "K means star inputs, not recommendation exposures",
+      "Fraction of evaluation rows is percent; support fraction difference may use percentage points",
+      "Do not sum across overlapping movie support columns; activity rows are mutually exclusive",
+      "13-14 percent retained alone does not prove insufficient training"
+    ],
+    "report_sha256": "40c5da5964b876f3a18e1dbd0d4249130a1f348529ad9486682ac2a0e7faf648",
+    "figure_visual_qa": "PASS: rendered, inspected; spacing updated to keep footnote and legend separate"
+  }
+}

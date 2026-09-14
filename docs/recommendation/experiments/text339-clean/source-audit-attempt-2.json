@@ -1,0 +1,30 @@
+{
+  "status": "SUPERSEDED_BY_CONSERVATIVE_RETENTION_SCREEN",
+  "reviewer": "root",
+  "clean_seal": {
+    "bytes": 915,
+    "sha256": "0c793deff339b36a3840e9aab35d42ed41c43aa088298056f1137e09f8885ea7"
+  },
+  "texts": {
+    "bytes": 253387264,
+    "sha256": "438d114dae4504199a408114552c4130733cad27e22f2b2cb2b7557e4e2d1310"
+  },
+  "example_mixed_format_ordinals": [
+    1032,
+    1040,
+    1058,
+    1206,
+    1235,
+    1274,
+    1283,
+    1472,
+    1775,
+    1784
+  ],
+  "screen_proposal": {
+    "bytes": 1181,
+    "sha256": "4a52efdd6d8ca046e5cd3aa5816451eea3219f348e0cddbd4e667325b4081b44"
+  },
+  "models_fit": 0,
+  "new_embeddings": 0
+}

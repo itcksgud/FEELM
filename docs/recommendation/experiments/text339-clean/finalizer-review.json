@@ -1,0 +1,17 @@
+{
+  "status": "PASS",
+  "reviewer": "Rawls",
+  "code": {
+    "bytes": 4921,
+    "sha256": "bd49f84a898ff1de2d6cc24e703d6a9af56f7a8f85cf9fef2e28e5fbecd17d65"
+  },
+  "synthetic_checks": 14,
+  "actual_readonly_dryrun": {
+    "candidates": 1843,
+    "proposed": 546,
+    "vetoed": 106,
+    "approved": 440
+  },
+  "file_writes": 0,
+  "ratings_read": 0
+}

@@ -1,0 +1,40 @@
+{
+  "status": "PASS",
+  "reviewers": [
+    "service_next_step_check / Confucius",
+    "target_domain_review / Euler"
+  ],
+  "scope": "Label-free readiness only; actual stars and fitting require separate review",
+  "fingerprint": {
+    "docs/recommendation/experiments/rec-ev-047/README.md": {
+      "bytes": 6078,
+      "sha256": "06c6f5039148cbe51fec1ced87cc7fdc18e99065e061911dfcd33ec361d8428a"
+    },
+    "scripts/rec047_readiness.py": {
+      "bytes": 8271,
+      "sha256": "eb5a6a46655975e9f2923947ff16400ab400c47238217c90bf73104afaeac8b7"
+    },
+    "scripts/rec046_common.py": {
+      "bytes": 8001,
+      "sha256": "42dd14e83ecbee0c02c5e4233abb4b6a8d807ad2213c24a22cfb82350bc47848"
+    },
+    "outputs/recommendation-evidence/rec-ev-032/user-resplits/splits.npz": {
+      "bytes": 634368,
+      "sha256": "5d230c59fcdbabdce529e6fa1ba5535895b59b2ab296905d71e9274c5c158410"
+    },
+    "outputs/recommendation-evidence/rec-ev-046/catalog.npz": {
+      "bytes": 276280,
+      "sha256": "03134ecc38bfee8dc2c6eabfae69f9ab2eeccf1859f3284c8c8a6c4f30e34af6"
+    },
+    "C:/higher/projects/MM/data/raw/ml-32m.zip": {
+      "bytes": 238950008,
+      "sha256": "e4a68655d7386b8f95f2f2424b2ff975dfdd15ffd59e0d864a14dca43e99d6ee"
+    }
+  },
+  "resolved": [
+    "UTF-8 JSON",
+    "K0 ALL unique movie scope",
+    "completed horizon timestamp gate",
+    "historical source seals verified"
+  ]
+}

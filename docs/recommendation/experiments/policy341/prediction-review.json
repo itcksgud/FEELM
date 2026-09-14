@@ -1,0 +1,22 @@
+{
+  "status": "PASS",
+  "reviewer": "Rawls",
+  "prediction_seal": {"bytes": 2675, "sha256": "6b2c26b42323631b571cb98f9cc2c39e5bcaefc6706f1556f649b669269a2fa9"},
+  "checks": {
+    "users": 270,
+    "candidate_pools": 2,
+    "models": 2,
+    "policies": 5,
+    "independent_configurations": 5400,
+    "ranking_rows": 45020,
+    "block_rows": 14710,
+    "genre_dimensions": 19,
+    "max_novelty_error": 0.0,
+    "ID_order_score_role_fallback_mismatches": 0,
+    "actual_pins_checked_before_and_after": 441,
+    "viewed_duplicate_partial_tie_score_floor_pass": true
+  },
+  "method": "Independent genre profile and complete-candidate selection; no production genre_vectors/familiarity/recommend call. Equal-weight normalized multi-genres, all remaining candidates, score/ID ordering, .25 connection and .30 score-floor comparisons; only novelty delta uses fixed 1e-12 tolerance.",
+  "evaluation_labels_read": false,
+  "scientific_contract_changed": false
+}

@@ -1,0 +1,19 @@
+{
+  "status": "PASS",
+  "reviewer": "Dewey",
+  "fingerprint": {
+    "combination340_evaluate.py": {
+      "bytes": 8348,
+      "sha256": "b9abec701b8523f9a36e0b7f8b51ae836227d3cc153cd7ce4fd24a6b95d15375"
+    }
+  },
+  "checks": [
+    "fixed C2 and W_DIRECT4 contrasts",
+    "six comparisons with small-N gate",
+    "S included in exploratory selection",
+    "label provenance before decoding",
+    "direct ALS/fallback separation",
+    "UNKNOWN and missing slots separated"
+  ],
+  "scope": "Code only, no actual results reviewed"
+}

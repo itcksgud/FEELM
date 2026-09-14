@@ -1,0 +1,1509 @@
+{
+  "featureVersion": "rh230-kobis15-v1",
+  "dimensions": 245,
+  "dtype": "float32",
+  "orderedNamesHashEncoding": "UTF-8 JSON array, ensure_ascii=false, separators comma/colon",
+  "orderedNamesHash": "a776529f25edff0b2f0886fcb783094ea5082b33f2a640c04006841d0364688c",
+  "prefix230Sources": [
+    {
+      "path": "outputs/recommendation-evidence/foundation340/RH/feature-info.json",
+      "sha256": "8b871f51b027b5ae3fb8c52ac4fa2b67bee7b3e819d06c3f4389a425e9549094"
+    },
+    {
+      "path": "scripts/rec046_common.py",
+      "sha256": "42dd14e83ecbee0c02c5e4233abb4b6a8d807ad2213c24a22cfb82350bc47848"
+    },
+    {
+      "path": "scripts/rec047_features.py",
+      "sha256": "a6f3fdc26cc88cceea2f6b1fe1244285bd9e29f7175874f7ab2eb8fae5904268"
+    },
+    {
+      "path": "scripts/cold_item_features.py",
+      "sha256": "78ed5bbea151dc12d7a8bb144fa389333c779550fcfdff66d28d90c6900a4cec"
+    },
+    {
+      "path": "scripts/foundation340_features.py",
+      "sha256": "83e2586d9acc8bfb8aec8dc47b8133f4bc0da8678ba0d82bdd295b5c7bf13cf9"
+    },
+    {
+      "path": "scripts/final344_adapter.py",
+      "sha256": "15b6a53c5be9e6207cb215857058570304b61c17c5aa88198341efd55f688894"
+    },
+    {
+      "path": "scripts/text339_relations.py",
+      "sha256": "fdc970a6506cfd27dcc2df15cd2785ce5f221f76bd74eaeb24aa6d73c5ccd4d6"
+    }
+  ],
+  "features": [
+    {
+      "index": 0,
+      "column": "x000",
+      "name": "support_candidate_genre_28",
+      "definition": "Frozen RH230 source contract"
+    },
+    {
+      "index": 1,
+      "column": "x001",
+      "name": "support_candidate_genre_12",
+      "definition": "Frozen RH230 source contract"
+    },
+    {
+      "index": 2,
+      "column": "x002",
+      "name": "support_candidate_genre_16",
+      "definition": "Frozen RH230 source contract"
+    },
+    {
+      "index": 3,
+      "column": "x003",
+      "name": "support_candidate_genre_35",
+      "definition": "Frozen RH230 source contract"
+    },
+    {
+      "index": 4,
+      "column": "x004",
+      "name": "support_candidate_genre_80",
+      "definition": "Frozen RH230 source contract"
+    },
+    {
+      "index": 5,
+      "column": "x005",
+      "name": "support_candidate_genre_99",
+      "definition": "Frozen RH230 source contract"
+    },
+    {
+      "index": 6,
+      "column": "x006",
+      "name": "support_candidate_genre_18",
+      "definition": "Frozen RH230 source contract"
+    },
+    {
+      "index": 7,
+      "column": "x007",
+      "name": "support_candidate_genre_10751",
+      "definition": "Frozen RH230 source contract"
+    },
+    {
+      "index": 8,
+      "column": "x008",
+      "name": "support_candidate_genre_14",
+      "definition": "Frozen RH230 source contract"
+    },
+    {
+      "index": 9,
+      "column": "x009",
+      "name": "support_candidate_genre_36",
+      "definition": "Frozen RH230 source contract"
+    },
+    {
+      "index": 10,
+      "column": "x010",
+      "name": "support_candidate_genre_27",
+      "definition": "Frozen RH230 source contract"
+    },
+    {
+      "index": 11,
+      "column": "x011",
+      "name": "support_candidate_genre_10402",
+      "definition": "Frozen RH230 source contract"
+    },
+    {
+      "index": 12,
+      "column": "x012",
+      "name": "support_candidate_genre_9648",
+      "definition": "Frozen RH230 source contract"
+    },
+    {
+      "index": 13,
+      "column": "x013",
+      "name": "support_candidate_genre_10749",
+      "definition": "Frozen RH230 source contract"
+    },
+    {
+      "index": 14,
+      "column": "x014",
+      "name": "support_candidate_genre_878",
+      "definition": "Frozen RH230 source contract"
+    },
+    {
+      "index": 15,
+      "column": "x015",
+      "name": "support_candidate_genre_53",
+      "definition": "Frozen RH230 source contract"
+    },
+    {
+      "index": 16,
+      "column": "x016",
+      "name": "support_candidate_genre_10752",
+      "definition": "Frozen RH230 source contract"
+    },
+    {
+      "index": 17,
+      "column": "x017",
+      "name": "support_candidate_genre_37",
+      "definition": "Frozen RH230 source contract"
+    },
+    {
+      "index": 18,
+      "column": "x018",
+      "name": "support_year_scaled",
+      "definition": "Frozen RH230 source contract"
+    },
+    {
+      "index": 19,
+      "column": "x019",
+      "name": "support_year_present",
+      "definition": "Frozen RH230 source contract"
+    },
+    {
+      "index": 20,
+      "column": "x020",
+      "name": "support_runtime_scaled",
+      "definition": "Frozen RH230 source contract"
+    },
+    {
+      "index": 21,
+      "column": "x021",
+      "name": "support_runtime_present",
+      "definition": "Frozen RH230 source contract"
+    },
+    {
+      "index": 22,
+      "column": "x022",
+      "name": "support_GENRE_candidate_present",
+      "definition": "Frozen RH230 source contract"
+    },
+    {
+      "index": 23,
+      "column": "x023",
+      "name": "support_GENRE_candidate_size",
+      "definition": "Frozen RH230 source contract"
+    },
+    {
+      "index": 24,
+      "column": "x024",
+      "name": "support_GENRE_input_usable_fraction",
+      "definition": "Frozen RH230 source contract"
+    },
+    {
+      "index": 25,
+      "column": "x025",
+      "name": "support_GENRE_linked_fraction",
+      "definition": "Frozen RH230 source contract"
+    },
+    {
+      "index": 26,
+      "column": "x026",
+      "name": "support_GENRE_similarity_mean",
+      "definition": "Frozen RH230 source contract"
+    },
+    {
+      "index": 27,
+      "column": "x027",
+      "name": "support_GENRE_similarity_max",
+      "definition": "Frozen RH230 source contract"
+    },
+    {
+      "index": 28,
+      "column": "x028",
+      "name": "support_GENRE_weighted_stars",
+      "definition": "Frozen RH230 source contract"
+    },
+    {
+      "index": 29,
+      "column": "x029",
+      "name": "support_GENRE_weighted_relative_stars",
+      "definition": "Frozen RH230 source contract"
+    },
+    {
+      "index": 30,
+      "column": "x030",
+      "name": "support_GENRE_linked_stars",
+      "definition": "Frozen RH230 source contract"
+    },
+    {
+      "index": 31,
+      "column": "x031",
+      "name": "support_GENRE_no_link",
+      "definition": "Frozen RH230 source contract"
+    },
+    {
+      "index": 32,
+      "column": "x032",
+      "name": "support_KEYWORD_candidate_present",
+      "definition": "Frozen RH230 source contract"
+    },
+    {
+      "index": 33,
+      "column": "x033",
+      "name": "support_KEYWORD_candidate_size",
+      "definition": "Frozen RH230 source contract"
+    },
+    {
+      "index": 34,
+      "column": "x034",
+      "name": "support_KEYWORD_input_usable_fraction",
+      "definition": "Frozen RH230 source contract"
+    },
+    {
+      "index": 35,
+      "column": "x035",
+      "name": "support_KEYWORD_linked_fraction",
+      "definition": "Frozen RH230 source contract"
+    },
+    {
+      "index": 36,
+      "column": "x036",
+      "name": "support_KEYWORD_similarity_mean",
+      "definition": "Frozen RH230 source contract"
+    },
+    {
+      "index": 37,
+      "column": "x037",
+      "name": "support_KEYWORD_similarity_max",
+      "definition": "Frozen RH230 source contract"
+    },
+    {
+      "index": 38,
+      "column": "x038",
+      "name": "support_KEYWORD_weighted_stars",
+      "definition": "Frozen RH230 source contract"
+    },
+    {
+      "index": 39,
+      "column": "x039",
+      "name": "support_KEYWORD_weighted_relative_stars",
+      "definition": "Frozen RH230 source contract"
+    },
+    {
+      "index": 40,
+      "column": "x040",
+      "name": "support_KEYWORD_linked_stars",
+      "definition": "Frozen RH230 source contract"
+    },
+    {
+      "index": 41,
+      "column": "x041",
+      "name": "support_KEYWORD_no_link",
+      "definition": "Frozen RH230 source contract"
+    },
+    {
+      "index": 42,
+      "column": "x042",
+      "name": "support_COUNTRY_LANGUAGE_candidate_present",
+      "definition": "Frozen RH230 source contract"
+    },
+    {
+      "index": 43,
+      "column": "x043",
+      "name": "support_COUNTRY_LANGUAGE_candidate_size",
+      "definition": "Frozen RH230 source contract"
+    },
+    {
+      "index": 44,
+      "column": "x044",
+      "name": "support_COUNTRY_LANGUAGE_input_usable_fraction",
+      "definition": "Frozen RH230 source contract"
+    },
+    {
+      "index": 45,
+      "column": "x045",
+      "name": "support_COUNTRY_LANGUAGE_linked_fraction",
+      "definition": "Frozen RH230 source contract"
+    },
+    {
+      "index": 46,
+      "column": "x046",
+      "name": "support_COUNTRY_LANGUAGE_similarity_mean",
+      "definition": "Frozen RH230 source contract"
+    },
+    {
+      "index": 47,
+      "column": "x047",
+      "name": "support_COUNTRY_LANGUAGE_similarity_max",
+      "definition": "Frozen RH230 source contract"
+    },
+    {
+      "index": 48,
+      "column": "x048",
+      "name": "support_COUNTRY_LANGUAGE_weighted_stars",
+      "definition": "Frozen RH230 source contract"
+    },
+    {
+      "index": 49,
+      "column": "x049",
+      "name": "support_COUNTRY_LANGUAGE_weighted_relative_stars",
+      "definition": "Frozen RH230 source contract"
+    },
+    {
+      "index": 50,
+      "column": "x050",
+      "name": "support_COUNTRY_LANGUAGE_linked_stars",
+      "definition": "Frozen RH230 source contract"
+    },
+    {
+      "index": 51,
+      "column": "x051",
+      "name": "support_COUNTRY_LANGUAGE_no_link",
+      "definition": "Frozen RH230 source contract"
+    },
+    {
+      "index": 52,
+      "column": "x052",
+      "name": "support_ERA_RUNTIME_candidate_present",
+      "definition": "Frozen RH230 source contract"
+    },
+    {
+      "index": 53,
+      "column": "x053",
+      "name": "support_ERA_RUNTIME_candidate_size",
+      "definition": "Frozen RH230 source contract"
+    },
+    {
+      "index": 54,
+      "column": "x054",
+      "name": "support_ERA_RUNTIME_input_usable_fraction",
+      "definition": "Frozen RH230 source contract"
+    },
+    {
+      "index": 55,
+      "column": "x055",
+      "name": "support_ERA_RUNTIME_linked_fraction",
+      "definition": "Frozen RH230 source contract"
+    },
+    {
+      "index": 56,
+      "column": "x056",
+      "name": "support_ERA_RUNTIME_similarity_mean",
+      "definition": "Frozen RH230 source contract"
+    },
+    {
+      "index": 57,
+      "column": "x057",
+      "name": "support_ERA_RUNTIME_similarity_max",
+      "definition": "Frozen RH230 source contract"
+    },
+    {
+      "index": 58,
+      "column": "x058",
+      "name": "support_ERA_RUNTIME_weighted_stars",
+      "definition": "Frozen RH230 source contract"
+    },
+    {
+      "index": 59,
+      "column": "x059",
+      "name": "support_ERA_RUNTIME_weighted_relative_stars",
+      "definition": "Frozen RH230 source contract"
+    },
+    {
+      "index": 60,
+      "column": "x060",
+      "name": "support_ERA_RUNTIME_linked_stars",
+      "definition": "Frozen RH230 source contract"
+    },
+    {
+      "index": 61,
+      "column": "x061",
+      "name": "support_ERA_RUNTIME_no_link",
+      "definition": "Frozen RH230 source contract"
+    },
+    {
+      "index": 62,
+      "column": "x062",
+      "name": "support_DIRECTOR_candidate_present",
+      "definition": "Frozen RH230 source contract"
+    },
+    {
+      "index": 63,
+      "column": "x063",
+      "name": "support_DIRECTOR_candidate_size",
+      "definition": "Frozen RH230 source contract"
+    },
+    {
+      "index": 64,
+      "column": "x064",
+      "name": "support_DIRECTOR_input_usable_fraction",
+      "definition": "Frozen RH230 source contract"
+    },
+    {
+      "index": 65,
+      "column": "x065",
+      "name": "support_DIRECTOR_linked_fraction",
+      "definition": "Frozen RH230 source contract"
+    },
+    {
+      "index": 66,
+      "column": "x066",
+      "name": "support_DIRECTOR_similarity_mean",
+      "definition": "Frozen RH230 source contract"
+    },
+    {
+      "index": 67,
+      "column": "x067",
+      "name": "support_DIRECTOR_similarity_max",
+      "definition": "Frozen RH230 source contract"
+    },
+    {
+      "index": 68,
+      "column": "x068",
+      "name": "support_DIRECTOR_weighted_stars",
+      "definition": "Frozen RH230 source contract"
+    },
+    {
+      "index": 69,
+      "column": "x069",
+      "name": "support_DIRECTOR_weighted_relative_stars",
+      "definition": "Frozen RH230 source contract"
+    },
+    {
+      "index": 70,
+      "column": "x070",
+      "name": "support_DIRECTOR_linked_stars",
+      "definition": "Frozen RH230 source contract"
+    },
+    {
+      "index": 71,
+      "column": "x071",
+      "name": "support_DIRECTOR_no_link",
+      "definition": "Frozen RH230 source contract"
+    },
+    {
+      "index": 72,
+      "column": "x072",
+      "name": "support_CAST_candidate_present",
+      "definition": "Frozen RH230 source contract"
+    },
+    {
+      "index": 73,
+      "column": "x073",
+      "name": "support_CAST_candidate_size",
+      "definition": "Frozen RH230 source contract"
+    },
+    {
+      "index": 74,
+      "column": "x074",
+      "name": "support_CAST_input_usable_fraction",
+      "definition": "Frozen RH230 source contract"
+    },
+    {
+      "index": 75,
+      "column": "x075",
+      "name": "support_CAST_linked_fraction",
+      "definition": "Frozen RH230 source contract"
+    },
+    {
+      "index": 76,
+      "column": "x076",
+      "name": "support_CAST_similarity_mean",
+      "definition": "Frozen RH230 source contract"
+    },
+    {
+      "index": 77,
+      "column": "x077",
+      "name": "support_CAST_similarity_max",
+      "definition": "Frozen RH230 source contract"
+    },
+    {
+      "index": 78,
+      "column": "x078",
+      "name": "support_CAST_weighted_stars",
+      "definition": "Frozen RH230 source contract"
+    },
+    {
+      "index": 79,
+      "column": "x079",
+      "name": "support_CAST_weighted_relative_stars",
+      "definition": "Frozen RH230 source contract"
+    },
+    {
+      "index": 80,
+      "column": "x080",
+      "name": "support_CAST_linked_stars",
+      "definition": "Frozen RH230 source contract"
+    },
+    {
+      "index": 81,
+      "column": "x081",
+      "name": "support_CAST_no_link",
+      "definition": "Frozen RH230 source contract"
+    },
+    {
+      "index": 82,
+      "column": "x082",
+      "name": "support_COMPANY_COLLECTION_candidate_present",
+      "definition": "Frozen RH230 source contract"
+    },
+    {
+      "index": 83,
+      "column": "x083",
+      "name": "support_COMPANY_COLLECTION_candidate_size",
+      "definition": "Frozen RH230 source contract"
+    },
+    {
+      "index": 84,
+      "column": "x084",
+      "name": "support_COMPANY_COLLECTION_input_usable_fraction",
+      "definition": "Frozen RH230 source contract"
+    },
+    {
+      "index": 85,
+      "column": "x085",
+      "name": "support_COMPANY_COLLECTION_linked_fraction",
+      "definition": "Frozen RH230 source contract"
+    },
+    {
+      "index": 86,
+      "column": "x086",
+      "name": "support_COMPANY_COLLECTION_similarity_mean",
+      "definition": "Frozen RH230 source contract"
+    },
+    {
+      "index": 87,
+      "column": "x087",
+      "name": "support_COMPANY_COLLECTION_similarity_max",
+      "definition": "Frozen RH230 source contract"
+    },
+    {
+      "index": 88,
+      "column": "x088",
+      "name": "support_COMPANY_COLLECTION_weighted_stars",
+      "definition": "Frozen RH230 source contract"
+    },
+    {
+      "index": 89,
+      "column": "x089",
+      "name": "support_COMPANY_COLLECTION_weighted_relative_stars",
+      "definition": "Frozen RH230 source contract"
+    },
+    {
+      "index": 90,
+      "column": "x090",
+      "name": "support_COMPANY_COLLECTION_linked_stars",
+      "definition": "Frozen RH230 source contract"
+    },
+    {
+      "index": 91,
+      "column": "x091",
+      "name": "support_COMPANY_COLLECTION_no_link",
+      "definition": "Frozen RH230 source contract"
+    },
+    {
+      "index": 92,
+      "column": "x092",
+      "name": "support_genre_profile_28",
+      "definition": "Frozen RH230 source contract"
+    },
+    {
+      "index": 93,
+      "column": "x093",
+      "name": "support_genre_profile_12",
+      "definition": "Frozen RH230 source contract"
+    },
+    {
+      "index": 94,
+      "column": "x094",
+      "name": "support_genre_profile_16",
+      "definition": "Frozen RH230 source contract"
+    },
+    {
+      "index": 95,
+      "column": "x095",
+      "name": "support_genre_profile_35",
+      "definition": "Frozen RH230 source contract"
+    },
+    {
+      "index": 96,
+      "column": "x096",
+      "name": "support_genre_profile_80",
+      "definition": "Frozen RH230 source contract"
+    },
+    {
+      "index": 97,
+      "column": "x097",
+      "name": "support_genre_profile_99",
+      "definition": "Frozen RH230 source contract"
+    },
+    {
+      "index": 98,
+      "column": "x098",
+      "name": "support_genre_profile_18",
+      "definition": "Frozen RH230 source contract"
+    },
+    {
+      "index": 99,
+      "column": "x099",
+      "name": "support_genre_profile_10751",
+      "definition": "Frozen RH230 source contract"
+    },
+    {
+      "index": 100,
+      "column": "x100",
+      "name": "support_genre_profile_14",
+      "definition": "Frozen RH230 source contract"
+    },
+    {
+      "index": 101,
+      "column": "x101",
+      "name": "support_genre_profile_36",
+      "definition": "Frozen RH230 source contract"
+    },
+    {
+      "index": 102,
+      "column": "x102",
+      "name": "support_genre_profile_27",
+      "definition": "Frozen RH230 source contract"
+    },
+    {
+      "index": 103,
+      "column": "x103",
+      "name": "support_genre_profile_10402",
+      "definition": "Frozen RH230 source contract"
+    },
+    {
+      "index": 104,
+      "column": "x104",
+      "name": "support_genre_profile_9648",
+      "definition": "Frozen RH230 source contract"
+    },
+    {
+      "index": 105,
+      "column": "x105",
+      "name": "support_genre_profile_10749",
+      "definition": "Frozen RH230 source contract"
+    },
+    {
+      "index": 106,
+      "column": "x106",
+      "name": "support_genre_profile_878",
+      "definition": "Frozen RH230 source contract"
+    },
+    {
+      "index": 107,
+      "column": "x107",
+      "name": "support_genre_profile_53",
+      "definition": "Frozen RH230 source contract"
+    },
+    {
+      "index": 108,
+      "column": "x108",
+      "name": "support_genre_profile_10752",
+      "definition": "Frozen RH230 source contract"
+    },
+    {
+      "index": 109,
+      "column": "x109",
+      "name": "support_genre_profile_37",
+      "definition": "Frozen RH230 source contract"
+    },
+    {
+      "index": 110,
+      "column": "x110",
+      "name": "support_genre_rated_profile_28",
+      "definition": "Frozen RH230 source contract"
+    },
+    {
+      "index": 111,
+      "column": "x111",
+      "name": "support_genre_rated_profile_12",
+      "definition": "Frozen RH230 source contract"
+    },
+    {
+      "index": 112,
+      "column": "x112",
+      "name": "support_genre_rated_profile_16",
+      "definition": "Frozen RH230 source contract"
+    },
+    {
+      "index": 113,
+      "column": "x113",
+      "name": "support_genre_rated_profile_35",
+      "definition": "Frozen RH230 source contract"
+    },
+    {
+      "index": 114,
+      "column": "x114",
+      "name": "support_genre_rated_profile_80",
+      "definition": "Frozen RH230 source contract"
+    },
+    {
+      "index": 115,
+      "column": "x115",
+      "name": "support_genre_rated_profile_99",
+      "definition": "Frozen RH230 source contract"
+    },
+    {
+      "index": 116,
+      "column": "x116",
+      "name": "support_genre_rated_profile_18",
+      "definition": "Frozen RH230 source contract"
+    },
+    {
+      "index": 117,
+      "column": "x117",
+      "name": "support_genre_rated_profile_10751",
+      "definition": "Frozen RH230 source contract"
+    },
+    {
+      "index": 118,
+      "column": "x118",
+      "name": "support_genre_rated_profile_14",
+      "definition": "Frozen RH230 source contract"
+    },
+    {
+      "index": 119,
+      "column": "x119",
+      "name": "support_genre_rated_profile_36",
+      "definition": "Frozen RH230 source contract"
+    },
+    {
+      "index": 120,
+      "column": "x120",
+      "name": "support_genre_rated_profile_27",
+      "definition": "Frozen RH230 source contract"
+    },
+    {
+      "index": 121,
+      "column": "x121",
+      "name": "support_genre_rated_profile_10402",
+      "definition": "Frozen RH230 source contract"
+    },
+    {
+      "index": 122,
+      "column": "x122",
+      "name": "support_genre_rated_profile_9648",
+      "definition": "Frozen RH230 source contract"
+    },
+    {
+      "index": 123,
+      "column": "x123",
+      "name": "support_genre_rated_profile_10749",
+      "definition": "Frozen RH230 source contract"
+    },
+    {
+      "index": 124,
+      "column": "x124",
+      "name": "support_genre_rated_profile_878",
+      "definition": "Frozen RH230 source contract"
+    },
+    {
+      "index": 125,
+      "column": "x125",
+      "name": "support_genre_rated_profile_53",
+      "definition": "Frozen RH230 source contract"
+    },
+    {
+      "index": 126,
+      "column": "x126",
+      "name": "support_genre_rated_profile_10752",
+      "definition": "Frozen RH230 source contract"
+    },
+    {
+      "index": 127,
+      "column": "x127",
+      "name": "support_genre_rated_profile_37",
+      "definition": "Frozen RH230 source contract"
+    },
+    {
+      "index": 128,
+      "column": "x128",
+      "name": "support_genre_shared_profile_28",
+      "definition": "Frozen RH230 source contract"
+    },
+    {
+      "index": 129,
+      "column": "x129",
+      "name": "support_genre_shared_profile_12",
+      "definition": "Frozen RH230 source contract"
+    },
+    {
+      "index": 130,
+      "column": "x130",
+      "name": "support_genre_shared_profile_16",
+      "definition": "Frozen RH230 source contract"
+    },
+    {
+      "index": 131,
+      "column": "x131",
+      "name": "support_genre_shared_profile_35",
+      "definition": "Frozen RH230 source contract"
+    },
+    {
+      "index": 132,
+      "column": "x132",
+      "name": "support_genre_shared_profile_80",
+      "definition": "Frozen RH230 source contract"
+    },
+    {
+      "index": 133,
+      "column": "x133",
+      "name": "support_genre_shared_profile_99",
+      "definition": "Frozen RH230 source contract"
+    },
+    {
+      "index": 134,
+      "column": "x134",
+      "name": "support_genre_shared_profile_18",
+      "definition": "Frozen RH230 source contract"
+    },
+    {
+      "index": 135,
+      "column": "x135",
+      "name": "support_genre_shared_profile_10751",
+      "definition": "Frozen RH230 source contract"
+    },
+    {
+      "index": 136,
+      "column": "x136",
+      "name": "support_genre_shared_profile_14",
+      "definition": "Frozen RH230 source contract"
+    },
+    {
+      "index": 137,
+      "column": "x137",
+      "name": "support_genre_shared_profile_36",
+      "definition": "Frozen RH230 source contract"
+    },
+    {
+      "index": 138,
+      "column": "x138",
+      "name": "support_genre_shared_profile_27",
+      "definition": "Frozen RH230 source contract"
+    },
+    {
+      "index": 139,
+      "column": "x139",
+      "name": "support_genre_shared_profile_10402",
+      "definition": "Frozen RH230 source contract"
+    },
+    {
+      "index": 140,
+      "column": "x140",
+      "name": "support_genre_shared_profile_9648",
+      "definition": "Frozen RH230 source contract"
+    },
+    {
+      "index": 141,
+      "column": "x141",
+      "name": "support_genre_shared_profile_10749",
+      "definition": "Frozen RH230 source contract"
+    },
+    {
+      "index": 142,
+      "column": "x142",
+      "name": "support_genre_shared_profile_878",
+      "definition": "Frozen RH230 source contract"
+    },
+    {
+      "index": 143,
+      "column": "x143",
+      "name": "support_genre_shared_profile_53",
+      "definition": "Frozen RH230 source contract"
+    },
+    {
+      "index": 144,
+      "column": "x144",
+      "name": "support_genre_shared_profile_10752",
+      "definition": "Frozen RH230 source contract"
+    },
+    {
+      "index": 145,
+      "column": "x145",
+      "name": "support_genre_shared_profile_37",
+      "definition": "Frozen RH230 source contract"
+    },
+    {
+      "index": 146,
+      "column": "x146",
+      "name": "support_genre_shared_rated_profile_28",
+      "definition": "Frozen RH230 source contract"
+    },
+    {
+      "index": 147,
+      "column": "x147",
+      "name": "support_genre_shared_rated_profile_12",
+      "definition": "Frozen RH230 source contract"
+    },
+    {
+      "index": 148,
+      "column": "x148",
+      "name": "support_genre_shared_rated_profile_16",
+      "definition": "Frozen RH230 source contract"
+    },
+    {
+      "index": 149,
+      "column": "x149",
+      "name": "support_genre_shared_rated_profile_35",
+      "definition": "Frozen RH230 source contract"
+    },
+    {
+      "index": 150,
+      "column": "x150",
+      "name": "support_genre_shared_rated_profile_80",
+      "definition": "Frozen RH230 source contract"
+    },
+    {
+      "index": 151,
+      "column": "x151",
+      "name": "support_genre_shared_rated_profile_99",
+      "definition": "Frozen RH230 source contract"
+    },
+    {
+      "index": 152,
+      "column": "x152",
+      "name": "support_genre_shared_rated_profile_18",
+      "definition": "Frozen RH230 source contract"
+    },
+    {
+      "index": 153,
+      "column": "x153",
+      "name": "support_genre_shared_rated_profile_10751",
+      "definition": "Frozen RH230 source contract"
+    },
+    {
+      "index": 154,
+      "column": "x154",
+      "name": "support_genre_shared_rated_profile_14",
+      "definition": "Frozen RH230 source contract"
+    },
+    {
+      "index": 155,
+      "column": "x155",
+      "name": "support_genre_shared_rated_profile_36",
+      "definition": "Frozen RH230 source contract"
+    },
+    {
+      "index": 156,
+      "column": "x156",
+      "name": "support_genre_shared_rated_profile_27",
+      "definition": "Frozen RH230 source contract"
+    },
+    {
+      "index": 157,
+      "column": "x157",
+      "name": "support_genre_shared_rated_profile_10402",
+      "definition": "Frozen RH230 source contract"
+    },
+    {
+      "index": 158,
+      "column": "x158",
+      "name": "support_genre_shared_rated_profile_9648",
+      "definition": "Frozen RH230 source contract"
+    },
+    {
+      "index": 159,
+      "column": "x159",
+      "name": "support_genre_shared_rated_profile_10749",
+      "definition": "Frozen RH230 source contract"
+    },
+    {
+      "index": 160,
+      "column": "x160",
+      "name": "support_genre_shared_rated_profile_878",
+      "definition": "Frozen RH230 source contract"
+    },
+    {
+      "index": 161,
+      "column": "x161",
+      "name": "support_genre_shared_rated_profile_53",
+      "definition": "Frozen RH230 source contract"
+    },
+    {
+      "index": 162,
+      "column": "x162",
+      "name": "support_genre_shared_rated_profile_10752",
+      "definition": "Frozen RH230 source contract"
+    },
+    {
+      "index": 163,
+      "column": "x163",
+      "name": "support_genre_shared_rated_profile_37",
+      "definition": "Frozen RH230 source contract"
+    },
+    {
+      "index": 164,
+      "column": "x164",
+      "name": "support_input_mean",
+      "definition": "Frozen RH230 source contract"
+    },
+    {
+      "index": 165,
+      "column": "x165",
+      "name": "support_input_std",
+      "definition": "Frozen RH230 source contract"
+    },
+    {
+      "index": 166,
+      "column": "x166",
+      "name": "support_input_k",
+      "definition": "Frozen RH230 source contract"
+    },
+    {
+      "index": 167,
+      "column": "x167",
+      "name": "support_has_input",
+      "definition": "Frozen RH230 source contract"
+    },
+    {
+      "index": 168,
+      "column": "x168",
+      "name": "GENRE_effective_n",
+      "definition": "Frozen RH230 source contract"
+    },
+    {
+      "index": 169,
+      "column": "x169",
+      "name": "GENRE_mass_reliability",
+      "definition": "Frozen RH230 source contract"
+    },
+    {
+      "index": 170,
+      "column": "x170",
+      "name": "KEYWORD_effective_n",
+      "definition": "Frozen RH230 source contract"
+    },
+    {
+      "index": 171,
+      "column": "x171",
+      "name": "KEYWORD_mass_reliability",
+      "definition": "Frozen RH230 source contract"
+    },
+    {
+      "index": 172,
+      "column": "x172",
+      "name": "COUNTRY_LANGUAGE_effective_n",
+      "definition": "Frozen RH230 source contract"
+    },
+    {
+      "index": 173,
+      "column": "x173",
+      "name": "COUNTRY_LANGUAGE_mass_reliability",
+      "definition": "Frozen RH230 source contract"
+    },
+    {
+      "index": 174,
+      "column": "x174",
+      "name": "ERA_RUNTIME_effective_n",
+      "definition": "Frozen RH230 source contract"
+    },
+    {
+      "index": 175,
+      "column": "x175",
+      "name": "ERA_RUNTIME_mass_reliability",
+      "definition": "Frozen RH230 source contract"
+    },
+    {
+      "index": 176,
+      "column": "x176",
+      "name": "DIRECTOR_effective_n",
+      "definition": "Frozen RH230 source contract"
+    },
+    {
+      "index": 177,
+      "column": "x177",
+      "name": "DIRECTOR_mass_reliability",
+      "definition": "Frozen RH230 source contract"
+    },
+    {
+      "index": 178,
+      "column": "x178",
+      "name": "CAST_effective_n",
+      "definition": "Frozen RH230 source contract"
+    },
+    {
+      "index": 179,
+      "column": "x179",
+      "name": "CAST_mass_reliability",
+      "definition": "Frozen RH230 source contract"
+    },
+    {
+      "index": 180,
+      "column": "x180",
+      "name": "COMPANY_COLLECTION_effective_n",
+      "definition": "Frozen RH230 source contract"
+    },
+    {
+      "index": 181,
+      "column": "x181",
+      "name": "COMPANY_COLLECTION_mass_reliability",
+      "definition": "Frozen RH230 source contract"
+    },
+    {
+      "index": 182,
+      "column": "x182",
+      "name": "genre_reliability_28",
+      "definition": "Frozen RH230 source contract"
+    },
+    {
+      "index": 183,
+      "column": "x183",
+      "name": "genre_reliability_12",
+      "definition": "Frozen RH230 source contract"
+    },
+    {
+      "index": 184,
+      "column": "x184",
+      "name": "genre_reliability_16",
+      "definition": "Frozen RH230 source contract"
+    },
+    {
+      "index": 185,
+      "column": "x185",
+      "name": "genre_reliability_35",
+      "definition": "Frozen RH230 source contract"
+    },
+    {
+      "index": 186,
+      "column": "x186",
+      "name": "genre_reliability_80",
+      "definition": "Frozen RH230 source contract"
+    },
+    {
+      "index": 187,
+      "column": "x187",
+      "name": "genre_reliability_99",
+      "definition": "Frozen RH230 source contract"
+    },
+    {
+      "index": 188,
+      "column": "x188",
+      "name": "genre_reliability_18",
+      "definition": "Frozen RH230 source contract"
+    },
+    {
+      "index": 189,
+      "column": "x189",
+      "name": "genre_reliability_10751",
+      "definition": "Frozen RH230 source contract"
+    },
+    {
+      "index": 190,
+      "column": "x190",
+      "name": "genre_reliability_14",
+      "definition": "Frozen RH230 source contract"
+    },
+    {
+      "index": 191,
+      "column": "x191",
+      "name": "genre_reliability_36",
+      "definition": "Frozen RH230 source contract"
+    },
+    {
+      "index": 192,
+      "column": "x192",
+      "name": "genre_reliability_27",
+      "definition": "Frozen RH230 source contract"
+    },
+    {
+      "index": 193,
+      "column": "x193",
+      "name": "genre_reliability_10402",
+      "definition": "Frozen RH230 source contract"
+    },
+    {
+      "index": 194,
+      "column": "x194",
+      "name": "genre_reliability_9648",
+      "definition": "Frozen RH230 source contract"
+    },
+    {
+      "index": 195,
+      "column": "x195",
+      "name": "genre_reliability_10749",
+      "definition": "Frozen RH230 source contract"
+    },
+    {
+      "index": 196,
+      "column": "x196",
+      "name": "genre_reliability_878",
+      "definition": "Frozen RH230 source contract"
+    },
+    {
+      "index": 197,
+      "column": "x197",
+      "name": "genre_reliability_53",
+      "definition": "Frozen RH230 source contract"
+    },
+    {
+      "index": 198,
+      "column": "x198",
+      "name": "genre_reliability_10752",
+      "definition": "Frozen RH230 source contract"
+    },
+    {
+      "index": 199,
+      "column": "x199",
+      "name": "genre_reliability_37",
+      "definition": "Frozen RH230 source contract"
+    },
+    {
+      "index": 200,
+      "column": "x200",
+      "name": "crowd_rating_value",
+      "definition": "Frozen RH230 source contract"
+    },
+    {
+      "index": 201,
+      "column": "x201",
+      "name": "crowd_rating_present",
+      "definition": "Frozen RH230 source contract"
+    },
+    {
+      "index": 202,
+      "column": "x202",
+      "name": "crowd_votes_value",
+      "definition": "Frozen RH230 source contract"
+    },
+    {
+      "index": 203,
+      "column": "x203",
+      "name": "crowd_votes_present",
+      "definition": "Frozen RH230 source contract"
+    },
+    {
+      "index": 204,
+      "column": "x204",
+      "name": "crowd_popularity_value",
+      "definition": "Frozen RH230 source contract"
+    },
+    {
+      "index": 205,
+      "column": "x205",
+      "name": "crowd_popularity_present",
+      "definition": "Frozen RH230 source contract"
+    },
+    {
+      "index": 206,
+      "column": "x206",
+      "name": "crowd_rating_input_fraction",
+      "definition": "Frozen RH230 source contract"
+    },
+    {
+      "index": 207,
+      "column": "x207",
+      "name": "crowd_rating_input_mean",
+      "definition": "Frozen RH230 source contract"
+    },
+    {
+      "index": 208,
+      "column": "x208",
+      "name": "crowd_rating_input_variance",
+      "definition": "Frozen RH230 source contract"
+    },
+    {
+      "index": 209,
+      "column": "x209",
+      "name": "crowd_rating_input_reliability",
+      "definition": "Frozen RH230 source contract"
+    },
+    {
+      "index": 210,
+      "column": "x210",
+      "name": "crowd_rating_rating_covariance",
+      "definition": "Frozen RH230 source contract"
+    },
+    {
+      "index": 211,
+      "column": "x211",
+      "name": "crowd_rating_candidate_delta",
+      "definition": "Frozen RH230 source contract"
+    },
+    {
+      "index": 212,
+      "column": "x212",
+      "name": "crowd_rating_response_cross",
+      "definition": "Frozen RH230 source contract"
+    },
+    {
+      "index": 213,
+      "column": "x213",
+      "name": "crowd_rating_input_present",
+      "definition": "Frozen RH230 source contract"
+    },
+    {
+      "index": 214,
+      "column": "x214",
+      "name": "crowd_votes_input_fraction",
+      "definition": "Frozen RH230 source contract"
+    },
+    {
+      "index": 215,
+      "column": "x215",
+      "name": "crowd_votes_input_mean",
+      "definition": "Frozen RH230 source contract"
+    },
+    {
+      "index": 216,
+      "column": "x216",
+      "name": "crowd_votes_input_variance",
+      "definition": "Frozen RH230 source contract"
+    },
+    {
+      "index": 217,
+      "column": "x217",
+      "name": "crowd_votes_input_reliability",
+      "definition": "Frozen RH230 source contract"
+    },
+    {
+      "index": 218,
+      "column": "x218",
+      "name": "crowd_votes_rating_covariance",
+      "definition": "Frozen RH230 source contract"
+    },
+    {
+      "index": 219,
+      "column": "x219",
+      "name": "crowd_votes_candidate_delta",
+      "definition": "Frozen RH230 source contract"
+    },
+    {
+      "index": 220,
+      "column": "x220",
+      "name": "crowd_votes_response_cross",
+      "definition": "Frozen RH230 source contract"
+    },
+    {
+      "index": 221,
+      "column": "x221",
+      "name": "crowd_votes_input_present",
+      "definition": "Frozen RH230 source contract"
+    },
+    {
+      "index": 222,
+      "column": "x222",
+      "name": "crowd_popularity_input_fraction",
+      "definition": "Frozen RH230 source contract"
+    },
+    {
+      "index": 223,
+      "column": "x223",
+      "name": "crowd_popularity_input_mean",
+      "definition": "Frozen RH230 source contract"
+    },
+    {
+      "index": 224,
+      "column": "x224",
+      "name": "crowd_popularity_input_variance",
+      "definition": "Frozen RH230 source contract"
+    },
+    {
+      "index": 225,
+      "column": "x225",
+      "name": "crowd_popularity_input_reliability",
+      "definition": "Frozen RH230 source contract"
+    },
+    {
+      "index": 226,
+      "column": "x226",
+      "name": "crowd_popularity_rating_covariance",
+      "definition": "Frozen RH230 source contract"
+    },
+    {
+      "index": 227,
+      "column": "x227",
+      "name": "crowd_popularity_candidate_delta",
+      "definition": "Frozen RH230 source contract"
+    },
+    {
+      "index": 228,
+      "column": "x228",
+      "name": "crowd_popularity_response_cross",
+      "definition": "Frozen RH230 source contract"
+    },
+    {
+      "index": 229,
+      "column": "x229",
+      "name": "crowd_popularity_input_present",
+      "definition": "Frozen RH230 source contract"
+    },
+    {
+      "index": 230,
+      "column": "x230",
+      "name": "kobis_candidate_z",
+      "definition": "MODELS.md section3 KOBIS15"
+    },
+    {
+      "index": 231,
+      "column": "x231",
+      "name": "kobis_candidate_valid",
+      "definition": "MODELS.md section3 KOBIS15"
+    },
+    {
+      "index": 232,
+      "column": "x232",
+      "name": "kobis_candidate_log_above_train_q99",
+      "definition": "MODELS.md section3 KOBIS15"
+    },
+    {
+      "index": 233,
+      "column": "x233",
+      "name": "kobis_history_fraction_original_h",
+      "definition": "MODELS.md section3 KOBIS15"
+    },
+    {
+      "index": 234,
+      "column": "x234",
+      "name": "kobis_history_count",
+      "definition": "MODELS.md section3 KOBIS15"
+    },
+    {
+      "index": 235,
+      "column": "x235",
+      "name": "kobis_history_reliability",
+      "definition": "MODELS.md section3 KOBIS15"
+    },
+    {
+      "index": 236,
+      "column": "x236",
+      "name": "kobis_history_z_mean",
+      "definition": "MODELS.md section3 KOBIS15"
+    },
+    {
+      "index": 237,
+      "column": "x237",
+      "name": "kobis_history_z_variance",
+      "definition": "MODELS.md section3 KOBIS15"
+    },
+    {
+      "index": 238,
+      "column": "x238",
+      "name": "kobis_history_rating_mean",
+      "definition": "MODELS.md section3 KOBIS15"
+    },
+    {
+      "index": 239,
+      "column": "x239",
+      "name": "kobis_history_rating_minus_original_mean",
+      "definition": "MODELS.md section3 KOBIS15"
+    },
+    {
+      "index": 240,
+      "column": "x240",
+      "name": "kobis_history_rating_covariance",
+      "definition": "MODELS.md section3 KOBIS15"
+    },
+    {
+      "index": 241,
+      "column": "x241",
+      "name": "kobis_candidate_delta",
+      "definition": "MODELS.md section3 KOBIS15"
+    },
+    {
+      "index": 242,
+      "column": "x242",
+      "name": "kobis_response_cross",
+      "definition": "MODELS.md section3 KOBIS15"
+    },
+    {
+      "index": 243,
+      "column": "x243",
+      "name": "kobis_history_present",
+      "definition": "MODELS.md section3 KOBIS15"
+    },
+    {
+      "index": 244,
+      "column": "x244",
+      "name": "kobis_response_estimable",
+      "definition": "MODELS.md section3 KOBIS15"
+    }
+  ]
+}

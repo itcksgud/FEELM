@@ -1,0 +1,204 @@
+{
+  "schema_version": 1,
+  "status": "PASS",
+  "date": "2026-09-12",
+  "kind": "independent_catalog_code_review",
+  "experiment": "hybrid345",
+  "scope": "DEVELOPMENT_ONLY",
+  "review_visibility": {
+    "hybrid345_evaluation_labels_opened": false,
+    "hybrid345_evaluation_outputs_opened": false,
+    "final344_seals_and_label_free_catalog_cache_opened": true,
+    "rec045_vote_metadata_opened": true,
+    "note": "The review inspected code, immutable label-free parents, and synthetic fixtures only. It did not open hybrid345 evaluation labels or generated hybrid345 evaluation/catalog results."
+  },
+  "fingerprint": {
+    "scripts/hybrid345_catalog.py": {
+      "bytes": 32261,
+      "sha256": "7aa2b2123d291d4849c9c8984a237b59b2f30ec96d971f2553fb3afe44017796"
+    },
+    "scripts/test_hybrid345_catalog.py": {
+      "bytes": 5656,
+      "sha256": "af2ff2c8707fd3a68b4f9b0f4b0f1f3adcf7c1d53416404e55ee1613f7881f77"
+    },
+    "scripts/report_hybrid345.py": {
+      "bytes": 20447,
+      "sha256": "06856ad5108950adc3e0ef65385f1e39f18271f57a45f1ea4da023bcdcefbc06"
+    },
+    "scripts/hybrid345_evaluate.py": {
+      "bytes": 70337,
+      "sha256": "146bd0dc4fa8fde49182528205b7f787edc5f5d55becb04e4a62b09060e9d1c9"
+    },
+    "scripts/test_hybrid345_evaluate.py": {
+      "bytes": 14271,
+      "sha256": "abe67769529a171f9e7c38a5bbdb4f8fcb21803ec77288dc85684abf271084d1"
+    },
+    "docs/recommendation/experiments/hybrid345/DESIGN.md": {
+      "bytes": 16289,
+      "sha256": "18ca3c22ffacaace55ca6483620ff36d76230902bb38557d7b2a34aaf1906884"
+    },
+    "docs/recommendation/experiments/hybrid345/config.json": {
+      "bytes": 22142,
+      "sha256": "f975cd83b179c8b61dac09e0a3a527c4f2c4794389e88b0be4fd3c69d0679506"
+    },
+    "docs/recommendation/experiments/hybrid345/design-review.json": {
+      "bytes": 3888,
+      "sha256": "4e6fde96f90ecfdbdb4cf32ed6d5a86d818e6650a6ea65547ea425c35c23d74f"
+    },
+    "docs/recommendation/experiments/hybrid345/evaluation-code-review.json": {
+      "bytes": 8692,
+      "sha256": "d7d651c3766207e920df93a6d25c8e27083d62f4d2fdef8cdff2c9d286214010"
+    }
+  },
+  "audits": {
+    "catalog_fingerprint": {
+      "status": "PASS",
+      "exact_files": [
+        "docs/recommendation/experiments/hybrid345/DESIGN.md",
+        "docs/recommendation/experiments/hybrid345/config.json",
+        "docs/recommendation/experiments/hybrid345/design-review.json",
+        "docs/recommendation/experiments/hybrid345/evaluation-code-review.json",
+        "scripts/hybrid345_catalog.py",
+        "scripts/hybrid345_evaluate.py",
+        "scripts/report_hybrid345.py",
+        "scripts/test_hybrid345_catalog.py",
+        "scripts/test_hybrid345_evaluate.py"
+      ],
+      "direct_prelabel_dependencies": "hybrid345_common/models/score are transitively fail-closed by verify_predictions -> current prelabel fingerprint and review before scoring",
+      "current_evaluation_review_bound": true
+    },
+    "evaluation_lineage": {
+      "status": "PASS",
+      "evaluation_seal_and_every_declared_output_pin_verified_before_scoring": true,
+      "manifest_exact_input_inventory_enforced": [
+        "catalog",
+        "contexts",
+        "roles",
+        "partition",
+        "rec033_metadata",
+        "texts",
+        "final344_input_lock",
+        "labels",
+        "tmdb_vote_metadata",
+        "final344_calibration_seal",
+        "final344_calibration"
+      ],
+      "manifest_input_count": 11,
+      "selection_and_calibration_pins_verified": true,
+      "prediction_parents_recursively_verified": true,
+      "current_evaluation_review_fingerprint_and_evaluator_code_verified": true
+    },
+    "tmdb_vote_and_calibration_provenance": {
+      "status": "PASS",
+      "vote_source": "outputs/recommendation-evidence/rec-ev-045/metadata.parquet",
+      "vote_access": "config-pinned final344/input-lock.json -> exact REC-045 file pin",
+      "vote_metadata": {
+        "bytes": 6891831,
+        "sha256": "4d838874938115be7a4b1f629a920dd196e082b655b75d559d71039e52eb7d8d"
+      },
+      "vote_rows": 85517,
+      "catalog_axis_exact": true,
+      "prior_calibration_seal": {
+        "bytes": 4330,
+        "sha256": "8c2c089d8518e1f2cb43251fea7121fa2334ba7084d89b1026fd5c5601b49059"
+      },
+      "prior_calibration_file": {
+        "bytes": 10863,
+        "sha256": "f62d86e59bbb0f50b1412ee97d61e611a89bc4488e04aa0e2a20e50a3f4eab76"
+      },
+      "prior_calibration_seal_bound_to_config_pinned_input_lock": true,
+      "prior_calibration_exact_file_inventory_and_execution_pins_verified": true
+    },
+    "final344_cache_lineage": {
+      "status": "PASS",
+      "configured_catalog_seal_verified": true,
+      "input_lock_and_model_audit_verified": true,
+      "six_fit_seals_verified": true,
+      "selection_seal_and_exact_selection_outputs_verified": true,
+      "recorded_catalog_producer_execution_files_current_match": true,
+      "each_of_124_consumed_cache_files_verified_before_scoring": true,
+      "each_consumed_cache_file_and_full_parent_lineage_rechecked_after_scoring": true
+    },
+    "population_and_candidates": {
+      "status": "PASS",
+      "role": "comparison",
+      "cap": 10,
+      "h_positive": true,
+      "h_positive_users": 124,
+      "comparison_cap10_users": 180,
+      "eligible_catalog_movies": 85517,
+      "candidate_axis": "exact final344 catalog-cache/{uid}.npz ei",
+      "all_124_release_and_seen_exclusion_axes_reproduced": true
+    },
+    "policy_semantics": {
+      "status": "PASS",
+      "als_unavailability_filled": false,
+      "zero_weight_exact_als": true,
+      "warm_route": "user ALS factor available AND actual item factor available",
+      "cold_route": "user ALS factor available AND actual item factor unavailable",
+      "fixed_fallback": "GBT120_s339",
+      "fallback_nonfinite_fails_closed": true,
+      "evaluator_router_boundary_equivalence_tested": true
+    },
+    "catalog_metrics": {
+      "status": "PASS",
+      "top_n": [
+        2,
+        4,
+        6
+      ],
+      "coverage_denominator": "union of exact eligible candidates across 124 H10/h>0 comparison users",
+      "unknown_definition": "not_in_observed_user_movie_labels; UNKNOWN is not treated as dislike or accuracy error",
+      "hhi": "squared returned-slot exposure shares",
+      "support_bands": [
+        "0",
+        "1-9",
+        "10-49",
+        "50+"
+      ],
+      "model_candidate_scopes_disclosed": true,
+      "missing_slots_disclosed": true
+    },
+    "fail_closed_order": {
+      "status": "PASS",
+      "order": [
+        "current catalog review",
+        "completed sealed evaluation and exact manifest lineage",
+        "output collision guard",
+        "full-catalog score construction",
+        "label pin and sole label read for UNKNOWN membership",
+        "source TOCTOU rechecks",
+        "sealed outputs"
+      ],
+      "direct_label_reads_before_frozen_selection_and_full_catalog_scoring": 0,
+      "label_pin_rechecked_after_unknown_join": true
+    },
+    "synthetic_tests": {
+      "status": "PASS",
+      "command": "outputs/recommendation-evidence/text339-runtime/venv/Scripts/python.exe -m unittest scripts/test_hybrid345_catalog.py -v",
+      "tests": 9,
+      "failures": 0,
+      "errors": 0
+    },
+    "py_compile": {
+      "status": "PASS",
+      "command": "outputs/recommendation-evidence/text339-runtime/venv/Scripts/python.exe -m py_compile scripts/hybrid345_catalog.py scripts/test_hybrid345_catalog.py",
+      "files": [
+        "scripts/hybrid345_catalog.py",
+        "scripts/test_hybrid345_catalog.py"
+      ]
+    }
+  },
+  "resolved_blockers": [
+    "The catalog gate now requires the evaluation manifest to contain exactly 11 inputs, including the config-pinned final344 input lock, its locked REC-045 TMDB vote metadata, and the prior final344 calibration seal/file.",
+    "The current evaluation review, evaluator code fingerprint, prediction lineage, selected policy and calibration are all verified before catalog scoring.",
+    "ALS remains unavailable outside actual item-factor support; only the declared cold route and fixed GBT120_s339 fallback can fill router output."
+  ],
+  "blocking_findings": [],
+  "not_claimed": [
+    "catalog results",
+    "recommendation quality for UNKNOWN movies",
+    "2026 Korean service satisfaction",
+    "service adoption or deployment"
+  ]
+}

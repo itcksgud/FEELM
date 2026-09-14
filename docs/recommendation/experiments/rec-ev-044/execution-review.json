@@ -1,0 +1,71 @@
+{
+  "status": "PASS_EXECUTION",
+  "recorded_at": "2026-09-09T00:39:07.141414+00:00",
+  "recorded_by": "root from independent reviewer messages; reviewers made no source edits",
+  "fingerprint": {
+    "scripts/feelm_residual_taste.py": {
+      "bytes": 11651,
+      "sha256": "26f8083734a02ef3d2dded142b5bb9ffab30e7bd9d92a68d5cd412577cbbc6fa"
+    },
+    "scripts/rec_ev_044_residual_taste.py": {
+      "bytes": 7486,
+      "sha256": "378adabf12d1548fbf750babaa2b8130ece3cdc631047efdd034d9b436883711"
+    },
+    "scripts/test_feelm_residual_taste.py": {
+      "bytes": 5591,
+      "sha256": "c6ae3053ba44d45c690bdbae6bb3c866df0fff67b9d7d5e196d44380a8ed1a6f"
+    },
+    "scripts/feelm_preference_structure.py": {
+      "bytes": 18743,
+      "sha256": "07d86e029b68ae407726ebde7442cc0be7f47bf599f263d28d985b0c11c8aae1"
+    },
+    "scripts/rec_ev_043_structure.py": {
+      "bytes": 11799,
+      "sha256": "15a58c42da70282fc2e5394b698cf0fdb179b5ccebdb522f903379ad847d80de"
+    },
+    "docs/recommendation/experiments/rec-ev-044/README.md": {
+      "bytes": 7846,
+      "sha256": "3663f88bcf3eaccc9ed88fbf59d297d028cdb721f5915766df3ad572d2d471ac"
+    },
+    "docs/recommendation/experiments/rec-ev-044/config.json": {
+      "bytes": 1370,
+      "sha256": "bf030486d1923719721b0b786202983dea88bb0411f6fc375dc877dad4df308d"
+    },
+    "docs/recommendation/experiments/rec-ev-044/data-readiness.json": {
+      "bytes": 1048,
+      "sha256": "af873091c38ee319bc46b462f5f909635cf5f9c6635734f1802f884058f41fa6"
+    }
+  },
+  "reviewers": [
+    {
+      "agent": "github_research_scope_audit",
+      "status": "PASS_EXECUTION",
+      "checks": [
+        "independent 13 synthetic tests",
+        "4 extra direct checks: recipient offset donor, zero shared keywords, direct 257-draw bootstrap and family tails, 9 delta directions",
+        "verify_sources input pins and lineage",
+        "E labels not decoded; no REC044 output exists"
+      ],
+      "required_changes": []
+    },
+    {
+      "agent": "rec044_design_audit",
+      "status": "PASS_EXECUTION",
+      "checks": [
+        "design and implementation review",
+        "independent 13 synthetic tests",
+        "no material execution blockers",
+        "E labels and actual outputs not opened"
+      ],
+      "notes": [
+        "combined missing-keyword rows have genre norm squared 0.5; fixed-probe comparison only",
+        "no general K-means superiority or causal/service claims"
+      ]
+    }
+  ],
+  "root_validation": [
+    "13 synthetic tests PASS",
+    "Ruff check and format PASS"
+  ],
+  "E_values_opened_this_experiment": false
+}

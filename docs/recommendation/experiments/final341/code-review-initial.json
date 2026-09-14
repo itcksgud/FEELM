@@ -1,0 +1,19 @@
+{
+  "status": "PASS",
+  "reviewer": "Dewey",
+  "code": {
+    "bytes": 17235,
+    "sha256": "5785131a3cd315831892f223ba1caf2b59328d40bf8ea299a295ae6794943c87"
+  },
+  "scope": "Pre-execution code and synthetic tests; actual output review required later",
+  "checks": [
+    "audited stage seals and actual artifact links",
+    "B metrics NULL retained and separated from exceptions",
+    "seven adjusted contrasts and h0 guard",
+    "Top2/4/6/10 and sets3/6/9 with valid denominators",
+    "fixed taste and conditional discovery/first-set distinction",
+    "P0 and empty metrics",
+    "six significant digits preserve small CI sign",
+    "all report outputs protected"
+  ]
+}

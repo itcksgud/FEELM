@@ -1,0 +1,123 @@
+{
+  "audit": {
+    "artifacts": {
+      "qwen-embedding-summary.json": {
+        "bytes": 1578,
+        "sha256": "5dee5a6ad93ee80c6997bcc8866b15be403899da2ee7175e428d9e28f64ec86a"
+      },
+      "qwen-embeddings.npy": {
+        "bytes": 350277760,
+        "sha256": "0bb0719fe9b4d2eb7a927b6fde5838c7f6a3a343a1edd6ad2690497a1805c7e3"
+      },
+      "qwen-movie-ids.npy": {
+        "bytes": 684264,
+        "sha256": "0b20708cd4feeb3fa3570fb5bc5a85f161fcc48817635bc3c5ad6369d4c77412"
+      }
+    },
+    "embedding": {
+      "all_finite": true,
+      "dtype": "float32",
+      "l2_max": 1.0000001192092896,
+      "l2_max_absolute_error": 1.1920928955078125e-07,
+      "l2_min": 0.9999998807907104,
+      "shape": [
+        85517,
+        1024
+      ]
+    },
+    "execution_contract": {
+      "batch_size": 8,
+      "batches": 10690,
+      "batching": "CONSECUTIVE_CANONICAL_MOVIE_ID_NO_LENGTH_SORT",
+      "compute_dtype": "bfloat16",
+      "dynamic_padding": true,
+      "length_bucketing": false,
+      "normalization": "L2_FLOAT32",
+      "partial_resume": false,
+      "pooling": "LAST_NON_PADDING_TOKEN",
+      "storage_dtype": "float32"
+    },
+    "label_boundary": {
+      "labels_opened": false,
+      "ratings_opened": false
+    },
+    "movie_axis": {
+      "array_sha256": "330606b18a36fc04c0f3ef9187b9dc45747e3c592f93f9869b3f02c610722fb6",
+      "dtype": "int64",
+      "first_movie_id": 1,
+      "last_movie_id": 292757,
+      "matches_documents_axis": true,
+      "movies": 85517,
+      "strict_ascending_unique": true
+    },
+    "parents_and_pins": {
+      "artifacts_match_embedding_seal": true,
+      "documents_model_token_and_pilot_lineage_recursively_verified": true,
+      "embedded_pilot_review_matches_current_review": true,
+      "implementation_matches_embedding_seal": true,
+      "progress_signature_matches_current_parents_and_implementation": true
+    },
+    "pilot_consistency": {
+      "all_504_selected_rows_exact_array_equal": true,
+      "maximum_absolute_difference": 0.0
+    },
+    "resources": {
+      "gpu_peak_allocated_bytes": 1416863744,
+      "gpu_peak_allocated_limit_bytes": 8585216000,
+      "gpu_peak_reserved_bytes": 1933574144,
+      "host_rss_limit_bytes": 12884901888,
+      "process_peak_rss_bytes": 2246664192,
+      "seconds": 1834.4476713000004,
+      "time_limit_seconds": 28800,
+      "within_all_limits": true
+    },
+    "state": {
+      "completed_movies": 85517,
+      "partial_memmap_absent": true,
+      "progress_file": {
+        "bytes": 3588,
+        "sha256": "740c5bcfc03495f317a86931e31a968ec57d93733cc506661f96fc299e1eb4e9"
+      },
+      "progress_status": "COMPLETE"
+    },
+    "tokens": {
+      "catalog_movies": 85517,
+      "maximum": 916,
+      "maximum_allowed": 1024,
+      "minimum": 44,
+      "padded_tokens_independently_recomputed": 30428003,
+      "true_tokens_independently_recomputed": 16434086,
+      "truncated_documents": 0
+    }
+  },
+  "blocking_findings": [],
+  "claim_scope": "DEVELOPMENT_ONLY",
+  "date": "2026-09-12",
+  "decision": "PASS_FULL_QWEN_EMBEDDING",
+  "embedding_seal": {
+    "bytes": 6178,
+    "sha256": "12840589dbf446c85f9bed301b8ffa5fbf6a6ff5904440c06fa613419742819a"
+  },
+  "experiment": "hybrid345",
+  "implementation": {
+    "docs/recommendation/experiments/hybrid345/config.json": {
+      "bytes": 22142,
+      "sha256": "f975cd83b179c8b61dac09e0a3a527c4f2c4794389e88b0be4fd3c69d0679506"
+    },
+    "scripts/hybrid345_common.py": {
+      "bytes": 3626,
+      "sha256": "6f0e48f559873996a8a710594832e9ebaa33beebab346da2f2ac58fed33f22db"
+    },
+    "scripts/hybrid345_encode.py": {
+      "bytes": 37696,
+      "sha256": "91bf948674fa13456e33d784e9b6dc2044e0b3bc82d4c8ab29405df8dca27c8e"
+    }
+  },
+  "kind": "independent_full_qwen_embedding_review",
+  "not_claimed": [
+    "Any recommendation quality result.",
+    "Any product or deployment decision."
+  ],
+  "schema_version": 1,
+  "status": "PASS"
+}

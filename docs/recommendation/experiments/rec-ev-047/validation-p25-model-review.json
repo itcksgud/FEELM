@@ -1,0 +1,39 @@
+{
+  "status": "PASS_PRELABEL_P25_MODEL_ARTIFACTS",
+  "reviewer": "github_research_scope_audit / Rawls",
+  "prediction_rows": 37528,
+  "target_ratings_decoded": 0,
+  "model_seals": {
+    "ALS": {
+      "bytes": 6005,
+      "sha256": "c2212350b549c696e91e3c3ba29905dbd228b306e3fd2ace6a98559dcf39a11d"
+    },
+    "FM": {
+      "bytes": 4615,
+      "sha256": "8aefa9465adb06bd57c027a11d8570b6f05f27e55c33842abb01016c7d64578f"
+    },
+    "RIDGE": {
+      "bytes": 4613,
+      "sha256": "e80daccbc70032f31d01251c38e09aae109b0cc741c82a6ceb920d8dc33332a3"
+    },
+    "GBT": {
+      "bytes": 5215,
+      "sha256": "634f28621ac491f6c3d1f1b2f453edab8f1f458c1fcfeb5db05527b2d4f34530"
+    }
+  },
+  "maximum_absolute_error": {
+    "ALS_augmented_SVD": 2.58e-14,
+    "FM_factor_sum": 4.44e-15,
+    "RIDGE_einsum": 8.88e-16,
+    "GBT_independent_60_tree_traversal": 7.99e-15
+  },
+  "verified_model_files": 68,
+  "ALS_supported_movies": 42913,
+  "ALS_direct_rows_across_all_K": 17436,
+  "ALS_fallback_rows_across_all_K": 20092,
+  "limitations": [
+    "No target model quality comparison yet",
+    "FM optimization convergence unverified",
+    "Ridge reached fixed 150 iteration cap; convergence not established"
+  ]
+}

@@ -1,0 +1,27 @@
+{
+  "status": "PASS_CODE_BEFORE_APPLICATION",
+  "reviewer": "/root/wiki_report_review",
+  "files": {
+    "text339_repair_overviews.py": {
+      "bytes": 4243,
+      "sha256": "bbdc2d66d3c078ce08389e5586af9c1fd831b848b7b6e927318ffd7f4d6923b5"
+    },
+    "text339_apply_usage_review.py": {
+      "bytes": 5012,
+      "sha256": "5fb058e7875d55dc197cae279f7fe246f8271ce97266a1335cc3c849f4a59b83"
+    },
+    "text339_text.py": {
+      "bytes": 16240,
+      "sha256": "f8e39d0cc781855e9ccc8cbc76c62ef6f4299ec17473c5f94e062ea1da6c584c"
+    }
+  },
+  "validation": [
+    "8 independent tiny Parquet/JSON execution cases in an external temporary directory",
+    "3 overview replacements preserve all other columns/rows and exact backups",
+    "wrong TMDB identity/language/IMDb rejected before source writes",
+    "Wiki quarantine clears both conditions and preserves raw/overview/movie rows",
+    "wrong QID/text hashes/incomplete changed population rejected before writes",
+    "reexecution rejected; original preflight preserved"
+  ],
+  "manifest_content_review": "pending final EN and KO decisions"
+}

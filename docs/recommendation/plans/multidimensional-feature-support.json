@@ -1,0 +1,74 @@
+{
+  "status": "METADATA_SUPPORT_ONLY_NOT_PREFERENCE_EVIDENCE",
+  "catalog_movies": 85517,
+  "users": 2180,
+  "O_pairs": 65400,
+  "E_pairs": 191932,
+  "rating_values_read": false,
+  "model_fit": false,
+  "sources": {
+    "axis": {
+      "path": "outputs/recommendation-evidence/rec-ev-044/input.npz",
+      "bytes": 1356908,
+      "sha256": "1790c114425cc71ed0b6722c5acc88b3f38fd68d2ed9c16eba0a99cb51182903"
+    },
+    "structured": {
+      "path": "outputs/recommendation-evidence/rec-ev-027-catalog/structured-features.parquet",
+      "bytes": 3739308,
+      "sha256": "231fa0bc2628066ae2fdc2fa65c03b9068cd6a5d8dbcd86c385cadf4e50098b3"
+    },
+    "countries": {
+      "path": "outputs/recommendation-evidence/rec-ev-027-catalog/domain-projection.parquet",
+      "bytes": 936743,
+      "sha256": "511d6e92efab16f5128eed8d2123fa71ba73fbae7090b01a4e62cb8ea2e513f0"
+    }
+  },
+  "audit_code": {
+    "bytes": 3372,
+    "sha256": "ef2b187746a0001a24fc5bdc8a5b5571a934afafad69d4dfb84db8abea7285ce"
+  },
+  "fields": {
+    "director_ids": {
+      "catalog_missing": 411,
+      "O_missing": 0,
+      "E_missing": 23,
+      "E_with_O_shared_value": 15777,
+      "E_with_value_in_two_O_movies": 2800,
+      "overlap_pair_fraction": 0.08220098784986349,
+      "repeated_pair_fraction": 0.014588500093783215
+    },
+    "top5_cast_ids": {
+      "catalog_missing": 2825,
+      "O_missing": 14,
+      "E_missing": 250,
+      "E_with_O_shared_value": 60512,
+      "E_with_value_in_two_O_movies": 11527,
+      "overlap_pair_fraction": 0.31527832774107495,
+      "repeated_pair_fraction": 0.06005772877894254
+    },
+    "production_country_codes": {
+      "catalog_missing": 3883,
+      "O_missing": 8,
+      "E_missing": 336,
+      "E_with_O_shared_value": 182271,
+      "E_with_value_in_two_O_movies": 177415,
+      "overlap_pair_fraction": 0.949664464497843,
+      "repeated_pair_fraction": 0.9243638371923389
+    },
+    "original_language": {
+      "catalog_missing": 0,
+      "O_missing": 0,
+      "E_missing": 0
+    },
+    "release_year": {
+      "catalog_missing": 0,
+      "O_missing": 0,
+      "E_missing": 0
+    },
+    "runtime_minutes": {
+      "catalog_missing": 504,
+      "O_missing": 1,
+      "E_missing": 38
+    }
+  }
+}

@@ -1,0 +1,17 @@
+{
+  "status": "PASS",
+  "reviewer": "Rawls",
+  "file": "docs/runbook/local-development.md",
+  "pin": {"bytes": 80919, "sha256": "bf8b4684a8c84f1ec0a0891b977dd8a57a10e244bfdfdcc4a341541794c92f7f"},
+  "scope": "New section 29 only",
+  "checks": [
+    "13 command entry points and arguments match actual code",
+    "Independent preparation, prediction and actual-result gates explicitly separate execution steps",
+    "LOCAL_ONLY artifacts and upstream seal restoration required; Git clone alone is insufficient",
+    "B recovery preserves trained model without refitting; missing telemetry remains UNKNOWN",
+    "H/RH 12GiB plus 4096 bytes strict memory exceptions preserved",
+    "Seven total fits and original 4096-candidate feature batches accurately documented"
+  ],
+  "commands_executed_by_reviewer": 0,
+  "labels_read": false
+}

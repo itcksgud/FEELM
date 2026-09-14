@@ -1,0 +1,260 @@
+{
+  "schema_version": 1,
+  "experiment": "hybrid345",
+  "date": "2026-09-12",
+  "kind": "independent_label_free_prediction_artifact_audit",
+  "status": "PASS",
+  "claim_scope": "DEVELOPMENT_ONLY",
+  "labels_opened": false,
+  "recursive_producer_verification": "PASS",
+  "non_label_source_pins_verified": 36,
+  "mapper": {
+    "teacher_items": 45074,
+    "train_items": 36058,
+    "validation_items": 9016,
+    "strata": {
+      "SUPPORT_1_9": {
+        "all": 32207,
+        "train": 25765,
+        "validation": 6442
+      },
+      "SUPPORT_10_49": {
+        "all": 6265,
+        "train": 5012,
+        "validation": 1253
+      },
+      "SUPPORT_50_PLUS": {
+        "all": 6602,
+        "train": 5281,
+        "validation": 1321
+      }
+    },
+    "selected_alpha": 10.0,
+    "held_out": {
+      "ALL": {
+        "items": 9016,
+        "cosine_items": 9016,
+        "mean_cosine": 0.868287772786668,
+        "rmse": 0.15909630026338348,
+        "mean_target_norm": 1.6083190790766366,
+        "mean_prediction_norm": 1.3895243485192135
+      },
+      "SUPPORT_1_9": {
+        "items": 6442,
+        "cosine_items": 6442,
+        "mean_cosine": 0.8726910460410816,
+        "rmse": 0.15456169639974404,
+        "mean_target_norm": 1.5280721153143015,
+        "mean_prediction_norm": 1.374258699353691
+      },
+      "SUPPORT_10_49": {
+        "items": 1253,
+        "cosine_items": 1253,
+        "mean_cosine": 0.8203491456316171,
+        "rmse": 0.19417740825726995,
+        "mean_target_norm": 1.8662701021675454,
+        "mean_prediction_norm": 1.4150090070152468
+      },
+      "SUPPORT_50_PLUS": {
+        "items": 1321,
+        "cosine_items": 1321,
+        "mean_cosine": 0.8922856634152416,
+        "rmse": 0.14315176586265344,
+        "mean_target_norm": 1.7549794186860634,
+        "mean_prediction_norm": 1.439796138699961
+      }
+    },
+    "coefficient_max_absolute_difference": 0.0,
+    "intercept_max_absolute_difference": 0.0,
+    "mapped_factor_shape": [
+      85517,
+      32
+    ],
+    "mapped_factor_all_finite": true,
+    "mapped_factor_max_absolute_difference": 0.0,
+    "factor_files_verified_against_fit_seal": 18
+  },
+  "predictions": {
+    "shape": [
+      93230,
+      11
+    ],
+    "names": [
+      "ALS",
+      "STRUCTURED_DIRECT",
+      "E5_DIRECT",
+      "QWEN_DIRECT",
+      "FM150_s339",
+      "FM150_s344",
+      "FM150_s345",
+      "GBT120_s339",
+      "GBT120_s344",
+      "GBT120_s345",
+      "ALS_C2F"
+    ],
+    "availability_equals_finiteness": true,
+    "als_exact_reuse": true,
+    "fixed_fm_gbt_exact_reuse": [
+      "FM150_s339",
+      "FM150_s344",
+      "FM150_s345",
+      "GBT120_s339",
+      "GBT120_s344",
+      "GBT120_s345"
+    ],
+    "independently_recomputed_contexts": 45,
+    "independent_context_indices": [
+      0,
+      1,
+      38,
+      77,
+      115,
+      154,
+      192,
+      231,
+      269,
+      270,
+      271,
+      308,
+      346,
+      385,
+      423,
+      462,
+      501,
+      539,
+      540,
+      541,
+      578,
+      616,
+      655,
+      693,
+      732,
+      770,
+      809,
+      810,
+      811,
+      847,
+      886,
+      925,
+      963,
+      1002,
+      1040,
+      1079,
+      1080,
+      1081,
+      1117,
+      1156,
+      1194,
+      1233,
+      1271,
+      1310,
+      1349
+    ],
+    "maximum_absolute_differences": {
+      "STRUCTURED_DIRECT": 0.0,
+      "E5_DIRECT": 0.0,
+      "QWEN_DIRECT": 0.0,
+      "ALS_C2F": 0.0
+    },
+    "all_context_na_rules_checked": true,
+    "all_availability_csv_metadata_checked": true,
+    "context_slices_contiguous": true
+  },
+  "resources": {
+    "mapper": {
+      "seconds": 9.056125600000087,
+      "process_peak_rss_bytes": 1511559168,
+      "seconds_limit": 1800.0,
+      "host_memory_bytes_limit": 12884901888
+    },
+    "scoring": {
+      "seconds": 7.870782900001359,
+      "process_peak_rss_bytes": 816164864,
+      "seconds_limit": 1800.0,
+      "host_memory_bytes_limit": 12884901888
+    },
+    "within_frozen_limits": true
+  },
+  "producer_seals": {
+    "prior-seal.json": {
+      "bytes": 3074,
+      "sha256": "c5b478d558c47bc771493a42a84130e080df36630fe4225b73c7bfe24c8b661a"
+    },
+    "mapper-seal.json": {
+      "bytes": 7204,
+      "sha256": "de8dbd4e19888c2ff1d5206bee0219c76eb1eea76da102a3f9bfbc3b31c96471"
+    },
+    "prediction-seal.json": {
+      "bytes": 26728,
+      "sha256": "7e229ba1de750286a0e7e12655c71cf7633de5c11946bacfb66cb777cba209c6"
+    },
+    "qwen-embedding-seal.json": {
+      "bytes": 6178,
+      "sha256": "12840589dbf446c85f9bed301b8ffa5fbf6a6ff5904440c06fa613419742819a"
+    }
+  },
+  "producer_implementation": {
+    "scripts/hybrid345_common.py": {
+      "bytes": 3626,
+      "sha256": "6f0e48f559873996a8a710594832e9ebaa33beebab346da2f2ac58fed33f22db"
+    },
+    "scripts/hybrid345_documents.py": {
+      "bytes": 25535,
+      "sha256": "33a49df0d09f8f8b41bc461fe72f3d2436e107239a48c3230dd7c41172648169"
+    },
+    "scripts/hybrid345_encode.py": {
+      "bytes": 37696,
+      "sha256": "91bf948674fa13456e33d784e9b6dc2044e0b3bc82d4c8ab29405df8dca27c8e"
+    },
+    "scripts/hybrid345_models.py": {
+      "bytes": 7806,
+      "sha256": "c9f97f119e0a77c9820ddab49ea4085a33589b955c40245738b62827a99d8540"
+    },
+    "scripts/hybrid345_score.py": {
+      "bytes": 27446,
+      "sha256": "bb452aeff56cb1b1767fdd2115b071bbdddd874a073e9c1d70604da6a5b4df81"
+    },
+    "scripts/test_hybrid345_documents.py": {
+      "bytes": 5764,
+      "sha256": "92bf642d0df6f775640b020deae99c4f066175034bd740c5f0004995e85e900c"
+    },
+    "scripts/test_hybrid345_encode.py": {
+      "bytes": 2640,
+      "sha256": "ddf692ee7fd2bdbd737e4d4a963026cb16c80d5f6b7993a1551e1361a7e11797"
+    },
+    "scripts/test_hybrid345_models.py": {
+      "bytes": 2771,
+      "sha256": "184f39ac80c68d3e896aad390e14b906fbe70a910293ce0eccf144b430165701"
+    },
+    "scripts/test_hybrid345_score.py": {
+      "bytes": 1967,
+      "sha256": "9d53aefc469badf9f299486c83e6298461d8f260c7de436681a1d4a8e38bf194"
+    },
+    "docs/recommendation/experiments/hybrid345/DESIGN.md": {
+      "bytes": 16289,
+      "sha256": "18ca3c22ffacaace55ca6483620ff36d76230902bb38557d7b2a34aaf1906884"
+    },
+    "docs/recommendation/experiments/hybrid345/config.json": {
+      "bytes": 22142,
+      "sha256": "f975cd83b179c8b61dac09e0a3a527c4f2c4794389e88b0be4fd3c69d0679506"
+    },
+    "docs/recommendation/experiments/hybrid345/design-review.json": {
+      "bytes": 3888,
+      "sha256": "4e6fde96f90ecfdbdb4cf32ed6d5a86d818e6650a6ea65547ea425c35c23d74f"
+    }
+  },
+  "producer_prelabel_review": {
+    "bytes": 11985,
+    "sha256": "be590bd5f5831582c0b7311f6b754a27f6b5557f699e26f04673a92c0469f5dc"
+  },
+  "audit_code": {
+    "bytes": 23615,
+    "sha256": "1a6b521c420650d8ccc3fec656a9bba6dae44f234eef5f3a94d780c2878cbe08"
+  },
+  "blocking_findings": [],
+  "not_claimed": [
+    "Any recommendation-quality result.",
+    "Any evaluation-label access.",
+    "Any product adoption or deployment decision."
+  ]
+}

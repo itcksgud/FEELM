@@ -1,0 +1,49 @@
+{
+  "status": "PASS_WITH_DOCUMENTED_LIMITS",
+  "reviewer": "Dewey",
+  "files": {
+    "README.md": {
+      "bytes": 5139,
+      "sha256": "376abd467370291cb41fe228ab0b4e7a21f261f8f879f087f6c46a82068b5607"
+    },
+    "RESULT.md": {
+      "bytes": 7150,
+      "sha256": "b5879727597e29e583d2b1c08bb2d3e1acfe6bb18827e299f24b5dbc43d954bc"
+    },
+    "EXAMPLES.md": {
+      "bytes": 2975,
+      "sha256": "2bdb9ac998f78d7d37cecf34d56deac3accfdf76eb12e804c6ad101b4eed7e17"
+    },
+    "comparison.png": {
+      "bytes": 51617,
+      "sha256": "8401c6172b9047c9514c5f40a5bfe71de4a2ceb16403c37ed16bb2defd23bc85"
+    },
+    "REPRODUCTION.md": {
+      "bytes": 5050,
+      "sha256": "dd1c5af12c625272cc7565165eb5bf851add78d2a67886b8b896220e10329aff"
+    }
+  },
+  "report_code": {
+    "bytes": 12038,
+    "sha256": "1374d43d6fb854267e90f52841ae3c45b1a5f71f62b27ce53595d112993c8e07"
+  },
+  "report_seal": {
+    "bytes": 942,
+    "sha256": "2f9daccdc3bb30040e120c9b4767d0fa426e238ec08fd0018485db0765209aff"
+  },
+  "evaluation_seal": {
+    "bytes": 1699,
+    "sha256": "aa6db64be89826a388dd0350d47ae7523c15caa7172f1a4672ce81214116f40a"
+  },
+  "checks": [
+    "Actual values and all denominators",
+    "Four exact deletion-ledger examples",
+    "PNG values, axes, Korean text and no clipping",
+    "Reported source/prepared/evaluation parents and all report files",
+    "Development and fixed-fit uncertainty, partial cleanup, T0 diagnostic scope, timing bias and both memory exceptions",
+    "Actual documented read-only reproduction command exited 0 / PASS"
+  ],
+  "pending_at_review": "Only result-review.json link, resolved by the final record created with this review",
+  "reviewer_files_written": 0,
+  "reviewer_new_fits": 0
+}

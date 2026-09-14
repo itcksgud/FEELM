@@ -1,0 +1,56 @@
+{
+  "status": "COMPLETE",
+  "reviewer": "Hubble",
+  "primary_reviewer": "Rawls",
+  "proposal": {
+    "bytes": 3025,
+    "sha256": "05d7739886814a1f6a4d0f2d377dbfc14183403296fd32f1d285634f6617d1bc"
+  },
+  "preview": {
+    "bytes": 723493,
+    "sha256": "0ea3ba265e33a276837e99e3f9f38ea09ce54aa22afe202ea2d3ab575c68bc2f"
+  },
+  "preview_seal": {
+    "bytes": 1065,
+    "sha256": "010ecb8b0f3576a5682995d7a0340a49b9c05c850b1a88b0d9214e3081a9a7eb"
+  },
+  "scope": "First 91 of181 proposal0 documents in preview order; last movie145478/T3",
+  "read_spans": 110,
+  "read_documents": 91,
+  "approved_count": 89,
+  "rejected_ordinals": [
+    165,
+    168,
+    219,
+    783,
+    819,
+    843,
+    867,
+    900,
+    915,
+    972,
+    984,
+    987,
+    1038,
+    1068,
+    1104,
+    1107,
+    1155,
+    1185,
+    1209,
+    1218,
+    1221
+  ],
+  "all_other_assigned_proposals": "APPROVE",
+  "cross_partition_retain": [
+    164,
+    167,
+    169
+  ],
+  "reasons": [
+    "Mixed film genre, format, segment order or style retained",
+    "Preserve narrative and later references",
+    "All181 original documents and combined literal deletion preview independently matched"
+  ],
+  "rating_values_read": 0
+}

@@ -1,0 +1,72 @@
+{
+  "status": "PASS",
+  "fingerprint": {
+    "scripts/cold_item_common.py": {
+      "bytes": 4622,
+      "sha256": "94d5a2c0823c0e54e20c3c577751a1b6e88d1b3cec0f0314df2769b898b5aab2"
+    },
+    "scripts/cold_item_features.py": {
+      "bytes": 4838,
+      "sha256": "78ed5bbea151dc12d7a8bb144fa389333c779550fcfdff66d28d90c6900a4cec"
+    },
+    "scripts/cold_item_prepare.py": {
+      "bytes": 9554,
+      "sha256": "e1fc97fd475d1d87af9135d6f84f32e62312fd33a5d9aa63fe91b6e84eba3881"
+    },
+    "scripts/cold_item_worker.py": {
+      "bytes": 4272,
+      "sha256": "b3b78b332fde524b868deb51dc2ec87d82b8046793f152d4b073cfc09f81b1d5"
+    },
+    "scripts/cold_item_run.py": {
+      "bytes": 6244,
+      "sha256": "62df960f951e6255f3ba6c42786559f8cc615e23ad7d2e5da3079fa90f36422c"
+    },
+    "scripts/cold_item_evaluate.py": {
+      "bytes": 7289,
+      "sha256": "5af3305eef64a8170a7f04b5e42e432b258badfae8a7d4c7e2039fc4a3a08635"
+    },
+    "scripts/test_cold_item.py": {
+      "bytes": 4207,
+      "sha256": "38e5579deb4fd10ad6fa9dbf0e02d2d1e1afcc049f7f79fd4442c3e7d469f490"
+    },
+    "scripts/rec047_features.py": {
+      "bytes": 5791,
+      "sha256": "a6f3fdc26cc88cceea2f6b1fe1244285bd9e29f7175874f7ab2eb8fae5904268"
+    },
+    "scripts/rec046_common.py": {
+      "bytes": 8001,
+      "sha256": "42dd14e83ecbee0c02c5e4233abb4b6a8d807ad2213c24a22cfb82350bc47848"
+    },
+    "scripts/rec047_common.py": {
+      "bytes": 5855,
+      "sha256": "a51d5c4fe9d487caf5c45606ead4cc244654c83fbe39339c40c56c165e792c16"
+    },
+    "scripts/rec047_readiness.py": {
+      "bytes": 8271,
+      "sha256": "eb5a6a46655975e9f2923947ff16400ab400c47238217c90bf73104afaeac8b7"
+    },
+    "docs/recommendation/experiments/cold-item-content/EXECUTION.md": {
+      "bytes": 9950,
+      "sha256": "d152e7a13a22779ccfd28e82a1876dd8699a2b254db09e06628ffbdb3d478f8f"
+    },
+    "docs/recommendation/experiments/cold-item-content/config.json": {
+      "bytes": 3113,
+      "sha256": "6300e727a82165ffdcc56c0874c1829513bdec89dd62fe506164225d7a4fde16"
+    }
+  },
+  "reviews": [
+    {
+      "reviewer": "github_research_scope_audit",
+      "scope": "feature and preparation code, metadata audit, independent formulas",
+      "status": "PASS"
+    },
+    {
+      "reviewer": "service_next_step_check",
+      "scope": "run/worker/evaluate/common gates; all source fingerprints; 500 pair checks and 9 bootstrap checks",
+      "status": "PASS"
+    }
+  ],
+  "synthetic_tests": 8,
+  "training_started": false,
+  "remaining": "prepared data audit before training; independent result audit after scoring"
+}

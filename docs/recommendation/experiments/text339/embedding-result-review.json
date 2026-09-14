@@ -1,0 +1,58 @@
+{
+  "status": "PASS",
+  "embedding_seal": {
+    "bytes": 4252,
+    "sha256": "b5cabf63e086d748478d6357cb8d1f00f8ad77aa1837513d989ac168d42ca4ac"
+  },
+  "storage_reviewer": "/root/wiki_report_review",
+  "numeric_reviewer": "/root/github_research_scope_audit",
+  "storage_checks": {
+    "movie_rows": 85517,
+    "document_hashes_recomputed": 256551,
+    "unique_documents": 136542,
+    "all_document_to_movie_rows_exact": true,
+    "all_float32_finite_768": true,
+    "max_norm_error": 1.17e-07,
+    "missing_T2_rows_zero": 34336,
+    "missing_T3_rows_zero": 34329
+  },
+  "independent_gpu_checks": {
+    "samples": [
+      52545,
+      85143,
+      132046
+    ],
+    "tokens": [
+      82,
+      475,
+      823
+    ],
+    "source": "T2",
+    "helper_calls": 0,
+    "original_batch_shapes": [
+      [
+        16,
+        485
+      ],
+      [
+        16,
+        485
+      ]
+    ],
+    "max_absolute_error": 1.780125957751011e-08,
+    "minimum_cosine": 0.9999999999999983,
+    "status": "PASS_EXACT_ORIGINAL_BATCH_REPRODUCTION"
+  },
+  "batch_invariance_check": {
+    "status": "FAILED_ONE_PREDECLARED_COSINE_THRESHOLD",
+    "original_limits": {
+      "max_absolute_error": 0.002,
+      "minimum_cosine": 0.99999
+    },
+    "batch1_unpadded_ko_cosine": 0.999984909,
+    "batch1_unpadded_ko_max_absolute_error": 0.00063336,
+    "explanation": "Changing batch and padding shapes changes fp16 arithmetic. All same-original-batch reference calculations reproduced stored vectors. No threshold relaxation or stored-vector rewrite was used.",
+    "claim_limit": "No strict invariance to changing batch/padding is claimed"
+  },
+  "rating_values_read": 0
+}

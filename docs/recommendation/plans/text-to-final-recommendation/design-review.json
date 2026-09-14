@@ -1,0 +1,53 @@
+{
+  "status": "PASS_ROADMAP_AND_JIRA_SCOPE",
+  "reviewed_at_utc": "2026-09-10T01:58:47.192348+00:00",
+  "reviewers": [
+    "/root/github_research_scope_audit",
+    "/root/wiki_report_review"
+  ],
+  "pins": {
+    "README.md": {
+      "bytes": 4649,
+      "sha256": "87dc6a25992a646040cd1d3dd97f603432dc654ea8bdabfb6e205db9dc1fedc0"
+    },
+    "DESIGN.md": {
+      "bytes": 24091,
+      "sha256": "831d7f8c74ec3d0e299e1ee1d44edf882aa821c92f2508d2806e3ae5d839f09b"
+    },
+    "text-to-final-recommendation-20260910.yml": {
+      "bytes": 11456,
+      "sha256": "044ca6db3d86d91f004f69e62a3caf36e01a9ab0aaba7a23faf2446b2346291e"
+    }
+  },
+  "jira_semantic_before_automation_sha256": "288a538b0d755a391d41141137883c7b2327ec40e5c79d17aa8425965c2b1fa0",
+  "review_rounds": [
+    {
+      "result": "NEEDS_CLARIFICATION",
+      "findings": [
+        "Separate C movie holdout from all J(u); retain W and natural support0",
+        "Define P0 third item as first discovery comparator and common |J|>=3/fallback population",
+        "Freeze identical movie/QID/language/page/revision/raw source before T2/T3 cleaning",
+        "Register final model1+policy6 comparisons as separate final family",
+        "State overlap coordination and result reuse with Jira315, without closing its implementation scope"
+      ]
+    },
+    {
+      "result": "PASS",
+      "all_findings_addressed": true
+    }
+  ],
+  "scope": [
+    "Three outcome-level Jira tasks, not execution or production adoption",
+    "H input cap, TopN cutoffs, official 2+1 service set and existing 500/100/20 buffers separated",
+    "UNKNOWN kept unknown; conditional observed ranking separated from catalog supply",
+    "16-fit upper bound; stages select/freeze instead of full Cartesian model search",
+    "Weak evidence may end with baseline or hold decision"
+  ],
+  "not_validated_yet": [
+    "Actual cohort identities and past-role usage audit",
+    "Exact time cutoffs and data/source/model revision seal",
+    "Embedding/chunking feature implementation and measured resource budget",
+    "Statistical method and executable comparison registry",
+    "Training, real predictions and final data results"
+  ]
+}

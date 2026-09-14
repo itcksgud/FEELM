@@ -1,0 +1,110 @@
+{
+  "status": "PASS_INDEPENDENT_RESULT_REVIEW",
+  "recorded_at_utc": "2026-09-09T06:58:48.358725+00:00",
+  "scope": "Local REC046 fixed-candidate development comparison; not production adoption",
+  "completion_seal": {
+    "bytes": 2497,
+    "sha256": "4391b4407c0e33f53d38d62d0a902d89ed9613ec7cca7c3709ed1c3657db5ea1"
+  },
+  "candidate_fingerprint": {
+    "bytes": 1335,
+    "sha256": "cd2c71f9689d14c2e9749c194c6f6ae12252b2e2a16f1707d938b46ef181cd96"
+  },
+  "preservation": "Scientific code, config, design and calculated completion seal unchanged after evaluation labels opened. Independent completion recorded separately.",
+  "reviews": [
+    {
+      "reviewer": "service_next_step_check / Confucius",
+      "status": "PASS_INDEPENDENT_NUMERIC_AUDIT",
+      "method": "Independent Kendall tau-b with explicit tie corrections; no production pair_accuracy call; brute-force cross-check of 150 groups. Recomputed all user-round metrics, equal-user aggregates and all 100 predefined bootstrap contrasts.",
+      "users": 300,
+      "unique_rating_pairs": 48326,
+      "unique_movies": 14533,
+      "metric_rows_recomputed": 179325,
+      "max_mse_error": 6.22e-15,
+      "max_pair_accuracy_error": 2.22e-16,
+      "max_summary_error": 4.44e-16,
+      "max_contrast_error": 5.55e-16,
+      "checks": [
+        "identical model denominators",
+        "repeated-user round aggregation",
+        "support causes",
+        "group counts",
+        "hybrid predictions"
+      ],
+      "claims_review": "No single winner. Input-independent ordering is not proven personalization; missing-item ALS fallback is not movie discrimination."
+    },
+    {
+      "reviewer": "target_domain_review / Euler",
+      "status": "PASS_INDEPENDENT_SOURCE_SELECTION_AND_SEALS",
+      "method": "Independent validation MSE selection, Spark Parquet to cached predictions and selected-array reconstruction; independent raw ZIP scan decoding ratings only for manifest-authorized post-cutoff validation/evaluation pairs.",
+      "fingerprint_files": 9,
+      "unique_hashed_files": 530,
+      "selected_prediction_elements": 5745825,
+      "selected_max_error": 0,
+      "validation_max_mse_error": 2.887e-15,
+      "validation_unique_rating_pairs": 49246,
+      "evaluation_unique_rating_pairs": 48326,
+      "raw_rows_scanned": 32000204,
+      "unauthorized_ratings_decoded": 0,
+      "raw_label_max_error": 0,
+      "selection": {
+        "r0": {
+          "ALS": 1,
+          "FM": 0,
+          "RIDGE": 0,
+          "GBT": 1,
+          "alpha": 0.25
+        },
+        "r1": {
+          "ALS": 1,
+          "FM": 1,
+          "RIDGE": 0,
+          "GBT": 1,
+          "alpha": 0.25
+        },
+        "r2": {
+          "ALS": 1,
+          "FM": 1,
+          "RIDGE": 0,
+          "GBT": 1,
+          "alpha": 0.25
+        }
+      }
+    }
+  ],
+  "small_aggregate_copies": {
+    "metrics.csv": {
+      "bytes": 40470,
+      "sha256": "680d3a112f8b30d59e3ec0b386621ac47096617c7659cde0d41d5c7cd7b2aa0a"
+    },
+    "contrasts.json": {
+      "bytes": 25343,
+      "sha256": "22938cd08f1edc4eae19ddf42e8ccc6b3f26af561edf48e6997d99b33d8b5ea6"
+    }
+  },
+  "limitations": [
+    "Previously used development users; no LOCKED_TEST/FINAL_RESERVE opened",
+    "Current TMDB metadata with historical MovieLens targets",
+    "Resource-limited training, not earlier full-data ALS comparison",
+    "Subgroup and input-K changes descriptive; 20-contrast correction is per K",
+    "No proof of 2026 Korean service quality or whole-catalog Top-N accuracy",
+    "FM optimal convergence unavailable",
+    "Single desktop Spark execution, not multi-host scale benchmark"
+  ],
+  "publication": "LOCAL_ONLY; no commit, push, Jira or MR",
+  "report_review": {
+    "reviewer": "service_next_step_check / Confucius",
+    "status": "PASS_WITH_SCOPE_WORDING_CLARIFICATIONS_APPLIED",
+    "checked": [
+      "reported metric values and CI directions",
+      "group denominators",
+      "personalization and service/general ALS scope limitations"
+    ],
+    "clarifications_applied": [
+      "Post-2019 target ratings refer to validation/evaluation, not training targets",
+      "Withheld movies included in evaluation-user inputs and targets, not training-user inputs"
+    ],
+    "final_report_sha256": "1049d7e0180637248df02b0dc890f29cf540bc0b492504569fd3e3748733d32a",
+    "visual_qa": "Comparison PNG rendered and inspected; legend/footer overlap fixed; expanded accuracy axis disclosed."
+  }
+}

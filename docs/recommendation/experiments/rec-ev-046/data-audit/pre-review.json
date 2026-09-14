@@ -1,0 +1,37 @@
+{
+  "status": "PASS",
+  "reviewers": [
+    "service_next_step_check / Confucius",
+    "target_domain_review / Euler"
+  ],
+  "fingerprint": {
+    "scripts/audit_rec046_population.py": {
+      "bytes": 31546,
+      "sha256": "582d0cd807017364fa2cbd813b815ba8e4d9e84edb4cf951e6146fa4f86c837f"
+    },
+    "scripts/test_rec046_population.py": {
+      "bytes": 1558,
+      "sha256": "22e78ef93280e24385264476963b9f7a4c807b4e607c3b438dfba1785dbd241c"
+    },
+    "docs/recommendation/experiments/rec-ev-046/data-audit/README.md": {
+      "bytes": 6559,
+      "sha256": "582fbebd1bf8c19deefa20edfa03749a6f0461899d5db0c0a328425fded5bdd2"
+    },
+    "docs/recommendation/experiments/rec-ev-046/data-audit/input-pins.json": {
+      "bytes": 6515,
+      "sha256": "0af31deb68cdb1fbc26d9c2cd9117e60b9563e1c2ee118b3b2730e4a20b5ef51"
+    }
+  },
+  "candidate_fingerprint_sha256": "bd5cb274a8a8db0362d00ff45a2d62f878e470d5b9c2d447ee2b600419390cb4",
+  "input_files_verified": 38,
+  "synthetic_tests": 4,
+  "scope": "Post-result population audit; no fit, selection or new raw rating decoding",
+  "resolved": [
+    "Full pool eligibility versus visited prefix versus selected sample",
+    "Raw-before count versus catalog and nonheld counts",
+    "Per-metric missing/small-user status",
+    "K0 no input versus unsupported input",
+    "Empty transformed feature blocks versus raw missingness",
+    "Pointwise descriptive intervals and observed-cell equal weighting limitations"
+  ]
+}

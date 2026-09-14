@@ -1,0 +1,89 @@
+{
+  "status": "PASS_EVALUATION_PREPARED",
+  "reviewers": [
+    "service_next_step_check / Confucius",
+    "target_domain_review / Euler"
+  ],
+  "fingerprint": {
+    "scripts/rec047_common.py": {
+      "bytes": 5855,
+      "sha256": "a51d5c4fe9d487caf5c45606ead4cc244654c83fbe39339c40c56c165e792c16"
+    },
+    "scripts/rec047_features.py": {
+      "bytes": 5791,
+      "sha256": "a6f3fdc26cc88cceea2f6b1fe1244285bd9e29f7175874f7ab2eb8fae5904268"
+    },
+    "scripts/rec047_prepare.py": {
+      "bytes": 12774,
+      "sha256": "033d9ca141436ad9ff742506090238fd4ad03b4889f382ac29aae0abcd4e1824"
+    },
+    "scripts/rec047_worker.py": {
+      "bytes": 7063,
+      "sha256": "73e4f049641fb3b8308888ca721694b9611a217c0e1d72fe98967c29fe9fb766"
+    },
+    "scripts/rec047_run.py": {
+      "bytes": 13998,
+      "sha256": "bd9db81789c64b5da8d56f703676d807df29ce98007e1632bb8ef6462f66ecfc"
+    },
+    "scripts/rec047_evaluate.py": {
+      "bytes": 12185,
+      "sha256": "113553b414cc0621f405fb6b8a53c795a41cee95895eca23b2dbfafc8645fed3"
+    },
+    "scripts/test_rec047.py": {
+      "bytes": 4266,
+      "sha256": "f18dafc2fddfc6195a7ccabe1e7aabfdd05272b3b5d13cdd46116d171b136b6e"
+    },
+    "scripts/rec047_runtime_smoke.py": {
+      "bytes": 4984,
+      "sha256": "8865083c06b5184ea024e506c0c2cbc8a6011790576e1a6068c6b7e8d8f73429"
+    },
+    "scripts/rec047_readiness.py": {
+      "bytes": 8271,
+      "sha256": "eb5a6a46655975e9f2923947ff16400ab400c47238217c90bf73104afaeac8b7"
+    },
+    "scripts/rec046_common.py": {
+      "bytes": 8001,
+      "sha256": "42dd14e83ecbee0c02c5e4233abb4b6a8d807ad2213c24a22cfb82350bc47848"
+    },
+    "docs/recommendation/experiments/rec-ev-047/EXECUTION.md": {
+      "bytes": 10912,
+      "sha256": "8d33ab74fbc75fd25e27e9e2b992bdb4f507dfb80ec9f6395780144978f23f6b"
+    },
+    "docs/recommendation/experiments/rec-ev-047/config.json": {
+      "bytes": 2735,
+      "sha256": "16a9a53ed087132293912c921a295fca9dac1fff09a9cf0db7d5ffd058fdd6ea"
+    }
+  },
+  "prepared_seal": {
+    "bytes": 3092,
+    "sha256": "489131d4228c2a1d94cc97df635a0c9b496c57391b023ff77a6ec19537b3019f"
+  },
+  "selection": {
+    "bytes": 3364,
+    "sha256": "107ebbd31d987eb713d119e5952e5e466b19654da6f9f2ef6a57b45c43f8b74f"
+  },
+  "raw_training_ratings_verified": 6261195,
+  "episodes_verified": 74369,
+  "movie_count_values_verified": 256551,
+  "prior_validation_ratings_preserved": 6169072,
+  "new_legal_ratings": 92123,
+  "prior_validation_episodes_preserved": 73082,
+  "new_episodes": 1287,
+  "training_feature_values_verified": 1051880760,
+  "training_features_max_float64_difference": 2.792429818487818e-07,
+  "evaluation_contexts": 1013,
+  "evaluation_score_rows": 41789,
+  "evaluation_users": 271,
+  "evaluation_feature_values_verified": 7020552,
+  "evaluation_features_max_float64_difference": 2.384185793236071e-07,
+  "input_support_detail_cells_verified": 3039,
+  "activity_support_cells_verified": 120,
+  "decoded_legal_input_candidates": 5577,
+  "actually_used_unique_input_ratings": 5521,
+  "unused_legal_input_candidates": 56,
+  "unused_input_explanation": "Four users have history lengths between fixed K steps. Extra legal pre-origin inputs were not used in features; exact context-only feature reconstruction passed.",
+  "evaluation_target_ratings_decoded": 0,
+  "k0_training_targets": 5151574,
+  "nonzero_k_training_targets": 1109621,
+  "claim": "Source, feature, temporal, population and support construction verified; no evaluation quality claim"
+}

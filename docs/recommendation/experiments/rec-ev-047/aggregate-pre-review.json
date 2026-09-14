@@ -1,0 +1,16 @@
+{
+  "status": "PASS",
+  "reviewer": "service_next_step_check / Confucius",
+  "export_script": {
+    "bytes": 4554,
+    "sha256": "f74e6f151ef590cf04da161b67dcc87a66c05bffc77cafa34659a6ceb0bfc8d3"
+  },
+  "scope": "Reporting only: sealed copies, eligible-K user-weighted movie-support summaries, runtime facts; no new models, tuning or confidence tests",
+  "checks": [
+    "Completion-selection-fit parent chain and fingerprints",
+    "User uniqueness within support group",
+    "Direct user mean rather than unweighted mean of activity means",
+    "PA validity counts and eligible_k cohort label"
+  ],
+  "evaluation_target_stars_decoded": 0
+}

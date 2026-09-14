@@ -1,0 +1,154 @@
+{
+  "outputs/recommendation-evidence/rec-ev-046/roles.json": {
+    "bytes": 41801449,
+    "sha256": "14ba4f1962b60e8668ce698dab59470151203142f2a053c476b380d38b47683d"
+  },
+  "outputs/recommendation-evidence/rec-ev-046/catalog.npz": {
+    "bytes": 276280,
+    "sha256": "03134ecc38bfee8dc2c6eabfae69f9ab2eeccf1859f3284c8c8a6c4f30e34af6"
+  },
+  "outputs/recommendation-evidence/rec-ev-046/readiness.json": {
+    "bytes": 985,
+    "sha256": "96950b1a87504314ee7ce085559900fac7b8d625ea5c7cf6275640f0139af8fd"
+  },
+  "outputs/recommendation-evidence/rec-ev-046/summary.csv": {
+    "bytes": 40470,
+    "sha256": "680d3a112f8b30d59e3ec0b386621ac47096617c7659cde0d41d5c7cd7b2aa0a"
+  },
+  "outputs/recommendation-evidence/rec-ev-046/evaluation-labels.parquet": {
+    "bytes": 181000,
+    "sha256": "854a02a58622c662e3b96ebc7bc1655c5555dbe633c7ac42dfcf301a3c08b23d"
+  },
+  "outputs/recommendation-evidence/rec-ev-046/validation-labels.parquet": {
+    "bytes": 215952,
+    "sha256": "8193251e5a1f17742b49130a7698e65c42ba2555391e13b86b1784d686bc44cf"
+  },
+  "outputs/recommendation-evidence/rec-ev-046/r0/als.csv": {
+    "bytes": 2984305,
+    "sha256": "0fafb93237a56a99ea5abbd3988e322db1975e97676fd8a5d6fb3577ca79c8b7"
+  },
+  "outputs/recommendation-evidence/rec-ev-046/r0/contexts.json": {
+    "bytes": 6337711,
+    "sha256": "a64ce0891c9d53783fc0f0f969f38ca72b347f668c2592a62ba561ebd849c9ca"
+  },
+  "outputs/recommendation-evidence/rec-ev-046/r0/feature-info.json": {
+    "bytes": 9418,
+    "sha256": "72dfdd25009a8ed196698c6e1cf090a03122ec595762166d7e8cb9beb1f8ac20"
+  },
+  "outputs/recommendation-evidence/rec-ev-046/r0/movie-features.npz": {
+    "bytes": 934708,
+    "sha256": "a6c537cfd875b9ce143f2f476156b05d6bfb51bcb55f29b01071777ded5dcbc2"
+  },
+  "outputs/recommendation-evidence/rec-ev-046/r0/train-counts.npy": {
+    "bytes": 684264,
+    "sha256": "3453f35f75754916e9eda26aedf561bf7d1b42588c3fa025cd77d3516ea4bdb4"
+  },
+  "outputs/recommendation-evidence/rec-ev-046/r0/selected.npz": {
+    "bytes": 10402265,
+    "sha256": "7c17e62ded12babf2093b7a4abee199f1aabb972415ec423fc29e5b23ac62b32"
+  },
+  "outputs/recommendation-evidence/rec-ev-046/r1/als.csv": {
+    "bytes": 3019766,
+    "sha256": "04c16cca3091aea0d3ed85348ddf9de02e00472f68f34a6db4792e97dfee1f24"
+  },
+  "outputs/recommendation-evidence/rec-ev-046/r1/contexts.json": {
+    "bytes": 6240679,
+    "sha256": "4d092d54451fb7a19ec43b003c209e294ae6f368d1d46b772a2aae5f2f61990f"
+  },
+  "outputs/recommendation-evidence/rec-ev-046/r1/feature-info.json": {
+    "bytes": 9365,
+    "sha256": "260d9d274de2d3f83522afbced8f0213b7e738212aa086685a32e7dc261ac96a"
+  },
+  "outputs/recommendation-evidence/rec-ev-046/r1/movie-features.npz": {
+    "bytes": 937048,
+    "sha256": "6bcf6a922c9d5bd51f8f8e09e33e46cd66681ecbdeee658a7b125232fe717e1d"
+  },
+  "outputs/recommendation-evidence/rec-ev-046/r1/train-counts.npy": {
+    "bytes": 684264,
+    "sha256": "7cfc3da58c1dbb21152703a51eaf785d122f9e850cf4553f3a9f1a7efe3e0cbb"
+  },
+  "outputs/recommendation-evidence/rec-ev-046/r1/selected.npz": {
+    "bytes": 10351257,
+    "sha256": "2c46236fe985333864855620d8467ec3c77a67db02a899475a9e83857e25141f"
+  },
+  "outputs/recommendation-evidence/rec-ev-046/r2/als.csv": {
+    "bytes": 3024193,
+    "sha256": "8ccbfaf16a8d05276024e9d07141689cd603b697a9feeccf907a47c9e604c1d4"
+  },
+  "outputs/recommendation-evidence/rec-ev-046/r2/contexts.json": {
+    "bytes": 6390075,
+    "sha256": "ef6f83f4a698b49c7caaa867d74c0b92cbfe16c7607fc4d4132f13148905cc99"
+  },
+  "outputs/recommendation-evidence/rec-ev-046/r2/feature-info.json": {
+    "bytes": 9403,
+    "sha256": "a237c7be951c80e67ec7b123487117b8a5c54c88b89975d5ddda868b41cd6b2f"
+  },
+  "outputs/recommendation-evidence/rec-ev-046/r2/movie-features.npz": {
+    "bytes": 937082,
+    "sha256": "a090ea6664f43dc84374fb2fc126c9fd3f425014407601d460f2c30b3c99b88d"
+  },
+  "outputs/recommendation-evidence/rec-ev-046/r2/train-counts.npy": {
+    "bytes": 684264,
+    "sha256": "25c8a6ce29ecc16b0cdeaece8728b16f9cd02ae0f49b7df38665297a6603af06"
+  },
+  "outputs/recommendation-evidence/rec-ev-046/r2/selected.npz": {
+    "bytes": 10537952,
+    "sha256": "0cb2da8e3320d4f23b829ce0d2e66924b91ef668a9f91a1faf3b8104ce673363"
+  },
+  "outputs/recommendation-evidence/rec-ev-032/user-resplits/splits.npz": {
+    "bytes": 634368,
+    "sha256": "5d230c59fcdbabdce529e6fa1ba5535895b59b2ab296905d71e9274c5c158410"
+  },
+  "C:/higher/projects/MM/data/raw/ml-32m.zip": {
+    "bytes": 238950008,
+    "sha256": "e4a68655d7386b8f95f2f2424b2ff975dfdd15ffd59e0d864a14dca43e99d6ee"
+  },
+  "docs/recommendation/experiments/rec-ev-046/README.md": {
+    "bytes": 10042,
+    "sha256": "b2ad2bbc2b47e9c6f39571fec7fac9f159c9f786a166275238cb47cdaaeb8784"
+  },
+  "docs/recommendation/experiments/rec-ev-046/config.json": {
+    "bytes": 2072,
+    "sha256": "2e619c1fa276c781768102a3ec293a299aee90935bc8d994d2978e1f0aafda14"
+  },
+  "scripts/rec046_common.py": {
+    "bytes": 8001,
+    "sha256": "42dd14e83ecbee0c02c5e4233abb4b6a8d807ad2213c24a22cfb82350bc47848"
+  },
+  "scripts/rec046_prepare.py": {
+    "bytes": 12096,
+    "sha256": "770bdad3b7a01c400ae22d56238b680756ea13ed9bb77cd78abbbd3fda094f84"
+  },
+  "scripts/rec046_worker.py": {
+    "bytes": 7410,
+    "sha256": "c090c1f85d6ed8c5e3065bafa1b88dadeec946cbd960254759c5b9e96a9adabd"
+  },
+  "scripts/rec046_run.py": {
+    "bytes": 12353,
+    "sha256": "4559108bfd0acc0264c37e1a9a769f5fe15b2123c674e074fbc6415354c71888"
+  },
+  "scripts/rec046_evaluate.py": {
+    "bytes": 9208,
+    "sha256": "66be2442220e56cc702fda195e2c287f3e4b7258e388b37b99869e5a5a56b93a"
+  },
+  "scripts/test_rec046.py": {
+    "bytes": 3717,
+    "sha256": "80c2c9aac7177b531992538f08124dfc7c21f07cbdb15b24611663bbb3ad32aa"
+  },
+  "performance/rec046.Dockerfile": {
+    "bytes": 302,
+    "sha256": "38905feb655e4c8fe9b4a6125a71f5f17eb87f202c07f97591f391d5a417420e"
+  },
+  "outputs/recommendation-evidence/rec-ev-046/completion-seal.json": {
+    "bytes": 2497,
+    "sha256": "4391b4407c0e33f53d38d62d0a902d89ed9613ec7cca7c3709ed1c3657db5ea1"
+  },
+  "outputs/recommendation-evidence/rec-ev-046/prediction-seal.json": {
+    "bytes": 2908,
+    "sha256": "a24d0a96345f06516bd86f2e4527341e6bbea2e185cc84f299eae690069e11b6"
+  },
+  "outputs/recommendation-evidence/rec-ev-046/prepared-seal.json": {
+    "bytes": 4963,
+    "sha256": "d8aac981932f14c07e26610f24adea7def3e64e4a0aecba76dc9775ed70cfbb2"
+  }
+}

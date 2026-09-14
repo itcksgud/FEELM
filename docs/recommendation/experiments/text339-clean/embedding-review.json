@@ -1,0 +1,32 @@
+{
+  "status": "PASS",
+  "reviewer": "Hubble",
+  "embedding_seal": {
+    "bytes": 1706,
+    "sha256": "2240912bcbce36793c74c9657d41813722d5e516996b68abfd79f78031b23108"
+  },
+  "source_review": {
+    "bytes": 858,
+    "sha256": "95da1fdd2c6073575396d1b49c27a274cdd7a8817cf940d2cf9eac74cd46e727"
+  },
+  "all_movie_rows": 85517,
+  "unchanged_overview_rows": 85350,
+  "unchanged_T3_rows": 85463,
+  "new_unique_vectors": 218,
+  "independent_values": 167424,
+  "reproduced_bitwise": true,
+  "max_absolute_error": 0,
+  "tokens": 78271,
+  "chunks": 317,
+  "outer_batches": [
+    64,
+    64,
+    64,
+    26
+  ],
+  "inner_batch": 16,
+  "actual_pins": 38,
+  "max_norm_error": 1.1920928955078125e-07,
+  "future_ratings_read": 0,
+  "new_recommender_predictions_read": 0
+}

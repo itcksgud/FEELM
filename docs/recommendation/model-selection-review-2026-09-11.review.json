@@ -1,0 +1,41 @@
+{
+  "status": "PASS",
+  "date": "2026-09-11",
+  "kind": "local_retrospective_and_decision_proposal_review",
+  "artifact": {
+    "path": "docs/recommendation/model-selection-review-2026-09-11.md",
+    "bytes": 19043,
+    "sha256": "9ef1a274103ded2bb19ed96e2deefb3d57fdc3d8a4e32936766a81b8edc37675"
+  },
+  "independent_reviews": [
+    {
+      "reviewer": "Rawls / github_research_scope_audit",
+      "status": "PASS",
+      "scope": "Historical experiment claims, comparability, eight current metric cells, catalog exposure counts, pagination denominators and 17 existing local evidence links",
+      "required_changes": []
+    },
+    {
+      "reviewer": "Dewey / wiki_report_review",
+      "status": "PASS",
+      "scope": "Current metrics and denominators, UNKNOWN, catalog concentration, calibration uncertainty, cold users, classification hold, two-at-a-time diagnostics and finite stopping rule",
+      "required_changes": []
+    }
+  ],
+  "literature": {
+    "primary_source_research": "Hubble / text339_eval_review and root",
+    "scope": "MNAR evaluation, sampled candidates, tuned baselines, BPR, LightFM, DropoutNet and official Spark documentation",
+    "caveat": "Hubble supplied an independent literature synthesis; it did not audit the final memo text. Root checked the citations and incorporated the synthesis. Rawls and Dewey did not claim external-source verification."
+  },
+  "root_verification": {
+    "current_metrics": "Read existing combination340 metrics.csv, selection.json and catalog-diagnostics.csv; no new model evaluation",
+    "sources": "Primary paper pages and official Spark 4.1.3 documentation",
+    "preservation": "Historical experiment seals, predictions and selection artifacts unchanged"
+  },
+  "not_claimed": [
+    "new training or execution of the proposed three diagnostics",
+    "a fresh independent final test",
+    "statistical equivalence or universal superiority of a model family",
+    "2026 Korean service satisfaction validation",
+    "service adoption or external publication"
+  ]
+}

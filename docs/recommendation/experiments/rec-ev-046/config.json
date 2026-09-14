@@ -1,0 +1,94 @@
+{
+  "experiment": "REC046",
+  "cutoff": 1546300800,
+  "ks": [
+    0,
+    1,
+    5,
+    10,
+    30
+  ],
+  "rounds": 3,
+  "train_users": 12000,
+  "validation_users": 300,
+  "training_targets": 8,
+  "seed": 46,
+  "caps": {
+    "GENRE": 100,
+    "KEYWORD": 128,
+    "COUNTRY_LANGUAGE": 64,
+    "ERA_RUNTIME": 64,
+    "DIRECTOR": 64,
+    "CAST": 128,
+    "COMPANY_COLLECTION": 64
+  },
+  "models": {
+    "ALS": [
+      {
+        "rank": 16,
+        "regParam": 0.1,
+        "maxIter": 15
+      },
+      {
+        "rank": 32,
+        "regParam": 0.1,
+        "maxIter": 15
+      }
+    ],
+    "FM": [
+      {
+        "factorSize": 8,
+        "regParam": 0.01,
+        "maxIter": 150,
+        "stepSize": 0.01,
+        "miniBatchFraction": 0.25
+      },
+      {
+        "factorSize": 16,
+        "regParam": 0.01,
+        "maxIter": 150,
+        "stepSize": 0.01,
+        "miniBatchFraction": 0.25
+      }
+    ],
+    "RIDGE": [
+      {
+        "regParam": 0.01,
+        "maxIter": 150
+      },
+      {
+        "regParam": 0.1,
+        "maxIter": 150
+      }
+    ],
+    "GBT": [
+      {
+        "maxDepth": 3,
+        "maxIter": 60,
+        "stepSize": 0.05
+      },
+      {
+        "maxDepth": 5,
+        "maxIter": 60,
+        "stepSize": 0.05
+      }
+    ]
+  },
+  "sources": {
+    "outputs/recommendation-evidence/rec-ev-045/metadata.parquet": {
+      "bytes": 6891831,
+      "sha256": "4d838874938115be7a4b1f629a920dd196e082b655b75d559d71039e52eb7d8d"
+    },
+    "outputs/recommendation-evidence/rec-ev-032/user-resplits/splits.npz": {
+      "bytes": 634368,
+      "sha256": "5d230c59fcdbabdce529e6fa1ba5535895b59b2ab296905d71e9274c5c158410"
+    },
+    "C:/higher/projects/MM/data/raw/ml-32m.zip": {
+      "bytes": 238950008,
+      "sha256": "e4a68655d7386b8f95f2f2424b2ff975dfdd15ffd59e0d864a14dca43e99d6ee"
+    }
+  },
+  "docker_image": "feelm-rec046-spark:local",
+  "image_id": "sha256:de611d62db982bb833b0737a7ddd72a7cd49ab1a7dc9128669cdabae39f46df8",
+  "bootstrap_repeats": 10000
+}

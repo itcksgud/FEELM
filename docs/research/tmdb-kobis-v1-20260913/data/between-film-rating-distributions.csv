@@ -1,0 +1,16 @@
+population,group,variable,meaning,movies,mean,sample_sd_ddof1,minimum,maximum,p5,p25,p50,p75,p95
+TK371,ALL,tmdb_mean_10,sample SD across film mean ratings; one film one observation,371,7.12899191374663,0.6393399826758446,3.975,8.78,6.0055,6.737,7.146,7.574,8.168
+TK371,ALL,tmdb_mean_5_rescaled,sample SD across film mean ratings; one film one observation,371,3.564495956873315,0.3196699913379223,1.9875,4.39,3.00275,3.3685,3.573,3.787,4.084
+TK371,K,tmdb_mean_10,sample SD across film mean ratings; one film one observation,181,7.086751381215471,0.6256236968558065,3.975,8.49,6.0,6.775,7.082,7.5,8.032
+TK371,K,tmdb_mean_5_rescaled,sample SD across film mean ratings; one film one observation,181,3.5433756906077356,0.31281184842790327,1.9875,4.245,3.0,3.3875,3.541,3.75,4.016
+TK371,F,tmdb_mean_10,sample SD across film mean ratings; one film one observation,190,7.169231578947368,0.6512343583332226,5.521,8.78,6.0344,6.73275,7.202,7.615,8.242
+TK371,F,tmdb_mean_5_rescaled,sample SD across film mean ratings; one film one observation,190,3.584615789473684,0.3256171791666113,2.7605,4.39,3.0172,3.366375,3.601,3.8075,4.121
+B337,ALL,ml_mean_5,sample SD across film mean ratings; one film one observation,337,3.4142267762020073,0.44502862843796714,0.5,4.75,2.695187859377012,3.2045454545454546,3.4652716353987243,3.7045454545454546,4.0
+B337,ALL,tmdb_mean_10,sample SD across film mean ratings; one film one observation,337,7.099608308605342,0.6280168718747395,3.975,8.535,5.9944,6.732,7.101,7.538,8.084
+B337,ALL,tmdb_mean_5_rescaled,sample SD across film mean ratings; one film one observation,337,3.549804154302671,0.31400843593736977,1.9875,4.2675,2.9972,3.366,3.5505,3.769,4.042
+B337,K,ml_mean_5,sample SD across film mean ratings; one film one observation,163,3.3939148179623118,0.4993875394729225,0.5,4.75,2.5640625,3.230254975124378,3.4642857142857144,3.6458966565349544,4.0
+B337,K,tmdb_mean_10,sample SD across film mean ratings; one film one observation,163,7.070435582822087,0.6272433815622938,3.975,8.49,6.0153,6.737,7.069,7.4695,8.0236
+B337,K,tmdb_mean_5_rescaled,sample SD across film mean ratings; one film one observation,163,3.5352177914110436,0.3136216907811469,1.9875,4.245,3.00765,3.3685,3.5345,3.73475,4.0118
+B337,F,ml_mean_5,sample SD across film mean ratings; one film one observation,174,3.433254645127698,0.3877746718212553,2.3539928486293205,4.173349175851957,2.7157169005223367,3.1746258482439593,3.465441660669539,3.7470345538937595,3.9777710358953553
+B337,F,tmdb_mean_10,sample SD across film mean ratings; one film one observation,174,7.126936781609196,0.6293180192801873,5.521,8.535,5.99735,6.6955,7.195,7.58675,8.1723
+B337,F,tmdb_mean_5_rescaled,sample SD across film mean ratings; one film one observation,174,3.563468390804598,0.31465900964009363,2.7605,4.2675,2.998675,3.34775,3.5975,3.793375,4.08615

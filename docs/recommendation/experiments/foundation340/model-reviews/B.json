@@ -1,0 +1,21 @@
+{
+  "status": "PASS",
+  "reviewer": "Hubble",
+  "variant": "B",
+  "model_seal": {
+    "bytes": 6749,
+    "sha256": "1fe7df563a1f3d9c25253c4b44a8995cf9d2396869f1328e2eb1089d559d15e2"
+  },
+  "prepared_seal": {
+    "bytes": 4711,
+    "sha256": "9f0550e38566512fc2dad084d3f9381a7197ea3bab05fd0428eef76878acb62e"
+  },
+  "actual_pins_checked": 78,
+  "native_coefficients_bit_exact": 3911,
+  "native_aligned_bit_exact_rows": 93230,
+  "independent_formula_max_error": 3.552713678800501e-15,
+  "ordered_partitions_independent_hash_pass": true,
+  "runtime_provenance_pass": true,
+  "B_measurements": "UNKNOWN",
+  "evaluation_labels_read": false
+}

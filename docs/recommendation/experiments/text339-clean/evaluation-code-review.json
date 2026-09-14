@@ -1,0 +1,24 @@
+{
+  "status": "PASS",
+  "reviewer": "Hubble",
+  "code": {
+    "bytes": 7724,
+    "sha256": "c25c44f341c2dfc0ff4ef942e5095c63aaec83f24badbe04525ef75a3853e7fb"
+  },
+  "mock_users": 270,
+  "mock_caps": 5,
+  "mock_score_rows": 93230,
+  "mock_user_metric_rows": 6480,
+  "mock_catalog_rows": 3240,
+  "checks": [
+    "Same aligned users/candidates",
+    "C+W+naturalzero equals slots",
+    "Actual T3 model verification called",
+    "Resource exception retained",
+    "All-0.5 labels produce null NDCG and explicit insufficient status while stars/low remain valid",
+    "Manual ranking toy agrees"
+  ],
+  "actual_labels_read": 0,
+  "actual_predictions_read": 0,
+  "scope": "Evaluation code only; actual predictions and result review remain separate"
+}

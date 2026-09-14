@@ -1,0 +1,87 @@
+{
+  "status": "PASS",
+  "reviewer": "/root/github_research_scope_audit",
+  "scope": "Static and synthetic pre-execution catalog review only; no actual scores, labels, models, fits or catalog predictions inspected.",
+  "fingerprint": {
+    "scripts/final344_catalog.py": {
+      "bytes": 11097,
+      "sha256": "09b3c69fa6fc9a93bed5191930ced1dae2b89f2cdca7ecff2d0cdea2b93df559"
+    },
+    "scripts/combination340_models.py": {
+      "bytes": 4025,
+      "sha256": "a519586b25d81574a96e1847dc6a4d8d08d3ded276deff64c5d82ff0bcdecd25"
+    },
+    "scripts/foundation340_features.py": {
+      "bytes": 7264,
+      "sha256": "83e2586d9acc8bfb8aec8dc47b8133f4bc0da8678ba0d82bdd295b5c7bf13cf9"
+    },
+    "scripts/cold_item_features.py": {
+      "bytes": 4838,
+      "sha256": "78ed5bbea151dc12d7a8bb144fa389333c779550fcfdff66d28d90c6900a4cec"
+    },
+    "scripts/text339_relations.py": {
+      "bytes": 3117,
+      "sha256": "fdc970a6506cfd27dcc2df15cd2785ce5f221f76bd74eaeb24aa6d73c5ccd4d6"
+    },
+    "scripts/rec047_features.py": {
+      "bytes": 5791,
+      "sha256": "a6f3fdc26cc88cceea2f6b1fe1244285bd9e29f7175874f7ab2eb8fae5904268"
+    },
+    "scripts/final344_common.py": {
+      "bytes": 5358,
+      "sha256": "0d6db903c17309816ffbd217341b78b7f55b17cb52675c51dddcefc6ccc8dc27"
+    },
+    "scripts/rec046_common.py": {
+      "bytes": 8001,
+      "sha256": "42dd14e83ecbee0c02c5e4233abb4b6a8d807ad2213c24a22cfb82350bc47848"
+    },
+    "docs/recommendation/experiments/final344/config.json": {
+      "bytes": 4468,
+      "sha256": "0e681dc956787e7a39f53c00bccdb61281752a79e00bab254f0c547cdd8ea52b"
+    },
+    "docs/recommendation/experiments/final344/execution.json": {
+      "bytes": 843,
+      "sha256": "7eb59a31ef4c6941a5d1e2dd43e1135fd3739d34e64be725ae8003a650a7a049"
+    },
+    "docs/recommendation/experiments/final344/IMPLEMENTATION.md": {
+      "bytes": 5751,
+      "sha256": "37a44cc64736bcc12e3939b4e7a80b22a89745ff2a62ee98833b859ccea786ce"
+    }
+  },
+  "fingerprint_digest": "490215bc3ee89f1666ce70b3bba7987e21111d73c6ffb76dd6de0c5246358666",
+  "digest_encoding": "SHA256 of UTF-8 json.dumps(fingerprint,sort_keys=True,separators=(comma,colon))",
+  "checks": [
+    "All85517 fixed movie axes, fixed snapshot release-date eligibility and all-viewed exclusion; same180 comparison cap10 contexts and legacy eligible axes.",
+    "Raw score order with movie ID ascending ties; each successful selected seed retained, full score vectors preserved.",
+    "UNKNOWN is membership complement only, never low/negative relevance. Natural slots, missing slots, cumulative2/4/6 and next-two slices stay separate.",
+    "Execution/input-lock/selection snapshot preserved before and after catalog, exact active model-audit path and bytes, all used fit files and seal pins reverified.",
+    "Current common.verify recursively validates selection calibration/evaluation source, audit and fit parents. Independent fake-pin drift regression passed.",
+    "Timing means shared feature plus per-model prediction and sorting component sum; models loaded together, initialization/IO/request overhead excluded."
+  ],
+  "synthetic_checks": {
+    "fm_explicit_feature_pair_rows": 37,
+    "features": 230,
+    "factors": 16,
+    "fm_max_abs_error": 9.325873406851315e-15,
+    "raw_order_cases": 1080,
+    "unknown_memberships": 6240,
+    "summary_rows": 108,
+    "summary_numeric_cells": 2160,
+    "summary_max_abs_error": 2.7755575615628914e-17,
+    "timing_rows": 24,
+    "timing_atol": 1e-12,
+    "parent_gate_cases": 14
+  },
+  "resolved_findings": [
+    "Catalog originally did not preserve exact selection/audit/fit parent snapshots across run; corrected and reviewed.",
+    "Selection parent calibration/evaluation source/fit recursion was missing in common.verify; corrected and independent drift cases now reject.",
+    "standalone_total_seconds was a component sum; renamed component_total_seconds with explicit interpretation."
+  ],
+  "remaining_blockers": [],
+  "actual_labels_or_model_values_opened": 0,
+  "caveats": [
+    "Code PASS is not actual runtime or result PASS.",
+    "Unknown catalog items carry no quality labels.",
+    "This local component timing is not service API latency."
+  ]
+}

@@ -1,0 +1,77 @@
+{
+  "experiment": "REC045",
+  "source_pins": {
+    "outputs/recommendation-evidence/rec-ev-033/metadata.parquet": {
+      "bytes": 13443836,
+      "sha256": "86e2e4eb087bbdbf2500b9b8a7e50abf1ef09b52ea6110c62d41581e7d45d016"
+    },
+    "outputs/recommendation-evidence/rec-ev-027-catalog/structured-features.parquet": {
+      "bytes": 3739308,
+      "sha256": "231fa0bc2628066ae2fdc2fa65c03b9068cd6a5d8dbcd86c385cadf4e50098b3"
+    },
+    "outputs/recommendation-evidence/rec-ev-027-catalog/domain-projection.parquet": {
+      "bytes": 936743,
+      "sha256": "511d6e92efab16f5128eed8d2123fa71ba73fbae7090b01a4e62cb8ea2e513f0"
+    },
+    "outputs/recommendation-evidence/rec-ev-032/user-resplits/splits.npz": {
+      "bytes": 634368,
+      "sha256": "5d230c59fcdbabdce529e6fa1ba5535895b59b2ab296905d71e9274c5c158410"
+    },
+    "outputs/recommendation-evidence/rec-ev-032/user-resplits/profiles.parquet": {
+      "bytes": 515271,
+      "sha256": "832a16d8692dfbd92504a3f76022bd2de598e4b69c9ff5a530b9ac82f3627e50"
+    },
+    "outputs/recommendation-evidence/rec-ev-032/user-resplits/targets.parquet": {
+      "bytes": 1003887,
+      "sha256": "af84245aebc5552cca5bff477ede70f7a0b5ffb8d97d11ef97deaffb41c9a2eb"
+    },
+    "outputs/recommendation-evidence/rec-ev-032/user-resplits/evaluation-labels.parquet": {
+      "bytes": 1873608,
+      "sha256": "8ceb5f08a7941f0a807fc71430f6dd645e0b4e229c6fda2be2582dbf241e9053"
+    },
+    "outputs/recommendation-evidence/rec-ev-032/user-resplits/completion-seal.json": {
+      "bytes": 7843,
+      "sha256": "48ecafa2bc5ce243e75e2c2770bdf1c386f6feb4adb0f745dd571f09c1f235f3"
+    },
+    "outputs/recommendation-evidence/rec-ev-032/user-resplits/r0/training.parquet": {
+      "bytes": 19168857,
+      "sha256": "057f6bc2828085eed182e0b061313b8492d97c51a112629b3717434214314213"
+    },
+    "outputs/recommendation-evidence/rec-ev-032/user-resplits/r1/training.parquet": {
+      "bytes": 19134668,
+      "sha256": "02c314037351455a161f3bf45666c884f36db419889f88b3bc9f8ae556d56ae6"
+    },
+    "outputs/recommendation-evidence/rec-ev-032/user-resplits/r2/training.parquet": {
+      "bytes": 19098382,
+      "sha256": "12191cdef23de989ada7bc60e417d1b02aa5631c6395444ca769aaf507cfa61a"
+    },
+    "outputs/recommendation-evidence/rec-ev-045-metadata/extended-metadata.parquet": {
+      "bytes": 3726372,
+      "sha256": "40c4436cc68b3bb8c284ed07aa9c9fb77d2a6187741e38f55adf825f6f08a16b"
+    },
+    "outputs/recommendation-evidence/rec-ev-045-metadata/summary.json": {
+      "bytes": 1785,
+      "sha256": "20e07b3e66aaf284f558c750c1f2f74f7d916058ae8b2e689d82b810d3e6f278"
+    },
+    "outputs/recommendation-evidence/rec-ev-045-metadata/seal.json": {
+      "bytes": 1103,
+      "sha256": "ffa02f9981ae999dd9578134ecd2e3c1a75dfeb3ef6abbd50327115266b20715"
+    }
+  },
+  "publication": "LOCAL_ONLY",
+  "metadata_pin_pending": false,
+  "blocks": 8,
+  "personal_ridge": 5,
+  "shared_ridge": 50,
+  "ks": [
+    5,
+    10,
+    30
+  ],
+  "draws": [
+    3,
+    3,
+    1
+  ],
+  "bootstrap_family": 13
+}

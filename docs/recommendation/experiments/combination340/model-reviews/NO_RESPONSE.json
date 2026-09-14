@@ -1,0 +1,32 @@
+{
+  "status": "PASS",
+  "reviewer": "Hubble",
+  "model_seal": {
+    "bytes": 3865,
+    "sha256": "a02e50a25d1005cda20817dbf9ea82381a717fc69b37348e33e861bd56e7a37b"
+  },
+  "input_lock": {
+    "bytes": 2329,
+    "sha256": "880647079a38243892ff533f4471abf2b17baa06a5f94112b872073024cd302d"
+  },
+  "retained_dimensions": 224,
+  "removed_original_columns": [
+    210,
+    212,
+    218,
+    220,
+    226,
+    228
+  ],
+  "native_portable_coefficients_bit_exact": 3809,
+  "observed_predictions": 93230,
+  "independent_formula_max_error": 2.6645352591003757e-15,
+  "actual_pins_checked": 53,
+  "ordered_partitions_independent_and_B_exact": true,
+  "fit_seconds": 1041.2346856229997,
+  "peak_bytes": 11315486720,
+  "strict_memory_pass": true,
+  "optimizer_convergence_verified": false,
+  "evaluation_labels_read": false,
+  "claim": "Numerical/execution verification only; no quality or convergence claim."
+}

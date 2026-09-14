@@ -1,0 +1,53 @@
+{
+  "schemaVersion": "feelm-service-v1-b1-execution-profile/1",
+  "status": "REVIEWED_LOCAL_BOUNDED_PROBE",
+  "profileId": "local4c12g-t14400-v1",
+  "runId": "b1-gbt120-s339-v1-r3-local4c12g-t14400",
+  "recoveryOrdinal": "r3",
+  "hostClass": "current-local-docker-desktop",
+  "singleAttempt": true,
+  "automaticRetry": false,
+  "docker": {
+    "cpus": "4",
+    "memory": "12g",
+    "memorySwap": "12g",
+    "maxMemoryBytes": 12884901888,
+    "network": "none"
+  },
+  "spark": {
+    "master": "local[4]",
+    "driverMemory": "8g",
+    "shufflePartitions": 8,
+    "adaptiveExecution": false
+  },
+  "timeoutsSeconds": {
+    "preflightDryRun": 14400,
+    "preflightFull": 14400,
+    "fit": 14400,
+    "score": 14400
+  },
+  "resourceObservation": {
+    "hostCgroupPollIntervalSeconds": 2.0,
+    "sampleBeforeTimeoutStop": true,
+    "inspectBeforeTimeoutStop": true,
+    "unknownPeakBlocksSuccess": true
+  },
+  "modelContract": {
+    "sourceRows": 4997069,
+    "logicalRows": 19988276,
+    "scoreRows": 93230,
+    "featureCount": 230,
+    "partitions": 8,
+    "seed": 339,
+    "trees": 120,
+    "workerSha256": "9708e0b3fdc618c5df2240c9e1dcf368fd4f6fa411d7915c31104b3af2146d42",
+    "modelInputSetSha256": "cd41a8ac341cdbc1435bbce21bd78e3b3012e2c50ca25cfac0ef034088b1ccfd",
+    "workerRuntimeSetSha256": "ff90bcd014b8ac498f2c5ccba27eb33d0a83f3ee062d36dc426e33a95c6a0a0a"
+  },
+  "authorization": {
+    "implementation": true,
+    "publicPreflight": true,
+    "fitBeforeNewSiblingReviewPass": false,
+    "deployment": false
+  }
+}

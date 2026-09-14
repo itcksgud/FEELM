@@ -1,0 +1,27 @@
+{
+  "status": "PASS",
+  "reviewer": "/root/text339_eval_review",
+  "files": {
+    "text339_evaluate.py": {
+      "bytes": 12441,
+      "sha256": "5d5e8f165faa944b5ab211f94c80fa076dbe55ab8bd0e0abe0eded4b51a8d192"
+    },
+    "text339_run.py": {
+      "bytes": 6840,
+      "sha256": "6c15122694b932ca3be4fb38c699505adee4916a634bb4d6cf94b3cdf1782dd7"
+    },
+    "report_text339.py": {
+      "bytes": 9846,
+      "sha256": "6d25ab18929d04bc3eedba35355b2a53bedf6165b03767bfed01da4451b8e067"
+    }
+  },
+  "validation": [
+    "31-user complete synthetic evaluate: NDCG excludes one IDCG0 user while stars retains all 31",
+    "release-decade candidate counts and Wiki missing/restored distinction verified",
+    "496 full-catalog diagnostic rows including missing returns",
+    "synthetic report main: three charts, twelve bars, twelve Top4/6/10 rows, both relative links resolve correctly",
+    "report invokes prepared/fit/catalog/evaluation and four model verifications; unmeasured memory is not zero",
+    "earlier 30-user mock and independent ranking/selection tests retained"
+  ],
+  "rating_values_read": 0
+}

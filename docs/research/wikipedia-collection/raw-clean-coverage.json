@@ -1,0 +1,16 @@
+{
+  "en": {
+    "nonempty_clean": 51102,
+    "nonempty_raw": 51920,
+    "nonempty_raw_empty_clean": 818,
+    "pages_with_templates_removed": 5878,
+    "recognized_section": 51943
+  },
+  "ko": {
+    "nonempty_clean": 6534,
+    "nonempty_raw": 6624,
+    "nonempty_raw_empty_clean": 90,
+    "pages_with_templates_removed": 290,
+    "recognized_section": 6625
+  }
+}

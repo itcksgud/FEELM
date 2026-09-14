@@ -1,0 +1,29 @@
+{
+  "status": "PASS",
+  "reviewer": "Dewey",
+  "evaluation_seal": {"bytes": 1023, "sha256": "9296f240a0a2819ac3a9403ba79b1fb882702b787ead4b2e6950b6ae9529feef"},
+  "checks": {
+    "independently_recomputed_user_rows": 2700,
+    "numeric_cells": 102600,
+    "max_numeric_difference": 5.55e-16,
+    "summary_rows": 1080,
+    "catalog_rows": 90,
+    "independently_recomputed_novelty_slots": 45020,
+    "max_novelty_difference": 3.33e-16,
+    "formal_bootstrap_records": 7,
+    "bootstrap_draws": 20000,
+    "seed": 341,
+    "max_interval_difference": 0.0,
+    "model_comparison_users": 176,
+    "fallback_inclusive_policy_users": 158,
+    "no_input_guard_users": 84,
+    "source_code_model_prediction_label_pins_pass": true,
+    "fixed_taste_conditional_discovery_first_slot_denominators_pass": true,
+    "locked_model_and_fixed_selection_rule_pass": true
+  },
+  "selected_model": "S",
+  "foundation_selected": "B",
+  "eligible_policies": ["P2_010", "P2_020"],
+  "selected_policy": "P2_010",
+  "interpretation": "Both constrained discovery policies pass the predeclared development criteria. P2_010 is selected by the fixed preference rule. Novelty is a genre proxy; fallback is included in primary set quality. This does not establish service usefulness or quality of UNKNOWN full-catalog recommendations."
+}

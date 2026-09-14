@@ -1,0 +1,22 @@
+{
+  "checks": [
+    "12 independent tests PASS",
+    "Official User-Agent contact / GET / read-only POST guidance reviewed",
+    "Actual previous POST cache reused for GET query, network 0, original request/body/file hash unchanged",
+    "Serial requests and Retry-After respected"
+  ],
+  "fingerprint": {
+    "docs\\research\\wikipedia-collection\\PLAN.md": "4e2b2b21aaa893a629d8761bbb13557c11999b34b8cf3be7296dcf7808882666",
+    "scripts\\collect_wikipedia_plots.py": "5ff2bc6dfb16c2123229ebc7b922e69575cd0ca10c961815a729b9d1b6e15af4",
+    "scripts\\test_wikipedia_plots.py": "49dc9ffc53a7178a1b701e47c89e6fb97a9377fb359cf55625fec7a945cfc107"
+  },
+  "limits": [
+    "Actual server quota classification and HTTP429 cause not established",
+    "Extraction and matching are unchanged from independently reviewed v2",
+    "No model-use approval"
+  ],
+  "reviewed_at": "2026-09-10T00:55:40.849387+00:00",
+  "reviewer": "/root/wiki_report_review",
+  "scope": "V3 transport-only update, same-cache pilot then full collection; model use remains false",
+  "status": "PASS"
+}

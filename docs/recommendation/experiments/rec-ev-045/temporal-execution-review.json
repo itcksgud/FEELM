@@ -1,0 +1,56 @@
+{
+  "status": "PASS",
+  "reviewer": "/root/rec045_temporal_feasibility",
+  "fingerprint": {
+    "docs/recommendation/experiments/rec-ev-045/temporal-design.md": {
+      "bytes": 4170,
+      "sha256": "481b413049eb8073ae06b209e32f3d43f4c06fb0bd255bc8fe988190f854896c"
+    },
+    "docs/recommendation/experiments/rec-ev-045/README.md": {
+      "bytes": 8334,
+      "sha256": "404f00784d055118a7043f5aa18ba8033bca7aa7687e951c49fe78fa832d38e0"
+    },
+    "docs/recommendation/experiments/rec-ev-045/config.json": {
+      "bytes": 3019,
+      "sha256": "e77e8ae4ec11f3fdc3cac887d485fcdd0dbd02eeea4ee50ae45cdf2d1f64c82c"
+    },
+    "scripts/rec_ev_045_temporal.py": {
+      "bytes": 15923,
+      "sha256": "cff96b76aa8f01e695f34cacc5d542c0c862008bba36233b18bbaee6d874490b"
+    },
+    "scripts/feelm_joint_preferences.py": {
+      "bytes": 9442,
+      "sha256": "e1075381638321ee8645c151a3ae8daebfa53a356399e6fb53cf2399a934a311"
+    },
+    "scripts/rec_ev_045_joint_preferences.py": {
+      "bytes": 19340,
+      "sha256": "a6f44f4b5e82961b1a369103dd701a380a2802885bb2259d1216361e59b91a34"
+    },
+    "scripts/test_feelm_joint_preferences.py": {
+      "bytes": 6153,
+      "sha256": "52042275afd54a43997a175bea386c6c3a6b9dee6ee99a77408fd7d7c7004a62"
+    },
+    "scripts/feelm_residual_taste.py": {
+      "bytes": 11651,
+      "sha256": "26f8083734a02ef3d2dded142b5bb9ffab30e7bd9d92a68d5cd412577cbbc6fa"
+    },
+    "scripts/feelm_preference_structure.py": {
+      "bytes": 18743,
+      "sha256": "07d86e029b68ae407726ebde7442cc0be7f47bf599f263d28d985b0c11c8aae1"
+    }
+  },
+  "source_pins_verified": 14,
+  "tests_passed": 10,
+  "independent_synthetic_temporal_sentinel_test": "PASS",
+  "eligibility_users": [
+    170,
+    166,
+    173
+  ],
+  "unique_eligible_users": 300,
+  "new_E_stars_read": false,
+  "findings_resolved": [
+    "README included in temporal fingerprint"
+  ],
+  "execution_gate": "main completed and metadata source seal verified"
+}

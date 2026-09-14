@@ -1,0 +1,39 @@
+{
+  "status": "PASS",
+  "reviewer": "Rawls",
+  "model_seal": {
+    "bytes": 13327,
+    "sha256": "4843d5a3f836238237f8ffe3338a1626a497be29095c98467008cb28814cc13b"
+  },
+  "fit_seal": {
+    "bytes": 20245,
+    "sha256": "702fb7fd8b82dabd607811064ed02fdd6e46cd319e718072a01a00328c1e7282"
+  },
+  "actual_pins_checked": 144,
+  "native_export_factor_values_bit_exact": 1442368,
+  "supported_items": 45074,
+  "C_factors": 0,
+  "training_user_factors": 39859,
+  "factor_rank": 32,
+  "independent_contexts_per_als": 1350,
+  "observed_rows_per_als": 93230,
+  "independent_augmented_svd_max_error": {
+    "actual": 1.2434497875801753e-14,
+    "reference": 2.4868995751603507e-14
+  },
+  "direct_and_nan_masks_exact": true,
+  "actual_direct_rows": 15977,
+  "actual_unsupported_rows": 77253,
+  "reference_direct_rows": 20824,
+  "availability_rows_exact": 2700,
+  "all_four_blends_max_error": 1.2434497875801753e-14,
+  "unsupported_exact_S_rows": 77253,
+  "C_exact_S_rows": 18775,
+  "S_exact_original_B_rows": 93230,
+  "fit_seconds": 30.484338691996527,
+  "peak_bytes": 2665603072,
+  "strict_memory_pass": true,
+  "parameter_provenance": "Native ALSModel stores rank/coldStart; reg.1/iter15/seed339 established by sealed worker/config and metrics.",
+  "claim": "Reference has additional C ratings; not causal upper bound or convergence guarantee.",
+  "evaluation_labels_read": false
+}

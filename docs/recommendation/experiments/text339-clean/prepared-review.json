@@ -1,0 +1,37 @@
+{
+  "status": "PASS",
+  "reviewer": "Rawls",
+  "prepared_seal": {
+    "bytes": 2267,
+    "sha256": "a22d70a6619fa83143f8396ecf68088a283485712b2b1e90912d08b6687f7d55"
+  },
+  "train_rows": 4997069,
+  "train_users": 39859,
+  "score_rows": 93230,
+  "episodes": 73771,
+  "fixed_columns": 338,
+  "all_row_ids_users_labels_and_fixed_features_exact": true,
+  "episodes_independently_reconstructed": true,
+  "C_movies_excluded_from_training_targets_and_inputs": 10952,
+  "same_roles_times_and_common_contexts": true,
+  "train_changed_target_rows": 23156,
+  "train_changed_input_slots": 1081,
+  "train_episodes_with_changed_input": 1056,
+  "H10_direct_exposure_users": 52,
+  "H10_changed_candidate_rows": 67,
+  "H10_changed_input_slots": 5,
+  "independent_text_formula": {
+    "production_feature_helpers_used": false,
+    "train_rows": 30,
+    "score_rows": 13,
+    "feature_values": 13932,
+    "predeclared_absolute_tolerance": 0.000002,
+    "maximum_overview_error": 0.00000047683716,
+    "maximum_T2_error": 0.00000023841858,
+    "maximum_T3_error": 0.00000023841858,
+    "coverage": "h0/1/5/10/30, partial caps, changed inputs/targets, C, natural-zero, missing Wiki"
+  },
+  "pins_checked_before_and_after": 24,
+  "future_rating_values_read": 0,
+  "new_recommender_fits_started": 0
+}

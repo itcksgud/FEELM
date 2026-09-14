@@ -1,0 +1,513 @@
+{
+  "scope": "DESCRIPTIVE_METADATA_ONLY; raw means separate from shrunk Bayes means; no model or primary contrast changed",
+  "source_completion": {
+    "bytes": 9286,
+    "sha256": "62bfd8b094fd2fe2424b7664f6cbfa3cca8a5952a90621dce74688e961d6906c"
+  },
+  "records": [
+    {
+      "round": 0,
+      "group": "rated_movies",
+      "movies": 59964,
+      "spearman_descriptive": {
+        "ml_raw_mean": {
+          "ml_raw_mean": 1.0,
+          "ml_log_count": 0.19181196694408736,
+          "tmdb_mean": 0.549854000950255,
+          "tmdb_log_votes": 0.1254503586179169,
+          "tmdb_log_popularity": 0.07366036355205044
+        },
+        "ml_log_count": {
+          "ml_raw_mean": 0.19181196694408736,
+          "ml_log_count": 1.0,
+          "tmdb_mean": 0.25639104664001344,
+          "tmdb_log_votes": 0.7485935547819714,
+          "tmdb_log_popularity": 0.6014511717915854
+        },
+        "tmdb_mean": {
+          "ml_raw_mean": 0.549854000950255,
+          "ml_log_count": 0.25639104664001344,
+          "tmdb_mean": 1.0,
+          "tmdb_log_votes": 0.243699819084982,
+          "tmdb_log_popularity": 0.15133998090625492
+        },
+        "tmdb_log_votes": {
+          "ml_raw_mean": 0.1254503586179169,
+          "ml_log_count": 0.7485935547819714,
+          "tmdb_mean": 0.243699819084982,
+          "tmdb_log_votes": 1.0,
+          "tmdb_log_popularity": 0.7610117622366386
+        },
+        "tmdb_log_popularity": {
+          "ml_raw_mean": 0.07366036355205044,
+          "ml_log_count": 0.6014511717915854,
+          "tmdb_mean": 0.15133998090625492,
+          "tmdb_log_votes": 0.7610117622366386,
+          "tmdb_log_popularity": 1.0
+        }
+      }
+    },
+    {
+      "round": 0,
+      "group": "ratings_1_49",
+      "movies": 51252,
+      "spearman_descriptive": {
+        "ml_raw_mean": {
+          "ml_raw_mean": 1.0,
+          "ml_log_count": 0.11366972266144967,
+          "tmdb_mean": 0.49942876933485797,
+          "tmdb_log_votes": 0.04076496939971782,
+          "tmdb_log_popularity": -0.01087096587191013
+        },
+        "ml_log_count": {
+          "ml_raw_mean": 0.11366972266144967,
+          "ml_log_count": 1.0,
+          "tmdb_mean": 0.17578213857094832,
+          "tmdb_log_votes": 0.6318295180162739,
+          "tmdb_log_popularity": 0.42425804700661357
+        },
+        "tmdb_mean": {
+          "ml_raw_mean": 0.49942876933485797,
+          "ml_log_count": 0.17578213857094832,
+          "tmdb_mean": 1.0,
+          "tmdb_log_votes": 0.15870377834315955,
+          "tmdb_log_popularity": 0.052131742305164715
+        },
+        "tmdb_log_votes": {
+          "ml_raw_mean": 0.04076496939971782,
+          "ml_log_count": 0.6318295180162739,
+          "tmdb_mean": 0.15870377834315955,
+          "tmdb_log_votes": 1.0,
+          "tmdb_log_popularity": 0.6563835979414391
+        },
+        "tmdb_log_popularity": {
+          "ml_raw_mean": -0.01087096587191013,
+          "ml_log_count": 0.42425804700661357,
+          "tmdb_mean": 0.052131742305164715,
+          "tmdb_log_votes": 0.6563835979414391,
+          "tmdb_log_popularity": 1.0
+        }
+      }
+    },
+    {
+      "round": 0,
+      "group": "ratings_50_499",
+      "movies": 6093,
+      "spearman_descriptive": {
+        "ml_raw_mean": {
+          "ml_raw_mean": 1.0,
+          "ml_log_count": 0.03087830318228617,
+          "tmdb_mean": 0.8381550531390028,
+          "tmdb_log_votes": -0.10682984052979863,
+          "tmdb_log_popularity": -0.24078697315995068
+        },
+        "ml_log_count": {
+          "ml_raw_mean": 0.03087830318228617,
+          "ml_log_count": 1.0,
+          "tmdb_mean": 0.06018935486383761,
+          "tmdb_log_votes": 0.353266846782486,
+          "tmdb_log_popularity": 0.3333469734494981
+        },
+        "tmdb_mean": {
+          "ml_raw_mean": 0.8381550531390028,
+          "ml_log_count": 0.06018935486383761,
+          "tmdb_mean": 1.0,
+          "tmdb_log_votes": 0.12529131237158617,
+          "tmdb_log_popularity": -0.012611888541525897
+        },
+        "tmdb_log_votes": {
+          "ml_raw_mean": -0.10682984052979863,
+          "ml_log_count": 0.353266846782486,
+          "tmdb_mean": 0.12529131237158617,
+          "tmdb_log_votes": 1.0,
+          "tmdb_log_popularity": 0.8459615488302921
+        },
+        "tmdb_log_popularity": {
+          "ml_raw_mean": -0.24078697315995068,
+          "ml_log_count": 0.3333469734494981,
+          "tmdb_mean": -0.012611888541525897,
+          "tmdb_log_votes": 0.8459615488302921,
+          "tmdb_log_popularity": 1.0
+        }
+      }
+    },
+    {
+      "round": 0,
+      "group": "ratings_500plus",
+      "movies": 2619,
+      "spearman_descriptive": {
+        "ml_raw_mean": {
+          "ml_raw_mean": 1.0,
+          "ml_log_count": 0.2601928404314206,
+          "tmdb_mean": 0.8691786568486219,
+          "tmdb_log_votes": 0.12884033239899526,
+          "tmdb_log_popularity": 0.07301475219670492
+        },
+        "ml_log_count": {
+          "ml_raw_mean": 0.2601928404314206,
+          "ml_log_count": 1.0,
+          "tmdb_mean": 0.35840349556784157,
+          "tmdb_log_votes": 0.49385541463137794,
+          "tmdb_log_popularity": 0.45311714584913504
+        },
+        "tmdb_mean": {
+          "ml_raw_mean": 0.8691786568486219,
+          "ml_log_count": 0.35840349556784157,
+          "tmdb_mean": 1.0,
+          "tmdb_log_votes": 0.35318010842716435,
+          "tmdb_log_popularity": 0.3079166503699449
+        },
+        "tmdb_log_votes": {
+          "ml_raw_mean": 0.12884033239899526,
+          "ml_log_count": 0.49385541463137794,
+          "tmdb_mean": 0.35318010842716435,
+          "tmdb_log_votes": 1.0,
+          "tmdb_log_popularity": 0.8635705275385557
+        },
+        "tmdb_log_popularity": {
+          "ml_raw_mean": 0.07301475219670492,
+          "ml_log_count": 0.45311714584913504,
+          "tmdb_mean": 0.3079166503699449,
+          "tmdb_log_votes": 0.8635705275385557,
+          "tmdb_log_popularity": 1.0
+        }
+      }
+    },
+    {
+      "round": 1,
+      "group": "rated_movies",
+      "movies": 59979,
+      "spearman_descriptive": {
+        "ml_raw_mean": {
+          "ml_raw_mean": 1.0,
+          "ml_log_count": 0.19555484131226028,
+          "tmdb_mean": 0.5427510392942984,
+          "tmdb_log_votes": 0.12980669836684233,
+          "tmdb_log_popularity": 0.07123088614021655
+        },
+        "ml_log_count": {
+          "ml_raw_mean": 0.19555484131226028,
+          "ml_log_count": 1.0,
+          "tmdb_mean": 0.2550209899318519,
+          "tmdb_log_votes": 0.7489526805684205,
+          "tmdb_log_popularity": 0.5998647885127562
+        },
+        "tmdb_mean": {
+          "ml_raw_mean": 0.5427510392942984,
+          "ml_log_count": 0.2550209899318519,
+          "tmdb_mean": 1.0,
+          "tmdb_log_votes": 0.2434417893674999,
+          "tmdb_log_popularity": 0.15055614799931413
+        },
+        "tmdb_log_votes": {
+          "ml_raw_mean": 0.12980669836684233,
+          "ml_log_count": 0.7489526805684205,
+          "tmdb_mean": 0.2434417893674999,
+          "tmdb_log_votes": 1.0,
+          "tmdb_log_popularity": 0.7597317922650695
+        },
+        "tmdb_log_popularity": {
+          "ml_raw_mean": 0.07123088614021655,
+          "ml_log_count": 0.5998647885127562,
+          "tmdb_mean": 0.15055614799931413,
+          "tmdb_log_votes": 0.7597317922650695,
+          "tmdb_log_popularity": 1.0
+        }
+      }
+    },
+    {
+      "round": 1,
+      "group": "ratings_1_49",
+      "movies": 51309,
+      "spearman_descriptive": {
+        "ml_raw_mean": {
+          "ml_raw_mean": 1.0,
+          "ml_log_count": 0.11181529805744517,
+          "tmdb_mean": 0.4896988119702574,
+          "tmdb_log_votes": 0.040693324271566876,
+          "tmdb_log_popularity": -0.019862111680746974
+        },
+        "ml_log_count": {
+          "ml_raw_mean": 0.11181529805744517,
+          "ml_log_count": 1.0,
+          "tmdb_mean": 0.1742425520322725,
+          "tmdb_log_votes": 0.6327935922908993,
+          "tmdb_log_popularity": 0.42302396510781964
+        },
+        "tmdb_mean": {
+          "ml_raw_mean": 0.4896988119702574,
+          "ml_log_count": 0.1742425520322725,
+          "tmdb_mean": 1.0,
+          "tmdb_log_votes": 0.15880444996286852,
+          "tmdb_log_popularity": 0.05176962838902508
+        },
+        "tmdb_log_votes": {
+          "ml_raw_mean": 0.040693324271566876,
+          "ml_log_count": 0.6327935922908993,
+          "tmdb_mean": 0.15880444996286852,
+          "tmdb_log_votes": 1.0,
+          "tmdb_log_popularity": 0.6551012026451113
+        },
+        "tmdb_log_popularity": {
+          "ml_raw_mean": -0.019862111680746974,
+          "ml_log_count": 0.42302396510781964,
+          "tmdb_mean": 0.05176962838902508,
+          "tmdb_log_votes": 0.6551012026451113,
+          "tmdb_log_popularity": 1.0
+        }
+      }
+    },
+    {
+      "round": 1,
+      "group": "ratings_50_499",
+      "movies": 6057,
+      "spearman_descriptive": {
+        "ml_raw_mean": {
+          "ml_raw_mean": 1.0,
+          "ml_log_count": 0.03500692033154879,
+          "tmdb_mean": 0.8402675586298233,
+          "tmdb_log_votes": -0.1032724521682886,
+          "tmdb_log_popularity": -0.235181253682923
+        },
+        "ml_log_count": {
+          "ml_raw_mean": 0.03500692033154879,
+          "ml_log_count": 1.0,
+          "tmdb_mean": 0.0571503005959713,
+          "tmdb_log_votes": 0.3487332070236614,
+          "tmdb_log_popularity": 0.33179025851950683
+        },
+        "tmdb_mean": {
+          "ml_raw_mean": 0.8402675586298233,
+          "ml_log_count": 0.0571503005959713,
+          "tmdb_mean": 1.0,
+          "tmdb_log_votes": 0.12581528567500938,
+          "tmdb_log_popularity": -0.013706684165357204
+        },
+        "tmdb_log_votes": {
+          "ml_raw_mean": -0.1032724521682886,
+          "ml_log_count": 0.3487332070236614,
+          "tmdb_mean": 0.12581528567500938,
+          "tmdb_log_votes": 1.0,
+          "tmdb_log_popularity": 0.8463995223184266
+        },
+        "tmdb_log_popularity": {
+          "ml_raw_mean": -0.235181253682923,
+          "ml_log_count": 0.33179025851950683,
+          "tmdb_mean": -0.013706684165357204,
+          "tmdb_log_votes": 0.8463995223184266,
+          "tmdb_log_popularity": 1.0
+        }
+      }
+    },
+    {
+      "round": 1,
+      "group": "ratings_500plus",
+      "movies": 2613,
+      "spearman_descriptive": {
+        "ml_raw_mean": {
+          "ml_raw_mean": 1.0,
+          "ml_log_count": 0.264721040502545,
+          "tmdb_mean": 0.8696994752071835,
+          "tmdb_log_votes": 0.13443363837006672,
+          "tmdb_log_popularity": 0.07824938646651239
+        },
+        "ml_log_count": {
+          "ml_raw_mean": 0.264721040502545,
+          "ml_log_count": 1.0,
+          "tmdb_mean": 0.363034857078808,
+          "tmdb_log_votes": 0.4987641152538643,
+          "tmdb_log_popularity": 0.4570225478932019
+        },
+        "tmdb_mean": {
+          "ml_raw_mean": 0.8696994752071835,
+          "ml_log_count": 0.363034857078808,
+          "tmdb_mean": 1.0,
+          "tmdb_log_votes": 0.35847568077209785,
+          "tmdb_log_popularity": 0.3129991665341328
+        },
+        "tmdb_log_votes": {
+          "ml_raw_mean": 0.13443363837006672,
+          "ml_log_count": 0.4987641152538643,
+          "tmdb_mean": 0.35847568077209785,
+          "tmdb_log_votes": 1.0,
+          "tmdb_log_popularity": 0.8638883079091932
+        },
+        "tmdb_log_popularity": {
+          "ml_raw_mean": 0.07824938646651239,
+          "ml_log_count": 0.4570225478932019,
+          "tmdb_mean": 0.3129991665341328,
+          "tmdb_log_votes": 0.8638883079091932,
+          "tmdb_log_popularity": 1.0
+        }
+      }
+    },
+    {
+      "round": 2,
+      "group": "rated_movies",
+      "movies": 59067,
+      "spearman_descriptive": {
+        "ml_raw_mean": {
+          "ml_raw_mean": 1.0,
+          "ml_log_count": 0.19049967353735425,
+          "tmdb_mean": 0.5338324988543349,
+          "tmdb_log_votes": 0.12206738938347918,
+          "tmdb_log_popularity": 0.06841226764980457
+        },
+        "ml_log_count": {
+          "ml_raw_mean": 0.19049967353735425,
+          "ml_log_count": 1.0,
+          "tmdb_mean": 0.25654116720092557,
+          "tmdb_log_votes": 0.7384582162096307,
+          "tmdb_log_popularity": 0.5923157675062567
+        },
+        "tmdb_mean": {
+          "ml_raw_mean": 0.5338324988543349,
+          "ml_log_count": 0.25654116720092557,
+          "tmdb_mean": 1.0,
+          "tmdb_log_votes": 0.23416253918937543,
+          "tmdb_log_popularity": 0.14819247989212428
+        },
+        "tmdb_log_votes": {
+          "ml_raw_mean": 0.12206738938347918,
+          "ml_log_count": 0.7384582162096307,
+          "tmdb_mean": 0.23416253918937543,
+          "tmdb_log_votes": 1.0,
+          "tmdb_log_popularity": 0.7617699963363338
+        },
+        "tmdb_log_popularity": {
+          "ml_raw_mean": 0.06841226764980457,
+          "ml_log_count": 0.5923157675062567,
+          "tmdb_mean": 0.14819247989212428,
+          "tmdb_log_votes": 0.7617699963363338,
+          "tmdb_log_popularity": 1.0
+        }
+      }
+    },
+    {
+      "round": 2,
+      "group": "ratings_1_49",
+      "movies": 50416,
+      "spearman_descriptive": {
+        "ml_raw_mean": {
+          "ml_raw_mean": 1.0,
+          "ml_log_count": 0.10812287073305987,
+          "tmdb_mean": 0.48017901711146604,
+          "tmdb_log_votes": 0.032670126416550156,
+          "tmdb_log_popularity": -0.021076748935437387
+        },
+        "ml_log_count": {
+          "ml_raw_mean": 0.10812287073305987,
+          "ml_log_count": 1.0,
+          "tmdb_mean": 0.17959489612158472,
+          "tmdb_log_votes": 0.6161869899985749,
+          "tmdb_log_popularity": 0.410027248830271
+        },
+        "tmdb_mean": {
+          "ml_raw_mean": 0.48017901711146604,
+          "ml_log_count": 0.17959489612158472,
+          "tmdb_mean": 1.0,
+          "tmdb_log_votes": 0.14869991332274096,
+          "tmdb_log_popularity": 0.05120623753149939
+        },
+        "tmdb_log_votes": {
+          "ml_raw_mean": 0.032670126416550156,
+          "ml_log_count": 0.6161869899985749,
+          "tmdb_mean": 0.14869991332274096,
+          "tmdb_log_votes": 1.0,
+          "tmdb_log_popularity": 0.6571059602323733
+        },
+        "tmdb_log_popularity": {
+          "ml_raw_mean": -0.021076748935437387,
+          "ml_log_count": 0.410027248830271,
+          "tmdb_mean": 0.05120623753149939,
+          "tmdb_log_votes": 0.6571059602323733,
+          "tmdb_log_popularity": 1.0
+        }
+      }
+    },
+    {
+      "round": 2,
+      "group": "ratings_50_499",
+      "movies": 6041,
+      "spearman_descriptive": {
+        "ml_raw_mean": {
+          "ml_raw_mean": 1.0,
+          "ml_log_count": 0.02971201689514625,
+          "tmdb_mean": 0.8357031518165124,
+          "tmdb_log_votes": -0.0965318752986054,
+          "tmdb_log_popularity": -0.23154949454888324
+        },
+        "ml_log_count": {
+          "ml_raw_mean": 0.02971201689514625,
+          "ml_log_count": 1.0,
+          "tmdb_mean": 0.05152603214965745,
+          "tmdb_log_votes": 0.35676721076274154,
+          "tmdb_log_popularity": 0.3394380463087526
+        },
+        "tmdb_mean": {
+          "ml_raw_mean": 0.8357031518165124,
+          "ml_log_count": 0.05152603214965745,
+          "tmdb_mean": 1.0,
+          "tmdb_log_votes": 0.12754552858735135,
+          "tmdb_log_popularity": -0.012102247027494658
+        },
+        "tmdb_log_votes": {
+          "ml_raw_mean": -0.0965318752986054,
+          "ml_log_count": 0.35676721076274154,
+          "tmdb_mean": 0.12754552858735135,
+          "tmdb_log_votes": 1.0,
+          "tmdb_log_popularity": 0.8486322711592281
+        },
+        "tmdb_log_popularity": {
+          "ml_raw_mean": -0.23154949454888324,
+          "ml_log_count": 0.3394380463087526,
+          "tmdb_mean": -0.012102247027494658,
+          "tmdb_log_votes": 0.8486322711592281,
+          "tmdb_log_popularity": 1.0
+        }
+      }
+    },
+    {
+      "round": 2,
+      "group": "ratings_500plus",
+      "movies": 2610,
+      "spearman_descriptive": {
+        "ml_raw_mean": {
+          "ml_raw_mean": 1.0,
+          "ml_log_count": 0.25703398142153594,
+          "tmdb_mean": 0.868029357441366,
+          "tmdb_log_votes": 0.13092076589606005,
+          "tmdb_log_popularity": 0.0751686446172077
+        },
+        "ml_log_count": {
+          "ml_raw_mean": 0.25703398142153594,
+          "ml_log_count": 1.0,
+          "tmdb_mean": 0.35901452650034055,
+          "tmdb_log_votes": 0.4961677991789822,
+          "tmdb_log_popularity": 0.4543730189277688
+        },
+        "tmdb_mean": {
+          "ml_raw_mean": 0.868029357441366,
+          "ml_log_count": 0.35901452650034055,
+          "tmdb_mean": 1.0,
+          "tmdb_log_votes": 0.35613016107205037,
+          "tmdb_log_popularity": 0.3116424882096454
+        },
+        "tmdb_log_votes": {
+          "ml_raw_mean": 0.13092076589606005,
+          "ml_log_count": 0.4961677991789822,
+          "tmdb_mean": 0.35613016107205037,
+          "tmdb_log_votes": 1.0,
+          "tmdb_log_popularity": 0.8641169762739838
+        },
+        "tmdb_log_popularity": {
+          "ml_raw_mean": 0.0751686446172077,
+          "ml_log_count": 0.4543730189277688,
+          "tmdb_mean": 0.3116424882096454,
+          "tmdb_log_votes": 0.8641169762739838,
+          "tmdb_log_popularity": 1.0
+        }
+      }
+    }
+  ]
+}

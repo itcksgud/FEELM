@@ -1,0 +1,51 @@
+{
+  "status": "PASS_INITIAL_QA",
+  "sample": {
+    "bytes": 153956,
+    "sha256": "0ad4c4a7ed350dc3c5c08eb08e1524d23da3cdfd192e1a7e21e6e2783e73a8bd"
+  },
+  "total_read": 64,
+  "reviews": [
+    {
+      "reviewer": "Dewey",
+      "source": "T3",
+      "read": 32,
+      "candidate_EN": 8,
+      "candidate_KO": 8,
+      "noncandidate_EN": 8,
+      "noncandidate_KO": 8,
+      "candidate_remove_proposals": [
+        138,
+        349,
+        727
+      ],
+      "control_docs_obvious_external_miss": 0
+    },
+    {
+      "reviewer": "Hubble",
+      "source": "overview",
+      "read": 32,
+      "candidate_EN": 8,
+      "candidate_KO": 8,
+      "noncandidate_EN": 8,
+      "noncandidate_KO": 8,
+      "candidate_remove_proposals": [
+        1829,
+        1779,
+        1371
+      ],
+      "control_docs_with_external_miss": [
+        240740,
+        27922
+      ]
+    }
+  ],
+  "limits": [
+    "Language fields are request/source labels, not language detection",
+    "Narrow rules miss some external promotion or festival mentions",
+    "Mixed narrative/genre/theme and documentary subjects retained",
+    "No claim of complete noise removal or detection recall",
+    "Actual all-deletion full-document review and offset integrity remain separate gates"
+  ],
+  "rating_values_read": 0
+}

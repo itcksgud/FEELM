@@ -1,0 +1,42 @@
+{
+  "status": "PASS",
+  "reviewer": "Hubble (display revision); Dewey (preserved base approval)",
+  "code": {
+    "bytes": 20216,
+    "sha256": "3de91f586ad1572d3f101a33b1632faedb1086583090f4dc74894093b6e1868e"
+  },
+  "scope": "Pre-execution code and synthetic tests; actual output review required later",
+  "checks": [
+    "audited stage seals and actual artifact links",
+    "B metrics NULL retained and separated from exceptions",
+    "seven adjusted contrasts and h0 guard",
+    "Top2/4/6/10 and sets3/6/9 with valid denominators",
+    "fixed taste and conditional discovery/first-set distinction",
+    "P0 and empty metrics",
+    "six significant digits preserve small CI sign",
+    "all report outputs protected"
+  ],
+  "revision_checks": [
+    "exact delta reconstructed previous approved SHA",
+    "H_POSITIVE N2 whole-catalog exposure selection",
+    "per-metric valid population displayed",
+    "duplicate exposure row rejected",
+    "exposure change not treated as quality improvement"
+  ],
+  "display_revision_checks": [
+    "Removing new display blocks and prose reconstructs exact prior 18476-byte approved source",
+    "All three policy selection outcomes yield six unique model/policy configurations",
+    "18 set rows, 18 taste rows, 24 discovery rows; all four tested discovery alternatives retained even when P0 is selected",
+    "Eight Stage2 catalog model rows checked against actual H_POSITIVE Top2 schema and 372 slots",
+    "Duplicate catalog rows and policy summary metrics rejected",
+    "No metric, criterion, model selection, or pre-output approval gate changed",
+    "Actual final output review still required"
+  ],
+  "input_description_checks": [
+    "503 byte description only; removal restores previous exact approved SHA",
+    "actual 230 features: support200/crowd6/response24",
+    "text339 T0 retained and textclean not adopted; no blanket rejection of text",
+    "both prior README links exist",
+    "no C/P labels or results read during this review"
+  ]
+}

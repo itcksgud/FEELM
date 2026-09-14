@@ -1,0 +1,38 @@
+{
+  "status": "PASS",
+  "fingerprint": {
+    "scripts/combination340_common.py": {
+      "bytes": 2703,
+      "sha256": "ec22d3d88542fb0a60cbafa11e132e8b7b8adc881e2b7e184756cefbc81050ee"
+    },
+    "scripts/combination340_models.py": {
+      "bytes": 4025,
+      "sha256": "a519586b25d81574a96e1847dc6a4d8d08d3ded276deff64c5d82ff0bcdecd25"
+    },
+    "scripts/combination340_worker.py": {
+      "bytes": 4976,
+      "sha256": "26ba7900c1617cb36afe06215a324345f30329f80948240d5ce986ffbf258762"
+    },
+    "scripts/combination340_run.py": {
+      "bytes": 7440,
+      "sha256": "325f8cb818dccc01d817657e323b760134f10435a4804f60f43d28ac10ff0f96"
+    },
+    "docs/recommendation/experiments/combination340/EXECUTION.md": {
+      "bytes": 6120,
+      "sha256": "72c3955328391c6b5d0749685aa7e7b6638c396a388c85a75bfe00f73758ea22"
+    },
+    "docs/recommendation/experiments/combination340/config.json": {
+      "bytes": 559,
+      "sha256": "6a1c8e433a6c352d6110771c7dbf6bcd371b6bf3facbbb96a129ec1fdefec6ae"
+    }
+  },
+  "reviewer": "Rawls",
+  "checks": [
+    "14 memory gate checks",
+    "five independent ALS fixtures",
+    "actual native tree structure and threshold fixture pins",
+    "reference factor files and supports",
+    "locked stage-one decision and three-fit budget"
+  ],
+  "limits": "Code only; actual inputs/models/predictions/results require separate review."
+}

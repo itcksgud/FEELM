@@ -1,0 +1,26 @@
+{
+  "status": "PASS",
+  "reviewer": "Rawls",
+  "proposal": {
+    "bytes": 1362,
+    "sha256": "a99c1b1412063ccf1ec56e81822cc1053566d5c589ff773b83e19f389861f2ec"
+  },
+  "pattern": {
+    "bytes": 1215,
+    "sha256": "12bd346d49c9b0cd0c1c3d414adf978a2af56aabacd3c37eb354f572308406f8"
+  },
+  "finalizer_code": {
+    "bytes": 6402,
+    "sha256": "4f473d029bea12f63a96a19498c4ef34c200f093452bf677af3fe655bd8f0445"
+  },
+  "independent_counts": {
+    "before": 435,
+    "retain": 86,
+    "after": 349,
+    "total_proposed": 546,
+    "total_veto": 197
+  },
+  "scope": "Conservative retain-only screen; possible excess retention allowed; no complete semantic detection guarantee",
+  "file_writes": 0,
+  "ratings_read": 0
+}

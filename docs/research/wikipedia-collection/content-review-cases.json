@@ -1,0 +1,17 @@
+{
+  "exhaustive_semantic_review": false,
+  "feature_use_approved": false,
+  "cases": [
+    {
+      "movie_id": 124342,
+      "tmdb_id": 91198,
+      "imdb_id": "tt1042567",
+      "qid": "Q2449985",
+      "revision_id": 1373114894,
+      "status": "EXCLUDE_PENDING_ENTITY_SCOPE_REVIEW",
+      "catalog_scope": "Chapters 13-22",
+      "page_scope": "Chapters 1-33",
+      "reason": "Matching IDs do not establish exact content scope"
+    }
+  ]
+}

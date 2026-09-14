@@ -1,0 +1,213 @@
+{
+  "status": "PASS",
+  "reviewer": "/root/text339_eval_review",
+  "recorded_at_utc": "2026-09-11T04:41:26.399734+00:00",
+  "scope": "Independent pre-execution review of root-authored final344_common/fit/worker and execution contract. Actual prepared input lock and model numerical audits remain separate gates.",
+  "fingerprint": {
+    "scripts/final344_fit.py": {
+      "bytes": 12480,
+      "sha256": "21e19fe6f84cc3033f30ad683b1c43b34620c1956c52d605c5846cdbeea80386"
+    },
+    "scripts/final344_worker.py": {
+      "bytes": 5400,
+      "sha256": "8727969bbc456e5b593c12e5a4684d18454ec9d9b1491211928cb227e8100840"
+    },
+    "scripts/final344_adapter.py": {
+      "bytes": 5100,
+      "sha256": "15b6a53c5be9e6207cb215857058570304b61c17c5aa88198341efd55f688894"
+    },
+    "scripts/test_final344_adapter.py": {
+      "bytes": 8599,
+      "sha256": "92a478de94f3400cada20560173f6329add6a73d17120dca49c92893164a0374"
+    },
+    "scripts/combination340_models.py": {
+      "bytes": 4025,
+      "sha256": "a519586b25d81574a96e1847dc6a4d8d08d3ded276deff64c5d82ff0bcdecd25"
+    },
+    "scripts/foundation340_features.py": {
+      "bytes": 7264,
+      "sha256": "83e2586d9acc8bfb8aec8dc47b8133f4bc0da8678ba0d82bdd295b5c7bf13cf9"
+    },
+    "scripts/cold_item_features.py": {
+      "bytes": 4838,
+      "sha256": "78ed5bbea151dc12d7a8bb144fa389333c779550fcfdff66d28d90c6900a4cec"
+    },
+    "scripts/text339_relations.py": {
+      "bytes": 3117,
+      "sha256": "fdc970a6506cfd27dcc2df15cd2785ce5f221f76bd74eaeb24aa6d73c5ccd4d6"
+    },
+    "scripts/rec047_features.py": {
+      "bytes": 5791,
+      "sha256": "a6f3fdc26cc88cceea2f6b1fe1244285bd9e29f7175874f7ab2eb8fae5904268"
+    },
+    "scripts/final344_common.py": {
+      "bytes": 5358,
+      "sha256": "0d6db903c17309816ffbd217341b78b7f55b17cb52675c51dddcefc6ccc8dc27"
+    },
+    "scripts/rec046_common.py": {
+      "bytes": 8001,
+      "sha256": "42dd14e83ecbee0c02c5e4233abb4b6a8d807ad2213c24a22cfb82350bc47848"
+    },
+    "docs/recommendation/experiments/final344/config.json": {
+      "bytes": 4468,
+      "sha256": "0e681dc956787e7a39f53c00bccdb61281752a79e00bab254f0c547cdd8ea52b"
+    },
+    "docs/recommendation/experiments/final344/execution.json": {
+      "bytes": 843,
+      "sha256": "7eb59a31ef4c6941a5d1e2dd43e1135fd3739d34e64be725ae8003a650a7a049"
+    },
+    "docs/recommendation/experiments/final344/IMPLEMENTATION.md": {
+      "bytes": 5751,
+      "sha256": "37a44cc64736bcc12e3939b4e7a80b22a89745ff2a62ee98833b859ccea786ce"
+    }
+  },
+  "checks": [
+    "Approved design identity and existing native resolved parameters; only maxIter and seed may differ.",
+    "Exact source anchors plus approved roles and availability hashes; RH230 inputs remain read-only and original labels are not replaced.",
+    "Actual row_id hash8 ordered partitions and full estimator params verified before fit; native params and finite aligned93230 predictions checked after fit.",
+    "Native/portable score and GBT root nextafter fixture target remains1e-8.",
+    "Complete Docker worker5400-second timeout; max8 attempts includes failures; active or unfinished attempts block overlap.",
+    "Launch, wait timeout, stop, kill and ps-error branches preserve failure state; unconfirmed termination writes a blocking marker.",
+    "Extra seeds require matching selected families, all four initial sealed outcomes, exact selection fit parents and current execution fingerprints.",
+    "Shared verifier additionally checks evaluation implementation, roles/labels hashes, preserved model-audit parent, fit parents and selection-calibration linkage.",
+    "Worker has only readonly RH train/score plus code/config mounts; it never mounts or decodes evaluation labels.",
+    "Every fit starts from scratch; FM actual iteration count remains unavailable; GBT tree count, numeric outcome and resource status are separate."
+  ],
+  "mock_tests": {
+    "count": 12,
+    "passed": true,
+    "actual_docker_calls": 0,
+    "actual_model_fits": 0
+  },
+  "constructor_probe": {
+    "spark": "4.1.3",
+    "models": [
+      {
+        "family": "FM",
+        "maxIter": 150,
+        "seed": 339,
+        "exact_resolved_match": true
+      },
+      {
+        "family": "FM",
+        "maxIter": 150,
+        "seed": 344,
+        "exact_resolved_match": true
+      },
+      {
+        "family": "FM",
+        "maxIter": 150,
+        "seed": 345,
+        "exact_resolved_match": true
+      },
+      {
+        "family": "FM",
+        "maxIter": 300,
+        "seed": 339,
+        "exact_resolved_match": true
+      },
+      {
+        "family": "FM",
+        "maxIter": 300,
+        "seed": 344,
+        "exact_resolved_match": true
+      },
+      {
+        "family": "FM",
+        "maxIter": 300,
+        "seed": 345,
+        "exact_resolved_match": true
+      },
+      {
+        "family": "GBT",
+        "maxIter": 60,
+        "seed": 339,
+        "exact_resolved_match": true
+      },
+      {
+        "family": "GBT",
+        "maxIter": 60,
+        "seed": 344,
+        "exact_resolved_match": true
+      },
+      {
+        "family": "GBT",
+        "maxIter": 60,
+        "seed": 345,
+        "exact_resolved_match": true
+      },
+      {
+        "family": "GBT",
+        "maxIter": 120,
+        "seed": 339,
+        "exact_resolved_match": true
+      },
+      {
+        "family": "GBT",
+        "maxIter": 120,
+        "seed": 344,
+        "exact_resolved_match": true
+      },
+      {
+        "family": "GBT",
+        "maxIter": 120,
+        "seed": 345,
+        "exact_resolved_match": true
+      }
+    ],
+    "fit_calls": 0,
+    "image_id": "sha256:de611d62db982bb833b0737a7ddd72a7cd49ab1a7dc9128669cdabae39f46df8",
+    "exit_code": 0,
+    "cpus": 2,
+    "memory_bytes": 4294967296,
+    "driver_memory": "2g",
+    "network": "none",
+    "host_mounts": 0
+  },
+  "probe_diagnostic": "Earlier direct-python import failed before Spark construction (pyspark not on that entrypoint path). The preserved final probe uses spark-submit like the worker and full keyword arguments; all12 configurations resolve exactly, with0 fits.",
+  "review_drift_handling": "A first attempt to finalize was aborted when the root added the final shared parent-verification and legacy-calibration pin delta. No PASS was written then. The current delta was read, mocks rerun, and this fingerprint stayed unchanged through finalization.",
+  "related_independent_reviews": {
+    "outputs/recommendation-evidence/final344-availability-audit/adapter-review.json": {
+      "bytes": 2429,
+      "sha256": "c33f86a74cc2fa5ace438d7621a75d39be32d2926c4ead386dc7f036f8a56704"
+    },
+    "outputs/recommendation-evidence/final344-availability-audit/existing-rh-input-review.json": {
+      "bytes": 8258,
+      "sha256": "d5a100bdaa562026ff1f9bf1cb6f37d40ff608f7ffb22909a1017c9dc6f19c1d"
+    },
+    "outputs/recommendation-evidence/final344-availability-audit/training-contribution.json": {
+      "bytes": 4172,
+      "sha256": "694ffa24681985eca269bb772f511efcb08d785670b5e18b497f5898a72bcc9f"
+    },
+    "outputs/recommendation-evidence/final344-availability-audit/result.json": {
+      "bytes": 4751,
+      "sha256": "53a44c6660c3ced849e3233239ec2920e5d3105358a12b78a13faa0ff09700a6"
+    }
+  },
+  "authorship_boundary": "I initially authored adapter/test; acceptance is the linked independent Rawls adapter-review. I did not author the common/fit/worker being independently reviewed here.",
+  "supplemental_files": {
+    "test_fit_control.py": {
+      "bytes": 8805,
+      "sha256": "b20a7530f6eb7b25eabc3fd65d2230d68f8bafbb857531f9b81bbcf9b01ad4c4"
+    },
+    "fit-control-tests.log": {
+      "bytes": 2694,
+      "sha256": "f8f8f63131657c06399e79e758abdd03a039ce5f6f395f1bfe51eddfa6490af9"
+    },
+    "constructor-probe-command.json": {
+      "bytes": 2605,
+      "sha256": "5d45caa9dce152b9ae28f3923dceab80d3f8e2eba59e718e89c5299c55160c28"
+    },
+    "constructor-probe.log": {
+      "bytes": 5671,
+      "sha256": "0fc780ab2ff66af63d4df003662bf0494a738efdd0280a436649e4f0d316c638"
+    }
+  },
+  "not_performed": [
+    "Actual final344 prepare/input-lock creation",
+    "New model fitting",
+    "Future evaluation star decoding",
+    "Actual model prediction or quality audit"
+  ],
+  "next_gate": "Root prepare may proceed after integrating this review. Independent actual input-lock verification is still required before first fit; every fitted model needs independent numerical audit before evaluation."
+}

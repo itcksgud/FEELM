@@ -1,0 +1,29 @@
+{
+  "status": "PASS",
+  "reviewer": "Dewey",
+  "evaluation_seal": {"bytes": 2447, "sha256": "cef4695acf99814d57f6bdc030004bce71212fcb28821916aa54066a0b6a25f1"},
+  "checks": {
+    "independently_recomputed_user_rows": 23084,
+    "numeric_cells": 877192,
+    "max_numeric_difference": 2.66e-15,
+    "summary_rows": 9790,
+    "reference_agreement_rows": 1179,
+    "ALS_support_rows": 2700,
+    "bootstrap_records": 38,
+    "formal_comparisons": 6,
+    "bootstrap_draws": 20000,
+    "seed": 340,
+    "max_interval_difference": 2.08e-17,
+    "C_primary_users": 110,
+    "W_DIRECT_primary_users": 165,
+    "guards_and_selection_pass": true,
+    "catalog_rows_independently_recomputed": 120,
+    "unsupported_ALS_NaN_and_blends_exact_S": true,
+    "actual_code_model_prediction_cache_parent_label_pins_pass": true
+  },
+  "selected": "S",
+  "foundation_selected": "B",
+  "eligible": [],
+  "interpretation": "GBT has a slightly higher ALL mean, but its C adjusted interval includes zero. No alternative passes the predeclared improvement rule. GBT reduces one-vote-ten exposure (23/372 versus S 342/372), while only 3/372 GBT slots and 0/372 S slots have observed labels. Exposure change is not demonstrated recommendation quality improvement. Selection retains the development comparator, not a service adoption decision.",
+  "resource_status": {"NO_RESPONSE": "PASS", "GBT": "PASS", "ALS": "PASS", "inherited_S_B_telemetry": "UNKNOWN"}
+}

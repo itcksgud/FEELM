@@ -1,0 +1,20 @@
+{
+  "status": "PASS",
+  "reviewer": "Dewey",
+  "code": {
+    "bytes": 12038,
+    "sha256": "1374d43d6fb854267e90f52841ae3c45b1a5f71f62b27ce53595d112993c8e07"
+  },
+  "review_scope": [
+    "H10, J>=N, IDCG=0 and separate NDCG/stars denominators",
+    "Actual users_valid fields and three relative output links",
+    "Primary comparison, point-estimate veto, T0 diagnostic-only scope",
+    "349 final spans, 221 movies/documents, two pre-embedding KEEP-only corrections",
+    "52 direct-exposure users among 270, not changed recommendations or primary valid users",
+    "Clean/prepared/model/catalog actual file verification and report parent pins",
+    "Previously opened development labels, UNKNOWN, old T3 resource exception and metadata timing limits"
+  ],
+  "new_result_values_read": false,
+  "new_rating_labels_read": false,
+  "note": "Pre-result report code review only; final rendered results require separate independent review."
+}

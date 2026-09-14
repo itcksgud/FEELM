@@ -1,0 +1,26 @@
+{
+  "status": "PASS",
+  "reviewer": "Rawls",
+  "fingerprint": {
+    "scripts/textclean_source.py": {
+      "bytes": 8664,
+      "sha256": "d5c9881a0424ba0b5e73935d928edbd711137e0e8e09b94465c8f53a57ebc22d"
+    },
+    "scripts/textclean_run.py": {
+      "bytes": 16621,
+      "sha256": "5d7701b8133076dd1dc9a7c2ee625683f95e2d623d42e3c45bde5089c0656480"
+    },
+    "docs/recommendation/experiments/text339-clean/PLAN.md": {
+      "bytes": 6242,
+      "sha256": "155145e48dd313581518b9dd7bb31eed69e505f51ad6b5a9c81716426b6e347c"
+    },
+    "docs/recommendation/experiments/text339-clean/config.json": {
+      "bytes": 5771,
+      "sha256": "2f7ca5a235b514bec07a7b1fb9648d1ed05849f6e83cfea81af6b6bd6851a4e3"
+    }
+  },
+  "independent_synthetic_checks": 8,
+  "root_alignment_tests": 6,
+  "ratings_read": 0,
+  "scope": "Exact code review; semantic approval and actual feature/model review remain separate gates"
+}

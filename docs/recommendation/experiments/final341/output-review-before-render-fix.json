@@ -1,0 +1,12 @@
+{
+  "status": "NUMERICAL_CLAIMS_LINKS_PASS_PENDING_DISPLAY_FIXES",
+  "reviewer": "Hubble",
+  "original_report_seal": {"bytes": 2009, "sha256": "d47e0a88fcf84ded7abe6486f9461a99d8134c9369c5f24080420f6cfc9612a4"},
+  "preserved_in": "outputs/recommendation-evidence/final341/before-render-fix",
+  "checks": {"tables": 10, "data_rows": 98, "numeric_and_status_cells": 345, "mismatches": 0, "valid_relative_links": 10},
+  "remaining_fixes": ["Replace missing U+2212 glyph in first chart contrast labels with ASCII minus", "Clarify total 270-user catalog cohort and personal-input 186-user cohort in the main summary"],
+  "facts": {"all_users": 270, "all_slots": 810, "all_known": 104, "all_unknown": 706, "personal_input_users": 186, "personal_input_slots": 558, "personal_input_known": 0, "personal_input_unknown": 558},
+  "known_fit_minutes_sum": 135.27722389546665,
+  "B_telemetry": "UNKNOWN",
+  "strict_memory_exceptions": ["H", "RH"]
+}

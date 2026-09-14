@@ -1,0 +1,29 @@
+{
+  "status": "PASS",
+  "reviewer": "target_domain_review (Euler)",
+  "prepared_seal": {
+    "bytes": 4963,
+    "sha256": "d8aac981932f14c07e26610f24adea7def3e64e4a0aecba76dc9775ed70cfbb2"
+  },
+  "checked_files": 24,
+  "independent_checks": [
+    "All global eval/validation users excluded from training",
+    "Development roles, cutoff and whole-item holdout respected",
+    "All per-round item counts recomputed from role manifest: exact match",
+    "Vocabulary and full movie CSR rebuilt from train-item TMDB metadata: max error 0",
+    "Train/score row IDs and sparse indices, lengths, finite values valid",
+    "O/E disjoint and support counts exact"
+  ],
+  "same_timestamp_boundary_users": [
+    918,
+    894,
+    970
+  ],
+  "empty_metadata_warning": "Intermediate divide-by-zero followed by an empty list; no NaN or Inf stored",
+  "review_did_not_read": [
+    "raw MovieLens",
+    "train/score labels",
+    "validation or evaluation labels",
+    "model results"
+  ]
+}

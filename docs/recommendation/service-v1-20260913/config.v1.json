@@ -1,0 +1,101 @@
+{
+  "schemaVersion": "feelm-recommendation-policy/1",
+  "policyVersion": "service-v1-20260913",
+  "status": "LOCAL_IMPLEMENTATION_BASELINE",
+  "defaultModel": "GBT",
+  "automaticModelSwitch": false,
+  "automaticAlsBlend": false,
+  "comparisonModels": [
+    "FM",
+    "ALS"
+  ],
+  "comparisonMode": "SHADOW",
+  "personalization": {
+    "minimumCurrentActualRatings": 10,
+    "originalHistoryLimit": 10,
+    "ratingMinimum": 0.5,
+    "ratingMaximum": 5.0,
+    "ratingStep": 0.5,
+    "ratingSort": [
+      "rating_updated_at:desc",
+      "service_movie_id:asc"
+    ],
+    "backfillUnmappedHistory": false,
+    "countOnboardingAsRating": false
+  },
+  "publicEvidence": {
+    "eligibilityOperator": "OR",
+    "tmdbMinimumVotes": 21,
+    "tmdbRequireValidAverage": true,
+    "kobisMinimumCumulativeAdmissions": 10000,
+    "requireVerifiedKobisMappingAndScope": true,
+    "popularityAlonePasses": false,
+    "bothSourcesBelowFloorEligible": false,
+    "applyFloorToHistoryOrRatingStorage": false,
+    "candidateFusion": "MIN_VALID_SOURCE_RANK",
+    "candidateQualityPriorMean": 6.314301027022476,
+    "candidateQualityPriorMass": 300
+  },
+  "personalized": {
+    "batchCandidateLimit": 500,
+    "onlineRerankLimit": 500,
+    "intermediateTop100Cut": false,
+    "sharedInitialCandidateLimit": 500,
+    "targetedRefreshOnStrongInput": true,
+    "exhaustionRefresh": "SESSION_EXPOSURE_AND_RESERVATION_EXCLUSION_FULL_CATALOG"
+  },
+  "discovery": {
+    "parentTasteCount": 8,
+    "childrenPerTaste": 128,
+    "groupRepresentative": "FROZEN_MEAN_NOT_UNIT_RENORMALIZED",
+    "maximumSupplyingGroups": 10,
+    "maximumCandidatesPerGroup": 10,
+    "maximumCandidates": 100,
+    "countPartiallySupplyingGroup": true,
+    "skipEmptyGroupWithoutCounting": true,
+    "refillFromEleventhSupplyingGroup": false,
+    "fillFromIneligibleContentCandidates": false,
+    "maximumViewedPerGroup": 2,
+    "maximumViewedFraction": 0.2,
+    "groupSimilarityMinimum": null,
+    "requireTopAndSubSupported": true
+  },
+  "serving": {
+    "personalizedPerRound": 2,
+    "discoveryPerRound": 1,
+    "roundsPerSet": 10,
+    "targetPersonalizedBuffer": 20,
+    "targetDiscoveryBuffer": 10,
+    "crossTypeSessionDeduplication": true,
+    "discoveryShortageFallback": "PERSONALIZED_WITH_EXPLICIT_ACTUAL_TYPE",
+    "sortByUnclippedCalibratedScore": true,
+    "predictedRatingClip": [
+      0.5,
+      5.0
+    ],
+    "roundPredictionsToActualRatingStep": false,
+    "assembleFromFullRankings": true,
+    "assemblyOrderPerRound": [
+      "PERSONALIZED",
+      "PERSONALIZED",
+      "DISCOVERY"
+    ]
+  },
+  "batch": {
+    "catalogDailyTime": "06:00",
+    "timezone": "Asia/Seoul",
+    "normalTrigger": "AFTER_ATOMIC_CATALOG_PUBLICATION",
+    "executeModelsSequentially": true
+  },
+  "feature": {
+    "targetFeatureVersion": "rh230-kobis15-v1",
+    "dimensions": 245,
+    "tmdbPriorMean": 6.173088067675869,
+    "tmdbPriorMass": 48,
+    "historyReliabilityPriorCount": 5,
+    "kobisScaleQuantile": 0.99,
+    "kobisVarianceEpsilon": 1e-08
+  },
+  "operationalDefaultsAreNotExperimentOptima": true,
+  "comparisonPolicyRegistry": "comparison-registry.v1.json"
+}

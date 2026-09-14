@@ -1,0 +1,114 @@
+{
+  "status": "PASS_CODE_AND_BENCHMARK_WITH_DOCUMENTED_LIMITS",
+  "reviewer": "/root/github_research_scope_audit",
+  "allowed_actions": [
+    "benchmark",
+    "encode"
+  ],
+  "fingerprint": {
+    "code": {
+      "text339_text.py": {
+        "bytes": 16392,
+        "sha256": "c6cbe0875bddbeb49b905c54d1737fcac83a8ae04cda73baf1fa4324e71f02e2"
+      },
+      "text339_encode.py": {
+        "bytes": 7646,
+        "sha256": "682d1015e2b0a135ea1e45a58861d836e2c309cbf6b71db2ca3c877c7a653383"
+      },
+      "text339_common.py": {
+        "bytes": 4611,
+        "sha256": "92376fd3c8c9085e975d864fe5122694f0ada539551c646d24edd5f32eb0b2a6"
+      },
+      "rec046_common.py": {
+        "bytes": 8001,
+        "sha256": "42dd14e83ecbee0c02c5e4233abb4b6a8d807ad2213c24a22cfb82350bc47848"
+      },
+      "collect_wikipedia_plots.py": {
+        "bytes": 26995,
+        "sha256": "5ff2bc6dfb16c2123229ebc7b922e69575cd0ca10c961815a729b9d1b6e15af4"
+      }
+    },
+    "embedding": {
+      "model_id": "intfloat/multilingual-e5-base",
+      "revision": "d128750597153bb5987e10b1c3493a34e5a4502a",
+      "prefix": "query: ",
+      "content_tokens": 480,
+      "overlap_tokens": 48,
+      "batch": 16,
+      "precision": "float16_model_float32_pool",
+      "dimension": 768,
+      "projection_dimension": 32
+    },
+    "embedding_timeout_seconds": 28800,
+    "model_sources": {
+      "outputs/recommendation-evidence/text339-runtime/model/config.json": {
+        "bytes": 694,
+        "sha256": "9dab198f24c8c0879e481cf7822005d5ecbceedbacb390ffafa594e28d31bac4"
+      },
+      "outputs/recommendation-evidence/text339-runtime/model/model.safetensors": {
+        "bytes": 1112201288,
+        "sha256": "a18a44fad1d0b46ded15928144138cff1135d5cc8233bdd90be5f18822de09a7"
+      },
+      "outputs/recommendation-evidence/text339-runtime/model/sentencepiece.bpe.model": {
+        "bytes": 5069051,
+        "sha256": "cfc8146abe2a0488e9e2a0c56de7952f7c11ab059eca145a0a727afce0db2865"
+      },
+      "outputs/recommendation-evidence/text339-runtime/model/special_tokens_map.json": {
+        "bytes": 280,
+        "sha256": "06e405a36dfe4b9604f484f6a1e619af1a7f7d09e34a8555eb0b77b66318067f"
+      },
+      "outputs/recommendation-evidence/text339-runtime/model/tokenizer.json": {
+        "bytes": 17082660,
+        "sha256": "62c24cdc13d4c9952d63718d6c9fa4c287974249e16b7ade6d5a85e7bbb75626"
+      },
+      "outputs/recommendation-evidence/text339-runtime/model/tokenizer_config.json": {
+        "bytes": 418,
+        "sha256": "efb5c0d09722e5fe59a462cd2a9976ee216d55b037597d997cd3fe833216da15"
+      },
+      "outputs/recommendation-evidence/text339-runtime/model/1_Pooling/config.json": {
+        "bytes": 200,
+        "sha256": "f586ab6c734af7b8d14d898bfa7faa886f23b46f86dd1730514309893af13d75"
+      }
+    },
+    "source_files": {
+      "texts.parquet": {
+        "bytes": 253422812,
+        "sha256": "a152f9e41db680aa0567d9befe0e71d9709e57d2ea925d3d61448550d884aa57"
+      },
+      "quality-sample.parquet": {
+        "bytes": 467836,
+        "sha256": "3f9da852bf868d498083c77933d93caef08ce171fa940b2079500e20592ea6d7"
+      },
+      "text-source-report.json": {
+        "bytes": 2967,
+        "sha256": "e3d70213dab17c872606f9b8c220da543dd5ddbfcd095c4e18b55337c5bd28ee"
+      }
+    }
+  },
+  "validation": [
+    "independent inference pooling maximum error 4.59584e-08; padding and batch differences zero",
+    "normalized prefix corruption and float64 cache rejected before model initialization",
+    "completed-budget-exceeded resume rejected",
+    "partial-document cache resumes with exact full axes and missing zeros",
+    "column staging checkpoint interruption resumes without inference rerun",
+    "completed column corruption rejected",
+    "benchmark pin/fingerprint/resource status failures rejected"
+  ],
+  "resource_review": "PASS",
+  "rating_values_read": 0,
+  "benchmark": {
+    "bytes": 3749,
+    "sha256": "dcb68ce456a06fc76c0604024c3e1c99a75e1151548f22b8d800d7c1c8ae3de5"
+  },
+  "source_quality_review": {
+    "bytes": 1922,
+    "sha256": "8eb3a3c19969f53551ed096b17cbbfb4dda449280218d6964e058e6cb3994d58"
+  },
+  "resource_conditions": {
+    "batch": 16,
+    "gpu_capacity_bytes": 8589934592,
+    "measured_peak_bytes": 1496256512,
+    "fixed_embedding_budget_seconds": 28800,
+    "limit": "sample benchmark does not promise full corpus runtime; full run retains hard stop and verified resume"
+  }
+}

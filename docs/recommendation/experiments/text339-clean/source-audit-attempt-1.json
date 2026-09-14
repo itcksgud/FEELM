@@ -1,0 +1,27 @@
+{
+  "status": "NEEDS_SEMANTIC_CORRECTION",
+  "reviewer": "Rawls",
+  "mechanical_integrity": "PASS",
+  "movies": 85517,
+  "unchanged_cells": 1795857,
+  "approved_spans": 440,
+  "new_empty_documents": 8,
+  "clean_seal": {
+    "bytes": 915,
+    "sha256": "aae01ab01deca7c59a6c6e4ed4b27d9ebe52832a918883d42d5bf1bee712e183"
+  },
+  "texts": {
+    "bytes": 253383178,
+    "sha256": "21c569b25441e080cac6ab9fd804c891347485c1b4c418dae375d8b1182e7eb2"
+  },
+  "required_restore": [
+    1134
+  ],
+  "conservative_restore": [
+    1371,
+    1382,
+    1385,
+    1422
+  ],
+  "reason": "Documentary format or sole adaptation/remake identity should remain; no encoding or model training occurred"
+}

@@ -1,0 +1,58 @@
+{
+  "outputs": {
+    "docs\\research\\wikipedia-collection\\RESULT.md": {
+      "bytes": 5707,
+      "sha256": "57cef6cbee82b95c58a3513d646b15ea1ad836fff4d17cc974632584d73c5b03"
+    },
+    "docs\\research\\wikipedia-collection\\collection-summary.json": {
+      "bytes": 904,
+      "sha256": "55214bf7779e1781994f71852d6cd2b56426d9660d4d6a7d591645add984b95d"
+    },
+    "docs\\research\\wikipedia-collection\\coverage-strata.csv": {
+      "bytes": 5826,
+      "sha256": "b821c1f626f92cbebb4ed87ef0570323a826fb0bf00fa1c10b200635dc2f4e18"
+    },
+    "docs\\research\\wikipedia-collection\\raw-clean-coverage.json": {
+      "bytes": 378,
+      "sha256": "db218bd5c0262c1659c4922c453ac2d91c2936371e0c45fee47c9752d1cec84d"
+    }
+  },
+  "report_code": {
+    "bytes": 15305,
+    "sha256": "fbaf67087be87673ed89243356dc33eee6fb9e83fb54953f18d83d82ab5d6de2"
+  },
+  "sources": {
+    "outputs\\recommendation-evidence\\wikipedia-plots-v3\\catalog.parquet": {
+      "bytes": 10698643,
+      "sha256": "9f07ff1fcec2e4d12d7426c1418b6609c3c82219dc6d8d657e0f35267274fcc6"
+    },
+    "outputs\\recommendation-evidence\\wikipedia-plots-v3\\coverage-strata.csv": {
+      "bytes": 5826,
+      "sha256": "b821c1f626f92cbebb4ed87ef0570323a826fb0bf00fa1c10b200635dc2f4e18"
+    },
+    "outputs\\recommendation-evidence\\wikipedia-plots-v3\\coverage.parquet": {
+      "bytes": 13530742,
+      "sha256": "d1ff0b396161f9135d99fdf2a6867f68444d88e7c153aab928df56e0ca28cf9b"
+    },
+    "outputs\\recommendation-evidence\\wikipedia-plots-v3\\manifest.json": {
+      "bytes": 1219,
+      "sha256": "753cda88feb8394108804b2e2e29d32c03b0d76722ee45add698f0b9d60a897b"
+    },
+    "outputs\\recommendation-evidence\\wikipedia-plots-v3\\mappings.parquet": {
+      "bytes": 5170820,
+      "sha256": "d25f5239a83a6e5478340751ad6d61446d894c025505cf3305ae2885013cf20c"
+    },
+    "outputs\\recommendation-evidence\\wikipedia-plots-v3\\pages.parquet": {
+      "bytes": 181058337,
+      "sha256": "b4b5fd8793461495e09c22313eb6b71cb5f8fac068ff3751bb4290bc34909dcb"
+    },
+    "outputs\\recommendation-evidence\\wikipedia-plots-v3\\summary.json": {
+      "bytes": 904,
+      "sha256": "55214bf7779e1781994f71852d6cd2b56426d9660d4d6a7d591645add984b95d"
+    },
+    "outputs\\recommendation-evidence\\wikipedia-plots-v3\\table-seal.json": {
+      "bytes": 679,
+      "sha256": "ac5e2b0a763c9ce8a98bdbe8c3d7a364de110c3a9e21459a3f8fc0e4de885cbb"
+    }
+  }
+}

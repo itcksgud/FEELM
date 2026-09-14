@@ -1,0 +1,37 @@
+{
+  "status": "PASS",
+  "reviewer": "Hubble",
+  "model_seal": {
+    "bytes": 4508,
+    "sha256": "5aef965db8a41a6fc8dcb0576dfefcc572c0535fa14b52c416ccb14b7f695468"
+  },
+  "fit_seal": {
+    "bytes": 20245,
+    "sha256": "702fb7fd8b82dabd607811064ed02fdd6e46cd319e718072a01a00328c1e7282"
+  },
+  "trees": 60,
+  "nodes": 3752,
+  "leaves": 1906,
+  "continuous_splits": 1846,
+  "max_depth": 5,
+  "tree_weights": "1 then .05 for 59 trees",
+  "native_predictions": 93230,
+  "independent_tree_prediction_max_error": 6.217248937900877e-15,
+  "threshold_fixtures": 180,
+  "threshold_max_error": 1.3322676295501878e-15,
+  "strict_less_negative_control_mismatches": 60,
+  "scalar_vector_exact_real_rows": 256,
+  "scalar_vector_exact_fixtures": 180,
+  "retained_dimensions": 230,
+  "same_B_and_independent_ordered_partitions": true,
+  "combined_NR_GBT_values_bit_exact_to_native": 186460,
+  "combined_shape": [
+    93230,
+    9
+  ],
+  "fit_seconds": 883.8113712129998,
+  "peak_bytes": 12076879872,
+  "strict_memory_pass": true,
+  "optimizer_convergence_verified": false,
+  "evaluation_labels_read": false
+}

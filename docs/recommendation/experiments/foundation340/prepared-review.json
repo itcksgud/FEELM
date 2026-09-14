@@ -1,0 +1,27 @@
+{
+  "status": "PASS",
+  "reviewer": "Hubble",
+  "prepared_seal": {
+    "bytes": 4711,
+    "sha256": "9f0550e38566512fc2dad084d3f9381a7197ea3bab05fd0428eef76878acb62e"
+  },
+  "actual_pins_verified": 57,
+  "training_rows_each": 4997069,
+  "score_rows_each": 93230,
+  "train_users": 39859,
+  "evaluation_users": 270,
+  "checks": [
+    "all ordered row_id uid training labels identical",
+    "B original 230 columns bit exact",
+    "R-B and RH-H unchanged 224 columns bit exact",
+    "three six-column formulas independently recalculated for every training target",
+    "strict-history original formula sample 407 with h0 through30",
+    "same-time exclusion and C exclusion",
+    "all score contexts and feature identity",
+    "old text339 code sources and seal unchanged"
+  ],
+  "structured_max_abs_error": 2.384185791015625e-07,
+  "new_h0": 1051625,
+  "new_history_pairs": 41750890,
+  "new_target_labels_read": 0
+}

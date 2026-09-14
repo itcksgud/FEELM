@@ -1,0 +1,479 @@
+{
+  "schemaVersion": "feelm-group-recipe/1",
+  "policyVersion": "service-v1-20260913",
+  "status": "IMPLEMENTATION_RECIPE_NOT_EXECUTED",
+  "sourceGeometryVersion": "feelm-discovery-v2-r2",
+  "targetGeometryVersion": "g913-gkt128-mean-v1",
+  "artifactBuildStatus": "NOT_BUILT",
+  "sources": {
+    "topAndPreprocessor": {
+      "path": ".codex-tmp/fixed-k8-discovery-v2-20260913/outputs/fixed-k8-discovery-v2/feelm-discovery-v2-r2/final/bundle.pkl",
+      "bytes": 10302746,
+      "sha256": "ddb2f2155745d6631151bdd18d84255a24551dd7d34381b9c791f8600bef8114"
+    },
+    "childrenAndMeans": {
+      "path": ".codex-tmp/fixed-k8-discovery-v2-20260913/outputs/fixed-k8-discovery-v2/feelm-discovery-v2-r2/cluster/GKT-K128-hierarchy.pkl",
+      "bytes": 11570337,
+      "sha256": "b51347ef483f4585a415cbc863cc4b7cb7387c5d154474b30e4aef7db915baf9"
+    },
+    "referenceAssignments": {
+      "path": ".codex-tmp/fixed-k8-discovery-v2-20260913/outputs/fixed-k8-discovery-v2/feelm-discovery-v2-r2/cluster/GKT-K128-assignments.npz",
+      "bytes": 1116111,
+      "sha256": "60df623e838c6df0c6813ecfedd90092c840343fff087af1d04245261914bbf3"
+    },
+    "referenceCatalog": {
+      "path": ".codex-tmp/fixed-k8-discovery-v2-20260913/outputs/fixed-k8-discovery-v2/feelm-discovery-v2-r2/prepare/catalog.parquet",
+      "bytes": 42113282,
+      "sha256": "8bda180eb6530188a6ebf08da599d4d68124247a878ca0911f0d3f38512415cd"
+    },
+    "referenceContentVectors": {
+      "path": ".codex-tmp/fixed-k8-discovery-v2-20260913/outputs/fixed-k8-discovery-v2/feelm-discovery-v2-r2/prepare/content.npy",
+      "bytes": 249232344,
+      "sha256": "a28ea24016ef1786111e0ece976c650ff20e6f4bcbeeea2c0f9047d78eaefd5b"
+    },
+    "clusterReport": {
+      "path": ".codex-tmp/fixed-k8-discovery-v2-20260913/outputs/fixed-k8-discovery-v2/feelm-discovery-v2-r2/cluster/report.json",
+      "bytes": 6409,
+      "sha256": "f8d01d935d4b8316c235bb657e21af2085f309cc1e7a164f72b4aaa6462bfbfa"
+    },
+    "frozenTransformReference": {
+      "path": ".codex-tmp/fixed-k8-discovery-20260912/scripts/k8_common.py",
+      "bytes": 7346,
+      "sha256": "b87f79cca4499f1310c9ab1c96a6ad14f59e21f3d2081212a6e053dd5676a349"
+    },
+    "representativeConstructionReference": {
+      "path": ".codex-tmp/fixed-k8-discovery-v2-20260913/scripts/dv2_cluster.py",
+      "bytes": 7726,
+      "sha256": "ef1965108a39c28e04480d9fe99fd3f223026655c59d554f4b5bbf55844ac150"
+    },
+    "profileReference": {
+      "path": ".codex-tmp/fixed-k8-discovery-v2-20260913/scripts/dv2_common.py",
+      "bytes": 7715,
+      "sha256": "6a45cc381aca7053a9e098c59a859c87a09825c866d1430cbc9e31e81394ba7a"
+    }
+  },
+  "sourceExtraction": {
+    "topAndPreprocessor": {
+      "allowKeys": [
+        "preprocessor",
+        "top_centers",
+        "top_weights",
+        "top_names"
+      ],
+      "forbiddenKeys": [
+        "child_centers",
+        "sub_weights",
+        "representatives",
+        "policy",
+        "predictor",
+        "quality",
+        "runtime_rules",
+        "research_decision"
+      ]
+    },
+    "childrenAndMeans": {
+      "keyMappings": {
+        "centers": "child_centers",
+        "sub_weights": "sub_weights",
+        "representatives.mean": "group_means",
+        "offsets": "offsets",
+        "geometry_version": "sourceGeometryVersion",
+        "space_hashes": "sourceSpaceHashes"
+      }
+    },
+    "referenceAssignments": {
+      "allowKeys": [
+        "service_movie_id",
+        "taste_id",
+        "child_id",
+        "group_id"
+      ],
+      "referenceRows": 237817
+    },
+    "doNotLoadLegacyBundleAsServingObject": true,
+    "observedLegacyPolicy": {
+      "hierarchy": "v1-fixed16",
+      "rep": "mean",
+      "budget": 50,
+      "quota": 25,
+      "kind": "group",
+      "id": "v1-fixed16:group:mean:B50:Q25"
+    },
+    "observedLegacySubWeights": [
+      1,
+      0,
+      0
+    ],
+    "sourceTopProvenanceSha256": "cbdc51940b9f3fe9a295ae802e4af45009397af64231c6a79884e673d58ef937"
+  },
+  "runtime": {
+    "python": "3.12.5",
+    "numpy": "1.26.4",
+    "scipy": "1.15.2",
+    "sklearn": "1.9.0"
+  },
+  "numeric": {
+    "dtype": "float64",
+    "l2NormThreshold": 1e-12,
+    "supportSquaredNormThreshold": 1e-12,
+    "profileNormThreshold": 1e-08,
+    "distance": "SUM_FIXED_AXIS((x-c)^2)",
+    "distanceRewriteOrBLASMatrixMultiply": false,
+    "exactDistanceTie": "LOWEST_FROZEN_ID",
+    "groupSimilarity": "SUM_FIXED_AXIS(p*mean)",
+    "groupOrder": [
+      "similarity_DESC",
+      "group_id_ASC"
+    ],
+    "transformReferenceFunctions": [
+      "csr_ids",
+      "norm",
+      "combine",
+      "transform",
+      "nearest"
+    ],
+    "sourceModuleExecuteAsJob": false
+  },
+  "input": {
+    "fields": [
+      "genre_ids",
+      "keyword_ids",
+      "overview"
+    ],
+    "genreKeywordIdType": "positive integer, boolean rejected, duplicate removed",
+    "nullLists": [],
+    "nullOverview": "",
+    "overviewCanonicalization": "strip outer whitespace only; no translation, cleaning, summary or Wikipedia append",
+    "unknownVocabularyId": "ZERO_CONTRIBUTION_NO_VOCABULARY_EXPANSION",
+    "idMapping": "reference service_movie_id <-> reference catalog tmdb_id <-> verified current DB serviceMovieId; preserve group IDs",
+    "invalidGenreKeywordElements": "DROP boolean, non-integer, or nonpositive elements; record source error count",
+    "invalidGenreKeywordField": "EMPTY_LIST_WITH_INVALID_TYPE_REASON",
+    "invalidOverview": "EMPTY_STRING_WITH_INVALID_TYPE_REASON"
+  },
+  "preprocessor": {
+    "sourceKey": "topAndPreprocessor.preprocessor",
+    "fitAllowed": false,
+    "fitRowsAtSource": 166603,
+    "genreVocabulary": [
+      12,
+      14,
+      16,
+      18,
+      27,
+      28,
+      35,
+      36,
+      37,
+      53,
+      80,
+      99,
+      878,
+      9648,
+      10402,
+      10749,
+      10751,
+      10752,
+      10770
+    ],
+    "keywordVocabularySize": 6543,
+    "genreDimensions": 19,
+    "keywordDimensions": 64,
+    "overviewDimensions": 48,
+    "combinedDimensions": 131,
+    "keywordPipeline": [
+      "binary vocabulary CSR",
+      "multiply frozen keyword IDF",
+      "L2 sparse rows",
+      "multiply frozen keyword_components.T",
+      "L2 dense rows"
+    ],
+    "overviewPipeline": [
+      "stored text_vectorizer.transform",
+      "multiply frozen text_components.T",
+      "L2 dense rows"
+    ],
+    "textVectorizerParams": {
+      "analyzer": "word",
+      "binary": false,
+      "decode_error": "strict",
+      "dtype": "<class 'numpy.float64'>",
+      "encoding": "utf-8",
+      "input": "content",
+      "lowercase": true,
+      "max_df": 1.0,
+      "max_features": 16000,
+      "min_df": 5,
+      "ngram_range": [
+        1,
+        1
+      ],
+      "norm": "l2",
+      "preprocessor": null,
+      "smooth_idf": true,
+      "stop_words": null,
+      "strip_accents": null,
+      "sublinear_tf": false,
+      "token_pattern": "(?u)\\b\\w\\w+\\b",
+      "tokenizer": null,
+      "use_idf": true,
+      "vocabulary": null
+    },
+    "textVocabularySize": 16000,
+    "keywordIdf": {
+      "shape": [
+        6543
+      ],
+      "dtype": "float64",
+      "sha256": "34e8bfa458613fdc2a1cc36479365d7fc444c076f5615c3159298ccd9cb1c602"
+    },
+    "keywordComponents": {
+      "shape": [
+        64,
+        6543
+      ],
+      "dtype": "float64",
+      "sha256": "8e86bbd86902390883ca7fe16ac94ad5248d5018a2acc992c850455b9baea9d4"
+    },
+    "textIdf": {
+      "shape": [
+        16000
+      ],
+      "dtype": "float64",
+      "sha256": "7a37712dc4fea57937acc52a06e3cba48ce82713f058a4c0632d2b964d3fde8a"
+    },
+    "textComponents": {
+      "shape": [
+        48,
+        16000
+      ],
+      "dtype": "float64",
+      "sha256": "cedfdbcd49e0113a411c62820c4267de1c50f634baa2190c9ecb5924be2f7af9"
+    },
+    "textVocabularyHashEncoding": "UTF-8 compact JSON of sorted (token,integer index) pairs, ensure_ascii=False",
+    "textVocabularySha256": "753a5d1b6505f3f499c529abc6b7c03affd53dc12fbdef2ac6e100e695db16f9",
+    "keywordVocabularyHashEncoding": "UTF-8 compact JSON array of integer IDs in frozen axis order",
+    "keywordVocabularySha256": "593d673c9519d9ac3258ea555894a9a3ec03b80de7dd4710d0a2406a45777198"
+  },
+  "geometry": {
+    "topWeights": [
+      1,
+      0,
+      0
+    ],
+    "subWeights": [
+      0.5,
+      0.35,
+      0.15
+    ],
+    "contentWeights": [
+      0.5,
+      0.35,
+      0.15
+    ],
+    "combine": "L2(concat(sqrt(weight_j)*L2(block_j)))",
+    "topCount": 8,
+    "childrenPerTop": 128,
+    "totalGroups": 1024,
+    "groupId": "taste_id*128+child_id",
+    "offsets": [
+      0,
+      128,
+      256,
+      384,
+      512,
+      640,
+      768,
+      896,
+      1024
+    ],
+    "topCenters": {
+      "shape": [
+        8,
+        131
+      ],
+      "dtype": "float64",
+      "sha256": "51096ccfebc76af502a78774a3420ef0ab96f72cf49483af1d33a8d647af8d6b"
+    },
+    "childCenters": [
+      {
+        "shape": [
+          128,
+          131
+        ],
+        "dtype": "float64",
+        "sha256": "2ed672e826663e3ebcc5bbfbd868bf561ab90788507cbce45d2705121e4fc4b8"
+      },
+      {
+        "shape": [
+          128,
+          131
+        ],
+        "dtype": "float64",
+        "sha256": "4531c1dd0fdd3c099e789cef8c1a7440bdfd5723ddf0e8427184bdf95c71a144"
+      },
+      {
+        "shape": [
+          128,
+          131
+        ],
+        "dtype": "float64",
+        "sha256": "74a0fd0ad7cd407e8432aabd018f3293e7a440fea06ac35e7d53631d777b95a3"
+      },
+      {
+        "shape": [
+          128,
+          131
+        ],
+        "dtype": "float64",
+        "sha256": "8d039f04ed634179bf82d1e88d82d941456391c6f849d08ea0cba1532a92d7cc"
+      },
+      {
+        "shape": [
+          128,
+          131
+        ],
+        "dtype": "float64",
+        "sha256": "b3a051a21e714404f98ef099d294c3bf817ac16c58f449422076348ff4296c1e"
+      },
+      {
+        "shape": [
+          128,
+          131
+        ],
+        "dtype": "float64",
+        "sha256": "247d46f78cc1b8abb21915cf0e44676cb0d754d5283925416f359b04ec659529"
+      },
+      {
+        "shape": [
+          128,
+          131
+        ],
+        "dtype": "float64",
+        "sha256": "60fa1280dfc491171b9265c283ba33439023a9fe0f3cd0db345dbdb225e2b0b0"
+      },
+      {
+        "shape": [
+          128,
+          131
+        ],
+        "dtype": "float64",
+        "sha256": "c1096f444ce50a97677ea8442950545c0a9f43d8835c8d6abe163badfd50dcc7"
+      }
+    ],
+    "groupMeans": {
+      "shape": [
+        1024,
+        131
+      ],
+      "dtype": "float64",
+      "sha256": "9edd5442abfa94b867bd2d29db0af3dd458c500c9e5468e00bf485ed4d8a3701"
+    },
+    "sourceTopNames": {
+      "0": "오리지널 솔트 — 다큐·현실의 기록",
+      "1": "핫칠리 — 공포·괴물·초자연",
+      "2": "솔티카라멜 — 코미디와 드라마",
+      "3": "다크초코 — 드라마·인물과 관계",
+      "4": "블랙페퍼 — 스릴러·범죄·긴장",
+      "5": "갈릭버터 — 코미디 중심",
+      "6": "허니버터 — 애니메이션·상상",
+      "7": "치즈믹스 — 여러 장르·장르 근거 부족"
+    },
+    "groupRepresentative": "FROZEN_UNWEIGHTED_MEAN_OF_SOURCE_CONTENT_SUPPORTED_ASSIGNED_FILMS",
+    "renormalizeMean": false,
+    "meanUseCurrentEligibility": false,
+    "meanRefitOnMetadataUpdate": false,
+    "centerCanonicalizeOnLoad": false,
+    "sourceSpaceHashes": {
+      "GKT": "60fff85810b8c9a4f87137d4ef3d8c612722edc4331d120ad81d0bbd11d5171c",
+      "G": "950a972695072c7d459e11a8c479587da15ea0bb1f818a75ba3252f4353c8152"
+    },
+    "sourceAssignmentArrays": {
+      "service_movie_id": {
+        "shape": [
+          237817
+        ],
+        "dtype": "int64",
+        "sha256": "6779655c1bf8c99118c3b92a6df4a7d87138ac256905f69f4b93130bcd75a17a"
+      },
+      "taste_id": {
+        "shape": [
+          237817
+        ],
+        "dtype": "int32",
+        "sha256": "fb00237ea9cabfedc2726bdfd64a68f9450a0bb933a5bee44d53dffcfde5a4c5"
+      },
+      "child_id": {
+        "shape": [
+          237817
+        ],
+        "dtype": "int32",
+        "sha256": "1a0d14bcb284f649995fac94f9910eac10435b2792fb5e45b32aa8f02006997c"
+      },
+      "group_id": {
+        "shape": [
+          237817
+        ],
+        "dtype": "int32",
+        "sha256": "b1e43ac80e20e0e9cb1ae5d3bb1837ce4775795c2c0b3b249f96ad88459e48d5"
+      }
+    }
+  },
+  "support": {
+    "top_supported": "sum(top_x^2)>1e-12",
+    "sub_supported": "sum(sub_x^2)>1e-12",
+    "group_mapped": "verified_id_mapping AND top_supported AND sub_supported",
+    "zeroVectorLabel": "PRESERVE_FROZEN_DIAGNOSTIC_LABEL_BUT_NOT_DISCOVERY_MEMBERSHIP",
+    "discoveryCandidateRequiresGroupMapped": true,
+    "viewedDenominator": "distinct confirmed watched with group_mapped=true over all current watched; not H10",
+    "profileCanUseSubSupportedWithUnsupportedTop": true,
+    "preserveActualRatingsKHistoryWatchedExclusions": true
+  },
+  "updates": {
+    "newMovie": "frozen transform then specified fixed-axis float64 top nearest then child nearest; no fitted estimator predict or fit",
+    "contentMetadataChanged": "new catalogVersion assignment using same frozen transform and centers; preserve prior version",
+    "publicValuesOnlyChanged": "CONTENT_VECTOR_AND_GROUP_UNCHANGED",
+    "deleteOrDisable": "candidate exclusion only; frozen centers and means unchanged",
+    "atomicBundleContents": [
+      "catalog",
+      "vectors",
+      "assignments",
+      "group source ranks"
+    ],
+    "requiredAssignmentColumns": [
+      "serviceMovieId",
+      "tmdbId",
+      "catalogVersion",
+      "geometryVersion",
+      "groupRecipeHash",
+      "tasteId",
+      "childId",
+      "groupId",
+      "topSupported",
+      "subSupported",
+      "groupMapped",
+      "vectorHash",
+      "sourceHash"
+    ]
+  },
+  "parity": {
+    "status": "NOT_RUN",
+    "sourceRows": 237817,
+    "maxAbsVectorDifference": 1e-10,
+    "sourceAssignmentMismatchAllowed": 0,
+    "singleVsBatchAssignmentsExact": true,
+    "edgeCases": [
+      "duplicate and unknown IDs",
+      "all missing",
+      "genre zero but sub supported",
+      "all GKT zero",
+      "equal distances",
+      "norm threshold",
+      "changed catalog ID mapping"
+    ],
+    "requireUnchangedLearnedArrayHashes": true,
+    "groupNotReadyState": "GROUP_BUNDLE_NOT_READY"
+  },
+  "arrayHashEncoding": "SHA256(str(dtype).encode + str(shape_tuple).encode + C-contiguous raw bytes); matches original dv2 array_hash",
+  "trainingPerformedByThisRecipe": false,
+  "inferenceExecutedForThisDocument": false
+}

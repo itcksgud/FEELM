@@ -1,0 +1,110 @@
+{
+  "status": "PASS_ALL_MODELS_AND_FINAL_PREDICTIONS",
+  "scope": "Independent native artifact predictions, sealed sources, no evaluation target ratings opened",
+  "reference_als": {
+    "reviewer": "service_next_step_check",
+    "status": "PASS_INDEPENDENT_CALCULATION_AND_FINAL_SERIALIZED_VECTOR",
+    "contexts": 465,
+    "predictions": 1854,
+    "independent_solver": "augmented least-squares/SVD",
+    "maximum_absolute_difference": 1.64313e-14,
+    "raw_input_rating_timestamp_checks": 3431,
+    "training_rows_uid_movie_time_checked": 6261195,
+    "training_users": 39859,
+    "evaluation_users": 118,
+    "training_evaluation_user_overlap": 0,
+    "distinct_input_movies": 2121,
+    "distinct_target_movies": 317,
+    "fallbacks": 0,
+    "target_ratings_decoded": 0
+  },
+  "models": [
+    {
+      "condition": "BASE", "model": "RIDGE", "reviewer": "target_domain_review",
+      "status": "PASS", "rows": 1854, "maximum_absolute_difference": 0,
+      "model_seal_sha256": "93752c24c9a0762be09735cdb1242a806e40a8385108dfd7c7e5803d8d0bc0a0"
+    },
+    {
+      "condition": "BASE", "model": "GBT", "reviewer": "target_domain_review",
+      "status": "PASS", "rows": 1854, "maximum_absolute_difference": 3.5527e-15,
+      "trees": 60, "nodes": 3756, "splits": 1848,
+      "model_seal_sha256": "5746f48382b40d6baca07a9710e34da261c633a05d4c185eed35d419485ca02e"
+    },
+    {
+      "condition": "BASE", "model": "FM", "reviewer": "github_research_scope_audit",
+      "status": "PASS", "rows": 1854, "maximum_absolute_difference": 4.441e-15,
+      "independent_method": "explicit sum over all 14028 feature pairs; native and portable parameters compared",
+      "model_seal_sha256": "10afcb6cc72d597ad2353ec8b5c587ed87d559130c7b6cda2a0a210757c4cea2"
+    },
+    {
+      "condition": "SUPPORT", "model": "RIDGE", "reviewer": "target_domain_review",
+      "status": "PASS", "rows": 1854, "maximum_absolute_difference": 4.440892098500626e-16,
+      "model_seal_sha256": "59338c071d30bc937b7dcfa58987026d71c86d48d88f9efa01b0007cead8ba5e",
+      "limitation": "total_iterations=150 reached configured cap; integrity is not proof of optimal convergence"
+    },
+    {
+      "condition": "SUPPORT", "model": "GBT", "reviewer": "target_domain_review",
+      "status": "PASS", "rows": 1854, "maximum_absolute_difference": 3.552713678800501e-15,
+      "trees": 60, "nodes": 3766, "splits": 1853,
+      "model_seal_sha256": "7d5edcb6758242f81ac5ee6ba1e347a0513ae1376321be75fad77bf02b6eae9a"
+    },
+    {
+      "condition": "SUPPORT", "model": "FM", "reviewer": "github_research_scope_audit",
+      "status": "PASS", "rows": 1854, "maximum_absolute_difference": 6.217e-15,
+      "independent_method": "explicit sum over all 19900 feature pairs; native and portable parameters compared",
+      "model_seal_sha256": "4340ce3b03dc6cc1463a2fd4b69bdec1aff4d8c0377e60e82cb2c2e3ba657033",
+      "limitation": "optimizer history unavailable; integrity is not proof of optimal convergence"
+    },
+    {
+      "condition": "CROWD_ITEM", "model": "RIDGE", "reviewer": "target_domain_review",
+      "status": "PASS", "rows": 1854, "maximum_absolute_difference": 8.881784197001252e-16,
+      "model_seal_sha256": "06a13edc95166edaf455f400f6f34b9aa9a47ee08673087949cd610bbbe9652b",
+      "limitation": "total_iterations=150 reached configured cap; integrity is not proof of optimal convergence"
+    },
+    {
+      "condition": "CROWD_ITEM", "model": "GBT", "reviewer": "target_domain_review",
+      "status": "PASS", "rows": 1854, "maximum_absolute_difference": 5.329070518200751e-15,
+      "trees": 60, "nodes": 3770, "splits": 1855,
+      "model_seal_sha256": "fbb44262eb42858b8c87f5e2fda1382ceafb274f55b86f2726a5113d3c358160"
+    },
+    {
+      "condition": "CROWD_ITEM", "model": "FM", "reviewer": "github_research_scope_audit",
+      "status": "PASS", "rows": 1854, "maximum_absolute_difference": 7.105e-15,
+      "independent_method": "explicit sum over all 21115 feature pairs; native and portable parameters compared",
+      "model_seal_sha256": "d6c9fd97fa2821f4e8a8f5b304996be63224238d1164fdeb8a652013c69c8217",
+      "limitation": "optimizer history unavailable; integrity is not proof of optimal convergence"
+    },
+    {
+      "condition": "CROWD_RESPONSE", "model": "RIDGE", "reviewer": "target_domain_review",
+      "status": "PASS", "rows": 1854, "maximum_absolute_difference": 1.7763568394002505e-15,
+      "model_seal_sha256": "dbe22b2d13e87a2e23db6202610ed71f25cb58eec8438fb4907a78eab160106a",
+      "limitation": "total_iterations=150 reached configured cap; integrity is not proof of optimal convergence"
+    },
+    {
+      "condition": "CROWD_RESPONSE", "model": "GBT", "reviewer": "target_domain_review",
+      "status": "PASS", "rows": 1854, "maximum_absolute_difference": 5.329070518200751e-15,
+      "trees": 60, "nodes": 3766, "splits": 1853,
+      "model_seal_sha256": "7bda528212d2edab8167affd5d2db51636c26d77b273445db311168b34022fe2",
+      "fit_seconds_observed": 848.983850935,
+      "worker_seconds_observed": 889.176268294
+    },
+    {
+      "condition": "CROWD_RESPONSE", "model": "FM", "reviewer": "github_research_scope_audit",
+      "status": "PASS", "rows": 1854, "maximum_absolute_difference": 6.217e-15,
+      "independent_method": "explicit sum over all 26335 feature pairs; native and portable parameters compared",
+      "model_seal_sha256": "2e2e17076ab575986a3ffc42557975fe4da8f71d33d9d1774b9f39233d9a9074",
+      "limitation": "optimizer history unavailable; integrity is not proof of optimal convergence"
+    }
+  ],
+  "assembled_predictions": {
+    "reviewers": ["github_research_scope_audit", "service_next_step_check"],
+    "shape": [1854, 13],
+    "content_column_vs_aligned_maximum_absolute_difference": 0,
+    "als_vs_independent_svd_maximum_absolute_difference": 1.64313e-14,
+    "sealed_fit_files_checked": 205,
+    "fit_seal_sha256": "d13afab1b4fcebeda710cb12d310b73e8bcde8848fa98dcce94079efa90c459d",
+    "predictions_sha256": "601ec79a259bbf12af26fd9fa2cc10a2bfc9a16755b11cb32a2ff668c286c655"
+  },
+  "all_auditors_read_only": true,
+  "actual_quality_review": "separate result-review.json"
+}

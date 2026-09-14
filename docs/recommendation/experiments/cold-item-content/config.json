@@ -1,0 +1,79 @@
+{
+  "origin": 1672531200,
+  "partition_origin": 1656979200,
+  "metadata": "outputs/recommendation-evidence/rec-ev-045/metadata.parquet",
+  "archive": "C:/higher/projects/MM/data/raw/ml-32m.zip",
+  "shrink_strength": 5.0,
+  "seed": 47,
+  "models": {
+    "FM": {
+      "factorSize": 16,
+      "regParam": 0.01,
+      "maxIter": 150,
+      "stepSize": 0.01,
+      "miniBatchFraction": 0.25
+    },
+    "RIDGE": {
+      "regParam": 0.01,
+      "maxIter": 150
+    },
+    "GBT": {
+      "maxDepth": 5,
+      "maxIter": 60,
+      "stepSize": 0.05
+    }
+  },
+  "docker_image": "feelm-rec046-spark:local",
+  "image_id": "sha256:de611d62db982bb833b0737a7ddd72a7cd49ab1a7dc9128669cdabae39f46df8",
+  "fit_timeout_seconds": 3600,
+  "sources": {
+    "outputs/recommendation-evidence/rec-ev-045/metadata.parquet": {
+      "bytes": 6891831,
+      "sha256": "4d838874938115be7a4b1f629a920dd196e082b655b75d559d71039e52eb7d8d"
+    },
+    "outputs/recommendation-evidence/rec-ev-032/user-resplits/splits.npz": {
+      "bytes": 634368,
+      "sha256": "5d230c59fcdbabdce529e6fa1ba5535895b59b2ab296905d71e9274c5c158410"
+    },
+    "outputs/recommendation-evidence/rec-ev-047-readiness/development-observations.parquet": {
+      "bytes": 50098493,
+      "sha256": "6d38956e7b516b69d847c21d85953bc1dc3efd7f10f84065cb155bc67ca0e62d"
+    },
+    "outputs/recommendation-evidence/rec-ev-047-readiness/user-origin-counts.parquet": {
+      "bytes": 2328627,
+      "sha256": "c1c5e1ee107b2e29fd1d4c269d342c33c5a38f82c28836a8f094dbfd85cd00c7"
+    },
+    "outputs/recommendation-evidence/rec-ev-047/evaluation/ratings.parquet": {
+      "bytes": 37407713,
+      "sha256": "115b07a73d3606642d4549b7431ce242aa11601baabe6068db122aff8fe41e88"
+    },
+    "outputs/recommendation-evidence/rec-ev-047/validation/catalog.npz": {
+      "bytes": 319694,
+      "sha256": "455dde7700243da42c8c7ad9bfffab7ec9215bdbc9052c272a03fdb0ac92088b"
+    },
+    "outputs/recommendation-evidence/rec-ev-047/evaluation/catalog.npz": {
+      "bytes": 324037,
+      "sha256": "427a8759dea5384e13ae099c0d9fe47692fbe6676ec488f8ec8ee9b588ed2e56"
+    },
+    "outputs/recommendation-evidence/rec-ev-047/evaluation/labels.parquet": {
+      "bytes": 75509,
+      "sha256": "4860b9b5255a75031210e87e5417229d79d221ffa1d074f4d5eedb6cb894592a"
+    },
+    "outputs/recommendation-evidence/rec-ev-047/evaluation/models/p100/ALS/model-seal.json": {
+      "bytes": 6110,
+      "sha256": "16552a121ac5da25c916d849b19d903892d7e4cc539695fa705bd8fd3260dba4"
+    },
+    "C:/higher/projects/MM/data/raw/ml-32m.zip": {
+      "bytes": 238950008,
+      "sha256": "e4a68655d7386b8f95f2f2424b2ff975dfdd15ffd59e0d864a14dca43e99d6ee"
+    },
+    "outputs/recommendation-evidence/cold-item-content/preflight.json": {
+      "bytes": 861,
+      "sha256": "d9c532d45cb6a00d05821807073d4ba6cda212124d3dd85e676eeb8d6c61208d"
+    },
+    "outputs/recommendation-evidence/cold-item-content/movie-partition.parquet": {
+      "bytes": 1225539,
+      "sha256": "564202e4965886b62704d267db79ea486e5c4aafeaf97025ca2867cab2f06740"
+    }
+  }
+}

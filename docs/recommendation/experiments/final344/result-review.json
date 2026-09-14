@@ -1,0 +1,124 @@
+{
+  "status": "PASS",
+  "scope": "DEVELOPMENT_ONLY",
+  "completed_utc": "2026-09-11T10:47:08.530962+00:00",
+  "decision": "NO_CLEAR_WINNER_OR_TRADEOFF",
+  "selected": {
+    "FM": "FM150",
+    "GBT": "GBT120"
+  },
+  "successful_fit_attempts": 8,
+  "failed_fit_attempts": 0,
+  "paired_seeds": [
+    339,
+    344,
+    345
+  ],
+  "prediction_ensemble": false,
+  "service_adoption": false,
+  "fresh_test": false,
+  "resource_counts_all_eight": {
+    "PASS": 2,
+    "EXCEPTION": 6,
+    "UNKNOWN": 0
+  },
+  "review_records": {
+    "initial_models": {
+      "path": "outputs/recommendation-evidence/final344/model-audit-seal.json",
+      "bytes": 1888,
+      "sha256": "a0f0cce3e275a8c69932838072106b33ffadef8d2ca0f3846d0287d51d7d23fc"
+    },
+    "final_models": {
+      "path": "outputs/recommendation-evidence/final344/final-model-audit-seal.json",
+      "bytes": 3466,
+      "sha256": "b5d3255cdf79e35cd2e9e73821427a6f97c5e299df932914dc2ba9530a434042"
+    },
+    "initial_statistics": {
+      "path": "outputs/recommendation-evidence/final344-availability-audit/initial-result-audit.json",
+      "bytes": 35173,
+      "sha256": "ecded89344dd919282184e037ed0a31e536e2a91462b0b6947be77ebad34fda4"
+    },
+    "final_statistics": {
+      "path": "outputs/recommendation-evidence/final344-availability-audit/final-result-audit.json",
+      "bytes": 66726,
+      "sha256": "1ef79105cfb600d163c2fd0909d423ccf851f7c335c1d501c5bf6e5c9cafbec4"
+    },
+    "full_catalog": {
+      "path": "outputs/recommendation-evidence/final344-availability-audit/catalog-result-audit.json",
+      "bytes": 129265,
+      "sha256": "f3cd8c25fadbbc25626a28151c54894f79559361ece3623acb987f9a64130589"
+    },
+    "presentation": {
+      "path": "outputs/recommendation-evidence/final344-report-audit/report-result-review.json",
+      "bytes": 10252,
+      "sha256": "fea35efb5e31a1448cea79a8117b02ad2cc8565f4caa487d8d5d039da445935b"
+    },
+    "readme": {
+      "path": "outputs/recommendation-evidence/final344-report-audit/readme-summary-review.json",
+      "bytes": 2950,
+      "sha256": "b22c5e56972efb62a4d304c17366ac8f092ee77d06276bffd57b8b362096da6b"
+    },
+    "audit_completion": {
+      "path": "outputs/recommendation-evidence/final344-availability-audit/final-audit-completion.json",
+      "bytes": 4717,
+      "sha256": "65d16e6e6ae8c1ca1e22406e3129b66d4fd66e55f3e1f3f3867086dd0a3b810d"
+    },
+    "audit_path_fix": {
+      "path": "outputs/recommendation-evidence/final344-availability-audit/path-normalization-root-review.json",
+      "bytes": 836,
+      "sha256": "d1cf4f09e71510cbb885daf94fa2791bf32c9933ac35b69e42492a1aa53fcb07"
+    }
+  },
+  "sealed_results": {
+    "selection-seal.json": {
+      "bytes": 4158,
+      "sha256": "99aa773fc5a80f868177ed0b9f1140bd8dd47e2e6d1d05b13c1526861b88e8f8"
+    },
+    "final-calibration-seal.json": {
+      "bytes": 4330,
+      "sha256": "8c2c089d8518e1f2cb43251fea7121fa2334ba7084d89b1026fd5c5601b49059"
+    },
+    "evaluation-seal.json": {
+      "bytes": 7951,
+      "sha256": "919d1af0fe73cff43f8afa50652c642799a8487b26969bfd04d2be9ed4ea1c45"
+    },
+    "catalog-seal.json": {
+      "bytes": 33229,
+      "sha256": "23f1f3951ec17b3639ad05667dc6dd2b0fa5d13a8ec79b9b81a22b2b4c76ef49"
+    }
+  },
+  "report_manifest": {
+    "bytes": 2782,
+    "sha256": "ec2363273538b3d134d743b371e1a3432969b1111bd640f298e853499bb61a5d"
+  },
+  "documents": {
+    "docs/recommendation/experiments/final344/README.md": {
+      "bytes": 4223,
+      "sha256": "1fa68283a3cd99563fde11146f22750c1707959309f677d23ac3e5cc557e8a58"
+    },
+    "docs/recommendation/experiments/final344/RESULT.md": {
+      "bytes": 10387,
+      "sha256": "32a4994b5943b52891f4933a43c2ffdc336950e90b8dca57e596264fcf26d4b1"
+    },
+    "docs/recommendation/experiments/final344/comparison.png": {
+      "bytes": 79021,
+      "sha256": "13c17120e9b34678e79c5ac05652b7ee868a932175d6c532076687c459628d34"
+    },
+    "docs/recommendation/active-experiment.md": {
+      "bytes": 35443,
+      "sha256": "b124e54883cf63f6e81da03d8298c01e742c7bc9cf97e30a089ab6880b7ce6c8"
+    },
+    "docs/runbook/local-development.md": {
+      "bytes": 88392,
+      "sha256": "bce4c5e809d797f37450dfc0cd3c34e37f148b5efdf1cb1f6f4341234246ad0c"
+    }
+  },
+  "root_visual_qa": "PASS: figure opened; Korean labels and values readable, no clipping or overlap.",
+  "audit_correction": "Audit-only Windows separator normalization after preserving first failure; root delta review and 12 synthetic checks. Production source, models, outputs and decision rules unchanged.",
+  "limitations": [
+    "Reused MovieLens development cohort, not a fresh confirmation test or evidence of 2026 Korean service satisfaction.",
+    "Observed-candidate quality and unlabelled full-catalog exposure are different measurements.",
+    "Four primary conditional confidence intervals include zero; no consistent winner or equivalence established.",
+    "Memory exceptions remain recorded; no retry or resource expansion."
+  ]
+}

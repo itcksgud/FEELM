@@ -1,0 +1,30 @@
+{
+  "status": "PASS",
+  "reviewers": {"numerical_claims_links": "Hubble", "final_output_delta_and_visual": "Rawls"},
+  "report_seal": {"bytes": 2009, "sha256": "545eb01008c9c337aaf4b29b3f37863051ae3901923d9a2d270fe8c7bc416657"},
+  "code": {"bytes": 21919, "sha256": "6b624e5ccde8d63be0c3104674f774ac714828fed09fd431a3940b2f3223acd3"},
+  "numerical_audit": {
+    "prior_review": "output-review-before-render-fix.json",
+    "tables": 10,
+    "data_rows": 98,
+    "numeric_and_status_cells": 345,
+    "mismatches": 0,
+    "valid_relative_links": 10,
+    "selection_denominators_intervals_UNKNOWN_resource_claims_pass": true
+  },
+  "final_display_audit": {
+    "status": "PASS_FINAL_OUTPUT_DELTA_AND_VISUAL",
+    "README_exact_cohort_clarification_only": true,
+    "DETAILS_and_runtime_byte_identical": true,
+    "scientific_result_parent_pins_unchanged": 6,
+    "current_and_preserved_pins_verified_before_and_after": 21,
+    "image_dimensions": [1920, 1440],
+    "changed_pixels": 2115,
+    "pixel_change_scope": "Only the five first-panel contrast-label regions",
+    "ASCII_minus_visually_verified": true,
+    "all_numeric_calculation_code_unchanged": true
+  },
+  "review_handoff": "Hubble's final corrected-output turn hit its usage limit after completing the full numeric audit and correction-code approval. Rawls completed the remaining actual corrected-output and visual audit.",
+  "conclusion": {"foundation": "B", "model": "S (=B)", "policy": "P2_010", "service_adoption": "NOT_ESTABLISHED"},
+  "scope": "All three local experiment stages, independent actual prediction/statistical audits, readable report and figure complete. Historical development sample and UNKNOWN catalog limitations remain explicit."
+}

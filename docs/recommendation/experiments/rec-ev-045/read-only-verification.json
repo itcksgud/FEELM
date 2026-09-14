@@ -1,0 +1,35 @@
+{
+  "status": "PASS",
+  "verifier": {
+    "bytes": 11612,
+    "sha256": "eaa6dbff64d835a0e0cb666efb0466633f4a2e2450122077a04b6acbb99171cd"
+  },
+  "records": [
+    {
+      "status": "PASS_READ_ONLY",
+      "temporal": false,
+      "unique_users": 3819,
+      "sample_prediction_cells": 20088,
+      "max_prediction_error": 5.329070518200751e-15,
+      "max_all_user_metric_error": 0.0,
+      "max_bootstrap_interval_error": 6.938893903907228e-17,
+      "completion_sha256": "62bfd8b094fd2fe2424b7664f6cbfa3cca8a5952a90621dce74688e961d6906c"
+    },
+    {
+      "status": "PASS_READ_ONLY",
+      "temporal": true,
+      "unique_users": 300,
+      "sample_prediction_cells": 21010,
+      "max_prediction_error": 9.769962616701378e-15,
+      "max_all_user_metric_error": 0.0,
+      "max_bootstrap_interval_error": 3.469446951953614e-17,
+      "completion_sha256": "efe33e53856ca3a473cf0ed3da153ebd82255651b8619cfb545d81535c0085de"
+    },
+    {
+      "status": "PASS_READ_ONLY_METADATA_DIAGNOSTIC",
+      "tables": 12,
+      "E_stars_read": false
+    }
+  ],
+  "writes_to_experiment_outputs": false
+}

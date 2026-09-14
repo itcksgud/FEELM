@@ -1,0 +1,26 @@
+{
+  "status": "PASS",
+  "reviewer": "Dewey",
+  "code": {
+    "bytes": 17973,
+    "sha256": "1cf7f01f1a8981454011ad45d30121b94f3cb2c9cef302ddd61a44d1414b977b"
+  },
+  "scope": "Pre-execution code and synthetic tests; actual output review required later",
+  "checks": [
+    "audited stage seals and actual artifact links",
+    "B metrics NULL retained and separated from exceptions",
+    "seven adjusted contrasts and h0 guard",
+    "Top2/4/6/10 and sets3/6/9 with valid denominators",
+    "fixed taste and conditional discovery/first-set distinction",
+    "P0 and empty metrics",
+    "six significant digits preserve small CI sign",
+    "all report outputs protected"
+  ],
+  "revision_checks": [
+    "exact delta reconstructed previous approved SHA",
+    "H_POSITIVE N2 whole-catalog exposure selection",
+    "per-metric valid population displayed",
+    "duplicate exposure row rejected",
+    "exposure change not treated as quality improvement"
+  ]
+}

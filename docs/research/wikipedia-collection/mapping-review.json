@@ -1,0 +1,32 @@
+{
+  "status": "PASS_FULL_MAPPING_INDEPENDENT",
+  "reviewer": "/root/github_research_scope_audit",
+  "recorded_at_utc": "2026-09-10T01:28:49.624952+00:00",
+  "scope": "Full ID linkage only, not completed page collection",
+  "movies": 85517,
+  "matched_both": 74964,
+  "matched_single": 67,
+  "no_match": 10301,
+  "conflicting_ids": 114,
+  "multiple_qids": 71,
+  "quarantined_auto_selected": 0,
+  "accepted_qids": 75031,
+  "accepted_qid_duplicates": 0,
+  "expected_docs": {
+    "en": 62078,
+    "ko": 18244,
+    "total": 80322
+  },
+  "source_tables_rejoined": 3,
+  "cache_files_rehashed": 856,
+  "lookup_pairs": 171034,
+  "binding_rows": 150876,
+  "mapping": {
+    "bytes": 5170820,
+    "sha256": "d25f5239a83a6e5478340751ad6d61446d894c025505cf3305ae2885013cf20c"
+  },
+  "v2_v3_mapping_identical": true,
+  "new_api_calls": 0,
+  "rating_values_read": 0,
+  "remaining": "Full page identity, extraction, coverage and final report audit after collector completion"
+}

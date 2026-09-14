@@ -1,0 +1,97 @@
+{
+  "status": "LAYOUT_V2_GENERATED_PENDING_VISUAL_REVIEW",
+  "inputs": [
+    {
+      "path": "C:\\higher\\projects\\FEELM-standalone\\docs\\research\\tmdb-kobis-v1-20260913\\data\\tmdb-kobis-pairs.csv",
+      "bytes": 82792,
+      "sha256": "ceb0bae58844ae020a61a0ae4fbca4242b041296630c73684c5f019b39d68f7f"
+    },
+    {
+      "path": "C:\\higher\\projects\\FEELM-standalone\\docs\\research\\tmdb-kobis-v1-20260913\\data\\movielens-same-film-rating-sd.csv",
+      "bytes": 88020,
+      "sha256": "066e2b429f8141df28cf47892c8ddc5b6ea717bd9cb3b640e877f30d97cd99cb"
+    },
+    {
+      "path": "C:\\higher\\projects\\FEELM-standalone\\docs\\research\\tmdb-kobis-v1-20260913\\data\\count-and-rating-relations.csv",
+      "bytes": 7797,
+      "sha256": "48fce8b412ca4bd65f53794bd1973d65c9b97711cb0a54ccd058bf0ae1ae02cd"
+    },
+    {
+      "path": "C:\\higher\\projects\\FEELM-standalone\\docs\\research\\tmdb-kobis-v1-20260913\\data\\between-film-rating-distributions.csv",
+      "bytes": 2845,
+      "sha256": "0ae00d35a4c1c037af3aee4545e8dd8ce057e731007be0cb93574067fd14389d"
+    },
+    {
+      "path": "C:\\higher\\projects\\FEELM-standalone\\docs\\research\\tmdb-kobis-v1-20260913\\REPORT.md",
+      "bytes": 9616,
+      "sha256": "bf2a236efda13bec9c8323e781ad52b5298e3ae18701f6b0596358f68d6e1d36"
+    },
+    {
+      "path": "C:\\higher\\projects\\FEELM-standalone\\outputs\\recommendation-evidence\\tmdb-kobis-v1-20260913\\manifest.json",
+      "bytes": 6744,
+      "sha256": "4ae7c9bf01023ac1ac830edcead52ab5b83f06af56661d8a845da4da32f7ce55"
+    },
+    {
+      "path": "C:\\higher\\projects\\FEELM-standalone\\scripts\\report_tmdb_kobis_v1.py",
+      "bytes": 33858,
+      "sha256": "70b68473201c31147d8865a658b8093f4a82b77748f37e441682798dfe7ab420"
+    }
+  ],
+  "script": {
+    "path": "C:\\higher\\projects\\FEELM-standalone\\scripts\\render_tmdb_kobis_v1_figures_v2.py",
+    "bytes": 3082,
+    "sha256": "4968b8911ebc69b1ad3d1df16393fc6b3b589b347f18ca869555866dce6d3253"
+  },
+  "outputs": [
+    {
+      "path": "C:\\higher\\projects\\FEELM-standalone\\docs\\research\\tmdb-kobis-v1-20260913\\data-v2\\01-counts-and-ratios.png",
+      "bytes": 213662,
+      "sha256": "1c05b06e85d16a93c8a5404215860023cf3b103b7ddc5135828e45e40ef4f3b3"
+    },
+    {
+      "path": "C:\\higher\\projects\\FEELM-standalone\\docs\\research\\tmdb-kobis-v1-20260913\\data-v2\\01-counts-and-ratios.svg",
+      "bytes": 89221,
+      "sha256": "c738a0b1789bd2922e18aba5229433779151138f32d55f3f5b115341c4649cee"
+    },
+    {
+      "path": "C:\\higher\\projects\\FEELM-standalone\\docs\\research\\tmdb-kobis-v1-20260913\\data-v2\\02-scale-imbalance.png",
+      "bytes": 110301,
+      "sha256": "a26f23dbedfe0b5e2d0d1ad745f400e0314ff12fa0ecd45e6eb5b8b2e80fa095"
+    },
+    {
+      "path": "C:\\higher\\projects\\FEELM-standalone\\docs\\research\\tmdb-kobis-v1-20260913\\data-v2\\02-scale-imbalance.svg",
+      "bytes": 22076,
+      "sha256": "956c40b8cf86f5a7681810676873093d70acd8fd8ae3bcb1171726d86dbd0f20"
+    },
+    {
+      "path": "C:\\higher\\projects\\FEELM-standalone\\docs\\research\\tmdb-kobis-v1-20260913\\data-v2\\03-rating-relations.png",
+      "bytes": 231534,
+      "sha256": "d013620542d1ef857e6dd7dbe9952a44377d6dadae7c238c2854e8b9a6f8cb3f"
+    },
+    {
+      "path": "C:\\higher\\projects\\FEELM-standalone\\docs\\research\\tmdb-kobis-v1-20260913\\data-v2\\03-rating-relations.svg",
+      "bytes": 140477,
+      "sha256": "95ef3393facf9d989711acb1c2dd2ce021286fb695cf9f574e68b4de7d31efbe"
+    },
+    {
+      "path": "C:\\higher\\projects\\FEELM-standalone\\docs\\research\\tmdb-kobis-v1-20260913\\data-v2\\04-rating-dispersion.png",
+      "bytes": 134853,
+      "sha256": "29726e013a7a1059d1da1e14c9d3afd95a4401318977dcbafa9af4b204fc1c23"
+    },
+    {
+      "path": "C:\\higher\\projects\\FEELM-standalone\\docs\\research\\tmdb-kobis-v1-20260913\\data-v2\\04-rating-dispersion.svg",
+      "bytes": 26227,
+      "sha256": "1cabfebd53f00cad249d1328a68a0ac962f785ddfa8a4060976c152116e134e6"
+    },
+    {
+      "path": "C:\\higher\\projects\\FEELM-standalone\\docs\\research\\tmdb-kobis-v1-20260913\\REPORT-v2.md",
+      "bytes": 9815,
+      "sha256": "2bdcffaf40d8c143593216f4ba5bcd906113cd195efe6b14da15ed5aa181a405"
+    }
+  ],
+  "changes": "bbox_inches=tight and pad_inches=.18 only; same plotting function, CSV values and axes",
+  "new_statistical_analysis": false,
+  "raw_ratings_rescanned": false,
+  "new_network_requests": 0,
+  "model_calls": 0
+}

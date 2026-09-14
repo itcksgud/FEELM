@@ -1,0 +1,46 @@
+{
+  "status": "PASS",
+  "reviewer": "/root/github_research_scope_audit",
+  "scope": "Actual final344 input lock identity and metadata against prior exhaustive RH input audit; no training or label/prediction decoding.",
+  "input_lock": {
+    "bytes": 5435,
+    "sha256": "487f2fdc8a216b39907af3bf3bbae1eb4790384a51572b36861248adf7dd3fc6"
+  },
+  "files_checked": 27,
+  "total_bytes_hashed": 1146504920,
+  "prior_data_pins_matched": 10,
+  "prior_prepared_parent_pins_matched": 2,
+  "prior_input_audit": {
+    "bytes": 8258,
+    "sha256": "d5a100bdaa562026ff1f9bf1cb6f37d40ff608f7ffb22909a1017c9dc6f19c1d"
+  },
+  "availability_audit": {
+    "bytes": 4751,
+    "sha256": "53a44c6660c3ced849e3233239ec2920e5d3105358a12b78a13faa0ff09700a6"
+  },
+  "adapter_review": {
+    "bytes": 2429,
+    "sha256": "c33f86a74cc2fa5ace438d7621a75d39be32d2926c4ead386dc7f036f8a56704"
+  },
+  "training_contribution": {
+    "bytes": 4172,
+    "sha256": "694ffa24681985eca269bb772f511efcb08d785670b5e18b497f5898a72bcc9f"
+  },
+  "training_rows": 4997069,
+  "training_users": 39859,
+  "features": 230,
+  "score_rows": 93230,
+  "roles": {
+    "calibration": 90,
+    "comparison": 180
+  },
+  "evaluation_scope": "DEVELOPMENT_ONLY",
+  "roles_bytes_identical": true,
+  "lock_unchanged_after_audit": true,
+  "actual_labels_or_model_values_opened": 0,
+  "seconds": 1.0310000000026776,
+  "limits": [
+    "Training UID/time/C/feature-formula validity inherited from byte-identical prior exhaustive input audit; this check does not repeat that computation.",
+    "Hashing bytes is not decoding rating or model values."
+  ]
+}

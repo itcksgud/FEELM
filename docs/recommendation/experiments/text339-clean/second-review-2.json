@@ -1,0 +1,58 @@
+{
+  "status": "COMPLETE",
+  "reviewer": "Dewey",
+  "primary_reviewer": "Hubble",
+  "proposal": {
+    "bytes": 2435,
+    "sha256": "1574cf052126f47ef75c608ef8e22b000e28a7b10c0242ba93e8ff101eae1afb"
+  },
+  "preview": {
+    "bytes": 723493,
+    "sha256": "0ea3ba265e33a276837e99e3f9f38ea09ce54aa22afe202ea2d3ab575c68bc2f"
+  },
+  "preview_seal": {
+    "bytes": 1065,
+    "sha256": "010ecb8b0f3576a5682995d7a0340a49b9c05c850b1a88b0d9214e3081a9a7eb"
+  },
+  "read_spans": 162,
+  "read_documents": 139,
+  "approved_count": 141,
+  "rejected_ordinals": [
+    8,
+    164,
+    167,
+    299,
+    332,
+    341,
+    584,
+    872,
+    1256,
+    1316,
+    1367,
+    1376,
+    1424,
+    1439,
+    1490,
+    1547,
+    1649,
+    1727,
+    1790,
+    1829,
+    1835
+  ],
+  "all_other_assigned_proposals": "APPROVE",
+  "cross_partition_retain": [
+    165,
+    168,
+    169,
+    867,
+    1183,
+    1750
+  ],
+  "reasons": [
+    "Preserve story/segment/edition/format and documentary subject",
+    "Preserve narrator/person introduction and later reference or causal connection",
+    "All 395 preview documents independently match old source identities, offsets, literal deletion and SHA"
+  ],
+  "rating_values_read": 0
+}

@@ -1,0 +1,14 @@
+{
+  "status": "PASS",
+  "reviewer": "Rawls",
+  "code": {
+    "bytes": 5383,
+    "sha256": "55e42d95ca149e4935ce21d62e5572652f4f9648eacbd5ce5910dec1637d28b5"
+  },
+  "actual_readonly_dryrun": {
+    "proposed": 546,
+    "vetoed": 111,
+    "approved": 435
+  },
+  "previous_attempt_preserved": true
+}

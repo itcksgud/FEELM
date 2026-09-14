@@ -1,0 +1,29 @@
+{
+  "status": "PASS",
+  "reviewer": "Rawls",
+  "clean_seal": {
+    "bytes": 915,
+    "sha256": "6b800bb0f146dff12b59454294f52f76c7a94bb141725a09e98bb8fa70b328cd"
+  },
+  "texts": {
+    "bytes": 253399782,
+    "sha256": "f5765c436e9eb763a5d73a51964ef554d2c237a03207d169e9fbae35a30206a1"
+  },
+  "semantic_review": {
+    "bytes": 43375,
+    "sha256": "89ebd8a6a62426e16aa9a0438c2e8676fb827cdbc502200c68c76982adf40739"
+  },
+  "movies": 85517,
+  "changed_documents": 221,
+  "unchanged_source_documents": 170813,
+  "removed_spans": 349,
+  "retained_proposals": 197,
+  "empty_documents": 2,
+  "unchanged_cells": 1795857,
+  "text_hash_checks": 342068,
+  "pins_checked": 34,
+  "initial_failed_semantic_gate_preserved": true,
+  "first_two_attempts_reconstructed": true,
+  "frozen_safety_pattern_approved_hits": 0,
+  "rating_values_read": 0
+}

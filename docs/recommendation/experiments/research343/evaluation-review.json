@@ -1,0 +1,68 @@
+{
+  "status": "PASS",
+  "reviewer": "Dewey /root/wiki_report_review",
+  "fingerprint": {
+    "scripts/research343_common.py": {
+      "bytes": 2323,
+      "sha256": "da529a1488559cc8777d0f783d6b657f405142232663aecffc1c76e5f4d7637c"
+    },
+    "scripts/research343_evaluate.py": {
+      "bytes": 11850,
+      "sha256": "011234bf37b368a5db7c1b8c43711e59219762f77bd5c49bcdd1df81be1309d3"
+    },
+    "scripts/research343_catalog.py": {
+      "bytes": 7390,
+      "sha256": "bcdc2ef4f579233367b87b02f63cdde800aa49f66c2c2894224d32ae432b0ba2"
+    },
+    "docs/recommendation/experiments/research343/DESIGN.md": {
+      "bytes": 8651,
+      "sha256": "d592f30c0aa53596fea4311297648302b51d52c40614fd7717a7e210739e2180"
+    },
+    "docs/recommendation/experiments/research343/config.json": {
+      "bytes": 455,
+      "sha256": "a040355033a12137db9bc0f70513ee2547fd0fbc0a0c7f8e4db8b95f3ef0a393"
+    },
+    "scripts/research343_lgb_models.py": {
+      "bytes": 2908,
+      "sha256": "38f1a6c89bd972ea1236dd6a769414fc1a716a7ae489086ba8e86933e57ec90f"
+    },
+    "scripts/combination340_models.py": {
+      "bytes": 4025,
+      "sha256": "a519586b25d81574a96e1847dc6a4d8d08d3ded276deff64c5d82ff0bcdecd25"
+    },
+    "scripts/foundation340_features.py": {
+      "bytes": 7264,
+      "sha256": "83e2586d9acc8bfb8aec8dc47b8133f4bc0da8678ba0d82bdd295b5c7bf13cf9"
+    },
+    "scripts/cold_item_features.py": {
+      "bytes": 4838,
+      "sha256": "78ed5bbea151dc12d7a8bb144fa389333c779550fcfdff66d28d90c6900a4cec"
+    },
+    "scripts/text339_relations.py": {
+      "bytes": 3117,
+      "sha256": "fdc970a6506cfd27dcc2df15cd2785ce5f221f76bd74eaeb24aa6d73c5ccd4d6"
+    },
+    "scripts/rec047_features.py": {
+      "bytes": 5791,
+      "sha256": "a6f3fdc26cc88cceea2f6b1fe1244285bd9e29f7175874f7ab2eb8fae5904268"
+    },
+    "scripts/rec046_common.py": {
+      "bytes": 8001,
+      "sha256": "42dd14e83ecbee0c02c5e4233abb4b6a8d807ad2213c24a22cfb82350bc47848"
+    },
+    "docs/recommendation/experiments/research343/IMPLEMENTATION.md": {
+      "bytes": 1310,
+      "sha256": "6ba6d6e1283fdaf5d5ef83f8c6ae98dd98d2d2eb9409c7ea63bb74d1aba32898"
+    }
+  },
+  "scope": "calibration, observed comparison and catalog generation; numerical result audit follows execution",
+  "checks": [
+    "synthetic full evaluation 288 user rows and 780 page rows",
+    "four fixed formal contrasts",
+    "90 calibration / 180 comparison isolation and user weighting",
+    "19/20-user and 20/40-row calibration thresholds",
+    "native ranker MSE N/A; ALS ALL rank N/A and fixed W_DIRECT",
+    "IDCG zero and J<N distinct valid denominators",
+    "label guard before read and end stage; calibrated outside-scale"
+  ]
+}

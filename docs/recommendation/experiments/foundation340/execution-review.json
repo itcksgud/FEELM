@@ -1,0 +1,86 @@
+{
+  "status": "PASS",
+  "fingerprint": {
+    "scripts/foundation340_common.py": {
+      "bytes": 3096,
+      "sha256": "ef0d7e8adc7a9c161b14c15de28eddc70c8b237bad802ba34466e6ad5057f0b6"
+    },
+    "scripts/foundation340_features.py": {
+      "bytes": 7264,
+      "sha256": "83e2586d9acc8bfb8aec8dc47b8133f4bc0da8678ba0d82bdd295b5c7bf13cf9"
+    },
+    "scripts/foundation340_prepare.py": {
+      "bytes": 5895,
+      "sha256": "586cf99c01d8e8d389800d27df8c6c7fad4580672517a3eadabf02b3170e4e65"
+    },
+    "scripts/foundation340_worker.py": {
+      "bytes": 3435,
+      "sha256": "225003b1661925a572f80dad96b86f7fdf0e8feda5d044e67d067711eb7a00b4"
+    },
+    "scripts/foundation340_run.py": {
+      "bytes": 6402,
+      "sha256": "76a448b67cb4ea0ad2e2e233ab983f5e6895e3626d638e0d48db8ea3e2c3f721"
+    },
+    "scripts/test_foundation340.py": {
+      "bytes": 3639,
+      "sha256": "ef33a31ad46d36662219d7f3ce2bb7612a82a48930bc1dd31a05e02b9838798e"
+    },
+    "scripts/cold_item_features.py": {
+      "bytes": 4838,
+      "sha256": "78ed5bbea151dc12d7a8bb144fa389333c779550fcfdff66d28d90c6900a4cec"
+    },
+    "scripts/rec047_features.py": {
+      "bytes": 5791,
+      "sha256": "a6f3fdc26cc88cceea2f6b1fe1244285bd9e29f7175874f7ab2eb8fae5904268"
+    },
+    "scripts/rec046_common.py": {
+      "bytes": 8001,
+      "sha256": "42dd14e83ecbee0c02c5e4233abb4b6a8d807ad2213c24a22cfb82350bc47848"
+    },
+    "scripts/text339_relations.py": {
+      "bytes": 3117,
+      "sha256": "fdc970a6506cfd27dcc2df15cd2785ce5f221f76bd74eaeb24aa6d73c5ccd4d6"
+    },
+    "scripts/text339_run.py": {
+      "bytes": 6840,
+      "sha256": "6c15122694b932ca3be4fb38c699505adee4916a634bb4d6cf94b3cdf1782dd7"
+    },
+    "scripts/text339_common.py": {
+      "bytes": 4611,
+      "sha256": "92376fd3c8c9085e975d864fe5122694f0ada539551c646d24edd5f32eb0b2a6"
+    },
+    "scripts/text339_features.py": {
+      "bytes": 3896,
+      "sha256": "122e2146e3f0fb71109e5598454f870cbb1b55494115dac3543acc9230b70574"
+    },
+    "scripts/text339_prepare.py": {
+      "bytes": 13203,
+      "sha256": "03283cfcea35de152a7e619cba38094aa7287ab917d253902f45719abbc4ddb7"
+    },
+    "scripts/text339_encode.py": {
+      "bytes": 7646,
+      "sha256": "682d1015e2b0a135ea1e45a58861d836e2c309cbf6b71db2ca3c877c7a653383"
+    },
+    "docs/recommendation/experiments/foundation340/EXECUTION.md": {
+      "bytes": 8601,
+      "sha256": "572c0aca1b1cbf06dbf75312d0d711689d94d08bc24d1e9bf312caba12783c38"
+    },
+    "docs/recommendation/experiments/foundation340/config.json": {
+      "bytes": 1231,
+      "sha256": "4ebb92c8418a929a54cd5c54672eb09187020625a88f2f900f6d4017b7bc547e"
+    }
+  },
+  "fingerprint_sha256": "fad0d28cba5c8aff5aa0b3bc3adc7d1d1ed3abcc98018a132d972454ea586bfc",
+  "reviewers": {
+    "Rawls": "prepare/fit/catalog guards, ten synthetic gate checks, exact final version PASS",
+    "Hubble": "feature math, 575 real histories per rule, original stored feature parity; max error 2.384185791015625e-7 PASS",
+    "Dewey": "four-fit design, five adjusted contrasts, selection/limits PASS"
+  },
+  "scope": "Code only. Prepared outputs, predictions and evaluation require separate reviews.",
+  "resolved_initial_blocks": [
+    "recursive parent and actual model verification",
+    "model prepared parent linkage",
+    "preserve completed or partial final predictions"
+  ],
+  "features_sha256": "83e2586d9acc8bfb8aec8dc47b8133f4bc0da8678ba0d82bdd295b5c7bf13cf9"
+}

@@ -1,0 +1,173 @@
+{
+  "status": "EXECUTION_CONFIGURATION",
+  "feature_recipe": "foundation340_RH_230",
+  "training_rows": 4997069,
+  "training_users": 39859,
+  "train_row_weight": 1,
+  "caps": [
+    0,
+    1,
+    5,
+    10,
+    30
+  ],
+  "primary_cap": 10,
+  "origin_timestamp": 1672531200,
+  "horizon_days": 180,
+  "catalog_snapshot_timestamp": 1788998400,
+  "seed_selection": 339,
+  "seed_stability": [
+    344,
+    345
+  ],
+  "max_fits": 8,
+  "all_fits_from_scratch": true,
+  "fit_timeout_seconds": 5400,
+  "cpu_limit": 4,
+  "memory_limit_bytes": 12884901888,
+  "driver_memory": "8g",
+  "spark_version": "4.1.3",
+  "image_id": "sha256:de611d62db982bb833b0737a7ddd72a7cd49ab1a7dc9128669cdabae39f46df8",
+  "models": {
+    "FM": {
+      "factorSize": 16,
+      "regParam": 0.01,
+      "stepSize": 0.01,
+      "miniBatchFraction": 0.25,
+      "solver": "adamW",
+      "tol": 1e-06,
+      "initStd": 0.01,
+      "fitLinear": true,
+      "fitIntercept": true,
+      "maxIter_candidates": [
+        150,
+        300
+      ]
+    },
+    "GBT": {
+      "maxDepth": 5,
+      "stepSize": 0.05,
+      "maxBins": 32,
+      "featureSubsetStrategy": "sqrt",
+      "subsamplingRate": 0.8,
+      "lossType": "squared",
+      "maxMemoryInMB": 128,
+      "cacheNodeIds": false,
+      "maxIter_candidates": [
+        60,
+        120
+      ]
+    }
+  },
+  "selection_rule": "larger_budget_only_if_calibrated_mse_not_higher_and_ndcg2_not_lower_with_one_strict_improvement_else_smaller",
+  "baseline_missing_action": "stop_selection_and_do_not_start_extra_seeds",
+  "larger_budget_missing_action": "retain_valid_smaller_budget_and_report_missing",
+  "missing_seed_action": "descriptive_individual_common_seeds_only_primary_ci_and_confirmation_na",
+  "formal_comparison_requires_all_paired_seeds": [
+    339,
+    344,
+    345
+  ],
+  "primary_groups": [
+    "ALL",
+    "C"
+  ],
+  "primary_metrics": [
+    "calibrated_user_macro_mse",
+    "observed_ndcg2"
+  ],
+  "bootstrap_seed": 344,
+  "bootstrap_samples": 20000,
+  "primary_ci": 0.9875,
+  "min_ci_users": 30,
+  "calibration_min_users": 20,
+  "calibration_min_rows": 40,
+  "confirmation_status": "UNPROVEN_REQUIRES_PRIOR_USAGE_AUDIT",
+  "confirmation_max_users": 1000,
+  "confirmation_min_hpositive_j2_users": 100,
+  "confirmation_hash_prefix": "final-fm-gbt-confirm|",
+  "no_confirmation_action": "finish_as_reused_development_comparison",
+  "docker_image": "feelm-rec046-spark:local",
+  "resolved_reference": {
+    "FM": {
+      "factorSize": 16,
+      "featuresCol": "features",
+      "fitIntercept": true,
+      "fitLinear": true,
+      "initStd": 0.01,
+      "labelCol": "label",
+      "maxIter": 150,
+      "miniBatchFraction": 0.25,
+      "predictionCol": "prediction",
+      "regParam": 0.01,
+      "seed": 339,
+      "solver": "adamW",
+      "stepSize": 0.01,
+      "tol": 1e-06
+    },
+    "GBT": {
+      "cacheNodeIds": false,
+      "checkpointInterval": 10,
+      "featureSubsetStrategy": "sqrt",
+      "featuresCol": "features",
+      "impurity": "variance",
+      "labelCol": "label",
+      "leafCol": "",
+      "lossType": "squared",
+      "maxBins": 32,
+      "maxDepth": 5,
+      "maxIter": 60,
+      "maxMemoryInMB": 128,
+      "minInfoGain": 0.0,
+      "minInstancesPerNode": 1,
+      "minWeightFractionPerNode": 0.0,
+      "predictionCol": "prediction",
+      "seed": 339,
+      "stepSize": 0.05,
+      "subsamplingRate": 0.8,
+      "validationTol": 0.01
+    }
+  },
+  "partition_identity": [
+    [
+      0,
+      624054,
+      "21fbf39b23490f46a935ff54dcdab20a1f38361351840780f278a27c4c8de4ea"
+    ],
+    [
+      1,
+      624438,
+      "b54c60df6c9ebf0b1268c60124f9908b2d86a7bbb9f2fceffce520a344123891"
+    ],
+    [
+      2,
+      624481,
+      "5c072bdc8ec9396af8e6dad574d95b13c20988765acf1177d46da6e2c82500d8"
+    ],
+    [
+      3,
+      625449,
+      "84692cce25046923f3a23751f3c1ca2902324f0e44650140dcdf607322cb8f7d"
+    ],
+    [
+      4,
+      624427,
+      "51e8100ac0aba07e8b3a0852f375924ae15a6baa2c81bb80f5953396efd2d2a1"
+    ],
+    [
+      5,
+      624773,
+      "14b8332eebabecb4cdb90975220967a2c258f7b2aae1ebd20bcbcc410ac6d4d0"
+    ],
+    [
+      6,
+      624390,
+      "442632597415d7f1e194fb6133a1675997a0e5d741bc9242dded088a0bb35923"
+    ],
+    [
+      7,
+      625057,
+      "2f51a1ffa91329f80d2802843df72e11ad387b2e304f82a653fcee3294336344"
+    ]
+  ]
+}

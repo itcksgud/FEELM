@@ -1,0 +1,124 @@
+{
+  "status": "PASS_RESULT",
+  "recorded_at": "2026-09-09T00:44:50.379558+00:00",
+  "recorded_by": "root from independent reviewer messages and local replay logs",
+  "execution_fingerprint": {
+    "scripts/feelm_residual_taste.py": {
+      "bytes": 11651,
+      "sha256": "26f8083734a02ef3d2dded142b5bb9ffab30e7bd9d92a68d5cd412577cbbc6fa"
+    },
+    "scripts/rec_ev_044_residual_taste.py": {
+      "bytes": 7486,
+      "sha256": "378adabf12d1548fbf750babaa2b8130ece3cdc631047efdd034d9b436883711"
+    },
+    "scripts/test_feelm_residual_taste.py": {
+      "bytes": 5591,
+      "sha256": "c6ae3053ba44d45c690bdbae6bb3c866df0fff67b9d7d5e196d44380a8ed1a6f"
+    },
+    "scripts/feelm_preference_structure.py": {
+      "bytes": 18743,
+      "sha256": "07d86e029b68ae407726ebde7442cc0be7f47bf599f263d28d985b0c11c8aae1"
+    },
+    "scripts/rec_ev_043_structure.py": {
+      "bytes": 11799,
+      "sha256": "15a58c42da70282fc2e5394b698cf0fdb179b5ccebdb522f903379ad847d80de"
+    },
+    "docs/recommendation/experiments/rec-ev-044/README.md": {
+      "bytes": 7846,
+      "sha256": "3663f88bcf3eaccc9ed88fbf59d297d028cdb721f5915766df3ad572d2d471ac"
+    },
+    "docs/recommendation/experiments/rec-ev-044/config.json": {
+      "bytes": 1370,
+      "sha256": "bf030486d1923719721b0b786202983dea88bb0411f6fc375dc877dad4df308d"
+    },
+    "docs/recommendation/experiments/rec-ev-044/data-readiness.json": {
+      "bytes": 1048,
+      "sha256": "af873091c38ee319bc46b462f5f909635cf5f9c6635734f1802f884058f41fa6"
+    }
+  },
+  "reviewers": [
+    {
+      "agent": "rec044_design_audit",
+      "status": "PASS_RESULT",
+      "independent_core_functions_reused": false,
+      "checks": {
+        "baseline_all_pairs_max_error": 0.0,
+        "MSE_all_2180_users_6_methods_max_error": 3.552713678800501e-15,
+        "MAE_max_error": 1.55e-15,
+        "O_only_primal_SVD_users": 64,
+        "O_only_primal_SVD_E_pairs": 5367,
+        "O_only_primal_SVD_max_error": 1.78e-15,
+        "genre_rows_checked": 18,
+        "genre_integer_fields_exact": 90,
+        "genre_float_max_error": 3.89e-16,
+        "nine_contrast_delta_max_error": 4.44e-15,
+        "bootstrap_20000_by_9_max_error": 1.04e-16,
+        "bootstrap_manual_linear_quantile_max_error": 2.69e-17,
+        "keyword_strata_macro_max_error": 1.55e-15,
+        "keyword_exact_baseline_fallback_pairs": 22875
+      },
+      "interpretation": "PASS; genre tables descriptive, combined vs genre undecided; no general K-means/causal/service/ALS claim",
+      "report_reviewed_sha256": "b06af30c04e8a6c9e7c13be3fb593bf3f496b5d3d3c8bf7c08a3ad5a08535c70",
+      "allowed_after_review": "completion status update, audit details and read-only replay command; numbers unchanged"
+    }
+  ],
+  "additional_reviewer_attempt": {
+    "agent": "github_research_scope_audit",
+    "status": "INCOMPLETE_USAGE_LIMIT_NOT_COUNTED_AS_RESULT_PASS",
+    "completed_before_stop": "input pins, lineage, raw E alignment checked; full statistical scope reassigned and completed by rec044_design_audit"
+  },
+  "root_read_only_replay": {
+    "status": "PASS_READ_ONLY_REPLAY",
+    "file": "scripts/verify_rec_ev_044.py",
+    "pin": {
+      "bytes": 4595,
+      "sha256": "317c97f781dfcc11c45977a960e91a080a200fe48e37f00127e98d7b2f8a1638"
+    },
+    "max_mse_error": 3.552713678800501e-15,
+    "max_bootstrap_error": 1.0408340855860843e-16,
+    "files_written": false,
+    "model_refit": false
+  },
+  "artifacts": {
+    "input.npz": {
+      "bytes": 1356908,
+      "sha256": "1790c114425cc71ed0b6722c5acc88b3f38fd68d2ed9c16eba0a99cb51182903"
+    },
+    "predictions.npz": {
+      "bytes": 19345458,
+      "sha256": "3bd0755d56fa6542acbf121c5106f4c0cff15a93c04d1497c8b6f89909847be5"
+    },
+    "labels.npz": {
+      "bytes": 655723,
+      "sha256": "3beb0ff17f4bd0248a7c57e50a87063864d1e0bdbba090cf45fda9395703334a"
+    },
+    "evaluation.npz": {
+      "bytes": 1819713,
+      "sha256": "bc81cd60c7016452e34a864b3fa7d982ce55039944b89d23a0b82b5fc7b1dbc3"
+    },
+    "summary.json": {
+      "bytes": 10382,
+      "sha256": "988a56374f4b174fb5f740428697632d55dc37b5625ef4388b219d816ee86d20"
+    },
+    "completion-seal.json": {
+      "bytes": 2296,
+      "sha256": "5597bed48337dd82e3e9baa92770700158fb24262b80c0043e710fa224187cdb"
+    },
+    "prediction-seal.json": {
+      "bytes": 2517,
+      "sha256": "4d446beb17aff82a81a547af7da78c5c264c60a83de5ed3345fcc9a109fddddf"
+    },
+    "request-seal.json": {
+      "bytes": 2349,
+      "sha256": "448666422a0b89215860c04ecc1b2e105bf00af5160450af8f5e47e4e0fbfa73"
+    }
+  },
+  "report_final": {
+    "bytes": 11128,
+    "sha256": "8ee18932c8938526ddfbd03c07c0b0f5304b8c9993fc0f1bff59b58d51452c26"
+  },
+  "summary_copy_exact": true,
+  "historical_inputs_and_seals_unchanged": true,
+  "publication": "LOCAL_ONLY",
+  "service_policy_adopted": false
+}

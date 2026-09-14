@@ -1,0 +1,29 @@
+{
+  "status": "PASS",
+  "reviewer": "root-independent-of-analysis-author",
+  "scope": "Existing-data descriptive analysis design and full source code before execution",
+  "fingerprint": {
+    "script": {
+      "path": "C:\\higher\\projects\\FEELM-standalone\\scripts\\report_tmdb_kobis_v1.py",
+      "bytes": 33858,
+      "sha256": "70b68473201c31147d8865a658b8093f4a82b77748f37e441682798dfe7ab420"
+    },
+    "design": {
+      "path": "C:\\higher\\projects\\FEELM-standalone\\docs\\research\\tmdb-kobis-v1-20260913\\DESIGN.md",
+      "bytes": 5182,
+      "sha256": "2f50f606b5d546bd09142deaa0107371fdbcf29267fd09e9a68ba8013ae33ac1"
+    }
+  },
+  "reviewed_checks": [
+    "TK371 includes movies without MovieLens; B337 is separate",
+    "ddof1 SD of film means is distinct from individual rating SD",
+    "Exact half-star sufficient stats; n1 SD missing and count/sum parity",
+    "Positive ratio/log domains and unique ID checks",
+    "No new network access or model fitting; preserve source pins",
+    "Dynamic chart bounds cover all displayed data; PNG/SVG scope matches"
+  ],
+  "execution_authorized_scope": "Only this reviewed existing-data analysis under current user request",
+  "result_review_required": true,
+  "visual_review_required": true,
+  "created_utc": "2026-09-13T04:23:34.612948+00:00"
+}

@@ -1,0 +1,21 @@
+{
+  "status": "PASS",
+  "reviewer": "Hubble",
+  "variant": "R",
+  "model_seal": {
+    "bytes": 6586,
+    "sha256": "73a7e60c2b13ab42aafd3d7f36bed31e9957cd2e450f592965fa994372fcc81e"
+  },
+  "prepared_seal": {
+    "bytes": 4711,
+    "sha256": "9f0550e38566512fc2dad084d3f9381a7197ea3bab05fd0428eef76878acb62e"
+  },
+  "actual_pins_checked": 75,
+  "native_coefficients_bit_exact": 3911,
+  "native_aligned_bit_exact_rows": 93230,
+  "independent_formula_max_error": 3.552713678800501e-15,
+  "ordered_partitions_independent_hash_pass": true,
+  "runtime_provenance_pass": true,
+  "B_measurements": "UNKNOWN",
+  "evaluation_labels_read": false
+}

@@ -1,0 +1,135 @@
+{
+  "origin": 1672531200,
+  "partition_origin": 1656979200,
+  "metadata": "outputs/recommendation-evidence/rec-ev-045/metadata.parquet",
+  "archive": "C:/higher/projects/MM/data/raw/ml-32m.zip",
+  "shrink_strength": 5.0,
+  "seed": 339,
+  "docker_image": "feelm-rec046-spark:local",
+  "image_id": "sha256:de611d62db982bb833b0737a7ddd72a7cd49ab1a7dc9128669cdabae39f46df8",
+  "fit_timeout_seconds": 5400,
+  "models": {
+    "FM": {
+      "factorSize": 16,
+      "regParam": 0.01,
+      "maxIter": 150,
+      "stepSize": 0.01,
+      "miniBatchFraction": 0.25
+    }
+  },
+  "text_sources": {
+    "outputs/recommendation-evidence/rec-ev-033/metadata.parquet": {
+      "bytes": 13443836,
+      "sha256": "86e2e4eb087bbdbf2500b9b8a7e50abf1ef09b52ea6110c62d41581e7d45d016"
+    },
+    "outputs/recommendation-evidence/rec-ev-033/cache-ledger.parquet": {
+      "bytes": 12341017,
+      "sha256": "e807e5a959bc0e57593b168db634a3fe86e032f1b51a88e6fff3cb061f6b0a63"
+    },
+    "outputs/recommendation-evidence/wikipedia-plots-v3/catalog.parquet": {
+      "bytes": 10698643,
+      "sha256": "9f07ff1fcec2e4d12d7426c1418b6609c3c82219dc6d8d657e0f35267274fcc6"
+    },
+    "outputs/recommendation-evidence/wikipedia-plots-v3/mappings.parquet": {
+      "bytes": 5170820,
+      "sha256": "d25f5239a83a6e5478340751ad6d61446d894c025505cf3305ae2885013cf20c"
+    },
+    "outputs/recommendation-evidence/wikipedia-plots-v3/pages.parquet": {
+      "bytes": 181058337,
+      "sha256": "b4b5fd8793461495e09c22313eb6b71cb5f8fac068ff3751bb4290bc34909dcb"
+    }
+  },
+  "sources": {
+    "outputs/recommendation-evidence/rec-ev-045/metadata.parquet": {
+      "bytes": 6891831,
+      "sha256": "4d838874938115be7a4b1f629a920dd196e082b655b75d559d71039e52eb7d8d"
+    },
+    "outputs/recommendation-evidence/rec-ev-047-readiness/development-observations.parquet": {
+      "bytes": 50098493,
+      "sha256": "6d38956e7b516b69d847c21d85953bc1dc3efd7f10f84065cb155bc67ca0e62d"
+    },
+    "outputs/recommendation-evidence/rec-ev-047-readiness/user-origin-counts.parquet": {
+      "bytes": 2328627,
+      "sha256": "c1c5e1ee107b2e29fd1d4c269d342c33c5a38f82c28836a8f094dbfd85cd00c7"
+    },
+    "outputs/recommendation-evidence/rec-ev-047/evaluation/ratings.parquet": {
+      "bytes": 37407713,
+      "sha256": "115b07a73d3606642d4549b7431ce242aa11601baabe6068db122aff8fe41e88"
+    },
+    "outputs/recommendation-evidence/cold-item-content/movie-partition.parquet": {
+      "bytes": 1225539,
+      "sha256": "564202e4965886b62704d267db79ea486e5c4aafeaf97025ca2867cab2f06740"
+    },
+    "outputs/recommendation-evidence/rec-ev-033/metadata.parquet": {
+      "bytes": 13443836,
+      "sha256": "86e2e4eb087bbdbf2500b9b8a7e50abf1ef09b52ea6110c62d41581e7d45d016"
+    },
+    "outputs/recommendation-evidence/rec-ev-033/cache-ledger.parquet": {
+      "bytes": 12341017,
+      "sha256": "e807e5a959bc0e57593b168db634a3fe86e032f1b51a88e6fff3cb061f6b0a63"
+    },
+    "outputs/recommendation-evidence/wikipedia-plots-v3/catalog.parquet": {
+      "bytes": 10698643,
+      "sha256": "9f07ff1fcec2e4d12d7426c1418b6609c3c82219dc6d8d657e0f35267274fcc6"
+    },
+    "outputs/recommendation-evidence/wikipedia-plots-v3/mappings.parquet": {
+      "bytes": 5170820,
+      "sha256": "d25f5239a83a6e5478340751ad6d61446d894c025505cf3305ae2885013cf20c"
+    },
+    "outputs/recommendation-evidence/wikipedia-plots-v3/pages.parquet": {
+      "bytes": 181058337,
+      "sha256": "b4b5fd8793461495e09c22313eb6b71cb5f8fac068ff3751bb4290bc34909dcb"
+    },
+    "outputs/recommendation-evidence/rec-ev-047/evaluation/labels.parquet": {
+      "bytes": 75509,
+      "sha256": "4860b9b5255a75031210e87e5417229d79d221ffa1d074f4d5eedb6cb894592a"
+    },
+    "C:/higher/projects/MM/data/raw/ml-32m.zip": {
+      "bytes": 238950008,
+      "sha256": "e4a68655d7386b8f95f2f2424b2ff975dfdd15ffd59e0d864a14dca43e99d6ee"
+    }
+  },
+  "embedding": {
+    "model_id": "intfloat/multilingual-e5-base",
+    "revision": "d128750597153bb5987e10b1c3493a34e5a4502a",
+    "prefix": "query: ",
+    "content_tokens": 480,
+    "overlap_tokens": 48,
+    "batch": 16,
+    "precision": "float16_model_float32_pool",
+    "dimension": 768,
+    "projection_dimension": 32
+  },
+  "model_sources": {
+    "outputs/recommendation-evidence/text339-runtime/model/config.json": {
+      "bytes": 694,
+      "sha256": "9dab198f24c8c0879e481cf7822005d5ecbceedbacb390ffafa594e28d31bac4"
+    },
+    "outputs/recommendation-evidence/text339-runtime/model/model.safetensors": {
+      "bytes": 1112201288,
+      "sha256": "a18a44fad1d0b46ded15928144138cff1135d5cc8233bdd90be5f18822de09a7"
+    },
+    "outputs/recommendation-evidence/text339-runtime/model/sentencepiece.bpe.model": {
+      "bytes": 5069051,
+      "sha256": "cfc8146abe2a0488e9e2a0c56de7952f7c11ab059eca145a0a727afce0db2865"
+    },
+    "outputs/recommendation-evidence/text339-runtime/model/special_tokens_map.json": {
+      "bytes": 280,
+      "sha256": "06e405a36dfe4b9604f484f6a1e619af1a7f7d09e34a8555eb0b77b66318067f"
+    },
+    "outputs/recommendation-evidence/text339-runtime/model/tokenizer.json": {
+      "bytes": 17082660,
+      "sha256": "62c24cdc13d4c9952d63718d6c9fa4c287974249e16b7ade6d5a85e7bbb75626"
+    },
+    "outputs/recommendation-evidence/text339-runtime/model/tokenizer_config.json": {
+      "bytes": 418,
+      "sha256": "efb5c0d09722e5fe59a462cd2a9976ee216d55b037597d997cd3fe833216da15"
+    },
+    "outputs/recommendation-evidence/text339-runtime/model/1_Pooling/config.json": {
+      "bytes": 200,
+      "sha256": "f586ab6c734af7b8d14d898bfa7faa886f23b46f86dd1730514309893af13d75"
+    }
+  },
+  "catalog_snapshot_timestamp": 1788998400,
+  "embedding_timeout_seconds": 28800
+}

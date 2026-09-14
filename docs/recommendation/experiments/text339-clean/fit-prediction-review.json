@@ -1,0 +1,29 @@
+{
+  "status": "PASS_NUMERICAL",
+  "reviewer": "Hubble",
+  "fit_seal": {
+    "bytes": 4866,
+    "sha256": "d28469d563affb709773da6c3713f24ced39bbeee7bc59f32e9cb174bb0e680f"
+  },
+  "actual_files_pinned": 103,
+  "native_portable_bitwise_exact": {
+    "intercept": 1,
+    "linear": 446,
+    "factors": 7136
+  },
+  "params_spark_and_446_indices_exact": true,
+  "native_saved_predictions_equal_aligned": 93230,
+  "score_row_ids_users_placeholder_labels_and_finiteness": "PASS",
+  "independent_formula_rows": 93230,
+  "maximum_absolute_error": 3.552713678800501e-15,
+  "mean_absolute_error": 4.3524243644028006e-16,
+  "predeclared_tolerance": 1e-8,
+  "rows_above_tolerance": 0,
+  "model_sha256": "efffe56356c7a91b2e54b5a6ede73cd9ca0fcdec9ddc2f0bdf9e55f1ec79737a",
+  "aligned_sha256": "06d8289680cc84629392e641f9ae01dcb80e67d90b767b1561d1c9b0288ab7ee",
+  "resource_status": "EXCEPTION_12GiB_PLUS_4096_BYTES",
+  "observed_peak_bytes": 12884905984,
+  "strict_12GiB_pass": false,
+  "future_rating_values_read": 0,
+  "note": "Numerical prediction verification does not waive the measured resource exception. Catalog verification is separate."
+}

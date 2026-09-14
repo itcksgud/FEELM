@@ -1,0 +1,116 @@
+{
+  "status": "PASS_ACTUAL_CATALOG_ORIGINAL_BATCH_ALL_RETURNED_SCORES",
+  "reviewer": "/root/text339_eval_review",
+  "future_rating_values_read": 0,
+  "new_fits": 0,
+  "reviewer_file_writes": 0,
+  "artifacts": {
+    "catalog-seal.json": {
+      "bytes": 3737,
+      "sha256": "6d069d20039a0ed84463070bf124cbf7b03d9bccbdfa89eaae6aacf5a232f9c7"
+    },
+    "catalog-top10.parquet": {
+      "bytes": 95812,
+      "sha256": "d46055cb73b31d8010a277aae3fc21407373ba04a56e00bfe326e95d5d4a86e2"
+    },
+    "catalog-timing.csv": {
+      "bytes": 9622,
+      "sha256": "aeb9576c9cfabcead028287a5276ffc07f82025712a7e7ee06f6796561d2a1fd"
+    },
+    "fit-seal.json": {
+      "bytes": 4195,
+      "sha256": "447c00df9cb888bbc0272bd03abd87f751b951954244e0e113bd1171d086c25d"
+    },
+    "prepared-seal.json": {
+      "bytes": 5024,
+      "sha256": "d27709a42bd0d5511a36f3740365637325d59b521c7f62eae04850523782fdd8"
+    },
+    "contexts.json": {
+      "bytes": 12290713,
+      "sha256": "951fc2464bd3aea25ea486c79c33084f6241f7846a3ed626e9d5fc3907a7aab7"
+    }
+  },
+  "verified_file_counts": {
+    "code": 21,
+    "prepared": 11,
+    "fit": 5,
+    "model_artifacts": 84,
+    "embedding": 6
+  },
+  "parents_exact": true,
+  "users": 270,
+  "variants": 4,
+  "top10_rows": 10800,
+  "metadata_movie_axis": 85517,
+  "snapshot_timestamp": 1788998400,
+  "date_eligible": 85517,
+  "date_missing": 0,
+  "date_future": 0,
+  "candidates": {
+    "min": 76085,
+    "median": 85356.5,
+    "max": 85517,
+    "sum": 22963869,
+    "stream_sha256": "35b66d225c9f3f0a1ff88246c2634e4c93d0267e81f7ed5d863359c15530c483",
+    "user_ledger_sha256": "f7e7e122d9920c68cd66cc1fe06845ac9e5c772921ec5f0d69f60ec5fd4e6d68"
+  },
+  "duplicate_missing_viewed_date_metadata_rank_errors": 0,
+  "exact_returned_score_ties": 0,
+  "original_batch_all_scores": {
+    "status": "PASS",
+    "feature_blas_threads": 4,
+    "independent_fm_blas_threads": 1,
+    "chunks": 2896,
+    "candidate_feature_rows": 11617949,
+    "scores": 10800,
+    "seconds": 203.016,
+    "tolerance": 1e-08,
+    "variant_max_errors": {
+      "T0": 4.4408920985e-15,
+      "T1": 4.4408920985e-15,
+      "T2": 9.7699626167e-15,
+      "T3": 7.9936057773e-15
+    },
+    "tolerance_exceedances": 0
+  },
+  "preserved_auxiliary_small_batch_check": {
+    "status": "FAIL_T1_T2_T3_AT_ORIGINAL_TOLERANCE",
+    "description": "Recreating only returned films changes float32 cosine feature batching. Original4096/lastchunk allrow recreation passes without threshold relaxation.",
+    "tolerance": 1e-08,
+    "max_errors": {
+      "T1": 1.9594648304e-07,
+      "T2": 1.6003001946e-07,
+      "T3": 1.6284965021e-07
+    }
+  },
+  "independent_full_catalog_examples": [
+    {
+      "uid": 884,
+      "h": 0,
+      "viewed": 0,
+      "candidates": 85517
+    },
+    {
+      "uid": 187305,
+      "h": 2,
+      "viewed": 2,
+      "candidates": 85515
+    },
+    {
+      "uid": 17035,
+      "h": 10,
+      "viewed": 9432,
+      "candidates": 76085
+    }
+  ],
+  "full_catalog_examples_results": {
+    "top10_lists": 12,
+    "exact_movie_id_rank_lists": 12,
+    "scores": 120,
+    "max_error": 4.4408920985e-15
+  },
+  "limits": [
+    "Research MovieLens-linked catalog integrity, not real Korean or OTT service quality.",
+    "T3 resource exception remains; catalog numeric PASS does not waive its strict peak cap failure."
+  ]
+}

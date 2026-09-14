@@ -1,0 +1,14 @@
+{
+  "status": "PASS",
+  "reviewer": "target_domain_review (Euler)",
+  "scope": "r0 FM/RIDGE variants, 7000 rows each, 1400 rows for each K=0/1/5/10/30; nonzero profiles checked for K>0",
+  "max_absolute_error": {
+    "FM-0": 1.78e-15,
+    "FM-1": 1.78e-15,
+    "RIDGE-0": 0,
+    "RIDGE-1": 0
+  },
+  "additional_FM_explicit_pair_sum_max_error": 3.55e-15,
+  "labels_opened": false,
+  "quality_claim": false
+}

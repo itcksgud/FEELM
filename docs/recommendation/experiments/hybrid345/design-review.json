@@ -1,0 +1,105 @@
+{
+  "schema_version": 1,
+  "status": "PASS",
+  "date": "2026-09-12",
+  "kind": "pre_execution_independent_design_review",
+  "experiment": "hybrid345",
+  "claim_scope": "DEVELOPMENT_ONLY",
+  "reviewed_artifacts": {
+    "DESIGN.md": {
+      "bytes": 16289,
+      "sha256": "18ca3c22ffacaace55ca6483620ff36d76230902bb38557d7b2a34aaf1906884"
+    },
+    "config.json": {
+      "bytes": 22142,
+      "sha256": "f975cd83b179c8b61dac09e0a3a527c4f2c4794389e88b0be4fd3c69d0679506"
+    }
+  },
+  "audits": {
+    "source_pins": {
+      "configured": 37,
+      "files_present": 37,
+      "bytes_matched": 37,
+      "sha256_matched": 37,
+      "mismatches": []
+    },
+    "formal_contrasts": {
+      "configured": 14,
+      "unique": 14,
+      "warm": {
+        "total": 2,
+        "mse": 1,
+        "ndcg2": 1,
+        "confidence": 0.975
+      },
+      "cold": {
+        "total": 8,
+        "mse": 4,
+        "ndcg2": 4,
+        "confidence": 0.99375
+      },
+      "router": {
+        "total": 4,
+        "mse": 2,
+        "ndcg2": 2,
+        "confidence": 0.9875
+      },
+      "duplicates": []
+    },
+    "rec027_coverage": {
+      "current_catalog_movies": 85517,
+      "current_catalog_rows_present": 85517,
+      "current_catalog_feature_eligible": 85517,
+      "rec019b_reused_by_rebuilt_input_hash": 68674,
+      "rec027_encoded": 17782,
+      "interpretation": "The 16,843 increase from 68,674 to 85,517 is net row growth, not a disjoint-set sum."
+    },
+    "calibration": {
+      "status": "PASS",
+      "weighting": "USER_EQUAL_EACH_USER_TOTAL_WEIGHT_1_THEN_NORMALIZE",
+      "minimum_users": 20,
+      "minimum_rows": 40,
+      "slope_constraint": "NONNEGATIVE",
+      "constant_case_defined": true
+    },
+    "qwen_contract": {
+      "status": "PASS",
+      "model_revision_pinned": true,
+      "document_semantics": "Symmetric document embeddings without a query instruction",
+      "padding": "left",
+      "pooling": "last_token",
+      "normalization": "l2",
+      "dimension": 1024,
+      "mrl_sweep_required": false,
+      "mrl_rationale": "Native 1024D is fixed as the maximum model output; dimension tuning is outside this comparison and the resource budget supports it."
+    },
+    "selection_and_statistics": {
+      "status": "PASS",
+      "calibration_and_comparison_roles_separated": true,
+      "cold_candidates_and_tie_break_fixed": true,
+      "bootstrap_draws_shared_across_metrics": false,
+      "bootstrap_seed_contract": "UINT64_BIG_ENDIAN_FIRST8_SHA256_UTF8(hybrid345-bootstrap-v1|346|family|after|before|metric)",
+      "decision_precedence_fixed": true
+    }
+  },
+  "resolved_review_items": [
+    "Qwen batch size, order, padding, dtype, runtime and clean-restart contract are fixed.",
+    "The current user-equal prior is regenerated only from the sealed 39,859-user, 4,997,069-row training population.",
+    "REC027, ALS and final344 source and row-axis provenance are pinned.",
+    "FM and GBT seed checkpoints are separated from seed-mean reporting and the seed339 operational fallback.",
+    "Warm, cold and router selection, safety, tie and inferential decision rules are fixed before comparison labels are opened.",
+    "The previous length-bucket pilot is feasibility-only; a new 504-movie pilot made from 63 complete canonical full-run batch-8 blocks is the full-run gate."
+  ],
+  "blocking_design_changes": [],
+  "implementation_review": {
+    "status": "SEPARATE_REVIEW_REMAINS_OPEN",
+    "scope": "This PASS covers DESIGN.md and config.json only.",
+    "known_item": "Existing document, token-audit, pilot and full seals must fail closed when parent seals, implementation pins or configuration drift. This must be resolved and independently re-reviewed before execution."
+  },
+  "not_claimed": [
+    "execution-code approval",
+    "a fresh unused test set",
+    "2026 Korean service satisfaction validation",
+    "service adoption or deployment"
+  ]
+}

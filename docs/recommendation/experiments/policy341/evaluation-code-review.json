@@ -1,0 +1,20 @@
+{
+  "status": "PASS",
+  "reviewer": "Dewey",
+  "fingerprint": {
+    "policy341_evaluate.py": {
+      "bytes": 10083,
+      "sha256": "bdc1e068a030cb61bed41805b131c35721ec9c83d9edf3d8fd2b98c87abd2046"
+    }
+  },
+  "checks": [
+    "synthetic 270-user cohort and exact 158/176/84 denominators",
+    "both pass chooses P2_010",
+    "zero novelty or h0 loss chooses P0",
+    "whole-J IDCG",
+    "fixed taste slots vs actual discovery prefixes vs first-slot discovery",
+    "UNKNOWN/missing separation",
+    "label identity before decode and explicit UID mismatch refusal"
+  ],
+  "scope": "Code and synthetic fixtures, no actual new labels/results"
+}

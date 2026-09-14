@@ -1,0 +1,317 @@
+{
+  "status": "SEMANTIC_REVIEW_COMPLETE_BEFORE_EMBEDDING",
+  "original_texts": {
+    "bytes": 253611206,
+    "sha256": "79ff6928e260e9fb709afbb713e0b1164f2a788d3aca0ab65b31bbe5304c5377"
+  },
+  "english_even": {
+    "reviewer": "/root/github_research_scope_audit",
+    "reviewed": 66,
+    "accepted": [
+      546,
+      2070,
+      2140,
+      2528,
+      3384,
+      4010,
+      7086,
+      8140,
+      8516,
+      26288,
+      38600,
+      49132,
+      51678,
+      61470,
+      67422,
+      67850,
+      73064,
+      74144,
+      81142,
+      82390,
+      84232,
+      86142,
+      95088,
+      121308,
+      121360,
+      127606,
+      136974,
+      153716,
+      157200,
+      158352,
+      194150,
+      194418,
+      200878,
+      202952,
+      219444,
+      226698,
+      238714,
+      241310,
+      241910,
+      249680,
+      250128,
+      252482,
+      253722,
+      265592,
+      270354
+    ],
+    "quarantine": [
+      [
+        5298,
+        "UNCERTAIN_NARRATIVE_SCOPE",
+        "크레딧 철학서 낭독의 서사 연결이 불명확함. 외부 비평으로 확정하지 않음."
+      ],
+      [
+        7056,
+        "NON_PLOT_PROSE",
+        "작가 의도와 영화 자체에 관한 관객 대상 서문."
+      ],
+      [
+        26312,
+        "NON_PLOT_PROSE",
+        "감독의 연출 수락 회고와 배우 연기 찬사."
+      ],
+      [
+        26472,
+        "NON_PLOT_PROSE",
+        "평론과 실제 촬영 일화."
+      ],
+      [
+        27846,
+        "NON_PLOT_PROSE",
+        "동명 외부 책의 논증."
+      ],
+      [
+        42418,
+        "UNCERTAIN_NARRATIVE_SCOPE",
+        "역사적 제사의 영화 사건 연결이 불명확함."
+      ],
+      [
+        49688,
+        "NON_PLOT_PROSE",
+        "실제 오프닝이지만 제작사와 RAF 등 제작 지원 감사문."
+      ],
+      [
+        51300,
+        "NON_PLOT_PROSE",
+        "영화의 폭력 표현에 대한 관객 대상 해명."
+      ],
+      [
+        58180,
+        "NON_PLOT_PROSE",
+        "감독의 캐스팅·재촬영·편집 회고. T2에도 제작평 포함."
+      ],
+      [
+        79430,
+        "NON_PLOT_PROSE",
+        "외부 단체의 영화 편향 비판."
+      ],
+      [
+        80210,
+        "NON_PLOT_PROSE",
+        "줄거리 인용과 평론가 찬사 혼합."
+      ],
+      [
+        115746,
+        "NON_PLOT_PROSE",
+        "감독의 외부 인터뷰 해설."
+      ],
+      [
+        118290,
+        "UNCERTAIN_NARRATIVE_SCOPE",
+        "오프닝 시의 사건·인물·세계 배경 연결이 불명확함."
+      ],
+      [
+        122288,
+        "NON_PLOT_PROSE",
+        "감독의 제작 목표와 희망."
+      ],
+      [
+        133270,
+        "NON_PLOT_PROSE",
+        "리뷰어의 작품 찬사."
+      ],
+      [
+        147682,
+        "UNCERTAIN_NARRATIVE_SCOPE",
+        "마지막 격언 카드의 구체적인 서사 연결이 불명확함."
+      ],
+      [
+        201218,
+        "NON_PLOT_PROSE",
+        "TV 도입부의 작가 찬사와 Emmy 수상 정보."
+      ],
+      [
+        201348,
+        "NON_PLOT_PROSE",
+        "감독의 제작 방법 인터뷰."
+      ],
+      [
+        219294,
+        "NON_PLOT_PROSE",
+        "감독판과 공모전 회고."
+      ],
+      [
+        266024,
+        "NON_PLOT_PROSE",
+        "상영 후 감독의 외부 해설."
+      ],
+      [
+        270692,
+        "NON_PLOT_PROSE",
+        "감독의 외부 주제 해설."
+      ]
+    ]
+  },
+  "english_odd": {
+    "reviewer": "/root/text339_eval_review",
+    "reviewed": 65,
+    "accepted_count": 47,
+    "quarantine": [
+      [
+        2781,
+        "NON_PLOT_PROSE",
+        "감독이 자신을 소개하고 관객의 전자자극·비명 반응을 예고하는 상영 장치 홍보 프롤로그."
+      ],
+      [
+        3017,
+        "NON_PLOT_PROSE",
+        "실제 쿠키이지만 1949 Collier’s의 만화매체 옹호 사설."
+      ],
+      [
+        3699,
+        "NON_PLOT_PROSE",
+        "John Carpenter의 LA Weekly 제작 인터뷰에서 다른 영화를 비교하는 작품 해설."
+      ],
+      [
+        25753,
+        "NON_PLOT_PROSE",
+        "실제 시작 카드이지만 Frank Norris의 소설가 창작관과 자기변호 인용."
+      ],
+      [
+        56551,
+        "NON_PLOT_PROSE",
+        "실제 closing dedication의 인명 헌사."
+      ],
+      [
+        77455,
+        "UNCERTAIN_NARRATIVE_SCOPE",
+        "Steve Lazarides 인용의 극중 발언 여부와 출처가 불명확해 외부 작품평가와 구분할 수 없음."
+      ],
+      [
+        88425,
+        "NON_PLOT_PROSE",
+        "NYT 평론의 시놉시스에 다른 영화 비교와 분위기 평가가 혼합됨."
+      ],
+      [
+        93865,
+        "NON_PLOT_PROSE",
+        "Edison Kinetogram 사건 소개에 제작 장면 찬사 혼합."
+      ],
+      [
+        174245,
+        "NON_PLOT_PROSE",
+        "Moving Picture World 사건 소개에 몰입도와 영화 제작 찬사 혼합."
+      ],
+      [
+        188345,
+        "NON_PLOT_PROSE",
+        "실제 오프닝 크레딧의 전몰·생존 군인 헌사."
+      ],
+      [
+        197049,
+        "NON_PLOT_PROSE",
+        "제작 발표에 실린 다큐 제작 소감."
+      ],
+      [
+        203389,
+        "NON_PLOT_PROSE",
+        "제작비 절감에 따른 인물·출연자 축소 회고."
+      ],
+      [
+        219511,
+        "NON_PLOT_PROSE",
+        "연출 복합성과 폴란드 영화사상 위상을 찬양한 영화평."
+      ],
+      [
+        219521,
+        "NON_PLOT_PROSE",
+        "작품을 사례 연구·에세이로 규정하는 창작자 작품 해설."
+      ],
+      [
+        229421,
+        "NON_PLOT_PROSE",
+        "감독 명의 소개문에 영화가 섬세하고 경쾌하고 깊이 감동적이라는 자기평가 혼합."
+      ],
+      [
+        264125,
+        "NON_PLOT_PROSE",
+        "감상평·다른 영화 비교·제작 동기 혼합."
+      ],
+      [
+        283925,
+        "NON_PLOT_PROSE",
+        "실제 다큐 속 발언이지만 감독의 인식·촬영 과정 회고. 외부 인터뷰로 단정하지 않음."
+      ],
+      [
+        287437,
+        "NON_PLOT_PROSE",
+        "Hulu 시놉시스에 이전 작품 평가와 현대적 리믹스라는 제작 설명 혼합."
+      ]
+    ]
+  },
+  "korean": {
+    "reviewer": "/root/wiki_report_review/quote_scope_scan",
+    "reviewed": 9,
+    "accepted": [
+      1272,
+      1936,
+      1946,
+      7934,
+      64993,
+      135290,
+      180031
+    ],
+    "quarantine": [
+      [
+        86898,
+        "ENTITY_SCOPE_PENDING",
+        "TMDB 극장판 2011/139분에 Wikipedia Plot의 2018 확장판 별도 서사가 함께 연결됨."
+      ],
+      [
+        214320,
+        "ENTITY_SCOPE_PENDING",
+        "다른 에피소드와의 연관성 하위절에 다른 사건·제작기법·소설 표현 설명이 포함됨."
+      ]
+    ]
+  },
+  "broad_sample": {
+    "reviewer": "/root/wiki_report_review",
+    "reviewed": 69,
+    "pages": 67,
+    "api_caches": 64,
+    "text_hashes_verified": 276,
+    "raw_scope_identical": 66,
+    "quarantine": [
+      [
+        211674,
+        "ENTITY_SCOPE_PENDING",
+        "TMDB 영화 1975/245분에 Plot이 명시한 12부 TV 시리즈 구성이 연결됨."
+      ],
+      [
+        254526,
+        "ENTITY_SCOPE_PENDING",
+        "2018년 121분 촬영 공연본에 2008년 이후 여러 공연을 포괄하는 일반 무대 뮤지컬 문서가 연결됨."
+      ]
+    ],
+    "known_limits": [
+      "Q11486176 v3 추출에서 선행 각주 234자 누락. 원 API 원문은 보존됨.",
+      "빈 본문 복원 9건은 대체로 짧은 공식 소개이며 결말 복원이 아님.",
+      "원문 자체 번역/사실 오류와 인용 외 템플릿 제거에 따른 명칭 누락은 남을 수 있음.",
+      "270354 A24 website 인라인 출처 표기 잔존.",
+      "수정되지 않은 수만 편의 의미 정확성을 전수 검증한 것은 아님."
+    ]
+  },
+  "rating_values_read": 0,
+  "scope": "Event/person/world background and diegetic dialogue retained. Explicit film quality appraisal, production discussion, dedication and ambiguous narrative scope quarantined equally in T2/T3. Ordinary suspense or synopsis tone is not itself an exclusion.",
+  "restored_body_correction": "Of 9 initially restored bodies, 229421 and 287437 are now quarantined under the strict explicit-appraisal rule; do not claim all 9 passed."
+}

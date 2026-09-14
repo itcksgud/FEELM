@@ -1,0 +1,330 @@
+{
+  "audits": {
+    "catalog_and_context_axis": {
+      "als_availability_matches_support_semantics": true,
+      "caps": [
+        0,
+        1,
+        5,
+        10,
+        30
+      ],
+      "catalog_movies": 85517,
+      "contexts": 1350,
+      "history_stars": "FINITE_EXACT_HALF_STAR_GRID_0.5_TO_5.0",
+      "history_target_overlap_rows": 0,
+      "movie_groups": {
+        "C": 10952,
+        "NATURAL_ZERO": 29491,
+        "W_DIRECT": 45074
+      },
+      "movie_id_int64_array_sha256": "330606b18a36fc04c0f3ef9187b9dc45747e3c592f93f9869b3f02c610722fb6",
+      "movie_id_order": "STRICT_ASCENDING_UNIQUE",
+      "rows": 93230,
+      "status": "PASS",
+      "users": 270
+    },
+    "label_boundary": {
+      "configured_source_pins": 37,
+      "evaluation_label_path": "outputs/recommendation-evidence/text339/labels.parquet",
+      "evaluation_label_pin_intentionally_not_opened": true,
+      "evaluation_labels_opened": false,
+      "non_label_source_pins_hashed_and_matched": 36,
+      "production_order": "documents -> token audit -> exact 504-movie pilot -> independent pilot review -> full Qwen -> prior/mapper/scoring seal -> evaluation labels",
+      "static_target_label_read_calls_in_reviewed_prelabel_code": [],
+      "status": "PASS"
+    },
+    "mapper_and_fold_in": {
+      "actual_als_direct_rows_independently_reproduced": 15977,
+      "actual_als_fold_in_max_absolute_difference": 3.1086244689504383e-15,
+      "alphas": [
+        0.01,
+        0.1,
+        1.0,
+        10.0,
+        100.0
+      ],
+      "als_factor_files_matched_to_combination340_fit_seal": 18,
+      "c_teacher_items": 0,
+      "fold_in": "solve(Y.T@Y + 0.1*n_supported*I, Y.T@stars)",
+      "model": "MULTIVARIATE_RIDGE_WITH_UNPENALIZED_INTERCEPT_NO_SCALING_FLOAT64",
+      "refit": "ALL_W_DIRECT_AFTER_ALPHA_SELECTION",
+      "selection": "MAX_MEAN_COSINE_THEN_MIN_RMSE_THEN_MIN_ALPHA",
+      "split": "DETERMINISTIC_SALTED_SHA256_STRATIFIED_80_20",
+      "status": "PASS",
+      "strata": [
+        "SUPPORT_1_9",
+        "SUPPORT_10_49",
+        "SUPPORT_50_PLUS"
+      ],
+      "teacher": "W_DIRECT_ONLY_ACTUAL_ALS_RAW_32D"
+    },
+    "prediction_bundle": {
+      "availability_is_exact_finiteness_mask": true,
+      "column_count": 11,
+      "columns": [
+        "ALS",
+        "STRUCTURED_DIRECT",
+        "E5_DIRECT",
+        "QWEN_DIRECT",
+        "FM150_s339",
+        "FM150_s344",
+        "FM150_s345",
+        "GBT120_s339",
+        "GBT120_s344",
+        "GBT120_s345",
+        "ALS_C2F"
+      ],
+      "fixed_fm_gbt_arrays": 6,
+      "fixed_fm_gbt_dtype": "float64",
+      "fixed_fm_gbt_shape": [
+        93230
+      ],
+      "lineage_binds_config_code_review_qwen_prior_mapper_als_factors_and_fixed_sources": true,
+      "recursive_parent_verification": true,
+      "rows": 93230,
+      "status": "PASS"
+    },
+    "prior": {
+      "g0_mid": [
+        0.006834946233007121,
+        0.027593632413873637,
+        0.047017579561808964,
+        0.07891920434880384,
+        0.12147613251875465,
+        0.23051962938302703,
+        0.37165132366449083,
+        0.5577510673348416,
+        0.743670775578122,
+        0.8958672240756375
+      ],
+      "g0_mid_float64_array_sha256": "2e1c535f99a7f5dbbb7e06b7595b39e8679e9cd78dc08a7c2253226cc00ac2c9",
+      "pi0": [
+        0.013669892466014242,
+        0.027847479895718796,
+        0.011000414400151867,
+        0.052802835173837895,
+        0.032311021166063686,
+        0.18577597256248107,
+        0.0964874160004466,
+        0.27571207134025494,
+        0.09612734514630594,
+        0.2082655518487249
+      ],
+      "pi0_float64_array_sha256": "00a9660629beb03d87d3483884edca40d2bf85d4286942c25b63b536a18cb36b",
+      "rating_grid": "0.5_TO_5.0_BY_0.5",
+      "rows": 4997069,
+      "source": "outputs/recommendation-evidence/text339/ratings.parquet",
+      "status": "PASS",
+      "users": 39859,
+      "weighting": "USER_EQUAL"
+    },
+    "qwen_contract": {
+      "batching": "CANONICAL_CONSECUTIVE_BATCH8_NO_LENGTH_SORT_DYNAMIC_PADDING",
+      "full_gate_pilot": {
+        "complete_full_run_blocks": 63,
+        "movies": 504,
+        "same_cobatching_as_full": true,
+        "separate_review_required": true
+      },
+      "input": "EXACT_SIX_FIELD_BODY_WITH_EMPTY_PREFIX_AND_NO_QUERY_INSTRUCTION",
+      "local_model_files_hashed_against_pinned_pilot": 12,
+      "local_model_total_bytes": 1207489041,
+      "model_id": "Qwen/Qwen3-Embedding-0.6B",
+      "normalization": "FLOAT32_L2",
+      "partial_resume": false,
+      "pooling": "LAST_NON_PADDING_TOKEN",
+      "revision": "97b0c614be4d77ee51c0cef4e5f07c00f9eb65b3",
+      "runtime": {
+        "attention": "sdpa",
+        "cuda": "12.8",
+        "device": "cuda",
+        "python": "3.12",
+        "torch": "2.10.0+cu128",
+        "transformers": "5.16.1"
+      },
+      "status": "PASS",
+      "storage": "FLOAT32_NATIVE_1024D"
+    },
+    "rec027_lineage": {
+      "catalog_rows_and_feature_eligible": 85517,
+      "identity_eligible": 86456,
+      "net_growth_is_not_a_disjoint_set_sum": true,
+      "net_row_growth": 16843,
+      "rec019b_hashes_reused": 68674,
+      "rec027_newly_encoded": 17782,
+      "status": "PASS",
+      "text_eligible": 86209
+    },
+    "representations": {
+      "e5": {
+        "all_finite": true,
+        "dtype": "float32",
+        "maximum_l2_error": 1.1920928955078125e-07,
+        "shape": [
+          85517,
+          384
+        ]
+      },
+      "status": "PASS",
+      "structured": {
+        "all_finite": true,
+        "dtype": "float32",
+        "maximum_l2_error": 2.384185791015625e-07,
+        "shape": [
+          85517,
+          215308
+        ],
+        "zero_rows": 0
+      }
+    },
+    "resource_limits": {
+      "mapper": {
+        "continuous_rss_sampling_seconds": 0.05,
+        "host_memory_bytes": 12884901888,
+        "seconds": 1800,
+        "synchronous_initial_rss_check": true
+      },
+      "qwen": {
+        "checked_each_batch_and_before_seal": true,
+        "gpu_bytes": 8585216000,
+        "host_memory_bytes": 12884901888,
+        "seconds": 28800
+      },
+      "scoring": {
+        "continuous_rss_sampling_seconds": 0.05,
+        "host_memory_bytes": 12884901888,
+        "seconds": 1800,
+        "synchronous_initial_rss_check": true
+      },
+      "status": "PASS",
+      "synthetic_time_and_rss_failure_tests": true
+    },
+    "tests": {
+      "command": "outputs/recommendation-evidence/text339-runtime/venv/Scripts/python.exe -m unittest discover -s scripts -p 'test_hybrid345_*.py' -v",
+      "errors": 0,
+      "evaluation_boundary_tests_in_suite": 7,
+      "failures": 0,
+      "prelabel_tests_in_suite": 17,
+      "py_compile": "PASS",
+      "status": "PASS",
+      "tests_run": 24
+    }
+  },
+  "blocking_findings": [],
+  "claim_scope": "DEVELOPMENT_ONLY",
+  "date": "2026-09-12",
+  "decision": "PASS_PRELABEL_IMPLEMENTATION_ONLY",
+  "experiment": "hybrid345",
+  "fingerprint": {
+    "docs/recommendation/experiments/hybrid345/DESIGN.md": {
+      "bytes": 16289,
+      "sha256": "18ca3c22ffacaace55ca6483620ff36d76230902bb38557d7b2a34aaf1906884"
+    },
+    "docs/recommendation/experiments/hybrid345/config.json": {
+      "bytes": 22142,
+      "sha256": "f975cd83b179c8b61dac09e0a3a527c4f2c4794389e88b0be4fd3c69d0679506"
+    },
+    "docs/recommendation/experiments/hybrid345/design-review.json": {
+      "bytes": 3888,
+      "sha256": "4e6fde96f90ecfdbdb4cf32ed6d5a86d818e6650a6ea65547ea425c35c23d74f"
+    },
+    "scripts/hybrid345_common.py": {
+      "bytes": 3626,
+      "sha256": "6f0e48f559873996a8a710594832e9ebaa33beebab346da2f2ac58fed33f22db"
+    },
+    "scripts/hybrid345_documents.py": {
+      "bytes": 25535,
+      "sha256": "33a49df0d09f8f8b41bc461fe72f3d2436e107239a48c3230dd7c41172648169"
+    },
+    "scripts/hybrid345_encode.py": {
+      "bytes": 37696,
+      "sha256": "91bf948674fa13456e33d784e9b6dc2044e0b3bc82d4c8ab29405df8dca27c8e"
+    },
+    "scripts/hybrid345_models.py": {
+      "bytes": 7806,
+      "sha256": "c9f97f119e0a77c9820ddab49ea4085a33589b955c40245738b62827a99d8540"
+    },
+    "scripts/hybrid345_score.py": {
+      "bytes": 27446,
+      "sha256": "bb452aeff56cb1b1767fdd2115b071bbdddd874a073e9c1d70604da6a5b4df81"
+    },
+    "scripts/test_hybrid345_documents.py": {
+      "bytes": 5764,
+      "sha256": "92bf642d0df6f775640b020deae99c4f066175034bd740c5f0004995e85e900c"
+    },
+    "scripts/test_hybrid345_encode.py": {
+      "bytes": 2640,
+      "sha256": "ddf692ee7fd2bdbd737e4d4a963026cb16c80d5f6b7993a1551e1361a7e11797"
+    },
+    "scripts/test_hybrid345_models.py": {
+      "bytes": 2771,
+      "sha256": "184f39ac80c68d3e896aad390e14b906fbe70a910293ce0eccf144b430165701"
+    },
+    "scripts/test_hybrid345_score.py": {
+      "bytes": 1967,
+      "sha256": "9d53aefc469badf9f299486c83e6298461d8f260c7de436681a1d4a8e38bf194"
+    }
+  },
+  "kind": "independent_prelabel_code_review",
+  "not_claimed": [
+    "Full-data execution approval without the separate exact-pilot review.",
+    "A completed Qwen embedding, mapper, scoring, or evaluation result.",
+    "A fresh unused test set.",
+    "2026 Korean service satisfaction validation.",
+    "Product adoption or deployment."
+  ],
+  "remaining_gates": [
+    "Run the fresh 504-movie pilot as 63 complete canonical batch-8 blocks.",
+    "Create an independent PASS pilot-review.json pinned to that exact pilot seal and implementation before full Qwen encoding.",
+    "Review the sealed prediction bundle before any evaluation-label access."
+  ],
+  "review_findings": [
+    {
+      "file": "scripts/hybrid345_common.py",
+      "finding": "The gate fingerprints all reviewed production code, four pre-label test modules, design, config, and design review; any drift invalidates PASS.",
+      "lines": "20-33,88-97"
+    },
+    {
+      "file": "scripts/hybrid345_documents.py",
+      "finding": "Document construction is pre-label gated, uses only pinned catalogue/TMDB/E5 lineage, enforces 85,517 exact E5 input hashes, and seals code/config/parents.",
+      "lines": "404-550"
+    },
+    {
+      "file": "scripts/hybrid345_encode.py",
+      "finding": "Pinned local model and runtime, exact batch-8 encoding, last-token float32 L2 pooling, no partial resume, separate 504-pilot review, and recursive full verification are fail-closed.",
+      "lines": "108-127,301-405,417-473,518-625,667-874"
+    },
+    {
+      "file": "scripts/hybrid345_score.py",
+      "finding": "Evaluation labels are skipped; the prior, ALS factor source, mapper, all 11 score columns, availability, implementation lineage, and recursive parents are sealed.",
+      "lines": "126-220,236-274,296-399,402-566"
+    },
+    {
+      "file": "scripts/hybrid345_models.py",
+      "finding": "Half-star weighting, content profiles, deterministic stratified split, ridge, factor reconstruction, and exact n-supported fold-in match the frozen design.",
+      "lines": "9-148"
+    },
+    {
+      "file": "scripts/test_hybrid345_score.py",
+      "finding": "Resource monitors fail closed for both time and RSS, and every ALS factor file is checked against the training seal.",
+      "lines": "31-46"
+    }
+  ],
+  "reviewed_files": [
+    "scripts/hybrid345_common.py",
+    "scripts/hybrid345_documents.py",
+    "scripts/hybrid345_encode.py",
+    "scripts/hybrid345_models.py",
+    "scripts/hybrid345_score.py",
+    "scripts/test_hybrid345_documents.py",
+    "scripts/test_hybrid345_encode.py",
+    "scripts/test_hybrid345_models.py",
+    "scripts/test_hybrid345_score.py",
+    "docs/recommendation/experiments/hybrid345/DESIGN.md",
+    "docs/recommendation/experiments/hybrid345/config.json",
+    "docs/recommendation/experiments/hybrid345/design-review.json"
+  ],
+  "schema_version": 1,
+  "status": "PASS"
+}

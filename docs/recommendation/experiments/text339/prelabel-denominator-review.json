@@ -1,0 +1,42 @@
+{
+  "status": "PASS_PRELABEL_CANDIDATE_DENOMINATORS",
+  "reviewer": "/root/text339_eval_review",
+  "cap": 10,
+  "full_users": 270,
+  "future_rating_values_or_predictions_read": 0,
+  "groups": {
+    "ALL": {"users_with_candidate": 270, "observations": 18646, "movies": 6500, "enough_n2": 260, "enough_n4": 237, "enough_n6": 218, "enough_n10": 192, "enough_n2_h0": 84, "enough_n2_h_positive": 176, "users_without_candidate": 0},
+    "C": {"users_with_candidate": 232, "observations": 3755, "movies": 1182, "enough_n2": 195, "enough_n4": 154, "enough_n6": 126, "enough_n10": 78, "enough_n2_h0": 84, "enough_n2_h_positive": 111, "users_without_candidate": 38},
+    "W": {"users_with_candidate": 268, "observations": 14386, "movies": 4858, "enough_n2": 249, "enough_n4": 227, "enough_n6": 209, "enough_n10": 180, "enough_n2_h0": 84, "enough_n2_h_positive": 165, "users_without_candidate": 2},
+    "NATURAL_ZERO": {"users_with_candidate": 80, "observations": 505, "movies": 460, "enough_n2": 45, "enough_n4": 27, "enough_n6": 23, "enough_n10": 12, "enough_n2_h0": 10, "enough_n2_h_positive": 35, "users_without_candidate": 190}
+  },
+  "whole_axis": {
+    "C": 10952,
+    "W": 45074,
+    "NATURAL_ZERO": 29491,
+    "total": 85517,
+    "C_pre_support_positive_and_post_support_zero": true,
+    "W_unblocked_and_post_support_positive": true,
+    "natural_zero_unblocked_and_post_support_zero": true,
+    "disjoint_complete_partition": true
+  },
+  "input_groups_may_overlap": {
+    "C": {"users": 167, "observations": 395, "movies": 277},
+    "W": {"users": 186, "observations": 1409, "movies": 1011},
+    "NATURAL_ZERO": {"users": 27, "observations": 48, "movies": 48},
+    "h0_users": 84,
+    "positive_h_users": 186,
+    "positive_h_users_with_any_zero_support_input": 171
+  },
+  "parents_sha256": {
+    "contexts.json": "951fc2464bd3aea25ea486c79c33084f6241f7846a3ed626e9d5fc3907a7aab7",
+    "catalog.parquet": "0bde668e0e26f5f82b5c41d90d62c7569fd350bf2a2fd4b59bb4402f438c5947",
+    "prepared-seal.json": "d27709a42bd0d5511a36f3740365637325d59b521c7f62eae04850523782fdd8"
+  },
+  "limits": [
+    "Within-group observed candidates to be reranked conditionally; not catalog exposure or recommendation quality.",
+    "Actual NDCG valid users may be fewer after excluding IDCG0.",
+    "Group-specific users_total in the evaluator includes users with at least one group candidate; users_without_candidate above must be added when assessing full-cohort coverage.",
+    "Natural-zero Top4/6/10 eligible users are below30."
+  ]
+}

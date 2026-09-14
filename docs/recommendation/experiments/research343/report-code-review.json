@@ -1,0 +1,18 @@
+{
+  "status": "PASS",
+  "reviewer": "Dewey /root/wiki_report_review",
+  "code": {
+    "bytes": 15639,
+    "sha256": "81960d9d34eea14c9f5c458620c919f4b39a14b1ebf1049d927b939e68314db5"
+  },
+  "checks": [
+    "cap10 and hpositive filters; native/calibration and NDCG/stars distinct denominators",
+    "evaluation/calibration/catalog and historical resource parent seals",
+    "refuse overwrite; --revise preserves four prior files",
+    "synthetic whole report generation, no real labels read"
+  ],
+  "approved_followups": [
+    "Dewey: graph-only three aligned metric panels; clarification to difference CI caption",
+    "Hubble: all 60 trees use 4997069 rows, actual local shared-dataset single native learner; no multi-node claim"
+  ]
+}

@@ -1,0 +1,188 @@
+{
+  "schemaVersion": "feelm-service-v1-b1-execution-profile/2",
+  "status": "DRAFT_REQUIRES_INDEPENDENT_REVIEW",
+  "profileId": "ec2-8vcpu32g-local5-fit20g-t28800-v1",
+  "runId": "b1-gbt120-s339-v1-r4-server5c20g-t28800",
+  "recoveryOrdinal": "r4",
+  "executionScope": "SERVER_THROUGH_CONFIRMATION",
+  "hostClass": "linux-x86_64-8vcpu-32g-class",
+  "singleAttempt": true,
+  "automaticRetry": false,
+  "docker": {
+    "cpus": "5",
+    "memory": "20g",
+    "memorySwap": "20g",
+    "maxMemoryBytes": 21474836480,
+    "network": "none",
+    "imageMode": "ARCHIVE",
+    "imageArchiveRelativePath": "runtime/feelm-rec046-spark-local.tar",
+    "imageId": "sha256:de611d62db982bb833b0737a7ddd72a7cd49ab1a7dc9128669cdabae39f46df8",
+    "imageUnpackedSizeBytes": 936463936,
+    "singleDockerLoad": true
+  },
+  "spark": {
+    "master": "local[5]",
+    "driverMemory": "12g",
+    "shufflePartitions": 8,
+    "adaptiveExecution": false
+  },
+  "timeoutsSeconds": {
+    "preflightDryRun": 7200,
+    "preflightFull": 7200,
+    "fit": 28800,
+    "score": 7200,
+    "evaluationSelection": 14400,
+    "evaluationConfirmation": 14400
+  },
+  "maintenanceWindowsSeconds": {
+    "preflightDryStart": 16200,
+    "preflightFullStart": 9000,
+    "fit": 32400,
+    "score": 9000,
+    "evaluationSelection": 16200,
+    "evaluationConfirmation": 16200
+  },
+  "serverPreconditions": {
+    "architecture": "x86_64",
+    "minimumLogicalCpu": 8,
+    "minimumMemTotalBytes": 32000000000,
+    "minimumMemAvailableBytes": 25769803776,
+    "minimumScratchFreeBytes": 85899345920,
+    "minimumOutputFreeBytes": 21474836480,
+    "minimumFreeInodes": 100000,
+    "sameFilesystemAtomicNoReplaceRequired": true,
+    "hostSupervisorRequired": true,
+    "noCompetingHeavyJob": true,
+    "dockerDaemonRequired": true,
+    "dockerRestartForbidden": true,
+    "hostRebootForbidden": true,
+    "maintenanceReservationRequired": true,
+    "requiredCgroupVersion": "v2"
+  },
+  "hostRuntime": {
+    "lockSchemaVersion": "feelm-service-v1-b1-r4-host-runtime-lock/1",
+    "lockRelativePath": "runtime/service-v1-b1-r4-host-runtime-lock.json",
+    "requirementsLockRelativePath": "requirements/service-v1-b1-r4-host-runtime.lock",
+    "wheelhouseManifestRelativePath": "runtime/service-v1-b1-r4-wheelhouse-manifest.json",
+    "wheelhouseRelativePath": "runtime/service-v1-b1-r4-wheelhouse",
+    "installationRootRelativePath": ".runtime/service-v1-b1-r4",
+    "interpreterRelativePath": ".runtime/service-v1-b1-r4/venv/bin/python3",
+    "bootstrapInterpreterCommand": "python3",
+    "pythonImplementation": "CPython",
+    "pythonVersion": "3.12.3",
+    "numpyVersion": "1.26.4",
+    "pandasVersion": "2.2.3",
+    "pyarrowVersion": "19.0.1",
+    "pythonPathPolicy": "UNSET",
+    "pythonNoUserSite": true,
+    "isolatedMode": true,
+    "venvCopiesRequired": true,
+    "entireVenvInventoryRequired": true,
+    "absoluteInterpreterRequired": true,
+    "interpreterSha256Required": true,
+    "importProbeRequired": true,
+    "evaluationFixtureRequired": true
+  },
+  "publicationRuntime": {
+    "canonicalPlatform": "linux",
+    "localPreparationMode": "WSL2_EXT4",
+    "localDistribution": "Ubuntu",
+    "linuxSourceStandaloneRoot": "/mnt/c/higher/projects/FEELM-standalone",
+    "linuxSourceTeamRoot": "/mnt/c/higher/projects/S15P21E106",
+    "linuxEvidenceRoot": "/home/kingc/.feelm-r4/evidence/service-v1-pretraining-20260913",
+    "linuxDeliveryStagingRoot": "/home/kingc/.feelm-r4/delivery/b1-gbt120-s339-v1-r4-server5c20g-t28800",
+    "windowsMirrorRoot": "outputs/recommendation-evidence/service-v1-r4-review-mirrors",
+    "windowsMirrorAuthoritative": false
+  },
+  "runnerSupervisor": {
+    "kind": "systemd-transient-service",
+    "preflightUnit": "feelm-b1-r4-server5c20g-t28800-preflight.service",
+    "fitUnit": "feelm-b1-r4-server5c20g-t28800-fit.service",
+    "scoreUnit": "feelm-b1-r4-server5c20g-t28800-score.service",
+    "cpuQuotaPercent": 100,
+    "memoryMaxBytes": 2147483648,
+    "memorySwapMaxBytes": 0,
+    "tasksMax": 512,
+    "killMode": "control-group",
+    "timeoutStopSeconds": 900,
+    "cgroupPollIntervalSeconds": 2.0
+  },
+  "evaluationSupervisor": {
+    "kind": "systemd-transient-service",
+    "selectionUnit": "feelm-b1-r4-server5c20g-t28800-selection.service",
+    "confirmationUnit": "feelm-b1-r4-server5c20g-t28800-confirmation.service",
+    "selectionMonitorUnit": "feelm-b1-r4-server5c20g-t28800-selection-monitor.service",
+    "confirmationMonitorUnit": "feelm-b1-r4-server5c20g-t28800-confirmation-monitor.service",
+    "cpuQuotaPercent": 500,
+    "memoryMaxBytes": 21474836480,
+    "memorySwapMaxBytes": 0,
+    "tasksMax": 4096,
+    "killMode": "control-group",
+    "timeoutStopSeconds": 900,
+    "cgroupPollIntervalSeconds": 2.0,
+    "monitorCpuQuotaPercent": 25,
+    "monitorMemoryMaxBytes": 268435456,
+    "monitorTasksMax": 64
+  },
+  "resourceObservation": {
+    "hostCgroupPollIntervalSeconds": 2.0,
+    "sampleBeforeTimeoutStop": true,
+    "inspectBeforeTimeoutStop": true,
+    "unknownPeakBlocksSuccess": true
+  },
+  "modelContract": {
+    "sourceRows": 4997069,
+    "logicalRows": 19988276,
+    "scoreRows": 93230,
+    "featureCount": 230,
+    "partitions": 8,
+    "seed": 339,
+    "trees": 120,
+    "workerSha256": "9708e0b3fdc618c5df2240c9e1dcf368fd4f6fa411d7915c31104b3af2146d42",
+    "modelInputSetSha256": "cd41a8ac341cdbc1435bbce21bd78e3b3012e2c50ca25cfac0ef034088b1ccfd",
+    "workerRuntimeSetSha256": "ff90bcd014b8ac498f2c5ccba27eb33d0a83f3ee062d36dc426e33a95c6a0a0a"
+  },
+  "authorizationPolicy": {
+    "profileMutable": false,
+    "currentState": "DRAFT_REVIEW_PENDING",
+    "implementationGates": [
+      "independent-design-review:PASS"
+    ],
+    "deliveryBuildGates": [
+      "independent-design-review:PASS",
+      "implementation-review:PASS"
+    ],
+    "serverTransferGates": [
+      "delivery-review:PASS"
+    ],
+    "serverReceiptBuildGates": [
+      "delivery-review:PASS"
+    ],
+    "publicPreflightGates": [
+      "delivery-review:PASS",
+      "server-receipt-review:PASS",
+      "dynamic-host-gate:PASS"
+    ],
+    "fitGates": [
+      "preflight-review:PASS",
+      "dynamic-host-gate:PASS"
+    ],
+    "scoreGates": [
+      "fit-review:PASS",
+      "dynamic-host-gate:PASS"
+    ],
+    "evaluationSelectionGates": [
+      "score-review:PASS",
+      "dynamic-host-gate:PASS"
+    ],
+    "evaluationConfirmationGates": [
+      "selection-review:PASS",
+      "dynamic-host-gate:PASS"
+    ],
+    "permanentlyForbidden": [
+      "deployment",
+      "automatic-retry",
+      "same-run-phase-retry"
+    ]
+  }
+}

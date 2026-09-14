@@ -1,0 +1,55 @@
+{
+  "status": "PASS",
+  "reviewer": "/root/wiki_report_review",
+  "reviewed_at_utc": "2026-09-10T01:47:05.586448+00:00",
+  "code": {
+    "bytes": 15334,
+    "sha256": "36bd8a1d44c2ee95ec608cfcf3e465093ff64d17fb0139a45a01e80d6f3a62b0"
+  },
+  "scope": "Cumulative synthetic guard/aggregation review, wording review, full-table result review and narrow median fix review",
+  "checks": {
+    "synthetic_corruptions_rejected_in_calculation_identical_predecessor": 17,
+    "final_median_cells_corrected": 2,
+    "unchanged_aggregate_outputs": 3,
+    "source_pins_unchanged": 8
+  },
+  "correction": "Length medians retain half-character precision: en 2128.5, ko 636.5. Preserved pre-fix report and seal under report-before-median-fix. Reverting median presentation yields fbaf67087be87673ed89243356dc33eee6fb9e83fb54953f18d83d82ab5d6de2; removing two wording lines yields prior reviewed 72443288a4b6ea9a5362decb20a837c288c3d426101d1e0a12ab2f1850416778.",
+  "previous_review": {
+    "status": "PASS",
+    "reviewer": "/root/wiki_report_review",
+    "reviewed_at_utc": "2026-09-10T01:33:00.233961+00:00",
+    "code": {
+      "bytes": 14816,
+      "sha256": "72443288a4b6ea9a5362decb20a837c288c3d426101d1e0a12ab2f1850416778"
+    },
+    "scope": "Report validation and raw/clean distinction, synthetic data only",
+    "checks": {
+      "normal_movies": 85517,
+      "normal_pages": 7,
+      "corruptions_rejected": 17,
+      "independently_recomputed_language_counts": 10
+    },
+    "notes": [
+      "Includes raw-only text lost to template removal",
+      "Separates empty selected section from nonempty raw text",
+      "Explicit full template removal and unexpanded transclusion limitation",
+      "Does not certify final collected pages"
+    ],
+    "previous_review": {
+      "status": "PASS",
+      "reviewer": "/root/wiki_report_review",
+      "reviewed_at": "2026-09-10",
+      "path": "scripts/report_wikipedia_collection.py",
+      "sha256": "fc2d0a3231a4a329148c3c885053f59b5b6e232a0d549b6a68a08c6a6fd6f7d4",
+      "checks": [
+        "Valid 85517-row synthetic complete dataset accepted",
+        "Nine corruptions rejected: missing/duplicate movie, missing/duplicate page, pending status, wrong per-movie plot flags, wrong any sum, wrong strata, model-use flag",
+        "Source population, collector fingerprint, coverage denominator and duplicate languages reviewed",
+        "Source text not copied into report; copyright/license and provenance language reviewed",
+        "V2 cache dependency wording update only; reverting one sentence reproduces prior reviewed code hash",
+        "V2/V3 pilot five data files byte-identical and all eight v3 pilot review pins verified"
+      ],
+      "scope": "Report code only; actual full collection results require separate independent review"
+    }
+  }
+}

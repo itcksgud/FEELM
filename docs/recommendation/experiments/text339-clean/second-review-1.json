@@ -1,0 +1,71 @@
+{
+  "status": "COMPLETE",
+  "reviewer": "Rawls",
+  "primary_reviewer": "Dewey",
+  "proposal": {
+    "bytes": 2908,
+    "sha256": "8005b4fe264198ca59dfa34ec1294112595070e588656630a576a6818fc798a8"
+  },
+  "preview": {
+    "bytes": 723493,
+    "sha256": "0ea3ba265e33a276837e99e3f9f38ea09ce54aa22afe202ea2d3ab575c68bc2f"
+  },
+  "preview_seal": {
+    "bytes": 1065,
+    "sha256": "010ecb8b0f3576a5682995d7a0340a49b9c05c850b1a88b0d9214e3081a9a7eb"
+  },
+  "read_spans": 175,
+  "read_documents": 156,
+  "approved_count": 141,
+  "rejected_ordinals": [
+    169,
+    292,
+    838,
+    988,
+    994,
+    1000,
+    1069,
+    1135,
+    1141,
+    1183,
+    1189,
+    1207,
+    1234,
+    1300,
+    1348,
+    1357,
+    1402,
+    1468,
+    1501,
+    1540,
+    1591,
+    1603,
+    1621,
+    1690,
+    1699,
+    1702,
+    1708,
+    1750,
+    1789,
+    1795,
+    1804,
+    1813,
+    1819,
+    1834
+  ],
+  "all_other_assigned_proposals": "APPROVE",
+  "cross_partition_retain": [
+    164,
+    165,
+    167,
+    168,
+    341,
+    768
+  ],
+  "reasons": [
+    "Narrative sequence and anaphora must remain intelligible",
+    "Mixed genre/theme/format/edition with credits retained even if repeated elsewhere",
+    "Entire original and combined after checked; original actual bytes and deletion concatenation match"
+  ],
+  "rating_values_read": 0
+}

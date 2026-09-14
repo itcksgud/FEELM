@@ -1,0 +1,34 @@
+{
+  "status": "PASS",
+  "reviewer": "independent-subagent-als-report-scope-review",
+  "reviewed_at_utc": "2026-09-12T03:17:14.1597296Z",
+  "script": {
+    "bytes": 21301,
+    "sha256": "749f78eccd23d3d3eb846e663fd1e07bcdab4626b36c06da2334a0746d2e286f"
+  },
+  "reviewed_checks": [
+    "Python syntax compilation passed for the exact reviewed script.",
+    "The report compares ALS with FM150 and GBT120 only on the common cap10, h>0, W_DIRECT user and movie axis.",
+    "The report keeps ALS absent from ALL, C, NATURAL_ZERO, and full-catalog quality tables where ALS has no direct score.",
+    "FM and GBT are identified as three-seed user-metric means rather than prediction ensembles, while ALS is identified as an older single-fit reference with its original calibrator.",
+    "Metric denominators are derived and asserted consistently: W_DIRECT MSE, MAE, and NDCG@1 use 122 users; NDCG@2 and Top2 measures use 109; NDCG@4 uses 96; NDCG@6 uses 86; ALL errors use 124 and ALL Top2 measures use 117.",
+    "ALS-relative MSE, MAE, NDCG, Top2 rating, good-rating, and low-rating deltas are calculated from the sealed per-user outputs; the displayed headline values match those calculations.",
+    "Catalog support counts are fixed and checked as 85,517 total, 45,074 W_DIRECT, 10,952 C, and 29,491 NATURAL_ZERO, with 40,443 movies outside ALS item-factor support.",
+    "The six FM and GBT catalog score sets are checked across 1,080 user-model rows and require finite_scores to equal candidates before claiming computational coverage.",
+    "The final344 input lock and selection, calibration, evaluation, and catalog seals are verified before result extraction.",
+    "The combination340 fit seal is linked to its input lock, pins the ALS model seal, and the ALS model seal pins every model child read for support analysis.",
+    "The script requires the preserved NO_CLEAR_WINNER_OR_TRADEOFF result and service_adoption false before emitting a conditional GBT implementation candidate.",
+    "The report explicitly separates statistical decision, conditional implementation priority, and service adoption, so GBT120 is not presented as a statistically proven winner or an adopted production model.",
+    "The figure separates common W_DIRECT quality from catalog support, starts value axes at zero, labels directionality, and annotates ALS-relative differences and the ALS support ceiling.",
+    "All logical source, count, direction, exposure, and timing checks occur before the first persistent output write.",
+    "Existing report, figure, CSV, and manifest paths are protected from overwrite, and the manifest pins the exact script, review record, sources, and generated outputs."
+  ],
+  "limitations": [
+    "This is a static pre-execution review. No report, CSV, or figure was generated or visually inspected in this review; generated artifacts still require independent numerical and visual review.",
+    "ALS is an older single-fit descriptive reference, whereas FM150 and GBT120 are three-seed metric means. No preregistered ALS-versus-model confidence interval exists, so ALS-relative differences remain descriptive.",
+    "The evidence is DEVELOPMENT_ONLY on reused MovieLens users and does not establish 2026 Korean-user satisfaction or online service performance.",
+    "Finite full-catalog scores establish computational coverage, not recommendation quality for UNKNOWN or otherwise unevaluated movies.",
+    "GBT120 is only a conditional implementation-priority candidate under the stated full-catalog, Top2, and low-rating-risk priorities; the statistical winner and service-adoption decisions remain unresolved and deferred.",
+    "The four write-once outputs are not committed as one atomic filesystem transaction. An exceptional I/O failure after the first write would require preserving and auditing the partial outputs before a deliberate rerun."
+  ]
+}

@@ -1,0 +1,11 @@
+{
+  "seed": 339,
+  "docker_image": "feelm-rec046-spark:local",
+  "image_id": "sha256:de611d62db982bb833b0737a7ddd72a7cd49ab1a7dc9128669cdabae39f46df8",
+  "fit_timeout_seconds": 5400,
+  "models": {"GBT": {"maxDepth": 5, "maxIter": 60, "stepSize": 0.05}},
+  "lgb": {"numIterations": 60, "numLeaves": 31, "maxDepth": 5, "learningRate": 0.05, "maxBin": 32, "minDataInLeaf": 20},
+  "bootstrap_seed": 343,
+  "bootstrap_samples": 20000,
+  "primary_ci": 0.9875
+}

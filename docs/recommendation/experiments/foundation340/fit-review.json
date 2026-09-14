@@ -1,0 +1,28 @@
+{
+  "status": "PASS",
+  "reviewer": "Hubble",
+  "fit_seal": {
+    "bytes": 3701,
+    "sha256": "9790dd15f77adf292ed15244ddb0b594d69ad2de553baf0a1ee14114dd99af2a"
+  },
+  "actual_pins_checked": 131,
+  "combined_shape": [
+    93230,
+    4
+  ],
+  "combined_names": [
+    "B",
+    "R",
+    "H",
+    "RH"
+  ],
+  "all_values_bit_exact_to_aligned": 372920,
+  "resource_status": {
+    "B": "UNKNOWN",
+    "R": "PASS",
+    "H": "STRICT_RESOURCE_EXCEPTION",
+    "RH": "STRICT_RESOURCE_EXCEPTION"
+  },
+  "scope": "Models and observed predictions; catalog audit still required",
+  "evaluation_labels_read": false
+}

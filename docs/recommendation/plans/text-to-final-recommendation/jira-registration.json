@@ -1,0 +1,85 @@
+{
+  "registered_at_utc": "2026-09-10T02:00:11.811590+00:00",
+  "scope": "Roadmap and Jira registration; no training or new MR",
+  "records": [
+    {
+      "key": "S15P21E106-339",
+      "summary": "[추천 연구] 줄거리·Wikipedia 정제와 텍스트 추가 효과 검증",
+      "url": "https://ssafy.atlassian.net/browse/S15P21E106-339",
+      "status": "진행 중",
+      "story_points": 8.0,
+      "assignee": "박찬형",
+      "parent": "S15P21E106-124",
+      "links": [
+        {
+          "type": "Blocks",
+          "outward": "S15P21E106-340",
+          "inward": null
+        }
+      ],
+      "sprint": [
+        {
+          "id": 55421,
+          "name": "[4주차] 핵심 기능 구현 및 서비스 연동",
+          "state": "active"
+        }
+      ],
+      "description_verified": true
+    },
+    {
+      "key": "S15P21E106-340",
+      "summary": "[추천 연구] 개인 반응·콘텐츠 결합 및 ALS 보조 효과 검증",
+      "url": "https://ssafy.atlassian.net/browse/S15P21E106-340",
+      "status": "해야 할 일",
+      "story_points": 8.0,
+      "assignee": "박찬형",
+      "parent": "S15P21E106-124",
+      "links": [
+        {
+          "type": "Blocks",
+          "outward": null,
+          "inward": "S15P21E106-339"
+        },
+        {
+          "type": "Blocks",
+          "outward": "S15P21E106-341",
+          "inward": null
+        }
+      ],
+      "sprint": [
+        {
+          "id": 55421,
+          "name": "[4주차] 핵심 기능 구현 및 서비스 연동",
+          "state": "active"
+        }
+      ],
+      "description_verified": true
+    },
+    {
+      "key": "S15P21E106-341",
+      "summary": "[추천 연구] 취향 맞춤·발견 Top-N 비교와 최종 추천안 정리",
+      "url": "https://ssafy.atlassian.net/browse/S15P21E106-341",
+      "status": "해야 할 일",
+      "story_points": 13.0,
+      "assignee": "박찬형",
+      "parent": "S15P21E106-124",
+      "links": [
+        {
+          "type": "Blocks",
+          "outward": null,
+          "inward": "S15P21E106-340"
+        }
+      ],
+      "sprint": [
+        {
+          "id": 55421,
+          "name": "[4주차] 핵심 기능 구현 및 서비스 연동",
+          "state": "active"
+        }
+      ],
+      "description_verified": true
+    }
+  ],
+  "reviewed_semantics_unchanged_after_automation": true,
+  "design_review_sha256": "c4be32daa270251c6dea0988bb5c3cc028d78b9f6026496abc17ac722b22b078"
+}

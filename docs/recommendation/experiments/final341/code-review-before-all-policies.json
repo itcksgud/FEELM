@@ -1,0 +1,33 @@
+{
+  "status": "PASS",
+  "reviewer": "Dewey",
+  "code": {
+    "bytes": 18476,
+    "sha256": "75f9c5c5a1b7207dbd80c7354d94a9ea45a971392a5f23f0e747d4a3f4c37943"
+  },
+  "scope": "Pre-execution code and synthetic tests; actual output review required later",
+  "checks": [
+    "audited stage seals and actual artifact links",
+    "B metrics NULL retained and separated from exceptions",
+    "seven adjusted contrasts and h0 guard",
+    "Top2/4/6/10 and sets3/6/9 with valid denominators",
+    "fixed taste and conditional discovery/first-set distinction",
+    "P0 and empty metrics",
+    "six significant digits preserve small CI sign",
+    "all report outputs protected"
+  ],
+  "revision_checks": [
+    "exact delta reconstructed previous approved SHA",
+    "H_POSITIVE N2 whole-catalog exposure selection",
+    "per-metric valid population displayed",
+    "duplicate exposure row rejected",
+    "exposure change not treated as quality improvement"
+  ],
+  "input_description_checks": [
+    "503 byte description only; removal restores previous exact approved SHA",
+    "actual 230 features: support200/crowd6/response24",
+    "text339 T0 retained and textclean not adopted; no blanket rejection of text",
+    "both prior README links exist",
+    "no C/P labels or results read during this review"
+  ]
+}

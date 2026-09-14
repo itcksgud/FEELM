@@ -1,0 +1,94 @@
+{
+  "status": "PASS_DESIGN_ONLY",
+  "created_utc": "2026-09-13T04:04:46.621662+00:00",
+  "scope": "Local popularity v2 redesign and independent design/model-contract review; no performance claim.",
+  "reviewed_documents": {
+    "README.md": {
+      "path": "docs/recommendation/service-popularity-v2-20260913/README.md",
+      "bytes": 9645,
+      "sha256": "6526459c6889c15c09a03099804bd408ad29ebaec27ca2036429ead61cca3af9"
+    },
+    "DESIGN.md": {
+      "path": "docs/recommendation/service-popularity-v2-20260913/DESIGN.md",
+      "bytes": 33049,
+      "sha256": "e7ac87875c3a5d9b7d139a1b9973460c05d7db0a7653dfae77a74fed5cd16a0d"
+    }
+  },
+  "independent_reviews": [
+    {
+      "path": "outputs/recommendation-evidence/popularity-redesign-20260913/design-review-r2.json",
+      "bytes": 7631,
+      "sha256": "d521f0bf318946ea13a62259930250bf9460057ee34d1f1844f9d31a997fa766"
+    },
+    {
+      "path": "outputs/recommendation-evidence/popularity-redesign-20260913/model-contract-review-r2.json",
+      "bytes": 6239,
+      "sha256": "d190922e3c61b81b83a03045066b4643f8d25d915c81f996eab415a3990da758"
+    }
+  ],
+  "superseded_reviews_preserved": [
+    {
+      "path": "outputs/recommendation-evidence/popularity-redesign-20260913/design-review-r1.json",
+      "bytes": 8291,
+      "sha256": "724126d7cde3c835918ee481205be14790ed3b7db7a180f6d0bbffdeb576b96d"
+    },
+    {
+      "path": "outputs/recommendation-evidence/popularity-redesign-20260913/model-contract-review-r1.json",
+      "bytes": 8978,
+      "sha256": "a37eb3bc954e5a0603300771f75fc37037618e27069b6c36f1ab3e2f62bc5b9a"
+    }
+  ],
+  "supporting_audits": [
+    {
+      "path": "outputs/recommendation-evidence/popularity-redesign-20260913/model-feature-audit.md",
+      "bytes": 15017,
+      "sha256": "2fec273bcf38c826cbadd9e43bd1017645b937a93336278b99d4f6a35c114f37"
+    },
+    {
+      "path": "outputs/recommendation-evidence/popularity-redesign-20260913/data-readiness-audit.md",
+      "bytes": 5229,
+      "sha256": "0ad31a23449546cbeaab39c2e2e3fff87fadba20cefbbefb51df5f83800d3594"
+    }
+  ],
+  "navigation_updated": [
+    {
+      "path": "docs/recommendation/active-experiment.md",
+      "bytes": 38612,
+      "sha256": "148aff446205b76e0b7a951c156b0e0a4f72dddf4bf84f477dc88cc9a98fb395"
+    },
+    {
+      "path": "docs/recommendation/experiments/hybrid345/PRESENTATION-DECISION.md",
+      "bytes": 22775,
+      "sha256": "4e68b0515e7a92244192e9398f526df86431c818de2a4d6bd9361eed98c5ae57"
+    }
+  ],
+  "verification": {
+    "review_document_hashes_match": true,
+    "local_links": "PASS",
+    "prior_v1_documents_unchanged": {
+      "README.md": "5fc74e819bcc1451b3635412d930978f9c5a0cf63e8e002f22a013086998808a",
+      "POLICY-DETAILS.md": "a4188b519f7365e2a613d974f9c25a5095126834aca3b508e147b1606da9c8ad",
+      "OPERATIONS.md": "2950352bc892b3d82d47fca63cc636b4f0228afee6263ec54552622fcb2fb8cc",
+      "KOBIS-DATA.md": "0fbdf6ed3b40dae219329e7e6ecca2094dc46d733f9e39d2b732e2b1ae1ef089"
+    }
+  },
+  "executed": {
+    "new_collection": false,
+    "new_model_training": false,
+    "new_performance_experiment": false,
+    "service_implementation": false,
+    "external_writes": false,
+    "commit_or_push": false
+  },
+  "next_execution_gates": [
+    "Fixed-role and H10 support upper bounds",
+    "Comparable KOBIS source scope and bounded collection-code review if data collection is feasible",
+    "Feature/calibration/mask/metric/resource implementation pre-review",
+    "Independent results and batch/service parity before adoption"
+  ],
+  "limitations": [
+    "Current KOBIS top200 extracts lack low-audience controls",
+    "Reused MovieLens development data and current source snapshots do not establish 2026 Korean-user performance",
+    "Passing design review does not establish better accuracy or data-readiness feasibility"
+  ]
+}

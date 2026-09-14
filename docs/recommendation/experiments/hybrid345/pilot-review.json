@@ -1,0 +1,120 @@
+{
+  "audit": {
+    "artifacts": {
+      "embedding_npy_sha256": "4ff53066a4030cf5218f987773302f362b135fdf0a4f57619028934904603985",
+      "movie_id_array_sha256": "4667854802e529d139a68b768795ff00d80e1ece226ecc0564858bbf667ead18",
+      "selection_position_array_sha256": "efbdd2cb745a33f8c5918ee811692f9b11a05e0b1137c8259148b67a26242269"
+    },
+    "embedding": {
+      "all_finite": true,
+      "dtype": "float32",
+      "l2_max": 1.0000001192092896,
+      "l2_max_absolute_error": 1.1920928955078125e-07,
+      "l2_min": 0.9999998807907104,
+      "shape": [
+        504,
+        1024
+      ]
+    },
+    "execution_contract": {
+      "batch_size": 8,
+      "batching": "63_COMPLETE_CANONICAL_FULL_RUN_BLOCKS_RESTORED_TO_BLOCK_ORDER",
+      "compute_dtype": "bfloat16",
+      "dynamic_padding_within_batch": true,
+      "full_run_cobatching_identical": true,
+      "input_order": "STRICT_ASCENDING_CANONICAL_MOVIE_ID",
+      "length_sort": false,
+      "normalization": "L2_FLOAT32",
+      "pooling": "LAST_NON_PADDING_TOKEN",
+      "storage_dtype": "float32"
+    },
+    "independent_repeat": {
+      "exact_array_equal_between_repeats": true,
+      "exact_array_equal_to_sealed_embedding": true,
+      "maximum_absolute_difference_between_repeats": 0.0,
+      "maximum_absolute_difference_to_sealed_embedding": 0.0
+    },
+    "label_boundary": {
+      "labels_opened": false,
+      "ratings_opened": false
+    },
+    "parents_and_pins": {
+      "artifacts_match_pilot_seal": true,
+      "documents_seal_and_artifacts_recursively_verified": true,
+      "implementation_matches_pilot_seal": true,
+      "model_inventory_recursively_verified": true,
+      "parents_match_pilot_seal": true,
+      "token_audit_seal_and_artifacts_recursively_verified": true
+    },
+    "population": {
+      "complete_batch_blocks": 63,
+      "deterministic_selection_reproduced": true,
+      "first_movie_id": 429,
+      "last_movie_id": 284875,
+      "movies": 504
+    },
+    "resources": {
+      "gpu_allocated_limit_bytes": 8585216000,
+      "host_rss_limit_bytes": 12884901888,
+      "rerun_passes": [
+        {
+          "gpu_peak_allocated_bytes": 1365174784,
+          "gpu_peak_reserved_bytes": 1486880768,
+          "padded_tokens": 163832,
+          "process_peak_rss_bytes": 2047979520,
+          "seconds": 9.601549699998941,
+          "true_tokens": 90802
+        },
+        {
+          "gpu_peak_allocated_bytes": 1365174784,
+          "gpu_peak_reserved_bytes": 1486880768,
+          "padded_tokens": 163832,
+          "process_peak_rss_bytes": 2050441216,
+          "seconds": 9.411474699998507,
+          "true_tokens": 90802
+        }
+      ],
+      "time_limit_seconds": 28800,
+      "within_all_limits": true
+    },
+    "tokens": {
+      "catalog_movies": 85517,
+      "independent_lengths_equal_sealed_array": true,
+      "maximum": 916,
+      "maximum_allowed": 1024,
+      "pilot_true_tokens": 90802,
+      "truncated_documents": 0
+    }
+  },
+  "blocking_findings": [],
+  "claim_scope": "DEVELOPMENT_ONLY",
+  "date": "2026-09-12",
+  "decision": "PASS_EXACT_QWEN_PILOT",
+  "experiment": "hybrid345",
+  "implementation": {
+    "docs/recommendation/experiments/hybrid345/config.json": {
+      "bytes": 22142,
+      "sha256": "f975cd83b179c8b61dac09e0a3a527c4f2c4794389e88b0be4fd3c69d0679506"
+    },
+    "scripts/hybrid345_common.py": {
+      "bytes": 3626,
+      "sha256": "6f0e48f559873996a8a710594832e9ebaa33beebab346da2f2ac58fed33f22db"
+    },
+    "scripts/hybrid345_encode.py": {
+      "bytes": 37696,
+      "sha256": "91bf948674fa13456e33d784e9b6dc2044e0b3bc82d4c8ab29405df8dca27c8e"
+    }
+  },
+  "kind": "independent_exact_qwen_pilot_review",
+  "not_claimed": [
+    "Full-catalog Qwen encoding is complete.",
+    "Any recommendation quality result.",
+    "Any product or deployment decision."
+  ],
+  "pilot_seal": {
+    "bytes": 1483,
+    "sha256": "e110cfb93d8b266ec896b596826471361f1a5392a224451ba39a424795a4f42a"
+  },
+  "schema_version": 1,
+  "status": "PASS"
+}

@@ -1,0 +1,48 @@
+{
+  "status": "PASS",
+  "scope": "Numerical predictions and research-catalog calculation; resource exception is not waived",
+  "reviewer": "Hubble",
+  "fit_seal": {
+    "bytes": 4866,
+    "sha256": "d28469d563affb709773da6c3713f24ced39bbeee7bc59f32e9cb174bb0e680f"
+  },
+  "catalog_seal": {
+    "bytes": 1124,
+    "sha256": "489bad27761f9bcd24e577a78e18d3fb1dc4c988c44e56c1d0726a4bc4566326"
+  },
+  "model_review": "fit-prediction-review.json",
+  "actual_pins_checked": 107,
+  "users": 270,
+  "returned_rows": 2700,
+  "eligible_movie_axis": 85517,
+  "candidate_pairs": 22963869,
+  "candidate_count_min_median_max": [76085, 85356.5, 85517],
+  "candidate_stream_sha256": "35b66d225c9f3f0a1ff88246c2634e4c93d0267e81f7ed5d863359c15530c483",
+  "candidate_ledger_sha256": "f7e7e122d9920c68cd66cc1fe06845ac9e5c772921ec5f0d69f60ec5fd4e6d68",
+  "same_original_candidate_universe": true,
+  "duplicates_viewed_or_sort_errors": 0,
+  "snapshot_timestamp": 1788998400,
+  "h0_users": 84,
+  "h_positive_users": 186,
+  "independent_returned_score_check": {
+    "original_chunk_size": 4096,
+    "original_chunks_reconstructed": 1931,
+    "feature_candidate_rows": 7715222,
+    "feature_BLAS_threads": 4,
+    "independent_formula_BLAS_threads": 1,
+    "returned_scores": 2700,
+    "maximum_absolute_error": 6.217248937900877e-15,
+    "mean_absolute_error": 1.0769985726289667e-15,
+    "predeclared_tolerance": 1e-8,
+    "above_tolerance": 0,
+    "seconds": 138.078
+  },
+  "label_blind_full_catalog_top10_checks": [
+    {"uid": 884, "h": 0, "candidates": 85517, "ordered_ids_exact": true, "maximum_score_error": 8.881784197e-16},
+    {"uid": 187305, "h": 2, "candidates": 85515, "ordered_ids_exact": true, "maximum_score_error": 3.552713679e-15},
+    {"uid": 17035, "h": 10, "candidates": 76085, "ordered_ids_exact": true, "maximum_score_error": 5.329070518e-15}
+  ],
+  "resource_status": "EXCEPTION_12GiB_PLUS_4096_BYTES",
+  "future_rating_values_read": 0,
+  "new_fits_in_review": 0
+}

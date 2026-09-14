@@ -1,0 +1,44 @@
+{
+  "experiment": "REC044",
+  "methods": [
+    "RULE8",
+    "KMEANS8",
+    "GENRES",
+    "KEYWORDS",
+    "GENRES_KEYWORDS"
+  ],
+  "sources": {
+    "prior_config": {
+      "path": "docs/recommendation/experiments/rec-ev-043/config.json",
+      "bytes": 3725,
+      "sha256": "6b9103af111a085b75b8c7b93029037d57ad1368c5d35d6dcd95de8332b51341"
+    },
+    "prior_input": {
+      "path": "outputs/recommendation-evidence/rec-ev-043/input.npz",
+      "bytes": 1356908,
+      "sha256": "1790c114425cc71ed0b6722c5acc88b3f38fd68d2ed9c16eba0a99cb51182903"
+    },
+    "prior_completion": {
+      "path": "outputs/recommendation-evidence/rec-ev-043/completion-seal.json",
+      "bytes": 846,
+      "sha256": "0ebe1159846816a6c062082a6cef0168db036c72890bc9829f82628d1674ea97"
+    },
+    "prior_result_review": {
+      "path": "docs/recommendation/experiments/rec-ev-043/result-review.json",
+      "bytes": 10355,
+      "sha256": "05842633d2649f39d26b76c0b5f0e17c4d642964a5ff12f8c18c4faacaa9ee82"
+    }
+  },
+  "output_root": "outputs/recommendation-evidence/rec-ev-044",
+  "ridge_strength": 5.0,
+  "min_keyword_df": 5,
+  "max_seconds": 900,
+  "max_process_tree_bytes": 4294967296,
+  "users": 2180,
+  "O_pairs": 65400,
+  "E_pairs": 191932,
+  "bootstrap_family": 9,
+  "bootstrap_repeats": 20000,
+  "bootstrap_seed": 20260910,
+  "publication": "LOCAL_ONLY_NO_AUTOMATIC_EXTERNAL_WRITE"
+}

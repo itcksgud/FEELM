@@ -1,0 +1,166 @@
+{
+  "status": "PASS_LOCAL_EXPERIMENT_COMPLETE",
+  "date": "2026-09-09",
+  "fingerprint": {
+    "scripts/rec047_common.py": {
+      "bytes": 5855,
+      "sha256": "a51d5c4fe9d487caf5c45606ead4cc244654c83fbe39339c40c56c165e792c16"
+    },
+    "scripts/rec047_features.py": {
+      "bytes": 5791,
+      "sha256": "a6f3fdc26cc88cceea2f6b1fe1244285bd9e29f7175874f7ab2eb8fae5904268"
+    },
+    "scripts/rec047_prepare.py": {
+      "bytes": 12774,
+      "sha256": "033d9ca141436ad9ff742506090238fd4ad03b4889f382ac29aae0abcd4e1824"
+    },
+    "scripts/rec047_worker.py": {
+      "bytes": 7063,
+      "sha256": "73e4f049641fb3b8308888ca721694b9611a217c0e1d72fe98967c29fe9fb766"
+    },
+    "scripts/rec047_run.py": {
+      "bytes": 13998,
+      "sha256": "bd9db81789c64b5da8d56f703676d807df29ce98007e1632bb8ef6462f66ecfc"
+    },
+    "scripts/rec047_evaluate.py": {
+      "bytes": 12185,
+      "sha256": "113553b414cc0621f405fb6b8a53c795a41cee95895eca23b2dbfafc8645fed3"
+    },
+    "scripts/test_rec047.py": {
+      "bytes": 4266,
+      "sha256": "f18dafc2fddfc6195a7ccabe1e7aabfdd05272b3b5d13cdd46116d171b136b6e"
+    },
+    "scripts/rec047_runtime_smoke.py": {
+      "bytes": 4984,
+      "sha256": "8865083c06b5184ea024e506c0c2cbc8a6011790576e1a6068c6b7e8d8f73429"
+    },
+    "scripts/rec047_readiness.py": {
+      "bytes": 8271,
+      "sha256": "eb5a6a46655975e9f2923947ff16400ab400c47238217c90bf73104afaeac8b7"
+    },
+    "scripts/rec046_common.py": {
+      "bytes": 8001,
+      "sha256": "42dd14e83ecbee0c02c5e4233abb4b6a8d807ad2213c24a22cfb82350bc47848"
+    },
+    "docs/recommendation/experiments/rec-ev-047/EXECUTION.md": {
+      "bytes": 10912,
+      "sha256": "8d33ab74fbc75fd25e27e9e2b992bdb4f507dfb80ec9f6395780144978f23f6b"
+    },
+    "docs/recommendation/experiments/rec-ev-047/config.json": {
+      "bytes": 2735,
+      "sha256": "16a9a53ed087132293912c921a295fca9dac1fff09a9cf0db7d5ffd058fdd6ea"
+    }
+  },
+  "canonical_fingerprint_sha256": "103502f3f97352cbc7b1e9653272066fe969f9a28d1d3737e83a24787acba6f1",
+  "completion": {
+    "bytes": 3409,
+    "sha256": "a840be08a01a62794e3b922d6e105173cda372b7cd102aca1f6fe0c00f3bd18a"
+  },
+  "completion_status_preserved": "CALCULATED_PENDING_INDEPENDENT_REVIEW",
+  "reviewers": [
+    {
+      "name": "target_domain_review / Euler",
+      "scope": "Legal raw labels and all user metrics",
+      "status": "PASS",
+      "raw_rows_scanned": 32000204,
+      "legal_evaluation_labels": 18960,
+      "users": 271,
+      "user_metric_rows": 54225,
+      "metric_slots_including_missing": 325350,
+      "pa_missing_slots": 11040,
+      "mse_max_absolute_difference": 8.88e-15,
+      "other_metric_max_absolute_difference": 0,
+      "outside_authorized_labels_decoded": 0
+    },
+    {
+      "name": "service_next_step_check / Confucius",
+      "scope": "All aggregates, bootstrap intervals, paired contrasts and report exports",
+      "status": "PASS",
+      "numeric_comparisons": 34572,
+      "maximum_absolute_difference": 2.27e-13,
+      "main_metric_rows": 900,
+      "strata_rows": 3600,
+      "contrast_rows": 26,
+      "intervals_verified": 926,
+      "bootstrap_replicates_each": 10000,
+      "seed": 47,
+      "training_composition_rows": 30,
+      "support_summary_rows": 200,
+      "runtime_rows": 24,
+      "population_rows": 24
+    },
+    {
+      "name": "github_research_scope_audit / Rawls",
+      "scope": "All 24 model predictions, final blend, sealed parents and final narrative",
+      "status": "PASS",
+      "evaluation_model_rows_each": 41789,
+      "final_prediction_shape": [
+        3,
+        41789,
+        5
+      ],
+      "evaluation_sealed_files": 217,
+      "blend_max_absolute_difference": 0,
+      "narrative_table_values_and_scope_verified": true
+    }
+  ],
+  "files": {
+    "RESULT.md": {
+      "bytes": 14835,
+      "sha256": "37a9e612777f9163eb0dab3b077b60272930c0b2d53689a7bd4c34b511b6f48e"
+    },
+    "learning-curves.png": {
+      "bytes": 195911,
+      "sha256": "c074ad65263b9c81904a8f0e2b4bbb3c5713d5d7f1411bd72d5282a196d0c5ea"
+    },
+    "aggregate-export.json": {
+      "bytes": 1614,
+      "sha256": "35b483760740904f600af3688e3a820c2c9dfa9c754a8aad2b8e18b621fd2d9a"
+    },
+    "aggregate-pre-review.json": {
+      "bytes": 656,
+      "sha256": "458a65feecc959cdf6ab720cc74de4c93830561d0349775b48dcec097a91f5b1"
+    },
+    "validation-data-review.json": {
+      "bytes": 2842,
+      "sha256": "63c8ad4f1814a7a0bbef7da744d5c2d56206a08613b7eab3c24668015e374be9"
+    },
+    "validation-model-review.json": {
+      "bytes": 2753,
+      "sha256": "ed9991ae9ab849f1403c9ece0a5590957e8fad66a1725f5308e85cab08218002"
+    },
+    "selection-review.json": {
+      "bytes": 2871,
+      "sha256": "dbfcef03195f4520006a35e5859427853e8f94edb9a87ea7d2f95058e13ea7b8"
+    },
+    "evaluation-data-review.json": {
+      "bytes": 3556,
+      "sha256": "0118842c9254e88c6e465eea3d70fad0438e4aa0f5b53e6b1478f18c8c95077e"
+    },
+    "evaluation-model-review.json": {
+      "bytes": 3096,
+      "sha256": "5a93c8453ab37f2165f1a776a861e8d54e44db20b2e1967d996653b6d17f2a29"
+    }
+  },
+  "report_scripts": {
+    "summarize_rec047.py": {
+      "bytes": 4554,
+      "sha256": "f74e6f151ef590cf04da161b67dcc87a66c05bffc77cafa34659a6ceb0bfc8d3"
+    },
+    "render_rec047.py": {
+      "bytes": 3923,
+      "sha256": "34da82ace93bfb149d1073376e800951664d015be2e58d8d01f2404b770c910b"
+    }
+  },
+  "visual_review": "Learning curves inspected at 1920x1260; text, axes, legends and data counts readable without overlap.",
+  "conclusions": [
+    "None of the ten predeclared 25-to-100-percent MSE contrasts excludes zero after the planned adjustment; not proof of equivalence or no benefit.",
+    "At K30 ALS pair accuracy exceeds FM, RIDGE and GBT in the planned comparisons; ALS_FM difference remains uncertain.",
+    "At K30 MSE, only RIDGE versus ALS is distinguished by the planned adjusted comparisons.",
+    "Support-zero and sparse-input comparisons are descriptive and do not establish a service routing threshold.",
+    "Activity strata can reverse mean-error ordering; low-activity and entirely unsupported-input users are scarce.",
+    "All 24 local Spark fits completed; no model-family optimum or Korean 2026 service quality is established."
+  ],
+  "publication_status": "LOCAL_ONLY",
+  "new_service_policy_adopted": false
+}

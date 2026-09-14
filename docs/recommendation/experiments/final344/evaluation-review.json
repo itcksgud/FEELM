@@ -1,0 +1,84 @@
+{
+  "status": "PASS",
+  "reviewer": "/root/github_research_scope_audit",
+  "independent_cross_reviewer": "/root/github_research_scope_audit/audit_script_review",
+  "scope": "Static and synthetic evaluation pre-execution review only; no actual labels, predictions or model arrays read; no fitting.",
+  "fingerprint": {
+    "scripts/final344_evaluate.py": {
+      "bytes": 47236,
+      "sha256": "01c7089a287591585235b7dba6c6e17b3dd606020841943674b008ebf37df071"
+    },
+    "scripts/test_final344_evaluate.py": {
+      "bytes": 24804,
+      "sha256": "ae1e6b0abfc7cb2cb883c67969373f5470594e86b8f1827fd3354e373dc5201f"
+    },
+    "scripts/final344_common.py": {
+      "bytes": 5358,
+      "sha256": "0d6db903c17309816ffbd217341b78b7f55b17cb52675c51dddcefc6ccc8dc27"
+    },
+    "scripts/rec046_common.py": {
+      "bytes": 8001,
+      "sha256": "42dd14e83ecbee0c02c5e4233abb4b6a8d807ad2213c24a22cfb82350bc47848"
+    },
+    "docs/recommendation/experiments/final344/config.json": {
+      "bytes": 4468,
+      "sha256": "0e681dc956787e7a39f53c00bccdb61281752a79e00bab254f0c547cdd8ea52b"
+    },
+    "docs/recommendation/experiments/final344/execution.json": {
+      "bytes": 843,
+      "sha256": "7eb59a31ef4c6941a5d1e2dd43e1135fd3739d34e64be725ae8003a650a7a049"
+    },
+    "docs/recommendation/experiments/final344/IMPLEMENTATION.md": {
+      "bytes": 5751,
+      "sha256": "37a44cc64736bcc12e3939b4e7a80b22a89745ff2a62ee98833b859ccea786ce"
+    }
+  },
+  "fingerprint_digest": "1a3980605e8a2887a51d0805f9a2fbef042fb08a7464601b654bb764f2151d84",
+  "digest_encoding": "SHA256 of UTF-8 compact sorted-key fingerprint JSON",
+  "checks": [
+    "Frozen previously used development labels and exact90calibration/180comparison roles; current train separation inherited through actual reviewed input lock.",
+    "Every cap/user keeps observed J, strict-past O, target window and viewed exclusions. Half-star domain, no model-dependent candidate removal.",
+    "Equal-user affine calibration: nonnegative slope,20users/40rows,constant and insufficient branches; comparison labels not used for fitting.",
+    "Fixed ALL calibrated-MSE/NDCG2 Pareto budget selection; unavailable smaller stops family selection and unavailable larger retains valid smaller.",
+    "Raw score ranks, movie-ID ascending ties; errors distinguish raw/clipped/calibrated. J<end and IDCG0 keep separate quality denominators.",
+    "Formal comparison requires all three paired seeds339/344/345 and valid primary-cap calibration. Average user-level metrics, not predictions; UID-sorted20k bootstrap seed344, four98.75% intervals, minimum30users.",
+    "Descriptive actual ALS is restricted to W_DIRECT; unsupported NaNs are not filled. Older FM_RH/GBT_B use original reference calibration.",
+    "Natural/J>=6 cohorts, caps, h, activity, support, metadata, next-two pages and fixed-target O-vs-empty diagnostics remain separate.",
+    "Exact selection/calibration parent bytes are captured before use, revalidated with sealed child artifacts and stored unchanged in resulting seals.",
+    "Failed fits and insufficient calibrators cannot silently produce full-seed primary results. Resource outcome remains separate from numerical quality."
+  ],
+  "synthetic_results": {
+    "test_suite_tests": 25,
+    "test_suite_passed": 25,
+    "independent_quality_cases": 1029,
+    "independent_quality_and_error_cells": 15582,
+    "independent_max_abs_error": 2.6645352591003757e-15,
+    "independent_affine_fixtures": 80,
+    "affine_max_abs_error": 3.108624468950438e-14,
+    "numerical_atol": 1e-12,
+    "synthetic_contexts": 1350,
+    "invalid_time_or_axis_guards_blocked": 7,
+    "independent_bootstrap_resamples": 20000,
+    "parent_common_drift_cases": 14,
+    "snapshot_helper_cases": 7,
+    "original_select_parent_drift_reproduced": true,
+    "corrected_select_parent_drift_blocked": true,
+    "inconsistent_seal_created_after_fix": false
+  },
+  "resolved_findings": [
+    {
+      "original_source_sha256": "6cbe20a2bdcda42d09ac34ae67c2f2a5d91a9fd9d592723a64b4743ffb959b35",
+      "issue": "Synthetic ev.select reproduced replacement of calibration JSON+seal during execution: old coefficients could receive a new parent pin.",
+      "resolution": "Start parent snapshot, end exact seal/child validation, original snapshot recorded in seal. Applied to select, final calibration and final evaluation; new25-test suite passes."
+    }
+  ],
+  "remaining_blockers": [],
+  "actual_labels_or_model_values_opened": 0,
+  "notes": [
+    "Mean of per-user RMSE differs from sqrt(mean user MSE); report as mean user RMSE.",
+    "Review establishes implementation consistency, not service adoption or unseen-user generalization.",
+    "Bootstrap uncertainty is conditional on fixed fits/calibrators and reused development users.",
+    "Actual runtime/model/result audits remain separate later gates.",
+    "Before writing this final report, a source guard caught a test-file update; no stale report was created. The new tests were read and all25 rerun successfully."
+  ]
+}

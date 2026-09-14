@@ -898,3 +898,489 @@ py -3.12 -B -X utf8 scripts/rec_ev_041_discovery.py
 선택 슬롯의 기존 E 정답은 모두0개여서 실제 품질·불호 감소는 미판정이다. 원본 전체의 무평점을 판정한 것이 아니다.
 입력량·영화 선정은 설계만 했고 실행하지 않았다. n30을 최종K나 온보딩 권장량으로 사용하지 않는다.
 [결과와 해석 범위](../recommendation/experiments/rec-ev-041/RESULT.md) 및 같은 폴더의 result-review.json에서 최종 검토를 확인한다.
+
+## 19. REC044 대중 평가 보정 후 개인 취향 반복 분석
+
+[고정 설계](../recommendation/experiments/rec-ev-044/README.md)를 기준으로 개인 연구 저장소
+루트에서 실행한다. 기존 Python3.12의 NumPy/SciPy/pandas/pyarrow/psutil 환경을 사용한다.
+
+```powershell
+py -3.12 -B -X utf8 -m unittest discover -s scripts -p test_feelm_residual_taste.py -v
+py -3.12 -B -X utf8 scripts/rec_ev_044_residual_taste.py
+py -3.12 -B -X utf8 scripts/verify_rec_ev_044.py
+```
+
+실제 실행은 execution-review.json의 PASS와 소스·설계·설정·준비 기록의 해시가 일치해야 한다.
+원본 입력은 config.json에 고정한 REC032/033/039/040/043 로컬 자료다. Git의 코드·집계만으로
+원자료 없이 실험을 재현할 수는 없다. 원자료/사용자별 결과는 Git 제외·LOCAL_ONLY다.
+예측 봉인 후 E원별점을 열며, 기존 출력이 있으면 덮어쓰지 않는다. 같은 설정을 재실행하려면
+기존 결과를 보존하는 별도 복제 환경이 필요하다. 15분/프로세스 트리4GiB 상한이다.
+마지막 verify 명령은 완료 출력을 읽기만 하며 봉인·MSE/MAE·20,000 bootstrap·키워드 층과
+fallback을 재검산한다. 모델 재학습이나 파일 덮어쓰기를 하지 않는다.
+최신 결과 상태는 [현재 연구](../recommendation/active-experiment.md)를 따른다.
+
+## 20. 다각도 취향 분석의 메타데이터 지원 범위 점검
+
+```powershell
+py -3.12 -B -X utf8 scripts/audit_preference_feature_support.py
+```
+
+REC044의 영화·입력·평가 ID축과 REC027 정규화 메타데이터만 읽어 국가·감독·상위5배우의
+반복/연결 범위, 원어·연도·상영시간 결측을 JSON으로 출력한다. O/E 별점 값·새 모델 학습은
+사용하지 않고 파일도 쓰지 않는다. 출력 사본은
+`docs/recommendation/plans/multidimensional-feature-support.json`에 저장했다.
+[분석안](../recommendation/plans/multidimensional-preference-analysis.md)의 전체 관계·집단별
+안정성 분석은 이 지원 범위 점검과 다른 단계이며 아래 REC045에서 후속 실행한다.
+
+## 21. REC045 복합 정보·작은 입력·집단·시간 진단
+
+현재 관계 분석은 [분류 수를 전제하지 않는 연구 범위](../recommendation/analysis-scope.md)를 따른다.
+아래는 완료한 실험을 재현·검산하는 명령이다. REC045의 필드 묶음 개수와 과거8맛 실험의
+군집 수를 후속 분석 조건으로 재사용하지 않는다.
+
+[고정 설계](../recommendation/experiments/rec-ev-045/README.md)와
+[시간 설계](../recommendation/experiments/rec-ev-045/temporal-design.md)를 따른다.
+메타데이터 준비와 두 실행 경로를 독립 검토한 버전으로 실행했다.
+
+```powershell
+py -3.12 -B -X utf8 -m unittest discover -s scripts -p test_feelm_joint_preferences.py
+py -3.12 -B -X utf8 scripts/rec_ev_045_metadata.py
+py -3.12 -B -X utf8 scripts/rec_ev_045_joint_preferences.py
+py -3.12 -B -X utf8 scripts/rec_ev_045_temporal.py
+```
+
+위 세 실행기는 기존 출력이 있으면 거부한다. 여기에는 이미 완료 출력이 있으므로 재검산은
+아래 읽기 전용 명령을 사용한다. 다른 환경에서 새로 실행하려면 고정 config의 원자료14개,
+기존 TMDB cache ledger/캐시, 명시된 MovieLens ZIP과 동일 코드·설계·독립 검토 봉인이 필요하다.
+Git의 소형 집계만으로 원자료를 복원할 수는 없다. 경로가 다른 환경으로 이식할 때는 원봉인을
+덮어쓰지 않고 새 실행 위치·경로 변경·동일 자료 해시를 기록하는 별도 준비가 필요하다.
+
+```powershell
+py -3.12 -B -X utf8 scripts/verify_rec_ev_045.py
+py -3.12 -B -X utf8 scripts/verify_rec_ev_045.py --temporal
+py -3.12 -B -X utf8 scripts/verify_rec_ev_045.py --metadata-diagnostic
+```
+
+새 의존성 없이 기존 Python3.12/NumPy/SciPy/pandas/pyarrow/psutil을 사용한다.
+메타데이터 준비 상한15분, 본·시간 실행 상한2시간/현재 프로세스6GiB다. BLAS스레드는1로 고정한다.
+예측 전부 봉인 후 E를 열며, 시간 경로는2019 경계 이전 평점만 학습/입력에 사용한다.
+누락 영화는 싫어요로 바꾸지 않고, 실제 별점은0.5단위를 보존한다.
+
+검증기는 모든 사용자별 지표·고유 사용자 집계·구간과 표본의 독립 primal SVD 예측을
+검산한다. 메타데이터 옵션은 평가 별점 없이 원평균/TMDB 상관표12개를 확인한다.
+결과·감사·한계는 [REC045 결과](../recommendation/experiments/rec-ev-045/RESULT.md)와
+같은 폴더의 result-review.json을 따른다. 대용량 출력·개인별 자료는Git제외·LOCAL_ONLY다.
+
+## 22. MovieLens 개봉연도별 관측 분포 감사
+
+[설계](../research/movielens-release-distribution/README.md)의 독립 사전 검토를 통과한 뒤
+원본 32,000,204개 평가 기록 전체를 집계했다. 결과는
+[분포 보고서](../research/movielens-release-distribution/REPORT.md)와
+[전체 연도 표](../research/movielens-release-distribution/BY_YEAR.md)를 따른다.
+
+```powershell
+py -3.12 -B -X utf8 scripts/audit_movielens_release_distribution.py
+py -3.12 -B -X utf8 scripts/render_movielens_release_distribution.py
+```
+
+첫 명령은 기존 완료 출력이 있으면 덮어쓰지 않고 거부한다. 이 환경에는 완료 자료가 있으므로
+표·그림만 다시 만들 때는 두 번째 명령만 사용한다. 원집계를 재현하려면 기존 출력을 보존하는
+별도 환경과 동일 원본 ZIP/REC045 입력/TMDB 메타데이터가 필요하다. 실행 지문이 고정되어 있어
+경로 또는 코드를 바꾸면 기존 봉인을 덮어쓰지 않고 별도 준비·검토 기록을 작성해야 한다.
+
+집계 입력은 원본 ratings.csv의 userId/movieId/timestamp, 영화 제목 연도와 기존 REC045 평가 ID다.
+별점 값·E 라벨·모델 예측은 사용하지 않는다. 8개 분류 조건도 없다. 원본 경로는
+`C:/higher/projects/MM/data/raw/ml-32m.zip`이며 원자료/대용량 출력은 Git 제외·LOCAL_ONLY다.
+집계기는 Python3.12/NumPy/pandas/pyarrow를, 렌더러는 기존 matplotlib와 Windows 맑은 고딕을 사용한다.
+집계 상한15분, 실측10.70초. 독립 Arrow 전수 재집계에서 개수와 교차표는 차이0,
+3,192개 비교의 최대 오차1.44e-14였다. 최종 검토는 같은 보고서 폴더의 result-review.json에 기록한다.
+
+전체 평가량은 데이터 관측 감사용이다. 후속 학습 입력이나 영화 지원량을 구성할 때는 해당
+학습 사용자·시간 경계 안의 정보만 사용해야 한다. 자료 종료 이후 영화는 이 MovieLens로 채점할 수 없다.
+## 23. REC046 로컬 모델 비교
+
+개인 연구 설계는 `docs/recommendation/experiments/rec-ev-046/README.md`다.
+실행 전 독립 검토의 fingerprint와 현재 코드가 같아야 한다.
+현재 환경에는 완료 출력이 있으므로 아래 학습·선택·평가 명령을 다시 실행하지 않는다.
+prepare/fit의 기존 출력 방어와 달리 select/evaluate는 일부 결과를 다시 쓸 수 있다.
+원본 데이터·모델은 Git에 포함하지 않는다. 작업 위치는 `C:/higher/projects/FEELM-standalone`이다.
+
+```powershell
+docker build -f performance/rec046.Dockerfile -t feelm-rec046-spark:local .
+py -3.12 -B -X utf8 -m unittest discover -s scripts -p test_rec046.py
+py -3.12 -B -X utf8 scripts/rec046_prepare.py
+py -3.12 -B -X utf8 scripts/rec046_run.py fit
+py -3.12 -B -X utf8 scripts/rec046_run.py select
+py -3.12 -B -X utf8 scripts/rec046_evaluate.py
+```
+
+이미지를 새로 빌드했으면 config의 image_id와 비교하고 변경 시 재검토한다.
+평가 이후 파라미터를 바꿔 같은 결과를 새 확증 결과로 보고하지 않는다.
+재현에는 config에 기록한 원본 ZIP, REC032의 3회차 역할 분할,
+REC045 메타데이터/출처 파일 및 정확한 Docker 이미지가 필요하다. 소형 Git 집계만으로
+모델을 재학습할 수는 없다. 경로·이미지가 다른 환경은 기존 결과를 보존한 별도 실행 위치에서
+자료 해시와 변경점을 기록하고 재검토한다. 원래 fingerprint를 새 환경에 맞춰 덮어쓰지 않는다.
+
+실제 24개 학습과 최종 채점·독립 감사는 완료했다.
+[결과](../recommendation/experiments/rec-ev-046/RESULT.md)와
+[독립 감사](../recommendation/experiments/rec-ev-046/result-review.json)를 따른다.
+`completion-seal.json`은 계산 당시의 `CALCULATED_PENDING_INDEPENDENT_REVIEW` 상태로
+보존했고, 감사 완료는 별도 result-review.json에 기록했다. 이를 미완료 실행으로 오해하지 않는다.
+
+그림만 다시 만드는 명령은 다음과 같다. 기존 summary.csv만 읽고 학습·선택·채점을 하지 않는다.
+
+```powershell
+py -3.12 -B -X utf8 scripts/render_rec046.py
+```
+
+호스트는 기존 Python3.12/NumPy/SciPy/pandas/pyarrow/matplotlib/psutil을 사용한다.
+학습 런타임은 Spark4.1.3/Java21/Python3.10 Docker이며 Dockerfile에 별도 라이브러리를 고정했다.
+기존 원본·모델·사용자별 Parquet·예측은 outputs 아래 Git 제외·LOCAL_ONLY다.
+
+## 24. REC046 사용자 활동량·영화 지원량 구성 감사
+
+[설계](../recommendation/experiments/rec-ev-046/data-audit/README.md)와
+[결과](../recommendation/experiments/rec-ev-046/data-audit/RESULT.md)를 따른다.
+기존 5종 모델을 고정한 사후 진단이며 새 모델 학습·선정은 하지 않는다.
+
+```powershell
+py -3.12 -B -X utf8 -m unittest discover -s scripts -p test_rec046_population.py
+py -3.12 -B -X utf8 scripts/audit_rec046_population.py
+py -3.12 -B -X utf8 scripts/render_rec046_population.py
+```
+
+현재 환경에는 완료 출력이 있어 감사 실행기는 덮어쓰지 않고 거부한다. 그림만 다시 만들 때는
+마지막 명령만 사용한다. 재집계하려면 원본 ZIP과 input-pins.json의 38개 원자료·기존 REC046
+산출물·코드가 동일한 별도 환경이 필요하다. 코드/경로를 바꾸면 원 봉인을 보존하는 별도
+검토·지문으로 준비한다. 소형 CSV만으로 전체 감사를 재현할 수는 없다.
+
+원본 ZIP에서는 사용자·영화·시간 세 열만 읽고, 별점은 이미 개방한 R/검증/평가 자료만
+사용한다. 출력은 `outputs/recommendation-evidence/rec-ev-046-data-audit`에 보존한다.
+사용자별 count/지표·Parquet은 Git 제외·LOCAL_ONLY다. 기존 REC046 완료 봉인을 수정하지 않는다.
+감사 출력 completion.json은 계산 시점 상태를 유지하고 data-review.json/result-review.json에
+독립 검토 완료를 기록했다. 원본 전수 count·구성표·전체 성능 셀·구간/결측 처리 감사 PASS다.
+
+## 25. REC047 전체 이력과 학습량 비교
+
+[실행 계약](../recommendation/experiments/rec-ev-047/EXECUTION.md)을 따른다. 가용성 점검은 완료됐고
+새 학습/평가는 독립 실행 검토의 현재 지문과 일치해야 한다. 작업 위치는
+`C:/higher/projects/FEELM-standalone`이다. 아래 순서를 지키며 완료 출력을 덮어쓰지 않는다.
+
+```powershell
+py -3.12 -B -X utf8 -m unittest discover -s scripts -p test_rec047.py
+py -3.12 -B -X utf8 scripts/rec047_prepare.py validation
+py -3.12 -B -X utf8 scripts/rec047_run.py fit validation
+py -3.12 -B -X utf8 scripts/rec047_run.py select
+py -3.12 -B -X utf8 scripts/rec047_prepare.py evaluation
+py -3.12 -B -X utf8 scripts/rec047_run.py fit evaluation
+py -3.12 -B -X utf8 scripts/rec047_evaluate.py
+```
+
+실행 후 모델 학습과 평가 완료 여부는 별도 봉인과 독립 검토 기록으로 구분한다. 고정 Docker
+이미지를 재사용하며 임의로 새 이미지로 바꾸지 않는다. 원본 ZIP/REC032 개발 역할/REC045
+메타데이터/REC047 가용성 metadata 및 각 소스 해시가 필요하다. 사용자/모델/전체 Parquet은
+Git 제외·LOCAL_ONLY다. 가용성 `rec047_readiness.py`와 합성 `rec047_runtime_smoke.py`의 완료
+출력도 보존한다. 원본 없는 합성 실행 성공을 전체 데이터의 학습 성능·자원 보증으로 확대하지 않는다.
+
+완료된 REC047 출력에서 소형 집계와 그림만 다시 만드는 명령은 다음과 같다.
+`completion.json`과 선택/학습 부모 봉인이 있어야 하며, 새 학습이나 목표 별점 개방은 하지 않는다.
+
+```powershell
+py -3.12 -B -X utf8 scripts/summarize_rec047.py
+py -3.12 -B -X utf8 scripts/render_rec047.py
+```
+
+`support-summary.csv`는 해당 K가 가능한 사람 중 각 영화 지원층의 사용자 평균이다.
+K30 입력이 가능한 공통 집단 지표와 구분한다. 활동층별 평균을 다시 단순 평균한 값도 아니다.
+표시용 코드의 [사전 검토](../recommendation/experiments/rec-ev-047/aggregate-pre-review.json)를
+남겼다. 실제24개 학습·최종채점과 [독립 결과 감사](../recommendation/experiments/rec-ev-047/result-review.json)를
+완료했고 [결과 보고서](../recommendation/experiments/rec-ev-047/RESULT.md)에 결론을 정리했다.
+REC047 `completion.json`은 계산 당시 상태를 보존한다. 감사 완료는 별도 result-review.json에서 확인한다.
+이미 완료된 준비·선택·채점을 덮어쓰지 않으며, 전체 재실행은 원본과 승인된 코드·런타임이
+일치하는 별도 환경에서 수행한다.
+
+## 26. 영화 평점 이력을 가린 콘텐츠 모델 비교
+
+[실행 명세](../recommendation/experiments/cold-item-content/EXECUTION.md)를 따른다.
+현재 진행·완료 상태는 [연구 현황](../recommendation/active-experiment.md)에서 확인한다.
+기존 REC047의 참고 ALS와 BASE / SUPPORT / CROWD_ITEM / CROWD_RESPONSE의
+FM·리지·GBT 12개를 비교한다. 새 튜닝이나 ALS+FM 혼합은 이 실행에 포함하지 않는다.
+
+작업 위치는 `C:/higher/projects/FEELM-standalone`이며 실행 순서는 다음과 같다.
+이 목록은 실행 기록이다. 기존 출력이 있는 현재 작업 폴더에서 준비·채점·보고서를 다시
+실행하거나 기존 출력을 삭제하지 않는다. 각 단계 사이의 독립 검토는 실행 명세를 따른다.
+
+```powershell
+py -3.12 -B -X utf8 -m unittest discover -s scripts -p test_cold_item.py
+py -3.12 -B -X utf8 scripts/cold_item_prepare.py prepare
+py -3.12 -B -X utf8 scripts/cold_item_run.py
+py -3.12 -B -X utf8 scripts/cold_item_evaluate.py
+py -3.12 -B -X utf8 scripts/cold_item_diagnostics.py
+py -3.12 -B -X utf8 scripts/report_cold_item.py
+```
+
+재학습에는 config의 원본 ZIP·역할 분할·TMDB 메타데이터·REC047 학습 자료와 참고 ALS
+요인, 고정 Docker 이미지가 필요하다. `config.sources` 전체 파일과 `execution-review.json`을
+기록된 해시에 맞춰 복원해야 한다.
+참고 ALS도 요인뿐 아니라 `model-seal.json`의 `files`에 열거된 예측·metrics·CRC 등
+전체 파일이 필요하다. 기존 평가 파일은 사전 단계에서 바이트 해시만 확인하고, 목표
+별점 값은 모든 예측을 봉인한 뒤 채점할 때 개방한다. 먼저 확정한 `preflight.json`과
+`movie-partition.parquet`도 최종 config의 입력으로 봉인한다. 새 환경에서는 이 두 파일을 해당
+해시로 복원한 뒤 준비 단계부터 재현한다. 최종 config 그대로 빈 폴더에서 `preflight`를
+새로 생성할 수 있다고 해석하지 않는다. 분할·경로·런타임을 바꾸는 새 실험은 원래 봉인을
+보존하고 새 실행 계약으로 검토한다.
+
+산출물은 `outputs/recommendation-evidence/cold-item-content`에 보존한다. 모델·전체
+Parquet·사용자별 값은 Git 제외·LOCAL_ONLY이며 소형 집계와 그림은 실행 명세와 같은
+문서 폴더에 둔다. `completion.json`은 계산 당시 상태를 보존하고, 최종 독립 결과 검토는
+별도 `result-review.json`에서 확인한다. 보고서 생성기는 집계 부모 해시를 확인하며 기존
+`RESULT.md`를 덮어쓰지 않는다.
+
+## 27. Wikipedia 영화 줄거리 수집
+
+[수집 설계](../research/wikipedia-collection/PLAN.md)를 따른다. 작업 위치는
+`C:/higher/projects/FEELM-standalone`이다. 기존 requests/pandas/pyarrow와 Python 표준
+라이브러리를 사용한다. 별도 API 키는 필요하지 않으며 평점 원자료를 열지 않는다.
+먼저 설계·수집기·테스트의 해시를 독립 검토한 `execution-review.json`이 있어야 한다.
+
+```powershell
+py -3.12 -B -X utf8 -m unittest discover -s scripts -p test_wikipedia_plots.py
+py -3.12 -B -X utf8 scripts/collect_wikipedia_plots.py prepare
+py -3.12 -B -X utf8 scripts/collect_wikipedia_plots.py pilot
+```
+
+고정 순서 200편과 언어별 최대 50문서의 실제 결과를 독립 검토하고 `pilot-review.json`을
+남긴 다음 같은 설정으로 전체 수집한다. 성공한 요청은 로컬 캐시에서 재사용한다.
+
+```powershell
+py -3.12 -B -X utf8 scripts/collect_wikipedia_plots.py run
+py -3.12 -B -X utf8 scripts/collect_wikipedia_plots.py summarize
+```
+
+`outputs/recommendation-evidence/wikipedia-plots-v3`에 catalog/mappings/pages/coverage Parquet,
+응답 압축 캐시, 입력/파생물 해시와 집계를 저장한다. 실패한 요청은 재시도 한도 후 중단하고
+자료 없음으로 기록하지 않는다. 재개는 같은 `run` 명령이다. 입력·코드·설계 해시가 달라지면
+섞지 않고 중단한다. 현재 수집본을 갱신하려는 새 수집은 기존 원문과 버전을 보존하는
+별도 수집 계약으로 수행한다. `summarize`는 봉인된 파생물만 재집계한다.
+원문·Parquet·캐시는 Git 제외이며, 수집 성공만으로 추천 성능을 주장하지 않는다.
+첫 pilot의 원응답은 `outputs/recommendation-evidence/wikipedia-plots/cache`에서 해시를
+확인해 재사용한다. 첫 추출 오류와 당시 코드·결과는 해당 폴더에 보존한다.
+전수 ID 조회와 일부 본문이 들어 있는 `wikipedia-plots-v2/cache`도 같은 방법으로 재사용한다.
+v3는 실제 공개 프로젝트 주소를 포함한 식별 정보와 GET 우선 요청을 사용한다.
+
+전체 수집 프로세스가 성공 종료하고 표 봉인이 완성된 뒤 소형 결과 문서를 만든다.
+
+```powershell
+py -3.12 -B -X utf8 scripts/report_wikipedia_collection.py
+```
+
+보고기는 파일 해시·모집단·예상 언어/QID 문서·상태/본문/길이·영화별 커버리지·층별 집계를
+검증한다. 진행 중인 pilot 표나 모순된 결과는 거부하고 기존 최종 보고서를 덮어쓰지 않는다.
+`docs/research/wikipedia-collection/`의 RESULT, coverage-strata, collection-summary,
+raw-clean-coverage와 report-seal을 생성한다. `result-review.json`의 독립 최종 감사를 별도로 확인한다.
+원문이 있는 경우와 템플릿 제거 후 정제본문이 남은 경우를 구분한다. 모든 feature_ready는 false다.
+수집 원문과 이 로컬 문서는 완료 추천 실험의 Jira337/338 및 MR165/166에 포함하지 않는다.
+
+## 28. Jira339 — 줄거리·Wikipedia 추가 효과의 로컬 비교
+
+[실행 명세](../recommendation/experiments/text339/EXECUTION.md)와 같은 폴더의 코드·텍스트·자원
+독립 검토 기록을 기준으로 한다. 결과 위치는 `outputs/recommendation-evidence/text339`다.
+현재 실험은 과거에 사용한 개발 사용자로 수행하며 새로운 최종 시험이 아니다.
+
+소스 가공과 검토 적용은 완료됐다. `before-overview-fallback-fix`, `before-wiki-usage-review`에
+원래 자료를 보존하고, 43편의 Wiki 사용 제외를 두 조건에 동일하게 적용했다.
+현재 파일·검토 해시가 맞아야 이후 명령이 진행된다. 완료된 결과가 있는 단계는 재실행을 거부한다.
+
+```powershell
+py -3.12 -B -X utf8 -m unittest discover -s scripts -p test_text339.py
+$text339Python = './outputs/recommendation-evidence/text339-runtime/venv/Scripts/python.exe'
+& $text339Python -B -X utf8 scripts/text339_encode.py encode
+```
+
+연구 전용 Python 환경의 PyTorch2.10.0+cu128/transformers5.16.1과 고정 multilingual-e5-base를
+사용한다. GPU 표본 시험과 원문 품질 검토가 완료돼야 전체 인코딩을 실행할 수 있다.
+같은 명령으로 재개하며, 완료 벡터의 해시·코드·입력과 누적8시간 한도를 확인한다.
+재개 중 자료형·순서·본문·설정이 바뀌면 중단한다. 이미 봉인된 인코딩은 그대로 사용한다.
+
+전체 인코딩 결과와 학습 실행 코드를 독립 검토한 후 다음을 순서대로 수행한다.
+
+```powershell
+$env:OPENBLAS_NUM_THREADS = '4'
+$env:OMP_NUM_THREADS = '4'
+$env:MKL_NUM_THREADS = '4'
+py -3.12 -B -X utf8 scripts/text339_prepare.py prepare
+py -3.12 -B -X utf8 scripts/text339_run.py fit
+py -3.12 -B -X utf8 scripts/text339_run.py catalog
+py -3.12 -B -X utf8 scripts/text339_evaluate.py
+py -3.12 -B -X utf8 scripts/report_text339.py
+```
+
+네 FM 조건의 예측과 전체 카탈로그 Top10을 저장·봉인한 뒤 개발 별점을 읽는다.
+Spark는 고정 Docker 이미지에서 CPU4개·컨테이너12GiB·JVM8GiB로 순차 실행하며 각 fit 단계의
+프로세스 상한은90분이다. 실패 산출물은 보존하고, 실행 중 표본이나 모델 설정을 줄이지 않는다.
+`RESULT.md`와 그림을 생성한 뒤 실제 결과 검산을 별도로 받아 결론을 확정한다.
+원문·모델·Parquet·사용자별 결과는 Git 제외다. Jira·GitLab 게시 범위는 결론 이후 정한다.
+
+## 29. 기준 모델·정보 결합·맞춤/발견의 3단계 로컬 비교
+
+작업 위치는 `C:/higher/projects/FEELM-standalone`이다. 실행 계약은
+[foundation340](../recommendation/experiments/foundation340/EXECUTION.md),
+[combination340](../recommendation/experiments/combination340/EXECUTION.md),
+[policy341](../recommendation/experiments/policy341/EXECUTION.md) 순서다.
+판단과 편수별 표는 [최종 정리](../recommendation/experiments/final341/README.md)에 모은다.
+이는 이미 사용한 개발 사용자에 대한 비교이며 새 최종 시험이나 운영 설정이 아니다.
+
+Python3.12와 기존 numpy/pandas/scipy/pyarrow/matplotlib, 고정
+`feelm-rec046-spark:local` 이미지의 Spark4.1.3을 사용한다. 이미지 digest·모든 원본과 선행
+text339/REC047 모델·메타데이터·정답 봉인은 각 config와 input-lock에서 확인한다.
+이 자료는 LOCAL_ONLY·Git 제외이므로 Git clone만으로 재학습할 수 없다.
+새 환경에서는 기록된 파일과 해시를 복원해야 한다. 원자료·경로·분할을 바꾸려면 새 실행
+계약을 검토하며, 기존 출력과 봉인을 지우거나 덮어쓰지 않는다.
+
+아래는 실제 사용한 단계별 명령이다. **각 단계의 독립 검토를 사이에 두며 일괄 실행하지 않는다.**
+준비물 검토가 통과한 다음에만 학습하고, 관측·전체 후보 예측의 독립 검산이 통과한 다음에만
+평가한다. 이전 단계의 실제 결과 검토가 통과해야 다음 단계의 입력을 고정한다.
+
+```powershell
+py -3.12 -B -X utf8 -m unittest discover -s scripts -p test_foundation340.py
+py -3.12 -B -X utf8 scripts/foundation340_prepare.py
+py -3.12 -B -X utf8 scripts/foundation340_run.py fit
+```
+
+위 최초 학습에서 B는 모델·예측을 저장한 뒤 cgroup 계측 오류가 났다. 이번 실행은
+[복구 기록](../recommendation/experiments/foundation340/RUNTIME-RECOVERY.md)의 별도 검토를 거쳐
+`foundation340_resume.py`로 **기존 B를 재학습하지 않고** R/H/RH만 진행했다.
+이 복구 명령은 당시 파일 상태와 해시에 종속되며 일반적인 처음 실행 명령이 아니다.
+B의 학습시간·학습 RMSE·최고 메모리·엄격 자원 준수는 UNKNOWN으로 유지한다.
+H/RH의 측정 최고값12GiB+4096B도 엄격 자원 예외로 보존한다.
+
+```powershell
+py -3.12 -B -X utf8 scripts/foundation340_run.py catalog
+py -3.12 -B -X utf8 scripts/foundation340_evaluate.py
+py -3.12 -B -X utf8 scripts/combination340_run.py prepare
+py -3.12 -B -X utf8 scripts/combination340_run.py fit
+py -3.12 -B -X utf8 scripts/combination340_catalog.py
+py -3.12 -B -X utf8 scripts/combination340_evaluate.py
+```
+
+추가 학습은 총7회(FM5·GBT1·ALS1)로 한정했다. 학습·별점·정책의 기준을 결과에 맞춰
+다시 바꾸지 않는다. 전체 후보 점수 재검산은 원래4096개 후보 feature 배치를 유지한다.
+Top10만 별도로 feature 계산하면 BLAS 계산 순서가 달라질 수 있으므로 같은 검산으로 간주하지 않는다.
+
+```powershell
+py -3.12 -B -X utf8 -m unittest discover -s scripts -p test_policy341.py
+py -3.12 -B -X utf8 scripts/policy341_run.py
+py -3.12 -B -X utf8 scripts/policy341_evaluate.py
+py -3.12 -B -X utf8 scripts/report_final341.py
+```
+
+정책은 추가 학습 없이 2단계에서 고정한 모델과 B에 같은 규칙을 적용한다. 정책 예측 검토,
+실제 통계 검토, 보고 코드 검토가 있어야 최종 보고서를 생성한다. 생성된 PNG와 문서 수치도
+별도 검토한다. 출력은 `outputs/recommendation-evidence/{foundation340,combination340,policy341,final341}`에
+보존하며, 완료한 명령은 기존 결과를 발견하면 중단한다. 정책 timing은 순위 처리만의 시간이다.
+코드·결과 봉인과 독립 검토 기록이 재현 근거이며, 모든 중간 자료를 팀 Git에 올리는 절차는 아니다.
+
+## 30. 두 편씩 추천·전체 후보 노출·ALS 혼합 경계 진단
+
+2026-09-11 사용자가 승인한 진단3개다. 설계는
+`docs/recommendation/experiments/diagnostic342/DESIGN.md`를 따른다.
+K-means·분류 기반 발견 정책은 보류하며, 위29절의 과거3편 정책을 적용하지 않는다.
+저장된 foundation340/combination340 예측과 기존 text339 개발 라벨을 소비한다.
+새 학습·추론은 없으며 입력 상한별 관측 평가와 H10 전용 전체 후보 진단을 구분한다.
+
+```powershell
+py -3.12 -B -X utf8 scripts/diagnostic342.py --selftest
+py -3.12 -B -X utf8 scripts/diagnostic342.py
+```
+
+실제 실행은 현재 코드·설계 핀과 일치하는 독립 `execution-review.json` PASS 및 기존 입력 봉인을 확인한다.
+`outputs/recommendation-evidence/diagnostic342`가 존재하면 덮어쓰지 않고 중단한다.
+CSV·사용자별Parquet·입력 manifest·실행 요약·결과 seal을 보존한다. 결과 검토와 사람이 읽는
+`RESULT.md`까지 완료해야 진단 완료로 보고한다. 새 모델 선정·가중치 조정은 이 명령에 포함하지 않는다.
+
+```powershell
+py -3.12 -B -X utf8 scripts/report_diagnostic342.py
+```
+
+보고 그림 생성은 기존 결과 봉인을 확인하고 공통134명 페이지 지표를 그린다. 기존PNG를 덮어쓰지 않는다.
+첫 실행의 초기화 오타와 당시코드·승인·입력manifest는
+`outputs/recommendation-evidence/diagnostic342-failed-initialization-01`에 보존했다.
+한 줄 수정의 독립 검토 후 실제 진단을 완료했으며 `result-seal.json`과 최종 `result-review.json`을 확인한다.
+
+## 31. 근거량 보정 GBT·LightGBM 회귀/순위 최종 비교
+
+2026-09-11 승인한 새 학습3회와 기존 모델의 다중 지표 비교다. 설계와 완료 결과는
+[research343](../recommendation/experiments/research343/RESULT.md)에 있다.
+학습39,859명/4,997,069행과 기존 개발270명을 사용한다. 개발 표본은 보정90명/비교180명으로
+분리했으며, 이미 확인했던 개발 자료를 새로운 최종 test로 부르지 않는다.
+
+아래는 실제 실행 순서다. 완료 출력이 있으면 재실행·덮어쓰기를 거부한다. 이미 완료된 모델을
+재학습할 필요는 없으며 결과·봉인·독립 감사 기록으로 확인한다. 새 환경에서 재현하려면
+foundation340/combination340/text339의 고정 입력·모델·봉인과 로컬 Docker 이미지가 필요하다.
+
+```powershell
+py -3.12 -B -X utf8 -m unittest discover -s scripts -p test_research343.py
+py -3.12 -B -X utf8 scripts/research343_fit.py prepare
+py -3.12 -B -X utf8 scripts/research343_fit.py fit
+py -3.12 -B -X utf8 scripts/research343_lgb.py prepare
+py -3.12 -B -X utf8 scripts/research343_lgb.py LGBM_REG_R
+py -3.12 -B -X utf8 scripts/research343_lgb.py LGBM_RANK_R
+py -3.12 -B -X utf8 scripts/research343_evaluate.py calibrate
+py -3.12 -B -X utf8 scripts/research343_evaluate.py evaluate
+py -3.12 -B -X utf8 scripts/research343_catalog.py
+py -3.12 -B -X utf8 scripts/report_research343.py
+```
+
+각 단계는 해당 `*-review.json` PASS와 코드·입력 해시를 확인한다. LightGBM 런타임은
+`outputs/recommendation-evidence/research343-runtime-probe/build`의 이미지·JAR 해시와
+합성 실행 기록에 고정했다. 실제 실행은 `spark-submit --jars`로 driver까지 의존성을
+전달하며, native `lambdarank_truncation_level=6`을 명시한다. `maxPosition=6`만 설정한
+합성 시도와 driver classpath 때문에 실제 학습 전에 실패한 시도는 별도 보존했다.
+이번 실행은 한 컴퓨터의 Spark local[4]이며 다중 노드 확장성 검증이 아니다.
+
+실제 수치는 `outputs/recommendation-evidence/research343`에 있다. 모델·평가·카탈로그
+봉인과 `research343-model-audit`, `research343-audit`의 독립 감사 자료를 함께 확인한다.
+독립 감사는 운영 계산 코드를 가져오지 않고 예측·집계·신뢰구간·후보 순서를 다시 계산했다.
+MSE는 사용자 평균/영화 평균/행 평균, native/별도 보정값을 구분하며 ALS는 지원 가능한
+동일 영화의 직접 비교만 해석한다. 미평가 전체 후보는 UNKNOWN으로 유지한다.
+보고 문구를 수정할 때만 `report_research343.py --revise`를 사용한다. 이전 보고서·그림·
+manifest·자원표를 `report-history`에 보존하고 결과 검토도 새 핀으로 갱신한다.
+
+### final344: 같은 RH 입력에서 최종 FM·GBT 비교
+
+승인 설계는 `docs/recommendation/plans/final-fm-gbt/`, 실제 실행 명세와 검토는
+`docs/recommendation/experiments/final344/`에 분리한다. 원본 RH train/score를 수정하지 않는다.
+실제 실행은 `outputs/recommendation-evidence/final344/`에 누적하며 기존 폴더를 덮어쓰지 않는다.
+
+```powershell
+py -3.12 -B -X utf8 scripts/test_final344_adapter.py
+py -3.12 -B -X utf8 scripts/test_final344_evaluate.py
+py -3.12 -B -X utf8 scripts/final344_fit.py prepare
+py -3.12 -B -X utf8 scripts/final344_fit.py fit --recipe FM150 --seed 339
+py -3.12 -B -X utf8 scripts/final344_fit.py fit --recipe FM300 --seed 339
+py -3.12 -B -X utf8 scripts/final344_fit.py fit --recipe GBT60 --seed 339
+py -3.12 -B -X utf8 scripts/final344_fit.py fit --recipe GBT120 --seed 339
+```
+
+위 명령은 한 번만 실행한다. 각 worker 전체에90분 제한, CPU4·메모리12GiB·driver8GiB·network none이다.
+실패와 중간 파일을 보존하고, 정리되지 않은 컨테이너·미완료 실행이 있으면 다음 학습을 차단한다.
+초기 네 실행의 독립 모델 검산 봉인과 평가 코드 검토가 갖춰진 뒤에만 아래를 실행한다.
+
+```powershell
+py -3.12 -B -X utf8 scripts/final344_evaluate.py calibrate
+py -3.12 -B -X utf8 scripts/final344_evaluate.py select
+```
+
+선택된 두 설정만 각각 seed344·345를 추가한다. 추가 실행도 `fit --recipe <선택값> --seed <seed>`를 사용한다.
+기본 설정이 평가 불가하면 추가 학습을 하지 않는다. 전체 최대8회이며 실패도 포함한다.
+추가 실행의 독립 모델 검산 뒤 `calibrate-final`, `evaluate`, `final344_catalog.py`, `report_final344.py`로 마무리한다.
+일부seed 실패는 공통 완료seed별 기술통계로 남기고 공식3seed 평균·CI로 포장하지 않는다.
+최종 결과와 그림은 별도 독립 검토를 거친다. 로컬 실행이며 외부 게시·서비스 정책 변경은 별도 요청 범위이다.
+
+2026-09-11 실제 완료: 초기4회에서 FM150·GBT120을 고정했고 각각seed344·345를 더해8회 모두 학습을 마쳤다.
+모델/보정/설정선택/최종통계/전체카탈로그/보고서의 독립 검산이PASS이며, 최종 결과는
+[final344 요약](../recommendation/experiments/final344/README.md)과 [전체 결과](../recommendation/experiments/final344/RESULT.md)에 있다.
+선택된6실행의 사용자별 지표 평균을 비교한 결과이며 앙상블·새 최종test·서비스 모델 채택이 아니다.
+8실행 중 엄격한메모리기준2PASS/6EXCEPTION을 보존했다. 완료된 출력에 위 명령을 다시 실행하지 않는다.
+감사 도구의 Windows경로 구분자 가정 오류는 최초실패/원본을 보존한 뒤, 경로정규화·중복alias차단만 수정해
+12합성검사와 별도diff검토 후 실제감사를 통과했다. 생산코드·모델·평가봉인·판정기준은 변경하지 않았다.

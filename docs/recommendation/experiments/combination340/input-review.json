@@ -1,0 +1,36 @@
+{
+  "status": "PASS",
+  "reviewer": "Rawls",
+  "input_lock": {
+    "bytes": 2329,
+    "sha256": "880647079a38243892ff533f4471abf2b17baa06a5f94112b872073024cd302d"
+  },
+  "selected_foundation": "B",
+  "checks": {
+    "actual_pins": 214,
+    "locked_parents": 12,
+    "train_rows": 4997069,
+    "train_users": 39859,
+    "feature_dimensions": 230,
+    "ordered_partitions": 8,
+    "score_rows": 93230,
+    "evaluation_users": 270,
+    "caps": 5,
+    "train_eval_user_overlap": 0,
+    "reference_rows": 6261195,
+    "removed_C_rows": 1264126,
+    "reference_minus_C_uid_movie_timestamp_exact": true,
+    "supported_W_movies": 45074,
+    "C_movies": 10952,
+    "natural_zero_movies": 29491,
+    "H10_observed_candidate_rows": {
+      "W": 14386,
+      "C": 3755,
+      "natural_zero": 505
+    }
+  },
+  "audit_correction": "Initial auxiliary assertion incorrectly excluded C from evaluation O. Only training ratings/history exclude C; original evaluation O is retained and actual ALS uses its supported subset. Audit assumption corrected, data/code unchanged.",
+  "new_training": false,
+  "new_data_or_resampling": false,
+  "evaluation_labels_read": false
+}

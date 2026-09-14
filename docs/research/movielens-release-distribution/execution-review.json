@@ -1,0 +1,22 @@
+{
+  "status": "PASS",
+  "reviewer": "/root/rec044_design_audit",
+  "fingerprint": {
+    "script": {
+      "bytes": 18034,
+      "sha256": "aa653115c5a6893967d4216f3cbcea7f6b423dc9c453a6eff750127a29c48498"
+    },
+    "design": {
+      "bytes": 4729,
+      "sha256": "324fd72ea3edef5aa13962c180490dcd701c0517da180f0a9d6b688d2cac2b81"
+    }
+  },
+  "scope": "metadata and rating record counts only, no E star values",
+  "resolved": [
+    "decade p90",
+    "TMDB source pin before and after read",
+    "user count and weight invariants",
+    "lag distribution"
+  ],
+  "prechecks": "title parsing, REC045 weights independently matched; six boundary/sentinel checks passed"
+}

@@ -1,0 +1,41 @@
+{
+  "status": "DESCRIPTIVE_ONLY_NOT_MODEL_EVALUATION",
+  "ml_movies": 87585,
+  "ml_rating_records": 32000204,
+  "ml_rating_period_utc": [
+    "1995-01-09T11:46:44",
+    "2023-10-13T02:29:07"
+  ],
+  "tmdb_local_movies": 237817,
+  "tmdb_valid_movies": 121656,
+  "mapping_status_counts": {
+    "SERVICE_ONLY_CONTENT_BASED": 151601,
+    "MATCHED": 86181,
+    "TMDB_ID_AMBIGUOUS": 35
+  },
+  "tmdb_collection_note": "MovieLens base plus recent-release expansion; not the full TMDB catalogue.",
+  "tmdb_snapshot": "DB export 2026-09-09; obtained 2026-09-12; per-film fetched_at unavailable.",
+  "kr_definition": "KR in production_country_codes; co-productions included",
+  "kr_local_catalog_movies": 3621,
+  "kr_ml_matched_movies": 1172,
+  "kr_ml_rated_movies": 1164,
+  "kr_ml_rating_records": 106726,
+  "kr_ml_share_of_all_ratings": 0.003335166238315231,
+  "kr_ml_median_ratings_including_zero": 7.0,
+  "kr_ml_movies_under10_including_zero": 672,
+  "kr_ml_rating_weighted_mean_5": 3.770622903509923,
+  "kr_ml_rated_film_equal_mean_5": 3.206620421710545,
+  "kr_top2_rating_share": 0.2717332233944868,
+  "same_rated_movies_all": 82181,
+  "release_year_mismatches_among_matched_known": 5718,
+  "no_model_training_or_prediction": true,
+  "read_columns_ratings": [
+    "movieId",
+    "rating",
+    "timestamp"
+  ],
+  "movie_means_are_not_rounded_to_half_stars": true,
+  "tmdb_divide_two_is_scale_conversion_only": true,
+  "ml_popularity_rule": "ml_count descending, movieId ascending",
+  "kr_recent_examples_rule": "For each 2024/2025/2026, released by 2026-09-09, valid TMDB rating, KR production; highest vote_count then tmdb_id"
+}

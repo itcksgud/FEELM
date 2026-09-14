@@ -1,0 +1,25 @@
+{
+  "status": "PASS",
+  "scope": "NUMERICAL_AND_PARTITION_ONLY",
+  "resource_status": "STRICT_RESOURCE_EXCEPTION",
+  "reviewer": "Hubble",
+  "variant": "H",
+  "model_seal": {
+    "bytes": 6586,
+    "sha256": "694db7457e388d15e592618aa7477a49cd754c368f540f8e4de12fb200b4e9a5"
+  },
+  "prepared_seal": {
+    "bytes": 4711,
+    "sha256": "9f0550e38566512fc2dad084d3f9381a7197ea3bab05fd0428eef76878acb62e"
+  },
+  "actual_pins_checked": 75,
+  "native_coefficients_bit_exact": 3911,
+  "native_aligned_bit_exact_rows": 93230,
+  "independent_formula_max_error": 2.6645352591003757e-15,
+  "ordered_partitions_independent_hash_pass": true,
+  "runtime_provenance_pass": true,
+  "fit_seconds": 2541.0358159410025,
+  "peak_bytes": 12884905984,
+  "strict_memory_pass": false,
+  "evaluation_labels_read": false
+}

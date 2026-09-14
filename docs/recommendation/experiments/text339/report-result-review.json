@@ -1,0 +1,184 @@
+{
+  "status": "PASS_REPORT_NUMBERS_RAW_LABEL_DIAGNOSTICS_AND_FINAL_WORDING",
+  "reviewer": "/root/wiki_report_review",
+  "new_fits": 0,
+  "reviewer_file_writes": 0,
+  "sources": {
+    "report-seal.json": {
+      "bytes": 620,
+      "sha256": "1b697bcf50ecc06667948b8dc791235168a89800561017099c39d919e70d9fb3"
+    },
+    "evaluation-seal.json": {
+      "bytes": 4890,
+      "sha256": "0ab420fb3e50cf770d9dd7a24d64e5ce8896a4c17b38a7ba5df73398ad6fb9c7"
+    },
+    "labels.parquet": {
+      "bytes": 75490,
+      "sha256": "e3bf301a6e2ea7885b59bcab7fe83c2d3ad84f93f2f1bbb2d54d943b9a658db8"
+    },
+    "catalog-top10.parquet": {
+      "bytes": 95812,
+      "sha256": "d46055cb73b31d8010a277aae3fc21407373ba04a56e00bfe326e95d5d4a86e2"
+    },
+    "contexts.json": {
+      "bytes": 12290713,
+      "sha256": "951fc2464bd3aea25ea486c79c33084f6241f7846a3ed626e9d5fc3907a7aab7"
+    },
+    "catalog-user-diagnostics.csv": {
+      "bytes": 202028,
+      "sha256": "9c1b68e09d926499eecddc0a496c6bbf105286bb17b4ad457429072fcc976f7b"
+    },
+    "catalog-diagnostics.csv": {
+      "bytes": 2884,
+      "sha256": "7578cc09011d22af492af75ec21fa780e115b2bdb7644837c6bce5e6fac0e85c"
+    }
+  },
+  "metadata": {
+    "bytes": 6891831,
+    "sha256": "4d838874938115be7a4b1f629a920dd196e082b655b75d559d71039e52eb7d8d"
+  },
+  "title_metadata": {
+    "bytes": 13443836,
+    "sha256": "86e2e4eb087bbdbf2500b9b8a7e50abf1ef09b52ea6110c62d41581e7d45d016"
+  },
+  "report_values_verified": 120,
+  "supplementary_group_table_rows_verified": 20,
+  "figure_visual_review": "PASS_no_clipping_or_ambiguous_layout",
+  "raw_label_reconstruction": {
+    "status": "PASS",
+    "source_rows": 18960,
+    "current_user_rows": 18959,
+    "user_diagnostic_rows": 4320,
+    "aggregate_rows": 16,
+    "label_join_recomputed": true,
+    "metrics": [
+      "known",
+      "unknown",
+      "good lower/upper bounds",
+      "known_only_stars",
+      "zero_support_fraction"
+    ],
+    "top2_known": [
+      74,
+      25,
+      24,
+      24
+    ],
+    "top2_unknown": [
+      466,
+      515,
+      516,
+      516
+    ],
+    "top2_known_good": [
+      63,
+      21,
+      20,
+      20
+    ]
+  },
+  "exposure": {
+    "actual_top10_rows": 10800,
+    "unique_movies_top2": [
+      15,
+      8,
+      10,
+      10
+    ],
+    "hhi_top2": [
+      0.16735,
+      0.1841,
+      0.23174,
+      0.22912
+    ],
+    "unique_and_hhi_recomputed_from_top10": true
+  },
+  "posthoc_metadata_diagnostic": {
+    "status": "PASS_INDEPENDENT_JOIN_COUNTS",
+    "variant_order": [
+      "T0",
+      "T1",
+      "T2",
+      "T3"
+    ],
+    "condition": "tmdb_vote_count==1 and tmdb_vote_average==10 in pinned snapshot",
+    "total_slots_per_variant": 540,
+    "matching_slots": [
+      346,
+      371,
+      367,
+      368
+    ],
+    "h0_users": 84,
+    "h0_slots": 168,
+    "h0_matching_slots": [
+      0,
+      0,
+      0,
+      0
+    ],
+    "h_positive_users": 186,
+    "h_positive_slots": 372,
+    "h_positive_matching_slots": [
+      346,
+      371,
+      367,
+      368
+    ],
+    "h_positive_known_slots": [
+      0,
+      0,
+      0,
+      0
+    ],
+    "all_known_slots_from_h0": true,
+    "two_movies": [
+      {
+        "movie_id": 239496,
+        "tmdb_id": 266555,
+        "title": "Drawn from Memory"
+      },
+      {
+        "movie_id": 278338,
+        "tmdb_id": 554863,
+        "title": "Pitkä vaihto"
+      }
+    ],
+    "two_movie_combined_slots": [
+      252,
+      238,
+      321,
+      317
+    ],
+    "interpretation": "Posthoc exposure association. No causal, film-quality, min-vote-policy, or primary-adoption claim."
+  },
+  "wording_corrections": [
+    "C inputs excluded from training only; evaluation inputs allowed.",
+    "PCA excludesC andzero-support; supported Wtextmayappear in evaluation.",
+    "Restored7 absent from evaluated users past inputs and180dayJ, still in wholecatalog.",
+    "Generated RESULT main Top2 denominator260, MSE270, PA255.",
+    "UNKNOWN means no rating for that user in180day evaluation window.",
+    "T3peak12GiB+4096 retains strict cap failure; reported12.00 is rounded."
+  ],
+  "final_wording_review": {
+    "status": "PASS",
+    "reviewer": "/root/wiki_report_review",
+    "required_corrections": 0,
+    "reviewed_readme_before_status_only_change_sha256": "5a7aa93f5974a6f45c2526cd8a45e66c950e5b597aafe29469d148640bbaf381",
+    "reviewed_human_files": {
+      "README.md": {
+        "bytes": 6695,
+        "sha256": "9e9d194cbd90f0ca755321c116a30d1e1d56a8e3d79084e70152da6ebf792fcc"
+      },
+      "INTERPRETATION.md": {
+        "bytes": 11218,
+        "sha256": "6c9a984eef1a1e0ce287c0e0348e3f31312e3c7f35e14d57fdfeb10898d9038a"
+      },
+      "training-input-distribution.md": {
+        "bytes": 4919,
+        "sha256": "7e41c5fa6dde3731ec341b254c538fae869faa1eb5c632e0006fdb45c19540e0"
+      }
+    },
+    "post_review_readme_change": "Only status sentence changed from final wording pending to local completion with resource exception."
+  }
+}

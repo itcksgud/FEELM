@@ -1,0 +1,72 @@
+{
+  "status": "PASS",
+  "date": "2026-09-11",
+  "result_seal": {
+    "bytes": 3191,
+    "sha256": "0f849218dbebb63d858623e98e83b36d709c20fb9528554faf78cdcb60f645e1"
+  },
+  "report": {
+    "RESULT.md": {
+      "bytes": 9636,
+      "sha256": "0a29feea36ce19bc8f5e8e2393af7ee97adf55c07e8121e80d375c49b7854f17"
+    },
+    "pages.png": {
+      "bytes": 95579,
+      "sha256": "1a8b5258584b134ef2b74307c11627d32c56ca3bfea89d724744d1af7c4d8717"
+    }
+  },
+  "independent_reviews": [
+    {
+      "reviewer": "Rawls / github_research_scope_audit",
+      "status": "PASS_RESULT",
+      "scope": "All page rows and summaries, overlap with original cumulative metrics, calibration, candidate distributions, full-catalog exposure, top2 changes and all boundary changes",
+      "page_rows": 132840,
+      "page_summary_rows": 22080,
+      "overlapping_cumulative_cells": 282420,
+      "overlap_max_absolute_error": 3.33e-16,
+      "boundary_integer_error": 0,
+      "large_pair_count_mean_csv_rounding_max_absolute_error": 1.1920928955078125e-7,
+      "inputs_unchanged": 290,
+      "sealed_outputs_verified": 18,
+      "review_harness_corrections": "Audit initially conflated W with W_DIRECT and historical origin with the full-catalog snapshot. Correcting those audit assumptions to the original contracts resolved the assertions; production outputs unchanged."
+    },
+    {
+      "reviewer": "Dewey / wiki_report_review",
+      "status": "PASS_RESULT_AND_REPORT",
+      "scope": "All catalog annotations/exposures, errors, calibration bins, candidate distributions, score statistics, top2 changes and full boundary counts; final report numbers and rendered figure",
+      "catalog_annotation_rows": 18432,
+      "catalog_exposure_rows": 216,
+      "error_rows": 12960,
+      "calibration_bin_rows": 16240,
+      "candidate_distribution_rows": 540,
+      "catalog_score_rows": 3240,
+      "top2_change_rows": 2160,
+      "boundary_rows": 4320,
+      "full_catalog_users": 270,
+      "full_catalog_candidate_rows": 22963869,
+      "boundary_method": "Independent binary search against fixed unsupported candidate order; all caches, no sampling",
+      "final_report_delta": "Recorded 57.5s runtime, R-versus-S HHI and natural-zero subgroup caveat verified; unchanged text and figure verified"
+    },
+    {
+      "reviewer": "Hubble / text339_eval_review",
+      "status": "PASS_INTERPRETATION",
+      "scope": "Separate descriptive candidate reconsideration from statistical superiority; retain GBT and corrected FM candidates; cold-item and page-specific limits",
+      "not_claimed": "Independent numeric recomputation of the full diagnostics"
+    }
+  ],
+  "root_checks": [
+    "Synthetic pagination, missing-page, zero-IDCG and tied-boundary selftest passed",
+    "Python AST parse passed; Ruff unavailable in the Python 3.12 environment",
+    "Rendered figure visually inspected",
+    "Final report artifact hashes and local links verified",
+    "Historical experiment results and seals preserved"
+  ],
+  "limits": [
+    "Reused development users and labels; no fresh final test",
+    "No new fitting, inference, blend tuning or model selection",
+    "UNKNOWN is not a negative label",
+    "Support-only ALS error is conditional on supported rows",
+    "Descriptive differences do not establish causal calibration effects or statistical superiority",
+    "Research catalog is not the full 2026 Korean service catalog"
+  ]
+}

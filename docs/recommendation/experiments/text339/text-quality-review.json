@@ -1,0 +1,46 @@
+{
+  "status": "PASS_WITH_DOCUMENTED_LIMITS",
+  "reviewer": "/root/wiki_report_review",
+  "texts": {
+    "bytes": 253422812,
+    "sha256": "a152f9e41db680aa0567d9befe0e71d9709e57d2ea925d3d61448550d884aa57"
+  },
+  "source_report": {
+    "bytes": 2967,
+    "sha256": "e3d70213dab17c872606f9b8c220da543dd5ddbfcd095c4e18b55337c5bd28ee"
+  },
+  "usage_application": {
+    "bytes": 2276,
+    "sha256": "a161d978bcda0a7c38a5985ce435bb3ed39bf0b114a968d96a9f0fd2e3ca4814"
+  },
+  "semantic_decisions": {
+    "bytes": 18008,
+    "sha256": "ab0d1f39f46b4b6197fd0bafcdfe34c955e9df7e2d041ad244e743113fd8ec88"
+  },
+  "preflight": {
+    "bytes": 3397,
+    "sha256": "b30005b3c62910f1400d2315a036511329aa79b6665621d2bb43c46f2da4d7b3"
+  },
+  "validation": [
+    "85517 complete rows compared: exactly 43 reviewed movies changed only both Wiki text blocks and related fields",
+    "171034 body SHA values independently recomputed",
+    "all other movie rows, raw texts, identity, overview and release dates preserved",
+    "69 QA rows match current texts; original 4 sample selection fields remain historical values",
+    "140 changed population and 43 before-quarantine rows match preserved sources",
+    "overview repair verified: only three requested fallback rows and four overview fields changed"
+  ],
+  "counts": {
+    "T2": 51181,
+    "T3": 51188,
+    "restored": 7,
+    "changed_nonempty": 92
+  },
+  "limits": [
+    "No direct evaluation or input observations for seven restored-body movies",
+    "Changed text has 23 target movies, 53 observations, 31 target users; H30 inputs cover 11 movies and 17 users",
+    "Semantic correctness of all unchanged Wiki texts is not exhaustively verified",
+    "Current text metadata and historical MovieLens ratings remain temporally mismatched",
+    "Original source errors and non-quote template omissions can remain"
+  ],
+  "rating_values_read": 0
+}

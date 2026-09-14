@@ -1,0 +1,18 @@
+{
+  "status": "PASS_CODE_ONLY",
+  "reviewer": "service_next_step_check",
+  "reporter": {
+    "bytes": 10810,
+    "sha256": "0beea8067814562ae7b5eb91b20e15b10415f948414f876435fd991c65c7939d"
+  },
+  "diagnostics_generator": {
+    "bytes": 2163,
+    "sha256": "4608614bb9293dca48a6a7f9d3daad664ae0e7845a169a1173e2b5a70b761325"
+  },
+  "diagnostic_seal": {
+    "bytes": 2666,
+    "sha256": "3f647df461f0a2a0992f4422dbf2e7bcbc4aa04fbabd588202285a5454c0efcf"
+  },
+  "actual_result_review_pending": true,
+  "scope": "aggregate parent seals, denominator/units, interpretation, plotting point estimates, labels unopened"
+}

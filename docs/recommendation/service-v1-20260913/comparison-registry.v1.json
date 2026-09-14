@@ -1,0 +1,145 @@
+{
+  "schemaVersion": "feelm-comparison-registry/1",
+  "registryVersion": "als-composite-v1-20260913",
+  "status": "CONFIGURED_NOT_EXECUTED",
+  "defaultExposureModel": "GBT",
+  "automaticPromotion": false,
+  "defaultComparisonScope": "SAME_POOL",
+  "standaloneModels": [
+    "GBT",
+    "FM",
+    "ALS"
+  ],
+  "totalScorePaths": 7,
+  "newBaseModelFitsInThisExtension": 0,
+  "compositePolicies": [
+    {
+      "id": "ALS_GBT_ROUTER",
+      "kind": "ROUTER",
+      "components": [
+        "ALS",
+        "GBT"
+      ],
+      "otherModel": "GBT",
+      "tau": null,
+      "countSource": null,
+      "usesCalibratedUnclippedScores": true,
+      "postBlendCalibration": false,
+      "structuralUnsupportedFallback": "SUPPORTED_COMPONENT_ONLY",
+      "artifactOrScorerError": "ERROR_NOT_FALLBACK",
+      "registrationStatus": "CONFIGURED_NOT_IMPLEMENTED",
+      "historicalFormula": "DV2"
+    },
+    {
+      "id": "ALS_GBT_SHRINK100",
+      "kind": "SHRINK100",
+      "components": [
+        "ALS",
+        "GBT"
+      ],
+      "otherModel": "GBT",
+      "tau": 100,
+      "countSource": "FROZEN_ALS_TRAIN_RATINGS_PER_MOVIE",
+      "usesCalibratedUnclippedScores": true,
+      "postBlendCalibration": false,
+      "structuralUnsupportedFallback": "SUPPORTED_COMPONENT_ONLY",
+      "artifactOrScorerError": "ERROR_NOT_FALLBACK",
+      "registrationStatus": "CONFIGURED_NOT_IMPLEMENTED",
+      "historicalFormula": "DV2"
+    },
+    {
+      "id": "ALS_FM_ROUTER",
+      "kind": "ROUTER",
+      "components": [
+        "ALS",
+        "FM"
+      ],
+      "otherModel": "FM",
+      "tau": null,
+      "countSource": null,
+      "usesCalibratedUnclippedScores": true,
+      "postBlendCalibration": false,
+      "structuralUnsupportedFallback": "SUPPORTED_COMPONENT_ONLY",
+      "artifactOrScorerError": "ERROR_NOT_FALLBACK",
+      "registrationStatus": "CONFIGURED_NOT_IMPLEMENTED",
+      "historicalFormula": "NEW_SYMMETRIC_EXTENSION"
+    },
+    {
+      "id": "ALS_FM_SHRINK100",
+      "kind": "SHRINK100",
+      "components": [
+        "ALS",
+        "FM"
+      ],
+      "otherModel": "FM",
+      "tau": 100,
+      "countSource": "FROZEN_ALS_TRAIN_RATINGS_PER_MOVIE",
+      "usesCalibratedUnclippedScores": true,
+      "postBlendCalibration": false,
+      "structuralUnsupportedFallback": "SUPPORTED_COMPONENT_ONLY",
+      "artifactOrScorerError": "ERROR_NOT_FALLBACK",
+      "registrationStatus": "CONFIGURED_NOT_IMPLEMENTED",
+      "historicalFormula": "NEW_SYMMETRIC_EXTENSION"
+    }
+  ],
+  "profiles": {
+    "primary": "service-v1-kobis245",
+    "legacy": "legacy-rh230",
+    "mixProfilesInOnePrimaryComparison": false
+  },
+  "inputContract": {
+    "originalHistoryLimit": 10,
+    "componentCalibrationRole": "CALIBRATION_45_CAP10",
+    "candidateParityWithStandalone": true,
+    "runtimeFailureIsStructuralUnsupported": false,
+    "shrinkCountMustMatchFactorTrainingVersion": true,
+    "alsTrainCountType": "POSITIVE_INTEGER_EXCLUDING_BOOL_NAN_INFINITY"
+  },
+  "outputContract": {
+    "policyKey": "comparisonPolicyId",
+    "componentVersionsRequired": true,
+    "branchRequired": true,
+    "effectiveAlsWeightRequired": true,
+    "rankingScore": "UNCUT_COMPOSITE_CALIBRATED_SCORE",
+    "predictedRatingClip": [
+      0.5,
+      5.0
+    ],
+    "roundPredictionsToHalfStar": false,
+    "doNotMutatePublicRankingPayload": true
+  },
+  "evaluation": {
+    "metricsContract": "EVALUATION.md",
+    "pairedSupport": "PAIRWISE_COMMON_ROWS_USERS",
+    "alsoReportFactorAndActualAlsSupport": true,
+    "missingAlsSamePoolScoreMustEqualOtherModel": true,
+    "allSevenIntersectionIsNotOnlyPopulation": true,
+    "globalTopKCanChangeOnColdRows": true,
+    "endToEndSeparateCandidatePools": true,
+    "discoveryRetrievalSamePolicy10x10": true,
+    "addsToExistingHolmFamily": false,
+    "promotionAllowedByThisRegistry": false
+  },
+  "legacyReferences": {
+    "rec047FixedAlsWeight": 0.25,
+    "reuseRec047WeightAsOptimum": false,
+    "rrf60": "LEGACY_RANK_ONLY_REFERENCE_NOT_ONE_OF_SEVEN"
+  },
+  "provenance": [
+    {
+      "path": ".codex-tmp/fixed-k8-discovery-v2-20260913/scripts/dv2_predictor.py",
+      "bytes": 19085,
+      "sha256": "db3c1c92278fdfc889e8e951c1aa53495c631772dcf2f07bc6644d545ecc4086"
+    },
+    {
+      "path": "scripts/rec047_run.py",
+      "bytes": 13998,
+      "sha256": "bd9db81789c64b5da8d56f703676d807df29ce98007e1632bb8ef6462f66ecfc"
+    },
+    {
+      "path": ".codex-tmp/fixed-k8-discovery-v2-20260913/scripts/rec_ev_032_basic.py",
+      "bytes": 35228,
+      "sha256": "ee17ef12d7ba0ec136d5e581b566ca2d652540edd134190daee5f0836851634f"
+    }
+  ]
+}

@@ -1,0 +1,22 @@
+{
+  "evaluation_scope": "DEVELOPMENT_ONLY",
+  "roles_source": "outputs/recommendation-evidence/research343/roles.csv",
+  "availability_audit": {
+    "bytes": 4751,
+    "sha256": "53a44c6660c3ced849e3233239ec2920e5d3105358a12b78a13faa0ff09700a6"
+  },
+  "plan_pins": {
+    "README.md": "f5f2b2dbfdbb85fcefc84957e41feab5f181066a46ed92aacb09fef35f22a63e",
+    "DESIGN.md": "721d765dd78c89b60320da90e4eee2fc6446202aed8221692e4d7ad421bb5ea4",
+    "EVIDENCE.md": "30ab877230928ff7bceb69219aff365478fdfc6926c2a6876877e1053a0e04e4",
+    "config.json": "7ac43a357a2788a900d5e291ea2381e28a8cd63dc21568d6a7b951ea752477bb",
+    "review.json": "fcef1953f4461fe1a482069bf1611fea14a1c78263dda15761e94c31068e0a61"
+  },
+  "source_design_preserved": true,
+  "full_catalog_caps": [
+    10
+  ],
+  "full_catalog_roles": [
+    "comparison"
+  ]
+}

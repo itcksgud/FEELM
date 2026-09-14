@@ -1,0 +1,25 @@
+{
+  "status": "PASS_ARTIFACT_IDENTITY",
+  "reviewer": "root_mechanical",
+  "reference_code_review": {
+    "bytes": 5342,
+    "sha256": "d504724d12d743fdc4ad911915b6b4d6a7a0296a5d0aa41f75359e843ee7382f"
+  },
+  "reference_result_review": {
+    "bytes": 6031,
+    "sha256": "30eb580a20d1c65ced1215b71d544f51546d841d3912593021bfec0f45730eea"
+  },
+  "original_prepared_seal": {
+    "bytes": 5024,
+    "sha256": "d27709a42bd0d5511a36f3740365637325d59b521c7f62eae04850523782fdd8"
+  },
+  "original_fit_seal": {
+    "bytes": 4195,
+    "sha256": "447c00df9cb888bbc0272bd03abd87f751b951954244e0e113bd1171d086c25d"
+  },
+  "T3_model_seal": {
+    "bytes": 7176,
+    "sha256": "0873c3001cad3b3f30906d7a2219e3125c63bfd6579be95ecf2c71686df09bad"
+  },
+  "scope": "Actual original code/config/sources/prepared outputs/model artifacts match their immutable reviewed pins"
+}

@@ -1,0 +1,33 @@
+{
+  "status": "PASS",
+  "reviewer": "Dewey",
+  "fingerprint": {
+    "scripts/policy341.py": {
+      "bytes": 2727,
+      "sha256": "b3e954d2896108bd5570bb2d644815e83f39c3a08256db0e2b76e08c5504e07e"
+    },
+    "scripts/policy341_run.py": {
+      "bytes": 5882,
+      "sha256": "21b8faf096dc67b912219932a42c3d069d47e105b325e61230ead998f79697fa"
+    },
+    "scripts/test_policy341.py": {
+      "bytes": 2347,
+      "sha256": "bfb9169f6f8c209732bd0572910dc7cb638d7674e372c01645a3ee1edf84cf0e"
+    },
+    "docs/recommendation/experiments/policy341/EXECUTION.md": {
+      "bytes": 5579,
+      "sha256": "02ae7c179fdf4465ccf5f8f4f620ff19db54bd28969f485345875981bedf513c"
+    }
+  },
+  "checks": [
+    "same fixed complete candidates and locked model",
+    "five policy configs",
+    "no history or genre fallback",
+    "fixed taste slots and no duplicates",
+    "exact novelty boundaries with predeclared 1e-12 tolerance",
+    "score and connection boundaries",
+    "255 independent multiblock invariant checks"
+  ],
+  "scope": "Pure policy and label-free execution code only",
+  "timing_scope": "recommend ranking only, excludes cache load/profile creation"
+}

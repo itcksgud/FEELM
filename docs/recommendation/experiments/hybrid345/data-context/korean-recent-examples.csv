@@ -1,0 +1,4 @@
+tmdb_id,tmdb_title,tmdb_year,mapping_status,movieId,ml_year,ml_count,ml_mean_5,tmdb_count,tmdb_mean_10
+626412,외계+인 2부,2024.0,SERVICE_ONLY_CONTENT_BASED,,,,,868.0,6.69
+701387,부고니아,2025.0,SERVICE_ONLY_CONTENT_BASED,,,,,2370.0,7.29
+980431,아앙: 더 라스트 에어벤더,2026.0,SERVICE_ONLY_CONTENT_BASED,,,,,1071.0,9.18

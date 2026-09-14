@@ -1,0 +1,66 @@
+{
+  "status": "PASS",
+  "reviewers": [
+    "Rawls /root/github_research_scope_audit core and delta review",
+    "Hubble /root/text339_eval_review native synthetic verification"
+  ],
+  "fingerprint": {
+    "scripts/research343_common.py": {
+      "bytes": 2323,
+      "sha256": "da529a1488559cc8777d0f783d6b657f405142232663aecffc1c76e5f4d7637c"
+    },
+    "scripts/research343_lgb.py": {
+      "bytes": 5867,
+      "sha256": "94bc7d643c7aede3961470441c312b51729d731ba43d5b7d5bd5b02f81cf64a9"
+    },
+    "scripts/research343_lgb_worker.py": {
+      "bytes": 4819,
+      "sha256": "4e1e4594a03c33e0600b7b5af24372c2633367a3931d620b5a8f6ec9a0748203"
+    },
+    "scripts/research343_lgb_models.py": {
+      "bytes": 2908,
+      "sha256": "38f1a6c89bd972ea1236dd6a769414fc1a716a7ae489086ba8e86933e57ec90f"
+    },
+    "scripts/combination340_worker.py": {
+      "bytes": 5302,
+      "sha256": "075f1f1721a392ceb45d3e523c47d92dd77d606dec3075227854f1a9bad4a673"
+    },
+    "scripts/rec046_common.py": {
+      "bytes": 8001,
+      "sha256": "42dd14e83ecbee0c02c5e4233abb4b6a8d807ad2213c24a22cfb82350bc47848"
+    },
+    "docs/recommendation/experiments/research343/DESIGN.md": {
+      "bytes": 8651,
+      "sha256": "d592f30c0aa53596fea4311297648302b51d52c40614fd7717a7e210739e2180"
+    },
+    "docs/recommendation/experiments/research343/config.json": {
+      "bytes": 455,
+      "sha256": "a040355033a12137db9bc0f70513ee2547fd0fbc0a0c7f8e4db8b95f3ef0a393"
+    }
+  },
+  "runtime_result": {
+    "bytes": 1436,
+    "sha256": "200d47eb03aa6a5a36fec02484728691d19357bb18bc8cb557e71d5b20a4b4aa"
+  },
+  "native_probe_manifest": {
+    "bytes": 3177,
+    "sha256": "df219812401fb05a9bbd03742138992bfe045fdf03f069414eeb6b1d70d522ff"
+  },
+  "native_probe_result": {
+    "bytes": 2380,
+    "sha256": "24c2663713c21321e765de0342333fe27377806492359b68f7b433c2a40b48dc"
+  },
+  "checks": [
+    "4997069 rows and 73771 same-input queries verified",
+    "30 integrity guards, parser structural rejection and 512 synthetic arithmetic rows",
+    "native maxPosition ignored; explicit truncation6 verified before actual fits",
+    "60 trees each; all 540 regression / 322 ranking internal split threshold triples max error zero",
+    "no actual FEELM labels or fits in runtime probe",
+    "same spark-submit --jars launcher tested; failed constructor before fit archived; query prepare AST unchanged"
+  ],
+  "prepared_query_seal": {
+    "bytes": 1741,
+    "sha256": "db8e135540f1aea2dcc0b3e4dd46d92a47802541217b0e05ba16a4178a7c827f"
+  },
+  "query_preparation_source": "outputs/recommendation-evidence/research343/failed-attempts/reg-driver-classpath-01"
+}

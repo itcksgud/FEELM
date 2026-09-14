@@ -1,0 +1,105 @@
+{
+  "status": "PASS_INDEPENDENT_OBSERVED_QUALITY_SELECTION",
+  "reviewer": "/root/github_research_scope_audit",
+  "artifacts": {
+    "evaluation-seal.json": {
+      "bytes": 4890,
+      "sha256": "0ab420fb3e50cf770d9dd7a24d64e5ce8896a4c17b38a7ba5df73398ad6fb9c7"
+    },
+    "original_labels.parquet": {
+      "bytes": 75509,
+      "sha256": "4860b9b5255a75031210e87e5417229d79d221ffa1d074f4d5eedb6cb894592a"
+    },
+    "labels.parquet": {
+      "bytes": 75490,
+      "sha256": "e3bf301a6e2ea7885b59bcab7fe83c2d3ad84f93f2f1bbb2d54d943b9a658db8"
+    },
+    "selection.json": {
+      "bytes": 2734,
+      "sha256": "3c49b41e0e93ba8bf0d3db571e3a71c554f1211631634817b821c1191979f912"
+    },
+    "user-metrics.parquet": {
+      "bytes": 1222131,
+      "sha256": "8e1830b895b5681f5a2283b4d0cd9fae69968e7c2155d2f97bcdba4973bc605c"
+    }
+  },
+  "current_code_pins": 21,
+  "actual_artifact_and_parent_hash_comparisons": 132,
+  "labels_opened_after_prediction_and_catalog_seals": true,
+  "source_label_rows": 18960,
+  "current_user_label_rows": 18959,
+  "H10_observed_scoring_rows": 18646,
+  "contexts_independently_checked": 1350,
+  "context_checks": [
+    "current role separation",
+    "past input timestamps",
+    "input/candidate separation",
+    "same candidate set across caps"
+  ],
+  "independent_quality": {
+    "caps": [
+      10
+    ],
+    "groups": [
+      "ALL",
+      "C",
+      "W",
+      "NATURAL_ZERO"
+    ],
+    "user_variant_group_rows": 3400,
+    "fields_per_row": 39,
+    "max_error": 1.7763568394002505e-15,
+    "summary_cells": 1540,
+    "summary_max_error": 1.7763568394002505e-15,
+    "production_quality_helper_calls": 0,
+    "production_interval_helper_calls": 0
+  },
+  "bootstrap": {
+    "iterations": 20000,
+    "seed": 339,
+    "uid_sorted": true,
+    "ndcg_alpha": 0.016666666666666666,
+    "max_interval_error": 7.806255641895632e-18,
+    "selection": "T0",
+    "first_failure_stop_exact": true
+  },
+  "denominators": {
+    "ALL_Top2_4_6_10": [
+      260,
+      237,
+      218,
+      192
+    ],
+    "ALL_recall2_4_6_10": [
+      254,
+      236,
+      218,
+      192
+    ],
+    "ALL_IDCG0": [
+      0,
+      0,
+      0,
+      0
+    ],
+    "C_Top2_candidates": 195,
+    "C_ndcg2": 194,
+    "C_recall2": 174,
+    "W_Top2_candidates": 249,
+    "W_recall2": 244,
+    "NATURAL_ZERO_Top2": 45,
+    "NATURAL_ZERO_recall2": 26,
+    "h0_Top2": 84,
+    "h_positive_all": 186,
+    "h_positive_Top2": 176
+  },
+  "unchanged_evaluation_seal_after_audit": true,
+  "limits": [
+    "Current development maintenance decision, not statistical superiority ofT0 or general uselessness of text.",
+    "Within-group reranking is conditional observed-candidate quality, not whole-catalog exposure.",
+    "Full catalog math and UNKNOWN diagnostics are separate reviews.",
+    "Single fixed-seed fit; user bootstrap does not cover optimization or training-seed uncertainty."
+  ],
+  "file_writes_by_reviewer": 0,
+  "new_fits": 0
+}

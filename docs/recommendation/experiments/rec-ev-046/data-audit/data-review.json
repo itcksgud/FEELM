@@ -1,0 +1,30 @@
+{
+  "status": "PASS_INDEPENDENT_DATA_COMPOSITION_AUDIT",
+  "reviewer": "target_domain_review / Euler",
+  "raw_scan": {
+    "rows": 32000204,
+    "loaded_columns": [
+      "userId",
+      "movieId",
+      "timestamp"
+    ],
+    "raw_rating_values_loaded": 0,
+    "user_count_cells": 1004740,
+    "catalog_movie_count_cells": 342068,
+    "authorized_timestamp_pairs": 115572,
+    "exact_match": true
+  },
+  "recomputed_tables": 11,
+  "recomputed_table_rows": 1778,
+  "integer_counts_and_keys": "EXACT_MATCH",
+  "max_share_difference": 1.53e-16,
+  "max_feature_share_difference": 1.11e-16,
+  "max_timestamp_csv_difference_seconds": 2.38e-07,
+  "training_selection": "All 3 round selected uid orders, K assignments and visited-prefix skip counts independently reproduced",
+  "input_support": "Recomputed from actual train-counts and O IDs",
+  "fingerprint_files_unchanged": 4,
+  "source_files_unchanged": 38,
+  "original_completion_unchanged": true,
+  "independent_reviewer_wrote_files": false,
+  "scope_excludes": "Performance-cell results audited separately"
+}

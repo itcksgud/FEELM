@@ -1,0 +1,28 @@
+{
+  "date": "2026-09-09",
+  "status": "DESIGN_REVIEW_PASS_NOT_EXECUTION_APPROVAL",
+  "document": "als-reference-cold-item-comparison.md",
+  "sha256": "5f25f12814d4d166819d4167029c0b652753c2fc246ce923e2087ca051b288eb",
+  "reviews": [
+    {
+      "reviewer": "service_next_step_check",
+      "status": "PASS",
+      "scope": "동일 사용자·영화의 비교 설계, 사용자·시간 분리, 영화 단위 평점 차단, ALS 직접 점수와 기본값 구분, 재현도와 실제 별점 품질 분리, 탐색 결과의 해석 범위",
+      "reviewed_revision_sha256": "fda75f00ca286a53a0ba51f56cafa19bfb3a249559d075a02afc25d65feecf6d"
+    },
+    {
+      "reviewer": "github_research_scope_audit",
+      "status": "PASS",
+      "scope": "REC047 특징 코드 검산 및 이후 변경된 TMDB 특징 설명·사용자별 취향/대중성 섹션 검토. exact ID 연결표 정정, 공유 모델과 개인별 계수 구분, 추가 특징 미실행, 동적 수치 시점과 보류 평점 재유입 경계",
+      "reviewed_revision_sha256": "5f25f12814d4d166819d4167029c0b652753c2fc246ce923e2087ca051b288eb"
+    }
+  ],
+  "execution_ready": false,
+  "new_training_or_label_scoring_performed": false,
+  "remaining_before_execution": [
+    "영화 ID·해시·반올림 규칙과 실제 표본 수 고정",
+    "사용자 질문을 반영한 특징 확장 여부·출처·시점·산식 고정",
+    "영화 차단 이후 입력 이력·통계·특징 생성 코드 독립 검토",
+    "지표·재표집 구현, 모델 설정 및 실행 봉인 고정"
+  ]
+}

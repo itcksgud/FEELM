@@ -1,0 +1,85 @@
+{
+  "status": "PASS",
+  "reviewer": "Hubble",
+  "prepared_seal": {
+    "bytes": 4711,
+    "sha256": "9f0550e38566512fc2dad084d3f9381a7197ea3bab05fd0428eef76878acb62e"
+  },
+  "files": {
+    "partition-identity.json": {
+      "bytes": 648,
+      "sha256": "3808daee7d3dd8e68de6e0cd9479a8d0cfceddc90f2aaf8736c401f72410152a"
+    },
+    "portable.npz": {
+      "bytes": 31150,
+      "sha256": "1f44f52c7d52363fd14dc72c83132953bde535dec0161ab5b49f4c64c1d7e14c"
+    },
+    "predictions/.part-00000-0e611b1f-c327-43ae-9510-b6d0ede12e92-c000.snappy.parquet.crc": {
+      "bytes": 6036,
+      "sha256": "fab3a6ce425e3456dc25c2d8f033c465544932ee748859de3e8089bbb9031bd6"
+    },
+    "predictions/._SUCCESS.crc": {
+      "bytes": 8,
+      "sha256": "1d44f510ec2ed7595badbec80583316defc14e8dd89130d719724149adfaa07d"
+    },
+    "predictions/part-00000-0e611b1f-c327-43ae-9510-b6d0ede12e92-c000.snappy.parquet": {
+      "bytes": 771379,
+      "sha256": "e1d678e63a0dee0231233fd4c61172ae9c9ce370e2e68c68ff1a901077889e11"
+    },
+    "predictions/_SUCCESS": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "native/data/.part-00000-6fcd8d20-1531-48d5-9290-6d601c7d430d-c000.snappy.parquet.crc": {
+      "bytes": 288,
+      "sha256": "e34a8133a9054d6bdba12855cd1d03c8e4a7287adb23f526245b5e5655d49f02"
+    },
+    "native/data/._SUCCESS.crc": {
+      "bytes": 8,
+      "sha256": "1d44f510ec2ed7595badbec80583316defc14e8dd89130d719724149adfaa07d"
+    },
+    "native/data/part-00000-6fcd8d20-1531-48d5-9290-6d601c7d430d-c000.snappy.parquet": {
+      "bytes": 35427,
+      "sha256": "b4dd3eb53a995795d5e14b7068d7ea85a4b20ac01c7d9a5ae886c16354c85eff"
+    },
+    "native/data/_SUCCESS": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "native/metadata/.part-00000-6daf044b-3f58-4e18-b333-dc569d826df0-c000.txt.crc": {
+      "bytes": 16,
+      "sha256": "465f23353bc19cdfdf4ea5c9bee1ad49e3dae90ee80b8b5f50c87396ca37e08d"
+    },
+    "native/metadata/._SUCCESS.crc": {
+      "bytes": 8,
+      "sha256": "1d44f510ec2ed7595badbec80583316defc14e8dd89130d719724149adfaa07d"
+    },
+    "native/metadata/part-00000-6daf044b-3f58-4e18-b333-dc569d826df0-c000.txt": {
+      "bytes": 570,
+      "sha256": "f7856381aec52d328e0b06b5cb30df592deebeca572142f28ddaf6fbcde47b0b"
+    },
+    "native/metadata/_SUCCESS": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  },
+  "native_coefficients_exact": 3911,
+  "native_prediction_rows": 93230,
+  "max_abs_prediction_error": 3.552713678800501e-15,
+  "independent_partition_counts": [
+    624054,
+    624438,
+    624481,
+    625449,
+    624427,
+    624773,
+    624390,
+    625057
+  ],
+  "partition_row_sequence_hashes_match": true,
+  "claim": "Preserved trained model and predictions only; worker process ended at post-fit metrics collection.",
+  "fit_seconds": null,
+  "peak_bytes": null,
+  "strict_memory_pass": null,
+  "new_fit_performed": false
+}

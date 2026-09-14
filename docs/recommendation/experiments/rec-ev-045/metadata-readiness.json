@@ -1,0 +1,92 @@
+{
+  "independent_preparation_review": "PASS /root/rec044_design_audit",
+  "source_seal": {
+    "bytes": 1103,
+    "sha256": "ffa02f9981ae999dd9578134ecd2e3c1a75dfeb3ef6abbd50327115266b20715"
+  },
+  "code": {
+    "bytes": 5563,
+    "sha256": "b6459b00bead8059d73473cb736e7ca72c04cb47fb22e36c78a22a0750947825"
+  },
+  "summary": {
+    "status": "METADATA_ONLY",
+    "movies": 85517,
+    "rating_values_read": false,
+    "network_requests": 0,
+    "seconds": 501.5470000000005,
+    "list_fields": {
+      "production_company_ids": {
+        "nonempty_movies": 76046,
+        "unique_values": 49142
+      },
+      "collection_ids": {
+        "nonempty_movies": 9745,
+        "unique_values": 4141
+      },
+      "spoken_language_codes": {
+        "nonempty_movies": 82863,
+        "unique_values": 166
+      },
+      "origin_country_codes": {
+        "nonempty_movies": 85392,
+        "unique_values": 188
+      }
+    },
+    "numeric_fields": {
+      "tmdb_vote_average": {
+        "nonnull_movies": 84660,
+        "quantiles": {
+          "0.0": 0.5,
+          "0.25": 5.4,
+          "0.5": 6.159,
+          "0.75": 6.8,
+          "1.0": 10.0
+        }
+      },
+      "tmdb_vote_count": {
+        "nonnull_movies": 85517,
+        "quantiles": {
+          "0.0": 0.0,
+          "0.25": 11.0,
+          "0.5": 27.0,
+          "0.75": 93.0,
+          "1.0": 40975.0
+        }
+      },
+      "tmdb_popularity": {
+        "nonnull_movies": 85517,
+        "quantiles": {
+          "0.0": 0.0,
+          "0.25": 1.0229,
+          "0.5": 1.4423,
+          "0.75": 2.1973,
+          "1.0": 150.0407
+        }
+      },
+      "budget_positive": {
+        "nonnull_movies": 16389,
+        "quantiles": {
+          "0.0": 1.0,
+          "0.25": 1000000.0,
+          "0.5": 5000000.0,
+          "0.75": 18000000.0,
+          "1.0": 700000000.0
+        }
+      },
+      "revenue_positive": {
+        "nonnull_movies": 16177,
+        "quantiles": {
+          "0.0": 1.0,
+          "0.25": 904000.0,
+          "0.5": 6149983.0,
+          "0.75": 30987695.0,
+          "1.0": 2923706026.0
+        }
+      }
+    },
+    "fetched_min": "2026-08-31T22:53:06.095301+00:00",
+    "fetched_max": "2026-09-05T15:52:35.176649+00:00",
+    "snapshot_aggregates_not_historical_forecast_inputs": true
+  },
+  "labels_read": false
+}

@@ -1,0 +1,92 @@
+{
+  "experiment": "REC047",
+  "origins": {
+    "validation": 1656979200,
+    "evaluation": 1672531200
+  },
+  "horizon_seconds": 15552000,
+  "seed": 47,
+  "levels": [
+    25,
+    50,
+    100
+  ],
+  "ks": [
+    0,
+    1,
+    5,
+    10,
+    30
+  ],
+  "models": {
+    "ALS": {
+      "rank": 32,
+      "regParam": 0.1,
+      "maxIter": 15
+    },
+    "FM": {
+      "factorSize": 16,
+      "regParam": 0.01,
+      "maxIter": 150,
+      "stepSize": 0.01,
+      "miniBatchFraction": 0.25
+    },
+    "RIDGE": {
+      "regParam": 0.01,
+      "maxIter": 150
+    },
+    "GBT": {
+      "maxDepth": 5,
+      "maxIter": 60,
+      "stepSize": 0.05
+    }
+  },
+  "blend_als_weights": [
+    0,
+    0.25,
+    0.5,
+    0.75,
+    1
+  ],
+  "metadata": "outputs/recommendation-evidence/rec-ev-045/metadata.parquet",
+  "split": "outputs/recommendation-evidence/rec-ev-032/user-resplits/splits.npz",
+  "forced_movie_holdout": false,
+  "feature_dimensions": 168,
+  "fit_timeout_seconds": 2700,
+  "docker_image": "feelm-rec046-spark:local",
+  "image_id": "sha256:de611d62db982bb833b0737a7ddd72a7cd49ab1a7dc9128669cdabae39f46df8",
+  "sources": {
+    "outputs/recommendation-evidence/rec-ev-045/metadata.parquet": {
+      "bytes": 6891831,
+      "sha256": "4d838874938115be7a4b1f629a920dd196e082b655b75d559d71039e52eb7d8d"
+    },
+    "outputs/recommendation-evidence/rec-ev-032/user-resplits/splits.npz": {
+      "bytes": 634368,
+      "sha256": "5d230c59fcdbabdce529e6fa1ba5535895b59b2ab296905d71e9274c5c158410"
+    },
+    "C:/higher/projects/MM/data/raw/ml-32m.zip": {
+      "bytes": 238950008,
+      "sha256": "e4a68655d7386b8f95f2f2424b2ff975dfdd15ffd59e0d864a14dca43e99d6ee"
+    },
+    "outputs/recommendation-evidence/rec-ev-047-readiness/completion.json": {
+      "bytes": 2665,
+      "sha256": "dbd3ef81197192051c0fa496b289609a4a6ea07fd7dc0a224eec7a644a125ba6"
+    },
+    "outputs/recommendation-evidence/rec-ev-047-readiness/development-observations.parquet": {
+      "bytes": 50098493,
+      "sha256": "6d38956e7b516b69d847c21d85953bc1dc3efd7f10f84065cb155bc67ca0e62d"
+    },
+    "outputs/recommendation-evidence/rec-ev-047-readiness/user-origin-counts.parquet": {
+      "bytes": 2328627,
+      "sha256": "c1c5e1ee107b2e29fd1d4c269d342c33c5a38f82c28836a8f094dbfd85cd00c7"
+    },
+    "docs/recommendation/experiments/rec-ev-047/readiness-pre-review.json": {
+      "bytes": 1427,
+      "sha256": "976cdcdd235a79ab3c9d7adb171d5b7868e5f3c8a3a5d82ebd6aea9fc76548b0"
+    },
+    "docs/recommendation/experiments/rec-ev-047/readiness-result-review.json": {
+      "bytes": 570,
+      "sha256": "48c38351ad4770e83c34d556f5ca5431bfb07d492f27a74f5df39a45147907b6"
+    }
+  }
+}

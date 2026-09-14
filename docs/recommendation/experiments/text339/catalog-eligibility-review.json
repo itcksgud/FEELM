@@ -1,0 +1,31 @@
+{
+  "status": "PASS_ACTUAL_CANDIDATE_ELIGIBILITY",
+  "reviewer": "/root/text339_eval_review",
+  "snapshot_timestamp": 1788998400,
+  "snapshot_utc": "2026-09-10T00:00:00Z",
+  "movie_axis": 85517,
+  "date_eligible_movies": 85517,
+  "missing_or_invalid_date_movies": 0,
+  "after_snapshot_movies": 0,
+  "users_H10": 270,
+  "users_h0": 84,
+  "users_h_positive": 186,
+  "candidate_counts": {
+    "min": 76085,
+    "median": 85356.5,
+    "max": 85517,
+    "sum": 22963869
+  },
+  "empty_duplicate_or_past_viewed_errors": 0,
+  "users_with_viewed_excluded_beyond_input": 185,
+  "additional_viewed_exclusions": 123869,
+  "max_additional_viewed_exclusions_per_user": 9422,
+  "movie_axis_int64_le_sha256": "330606b18a36fc04c0f3ef9187b9dc45747e3c592f93f9869b3f02c610722fb6",
+  "candidate_stream_sha256": "35b66d225c9f3f0a1ff88246c2634e4c93d0267e81f7ed5d863359c15530c483",
+  "candidate_stream_format": "ASCII text339-current-candidate-id-sequence-v1\\n1788998400\\n, then for each UID ascending struct.pack('<qQ', uid, candidate_count) and ascending movie IDs as signed int64 LE bytes",
+  "per_user_checksum_tsv_sha256": "f7e7e122d9920c68cd66cc1fe06845ac9e5c772921ec5f0d69f60ec5fd4e6d68",
+  "per_user_checksum_tsv_format": "UID ascending, uid TAB candidate_count TAB SHA256(movie ID int64 LE bytes) LF",
+  "parents_verified": ["contexts.json", "catalog.parquet", "texts.parquet"],
+  "future_rating_values_or_model_scores_read": 0,
+  "claim_limit": "MovieLens-linked research catalog eligibility only, not service or KR OTT catalog coverage, prediction quality, or completed scoring audit"
+}

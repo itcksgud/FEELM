@@ -1,0 +1,237 @@
+{
+  "schema_version": 1,
+  "status": "PASS",
+  "date": "2026-09-12",
+  "kind": "independent_label_opening_evaluation_code_review",
+  "experiment": "hybrid345",
+  "scope": "DEVELOPMENT_ONLY",
+  "labels_opened_during_review": false,
+  "review_visibility": {
+    "hybrid345_evaluation_labels_opened": false,
+    "hybrid345_label_derived_outputs_opened": false,
+    "existing_final344_calibration_reference_inspected": true,
+    "note": "The previously sealed final344 calibration reference was seen while checking its provenance; no hybrid345 labels or hybrid345 evaluation outcomes were opened."
+  },
+  "fingerprint": {
+    "scripts/hybrid345_evaluate.py": {
+      "bytes": 70337,
+      "sha256": "146bd0dc4fa8fde49182528205b7f787edc5f5d55becb04e4a62b09060e9d1c9"
+    },
+    "scripts/report_hybrid345.py": {
+      "bytes": 20447,
+      "sha256": "06856ad5108950adc3e0ef65385f1e39f18271f57a45f1ea4da023bcdcefbc06"
+    },
+    "scripts/test_hybrid345_evaluate.py": {
+      "bytes": 14271,
+      "sha256": "abe67769529a171f9e7c38a5bbdb4f8fcb21803ec77288dc85684abf271084d1"
+    },
+    "docs/recommendation/experiments/hybrid345/DESIGN.md": {
+      "bytes": 16289,
+      "sha256": "18ca3c22ffacaace55ca6483620ff36d76230902bb38557d7b2a34aaf1906884"
+    },
+    "docs/recommendation/experiments/hybrid345/config.json": {
+      "bytes": 22142,
+      "sha256": "f975cd83b179c8b61dac09e0a3a527c4f2c4794389e88b0be4fd3c69d0679506"
+    },
+    "docs/recommendation/experiments/hybrid345/design-review.json": {
+      "bytes": 3888,
+      "sha256": "4e6fde96f90ecfdbdb4cf32ed6d5a86d818e6650a6ea65547ea425c35c23d74f"
+    }
+  },
+  "audits": {
+    "tmdb_vote_source": {
+      "status": "PASS",
+      "document_metadata_source": "outputs/recommendation-evidence/rec-ev-033/metadata.parquet",
+      "diagnostic_vote_source": "outputs/recommendation-evidence/rec-ev-045/metadata.parquet",
+      "access_contract": "CONFIG_PINNED_FINAL344_INPUT_LOCK_THEN_LOCKED_FILE_PIN",
+      "direct_unpinned_rec045_access": false,
+      "input_lock_scope": "DEVELOPMENT_ONLY",
+      "input_lock_labels_read": false,
+      "metadata_bytes": 6891831,
+      "metadata_sha256": "4d838874938115be7a4b1f629a920dd196e082b655b75d559d71039e52eb7d8d",
+      "rows": 85517,
+      "unique_movie_ids": 85517,
+      "catalog_axis_exact": true,
+      "vote_counts_finite_nonnegative_integral": true,
+      "vote_count_range": [
+        0,
+        40975
+      ]
+    },
+    "producer_continuity": {
+      "status": "PASS",
+      "config_changed_for_fix": false,
+      "config_sha256": "f975cd83b179c8b61dac09e0a3a527c4f2c4794389e88b0be4fd3c69d0679506",
+      "documents_seal_recursive_verification": "PASS_LABEL_FREE_INPUTS_SEALED",
+      "rec033_document_source_pin_verified": true,
+      "qwen_embedding_seal_recursive_verification": "PASS",
+      "qwen_embedding_sha256": "0bb0719fe9b4d2eb7a927b6fde5838c7f6a3a343a1edd6ad2690497a1805c7e3",
+      "prediction_seal_recursive_verification": "PASS",
+      "prediction_sha256": "cc8612fdf96a0bf4eba3dab503fe005ea92c7ee7991c1122781c3d669bb4ad81",
+      "producer_labels_opened": false
+    },
+    "label_boundary": {
+      "status": "PASS",
+      "prediction_seal_gate_before_label_read": true,
+      "evaluation_review_gate_before_label_read": true,
+      "label_free_axes_and_source_pins_checked_before_label_read": true,
+      "output_collision_gate_before_label_read": true,
+      "sole_label_reader": "load_truth",
+      "label_sha256_checked_immediately_before_parquet_read": true,
+      "expected_label_sha256": "e3bf301a6e2ea7885b59bcab7fe83c2d3ad84f93f2f1bbb2d54d943b9a658db8",
+      "calibration_and_selection_role": "calibration",
+      "comparison_role_used_for_selection": false
+    },
+    "final344_calibration_parent": {
+      "status": "PASS",
+      "seal_path": "outputs/recommendation-evidence/final344/final-calibration-seal.json",
+      "calibration_path": "outputs/recommendation-evidence/final344/final-calibration.json",
+      "seal_bound_to_config_pinned_final344_input_lock": true,
+      "seal_exact_file_inventory_enforced": true,
+      "seal_execution_pins_verified": true,
+      "rechecked_before_reproduction_parse": true,
+      "rechecked_before_evaluation_seal": true
+    },
+    "manifest_inventory": {
+      "status": "PASS",
+      "result_files_before_manifest": 14,
+      "evaluation_seal_covers_result_files_and_manifest": true,
+      "records_prediction_seal": true,
+      "records_evaluation_review_and_fingerprint": true,
+      "records_config": true,
+      "records_direct_inputs": [
+        "catalog",
+        "contexts",
+        "roles",
+        "partition",
+        "rec033_metadata",
+        "texts",
+        "final344_input_lock",
+        "labels"
+      ],
+      "records_indirect_inputs": [
+        "tmdb_vote_metadata",
+        "final344_calibration_seal",
+        "final344_calibration"
+      ],
+      "records_label_pin": true,
+      "records_evaluator_code": true,
+      "parent_and_review_rechecked_before_seal": true
+    },
+    "formal_contrasts": {
+      "status": "PASS",
+      "total": 14,
+      "families": {
+        "warm": 2,
+        "cold": 8,
+        "router": 4
+      },
+      "config_and_code_order_match": true
+    },
+    "aggregation_and_denominators": {
+      "status": "PASS",
+      "primary_unit": "USER_MACRO",
+      "primary_cap": 10,
+      "primary_h_positive": true,
+      "groups": [
+        "ALL",
+        "W_DIRECT",
+        "C",
+        "V",
+        "E",
+        "NATURAL_ZERO"
+      ],
+      "selection_common_uid_scope_enforced": true,
+      "contrast_common_finite_uid_per_metric_enforced": true,
+      "metric_valid_user_counts_disclosed": true
+    },
+    "seed_model_semantics": {
+      "status": "PASS",
+      "fm_and_gbt_checkpoints_evaluated_separately": true,
+      "seed_mean_is_per_user_metric_mean": true,
+      "prediction_ensemble_used": false,
+      "router_fallback_checkpoint": "GBT120_s339"
+    },
+    "selection_semantics": {
+      "status": "PASS",
+      "zero_weight_exact_als_full_availability": true,
+      "cold_route_requires_user_als_factor_and_cold_item": true,
+      "warm_selection_role": "calibration",
+      "cold_selection_role": "calibration"
+    },
+    "bootstrap": {
+      "status": "PASS",
+      "samples": 20000,
+      "minimum_users": 30,
+      "generator": "numpy.random.Generator(PCG64)",
+      "uid_order": "ASCENDING",
+      "independent_stream_per_contrast_metric": true,
+      "seed_derivation": "UINT64_BIG_ENDIAN_FIRST8_SHA256_UTF8(hybrid345-bootstrap-v1|346|family|after|before|metric)"
+    },
+    "metrics": {
+      "status": "PASS",
+      "ndcg": [
+        1,
+        2,
+        4,
+        6
+      ],
+      "top_quality": [
+        1,
+        2,
+        4,
+        6
+      ],
+      "two_item_pages": [
+        "1-2",
+        "3-4",
+        "5-6"
+      ],
+      "low_threshold": 2.0,
+      "error_clip": [
+        0.5,
+        5.0
+      ]
+    },
+    "decision_precedence": {
+      "status": "PASS",
+      "order": [
+        "DESCRIPTIVE_SMALL_N",
+        "TRADEOFF",
+        "DETECTED_HARM_SAFETY",
+        "DETECTED_HARM_CI",
+        "ONE_METRIC_ADVANTAGE_NO_DETECTED_HARM",
+        "NO_CLEAR_DIFFERENCE"
+      ],
+      "clear_win_or_noninferiority_claimed": false
+    },
+    "synthetic_tests": {
+      "status": "PASS",
+      "command": "outputs/recommendation-evidence/text339-runtime/venv/Scripts/python.exe -m unittest discover -s scripts -p test_hybrid345_*.py -q",
+      "tests": 38,
+      "failures": 0,
+      "errors": 0
+    },
+    "py_compile": {
+      "status": "PASS",
+      "files": [
+        "scripts/hybrid345_evaluate.py",
+        "scripts/report_hybrid345.py",
+        "scripts/test_hybrid345_evaluate.py"
+      ]
+    }
+  },
+  "resolved_blockers": [
+    "TMDB vote-count diagnostics now read REC-045 metadata only through the config-pinned final344 input lock instead of requesting the absent field from REC-033 metadata.",
+    "The final344 calibration reproduction reference and its seal are now verified before labels, recorded in the evaluation manifest, rechecked before parsing, and rechecked before sealing.",
+    "The existing Qwen embedding and prediction artifacts remain valid because the config, document builder, encoder, model, and scoring producer fingerprints did not change."
+  ],
+  "blocking_findings": [],
+  "not_claimed": [
+    "evaluation results",
+    "catalog-diagnostic approval",
+    "fresh unused test-set validity",
+    "2026 Korean service satisfaction",
+    "service adoption or deployment"
+  ]
+}

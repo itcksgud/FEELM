@@ -1,0 +1,50 @@
+{
+  "catalog_movies": 85517,
+  "raw_keyword_vocabulary": 32632,
+  "raw_keyword_missing": 22834,
+  "filtered_keyword_missing": 23575,
+  "keyword_nnz": 337368,
+  "keyword_vocabulary": 10818,
+  "O_pairs": 65400,
+  "E_pairs": 191932,
+  "users": 2180,
+  "E_values_opened": false,
+  "provenance": "REC033 TMDB metadata snapshot; catalog-only keyword DF/IDF; REC043 known O and label-free E IDs",
+  "features": [
+    {
+      "method": "RULE8",
+      "columns": 8,
+      "nnz": 85505,
+      "O_missing": 0,
+      "E_missing": 0
+    },
+    {
+      "method": "KMEANS8",
+      "columns": 8,
+      "nnz": 85517,
+      "O_missing": 0,
+      "E_missing": 0
+    },
+    {
+      "method": "GENRES",
+      "columns": 18,
+      "nnz": 173457,
+      "O_missing": 0,
+      "E_missing": 0
+    },
+    {
+      "method": "KEYWORDS",
+      "columns": 10818,
+      "nnz": 337368,
+      "O_missing": 72,
+      "E_missing": 3432
+    },
+    {
+      "method": "GENRES_KEYWORDS",
+      "columns": 10836,
+      "nnz": 510825,
+      "O_missing": 0,
+      "E_missing": 0
+    }
+  ]
+}

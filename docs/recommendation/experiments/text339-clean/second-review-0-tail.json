@@ -1,0 +1,62 @@
+{
+  "status": "COMPLETE",
+  "reviewer": "Dewey",
+  "primary_reviewer": "Rawls",
+  "proposal": {
+    "bytes": 3025,
+    "sha256": "05d7739886814a1f6a4d0f2d377dbfc14183403296fd32f1d285634f6617d1bc"
+  },
+  "preview": {
+    "bytes": 723493,
+    "sha256": "0ea3ba265e33a276837e99e3f9f38ea09ce54aa22afe202ea2d3ab575c68bc2f"
+  },
+  "preview_seal": {
+    "bytes": 1065,
+    "sha256": "010ecb8b0f3576a5682995d7a0340a49b9c05c850b1a88b0d9214e3081a9a7eb"
+  },
+  "scope": "Last90 of181 proposal0 documents in preview order; first146074/overview last289257/T3",
+  "read_spans": 99,
+  "read_documents": 90,
+  "approved_count": 69,
+  "rejected_ordinals": [
+    618,
+    711,
+    768,
+    1227,
+    1335,
+    1338,
+    1347,
+    1368,
+    1437,
+    1449,
+    1467,
+    1494,
+    1542,
+    1545,
+    1563,
+    1575,
+    1581,
+    1587,
+    1590,
+    1599,
+    1623,
+    1629,
+    1662,
+    1689,
+    1695,
+    1713,
+    1752,
+    1776,
+    1785,
+    1791
+  ],
+  "all_other_assigned_proposals": "APPROVE",
+  "cross_partition_retain": [],
+  "reasons": [
+    "Preserve language, genre, performance, edition, narrative order and documentary subject",
+    "Mixed artistic interpretation and external criticism retained",
+    "81 full documents newly read;9 identical v2 contexts reused from immediately completed p2 review with assigned span recheck",
+    "Wholly external-only empty outputs are allowed; movie retained"
+  ],
+  "rating_values_read": 0
+}

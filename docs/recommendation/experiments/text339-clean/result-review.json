@@ -1,0 +1,196 @@
+{
+  "status": "COMPLETED_WITH_RESOURCE_EXCEPTIONS",
+  "scope": "Local exploratory text-cleaning recommendation comparison; no current Korean service adoption",
+  "independent_reviewers": [
+    "Rawls",
+    "Hubble",
+    "Dewey"
+  ],
+  "decision": {
+    "comparison": "CLEAN-T3",
+    "improvement_criterion_passed": false,
+    "comparisons": {
+      "ndcg2": {
+        "users": 260,
+        "mean_delta": -0.0025321517557675855,
+        "interval_95": [
+          -0.00533838229803608,
+          -0.00018938108173210185
+        ]
+      },
+      "stars2": {
+        "users": 260,
+        "mean_delta": -0.009615384615384616,
+        "interval_95": [
+          -0.021153846153846155,
+          0.0
+        ]
+      },
+      "low2": {
+        "users": 260,
+        "mean_delta": 0.0019230769230769232,
+        "interval_95": [
+          0.0,
+          0.0057692307692307696
+        ]
+      }
+    },
+    "T0_adoption_decision": "NOT_TESTED_PRIMARY_T0_REMAINS_REFERENCE",
+    "scope": "Already opened development users; conditional on two one-seed fitted models",
+    "seed": 339,
+    "bootstrap_draws": 20000,
+    "safety": "point-estimate veto; not safety certification",
+    "status": "SUFFICIENT_DEVELOPMENT_USERS",
+    "local_action": "Do not adopt this CLEAN condition for recommendation improvement"
+  },
+  "actual_run": {
+    "new_fits": 1,
+    "train_rows": 4997069,
+    "train_users": 39859,
+    "development_users": 270,
+    "primary_Top2_users": 260,
+    "changed_movies": 221,
+    "removed_spans": 349,
+    "new_unique_embeddings": 218,
+    "score_rows": 93230,
+    "catalog_movies": 85517,
+    "catalog_candidate_pairs": 22963869,
+    "catalog_returned_rows": 2700,
+    "CLEAN_fit_seconds": 4161.7119302899955
+  },
+  "checks": {
+    "source_semantics_and_actual_spans": "PASS_WITH_DOCUMENTED_CORRECTIONS",
+    "new_GPU_embeddings": "PASS_BITWISE_INDEPENDENT_REPRODUCTION",
+    "all_training_rows_and_fixed_features": "PASS",
+    "native_portable_and_all_observed_predictions": "PASS",
+    "all_returned_catalog_scores_and_three_full_rankings": "PASS",
+    "quality_statistics_and_denominators": "PASS",
+    "report_and_visualization": "PASS_WITH_DOCUMENTED_LIMITS",
+    "strict_memory_peak": "EXCEPTION_BOTH_T3_AND_CLEAN_12GiB_PLUS_4096_BYTES"
+  },
+  "resource": {
+    "observed_peak_bytes_T3": 12884905984,
+    "observed_peak_bytes_CLEAN": 12884905984,
+    "strict_limit_bytes": 12884901888,
+    "strict_peak_pass": false,
+    "numerical_pass_does_not_waive_resource_exception": true
+  },
+  "seals": {
+    "clean-seal.json": {
+      "bytes": 915,
+      "sha256": "6b800bb0f146dff12b59454294f52f76c7a94bb141725a09e98bb8fa70b328cd"
+    },
+    "embedding-seal.json": {
+      "bytes": 1706,
+      "sha256": "2240912bcbce36793c74c9657d41813722d5e516996b68abfd79f78031b23108"
+    },
+    "prepared-seal.json": {
+      "bytes": 2267,
+      "sha256": "a22d70a6619fa83143f8396ecf68088a283485712b2b1e90912d08b6687f7d55"
+    },
+    "fit-seal.json": {
+      "bytes": 4866,
+      "sha256": "d28469d563affb709773da6c3713f24ced39bbeee7bc59f32e9cb174bb0e680f"
+    },
+    "catalog-seal.json": {
+      "bytes": 1124,
+      "sha256": "489bad27761f9bcd24e577a78e18d3fb1dc4c988c44e56c1d0726a4bc4566326"
+    },
+    "evaluation-seal.json": {
+      "bytes": 1699,
+      "sha256": "aa6db64be89826a388dd0350d47ae7523c15caa7172f1a4672ce81214116f40a"
+    },
+    "report-seal.json": {
+      "bytes": 942,
+      "sha256": "2f9daccdc3bb30040e120c9b4767d0fa426e238ec08fd0018485db0765209aff"
+    }
+  },
+  "reviews": {
+    "execution-review.json": {
+      "bytes": 997,
+      "sha256": "9957a0b723506a39cbc603cd4502c07f5718e0db03ac5b3debcdf99de92e8a79"
+    },
+    "source-review.json": {
+      "bytes": 858,
+      "sha256": "95da1fdd2c6073575396d1b49c27a274cdd7a8817cf940d2cf9eac74cd46e727"
+    },
+    "embedding-review.json": {
+      "bytes": 788,
+      "sha256": "4647b464da097c1de36057a2f294db97226b3311baa3d46c62b20c480f93db3c"
+    },
+    "prepared-review.json": {
+      "bytes": 1278,
+      "sha256": "2b27e32f659f2795f1651a789d30f423ff79f7d2cd6ce75f52004515aca0b3e6"
+    },
+    "fit-prediction-review.json": {
+      "bytes": 1133,
+      "sha256": "cbcab163fd8bf929bca9ef81c19ac135adceda145700b040edd81a56301bf949"
+    },
+    "prediction-review.json": {
+      "bytes": 1964,
+      "sha256": "15e56d00cc11a8aba2e27da2f6c35a1265f62657a508ba8158ff21a65363fc1e"
+    },
+    "evaluation-code-review.json": {
+      "bytes": 767,
+      "sha256": "69cc16bb1551e459f26105fad2543158bb2ec91d99a6e4e0fc36f29f4edacace"
+    },
+    "statistical-review.json": {
+      "bytes": 2010,
+      "sha256": "c5ecd8d8ee7e309f7c84e6b1c3de7ed4c09c9eb61e7e0333de24322bf845f9c8"
+    },
+    "report-code-review.json": {
+      "bytes": 938,
+      "sha256": "a766a3793fc913cbddf087f8b2483f111fb0303938a37330c2b0332a37fd52d2"
+    },
+    "report-review.json": {
+      "bytes": 1763,
+      "sha256": "50b87e0e574bcc06b482ceb2469f3561ec18b0e23676942ce532b6c7f0af8e49"
+    }
+  },
+  "human_files": {
+    "README.md": {
+      "bytes": 5139,
+      "sha256": "376abd467370291cb41fe228ab0b4e7a21f261f8f879f087f6c46a82068b5607"
+    },
+    "RESULT.md": {
+      "bytes": 7150,
+      "sha256": "b5879727597e29e583d2b1c08bb2d3e1acfe6bb18827e299f24b5dbc43d954bc"
+    },
+    "EXAMPLES.md": {
+      "bytes": 2975,
+      "sha256": "2bdb9ac998f78d7d37cecf34d56deac3accfdf76eb12e804c6ad101b4eed7e17"
+    },
+    "comparison.png": {
+      "bytes": 51617,
+      "sha256": "8401c6172b9047c9514c5f40a5bfe71de4a2ceb16403c37ed16bb2defd23bc85"
+    },
+    "REPRODUCTION.md": {
+      "bytes": 5050,
+      "sha256": "dd1c5af12c625272cc7565165eb5bf851add78d2a67886b8b896220e10329aff"
+    }
+  },
+  "preservation": {
+    "old_text339_artifacts_unchanged": true,
+    "source_corrections": [
+      "source-attempt-1",
+      "source-attempt-2"
+    ],
+    "user_stopped_partial_preparation": "prepare-interrupted-1"
+  },
+  "limitations": [
+    "Previously opened development users and labels",
+    "One fitted model per condition; bootstrap omits training randomness",
+    "Only conservative external-span cleanup, not exhaustive text purification",
+    "Current metadata versus historical MovieLens timing and user bias",
+    "Full-catalog UNKNOWN is not dislike or accuracy",
+    "No T0 adoption or broad causal text-cleaning conclusion"
+  ],
+  "external_actions": {
+    "jira": false,
+    "gitlab": false,
+    "commit": false,
+    "push": false,
+    "deployment": false,
+    "next_experiment_started": false
+  }
+}

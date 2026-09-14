@@ -1,0 +1,23 @@
+{
+  "status": "PASS_COLLECTION_WITH_TEXT_CLEANING_LIMITS",
+  "reviewer": "/root/wiki_report_review",
+  "reviewed_at": "2026-09-10T01:01:26Z",
+  "scope": "Fixed 100-batch snapshot of newly collected English pages, not final full-result audit",
+  "requested_pages": 5000,
+  "unique_response_pages": 4997,
+  "independent_section_boundary_mismatches": 0,
+  "reception_or_box_office_subheading_contamination": 0,
+  "qid_mismatches_quarantined": 30,
+  "plot_text_present": 4052,
+  "no_plot_section": 833,
+  "empty_after_cleaning": 85,
+  "text_length_min_median_max": [34, 2418, 12204],
+  "snapshot_list_sha256": "d6000da7d64cc5f5bbfa9701b4eb2f96573286c457a98767d7329a469d31eb0b",
+  "mapping_sha256": "d25f5239a83a6e5478340751ad6d61446d894c025505cf3305ae2885013cf20c",
+  "limits": [
+    "Meaning-bearing templates may lose some or all text during cleaning; raw plot is preserved",
+    "Cross-page transclusions are preserved in raw markup but are not expanded",
+    "Residual markup and literal markup require later cleaning review",
+    "Feature-ready remains false; this is collection QA, not recommendation evaluation"
+  ]
+}

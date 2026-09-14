@@ -1,0 +1,24 @@
+{
+  "data_result_seal": {
+    "bytes": 3191,
+    "sha256": "0f849218dbebb63d858623e98e83b36d709c20fb9528554faf78cdcb60f645e1"
+  },
+  "files": {
+    "docs/recommendation/experiments/diagnostic342/RESULT.md": {
+      "bytes": 9636,
+      "sha256": "0a29feea36ce19bc8f5e8e2393af7ee97adf55c07e8121e80d375c49b7854f17"
+    },
+    "docs/recommendation/experiments/diagnostic342/pages.png": {
+      "bytes": 95579,
+      "sha256": "1a8b5258584b134ef2b74307c11627d32c56ca3bfea89d724744d1af7c4d8717"
+    },
+    "docs/recommendation/experiments/diagnostic342/result-review.json": {
+      "bytes": 3415,
+      "sha256": "62d3af30a70ceb5aeda074ee7ad8b3b3da5b8401afab95f46f401d0f55e095ca"
+    },
+    "scripts/report_diagnostic342.py": {
+      "bytes": 2801,
+      "sha256": "5657a896a58536562b0d7e53582613885f24a3d924df993d95ed47f2c9f03bb7"
+    }
+  }
+}

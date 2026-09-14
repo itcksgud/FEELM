@@ -1,0 +1,96 @@
+{
+  "status": "PASS",
+  "scope": "EXPLORATORY_JOINT_PREFERENCE_AND_CONDITIONAL_TEMPORAL_DIAGNOSTIC",
+  "main": {
+    "reviewer": "/root/rec044_design_audit",
+    "status": "PASS_RESULT",
+    "source_training_roles": "all rounds, all evaluation users excluded",
+    "training_counts_sums_squares_bayes_max_error": 0,
+    "training_variance_max_error": 1.78e-15,
+    "item_residual_sum_max_error": 8.19e-12,
+    "original_E_axis_exact_observations": 577551,
+    "all_subgroups_checked": 24,
+    "subgroup_metrics_max_error": 0,
+    "subgroup_interval_max_error": 3.47e-18,
+    "high_precision_LSQR": {
+      "movie_correction_max_difference": 0.00047188,
+      "observed_prediction_max_difference": 0.000360986,
+      "unique_user_mean_contrast_max_difference": 8.54e-09,
+      "all_13_decisions_unchanged": true,
+      "original_seals_unchanged": true
+    },
+    "completion": {
+      "bytes": 9286,
+      "sha256": "62bfd8b094fd2fe2424b7664f6cbfa3cca8a5952a90621dce74688e961d6906c"
+    },
+    "summary": {
+      "bytes": 27985,
+      "sha256": "bb59d7e2fc0fe4a00110f9cac1c0044f456f70c53f934195163aa17a5f7e6742"
+    },
+    "reviewed_result_draft_sha256": "c96dfc66d74d866595c87ab66c6d17e357100ab2fcbd850be553bddeb6fa1368"
+  },
+  "temporal": {
+    "reviewer": "/root/rec045_temporal_feasibility",
+    "status": "PASS_RESULT",
+    "raw_pretraining_pool_exact_rows": 7191622,
+    "round_training_rows": [
+      5696110,
+      5686966,
+      5689578
+    ],
+    "raw_unique_O_pairs_exact": 9000,
+    "raw_unique_E_pairs_exact": 48326,
+    "all_original_round_evaluation_users_excluded": true,
+    "counts_sums_squares_bayes_variance_max_error": 0,
+    "item_residual_sum_max_error": 1.069e-11,
+    "crowd_max_error": 3.33e-16,
+    "same_LSMR_replay_max_error": 0,
+    "LSMR_normal_residual_ratios": [
+      9.996e-08,
+      9.974e-08,
+      9.942e-08
+    ],
+    "high_precision_LSQR": {
+      "movie_correction_max_difference": 0.0003239,
+      "observed_prediction_max_difference": 0.000217153,
+      "unique_user_mean_contrast_max_difference": 2.6763e-07,
+      "interval_endpoint_max_difference": 6.3604e-07,
+      "all_3_decisions_unchanged": true,
+      "original_seals_unchanged": true,
+      "extra_absolute_1e_minus4_check": "NOT_MET: audit-only 1e-4 absolute difference threshold; not the preregistered solver convergence criterion"
+    },
+    "completion": {
+      "bytes": 5658,
+      "sha256": "efe33e53856ca3a473cf0ed3da153ebd82255651b8619cfb545d81535c0085de"
+    },
+    "prediction_seal": {
+      "bytes": 4614,
+      "sha256": "6a81d53d1142c5d0c49314209060ae2c48451dc465052c2b631949aca1c26592"
+    },
+    "summary": {
+      "bytes": 5039,
+      "sha256": "6d89b8adf510e87aa52363a6e4074cecfe828dabebc1ebec98c729ba1593eef9"
+    },
+    "canonical_raw_and_saved_training_pool_tuple_sha256": "b84a264f352fe3727287cf7e77c12dbd57902581900ec38c7bf23a7ee3f604da"
+  },
+  "interpretation": {
+    "causal_claim": false,
+    "new_independent_confirmation": false,
+    "all_group_robustness_claim": false,
+    "ALS_superiority_claim": false,
+    "service_onboarding_or_taste_contract_changed": false,
+    "country_language_and_era_runtime_additional_personal_contribution": "UNDECIDED",
+    "rare_film_improvement": "UNDECIDED",
+    "person_era_temporal_increment": "UNDECIDED",
+    "shared_only_temporal_worsening_disclosed": true
+  },
+  "publication": "LOCAL_ONLY_NO_COMMIT_PUSH_OR_EXTERNAL_WRITE",
+  "final_report": {
+    "bytes": 14273,
+    "sha256": "f1b78b7dc66c8034ab34140a74da0f1f656514080dbf1eae459bfe00527b80d3"
+  },
+  "read_only_verification": {
+    "bytes": 1094,
+    "sha256": "f2eab9b324efa7f6920ff75170d8b6fa944984881e38f8fe355ca5a20e13a7f8"
+  }
+}

@@ -1,0 +1,34 @@
+{
+  "status": "PASS",
+  "reviewer": "Dewey",
+  "evaluation_seal": {
+    "bytes": 4127,
+    "sha256": "cacf9f17a9c20c8d12f6ec75466d163b40b59b6acf3168094701f0585be316e7"
+  },
+  "checks": {
+    "independent_user_metric_rows": 12420,
+    "independent_numeric_cells": 471960,
+    "max_numeric_difference": 1.89e-15,
+    "summary_rows": 5720,
+    "bootstrap_records": 45,
+    "formal_99_percent_intervals": 5,
+    "bootstrap_draws": 20000,
+    "seed": 340,
+    "max_interval_difference": 1.04e-17,
+    "h_positive_ndcg2_users": 176,
+    "h_zero_users": 84,
+    "all_ndcg2_users": 260,
+    "veto_and_did_pass": true,
+    "catalog_diagnostic_cells": 48,
+    "code_data_label_model_prediction_parents_pass": true
+  },
+  "selected": "B",
+  "eligible": [],
+  "interpretation": "No new foundation condition passes the predeclared improvement rule. R/RH remove one-vote-ten catalog exposure; that is not demonstrated observed-candidate quality improvement. The majority of full-catalog recommendations remain UNKNOWN. B is a development comparator, not service adoption.",
+  "resource_status": {
+    "B": "UNKNOWN_TIME_TRAIN_RMSE_PEAK_STRICT",
+    "R": "PASS",
+    "H": "STRICT_RESOURCE_EXCEPTION",
+    "RH": "STRICT_RESOURCE_EXCEPTION"
+  }
+}

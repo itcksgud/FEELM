@@ -1,0 +1,158 @@
+{
+  "status": "COMPLETED_WITH_T3_RESOURCE_EXCEPTION",
+  "issue_scope": "S15P21E106-339 local text representation experiment",
+  "independent_reviewers": [
+    "/root/github_research_scope_audit",
+    "/root/text339_eval_review",
+    "/root/wiki_report_review"
+  ],
+  "decision": {
+    "selected_representation": "T0",
+    "meaning": "Maintain structured information and user reaction representation for this fixed development comparison; no demonstrated reason to add the tested text representations.",
+    "not_claimed": [
+      "T0 statistical superiority",
+      "text generally useless",
+      "final service model adopted",
+      "2026 Korean user quality",
+      "causal explanation of exposure concentration"
+    ]
+  },
+  "checks": {
+    "fixed_code_and_input_review": "PASS",
+    "actual_source_and_embedding_review": "PASS_WITH_DOCUMENTED_LIMITS",
+    "all_four_actual_models": "PASS_NUMERICAL",
+    "full_catalog": "PASS_ORIGINAL_BATCH_ALL_RETURNED_SCORES",
+    "observed_quality_denominators_and_selection": "PASS",
+    "raw_label_UNKNOWN_and_report": "PASS",
+    "strict_observed_memory_peak": "FAIL_T3_12GiB_PLUS_4096_BYTES",
+    "T2_memory_headroom": "NOT_ESTABLISHED_CAP_REACHED"
+  },
+  "actual_run": {
+    "fits": 4,
+    "train_users": 39859,
+    "train_ratings": 4997069,
+    "development_users": 270,
+    "main_Top2_users": 260,
+    "prediction_rows_per_model": 93230,
+    "catalog_movies": 85517,
+    "catalog_user_candidate_pairs": 22963869,
+    "catalog_top10_rows": 10800,
+    "h_positive_catalog_Top2_users": 186,
+    "h_positive_catalog_Top2_slots": 372,
+    "h_positive_catalog_Top2_known_slots": [
+      0,
+      0,
+      0,
+      0
+    ]
+  },
+  "seals": {
+    "embedding-seal.json": {
+      "bytes": 4252,
+      "sha256": "b5cabf63e086d748478d6357cb8d1f00f8ad77aa1837513d989ac168d42ca4ac"
+    },
+    "prepared-seal.json": {
+      "bytes": 5024,
+      "sha256": "d27709a42bd0d5511a36f3740365637325d59b521c7f62eae04850523782fdd8"
+    },
+    "fit-seal.json": {
+      "bytes": 4195,
+      "sha256": "447c00df9cb888bbc0272bd03abd87f751b951954244e0e113bd1171d086c25d"
+    },
+    "catalog-seal.json": {
+      "bytes": 3737,
+      "sha256": "6d069d20039a0ed84463070bf124cbf7b03d9bccbdfa89eaae6aacf5a232f9c7"
+    },
+    "evaluation-seal.json": {
+      "bytes": 4890,
+      "sha256": "0ab420fb3e50cf770d9dd7a24d64e5ce8896a4c17b38a7ba5df73398ad6fb9c7"
+    },
+    "report-seal.json": {
+      "bytes": 620,
+      "sha256": "1b697bcf50ecc06667948b8dc791235168a89800561017099c39d919e70d9fb3"
+    }
+  },
+  "reviews": {
+    "execution-review.json": {
+      "bytes": 5342,
+      "sha256": "d504724d12d743fdc4ad911915b6b4d6a7a0296a5d0aa41f75359e843ee7382f"
+    },
+    "text-quality-review.json": {
+      "bytes": 1922,
+      "sha256": "8eb3a3c19969f53551ed096b17cbbfb4dda449280218d6964e058e6cb3994d58"
+    },
+    "embedding-result-review.json": {
+      "bytes": 1698,
+      "sha256": "de8effbae80aa63d578cf8dc9d42565e31405748a86a074c2101164386140339"
+    },
+    "prepared-training-review.json": {
+      "bytes": 1378,
+      "sha256": "4a4f563e3c8d9c863f4d3286c0869da3312a3e7f442ce3a881f6e20aef8c4cf7"
+    },
+    "prepared-evaluation-review.json": {
+      "bytes": 1803,
+      "sha256": "82a34d2ac737ebcf413197f15724230b96f9f7cb5cca208609c14d337019220b"
+    },
+    "model-result-review.json": {
+      "bytes": 6242,
+      "sha256": "bc1cefac6a3baaf8b2808e5bcae4a932a725e29ca0592db52605a83eb771d769"
+    },
+    "catalog-eligibility-review.json": {
+      "bytes": 1576,
+      "sha256": "35b7b6c19679b80e4d1a2dc530445ef3904d3c08c1428fde375ec7027a2d42f5"
+    },
+    "prelabel-denominator-review.json": {
+      "bytes": 2515,
+      "sha256": "affecef4eafd8bbb5d142783026cd0d0b485c40d19e2e3cde56f3982f35008e6"
+    },
+    "catalog-result-review.json": {
+      "bytes": 3436,
+      "sha256": "0819f3735e32ca78840f7682b44f9d1700dcbf787511cfa42d1f83afe8837c4f"
+    },
+    "evaluation-result-review.json": {
+      "bytes": 3029,
+      "sha256": "e3b9fe51909089c81103231ed1b0a3bb2d7da004f1042220087f9fef09e9efc1"
+    },
+    "report-result-review.json": {
+      "bytes": 5111,
+      "sha256": "4662d6c5be541dd5f7af6f32cef59aed30e799af41dd52661bdaabfea472faa7"
+    }
+  },
+  "human_artifacts": {
+    "README.md": {
+      "bytes": 6695,
+      "sha256": "9e9d194cbd90f0ca755321c116a30d1e1d56a8e3d79084e70152da6ebf792fcc"
+    },
+    "INTERPRETATION.md": {
+      "bytes": 11218,
+      "sha256": "6c9a984eef1a1e0ce287c0e0348e3f31312e3c7f35e14d57fdfeb10898d9038a"
+    },
+    "RESULT.md": {
+      "bytes": 6095,
+      "sha256": "35770257951fa980fd8deda5a601d3cf131cb36f89bd72a8c3a3226b8356e3f7"
+    },
+    "comparison.png": {
+      "bytes": 67156,
+      "sha256": "6b3ff3fe8f0519518142c14cbbf8d17633c0034ab0a30f5cd72106af1f7cdfb6"
+    }
+  },
+  "preserved_exceptions": [
+    "Initial small-batch GPU validation sensitivity; exact original batch passed.",
+    "Initial small-batch catalog feature recreation failed1e-8; original4096chunk recreation ofall10800scores passed unchanged threshold.",
+    "T2strict headroom check failed at12GiB; T3strict peakcapcheck failed by4096bytes.",
+    "Training RMSE is stored native output, not independently recomputed; no convergence trace.",
+    "Only current execution role separation is verified; evaluationuserswereusedinpriorresearch.",
+    "Current metadata dates/vote aggregates/Wiki are not historical snapshots."
+  ],
+  "next_design_questions": [
+    "How to express crowd-rating evidence and interaction with individual responses.",
+    "How to construct training history/input support before comparing feature combinations."
+  ],
+  "followup_design_note": {
+    "bytes": 4919,
+    "sha256": "7e41c5fa6dde3731ec341b254c538fae869faa1eb5c632e0006fdb45c19540e0"
+  },
+  "new_fit_or_threshold_change_after_labels": false,
+  "external_publication_performed_for_this_local_result": false,
+  "raw_data_and_models": "LOCAL_ONLY; excluded fromGit"
+}

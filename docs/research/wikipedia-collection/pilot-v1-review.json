@@ -1,0 +1,9 @@
+{
+  "status": "FAIL_EXTRACTION_BOUNDARY",
+  "checked_by": "/root",
+  "issue": "Self-closing ref tag hid subsequent real headings during literal masking; Ant-Man and the Wasp: Quantumania included non-plot sections",
+  "action": "Do not run full collection. Preserve pilot v1 raw/code/results, fix parser, review v2 code and re-extract the same raw responses.",
+  "model_use": false,
+  "pages_sha256": "0aee98d668f7a39d990dc9fb504e8805a70bdbc07680e85e3461abe8e992366e",
+  "summary_sha256": "09e3283b32a9e4872eceb5c49a4570b89a1c52f6ad44c18176c71543cf0560a2"
+}

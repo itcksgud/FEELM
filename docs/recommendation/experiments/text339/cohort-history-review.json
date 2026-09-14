@@ -1,0 +1,34 @@
+{
+  "status": "PASS_DEVELOPMENT_ROLE_REUSE_FINAL_FRESH_NOT_ESTABLISHED",
+  "reviewer": "/root/github_research_scope_audit",
+  "method": "UID-only projections, no rating/factor values or unused final labels read",
+  "counts": {
+    "rec002_train_users": 170491,
+    "early_validation_users": 22919,
+    "union_early_train_validation": 186687,
+    "rec032_used_union": 57760,
+    "rec032_cross_role_users": 2924,
+    "rec047_eval_users": 271,
+    "rec047_previously_used": 271,
+    "rec047_previously_trained": 261,
+    "named_final_reserve": 9670,
+    "reserve_already_in_early": 8992,
+    "reserve_unproven_remaining": 678,
+    "all_remaining_unproven_upper_bound": 10085
+  },
+  "decision": "Existing REC047 roles can be reused for DEVELOPMENT ONLY with current-run user separation; no untouched final claim. Do not open reserve labels as a final test.",
+  "sources": {
+    "outputs/recommendation-evidence/rec-ev-032/user-resplits/splits.npz": {
+      "bytes": 634368,
+      "sha256": "5d230c59fcdbabdce529e6fa1ba5535895b59b2ab296905d71e9274c5c158410"
+    },
+    "outputs/recommendation-evidence/rec-ev-047-readiness/user-origin-counts.parquet": {
+      "bytes": 2328627,
+      "sha256": "c1c5e1ee107b2e29fd1d4c269d342c33c5a38f82c28836a8f094dbfd85cd00c7"
+    },
+    "outputs/recommendation-evidence/rec-ev-002/als_factors.npz": {
+      "bytes": 26189780,
+      "sha256": "908ba9f99bcb55813cf25577e264893239b81025b0f36e70a715dc493b81c46d"
+    }
+  }
+}
