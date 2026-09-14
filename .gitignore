@@ -16,3 +16,13 @@ node_modules/
 performance/.tmp/
 test-results/
 playwright-report/
+.ruff_cache/
+.codex-ppt-build/
+# local runtime bundles (docker image tar, offline wheelhouse)
+runtime/
+# accidental venv at repo root
+/bin/
+/include/
+/lib/
+/lib64
+/pyvenv.cfg
