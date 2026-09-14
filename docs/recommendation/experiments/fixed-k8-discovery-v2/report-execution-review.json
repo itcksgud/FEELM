@@ -1,0 +1,34 @@
+{
+  "status": "PASS",
+  "reviewer": "Copernicus/design_review",
+  "fingerprint": {
+    "stage": "report",
+    "files": {
+      "C:\\higher\\projects\\FEELM-standalone\\.codex-tmp\\fixed-k8-discovery-v2-20260913\\docs\\recommendation\\experiments\\fixed-k8-discovery-v2\\config.json": {
+        "sha256": "20e624a77ac73c2334eb1730f9df8cee3bfbc305d592b07000b0dd178b509103",
+        "bytes": 1785
+      },
+      "C:\\higher\\projects\\FEELM-standalone\\.codex-tmp\\fixed-k8-discovery-v2-20260913\\docs\\recommendation\\experiments\\fixed-k8-discovery-v2\\EXECUTION.md": {
+        "sha256": "4f7e4aebf28701d01d77e33457e4b2df9a541e46eef8e610fe7f124ae5c1d93f",
+        "bytes": 20596
+      },
+      "C:\\higher\\projects\\FEELM-standalone\\.codex-tmp\\fixed-k8-discovery-v2-20260913\\scripts\\dv2_common.py": {
+        "sha256": "6a45cc381aca7053a9e098c59a859c87a09825c866d1430cbc9e31e81394ba7a",
+        "bytes": 7715
+      },
+      "C:\\higher\\projects\\FEELM-standalone\\.codex-tmp\\fixed-k8-discovery-v2-20260913\\scripts\\dv2_report.py": {
+        "sha256": "651fe41eac442208639e2199765b39e72658344f1582217081e573aea912aa48",
+        "bytes": 23993
+      }
+    }
+  },
+  "scope": "Sealed outputs only; canonical actual-cost references, valid-user denominators, no-vector/undefined reports, metadata source pins; actual report results pending",
+  "synthetic_tests": [
+    "independent canonical reused-reference/country-missing/conditional-denominator/NaN tests",
+    "root 4 reporting regression tests"
+  ],
+  "reviewed_test": {
+    "sha256": "b65202ff1e6d724d4591538efda6ee1375eab1049a57d6793666b5c4f8a9a068",
+    "bytes": 3504
+  }
+}

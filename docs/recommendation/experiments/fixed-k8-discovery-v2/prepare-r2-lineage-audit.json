@@ -1,0 +1,143 @@
+{
+  "status": "PASS",
+  "reviewed_on": "2026-09-13",
+  "scope": "r1 to r2 sealed preparation equivalence and corrected role lineage; no role-dependent model outcome",
+  "auditor": "/root/asset_audit",
+  "independent_reviewer": "/root/asset_audit/predictor_source_pins",
+  "r1_seal": {
+    "bytes": 1997,
+    "sha256": "0d18af14e2f8d575427dc5f80e535591874acb731a8c9f4da3662682a12a92c0"
+  },
+  "r2_seal": {
+    "bytes": 1997,
+    "sha256": "42de5a1343e33fb6ce600d567248def48f6eb9a9c95dddfeb41d91cf408e3c76"
+  },
+  "identical_files": {
+    "prepare\\base-eligible.npy": {
+      "sha256": "efe864f859d9887d0f83983d0661109c6f7d5ce11b767b6f98b6a56cbcfef594",
+      "bytes": 237945
+    },
+    "prepare\\catalog.parquet": {
+      "sha256": "8bda180eb6530188a6ebf08da599d4d68124247a878ca0911f0d3f38512415cd",
+      "bytes": 42113282
+    },
+    "prepare\\content.npy": {
+      "sha256": "a28ea24016ef1786111e0ece976c650ff20e6f4bcbeeea2c0f9047d78eaefd5b",
+      "bytes": 249232344
+    },
+    "prepare\\contexts.json": {
+      "sha256": "a174950e3655fc77d33fdb153e128153a7382e7df2a9657dd9628b95cabde39f",
+      "bytes": 11487444
+    },
+    "prepare\\genre-binary.npy": {
+      "sha256": "680712274eec03dbc2ac7a15eb11c455a0053fb6637fb59177eafeff37ad29dd",
+      "bytes": 36148312
+    },
+    "prepare\\genre.npy": {
+      "sha256": "a78ee8a9f69aa4826cc66d6cee8b1903c9614d0c73651051ebe2c810f7bc50c8",
+      "bytes": 36148312
+    },
+    "prepare\\quality-config.json": {
+      "sha256": "c853dcbdf0ded77de2c46ad9868049b285a72b357dc0d07e72e81e2a80c512bd",
+      "bytes": 198
+    },
+    "prepare\\quality-order.npy": {
+      "sha256": "62b7c14354df559e4b5fe9016740a53b1ac2cf6e95d93dd189e8aff180f2bde3",
+      "bytes": 950448
+    },
+    "prepare\\quality-sensitivity.json": {
+      "sha256": "c7a445f9dc31f183c055542ae572e1094dff5b204cfc3d46a308a1c0268bc562",
+      "bytes": 12158
+    },
+    "prepare\\quality.npy": {
+      "sha256": "26e41b042060ec2b43d99ff0d8e832328142b2645c5ab73c94bd8c0a26b36539",
+      "bytes": 1902664
+    },
+    "prepare\\top.npy": {
+      "sha256": "88b98abfd8e5c0c4a96a1a344e9b2ddce414605611f5da1bcf2b3b9d8a3ae870",
+      "bytes": 951396
+    }
+  },
+  "different_files": {
+    "prepare\\report.json": {
+      "r1": {
+        "sha256": "a44f0d7ffd8d94ad23130ab6f120a476edc4e199efa24e95d39105b0bbbc7600",
+        "bytes": 5265
+      },
+      "r2": {
+        "sha256": "52ff9fd3d837eeb5aab84d9e01bd7fd118e51dfa7308c8c67245012a4d9c4819",
+        "bytes": 5483
+      }
+    },
+    "prepare\\roles.json": {
+      "r1": {
+        "sha256": "6a7457e45ca2c81d30198a935e54c4477bc9b9fbde01b827aa16680700426411",
+        "bytes": 3456
+      },
+      "r2": {
+        "sha256": "2aeba560539100fcf65ac95675784ffe8e366da32c54df2b6ce461414f03ad87",
+        "bytes": 3532
+      }
+    }
+  },
+  "inventories": {
+    "r1_files": 13,
+    "r2_files": 13,
+    "exact_actual_inventory_verified": true,
+    "identical_files": 11,
+    "changed_files": 2
+  },
+  "roles": {
+    "source": "C:/higher/projects/FEELM-standalone/outputs/recommendation-evidence/final344/roles.csv",
+    "source_pin": {
+      "bytes": 5806,
+      "sha256": "466b7cede9cb2d67f2bd7fca4fcdada770943bdd9d5924c35ccfdbe6a4cf2cc9"
+    },
+    "input_lock_sha256": "487f2fdc8a216b39907af3bf3bbae1eb4790384a51572b36861248adf7dd3fc6",
+    "selection_key": "validation",
+    "selection_exact_source_role": "calibration",
+    "selection_users": 90,
+    "check_key": "verification",
+    "check_exact_source_role": "comparison",
+    "check_users": 180,
+    "disjoint": true,
+    "union_users": 270,
+    "r1_check_overlap_with_calibration": 57,
+    "r2_check_overlap_with_calibration": 0,
+    "users_switched": 114,
+    "users_still_selection": 33,
+    "users_still_check": 123
+  },
+  "contexts": {
+    "byte_identical": true,
+    "contexts": 1350,
+    "users": 270,
+    "caps": [
+      0,
+      1,
+      5,
+      10,
+      30
+    ],
+    "comparison_basis": "Identical complete file hashes; subsequent equivalence verification does not need parsing future ratings."
+  },
+  "report_difference": "Only added the final344/roles.csv source pin; all metadata/quality/support values unchanged.",
+  "carried_forward": [
+    "Full 237817-row raw metadata normalization audit",
+    "Complete service/TMDb/MovieLens mapping axis and fixed top assignment equality",
+    "Q/eligibility vectors and sorted order",
+    "Frozen train counts/factor mapping",
+    "Feature-only parity on the full service metadata index"
+  ],
+  "not_carried_forward": [
+    "Any r1 role-dependent predictor choice, sweep, check or quality result"
+  ],
+  "label_boundary": {
+    "future_label_json_values_parsed_in_initial_comparison": true,
+    "future_label_individual_values_inspected_or_printed": false,
+    "future_label_metrics_or_selection_use": false,
+    "trained_model_predictions": 0,
+    "note": "Initial independent equality check parsed full contexts including ratings before identifying this boundary. It only performed structural equality, did not inspect individual values or calculate outcomes. Later confirmation uses file hashes only. R1 audit ledger has the same disclosure."
+  },
+  "required_corrections": []
+}

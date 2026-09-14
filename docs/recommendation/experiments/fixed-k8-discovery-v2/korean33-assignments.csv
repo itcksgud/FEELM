@@ -1,0 +1,34 @@
+﻿service_movie_id,tmdb_id,title,display_title,top_id,genres,genre_present,keyword_present,overview_present,no_content,mapping_status,eligible,K128_group_id,K128_child_id,K128_members,K128_eligible,K256_group_id,K256_child_id,K256_members,K256_eligible
+22139,47748,워낭소리,워낭소리,0,다큐멘터리,True,False,True,False,MATCHED,True,33,33,159,60,123,123,106,40
+59738,306598,"님아, 그 강을 건너지 마오","님아, 그 강을 건너지 마오",0,다큐멘터리,True,True,True,False,MATCHED,True,8,8,229,155,39,39,104,74
+82246,740996,블랙핑크: 세상을 밝혀라,블랙핑크: 세상을 밝혀라,0,다큐멘터리|음악,True,True,True,False,MATCHED,True,54,54,306,223,133,133,257,187
+863,1255,괴물,괴물(봉준호),1,드라마|공포|SF,True,True,True,False,MATCHED,True,199,71,18,7,350,94,7,5
+58434,293670,곡성,곡성,1,공포|미스터리,True,True,True,False,MATCHED,True,236,108,56,51,278,22,21,18
+73139,508642,곤지암,곤지암,1,공포|미스터리,True,True,True,False,MATCHED,True,236,108,56,51,493,237,41,34
+72564,496243,기생충,기생충,2,드라마|코미디|스릴러,True,True,True,False,MATCHED,True,316,60,209,155,529,17,28,21
+4955,11178,엽기적인 그녀,엽기적인 그녀,2,드라마|코미디|로맨스,True,True,True,False,MATCHED,True,314,58,114,110,614,102,63,62
+140173,158445,7번방의 선물,7번방의 선물,2,드라마|코미디,True,True,True,False,MATCHED,True,333,77,189,163,720,208,42,41
+59652,313108,국제시장,국제시장,3,드라마,True,True,True,False,MATCHED,True,398,14,942,762,837,69,325,261
+68859,437068,택시운전사,택시운전사,3,드라마|액션|역사,True,True,True,False,MATCHED,True,498,114,326,309,993,225,195,184
+45504,157336,인터스텔라,인터스텔라,3,모험|드라마|SF,True,True,True,False,MATCHED,True,496,112,258,181,998,230,82,59
+539,670,올드보이,올드보이,4,스릴러|미스터리,True,True,True,False,MATCHED,True,584,72,218,168,1091,67,121,91
+5166,11423,살인의 추억,살인의 추억,4,드라마|스릴러|범죄,True,True,True,False,MATCHED,True,529,17,137,127,1070,46,71,70
+71666,479718,범죄도시,범죄도시,4,액션|스릴러|범죄,True,True,True,False,MATCHED,True,620,108,139,137,1244,220,79,77
+76119,567646,극한직업,극한직업,5,액션|코미디|범죄,True,True,True,False,MATCHED,True,664,24,140,131,1356,76,50,49
+76335,572164,엑시트,엑시트,5,액션|코미디,True,True,True,False,MATCHED,True,671,31,222,187,1329,49,57,40
+609,771,나 홀로 집에,나 홀로 집에,5,코미디|가족,True,True,True,False,MATCHED,True,749,109,123,115,1484,204,47,46
+44851,150540,인사이드 아웃,인사이드 아웃(픽사),6,모험|애니메이션|드라마|코미디|가족,True,True,True,False,MATCHED,True,884,116,123,119,1766,230,49,46
+38814,109445,겨울왕국,겨울왕국,6,모험|판타지|애니메이션|가족,True,True,True,False,MATCHED,True,880,112,30,29,1765,229,34,34
+100,129,센과 치히로의 행방불명,센과 치히로의 행방불명,6,판타지|애니메이션|가족,True,True,True,False,MATCHED,True,866,98,76,67,1637,101,26,19
+12515,27205,인셉션,인셉션,7,모험|액션|SF,True,True,True,False,MATCHED,True,1012,116,192,149,2018,226,83,78
+42012,128246,늑대소년,늑대소년,7,판타지|로맨스,True,True,True,False,MATCHED,True,951,55,113,54,1923,131,98,44
+5332,11658,태극기 휘날리며,태극기 휘날리며,7,모험|드라마|액션|역사|전쟁,True,True,True,False,MATCHED,True,1005,109,77,72,2024,232,60,51
+111440,1268052,Return,Return,7,,False,True,False,False,SERVICE_ONLY_CONTENT_BASED,True,956,60,265,58,1889,97,249,53
+128570,1339252,Harry,Harry,7,,False,False,False,True,SERVICE_ONLY_CONTENT_BASED,False,906,10,28476,24,1809,17,28386,5
+65874,396535,부산행,부산행,4,모험|공포|액션|스릴러,True,True,True,False,MATCHED,True,625,113,91,68,1256,232,85,66
+65942,397567,신과함께-죄와 벌,신과함께-죄와 벌,4,모험|판타지|드라마|액션|스릴러,True,True,True,False,MATCHED,True,635,123,96,93,1276,252,52,40
+74127,518068,신과함께-인과 연,신과함께-인과 연,7,모험|판타지|액션|스릴러,True,True,True,False,MATCHED,True,1000,104,93,82,2006,214,51,47
+88879,1050035,괴물,괴물(고레에다),4,드라마|스릴러|미스터리,True,True,True,False,MATCHED,True,577,65,251,213,1153,129,152,130
+29791,70877,인사이드 아웃,인사이드 아웃(동명 액션),7,액션|범죄,True,False,False,False,MATCHED,True,985,89,312,224,1891,99,263,184
+74333,521777,굿 보이즈,굿 보이즈,5,코미디,True,True,True,False,TMDB_ID_AMBIGUOUS,True,680,40,323,264,1300,20,132,117
+4835,10991,극장판 포켓몬스터: 결정탑의 제왕 엔테이,극장판 포켓몬스터: 결정탑의 제왕 엔테이,6,모험|판타지|애니메이션|액션|가족,True,True,True,False,TMDB_ID_AMBIGUOUS,True,885,117,60,57,1760,224,41,38

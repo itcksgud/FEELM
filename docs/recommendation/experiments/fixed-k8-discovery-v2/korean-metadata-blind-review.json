@@ -1,0 +1,65 @@
+{
+  "status": "PASS_WITH_EXPLANATION_LIMITS",
+  "reviewed_on": "2026-09-13",
+  "reviewer": "/root/asset_audit",
+  "scope": "Outcome-blind empirical metadata descriptions and factual checks of33old-guide examples at frozenK128/K256, before root discloses selected exemplar",
+  "files": {
+    "C:/higher/projects/FEELM-standalone/.codex-tmp/discovery-v2-predictor-20260913/scripts/audit_dv2_korean_metadata.py": {
+      "bytes": 10041,
+      "sha256": "760029c65734b2b8fdf6b6258eb5fd8304dddc2449388648870617ee98d13eef"
+    },
+    "C:/higher/projects/FEELM-standalone/.codex-tmp/discovery-v2-predictor-20260913/docs/recommendation/experiments/fixed-k8-discovery-v2/KOREAN-METADATA-BLIND-REVIEW.md": {
+      "bytes": 10631,
+      "sha256": "0ff551fa43050c0e3997228d7e87f15ce370ba616c9167b7af47bc3a676e027c"
+    },
+    "C:/higher/projects/FEELM-standalone/.codex-tmp/discovery-v2-predictor-20260913/outputs/dv2-korean-metadata-audit-r2/examples.json": {
+      "bytes": 1446808,
+      "sha256": "8ed2ba1c8fba14f795aa49856f9cda04986faa7c8ea2aadcc4ffa1c983a06a6e"
+    },
+    "C:/higher/projects/FEELM-standalone/.codex-tmp/discovery-v2-predictor-20260913/outputs/dv2-korean-metadata-audit-r2/extra-prefix-cases.json": {
+      "bytes": 1324,
+      "sha256": "f3a4aed49a5befee1d5c31942ebbfa031103ea8dcf84b4a3a435ed1ac00aff4d"
+    },
+    "C:/higher/projects/FEELM-standalone/.codex-tmp/discovery-v2-predictor-20260913/outputs/dv2-korean-metadata-audit-r2/groups.json": {
+      "bytes": 14206179,
+      "sha256": "5de9b0f2cc60d7b0c38c18458df38d543798f4d359162c89364c2aea87f12fb8"
+    },
+    "C:/higher/projects/FEELM-standalone/.codex-tmp/discovery-v2-predictor-20260913/outputs/dv2-korean-metadata-audit-r2/korean33-assignments.csv": {
+      "bytes": 4892,
+      "sha256": "234a4a383cf5f66f30a8da836569c44aab95708732c2b5f449956818f85ed9fb"
+    },
+    "C:/higher/projects/FEELM-standalone/.codex-tmp/discovery-v2-predictor-20260913/outputs/dv2-korean-metadata-audit-r2/report.json": {
+      "bytes": 5476,
+      "sha256": "ff00f3af0b0ef0506f9d27ac05b2cd79d46ace727c8c9f08fe1383585b805aad"
+    }
+  },
+  "checks": {
+    "service_tmdb_id_pairs": 33,
+    "hierarchy_example_pairs": 66,
+    "empirical_group_descriptors": 3072,
+    "raw_genre_and_keyword_names_verified": true,
+    "keyword_name_conflicts": 0,
+    "group_means_recomputed_against_frozen_representatives": true,
+    "inputs_and_cluster_source_pins_before_after_equal": true,
+    "prediction_model_calls": 0,
+    "user_context_or_future_label_files_read_for_this_review": false,
+    "predictor_sweep_check_outputs_read_for_this_review": false,
+    "selection_exemplar_not_yet_disclosed": true
+  },
+  "findings": [
+    "Dense literal genre and keyword descriptions are defensible for Parasite/darkcomedy, TrainToBusan/zombie, BLACKPINK/musicdocumentary and HomeAlone/holiday; they do not establish satisfaction.",
+    "Sparse topkeywords cannot be promoted into a unifying theme: Inception giantmonster13/83, EXIT murder8/57, OldPartner allmostcommonkeywords1/106.",
+    "The same series can cross frozen top boundaries; AlongWithTheGods twofilms share8keywords but top4vs7.",
+    "Missing raw content and zero projected clustering features are distinct: Harry groupK256 has28386members,28131rawallmissing,255someRawPresent,butonly24nonzeroGKT; only5eligible.",
+    "Geometric representatives may be ineligible or differ from actualQprefix:203/1024 and489/2048 medoids are ineligible.",
+    "K256group1829 has signlanguages26/27 and deafculture24/27 but its soleeligible prefix film has onlyvampire/BLkeywords; wholemeandescription cannot substitute actualcandidate inspection.",
+    "K256 creates more sub25eligible groups857/2048 versus159/1024; this is descriptive fragmentation, no new selection gate."
+  ],
+  "limits": [
+    "Staticprefix25 is before user seen exclusion and E_u filtering, not a real user-specific recommendation.",
+    "This is metadata coherence inspection, not human satisfaction or Korean-user evaluation.",
+    "Movie titles are disambiguated by service/TMDb IDs; ambiguousMovieLens mappings remain explicit.",
+    "Future selected exemplar input/ranked-candidate factual review remains a separate pending addition."
+  ],
+  "required_stage_code_corrections": []
+}

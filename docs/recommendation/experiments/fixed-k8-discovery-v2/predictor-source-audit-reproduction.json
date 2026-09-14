@@ -1,0 +1,22 @@
+{
+  "status": "PASS",
+  "scope": "Preservation of independent reviewer successful source/formula/time audit payload",
+  "reviewer": "/root/asset_audit/predictor_source_pins",
+  "script": {
+    "scripts/audit_dv2_predictor_source.py": {
+      "bytes": 11004,
+      "sha256": "2870b7d4732651ab75b0dd4613fe00add9d9dc19cad68251051b7927373388c8"
+    }
+  },
+  "provenance": "Exact successful payload from reviewer tool chunk c1148e, with only a documentation header added; no additional model execution during preservation.",
+  "reproduce": [
+    "C:/higher/projects/FEELM-standalone/outputs/recommendation-evidence/text339-runtime/venv/Scripts/python.exe",
+    "-B",
+    "scripts/audit_dv2_predictor_source.py"
+  ],
+  "result_ledger": "docs/recommendation/experiments/fixed-k8-discovery-v2/predictor-stage-result-review.json",
+  "result_ledger_sha256": "996951648a220f690c458d38e08ac5a8bf32cb27475f055fc0d0684f81d55feb",
+  "syntax_parse": "PASS",
+  "observed_target_subset": "At most ten per user by SHA256 dv2-stage-observed-audit:{service_movie_id}; all actual candidate rows per sampled user.",
+  "authorized_future_labels": "Read for post-execution audit; no selection criteria changed."
+}

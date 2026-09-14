@@ -1,0 +1,46 @@
+{
+  "status": "PASS",
+  "reviewer": "Copernicus/design_review",
+  "fingerprint": {
+    "stage": "final",
+    "files": {
+      "C:\\higher\\projects\\FEELM-standalone\\.codex-tmp\\fixed-k8-discovery-v2-20260913\\docs\\recommendation\\experiments\\fixed-k8-discovery-v2\\config.json": {
+        "sha256": "20e624a77ac73c2334eb1730f9df8cee3bfbc305d592b07000b0dd178b509103",
+        "bytes": 1785
+      },
+      "C:\\higher\\projects\\FEELM-standalone\\.codex-tmp\\fixed-k8-discovery-v2-20260913\\docs\\recommendation\\experiments\\fixed-k8-discovery-v2\\EXECUTION.md": {
+        "sha256": "4f7e4aebf28701d01d77e33457e4b2df9a541e46eef8e610fe7f124ae5c1d93f",
+        "bytes": 20596
+      },
+      "C:\\higher\\projects\\FEELM-standalone\\.codex-tmp\\fixed-k8-discovery-v2-20260913\\scripts\\dv2_common.py": {
+        "sha256": "6a45cc381aca7053a9e098c59a859c87a09825c866d1430cbc9e31e81394ba7a",
+        "bytes": 7715
+      },
+      "C:\\higher\\projects\\FEELM-standalone\\.codex-tmp\\fixed-k8-discovery-v2-20260913\\scripts\\dv2_freeze.py": {
+        "sha256": "faf9f65287aac460bcf82ecfb9ffaa4e81a7c540151c80673c659fcc8e963519",
+        "bytes": 15517
+      },
+      "C:\\higher\\projects\\FEELM-standalone\\.codex-tmp\\fixed-k8-discovery-v2-20260913\\scripts\\dv2_predictor.py": {
+        "sha256": "db3c1c92278fdfc889e8e951c1aa53495c631772dcf2f07bc6644d545ecc4086",
+        "bytes": 19085
+      },
+      "C:\\higher\\projects\\FEELM-standalone\\.codex-tmp\\fixed-k8-discovery-v2-20260913\\scripts\\dv2_retrieve.py": {
+        "sha256": "5601266ffb37ecad46aa92f21c861c537c46002569b11eeb3de0b34b4a8e3465",
+        "bytes": 7637
+      },
+      "C:\\higher\\projects\\FEELM-standalone\\.codex-tmp\\fixed-k8-discovery-v2-20260913\\scripts\\dv2_runtime.py": {
+        "sha256": "87a20c6d43849f8bc18597e3d1af9902be70fc5a711b891e9bc311ea30c3721e",
+        "bytes": 8874
+      }
+    }
+  },
+  "scope": "Exact final/runtime pre-execution only; actual invariance and serving results pending",
+  "tests": [
+    "7 independent runtime tests",
+    "synthetic anchor/tombstone/head-count counterexamples"
+  ],
+  "reviewed_runtime_test": {
+    "sha256": "71c3ee3daa93cfcd2331591257da67fea833acc93dd044084664d115125464c1",
+    "bytes": 5605
+  }
+}

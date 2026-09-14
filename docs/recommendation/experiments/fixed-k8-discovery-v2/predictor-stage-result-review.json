@@ -1,0 +1,283 @@
+{
+  "status": "PASS",
+  "reviewed_on": "2026-09-13",
+  "scope": "r2 predictor selection calculation, full saved-row support/rank audit, bounded independent trained-head source parity and leakage/source lineage",
+  "aggregate_auditor": "/root/asset_audit",
+  "aggregate_code_static_reviewer": "/root/design_review",
+  "independent_source_formula_and_leakage_auditor": "/root/asset_audit/predictor_source_pins",
+  "files": {
+    "C:/higher/projects/FEELM-standalone/.codex-tmp/discovery-v2-predictor-20260913/scripts/audit_dv2_predictor_stage.py": {
+      "bytes": 11239,
+      "sha256": "f4bbb2159b6aac7906f491098ab2d63e577a29dd628d599bbf5e5c65f4b4d803"
+    },
+    "C:/higher/projects/FEELM-standalone/.codex-tmp/discovery-v2-predictor-20260913/outputs/dv2-predictor-stage-audit-r2/aggregate-audit.json": {
+      "bytes": 4656,
+      "sha256": "adda8c7ad969ddb64dff296c3092c270434c7694248c14b30c5752766c610fde"
+    },
+    "C:/higher/projects/FEELM-standalone/.codex-tmp/discovery-v2-predictor-20260913/scripts/dv2_predictor_parity.py": {
+      "bytes": 19171,
+      "sha256": "d16902be0ec99d7ab1d52270b55f6b9a3a2b7ad8d3dc4c4124e152869ade018d"
+    },
+    "C:/higher/projects/FEELM-standalone/.codex-tmp/discovery-v2-predictor-20260913/scripts/test_dv2_predictor.py": {
+      "bytes": 24918,
+      "sha256": "d23981256e5b7cc1ab19ec0e3670f8ca4b8f107f81317f26d5ef7fe79fa9c996"
+    },
+    "C:/higher/projects/FEELM-standalone/.codex-tmp/discovery-v2-predictor-20260913/scripts/dv2_predictor.py": {
+      "bytes": 19085,
+      "sha256": "db3c1c92278fdfc889e8e951c1aa53495c631772dcf2f07bc6644d545ecc4086"
+    },
+    "C:/higher/projects/FEELM-standalone/.codex-tmp/fixed-k8-discovery-v2-20260913/outputs/fixed-k8-discovery-v2/feelm-discovery-v2-r2/predictor-seal.json": {
+      "bytes": 834,
+      "sha256": "245c69bc2efdc96377e75f0b8529e6016c2dcc205328f94235c8aff60e8012d7"
+    },
+    "C:/higher/projects/FEELM-standalone/.codex-tmp/fixed-k8-discovery-v2-20260913/outputs/fixed-k8-discovery-v2/feelm-discovery-v2-r2/prepare-seal.json": {
+      "bytes": 1997,
+      "sha256": "42de5a1343e33fb6ce600d567248def48f6eb9a9c95dddfeb41d91cf408e3c76"
+    },
+    "C:/higher/projects/FEELM-standalone/.codex-tmp/fixed-k8-discovery-v2-20260913/outputs/fixed-k8-discovery-v2/feelm-discovery-v2-r2/cluster-seal.json": {
+      "bytes": 2881,
+      "sha256": "49d0a5e53bbb66d2278d7e1e49500654794e596670fe86d5a7482fda2d681c43"
+    },
+    "C:/higher/projects/FEELM-standalone/.codex-tmp/fixed-k8-discovery-v2-20260913/scripts/dv2_experiment.py": {
+      "bytes": 31308,
+      "sha256": "20ce383c1d94b85008e0f8b1f0417fb99bfc6a57a0e0a2bc878f173c4fabffac"
+    },
+    "C:/higher/projects/FEELM-standalone/.codex-tmp/fixed-k8-discovery-v2-20260913/docs/recommendation/experiments/fixed-k8-discovery-v2/predictor-execution-review.json": {
+      "bytes": 2024,
+      "sha256": "17e5b8eb8d16124a865c850114b724c63daa20178386110c6fb018a876853952"
+    },
+    "C:/higher/projects/FEELM-standalone/.codex-tmp/fixed-k8-discovery-v2-20260913/docs/recommendation/experiments/fixed-k8-discovery-v2/predictor-parity-review.json": {
+      "bytes": 4774,
+      "sha256": "77c382bdb9c3d567ad505be90149605b9f75202e1be952a0c9f16763114e92a4"
+    },
+    "C:/higher/projects/FEELM-standalone/.codex-tmp/fixed-k8-discovery-v2-20260913/outputs/fixed-k8-discovery-v2/feelm-discovery-v2-r2/predictor/candidate-details.json": {
+      "bytes": 2760348,
+      "sha256": "9b3d5bf677049150d858ea574ce6260e91fc49c886410b62344a9ea4982c3930"
+    },
+    "C:/higher/projects/FEELM-standalone/.codex-tmp/fixed-k8-discovery-v2-20260913/outputs/fixed-k8-discovery-v2/feelm-discovery-v2-r2/predictor/decision.json": {
+      "bytes": 3065,
+      "sha256": "2bf82b7b3cfbb1ced0b08c01f78c005f8ec5a66bd12af7d1746ce138fab6ba96"
+    },
+    "C:/higher/projects/FEELM-standalone/.codex-tmp/fixed-k8-discovery-v2-20260913/outputs/fixed-k8-discovery-v2/feelm-discovery-v2-r2/predictor/observed-errors.parquet": {
+      "bytes": 256483,
+      "sha256": "862eac369cec687628fd5a8395ca5e146a5a5de3c31b3b9c8faaede75d29a099"
+    },
+    "C:/higher/projects/FEELM-standalone/.codex-tmp/fixed-k8-discovery-v2-20260913/outputs/fixed-k8-discovery-v2/feelm-discovery-v2-r2/predictor/same-candidate-requests.parquet": {
+      "bytes": 96448,
+      "sha256": "fcef6ec6821a68deec9a277590e277df3adc0d7fdd42d48f8bce61297529615a"
+    },
+    "C:/higher/projects/FEELM-standalone/.codex-tmp/fixed-k8-discovery-v2-20260913/outputs/fixed-k8-discovery-v2/feelm-discovery-v2-r2/predictor/summary.json": {
+      "bytes": 1764,
+      "sha256": "163d571d451b58af35b0a546ede51cc871e1e7ff864a70248c1a638726c67640"
+    }
+  },
+  "reproduce": {
+    "runtime": "C:/higher/projects/FEELM-standalone/outputs/recommendation-evidence/text339-runtime/venv/Scripts/python.exe",
+    "cwd": "C:/higher/projects/FEELM-standalone/.codex-tmp/discovery-v2-predictor-20260913",
+    "argv": [
+      "-B",
+      "scripts/audit_dv2_predictor_stage.py"
+    ],
+    "native_oracle_code": "scripts/dv2_predictor_parity.py independent_heads plus NativeScalarGBT; no adapter prediction used as the oracle",
+    "native_user_selection": "First three stage users by SHA256 dv2-stage-formula-audit:{uid}; 95057,34850,59050; all candidates and first ten observed targets for each, all four variants"
+  },
+  "full_aggregate": {
+    "observed_rows": 7316,
+    "requests": 248,
+    "per_variant_observed_rows": 1829,
+    "selection_users": 90,
+    "participating_users": 62,
+    "no_history_users": 28,
+    "per_variant_low_rows": 614,
+    "per_variant_low_users": 54,
+    "all_saved_error_terms_recomputed": true,
+    "all_observed_true_stars_rejoined": true,
+    "all_candidate_sets_identical_across_variants": true,
+    "all_support_counts_and_factor_availability_rebuilt_from_source_ids": true,
+    "all_top10_ranks_weights_branches_actual_head_counts_recomputed": true,
+    "frozen_gate_priority_exact": true,
+    "selected": "shrink100",
+    "summary": [
+      {
+        "variant": "original",
+        "rows": 1829,
+        "users": 62,
+        "macro_mse": 0.6015483776667179,
+        "micro_mse": 0.6187094479966587,
+        "macro_mae": 0.5868383505922992,
+        "low_rows": 614,
+        "low_users": 54,
+        "low_macro_mse": 0.6410479707625664,
+        "low_micro_mse": 0.6417783208832276,
+        "original_als_low20_top1": 35,
+        "all_low_ml20_top1": 56,
+        "low_tmdb20_top1": 0,
+        "out_of_rating_range": 0
+      },
+      {
+        "variant": "shrink20",
+        "rows": 1829,
+        "users": 62,
+        "macro_mse": 0.5950933553217588,
+        "micro_mse": 0.6194806692155492,
+        "macro_mae": 0.5808446657591191,
+        "low_rows": 614,
+        "low_users": 54,
+        "low_macro_mse": 0.6273745246499332,
+        "low_micro_mse": 0.6452765742350475,
+        "original_als_low20_top1": 14,
+        "all_low_ml20_top1": 54,
+        "low_tmdb20_top1": 0,
+        "out_of_rating_range": 0
+      },
+      {
+        "variant": "shrink100",
+        "rows": 1829,
+        "users": 62,
+        "macro_mse": 0.5958107601438849,
+        "micro_mse": 0.6215207053504149,
+        "macro_mae": 0.5822401749342885,
+        "low_rows": 614,
+        "low_users": 54,
+        "low_macro_mse": 0.6270717410674697,
+        "low_micro_mse": 0.648404786893023,
+        "original_als_low20_top1": 20,
+        "all_low_ml20_top1": 52,
+        "low_tmdb20_top1": 0,
+        "out_of_rating_range": 0
+      },
+      {
+        "variant": "min20",
+        "rows": 1829,
+        "users": 62,
+        "macro_mse": 0.5951172124824252,
+        "micro_mse": 0.6210807692932084,
+        "macro_mae": 0.5808248812850384,
+        "low_rows": 614,
+        "low_users": 54,
+        "low_macro_mse": 0.6268120977068051,
+        "low_micro_mse": 0.6488420776444482,
+        "original_als_low20_top1": 24,
+        "all_low_ml20_top1": 51,
+        "low_tmdb20_top1": 0,
+        "out_of_rating_range": 0
+      }
+    ],
+    "alternatives": [
+      {
+        "variant": "shrink100",
+        "gates": {
+          "global_mse": true,
+          "low_mse": true,
+          "low_top1_drop": true
+        },
+        "sufficient_low_error_evidence": true,
+        "sufficient_low_exposure_evidence": true,
+        "pass": true
+      },
+      {
+        "variant": "shrink20",
+        "gates": {
+          "global_mse": true,
+          "low_mse": true,
+          "low_top1_drop": true
+        },
+        "sufficient_low_error_evidence": true,
+        "sufficient_low_exposure_evidence": true,
+        "pass": true
+      },
+      {
+        "variant": "min20",
+        "gates": {
+          "global_mse": true,
+          "low_mse": true,
+          "low_top1_drop": true
+        },
+        "sufficient_low_error_evidence": true,
+        "sufficient_low_exposure_evidence": true,
+        "pass": true
+      }
+    ],
+    "candidate_counts_by_user": {
+      "0": 1,
+      "25": 4,
+      "50": 6,
+      "75": 13,
+      "100": 38
+    },
+    "candidate_rows_per_variant": 5175,
+    "candidate_model_calls_per_variant": 61
+  },
+  "independent_native_predictions": {
+    "users": [
+      95057,
+      34850,
+      59050
+    ],
+    "candidate_counts": [
+      100,
+      100,
+      75
+    ],
+    "observed_counts": [
+      10,
+      6,
+      10
+    ],
+    "candidate_variant_predictions": 1100,
+    "observed_variant_predictions": 104,
+    "max_candidate_abs_error": 1.7763568394002505e-15,
+    "max_observed_prediction_abs_error": 4.440892098500626e-16,
+    "max_squared_error_abs_error": 1.1102230246251565e-15,
+    "native_reference": "Independent batch RH230, native scalar GBT nodes, source MovieLens-ID ALS fold-in and independent source calibration map",
+    "branch_weight_and_top10_match": true
+  },
+  "source_and_leakage": {
+    "all_prepare_13_cluster_and_predictor_5_file_inventories_verified": true,
+    "execution_review_and_parity_prerequisite_pins_verified": true,
+    "all_model_source_inventory_and_reference_code_pins_verified": true,
+    "all_contexts_reconstructed": 1350,
+    "mapped_history_entries": 8484,
+    "mapped_target_entries": 93045,
+    "original_capped_order_preserved_before_mapping": true,
+    "past_timestamp_strict_upper_bound": 1672531200,
+    "target_window_days": 180,
+    "targets_disjoint_full_viewed": true,
+    "train_rows": 4997069,
+    "max_train_timestamp": 1672530707,
+    "train_eval_user_overlap": 0,
+    "selection_exact_final344_role": "calibration90",
+    "check_exact_final344_role": "comparison180",
+    "check_users_contributing_to_predictor_rows_or_selection": 0,
+    "stage_reads_complete_prepared_context_json": true,
+    "check_role_future_label_arrays_can_be_parsed_in_memory": true,
+    "check_future_labels_used_for_selection": false,
+    "predictor_context_fields": [
+      "cap",
+      "oi",
+      "stars",
+      "viewed"
+    ],
+    "audit_future_labels_read": "Explicitly authorized post-execution to validate saved observed targets/errors"
+  },
+  "interpretation": {
+    "macro_mse_change_percent": -0.9538081617122773,
+    "low_macro_mse_change_percent": -2.180215885945491,
+    "micro_mse_change_percent": 0.4543744018874918,
+    "low_micro_mse_change_percent": 1.0325163368990031,
+    "original_als_available_low20_top1": {
+      "original": 35,
+      "shrink100": 20,
+      "drop_percent": 42.85714285714286
+    }
+  },
+  "limits": [
+    "Fixed gates use user-macro MSE. Micro MSE slightly worsens, including the low-support subset; do not claim uniform error improvement.",
+    "All three alternatives pass. Shrink100 is the first passing alternative in the frozen priority order, not the minimum-error alternative.",
+    "Profile VALID62/no-history28 is checked against saved expectations by the aggregate script, not independently recomputed from content vectors there.",
+    "The aggregate script relies on separate verified prepare/source audits for source hashes; those pins and full source lineage were independently reverified for this combined review.",
+    "This is current-2026-metadata-assisted reused-development technical diagnostics, not historical-2023-metadata, fresh-test, Korean-service or discovery-satisfaction validation.",
+    "Check-role labels may be parsed by the complete JSON reader but no check user contributes features, predictions, error rows or choice in this stage."
+  ],
+  "required_corrections": []
+}

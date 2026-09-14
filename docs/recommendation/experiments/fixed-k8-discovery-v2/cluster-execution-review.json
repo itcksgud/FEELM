@@ -1,0 +1,32 @@
+{
+  "status": "PASS",
+  "reviewer": "Copernicus/design_review",
+  "fingerprint": {
+    "stage": "cluster",
+    "files": {
+      "C:\\higher\\projects\\FEELM-standalone\\.codex-tmp\\fixed-k8-discovery-v2-20260913\\docs\\recommendation\\experiments\\fixed-k8-discovery-v2\\config.json": {
+        "sha256": "20e624a77ac73c2334eb1730f9df8cee3bfbc305d592b07000b0dd178b509103",
+        "bytes": 1785
+      },
+      "C:\\higher\\projects\\FEELM-standalone\\.codex-tmp\\fixed-k8-discovery-v2-20260913\\docs\\recommendation\\experiments\\fixed-k8-discovery-v2\\EXECUTION.md": {
+        "sha256": "4f7e4aebf28701d01d77e33457e4b2df9a541e46eef8e610fe7f124ae5c1d93f",
+        "bytes": 20596
+      },
+      "C:\\higher\\projects\\FEELM-standalone\\.codex-tmp\\fixed-k8-discovery-v2-20260913\\scripts\\dv2_cluster.py": {
+        "sha256": "ef1965108a39c28e04480d9fe99fd3f223026655c59d554f4b5bbf55844ac150",
+        "bytes": 7726
+      },
+      "C:\\higher\\projects\\FEELM-standalone\\.codex-tmp\\fixed-k8-discovery-v2-20260913\\scripts\\dv2_common.py": {
+        "sha256": "6a45cc381aca7053a9e098c59a859c87a09825c866d1430cbc9e31e81394ba7a",
+        "bytes": 7715
+      }
+    }
+  },
+  "scope": "Pre-execution exact code/input/contract only; actual stage output pending",
+  "tests": [
+    "17 synthetic",
+    "source-role calibration/check alignment",
+    "all prior input identities/time/threadpool assertions",
+    "versions combined resource budget"
+  ]
+}

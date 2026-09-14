@@ -1,0 +1,136 @@
+{
+  "status": "PASS",
+  "prepare_seal": {
+    "bytes": 1997,
+    "sha256": "0d18af14e2f8d575427dc5f80e535591874acb731a8c9f4da3662682a12a92c0"
+  },
+  "catalog": {
+    "bytes": 42113282,
+    "sha256": "8bda180eb6530188a6ebf08da599d4d68124247a878ca0911f0d3f38512415cd"
+  },
+  "source_pins": {
+    "02_tmdb-movie-raw_20231013-20260907.tar.gz": {
+      "bytes": 698263832,
+      "sha256": "cb4a9f119bdc349841f9245723f24f911f823f65e25bf4ce08ae03fce335e10e"
+    },
+    "03_tmdb-keywords-raw_20231013-20260907.tar.gz": {
+      "bytes": 14387419,
+      "sha256": "e6681572435284c721425ea1d8b31623cbb0f75804aafcb2fa370eb4bd4b7326"
+    },
+    "v1_catalog": {
+      "bytes": 30806209,
+      "sha256": "f16abeb51ccff940a73480aa07347a44502524c82f29d9b7f1fde379b844006f"
+    },
+    "v1_prepare_seal": {
+      "bytes": 1883,
+      "sha256": "963a5bd3a4598c3ccf8fa0dd059e89761951d36755c0c0efb5b1f1105b9d6844"
+    },
+    "v1_top_assignments": {
+      "bytes": 13538341,
+      "sha256": "095c157daa77ffdd6d09fd4f33341b51bed81890f57095492112b5ef75a54708"
+    },
+    "prepare_config": {
+      "bytes": 1785,
+      "sha256": "20e624a77ac73c2334eb1730f9df8cee3bfbc305d592b07000b0dd178b509103"
+    },
+    "prepare_execution_review": {
+      "bytes": 1475,
+      "sha256": "d41ca6fd7dc021fed2c69efe65c56de6c29b8e5e5f9b21bc8d54c4b9ac8f7a3a"
+    },
+    "original_viewed_contexts": {
+      "bytes": 11084812,
+      "sha256": "27a1470c1d546bd6940f6fd3fbf3158d8f97ec32e489be00c77c56c6b6150898"
+    },
+    "original_viewed_contexts_seal": {
+      "bytes": 3792,
+      "sha256": "2f83b17ef6a1959814354105f1d7a10ab85c9d6499e37b17d77bb13e62681ccd"
+    },
+    "text339_contexts": {
+      "bytes": 12290713,
+      "sha256": "951fc2464bd3aea25ea486c79c33084f6241f7846a3ed626e9d5fc3907a7aab7"
+    },
+    "text339_contexts_seal": {
+      "bytes": 5024,
+      "sha256": "d27709a42bd0d5511a36f3740365637325d59b521c7f62eae04850523782fdd8"
+    }
+  },
+  "raw_rows_compared": 237817,
+  "keyword_source_rows": 237803,
+  "metadata_mismatches": {},
+  "mismatch_examples": [],
+  "raw_quality_states": {
+    "VALID": 121656,
+    "ZERO_VOTES": 115798,
+    "AMBIGUOUS_ZERO_AVERAGE": 239,
+    "CONTRADICTORY_ZERO_COUNT": 124
+  },
+  "metadata_types": {
+    "runtime:int": 237817
+  },
+  "base_eligible": 208847,
+  "quality_eligible": 118790,
+  "C": 6.314301027022476,
+  "m": 300,
+  "contexts_equal_to_sealed_history_source": 1350,
+  "service_tmdb_movielens_axis_equal": 237817,
+  "top_assignments_equal": 237817,
+  "service_factor_items": 44844,
+  "service_train_rating_support_sum": 4992475,
+  "service_axis_rh_parity": {
+    "index_rows": 237817,
+    "contexts": 15,
+    "candidate_rows": 109,
+    "max_abs_error": 5.960464477539063e-8
+  },
+  "trained_model_predictions": 0,
+  "future_label_columns_read": 0,
+  "future_label_json_values_parsed": true,
+  "future_label_individual_values_inspected_or_printed": false,
+  "future_label_metrics_or_selection_use": false,
+  "label_boundary_disclosure": "The complete prepared and v1 context JSON documents include a ratings field. Those arrays were incidentally parsed into memory and included in whole-context structural equality, though individual future ratings were not inspected/printed or used for model prediction, metrics, or selection. Zero Parquet label columns read must not be interpreted as zero JSON label parsing.",
+  "seconds": 85.47080700000515,
+  "code": {
+    "audit_dv2_prepare_inputs.py": {
+      "bytes": 19429,
+      "sha256": "319c2f6de0dd108a08162f3f1d9a927214c2ef50b0d08e77f15ff0828c6a6b15"
+    },
+    "dv2_predictor.py": {
+      "bytes": 19085,
+      "sha256": "db3c1c92278fdfc889e8e951c1aa53495c631772dcf2f07bc6644d545ecc4086"
+    },
+    "test_dv2_predictor.py": {
+      "bytes": 24918,
+      "sha256": "d23981256e5b7cc1ab19ec0e3670f8ca4b8f107f81317f26d5ef7fe79fa9c996"
+    }
+  },
+  "reviewed_on": "2026-09-13",
+  "scope": "Independent read-only input audit on the complete 237817-service-film axis; feature parity only, no trained-model prediction or recommendation quality outcome",
+  "auditor": "/root/asset_audit",
+  "code_review": {
+    "status": "PASS",
+    "reviewer": "/root/asset_audit/predictor_source_pins",
+    "audit_sha256": "319c2f6de0dd108a08162f3f1d9a927214c2ef50b0d08e77f15ff0828c6a6b15",
+    "required_corrections": []
+  },
+  "reproduce": {
+    "runtime": "C:/higher/projects/FEELM-standalone/outputs/recommendation-evidence/text339-runtime/venv/Scripts/python.exe",
+    "cwd": "C:/higher/projects/FEELM-standalone/.codex-tmp/discovery-v2-predictor-20260913",
+    "argv": [
+      "-B",
+      "scripts/audit_dv2_prepare_inputs.py",
+      "--prepare-root",
+      "C:/higher/projects/FEELM-standalone/.codex-tmp/fixed-k8-discovery-v2-20260913"
+    ],
+    "writes": "No files; progress and final JSON printed"
+  },
+  "audit_harness_revision_notes": [
+    "Initial audit expectation omitted the frozen v1 overview .strip(), producing four false mismatch flags; the prepared data were correct.",
+    "The initial final-JSON formatter could not print a nonbreaking-space example under CP949, so that attempt produced no PASS ledger.",
+    "Independent review strengthened service/mapping/source-context/config pins, exact unique context coverage, nonempty parity, and final child-file inventory checks. All corrections were applied before the successful full rerun recorded here."
+  ],
+  "limits": [
+    "Snapshot provenance and normalization do not establish historical TMDb availability; top-level fetched timestamp fields are absent.",
+    "The same prior development users and current metadata remain DEVELOPMENT_ONLY.",
+    "The 109 candidate rows validate feature computation on the full service index; no complete-catalog trained model predictions, performance benchmark, offline recommendation outcome, or service quality claim is covered."
+  ]
+}

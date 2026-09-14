@@ -1,0 +1,39 @@
+{
+  "status": "PASS",
+  "reviewer": "Copernicus/design_review",
+  "fingerprint": {
+    "stage": "predictor",
+    "files": {
+      "C:\\higher\\projects\\FEELM-standalone\\.codex-tmp\\fixed-k8-discovery-v2-20260913\\docs\\recommendation\\experiments\\fixed-k8-discovery-v2\\config.json": {
+        "sha256": "20e624a77ac73c2334eb1730f9df8cee3bfbc305d592b07000b0dd178b509103",
+        "bytes": 1785
+      },
+      "C:\\higher\\projects\\FEELM-standalone\\.codex-tmp\\fixed-k8-discovery-v2-20260913\\docs\\recommendation\\experiments\\fixed-k8-discovery-v2\\EXECUTION.md": {
+        "sha256": "4f7e4aebf28701d01d77e33457e4b2df9a541e46eef8e610fe7f124ae5c1d93f",
+        "bytes": 20596
+      },
+      "C:\\higher\\projects\\FEELM-standalone\\.codex-tmp\\fixed-k8-discovery-v2-20260913\\scripts\\dv2_common.py": {
+        "sha256": "6a45cc381aca7053a9e098c59a859c87a09825c866d1430cbc9e31e81394ba7a",
+        "bytes": 7715
+      },
+      "C:\\higher\\projects\\FEELM-standalone\\.codex-tmp\\fixed-k8-discovery-v2-20260913\\scripts\\dv2_experiment.py": {
+        "sha256": "20ce383c1d94b85008e0f8b1f0417fb99bfc6a57a0e0a2bc878f173c4fabffac",
+        "bytes": 31308
+      },
+      "C:\\higher\\projects\\FEELM-standalone\\.codex-tmp\\fixed-k8-discovery-v2-20260913\\scripts\\dv2_predictor.py": {
+        "sha256": "db3c1c92278fdfc889e8e951c1aa53495c631772dcf2f07bc6644d545ecc4086",
+        "bytes": 19085
+      },
+      "C:\\higher\\projects\\FEELM-standalone\\.codex-tmp\\fixed-k8-discovery-v2-20260913\\scripts\\dv2_retrieve.py": {
+        "sha256": "5601266ffb37ecad46aa92f21c861c537c46002569b11eeb3de0b34b4a8e3465",
+        "bytes": 7637
+      }
+    }
+  },
+  "scope": "Exact runner pre-execution review; actual model prediction parity is an additional enforced prerequisite; actual results pending",
+  "tests": [
+    "27 independent synthetic",
+    "conditional Top1 denominator fixture"
+  ],
+  "reviewed_main_test_sha256": "af0c63a9c1e8f7065a0d5df61174cceef09c1547ba39c173fcf252e056af3115"
+}
