@@ -1,0 +1,54 @@
+{
+  "status": "PASS",
+  "stages": [
+    "prepare",
+    "train",
+    "recommend",
+    "final"
+  ],
+  "reviewers": [
+    "/root/design_review",
+    "/root/asset_audit"
+  ],
+  "fingerprint": {
+    "docs/recommendation/experiments/fixed-k8-discovery/DESIGN.md": {
+      "sha256": "8b217ed894c2a10f3357d93cd04fa7ac2b71e550446c591a5b329b626ca86fd9",
+      "bytes": 16340
+    },
+    "docs/recommendation/experiments/fixed-k8-discovery/config.json": {
+      "sha256": "1b0956306527ac91e416ed52a0a497df2a189ce530f28bae961f781ff8fdccaf",
+      "bytes": 1528
+    },
+    "scripts/k8_assign.py": {
+      "sha256": "dac8e2de73ba2139de93d41980036dc39ad7d9353916680ac6fc238030a7ea96",
+      "bytes": 2016
+    },
+    "scripts/k8_common.py": {
+      "sha256": "b87f79cca4499f1310c9ab1c96a6ad14f59e21f3d2081212a6e053dd5676a349",
+      "bytes": 7346
+    },
+    "scripts/k8_finalize.py": {
+      "sha256": "f85bdf89dbad0427900fc15bf37dd9ddf049a9bb331622a2c113a78bce393730",
+      "bytes": 7758
+    },
+    "scripts/k8_prepare.py": {
+      "sha256": "f2adc41587f358bb83b719d23f7621cd6ca69464816bc6ecf1888c55456c38f2",
+      "bytes": 6089
+    },
+    "scripts/k8_recommend.py": {
+      "sha256": "8cda15305f838e39592a7f2afdb472370dad8b48802b7baee87040d132410577",
+      "bytes": 21381
+    },
+    "scripts/k8_tests.py": {
+      "sha256": "356ee79cbe15aa8d401e8eb29d71aa1c4b9617d90220ff769c7ea597cea09acc",
+      "bytes": 3293
+    },
+    "scripts/k8_train.py": {
+      "sha256": "29b7b1a5a605fdae858b3d798afee9e793ea224e466e64d914abef718ca36121",
+      "bytes": 12618
+    }
+  },
+  "synthetic_tests": 7,
+  "scope": "Top8; childK through256; reviewed before any real execution",
+  "code_review_log": "REVIEW-LOG.md"
+}

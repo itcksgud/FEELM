@@ -1384,3 +1384,12 @@ py -3.12 -B -X utf8 scripts/final344_evaluate.py select
 8실행 중 엄격한메모리기준2PASS/6EXCEPTION을 보존했다. 완료된 출력에 위 명령을 다시 실행하지 않는다.
 감사 도구의 Windows경로 구분자 가정 오류는 최초실패/원본을 보존한 뒤, 경로정규화·중복alias차단만 수정해
 12합성검사와 별도diff검토 후 실제감사를 통과했다. 생산코드·모델·평가봉인·판정기준은 변경하지 않았다.
+
+## 고정8맛·하위 그룹256까지의 발견 추천 연구
+
+2026-09-12 개인 연구 실행·재현 절차는 [fixed-k8-discovery 실행 안내](../recommendation/experiments/fixed-k8-discovery/README.md)에 연결한다.
+별도 worktree `research/fixed-k8-discovery-20260912`에서 설계·코드 독립 검토, 전수 데이터 확인, 하위K1~256 학습,
+실제 추천 품질·시간 비교와 독립 수치 감사, 전체 배정 불변성 및 신규/삭제 추천 경로 검증을 완료했다.
+237817편의 고정8맛/16하위 그룹 산출물은 제공하며, 실제 이력 사용자 성능 저하 때문에 개인화 발견 정책 교체는 보류한다.
+팀 API/DB·기존 주 작업공간·외부 게시를 변경하지 않았다. [최종 결과](../recommendation/experiments/fixed-k8-discovery/RESULT.md)에서
+원래 전체 사전 기준 통과와 이력별 한계, 데이터 결측, 모델 해시·소스와 재실행 명령을 확인한다.

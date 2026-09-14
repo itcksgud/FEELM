@@ -1,0 +1,24 @@
+{
+  "script": {
+    "sha256": "409dd3041f29e58864f2e58ae9c4439961c8534689e8fbbf6886ac2773b2f073",
+    "bytes": 4203
+  },
+  "files": {
+    "recommend/validation-curves.csv": {
+      "sha256": "afc41f36560bec1dbc3983a08ea4ca48f53a4e57c57c2088ecee4911a56c29ab",
+      "bytes": 191653
+    },
+    "recommend/selection.json": {
+      "sha256": "eb746a21a5e17f24eacd18736dd014db7e95f5a6f13dc452e47f91dc9ea244ba",
+      "bytes": 4053
+    },
+    "recommend/verification-summary.json": {
+      "sha256": "01c00af6c12af147049285a5d910be3e52a16a57309b2910a5c576133d696ced",
+      "bytes": 8004
+    },
+    "final/assignments.parquet": {
+      "sha256": "095c157daa77ffdd6d09fd4f33341b51bed81890f57095492112b5ef75a54708",
+      "bytes": 13538341
+    }
+  }
+}

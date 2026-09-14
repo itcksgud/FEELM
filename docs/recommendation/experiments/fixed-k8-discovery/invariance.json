@@ -1,0 +1,22 @@
+{
+  "status": "PASS",
+  "movies": 237817,
+  "unique_service_ids": 237817,
+  "tastes": 8,
+  "groups": 16,
+  "tests": [
+    "full_reversal",
+    "delete_every_seventh",
+    "37_batch_partitions",
+    "append_empty_OOV_new_records",
+    "save_reload_all_rows",
+    "original_labels_match",
+    "nonmutating_assign",
+    "exactly_one_nested_assignment"
+  ],
+  "top_unsupported": 30577,
+  "no_content": 28131,
+  "weak_evidence": 128843,
+  "keyword_oov_only": 5464,
+  "overview_oov_only": 7
+}

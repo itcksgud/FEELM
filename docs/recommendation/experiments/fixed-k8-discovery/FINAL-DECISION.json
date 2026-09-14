@@ -1,0 +1,155 @@
+{
+  "status": "LOCAL_RESEARCH_COMPLETE",
+  "recommendation_policy": "HOLD_PERSONALIZED_DISCOVERY_KEEP_FLAT_BASELINE",
+  "prespecified_overall_gate": {
+    "recommendation": "ADOPT_GROUPED",
+    "ndcg_delta": {
+      "n": 173,
+      "delta": 0.013228913457637664,
+      "ci95": [
+        0.004797153912387245,
+        0.022274160323182513
+      ]
+    },
+    "underseen_delta": {
+      "n": 180,
+      "delta": 0.16111111111111112,
+      "ci95": [
+        0.12777777777777777,
+        0.19611111111111118
+      ]
+    },
+    "status": "DEVELOPMENT_ONLY",
+    "invariants_pending": true
+  },
+  "invariants": {
+    "status": "PASS",
+    "movies": 237817,
+    "unique_service_ids": 237817,
+    "tastes": 8,
+    "groups": 16,
+    "tests": [
+      "full_reversal",
+      "delete_every_seventh",
+      "37_batch_partitions",
+      "append_empty_OOV_new_records",
+      "save_reload_all_rows",
+      "original_labels_match",
+      "nonmutating_assign",
+      "exactly_one_nested_assignment"
+    ],
+    "top_unsupported": 30577,
+    "no_content": 28131,
+    "weak_evidence": 128843,
+    "keyword_oov_only": 5464,
+    "overview_oov_only": 7
+  },
+  "serving_acceptance": {
+    "status": "PASS",
+    "all_original_assignments_preserved": 237817,
+    "new_empty": [
+      {
+        "service_movie_id": 238053,
+        "taste_id": 7,
+        "group_id": 15,
+        "weak_evidence": true
+      }
+    ],
+    "new_content": [
+      {
+        "service_movie_id": 238054,
+        "taste_id": 3,
+        "group_id": 6,
+        "weak_evidence": false
+      }
+    ],
+    "checks": [
+      "empty_history",
+      "new_missing_content",
+      "new_content_zero_factor",
+      "same_input_upsert",
+      "catalog_delete",
+      "negative_rating_seen",
+      "all_caps",
+      "all_seen",
+      "empty_active_catalog",
+      "no_model_mutation",
+      "frozen_prior"
+    ],
+    "code": {
+      "serve_fixed_k8.py": {
+        "sha256": "fa54cd709fd67e9d261242a41acb54f09d77dd53e9254832cdb125166fdd3f69",
+        "bytes": 7976
+      },
+      "check_fixed_k8_serving.py": {
+        "sha256": "ec63e9f2f16e1cde93d54bcac5b04ae6105f838c27a82c047a530f842a5add0e",
+        "bytes": 4456
+      }
+    }
+  },
+  "posthoc_history_diagnostic": {
+    "status": "POSTHOC_DESCRIPTIVE_NO_SELECTION_CHANGE",
+    "strata": {
+      "False": {
+        "users": 124,
+        "positive_users": 117,
+        "group_ndcg": 0.03378471801895639,
+        "flat_ndcg": 0.04013753490145481,
+        "delta_ci": {
+          "n": 117,
+          "delta": -0.006352816882498407,
+          "ci95": [
+            -0.01340670777658326,
+            -0.0008821355016560888
+          ]
+        }
+      },
+      "True": {
+        "users": 56,
+        "positive_users": 56,
+        "group_ndcg": 0.28482368567000654,
+        "flat_ndcg": 0.23068294275172743,
+        "delta_ci": {
+          "n": 56,
+          "delta": 0.0541407429182791,
+          "ci95": [
+            0.03524554288009331,
+            0.07345487243247677
+          ]
+        }
+      }
+    }
+  },
+  "original_score_selection_changed": false,
+  "artifact_version": "feelm-fixed-k8-v1",
+  "source_pins": {
+    "prepare-seal.json": {
+      "sha256": "963a5bd3a4598c3ccf8fa0dd059e89761951d36755c0c0efb5b1f1105b9d6844",
+      "bytes": 1883
+    },
+    "train-seal.json": {
+      "sha256": "a9e88305c703e0b9924a7cb7f122e701e5644958403d935b62e7bb62e1eaa09d",
+      "bytes": 4900
+    },
+    "recommend-seal.json": {
+      "sha256": "2f83b17ef6a1959814354105f1d7a10ab85c9d6499e37b17d77bb13e62681ccd",
+      "bytes": 3792
+    },
+    "final-seal.json": {
+      "sha256": "6ae45a2920214fae5a0d58c6688ba3108149b776918232e211fe6c7a3e457287",
+      "bytes": 2482
+    },
+    "final/manifest.json": {
+      "sha256": "9721ac7fa3ee1887b45505965b23944718587fecc4022bb851a51a408d4c6ae9",
+      "bytes": 8286
+    }
+  },
+  "reviews": {
+    "prepare": "PASS /root/design_review",
+    "train": "PASS /root/design_review, independent9fit replay",
+    "recommendation": "PASS /root/asset_audit",
+    "final_artifact": "PASS /root/design_review",
+    "serving": "PASS /root/asset_audit; fullcatalog rerunPASS"
+  },
+  "external_changes": false
+}

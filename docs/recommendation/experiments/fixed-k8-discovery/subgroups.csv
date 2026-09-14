@@ -1,0 +1,17 @@
+﻿group_id,taste_id,name,movies,top_unsupported,no_content,genres,keywords,examples,korean_examples
+0,0,다큐멘터리 · 음악 · 역사,2860,0,0,다큐멘터리; 음악; 역사,music documentary; music; concert; concert film; biography,에이미; 마이클 잭슨의 디스 이즈 잇; 원 디렉션: 디스 이즈 어스,블랙핑크: 세상을 밝혀라; 브링 더 소울: 더 무비
+1,0,다큐멘터리 · 역사 · TV 영화,36737,0,0,다큐멘터리; 역사; TV 영화,documentary; woman director; biography; short film; sports,해리 포터 20주년: 리턴 투 호그와트; 슈퍼 사이즈 미; 프리 솔로,오징어 게임: 시즌2 제작 이야기; 부재의 기억
+2,1,드라마 · 공포 · 미스터리,2193,0,0,드라마; 공포; 미스터리,short film; horror; ghost; murder; based on novel or book,콰이어트 플레이스; 미드소마; 마더!,"괴물; 장화, 홍련"
+3,1,공포 · SF · 미스터리,10865,0,0,공포; SF; 미스터리,found footage; horror; murder; short film; slasher,월드워 Z; 에이리언; 프로메테우스,곡성; #살아있다
+4,2,드라마 · 코미디 · 로맨스,3135,0,0,드라마; 코미디; 로맨스,woman director; love; lgbt; romcom; christmas,포레스트 검프; 라라랜드; 실버라이닝 플레이북,엽기적인 그녀; 싸이보그지만 괜찮아
+5,2,드라마 · 코미디 · 가족,11183,0,0,드라마; 코미디; 가족,woman director; coming of age; short film; dark comedy; based on novel or book,더 울프 오브 월 스트리트; 기생충; 트루먼 쇼,기생충; 7번방의 선물
+6,3,드라마 · 범죄 · 액션,3478,0,0,드라마; 범죄; 액션,murder; based on novel or book; gangster; film noir; based on true story,쇼생크 탈출; 대부; 배트맨 비긴즈,마더; 빈집
+7,3,드라마 · 로맨스 · 역사,49861,0,0,드라마; 로맨스; 역사,woman director; based on novel or book; short film; lgbt; based on true story,인터스텔라; 장고: 분노의 추적자; 타이타닉,설국열차; 봄 여름 가을 겨울 그리고 봄
+8,4,드라마 · 스릴러 · 범죄,9440,0,0,드라마; 스릴러; 범죄,murder; based on novel or book; revenge; based on true story; woman director,파이트 클럽; 조커; 셔터 아일랜드,살인의 추억; 아가씨
+9,4,스릴러 · 공포 · 범죄,15472,0,0,스릴러; 공포; 범죄,murder; serial killer; based on novel or book; revenge; short film,다크 나이트; 펄프 픽션; 세븐,올드보이; 부산행
+10,5,코미디 · 로맨스 · TV 영화,5218,0,0,코미디; 로맨스; TV 영화,romcom; woman director; musical; christmas; love,아멜리에; 마스크; 귀여운 여인,모럴센스; 오싹한 연애
+11,5,코미디 · 공포 · 액션,26002,0,0,코미디; 공포; 액션,short film; stand-up comedy; comedy; woman director; sequel,데드풀; 빽 투 더 퓨쳐; 데드풀 2,극한직업; 염력
+12,6,애니메이션 · 드라마 · 판타지,8654,0,0,애니메이션; 드라마; 판타지,short film; anime; animation; stop motion; 3d animation,하울의 움직이는 성; 유령 신부; 모노노케 히메,원더풀 데이즈; 이 별에 필요한
+13,6,애니메이션 · 코미디 · 가족,4439,0,0,애니메이션; 코미디; 가족,short film; 3d animation; cartoon; anime; villain,인사이드 아웃; 업; 코코,레드슈즈; 아치와 씨팍
+14,7,음악 · 로맨스 · 판타지,3866,0,0,음악; 로맨스; 판타지,concert; musical; live music; music; concert film,캠프 락; 어 신데렐라 스토리: 이프 더 슈 핏츠; 문워커,러브 유어셀프 인 서울; BTS World Tour 'Love Yourself - Speak Yourself' (The Final) Seoul Live Viewing
+15,7,액션 · 모험 · SF,44414,30577,28131,액션; 모험; SF,short film; based on novel or book; experimental; martial arts; sequel,인셉션; 어벤져스; 아바타,"외계+인 2부; 좋은 놈, 나쁜 놈, 이상한 놈"

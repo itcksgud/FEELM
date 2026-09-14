@@ -1,0 +1,21 @@
+{
+  "recommendation": "ADOPT_GROUPED",
+  "ndcg_delta": {
+    "n": 173,
+    "delta": 0.013228913457637664,
+    "ci95": [
+      0.004797153912387245,
+      0.022274160323182513
+    ]
+  },
+  "underseen_delta": {
+    "n": 180,
+    "delta": 0.16111111111111112,
+    "ci95": [
+      0.12777777777777777,
+      0.19611111111111118
+    ]
+  },
+  "status": "DEVELOPMENT_ONLY",
+  "invariants_pending": true
+}

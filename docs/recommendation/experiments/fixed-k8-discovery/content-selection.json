@@ -1,0 +1,354 @@
+{
+  "baseline": {
+    "name": "G",
+    "seed": 913,
+    "key": "G-913",
+    "D8": 0.8081356713376966,
+    "ratios": [
+      0.4777339025524263,
+      0.9682170079149184,
+      0.9784561035457451
+    ],
+    "support": [
+      30960,
+      15440,
+      5482
+    ],
+    "complete_case_count": 4262,
+    "complete_case_D8": 0.8315545782272046,
+    "worst_decile_relative_loss": 1.3288469502193503,
+    "inertia": 45135.235804834636,
+    "iterations": 9,
+    "converged_before_cap": true
+  },
+  "challenger": {
+    "name": "GKT",
+    "seed": 912,
+    "key": "GKT-912",
+    "D8": 0.8082754487030028,
+    "ratios": [
+      0.48145588525101,
+      0.9663098213943716,
+      0.977060639463627
+    ],
+    "support": [
+      30960,
+      15440,
+      5482
+    ],
+    "complete_case_count": 4262,
+    "complete_case_D8": 0.8367778352765561,
+    "worst_decile_relative_loss": 1.3415188117293273,
+    "inertia": 67236.58718489956,
+    "iterations": 15,
+    "converged_before_cap": true
+  },
+  "verification_delta": {
+    "delta": 0.0008176499366735379,
+    "ci95": [
+      0.0004475420917496807,
+      0.0011986885600982163
+    ]
+  },
+  "baseline_verification": {
+    "D8": 0.8066143040753045,
+    "ratios": [
+      0.47470530922604093,
+      0.9686076315551287,
+      0.9765299714447437
+    ],
+    "support": [
+      31103,
+      15481,
+      5496
+    ],
+    "complete_case_count": 4259,
+    "complete_case_D8": 0.8327378532767288,
+    "worst_decile_relative_loss": 1.3201432678874077
+  },
+  "challenger_verification": {
+    "D8": 0.8074319540120064,
+    "ratios": [
+      0.47956147208627986,
+      0.9668422697991662,
+      0.9758921201505729
+    ],
+    "support": [
+      31103,
+      15481,
+      5496
+    ],
+    "complete_case_count": 4259,
+    "complete_case_D8": 0.8386151465107803,
+    "worst_decile_relative_loss": 1.3340237721460022
+  },
+  "selected": {
+    "name": "G",
+    "seed": 913,
+    "key": "G-913",
+    "D8": 0.8081356713376966,
+    "ratios": [
+      0.4777339025524263,
+      0.9682170079149184,
+      0.9784561035457451
+    ],
+    "support": [
+      30960,
+      15440,
+      5482
+    ],
+    "complete_case_count": 4262,
+    "complete_case_D8": 0.8315545782272046,
+    "worst_decile_relative_loss": 1.3288469502193503,
+    "inertia": 45135.235804834636,
+    "iterations": 9,
+    "converged_before_cap": true
+  },
+  "validation": [
+    {
+      "name": "G",
+      "seed": 912,
+      "key": "G-912",
+      "D8": 0.8101249813481172,
+      "ratios": [
+        0.4831619581493803,
+        0.9687415125650131,
+        0.978471473329958
+      ],
+      "support": [
+        30960,
+        15440,
+        5482
+      ],
+      "complete_case_count": 4262,
+      "complete_case_D8": 0.8362248874338333,
+      "worst_decile_relative_loss": 1.3371180622448948,
+      "inertia": 45412.485556838794,
+      "iterations": 12,
+      "converged_before_cap": true
+    },
+    {
+      "name": "G",
+      "seed": 913,
+      "key": "G-913",
+      "D8": 0.8081356713376966,
+      "ratios": [
+        0.4777339025524263,
+        0.9682170079149184,
+        0.9784561035457451
+      ],
+      "support": [
+        30960,
+        15440,
+        5482
+      ],
+      "complete_case_count": 4262,
+      "complete_case_D8": 0.8315545782272046,
+      "worst_decile_relative_loss": 1.3288469502193503,
+      "inertia": 45135.235804834636,
+      "iterations": 9,
+      "converged_before_cap": true
+    },
+    {
+      "name": "G",
+      "seed": 914,
+      "key": "G-914",
+      "D8": 0.8095125333715156,
+      "ratios": [
+        0.4790740437599795,
+        0.9704407049692343,
+        0.9790228513853333
+      ],
+      "support": [
+        30960,
+        15440,
+        5482
+      ],
+      "complete_case_count": 4262,
+      "complete_case_D8": 0.835331542489302,
+      "worst_decile_relative_loss": 1.3563934619532012,
+      "inertia": 45613.316172584775,
+      "iterations": 8,
+      "converged_before_cap": true
+    },
+    {
+      "name": "GK",
+      "seed": 912,
+      "key": "GK-912",
+      "D8": 0.8087498307349744,
+      "ratios": [
+        0.4830945988496013,
+        0.9659973059834394,
+        0.9771575873718829
+      ],
+      "support": [
+        30960,
+        15440,
+        5482
+      ],
+      "complete_case_count": 4262,
+      "complete_case_D8": 0.8359225380707196,
+      "worst_decile_relative_loss": 1.3488404147534483,
+      "inertia": 69443.23173185377,
+      "iterations": 15,
+      "converged_before_cap": true
+    },
+    {
+      "name": "GK",
+      "seed": 913,
+      "key": "GK-913",
+      "D8": 0.8087497788305162,
+      "ratios": [
+        0.483092323419959,
+        0.9659975848661936,
+        0.9771594282053961
+      ],
+      "support": [
+        30960,
+        15440,
+        5482
+      ],
+      "complete_case_count": 4262,
+      "complete_case_D8": 0.8359163505984292,
+      "worst_decile_relative_loss": 1.3488193903067696,
+      "inertia": 69443.23025992652,
+      "iterations": 15,
+      "converged_before_cap": true
+    },
+    {
+      "name": "GK",
+      "seed": 914,
+      "key": "GK-914",
+      "D8": 0.8122972519110389,
+      "ratios": [
+        0.49479844970630926,
+        0.9625028350414051,
+        0.9795904709854022
+      ],
+      "support": [
+        30960,
+        15440,
+        5482
+      ],
+      "complete_case_count": 4262,
+      "complete_case_D8": 0.8460932458300595,
+      "worst_decile_relative_loss": 1.3824309471897767,
+      "inertia": 70007.57935693821,
+      "iterations": 19,
+      "converged_before_cap": true
+    },
+    {
+      "name": "GKT",
+      "seed": 912,
+      "key": "GKT-912",
+      "D8": 0.8082754487030028,
+      "ratios": [
+        0.48145588525101,
+        0.9663098213943716,
+        0.977060639463627
+      ],
+      "support": [
+        30960,
+        15440,
+        5482
+      ],
+      "complete_case_count": 4262,
+      "complete_case_D8": 0.8367778352765561,
+      "worst_decile_relative_loss": 1.3415188117293273,
+      "inertia": 67236.58718489956,
+      "iterations": 15,
+      "converged_before_cap": true
+    },
+    {
+      "name": "GKT",
+      "seed": 913,
+      "key": "GKT-913",
+      "D8": 0.8122748178318137,
+      "ratios": [
+        0.4947550718561117,
+        0.9626435471836986,
+        0.9794258344556308
+      ],
+      "support": [
+        30960,
+        15440,
+        5482
+      ],
+      "complete_case_count": 4262,
+      "complete_case_D8": 0.8455951495968691,
+      "worst_decile_relative_loss": 1.3532251282375274,
+      "inertia": 67460.93840780431,
+      "iterations": 16,
+      "converged_before_cap": true
+    },
+    {
+      "name": "GKT",
+      "seed": 914,
+      "key": "GKT-914",
+      "D8": 0.8118511555048628,
+      "ratios": [
+        0.4923652645341168,
+        0.9643357085215262,
+        0.9788524934589456
+      ],
+      "support": [
+        30960,
+        15440,
+        5482
+      ],
+      "complete_case_count": 4262,
+      "complete_case_D8": 0.8414716336045819,
+      "worst_decile_relative_loss": 1.3405872411640436,
+      "inertia": 68317.66536056166,
+      "iterations": 23,
+      "converged_before_cap": true
+    }
+  ],
+  "seed_stability": [
+    {
+      "name": "G",
+      "seed": 913,
+      "ARI": 0.8567441656160936,
+      "matched_agreement": 0.9168814676831345
+    },
+    {
+      "name": "G",
+      "seed": 914,
+      "ARI": 0.7963892939171949,
+      "matched_agreement": 0.8407178628945786
+    },
+    {
+      "name": "GK",
+      "seed": 913,
+      "ARI": 0.9998034197713137,
+      "matched_agreement": 0.9999074918950285
+    },
+    {
+      "name": "GK",
+      "seed": 914,
+      "ARI": 0.6705573749802004,
+      "matched_agreement": 0.7582595020541004
+    },
+    {
+      "name": "GKT",
+      "seed": 913,
+      "ARI": 0.821510124265404,
+      "matched_agreement": 0.8792348738736087
+    },
+    {
+      "name": "GKT",
+      "seed": 914,
+      "ARI": 0.8204583661075768,
+      "matched_agreement": 0.8639920611226279
+    }
+  ],
+  "split_counts": {
+    "train": 166603,
+    "validation": 35459,
+    "verification": 35755
+  },
+  "preprocessor_variance": {
+    "keyword_explained_variance": 0.1969900793545444,
+    "text_explained_variance": 0.06949921310545781
+  }
+}

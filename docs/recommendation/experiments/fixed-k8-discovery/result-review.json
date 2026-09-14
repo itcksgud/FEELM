@@ -1,0 +1,32 @@
+{
+  "status": "PASS",
+  "reviewers": [
+    "/root/design_review",
+    "/root/asset_audit"
+  ],
+  "evidence": "REVIEW-LOG.md",
+  "metric_rows_independently_recomputed": {
+    "validation": 59130,
+    "verification": 2160,
+    "deployment_supply": 360
+  },
+  "requests_independently_rebuilt": 2520,
+  "prediction_rows_exact": 32694,
+  "selection_fits_independently_replayed": 9,
+  "final_artifact_rows": 237817,
+  "final_artifact_independent_sample": 1280,
+  "korean_example_id_pairs": 33,
+  "final_result": {
+    "sha256": "5795bf1ea61bbe78b92a14b51d00d8bad255fa29dfbb7eb860a1f531fb851121",
+    "bytes": 16878
+  },
+  "manifest": {
+    "sha256": "9721ac7fa3ee1887b45505965b23944718587fecc4022bb851a51a408d4c6ae9",
+    "bytes": 8286
+  },
+  "final_seal": {
+    "sha256": "6ae45a2920214fae5a0d58c6688ba3108149b776918232e211fe6c7a3e457287",
+    "bytes": 2482
+  },
+  "interpretation": "Overall fixed gate passed; personal-history degradation requires practical HOLD; originalselection unchanged"
+}
