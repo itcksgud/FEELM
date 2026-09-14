@@ -1,0 +1,2 @@
+# Optional local measurement environment; not a product/runtime dependency.
+tiktoken==0.14.0

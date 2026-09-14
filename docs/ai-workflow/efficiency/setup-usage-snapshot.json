@@ -1,0 +1,113 @@
+{
+  "snapshot_at_utc": "2026-09-12T13:04:43.428006+00:00",
+  "scope": "This implementation turn and six named child agents through the latest available counters. Excludes prior audit turn. Includes both paired pilots and their grading.",
+  "complete_turn_total": false,
+  "limitation": "Lower bound: final report/tool calls after this snapshot and final answer are not yet included. Not a billed cost estimate. No net saving has been established.",
+  "root_turn_start_utc": "2026-09-12T12:44:01.472Z",
+  "root_counter_before_turn": {
+    "input_tokens": 1055435,
+    "cached_input_tokens": 982656,
+    "cache_write_input_tokens": 0,
+    "output_tokens": 11148,
+    "reasoning_output_tokens": 2735,
+    "total_tokens": 1066583
+  },
+  "root_latest_counter": {
+    "input_tokens": 5103796,
+    "cached_input_tokens": 4887040,
+    "cache_write_input_tokens": 0,
+    "output_tokens": 38902,
+    "reasoning_output_tokens": 10642,
+    "total_tokens": 5142698
+  },
+  "root_turn_delta": {
+    "input_tokens": 4048361,
+    "cached_input_tokens": 3904384,
+    "cache_write_input_tokens": 0,
+    "output_tokens": 27754,
+    "reasoning_output_tokens": 7907,
+    "total_tokens": 4076115
+  },
+  "children": [
+    {
+      "agent_path": "/root/efficiency_review",
+      "latest_counter_utc": "2026-09-12T12:51:49.023Z",
+      "usage": {
+        "input_tokens": 604351,
+        "cached_input_tokens": 559104,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 4030,
+        "reasoning_output_tokens": 790,
+        "total_tokens": 608381
+      }
+    },
+    {
+      "agent_path": "/root/packet_k",
+      "latest_counter_utc": "2026-09-12T12:52:22.410Z",
+      "usage": {
+        "input_tokens": 65581,
+        "cached_input_tokens": 51072,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 1032,
+        "reasoning_output_tokens": 516,
+        "total_tokens": 66613
+      }
+    },
+    {
+      "agent_path": "/root/packet_m",
+      "latest_counter_utc": "2026-09-12T12:52:20.192Z",
+      "usage": {
+        "input_tokens": 58253,
+        "cached_input_tokens": 53888,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 641,
+        "reasoning_output_tokens": 149,
+        "total_tokens": 58894
+      }
+    },
+    {
+      "agent_path": "/root/pilot_grade",
+      "latest_counter_utc": "2026-09-12T13:02:57.040Z",
+      "usage": {
+        "input_tokens": 150235,
+        "cached_input_tokens": 135296,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 3901,
+        "reasoning_output_tokens": 2358,
+        "total_tokens": 154136
+      }
+    },
+    {
+      "agent_path": "/root/packet_k2",
+      "latest_counter_utc": "2026-09-12T12:58:34.155Z",
+      "usage": {
+        "input_tokens": 65269,
+        "cached_input_tokens": 53376,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 1383,
+        "reasoning_output_tokens": 558,
+        "total_tokens": 66652
+      }
+    },
+    {
+      "agent_path": "/root/packet_m2",
+      "latest_counter_utc": "2026-09-12T12:58:34.916Z",
+      "usage": {
+        "input_tokens": 58202,
+        "cached_input_tokens": 53376,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 1151,
+        "reasoning_output_tokens": 391,
+        "total_tokens": 59353
+      }
+    }
+  ],
+  "combined_observed_tokens": {
+    "input_tokens": 5050252,
+    "cached_input_tokens": 4810496,
+    "cache_write_input_tokens": 0,
+    "output_tokens": 39892,
+    "reasoning_output_tokens": 12669,
+    "total_tokens": 5090144
+  }
+}

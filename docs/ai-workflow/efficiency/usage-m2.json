@@ -1,0 +1,43 @@
+{
+  "measurement": "observed_rollout_counters",
+  "rollouts": [
+    {
+      "path": "C:\\higher\\projects\\FEELM-docs-efficiency\\docs\\ai-workflow\\efficiency\\usage-m2.jsonl",
+      "sha256": "a0c0d035ebaed90d925d5c808c6e5f71dabde7ce1d5ad60be865c60b0380baef",
+      "session_id": "01a095b2-19c6-7ea1-ba7f-9b23af3a1700",
+      "first_usage_utc": "2026-09-12T12:58:00.270Z",
+      "last_usage_utc": "2026-09-12T12:58:34.916Z",
+      "contexts": [
+        [
+          "gpt-6-astra",
+          "ultra"
+        ]
+      ],
+      "usage": {
+        "input_tokens": 58202,
+        "cached_input_tokens": 53376,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 1151,
+        "reasoning_output_tokens": 391,
+        "total_tokens": 59353
+      },
+      "usage_updates": 2,
+      "duplicate_snapshots_skipped": 0,
+      "tool_calls": 1
+    }
+  ],
+  "usage": {
+    "input_tokens": 58202,
+    "cached_input_tokens": 53376,
+    "cache_write_input_tokens": 0,
+    "output_tokens": 1151,
+    "reasoning_output_tokens": 391,
+    "total_tokens": 59353
+  },
+  "scope": "Only explicitly supplied, nonoverlapping completed log files; include all child runs and retries.",
+  "limitations": [
+    "Caller must verify log coverage and no inherited overlapping history.",
+    "Cumulative reasoning is already in output, cached input already in input.",
+    "Does not infer prices, cash spending, quality, or causal savings."
+  ]
+}

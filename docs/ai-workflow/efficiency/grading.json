@@ -1,0 +1,178 @@
+{
+  "rubric": "rubric.json",
+  "round1": {
+    "k": {
+      "Q1": {
+        "grade": "pass",
+        "omissions": []
+      },
+      "Q2": {
+        "grade": "pass",
+        "omissions": []
+      },
+      "Q3": {
+        "grade": "pass",
+        "omissions": []
+      },
+      "Q4": {
+        "grade": "partial",
+        "omissions": [
+          "중복 없는 반환 검증이 빠졌다.",
+          "실제 환경의 응답 시간·비용 검증이 빠졌다.",
+          "서비스 연결을 카탈로그·사용자 입력 연동으로 구체화하지 않았다."
+        ]
+      },
+      "Q5": {
+        "grade": "partial",
+        "omissions": [
+          "자동 커밋·푸시 금지를 명시하거나 동등한 의미로 설명하지 않았다.",
+          "배포가 별도라는 설명만으로는 자동 배포 금지가 분명하지 않다."
+        ]
+      },
+      "strict_all_required_pass_count": 3
+    },
+    "m": {
+      "Q1": {
+        "grade": "pass",
+        "omissions": []
+      },
+      "Q2": {
+        "grade": "pass",
+        "omissions": []
+      },
+      "Q3": {
+        "grade": "partial",
+        "omissions": [
+          "MovieLens 개발 자료를 재사용했다는 제한이 빠졌다."
+        ]
+      },
+      "Q4": {
+        "grade": "pass",
+        "omissions": []
+      },
+      "Q5": {
+        "grade": "partial",
+        "omissions": [
+          "외부 공유의 명시적 요청 조건은 있지만, 자동 Jira·MR·커밋·푸시·배포 금지 전체를 설명하지 않았다."
+        ]
+      },
+      "strict_all_required_pass_count": 3
+    }
+  },
+  "round2_preliminary": {
+    "k2": {
+      "Q1": {
+        "grade": "partial",
+        "omissions": [
+          "Qwen 혼합의 개선 판정 기준이 사전에 고정된 기준이라는 설명이 빠졌다. 사전 대조의 언급만으로 판정 기준의 사전 고정을 확인할 수 없다."
+        ]
+      },
+      "Q2": {
+        "grade": "pass",
+        "omissions": []
+      },
+      "Q3": {
+        "grade": "partial",
+        "omissions": [
+          "개발 사용자·영화의 재사용은 설명했지만, 해당 자료가 MovieLens라는 정보가 빠졌다."
+        ]
+      },
+      "Q4": {
+        "grade": "partial",
+        "omissions": [
+          "실행 환경의 비용·응답 검증은 언급했지만, 응답 시간 또는 지연 시간 검증인지는 분명하지 않다."
+        ]
+      },
+      "Q5": {
+        "grade": "pass",
+        "omissions": []
+      },
+      "strict_all_required_pass_count": 2
+    },
+    "m2": {
+      "Q1": {
+        "grade": "pass",
+        "omissions": []
+      },
+      "Q2": {
+        "grade": "pass",
+        "omissions": []
+      },
+      "Q3": {
+        "grade": "pass",
+        "omissions": []
+      },
+      "Q4": {
+        "grade": "pass",
+        "omissions": []
+      },
+      "Q5": {
+        "grade": "pass",
+        "omissions": []
+      },
+      "strict_all_required_pass_count": 5
+    }
+  },
+  "round2_final": {
+    "preliminary_grades_preserved": true,
+    "k2": {
+      "Q1": {
+        "grade": "partial",
+        "omissions": [
+          "Qwen 혼합 판정 기준이 사전에 고정됐다는 설명이 없다."
+        ]
+      },
+      "Q2": {
+        "grade": "pass",
+        "omissions": []
+      },
+      "Q3": {
+        "grade": "partial",
+        "omissions": [
+          "재사용한 개발 자료가 MovieLens라는 정보가 없다."
+        ]
+      },
+      "Q4": {
+        "grade": "partial",
+        "omissions": [
+          "응답 검증을 언급하지만 응답 속도·지연 시간 검증인지는 확인되지 않는다."
+        ]
+      },
+      "Q5": {
+        "grade": "pass",
+        "omissions": []
+      },
+      "strict_all_required_pass_count": 2
+    },
+    "m2": {
+      "Q1": {
+        "grade": "partial",
+        "omissions": [
+          "Qwen 혼합 판정 기준이 사전에 고정됐다는 설명이 없다."
+        ]
+      },
+      "Q2": {
+        "grade": "pass",
+        "omissions": []
+      },
+      "Q3": {
+        "grade": "pass",
+        "omissions": []
+      },
+      "Q4": {
+        "grade": "pass",
+        "omissions": []
+      },
+      "Q5": {
+        "grade": "pass",
+        "omissions": []
+      },
+      "strict_all_required_pass_count": 4
+    },
+    "audit_reasons": [
+      "m2 Q1을 pass에서 partial로 수정했다. 두 답변의 Q1에는 해당 판정 기준의 사전 고정을 구별할 실제 의미 차이가 없다. m2 Q5의 사전 판정 기준 검토 절차는 해당 Qwen 실험의 기준이 실제로 사전 고정됐다는 진술을 대신하지 않는다.",
+      "k2 Q4는 partial을 유지했다. '응답 검증'은 반환 내용이나 동작 검증도 뜻하므로, 실행 환경·비용이라는 문맥만으로 시간 성능 검증을 확정하지 않았다. 특정 단어를 요구하는 판단은 아니다. 속도·대기 시간·지연 등 시간 성능을 나타내는 동등한 표현도 충족으로 인정한다. m2는 '응답 시간'을 명확히 포함한다."
+    ]
+  },
+  "notes": "Blind labels; final round2 corrects an asymmetric preliminary Q1 grade. All responses retained."
+}

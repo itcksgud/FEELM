@@ -12,6 +12,15 @@ revision 기준 프로젝트 완료나 production readiness를 뜻하지 않는�
 범위와 남은 Gate는 [local-MVP 완성 단계 고찰](./docs/planning/local-mvp-completion-reflection-20260830.md)과
 [프로젝트 완료 Gate](./docs/planning/project-completion-gates.yaml)를 따른다.
 
+## 지금 볼 문서
+
+- [현재 추천 연구와 남은 일](docs/recommendation/active-experiment.md)
+- [폴더·브랜치 지도](docs/workspace-map.md)
+- [문서 지도](docs/README.md) · [실험 요약 양식](docs/recommendation/experiment-summary-template.md)
+- [AI 작업 방식과 토큰 측정 결과](docs/ai-workflow/README.md)
+
+아래의 제품 구현 상태와 REC019 등 과거 검증 기록은 그 범위의 이력이다. 최신 개인 연구의 선정안은 위 현재 연구에서 확인한다.
+
 ## 구성
 
 - `frontend/`: React·TypeScript·Vite UI

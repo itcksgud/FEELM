@@ -1,0 +1,66 @@
+{
+  "schema_version": 1,
+  "description": "One predefined current-research handoff task. Both bundles contain the same evidence presentation; required research execution policy is not in scope because no experiment is executed.",
+  "encoding": "o200k_base",
+  "tokenizer_role": "Local text-token proxy, not an assertion of the Astra tokenizer or billed tokens.",
+  "normalization": "UTF-8 BOM removed; CRLF and CR normalized to LF; documents joined as ## FILE: relative/path + LF + body + LF.",
+  "bundles": {
+    "before": {
+      "packet_label": "k",
+      "packet_path": "bundles/before.md",
+      "documents": [
+        {
+          "path": "AGENTS.md",
+          "sha256_raw": "91981c4d7dd2a8510073cb2ee127f4b08ebea847310ae7a5499c942960ff4ae5",
+          "lines": 141,
+          "characters": 5056
+        },
+        {
+          "path": "docs/recommendation/active-experiment.md",
+          "sha256_raw": "1ab3642d0169eb2e929c68f611cb5f1dd382205dc711acc6b58f11307fb3aa62",
+          "lines": 359,
+          "characters": 18837
+        },
+        {
+          "path": "docs/recommendation/experiments/hybrid345/PRESENTATION-DECISION.md",
+          "sha256_raw": "8e489286b9719a3e9cd5f6d0be9512e3685e67c914164fd71a8aadfc2744b8f6",
+          "lines": 82,
+          "characters": 3561
+        }
+      ],
+      "sha256_normalized_packet": "e1f84ec79a2082d9b0c2a2317db253168b54b84225214963520d06162f9c0d0a"
+    },
+    "after": {
+      "packet_label": "m",
+      "packet_path": "bundles/after.md",
+      "documents": [
+        {
+          "path": "AGENTS.md",
+          "sha256_raw": "42c8e745efc88cb7166fbbfc458c0bfb5f8ba4ca932c81b91fefd2513ee5fe00",
+          "lines": 43,
+          "characters": 2090
+        },
+        {
+          "path": "docs/recommendation/active-experiment.md",
+          "sha256_raw": "ea39b29b426d093d6bc4a9427f40674152d1c8348ba5d3b68de4dfb9dd64cad9",
+          "lines": 38,
+          "characters": 1662
+        },
+        {
+          "path": "docs/recommendation/experiments/hybrid345/PRESENTATION-DECISION.md",
+          "sha256_raw": "8e489286b9719a3e9cd5f6d0be9512e3685e67c914164fd71a8aadfc2744b8f6",
+          "lines": 82,
+          "characters": 3561
+        }
+      ],
+      "sha256_normalized_packet": "14f58f354dd807942f8c71d12b76c496e0b56d3b0b74e7196bed45a7cd5fd994"
+    }
+  },
+  "questions": [
+    "Which model is selected for supported and unsupported films, and what happened to Qwen mixing?",
+    "Do the full-set MSE values prove Router is better or equivalent to FM/GBT? Explain.",
+    "Is cap10 a mandatory service input count, and can UNKNOWN or MovieLens results prove Korean user satisfaction?",
+    "What work remains, and is fixed eight-cluster recommendation a current requirement?",
+    "What independent reviews and external-publication boundaries apply before starting a new experiment?"
+  ]
+}

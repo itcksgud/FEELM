@@ -3,12 +3,17 @@
 현재 C2B~C5 local-MVP 승인 기록은
 [`planning/product-owner-approval-request-20260830.md`](planning/product-owner-approval-request-20260830.md)를 본다.
 
-새 작업은 이 문서에서 시작한다. 공개 제품 계약의 권위는
+추천 연구의 현재 결론은 [현재 연구](recommendation/active-experiment.md)에서 시작한다.
+작업 폴더는 [폴더·브랜치 지도](workspace-map.md), 문서 작성은 [짧은 작성 규칙](ai-workflow/writing.md)을 본다. [AI 작업 방식·측정 결과](ai-workflow/README.md)도 참고할 수 있다.
+
+제품 구현 작업은 이 문서에서 해당 영역을 고른다. 공개 제품 계약의 권위는
 [`approved-slices.json`](./spec/approved-slices.json), 전체 완료 상태와 남은 Gate는
 [`project-completion-gates.yaml`](./planning/project-completion-gates.yaml)을 기준으로 한다.
 요구사항 원문과 목업은 근거·참고 자료다.
 
-## 기준 문서 읽는 순서
+## 제품 구현의 기준 문서
+
+아래는 계약 지도다. 해당 기능의 계약 연결을 확인하되 모든 영역을 매번 전부 읽지 않는다.
 
 1. [저장소 작업 규칙](../AGENTS.md)
 2. [제품 범위](./spec/00-product-scope.md), [용어·정책](./spec/01-glossary-and-policies.md)
@@ -42,16 +47,6 @@ npm run verify:e2e
 
 모든 명령과 환경 변수는 [로컬 Runbook](./runbook/local-development.md) 한 곳에서 관리한다.
 
-추천·예상 별점 작업은 [추천 기록 체계](./recommendation/README.md)와
-[제품 결정 요청](./recommendation/product-decisions-required.md)을 먼저 읽는다.
-아직 판단할 결과가 없는 항목은 [판단 자료 계획](./recommendation/decision-evidence-plan.md)에 따라
-LLM이 먼저 비교 자료를 생성한다.
-
-현재 실제 수치는 [REC-EV-002 예상 별점·기준선 보고서](./recommendation/evidence/REC-EV-002-prediction-calibration.md),
-[REC-EV-004B full-catalog 탐색 보고서](./recommendation/evidence/REC-EV-004B-full-catalog-pareto.md),
-[REC-EV-011 cold-start full-catalog 보고서](./recommendation/evidence/REC-EV-011-cold-foldin-full-catalog.md)에 있다.
-첫 ALS는 warm 별점 오차를 줄였지만 coverage와 sampled ranking Gate를 통과하지 못해 채택하지
-않았다. full-catalog에서는 K10 Fold-in blend가 offline 개선 후보가 됐지만 공개 champion은 아니다.
-반면 전체 Top-10 Explore05는 Popularity보다 NDCG가 약 45.5% 낮아져 기각했다. 이어진
-[REC-EV-013 constrained 2+1](./recommendation/evidence/REC-EV-013-constrained-two-plus-one.md)도
-selection relevance budget을 모든 후보가 넘겨 v1 정책은 채택하지 않는다.
+추천 연구: [현재 결론](recommendation/active-experiment.md) → [필요한 연구 절차](recommendation/README.md).
+과거 REC002~019의 수치는 당시 연구 이력이며 [이전 기록 지도](recommendation/record-system-history-20260912.md)에서 찾는다.
+현재 연구의 선정안으로 승인 제품 정책을 자동 변경하지 않는다.

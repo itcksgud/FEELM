@@ -1,0 +1,14 @@
+Q1. ALS 지원 영화는 ALS, 미지원은 GBT120_s339를 유지하는 구현 선정안이다. Qwen 양의 혼합은 사전 개선 기준을 통과하지 못해 0%를 선택했다.
+출처: docs/recommendation/experiments/hybrid345/PRESENTATION-DECISION.md
+
+Q2. 전체 MSE는 Router 0.6645, FM 0.6890, GBT 0.6793이다. Router 점추정치가 낮아도 사전 대조 신뢰구간이 모두 0을 포함하므로 우월성이나 동등성을 입증하지 못했다.
+출처: docs/recommendation/experiments/hybrid345/PRESENTATION-DECISION.md
+
+Q3. cap10은 실험의 입력 최대 10편 조건이며 서비스 필수 입력량이 아니다. UNKNOWN은 관측 별점 부재로 오답률·만족도가 아니다. 재사용한 MovieLens 개발 자료로 한국 사용자 만족도를 입증할 수 없다.
+출처: docs/recommendation/experiments/hybrid345/PRESENTATION-DECISION.md
+
+Q4. 추가 모델 탐색은 종료 가능하나 실제 서비스 연결, 빈 입력·미지원 입력 처리와 2편씩 반환 검증은 남았다. 고정 8군집은 현재 요구가 아니며 K-means·분류 기반 맞춤/발견 추천은 보류됐다.
+출처: docs/recommendation/active-experiment.md
+
+Q5. 실행 전 별도 검토자가 설계·코드를 검토하고 수정·검토 버전을 기록한다. 실행 후 계산·누수·주장 범위를 독립 검증한다. 전체 질문의 결론을 사용자에게 먼저 설명하고, 사용자가 공유 범위와 게시를 요청할 때만 Jira·GitLab에 기록한다. Jira 선등록·중간 자동 MR·과거 상시 승인은 시작·게시 근거가 아니다. 배포·공통 계약 변경은 별도이며 승인·병합은 사람이 한다.
+출처: AGENTS.md

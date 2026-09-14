@@ -1,0 +1,27 @@
+{
+  "measurement": "local_text_token_proxy",
+  "tokenizer": "tiktoken",
+  "version": "0.14.0",
+  "encoding": "o200k_base",
+  "manifest_sha256": "a6fc48a9a4abf6fafe8ab69e5ddbfe712905f0b1949b248d2aeccb954c132ae6",
+  "bundles": {
+    "before": {
+      "tokens": 14069,
+      "characters": 27602,
+      "lines": 588,
+      "sha256_normalized_packet": "e1f84ec79a2082d9b0c2a2317db253168b54b84225214963520d06162f9c0d0a"
+    },
+    "after": {
+      "tokens": 3647,
+      "characters": 7461,
+      "lines": 169,
+      "sha256_normalized_packet": "14f58f354dd807942f8c71d12b76c496e0b56d3b0b74e7196bed45a7cd5fd994"
+    }
+  },
+  "reduction_fraction": 0.7407775961333428,
+  "limitations": [
+    "Frozen task-specific text only; excludes tool/system framing and model outputs.",
+    "This encoding is an explicit proxy, not a claim about Astra's internal tokenizer.",
+    "No claim of realized full-task token, credit, subscription or cash savings."
+  ]
+}

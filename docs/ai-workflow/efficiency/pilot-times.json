@@ -1,0 +1,26 @@
+{
+  "k": {
+    "start_utc": "2026-09-12T12:51:41.178Z",
+    "end_utc": "2026-09-12T12:52:22.437Z",
+    "agent_id": "01a095ac-6f88-7fb1-9533-148315f779d5",
+    "complete": true
+  },
+  "m": {
+    "start_utc": "2026-09-12T12:51:52.546Z",
+    "end_utc": "2026-09-12T12:52:20.220Z",
+    "agent_id": "01a095ac-9bf4-72d3-a6c7-26b3dc4cd824",
+    "complete": true
+  },
+  "k2": {
+    "start_utc": "2026-09-12T12:57:37.071Z",
+    "end_utc": "2026-09-12T12:58:34.235Z",
+    "agent_id": "01a095b1-dda9-7873-ba70-48bf9e8a0777",
+    "complete": true
+  },
+  "m2": {
+    "start_utc": "2026-09-12T12:57:52.453Z",
+    "end_utc": "2026-09-12T12:58:35.113Z",
+    "agent_id": "01a095b2-19c6-7ea1-ba7f-9b23af3a1700",
+    "complete": true
+  }
+}

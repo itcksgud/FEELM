@@ -1,0 +1,27 @@
+{
+  "frozen_before_pilot": true,
+  "criteria": [
+    {
+      "id": "Q1",
+      "pass": "ALS when supported; GBT120_s339 when unsupported; positive Qwen mixing did not pass preregistered gate."
+    },
+    {
+      "id": "Q2",
+      "pass": "Router 0.6645, FM 0.6890, GBT 0.6793 lower-point-estimate alone is not superiority/equivalence; CIs include zero."
+    },
+    {
+      "id": "Q3",
+      "pass": "cap10 is evaluation condition, not service requirement; reused MovieLens development data; UNKNOWN is not dislike/error; no Korean satisfaction claim."
+    },
+    {
+      "id": "Q4",
+      "pass": "Catalog/input integration, empty/unsupported inputs, duplicate-free two-at-a-time results and environment latency/cost remain; fixed 8/K-means not required."
+    },
+    {
+      "id": "Q5",
+      "pass": "Independent design/code review before execution and independent calculation/leakage/claim review after; no auto Jira/MR/commit/push/deploy; publication requires explicit scoped request."
+    }
+  ],
+  "all_required": true,
+  "reporting": "Five checks within one paired task; not five independent experiments. Count all logged usage, including tool calls and reasoning, report cache separately. No retries or child agents in the two pilot runs. Review labels without before/after mapping."
+}

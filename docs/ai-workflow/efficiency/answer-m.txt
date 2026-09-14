@@ -1,0 +1,9 @@
+Q1. ALS 지원 영화는 ALS, 미지원 영화는 GBT120_s339를 유지한다. Qwen 양의 혼합 비중은 MSE·NDCG@2 동시 개선 기준을 통과하지 못해 0%를 선택했다. 출처: `docs/recommendation/experiments/hybrid345/PRESENTATION-DECISION.md`
+
+Q2. 전체 관측 후보 MSE는 Router 0.6645, FM 0.6890, GBT 0.6793이다. Router의 점추정치는 낮지만 사전 비교 신뢰구간이 모두 0을 포함하므로 우월성도 동등성도 입증하지 못했다. 출처: `docs/recommendation/active-experiment.md`
+
+Q3. cap10은 평가의 입력 상한이며 서비스 필수 입력 수가 아니다. UNKNOWN은 오답·싫어요가 아니며, MovieLens 개발 결과로 한국 사용자 만족도를 입증할 수 없다. 출처: `docs/recommendation/active-experiment.md`
+
+Q4. 실제 카탈로그·사용자 입력 연동, 빈 입력·미지원 입력 처리, 2편씩 중복 없는 추가 반환, 실제 환경 비용·응답 시간 검증이 남았다. 고정 8개 군집은 요구사항이 아니며 K-means·고정 분류별 슬롯은 보류다. 출처: `docs/recommendation/active-experiment.md`, `AGENTS.md`
+
+Q5. 비교 조건·판정·중단 기준을 사전 고정하고 실행 전 설계·코드를 독립 검토한다. 결과도 계산·누수·주장 범위의 독립 검토가 필요하다. 외부 공유는 사용자가 결론·범위를 정해 요청할 때 수행하며 과거 게시는 새 승인으로 보지 않는다. 출처: `AGENTS.md`, `docs/recommendation/active-experiment.md`
