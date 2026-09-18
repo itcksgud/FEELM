@@ -1,6 +1,32 @@
 # 현재 로컬 추천 연구
 
-상태: DRAFT — 개인 연구 업무 추적이며 제품 정책 계약이 아니다. 갱신2026-09-13.
+상태: DRAFT — 개인 연구 업무 추적이며 제품 정책 계약이 아니다. 갱신2026-09-18.
+
+## 최신 진행 — GBT·FM 0~N 실험 준비와 노트북 인계
+
+현재 팀 작업은 Jira S15P21E106-620~623의 데이터/run 계약, readiness, GBT, FM 순서로
+진행한다. 팀 적용 기준은 최신 Jira와 `S15P21E106/pipeline/docs/service-v1/`이며, 아래의
+2026-09-13 서비스 v1과 과거 고정10 입력 실험은 근거·대조 이력으로 사용한다.
+
+- 서비스는 평가0~N개를 지원한다. 0개는 별도 cold-start·대중성 경로로 처리하고, 1개 이상은
+  평가량 구간별 성능·지원률·confidence를 비교한다. 최신10편을 필수 입력 개수로 고정하지 않는다.
+- GBT와 FM은 같은 원천·split의 공통 대조를 유지하되 모델별 표현을 추가 비교한다. GBT는
+  결측 표시와 안정된 집계 특징, FM은 희소 원속성과 사용자 반응의 쌍별 상호작용이 사라지지
+  않았는지 ablation으로 확인한다.
+- MovieLens는 오프라인 비교용 약한 대리 지표다. 최종 선택은 모델명을 가린 작은 실제 사용자
+  평가와 이후 서비스 로그로 판단한다.
+- KOBIS 최소 입력은
+  `outputs/recommendation-evidence/kobis-expanded-20260913/linked-v2/confirmed-movie-comparison.parquet`의
+  직접 코드 영화2,176행과 `last_observed_cumulative_admissions`다. 72,700행은 재생성·감사용
+  연도별 원관측이며 고유 영화 수가 아니다. 확정 TMDB·서비스 연결은 아직0개다.
+- Discovery 대중성은 TMDB 투표와 KOBIS 관객 원값을 직접 max 비교하지 않는다. 출처별 정규화
+  후 max와 두 채널 분리안을 같은 조건에서 비교한다.
+- 학습은 데스크톱·노트북 로컬 단일 장비에서 fixture→10% 계측→전체 순서로 실행한다. 선택
+  artifact는 feature schema·전처리·보정·runtime·hash·CPU parity를 묶어 서버에 전달한다.
+
+개인 FEELM 코드는 GitHub `main` revision
+`c648d2fda987b2bb0df4d6ac26bea63a9685fa87`부터 이 방향을 `AGENTS.md`에 명시한다. KOBIS 자료와
+대용량 모델은 Git에 넣지 않고 manifest와 노트북 전송 키트로 전달한다.
 
 ## 최신 외부 게시 — 추천 v1 인계387
 
