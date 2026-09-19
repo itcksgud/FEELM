@@ -1,0 +1,37 @@
+{
+  "experiment": "S15P21E106-622-gbt-zero-n-v1",
+  "seed": 622,
+  "runtime": {
+    "docker_image": "feelm-rec046-spark:local",
+    "image_id": "sha256:de611d62db982bb833b0737a7ddd72a7cd49ab1a7dc9128669cdabae39f46df8",
+    "spark_version": "4.1.3",
+    "master": "local[4]",
+    "driver_memory": "8g",
+    "container_memory": "12g",
+    "timeout_seconds": 5400
+  },
+  "estimator": {
+    "maxIter": 40,
+    "maxDepth": 5,
+    "stepSize": 0.05,
+    "maxBins": 32,
+    "featureSubsetStrategy": "sqrt",
+    "subsamplingRate": 0.8,
+    "maxMemoryInMB": 128,
+    "cacheNodeIds": false,
+    "lossType": "squared"
+  },
+  "profiles": [
+    "movie_only",
+    "history_aggregate",
+    "response_relation"
+  ],
+  "selection_metric": "validation_user_macro_mse",
+  "selection_gate": {
+    "nested_history_all_buckets_non_worse_than_n0": true,
+    "maximum_positive_user_macro_mse_delta": 1e-12,
+    "require_strict_improvement": true,
+    "minimum_strict_improvement": 1e-6
+  },
+  "final_test_policy": "SEALED_UNTIL_PROFILE_SELECTION"
+}
