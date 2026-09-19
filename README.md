@@ -66,6 +66,7 @@ GitHub Actions는 개인 연구 저장소의 상시 검증 비용을 줄이기 �
 현재 사용하지 않는 frontend/backend/Compose E2E와 전체 의존성 감사는 아래 로컬 명령으로 필요할 때
 검증한다. CI의 추천 evidence 검사는 커밋된 자료만 대상으로 하며, `outputs/`의 로컬 실험 산출물과
 빌드된 UI까지 확인하는 전체 검사는 `npm run recommendation:evidence:check`로 실행한다.
+GitHub Action은 Node 24 runtime을 사용하는 v7 stable release의 commit SHA로 고정한다.
 
 개별 명령은 다음과 같다.
 
