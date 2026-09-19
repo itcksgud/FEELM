@@ -1,0 +1,26 @@
+{
+  "schema_version": 1,
+  "experiment": "S15P21E106-622-gbt-zero-n-completion-v1",
+  "base_seed": 622,
+  "sensitivity_profile": "history_aggregate",
+  "sensitivity_seeds": [1622, 2622],
+  "rank_profile": "response_relation",
+  "rank_anchor_count": 3,
+  "rank_estimator": {
+    "maxIter": 40,
+    "maxDepth": 5,
+    "stepSize": 0.05,
+    "maxBins": 32,
+    "featureSubsetStrategy": "sqrt",
+    "subsamplingRate": 0.8,
+    "maxMemoryInMB": 128,
+    "cacheNodeIds": false
+  },
+  "legacy_baseline": {
+    "fit_id": "GBT120_s339",
+    "expected_seed": 339,
+    "expected_dimensions": 230,
+    "comparison_policy": "AUDIT_ONLY_DIFFERENT_COHORT_AND_INPUT"
+  },
+  "final_test_policy": "SEALED_FOR_S15P21E106-625"
+}

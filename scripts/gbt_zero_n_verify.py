@@ -52,6 +52,7 @@ def verify_input_semantics(input_root: Path, movielens_root: Path, manifest: dic
     current_key = None
     current_histories: list[tuple[str, ...]] = []
     current_pool_digest = None
+    current_full_history_count = 0
 
     def finish_nested() -> None:
         nonlocal nested_groups
@@ -60,6 +61,8 @@ def verify_input_semantics(input_root: Path, movielens_root: Path, manifest: dic
         for previous, following in zip(current_histories, current_histories[1:]):
             if previous != following[:len(previous)]:
                 raise RuntimeError(f"history is not nested prefix: {current_key}")
+        if current_full_history_count != 1:
+            raise RuntimeError(f"nested group must contain exactly one full-history variant: {current_key}")
         nested_groups += 1
 
     with (input_root / "episodes.jsonl").open("r", encoding="utf-8") as stream:
@@ -96,15 +99,22 @@ def verify_input_semantics(input_root: Path, movielens_root: Path, manifest: dic
                 raise RuntimeError("supported history count mismatch")
             if len(history) > int(row["total_history_count"]):
                 raise RuntimeError("supported history exceeds total history")
+            if int(row["n"]) != len(history):
+                raise RuntimeError("N differs from supported history count")
+            is_full = len(history) == int(row["total_history_count"])
+            if bool(row.get("is_full_history")) != is_full:
+                raise RuntimeError("full-history marker mismatch")
             key = (role, uid, int(row["target_movie_id"]), int(row["prediction_at"]))
             if key != current_key:
                 finish_nested()
                 current_key = key
                 current_histories = []
                 current_pool_digest = row["candidate_digest"]
+                current_full_history_count = 0
             elif current_pool_digest != row["candidate_digest"]:
                 raise RuntimeError("candidate pool changed inside a nested-history group")
             current_histories.append(tuple(str(item["event_id"]) for item in history))
+            current_full_history_count += int(is_full)
             pool_key = (role, uid, int(row["target_movie_id"]))
             episode_pools[pool_key] = (row["candidate_digest"], row["eligible_population_digest"])
     finish_nested()
@@ -243,12 +253,22 @@ def main() -> None:
     train_path = args.prepared_root / "train-targets.parquet"
     validation_path = args.prepared_root / "validation-targets.parquet"
     train = pq.read_table(train_path, columns=["uid", "role", "label_state", "sample_weight"])
-    validation_targets = pq.read_table(validation_path, columns=["role", "label_state"])
+    validation_targets = pq.read_table(
+        validation_path,
+        columns=["role", "label_state", "n", "total_history_count", "supported_history_count",
+                 "is_full_history"],
+    )
     require(set(train["role"].to_pylist()) == {"TRAIN"}, "training parquet contains only TRAIN rows", checks)
     require(set(validation_targets["role"].to_pylist()) == {"VALIDATION"},
             "validation parquet contains only VALIDATION rows", checks)
     require("UNKNOWN_SAMPLED" not in set(train["label_state"].to_pylist()),
             "UNKNOWN_SAMPLED is absent from training labels", checks)
+    require(pc.all(pc.equal(validation_targets["n"], validation_targets["supported_history_count"])).as_py(),
+            "validation N equals supportedHistoryCount", checks)
+    full_expected = pc.equal(validation_targets["supported_history_count"],
+                             validation_targets["total_history_count"])
+    require(pc.all(pc.equal(validation_targets["is_full_history"], full_expected)).as_py(),
+            "validation full-history marker matches arbitrary N", checks)
 
     grouped = train.group_by("uid").aggregate([("sample_weight", "sum")])
     deviations = pc.abs(pc.subtract(grouped["sample_weight_sum"], 1.0))

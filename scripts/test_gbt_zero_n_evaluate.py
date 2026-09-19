@@ -2,7 +2,13 @@ import unittest
 
 import pandas as pd
 
-from gbt_zero_n_evaluate import bootstrap_mean_ci, nested_history_curve, select_profile
+from gbt_zero_n_evaluate import (
+    bootstrap_mean_ci,
+    candidate_metrics,
+    low_history_cohort,
+    nested_history_curve,
+    select_profile,
+)
 
 
 class GbtZeroNEvaluateTest(unittest.TestCase):
@@ -58,6 +64,41 @@ class GbtZeroNEvaluateTest(unittest.TestCase):
         selected, gate = select_profile(results, config)
         self.assertEqual(selected, "steady")
         self.assertEqual(gate["profiles"]["unstable"]["status"], "FAIL")
+
+    def test_candidate_metrics_keep_unknown_slots_in_rank(self):
+        frame = pd.DataFrame([
+            {"episode_id": "e", "uid": 1, "candidate_movie_id": 1, "prediction": 0.9,
+             "label": None, "label_state": "UNKNOWN_SAMPLED", "is_target": False},
+            {"episode_id": "e", "uid": 1, "candidate_movie_id": 2, "prediction": 0.8,
+             "label": 5.0, "label_state": "POSITIVE_OBSERVED", "is_target": True},
+            {"episode_id": "e", "uid": 1, "candidate_movie_id": 3, "prediction": 0.7,
+             "label": 2.0, "label_state": "NEGATIVE_OBSERVED", "is_target": False},
+        ])
+        metrics, ranked = candidate_metrics(frame)
+        self.assertEqual(metrics["unknown_slot_fraction_at_10"]["numerator"], 1)
+        self.assertEqual(metrics["observed_positive_recall_at_10"]["value"], 1.0)
+        self.assertEqual(int(ranked.iloc[0].model_rank), 1)
+
+    def test_low_history_uses_only_full_history_variant(self):
+        targets = pd.DataFrame([
+            {"episode_id": "e0", "uid": 1, "target_movie_id": 10, "prediction_at": 100,
+             "n": 0, "total_history_count": 3, "is_full_history": False,
+             "squared_error": 4.0, "absolute_error": 2.0},
+            {"episode_id": "e3", "uid": 1, "target_movie_id": 10, "prediction_at": 100,
+             "n": 3, "total_history_count": 3, "is_full_history": True,
+             "squared_error": 1.0, "absolute_error": 1.0},
+        ])
+        candidates = pd.DataFrame([
+            {"episode_id": "e3", "uid": 1, "candidate_movie_id": 10, "prediction": 4.0,
+             "label": 5.0, "label_state": "POSITIVE_OBSERVED", "is_target": True,
+             "total_history_count": 3, "is_full_history": True},
+            {"episode_id": "e3", "uid": 1, "candidate_movie_id": 11, "prediction": 3.0,
+             "label": None, "label_state": "UNKNOWN_SAMPLED", "is_target": False,
+             "total_history_count": 3, "is_full_history": True},
+        ])
+        result = low_history_cohort(targets, candidates)
+        self.assertEqual(result[0]["total_history_bucket"], "3-4")
+        self.assertEqual(result[0]["user_macro_mse"], 1.0)
 
 
 if __name__ == "__main__":

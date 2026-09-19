@@ -71,6 +71,12 @@ def support_bucket(value: int) -> str:
     return "0" if value == 0 else "1-9" if value < 10 else "10-49" if value < 50 else "50+"
 
 
+def history_variant_sizes(total: int) -> list[int]:
+    if total < 0:
+        raise ValueError("history size cannot be negative")
+    return sorted({*[value for value in N_VALUES[:-1] if value <= total], total})
+
+
 def file_sha256(path: Path) -> str:
     digest = hashlib.sha256()
     with path.open("rb") as stream:
@@ -269,9 +275,11 @@ def build(args: argparse.Namespace) -> dict:
                         "importance_weight": 1.0 / args.unknown_probability if rating is None else None,
                         "eligible_population_digest": eligible_digest,
                     })
-                requested_values = [value for value in N_VALUES[:-1] if value <= len(case.history)]
-                if len(case.history) >= 50:
-                    requested_values.append(len(case.history))
+                # Always include the user's actual available N.  The fixed diagnostic
+                # caps alone omit values such as 3, 5, or 41 and therefore cannot
+                # demonstrate the service contract's arbitrary 0..N behavior or form
+                # a truthful LOW_HISTORY_COHORT from the full supported history.
+                requested_values = history_variant_sizes(len(case.history))
                 for requested_n in requested_values:
                     history = case.history[:requested_n] if requested_n else []
                     bucket = n_bucket(requested_n)
@@ -289,6 +297,7 @@ def build(args: argparse.Namespace) -> dict:
                         "unknown_sample_count": len(unknown),
                         "request_target_count": len(case.targets),
                         "total_history_count": len(case.history), "supported_history_count": len(history),
+                        "is_full_history": requested_n == len(case.history),
                         "n": requested_n, "n_bucket": bucket, "candidate_digest": pool_digest,
                         "history": [{"event_id": row.event_id, "movie_id": row.movie_id,
                                      "rating": row.rating, "event_at": row.timestamp} for row in history],
