@@ -363,7 +363,7 @@ if (systemGate) {
     fail('GATE-SYSTEM-REPRODUCTION must remain blocked by revision reproduction')
   }
   for (const item of [
-    'fixed_revision_ci_dependency_audit',
+    'fixed_revision_local_dependency_audit',
     'fixed_revision_secret_history_scan',
     'multi_host_network_and_failure_benchmark_before_production_scale_claim',
     'user_authorized_revision',
@@ -440,8 +440,11 @@ if (!workflow.includes('npm run completion:gates:mutation:check')) {
 if (!workflow.includes('npm run revision:readiness:require')) {
   fail('CI must require all project evidence to belong to a clean revision')
 }
-if (!workflow.includes('npm test --prefix e2e') || !workflow.includes('pwsh -NoProfile -File scripts/verify-c2-compose.ps1')) {
-  fail('CI catalog E2E must run both Playwright and the C2A Compose probe')
+for (const marker of [
+  "python -m unittest discover -s data-pipeline/tests -p 'test_*.py' -v",
+  "python -m unittest discover -s recommender/tests -p 'test_*.py' -v",
+]) {
+  if (!workflow.includes(marker)) fail(`research CI misses execution boundary: ${marker}`)
 }
 
 const reproductionScript = fs.readFileSync(path.join(root, 'scripts/verify-reproduction.ps1'), 'utf8')

@@ -21,6 +21,7 @@
     "completion:gates:mutation:check": "node scripts/test-completion-gate-validator.mjs",
     "supply-chain:check": "node scripts/run-python.mjs scripts/validate_supply_chain_pins.py",
     "recommendation:evidence:check": "node scripts/verify-recommendation-evidence.mjs",
+    "recommendation:evidence:tracked:check": "node scripts/verify-recommendation-evidence.mjs --tracked-only",
     "recommendation:vnext:readiness:check": "node scripts/run-python.mjs scripts/validate_recommendation_vnext_readiness.py",
     "recommendation:019c:contract:check": "node scripts/run-python.mjs scripts/validate_rec_ev_019c_contract.py && node scripts/run-python.mjs -m unittest scripts/tests/test_validate_rec_ev_019c_contract.py scripts/tests/test_rec_ev_019c_bounded_core.py scripts/tests/test_rec_ev_019c_data.py scripts/tests/test_rec_ev_019c_models.py scripts/tests/test_rec_ev_019c_evaluation.py scripts/tests/test_rec_ev_019c_lightfm.py scripts/tests/test_rec_ev_019c_experiment.py scripts/tests/test_rec_ev_019c_artifacts.py",
     "recommendation:019c:synthetic:run": "node scripts/run-python.mjs scripts/run_rec_ev_019c_validation.py --mode synthetic-preflight --role validation && node scripts/run-python.mjs scripts/verify_rec_ev_019c_validation.py --manifest docs/recommendation/evidence/manifests/rec-ev-019c-synthetic-preflight.json",

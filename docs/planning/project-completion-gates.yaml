@@ -194,7 +194,7 @@ gates:
       - docs/planning/local-mvp-completion-reflection-20260830.md
       - docs/testing/local-mvp-compose-e2e-20260830.md
     remaining:
-      - fixed_revision_ci_dependency_audit
+      - fixed_revision_local_dependency_audit
       - fixed_revision_secret_history_scan
       - multi_host_network_and_failure_benchmark_before_production_scale_claim
       - user_authorized_revision

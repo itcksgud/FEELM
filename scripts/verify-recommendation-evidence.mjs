@@ -2,6 +2,7 @@ import { delimiter } from 'node:path'
 import { spawnSync } from 'node:child_process'
 
 const isWindows = process.platform === 'win32'
+const trackedOnly = process.argv.includes('--tracked-only')
 const configuredPython = process.env.FEELM_PYTHON
 const python = configuredPython || (isWindows ? 'py' : 'python3')
 const pythonPrefix = configuredPython ? [] : (isWindows ? ['-3'] : [])
@@ -28,7 +29,7 @@ const commands = [
   [python, [...pythonPrefix, 'scripts/verify_recommendation_relative_utility.py', '--manifest', 'docs/recommendation/evidence/manifests/rec-ev-015.json']],
   [python, [...pythonPrefix, 'scripts/verify_recommendation_user_case_study.py', '--manifest', 'docs/recommendation/evidence/manifests/rec-ev-016.json']],
   [python, [...pythonPrefix, 'scripts/verify_recommendation_relational_ablation.py', '--manifest', 'docs/recommendation/evidence/manifests/rec-ev-017.json']],
-  [python, [...pythonPrefix, 'scripts/verify_recommendation_user_percentile_audit.py', '--manifest', 'docs/recommendation/evidence/manifests/rec-ev-018.json']],
+  [python, [...pythonPrefix, 'scripts/verify_recommendation_user_percentile_audit.py', '--manifest', 'docs/recommendation/evidence/manifests/rec-ev-018.json'], { requiresLocalArtifacts: true }],
   [python, [...pythonPrefix, 'scripts/verify_recommendation_binary_onboarding_preflight.py', '--manifest', 'docs/recommendation/evidence/manifests/rec-ev-019p.json']],
   [python, [...pythonPrefix, 'scripts/validate_rec_ev_019c_contract.py']],
   [python, [...pythonPrefix, 'scripts/verify_rec_ev_019c_validation.py', '--manifest', 'docs/recommendation/evidence/manifests/rec-ev-019c-synthetic-preflight.json']],
@@ -36,22 +37,27 @@ const commands = [
   [python, [...pythonPrefix, 'scripts/verify_rec_ev_019c_resource_dry_run.py', '--manifest', 'docs/recommendation/evidence/manifests/rec-ev-019c-resource-dry-run.json']],
   [python, [...pythonPrefix, '-m', 'unittest', 'scripts/tests/test_rec_ev_019d_contract.py', 'scripts/tests/test_run_rec_ev_019d_prefix_ablation.py', 'scripts/tests/test_verify_rec_ev_019d_prefix_ablation.py']],
   [python, [...pythonPrefix, 'scripts/validate_rec_ev_019d_contract.py']],
-  [python, [...pythonPrefix, 'scripts/verify_rec_ev_019d_prefix_ablation.py', '--manifest', 'docs/recommendation/evidence/manifests/rec-ev-019d-validation.json']],
+  [python, [...pythonPrefix, 'scripts/verify_rec_ev_019d_prefix_ablation.py', '--manifest', 'docs/recommendation/evidence/manifests/rec-ev-019d-validation.json'], { requiresLocalArtifacts: true }],
   [python, [...pythonPrefix, '-m', 'unittest', 'scripts/tests/test_rec_ev_019e_contract.py', 'scripts/tests/test_run_rec_ev_019e_no_retune_incremental_applicability.py', 'scripts/tests/test_verify_rec_ev_019e_no_retune_incremental_applicability.py']],
   [python, [...pythonPrefix, 'scripts/validate_rec_ev_019e_contract.py']],
-  [python, [...pythonPrefix, 'scripts/verify_rec_ev_019e_no_retune_incremental_applicability.py', '--manifest', 'docs/recommendation/evidence/manifests/rec-ev-019e-validation.json']],
+  [python, [...pythonPrefix, 'scripts/verify_rec_ev_019e_no_retune_incremental_applicability.py', '--manifest', 'docs/recommendation/evidence/manifests/rec-ev-019e-validation.json'], { requiresLocalArtifacts: true }],
   [python, [...pythonPrefix, '-m', 'unittest', 'scripts/tests/test_rec_ev_019f_contract.py', 'scripts/tests/test_run_rec_ev_019f_independent_temporal_routing.py', 'scripts/tests/test_verify_rec_ev_019f_independent_temporal_routing.py']],
-  [python, [...pythonPrefix, 'scripts/validate_rec_ev_019f_contract.py']],
-  [python, [...pythonPrefix, 'scripts/verify_rec_ev_019f_independent_temporal_routing.py', '--manifest', 'docs/recommendation/evidence/manifests/rec-ev-019f-validation.json', '--full-rescore-users', '64']],
+  [python, [...pythonPrefix, 'scripts/validate_rec_ev_019f_contract.py'], { requiresLocalArtifacts: true }],
+  [python, [...pythonPrefix, 'scripts/verify_rec_ev_019f_independent_temporal_routing.py', '--manifest', 'docs/recommendation/evidence/manifests/rec-ev-019f-validation.json', '--full-rescore-users', '64'], { requiresLocalArtifacts: true }],
   [python, [...pythonPrefix, '-m', 'unittest', 'scripts/tests/test_rec_ev_021v_pooled_judgment.py']],
-  [python, [...pythonPrefix, 'scripts/verify_rec_ev_021v_preflight.py', '--manifest', 'docs/recommendation/evidence/manifests/rec-ev-021v-preflight.json']],
-  [python, [...pythonPrefix, 'scripts/validate_recommendation_vnext_readiness.py']],
+  [python, [...pythonPrefix, 'scripts/verify_rec_ev_021v_preflight.py', '--manifest', 'docs/recommendation/evidence/manifests/rec-ev-021v-preflight.json'], { requiresLocalArtifacts: true }],
+  [python, [...pythonPrefix, 'scripts/validate_recommendation_vnext_readiness.py'], { requiresLocalArtifacts: true }],
   [python, [...pythonPrefix, 'scripts/verify_spark_als_scaling_evidence.py', '--result', 'performance/results/spark-als-scaling/latest.json']],
-  [process.execPath, ['scripts/verify-recommendation-ui-comparison.mjs']],
+  [process.execPath, ['scripts/verify-recommendation-ui-comparison.mjs'], { requiresLocalArtifacts: true }],
   [process.execPath, ['scripts/verify-recommendation-product-decision-packet.mjs']],
 ]
 
-for (const [command, args] of commands) {
+let skippedLocalArtifactChecks = 0
+for (const [command, args, options = {}] of commands) {
+  if (trackedOnly && options.requiresLocalArtifacts) {
+    skippedLocalArtifactChecks += 1
+    continue
+  }
   const result = spawnSync(command, args, { stdio: 'inherit', env: environment })
   if (result.error) {
     console.error(result.error.message)
@@ -62,4 +68,8 @@ for (const [command, args] of commands) {
   }
 }
 
-console.log('Recommendation evidence verification passed: unit protocols, REC-EV-004/004B/006/007/008/011/013/015/016/017/018/019P/019A, REC-EV-019C gates, REC-EV-019D/019F independent full-rescore sampling, REC-EV-019E post-hoc routing, REC-EV-021V target-domain preflight, decision packet, and Spark scaling evidence.')
+if (trackedOnly) {
+  console.log(`Tracked recommendation evidence verification passed; skipped ${skippedLocalArtifactChecks} checks that require ignored outputs or a built frontend.`)
+} else {
+  console.log('Recommendation evidence verification passed: unit protocols, REC-EV-004/004B/006/007/008/011/013/015/016/017/018/019P/019A, REC-EV-019C gates, REC-EV-019D/019F independent full-rescore sampling, REC-EV-019E post-hoc routing, REC-EV-021V target-domain preflight, decision packet, and Spark scaling evidence.')
+}

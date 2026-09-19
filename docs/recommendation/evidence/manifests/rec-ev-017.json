@@ -1,9 +1,9 @@
 {
   "artifacts": {
     "evidence": {
-      "bytes": 13625,
+      "bytes": 13382,
       "path": "docs/recommendation/evidence/REC-EV-017-relational-tag-ablation.md",
-      "sha256": "fd67174a5f04425cc5de414b9f5fe2afd44059868126485921b463322c4f8e6b"
+      "sha256": "8ac0aa7773fe6cdb6895091528948fe185244678aef4686da7c46c33ab1f6c4b"
     },
     "result": {
       "bytes": 33624,
