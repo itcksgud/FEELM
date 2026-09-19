@@ -138,6 +138,8 @@ checksum 문제가 보고돼 채택하지 않았다.
   upstream tag/release를 다시 확인하고 validator의 audited 값과 문서를 함께 변경해야 한다.
 - commit이 생긴 뒤 clean checkout에서 secret history scan과 모든 lock/pin 감사를 다시 실행한다.
 
-CI의 `dependency-audit` job은 세 npm lockfile, Python data/runtime/test hash lock,
-Java runtime CycloneDX를 매 push/MR 시 현재 advisory DB로 다시 검사한다. OSV binary 자체도 고정
-checksum을 확인한다. 새 advisory로 실패하는 것은 재현성 오류가 아니라 의존성 재검토 신호다.
+이 문서를 작성한 2026-08-30에는 CI의 `dependency-audit` job이 세 npm lockfile, Python
+data/runtime/test hash lock, Java runtime CycloneDX를 매 push/MR 시 현재 advisory DB로 검사했다.
+2026-09-19부터 개인 연구 저장소 CI는 추천·데이터 경계에 집중하며, 전체 의존성 감사와 고정된 OSV
+binary checksum 검증은 아래 로컬 재현 명령에서 필요할 때 실행한다. 새 advisory로 실패하는 것은
+재현성 오류가 아니라 의존성 재검토 신호다.

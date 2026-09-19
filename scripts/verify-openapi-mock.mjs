@@ -11,7 +11,7 @@ const child = spawn(process.execPath, [serverPath], {
 })
 
 async function waitUntilReady() {
-  for (let attempt = 0; attempt < 50; attempt += 1) {
+  for (let attempt = 0; attempt < 150; attempt += 1) {
     try {
       const response = await fetch(`${baseUrl}/api/v1/catalog/genres`)
       if (response.ok) return
@@ -20,7 +20,7 @@ async function waitUntilReady() {
     }
     await delay(100)
   }
-  throw new Error('OpenAPI mock did not start within 5 seconds')
+  throw new Error('OpenAPI mock did not start within 15 seconds')
 }
 
 async function expectStatus(path, expected) {

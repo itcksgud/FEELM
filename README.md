@@ -61,6 +61,12 @@ npm run verify:reproduce
 artifact local volume을 초기화한다. 이미 준비된 개발 환경에서 빠른 비컨테이너 회귀만 반복할 때는
 `npm run verify`를 사용한다.
 
+GitHub Actions는 개인 연구 저장소의 상시 검증 비용을 줄이기 위해 계약, 추천 evidence,
+추천 코어와 catalog data pipeline만 검사한다. PR에서 한 번, 병합 후 `main`에서 한 번 실행하며
+현재 사용하지 않는 frontend/backend/Compose E2E와 전체 의존성 감사는 아래 로컬 명령으로 필요할 때
+검증한다. CI의 추천 evidence 검사는 커밋된 자료만 대상으로 하며, `outputs/`의 로컬 실험 산출물과
+빌드된 UI까지 확인하는 전체 검사는 `npm run recommendation:evidence:check`로 실행한다.
+
 개별 명령은 다음과 같다.
 
 ```powershell

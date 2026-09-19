@@ -31,7 +31,6 @@ const commonNpmChecks = [
   'completion:gates:mutation:check',
   'verification:parity:check',
   'supply-chain:check',
-  'recommendation:evidence:check',
   'security:secrets:check',
   'openapi:lint',
   'openapi:mock:check',
@@ -43,19 +42,19 @@ for (const script of commonNpmChecks) {
   requireText(ci, `npm run ${script}`, '.github/workflows/ci.yml')
 }
 
+requireText(verify, "Invoke-Checked npm @('run', 'recommendation:evidence:check')", 'verify-all.ps1')
+requireText(ci, 'npm run recommendation:evidence:tracked:check', '.github/workflows/ci.yml')
+if (typeof packageJson.scripts?.['recommendation:evidence:tracked:check'] !== 'string') {
+  failures.push('package.json misses script recommendation:evidence:tracked:check')
+}
+
 requireText(verify, "Invoke-Checked npm @('run', 'revision:readiness:check')", 'verify-all.ps1')
 requireText(ci, 'npm run revision:readiness:require', '.github/workflows/ci.yml')
 requireText(verify, "Invoke-Checked npm @('run', 'ci:workflow:check')", 'verify-all.ps1')
 requireText(ci, '"$tool_root/actionlint" -no-color .github/workflows/ci.yml', '.github/workflows/ci.yml workflow lint boundary')
 requireText(verify, "Invoke-Checked npm @('run', 'security:java:check')", 'verify-all.ps1')
 requireText(verify, "Invoke-Checked npm @('run', 'security:history:check')", 'verify-all.ps1')
-requireText(ci, 'gitleaks git --no-banner --redact .', '.github/workflows/ci.yml history security job')
-requireText(ci, 'fetch-depth: 0', '.github/workflows/ci.yml history security job')
 requireText(verify, "Invoke-Checked npm @('run', 'frontend:api-schema:check')", 'verify-all.ps1')
-requireText(ci, 'npm run frontend:api-schema:check', '.github/workflows/ci.yml frontend job')
-for (const marker of ['writeRuntimeCycloneDx', 'osv-scanner scan source']) {
-  requireText(ci, marker, '.github/workflows/ci.yml Java security job')
-}
 
 for (const marker of [
   "'.\\backend\\gradlew.bat' @('-p', 'backend', '--dependency-verification', 'strict', 'test')",
@@ -68,9 +67,6 @@ for (const marker of [
 }
 
 for (const marker of [
-  'bash backend/gradlew -p backend --dependency-verification strict test',
-  'npm run test --prefix frontend',
-  'npm run build --prefix frontend',
   "python -m unittest discover -s data-pipeline/tests -p 'test_*.py' -v",
   "python -m unittest discover -s recommender/tests -p 'test_*.py' -v",
 ]) {
@@ -79,8 +75,6 @@ for (const marker of [
 
 requireText(freshE2e, "Invoke-Checked npm @('test', '--prefix', 'e2e')", 'verify-e2e-fresh.ps1')
 requireText(freshE2e, 'verify-c2-compose.ps1', 'verify-e2e-fresh.ps1')
-requireText(ci, 'npm test --prefix e2e', '.github/workflows/ci.yml')
-requireText(ci, 'verify-c2-compose.ps1', '.github/workflows/ci.yml')
 
 for (const marker of [
   "Invoke-Checked npm @('ci')",
@@ -102,4 +96,4 @@ if (failures.length) {
   process.exit(1)
 }
 
-console.log(`Verification parity validation: PASS (${commonNpmChecks.length} common gates + backend/frontend/data/recommender/E2E/C2A boundaries)`)
+console.log(`Verification parity validation: PASS (${commonNpmChecks.length} common gates + research CI data/recommender boundaries; product-stack checks remain local)`)

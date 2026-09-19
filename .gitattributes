@@ -1,3 +1,10 @@
 /experiments/gbt-zero-n/** text eol=lf
-/scripts/gbt_zero_n_*.py text eol=lf
-/scripts/test_gbt_zero_n_*.py text eol=lf
+/scripts/** text eol=lf
+/requirements*.lock text eol=lf
+/frontend/src/evidence/** text eol=lf
+/docs/recommendation/contracts/** text eol=lf
+/docs/recommendation/protocols/** text eol=lf
+/docs/recommendation/schemas/** text eol=lf
+/docs/recommendation/evidence/manifests/** text eol=lf
+/docs/recommendation/evidence/results/** text eol=lf
+/docs/recommendation/evidence/*.md text eol=lf

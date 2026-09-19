@@ -32,7 +32,6 @@ EXPECTED_ACTIONS = {
     "actions/checkout": "11d5960a326750d5838078e36cf38b85af677262",
     "actions/setup-node": "49933ea5288caeca8642d1e84afbd3f7d6820020",
     "actions/setup-python": "a26af69be951a213d495a4c3e4e4022e16d87065",
-    "actions/setup-java": "cf277c60eb25467037889841efdb72551f06f6c3",
 }
 
 EXPECTED_GRADLE_DISTRIBUTION_SHA256 = (
@@ -43,7 +42,6 @@ EXPECTED_GRADLE_WRAPPER_JAR_SHA256 = (
 )
 EXPECTED_GITLEAKS_VERSION = "8.29.1"
 EXPECTED_GITLEAKS_WINDOWS_SHA256 = "e4b7d556f0cddbe23d10d8fac2ab0f29f68f019091c6599ffbeaa8a4fb71ac78"
-EXPECTED_GITLEAKS_LINUX_SHA256 = "e4eb209d04e20339d77122a3bdf9cd41351255cfb27ebcb75e85325e04f88924"
 EXPECTED_ACTIONLINT_VERSION = "1.7.12"
 EXPECTED_ACTIONLINT_WINDOWS_SHA256 = "6e7241b51e6817ea6a047693d8e6fed13b31819c9a0dd6c5a726e1592d22f6e9"
 EXPECTED_ACTIONLINT_LINUX_SHA256 = "8aca8db96f1b94770f1b0d72b6dddcb1ebb8123cb3712530b08cc387b349a3d8"
@@ -181,12 +179,12 @@ def main() -> int:
         errors.append("frontend Dockerfile must use npm bundled in the digest-pinned Node image")
 
     workflow = read(".github/workflows/ci.yml")
-    if workflow.count("runs-on: ubuntu-24.04") != 8 or "ubuntu-latest" in workflow:
-        errors.append("CI runner images must be fixed to ubuntu-24.04 for all eight jobs")
-    if workflow.count("python-version: '3.12.5'") != 4:
-        errors.append("CI Python must be fixed to 3.12.5 for all four Python jobs")
-    if workflow.count("java-version: '17.0.20+8'") != 2:
-        errors.append("CI Temurin Java must be fixed to 17.0.20+8 for both Java jobs")
+    if workflow.count("runs-on: ubuntu-24.04") != 4 or "ubuntu-latest" in workflow:
+        errors.append("CI runner images must be fixed to ubuntu-24.04 for all four research jobs")
+    if workflow.count("python-version: '3.12.5'") != 3:
+        errors.append("CI Python must be fixed to 3.12.5 for all three Python jobs")
+    if "actions/setup-java@" in workflow or "java-version:" in workflow:
+        errors.append("research CI must not bootstrap the unused product Java stack")
     action_refs = re.findall(r"uses:\s+(actions/[A-Za-z0-9_.-]+)@([^\s#]+)", workflow)
     for action, revision in action_refs:
         expected = EXPECTED_ACTIONS.get(action)
@@ -202,15 +200,7 @@ def main() -> int:
         "pip install --require-hashes -r recommender/requirements-test.lock",
         "pip install --no-build-isolation --require-hashes -r requirements-data.lock",
         "pip install --require-hashes -r requirements-ml.lock",
-        "pip install --require-hashes -r scripts/requirements-audit-tools.lock",
         "pip install --require-hashes -r scripts/requirements-build-tools.lock",
-        "pip_audit -r recommender/requirements.lock",
-        "pip_audit -r recommender/requirements-test.lock",
-        "pip_audit -r requirements-data.lock",
-        "pip_audit -r requirements-ml.lock",
-        "pip_audit -r scripts/requirements-audit-tools.lock",
-        "pip_audit -r scripts/requirements-build-tools.lock",
-        "pip_audit -r scripts/requirements-lock-tools.lock",
     ):
         if required_fragment not in workflow:
             errors.append(f"CI misses locked dependency boundary: {required_fragment}")
@@ -230,16 +220,6 @@ def main() -> int:
     ):
         if required_fragment not in history_script:
             errors.append(f"local history scanner misses pinned boundary: {required_fragment}")
-    for required_fragment in (
-        f"releases/download/v{EXPECTED_GITLEAKS_VERSION}/gitleaks_{EXPECTED_GITLEAKS_VERSION}_linux_x64.tar.gz",
-        EXPECTED_GITLEAKS_LINUX_SHA256,
-        "fetch-depth: 0",
-        "control_exit",
-        "gitleaks git --no-banner --redact .",
-    ):
-        if required_fragment not in workflow:
-            errors.append(f"CI history scanner misses pinned boundary: {required_fragment}")
-
     actionlint_script = read("scripts/verify-github-workflow.ps1")
     for required_fragment in (
         f"$version = '{EXPECTED_ACTIONLINT_VERSION}'",
@@ -268,7 +248,7 @@ def main() -> int:
         "Supply-chain pin validation: PASS "
         f"({sum(len(value) for value in EXPECTED_IMAGES.values())} images, "
         f"{len(EXPECTED_ACTIONS)} actions, 7 Python locks, Gradle ZIP+wrapper checksums, "
-        "Gitleaks pinned+controlled, actionlint pinned)"
+        "local Gitleaks pinned+controlled, actionlint pinned)"
     )
     return 0
 
