@@ -1,6 +1,6 @@
 import unittest
 
-from gbt_zero_n_build_input import Rating, choose_targets, role_for_user
+from gbt_zero_n_build_input import Rating, choose_targets, history_variant_sizes, role_for_user
 
 
 class GbtZeroNInputTest(unittest.TestCase):
@@ -21,6 +21,12 @@ class GbtZeroNInputTest(unittest.TestCase):
 
     def test_single_class_user_is_kept(self):
         self.assertEqual(choose_targets(622, 1, [Rating(1, 5.0, 10)], 4.0), [Rating(1, 5.0, 10)])
+
+    def test_arbitrary_available_n_is_always_included(self):
+        self.assertEqual(history_variant_sizes(0), [0])
+        self.assertEqual(history_variant_sizes(3), [0, 1, 2, 3])
+        self.assertEqual(history_variant_sizes(41), [0, 1, 2, 4, 7, 15, 25, 40, 41])
+        self.assertEqual(history_variant_sizes(50)[-1], 50)
 
 
 if __name__ == "__main__":

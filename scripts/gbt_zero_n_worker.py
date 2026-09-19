@@ -81,13 +81,15 @@ def main() -> None:
     loaded = GBTRegressionModel.load(str(args.output_root / "model" / "native"))
 
     target_projection = ["episode_id", "uid", "target_movie_id", "prediction_at", "n", "n_bucket",
+                         "total_history_count", "supported_history_count", "is_full_history",
                          "label", "sample_weight", "prediction"]
     target_predictions = loaded.transform(assembler.transform(add_safe_feature_columns(validation_raw))).select(
         *target_projection
     )
     target_predictions.write.mode("error").parquet(str(args.output_root / "validation-target-predictions.parquet"))
     candidate_projection = ["episode_id", "uid", "target_movie_id", "candidate_movie_id", "prediction_at",
-                            "n", "n_bucket", "candidate_rank", "label_state", "is_target", "label",
+                            "n", "n_bucket", "total_history_count", "supported_history_count",
+                            "is_full_history", "candidate_rank", "label_state", "is_target", "label",
                             "prediction"]
     candidate_predictions = loaded.transform(assembler.transform(add_safe_feature_columns(candidate_raw))).select(
         *candidate_projection
