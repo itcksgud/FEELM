@@ -53,15 +53,16 @@ def main() -> None:
     judged = joined.dropna(subset=["observed_ndcg_at_10_rank", "observed_ndcg_at_10_regression"]).copy()
     judged["delta"] = judged.observed_ndcg_at_10_rank - judged.observed_ndcg_at_10_regression
     user_delta = judged.groupby("uid", sort=True).delta.mean()
+    ndcg_available = not user_delta.empty
     report = {
-        "status": "PASS",
+        "status": "PASS" if ndcg_available else "INSUFFICIENT_JUDGMENTS",
         "comparison": "PAIRWISE_RANK_GBT_VS_RESPONSE_RELATION_REGRESSION_GBT",
         "same_candidate_identity": True,
         "regression": regression_summary,
         "pairwise_rank": rank_summary,
-        "paired_user_macro_ndcg_at_10_delta": float(user_delta.mean()),
-        "paired_user_macro_ndcg_at_10_delta_bootstrap_95_ci": bootstrap_mean_ci(
-            user_delta.to_numpy(dtype=float), args.seed
+        "paired_user_macro_ndcg_at_10_delta": float(user_delta.mean()) if ndcg_available else None,
+        "paired_user_macro_ndcg_at_10_delta_bootstrap_95_ci": (
+            bootstrap_mean_ci(user_delta.to_numpy(dtype=float), args.seed) if ndcg_available else None
         ),
         "paired_users": int(len(user_delta)),
         "pairwise_rank_rating_mse": None,

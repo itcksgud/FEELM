@@ -14,9 +14,13 @@ from dataclasses import dataclass
 from datetime import datetime, timezone
 from pathlib import Path
 
+import pyarrow.parquet as pq
+
 
 ROLES = ("TRAIN", "VALIDATION", "FINAL_TEST")
-N_VALUES = (0, 1, 2, 4, 7, 15, 25, 40, 50)
+VALIDATION_SPLITS = ("SELECTION", "CONFIRM")
+REQUIRED_CONFIRM_STRATA = ("0", "1", "2", "4", "5", "9", "10", "19", "20", "30-49", "50+")
+N_VALUES = (0, 1, 2, 4, 5, 7, 10, 15, 20, 25, 40, 50)
 TRAIN_END = 1577836799
 VALIDATION_END = 1640995199
 FINAL_TEST_END = 1697164147
@@ -41,6 +45,7 @@ class Case:
     history: list[Rating]
     targets: list[Rating]
     rank: int
+    evaluation_split: str
 
 
 def stable_rank(seed: int, *parts: object) -> int:
@@ -65,6 +70,15 @@ def n_bucket(value: int) -> str:
     boundaries = ((0, "0"), (1, "1"), (2, "2"), (4, "3-4"), (9, "5-9"),
                   (19, "10-19"), (29, "20-29"), (49, "30-49"))
     return next((label for upper, label in boundaries if value <= upper), "50+")
+
+
+def validation_split(seed: int, uid: int) -> str:
+    return VALIDATION_SPLITS[stable_rank(seed, "validation-split", uid) % len(VALIDATION_SPLITS)]
+
+
+def confirmation_stratum(total: int) -> str:
+    exact = {0, 1, 2, 4, 5, 9, 10, 19, 20}
+    return str(total) if total in exact else n_bucket(total)
 
 
 def support_bucket(value: int) -> str:
@@ -98,16 +112,25 @@ def push(heap: list, case: Case, limit: int) -> None:
         heapq.heapreplace(heap, entry)
 
 
-def select_cases(ratings_path: Path, seed: int, goals: dict[str, int], threshold: float,
-                 release_years: dict[int, int | None]):
+def select_cases(
+    ratings_path: Path,
+    seed: int,
+    goals: dict[str, int],
+    threshold: float,
+    release_years: dict[int, int | None],
+    excluded_validation_users: set[int] | None = None,
+):
     heaps: dict[tuple[str, str], list] = defaultdict(list)
     train_support: Counter[int] = Counter()
+    excluded_validation_users = excluded_validation_users or set()
 
     def finish(uid: int | None, events: list[Rating]) -> None:
         if uid is None:
             return
         events.sort(key=lambda row: (row.timestamp, row.event_id or str(row.movie_id)))
         role = role_for_user(seed, uid)
+        if goals[role] <= 0 or (role == "VALIDATION" and uid in excluded_validation_users):
+            return
         if role == "TRAIN":
             train_support.update(row.movie_id for row in events if row.timestamp <= TRAIN_END)
         start, end = role_window(role)
@@ -120,8 +143,17 @@ def select_cases(ratings_path: Path, seed: int, goals: dict[str, int], threshold
         if not targets:
             return
         group = "HIGH" if len(history) >= 50 else "LOW"
-        case = Case(uid, role, start + 1, history, targets, stable_rank(seed, "sample", uid))
-        push(heaps[(role, group)], case, max(goals[role], 100))
+        split = validation_split(seed, uid) if role == "VALIDATION" else role
+        case = Case(uid, role, start + 1, history, targets, stable_rank(seed, "sample", uid), split)
+        if role == "VALIDATION":
+            push(heaps[(role, f"{split}:ALL")], case, max(goals[role], 100))
+            push(
+                heaps[(role, f"{split}:{confirmation_stratum(len(history))}")],
+                case,
+                max(goals[role], 100),
+            )
+        else:
+            push(heaps[(role, group)], case, max(goals[role], 100))
 
     current = None
     events: list[Rating] = []
@@ -139,6 +171,41 @@ def select_cases(ratings_path: Path, seed: int, goals: dict[str, int], threshold
     selected = {}
     for role in ROLES:
         goal = goals[role]
+        if goal == 0:
+            selected[role] = []
+            continue
+        if role == "VALIDATION":
+            role_selected: list[Case] = []
+            split_goals = {"SELECTION": goal // 2, "CONFIRM": goal - goal // 2}
+            for split, split_goal in split_goals.items():
+                chosen_by_uid: dict[int, Case] = {}
+                minimum_per_stratum = min(
+                    100, max(1, split_goal // len(REQUIRED_CONFIRM_STRATA))
+                )
+                for stratum in REQUIRED_CONFIRM_STRATA:
+                    rows = sorted(
+                        (entry[2] for entry in heaps[(role, f"{split}:{stratum}")]),
+                        key=lambda row: (row.rank, row.uid),
+                    )
+                    for case in rows[:minimum_per_stratum]:
+                        chosen_by_uid[case.uid] = case
+                all_rows = sorted(
+                    (entry[2] for entry in heaps[(role, f"{split}:ALL")]),
+                    key=lambda row: (row.rank, row.uid),
+                )
+                for case in all_rows:
+                    if len(chosen_by_uid) >= split_goal:
+                        break
+                    chosen_by_uid.setdefault(case.uid, case)
+                if len(chosen_by_uid) < split_goal:
+                    raise RuntimeError(
+                        f"{role}:{split}: eligible users {len(chosen_by_uid)} below requested {split_goal}"
+                    )
+                role_selected.extend(
+                    sorted(chosen_by_uid.values(), key=lambda row: (row.rank, row.uid))[:split_goal]
+                )
+            selected[role] = sorted(role_selected, key=lambda row: row.uid)
+            continue
         high = sorted((entry[2] for entry in heaps[(role, "HIGH")]), key=lambda row: (row.rank, row.uid))
         low = sorted((entry[2] for entry in heaps[(role, "LOW")]), key=lambda row: (row.rank, row.uid))
         high_goal = min(max(100, goal // 2), goal)
@@ -203,10 +270,19 @@ def build(args: argparse.Namespace) -> dict:
         for row in csv.DictReader(stream):
             match = re.search(r"\((\d{4})\)\s*$", row["title"])
             release_years[int(row["movieId"])] = int(match.group(1)) if match else None
+    excluded_validation_users: set[int] = set()
+    if args.exclude_validation_users_parquet:
+        excluded_validation_users = set(
+            int(value) for value in pq.read_table(
+                args.exclude_validation_users_parquet, columns=["uid"]
+            )["uid"].to_pylist()
+        )
     selected, train_support = select_cases(
-        args.movielens_root / "ratings.csv", args.seed, goals, args.positive_threshold, release_years
+        args.movielens_root / "ratings.csv", args.seed, goals, args.positive_threshold, release_years,
+        excluded_validation_users,
     )
     args.output.mkdir(parents=True)
+    active_roles = tuple(role for role in ROLES if goals[role] > 0)
     catalog = sorted(release_years)
     cutoff = int(args.unknown_probability * (1 << 256))
     global_hash_sample = [movie_id for movie_id in catalog
@@ -214,7 +290,7 @@ def build(args: argparse.Namespace) -> dict:
     role_catalog = {
         role: [movie_id for movie_id in catalog if release_years[movie_id] is not None and
                release_years[movie_id] <= datetime.fromtimestamp(role_window(role)[0] + 1, timezone.utc).year]
-        for role in ROLES
+        for role in active_roles
     }
     role_catalog_sets = {role: set(values) for role, values in role_catalog.items()}
     role_catalog_digests = {
@@ -224,7 +300,7 @@ def build(args: argparse.Namespace) -> dict:
     global_unknown = {
         role: [movie_id for movie_id in global_hash_sample if release_years[movie_id] is not None and
                release_years[movie_id] <= datetime.fromtimestamp(role_window(role)[0] + 1, timezone.utc).year]
-        for role in ROLES
+        for role in active_roles
     }
     if any(len(values) < 20 for values in global_unknown.values()):
         raise RuntimeError("as-of UNKNOWN threshold produced too few candidates")
@@ -232,8 +308,10 @@ def build(args: argparse.Namespace) -> dict:
     episode_writer = JsonlWriter(args.output / "episodes.jsonl")
     candidate_writer = JsonlWriter(args.output / "candidates.jsonl")
     role_profiles = {}
-    cell_users: dict[tuple[str, str], set[int]] = defaultdict(set)
-    for role in ROLES:
+    nested_cell_users: dict[tuple[str, str, str], set[int]] = defaultdict(set)
+    low_history_cell_users: dict[tuple[str, str, str], set[int]] = defaultdict(set)
+    exact_history_users: dict[tuple[str, str, int], set[int]] = defaultdict(set)
+    for role in active_roles:
         cases = selected[role]
         all_targets = [target for case in cases for target in case.targets]
         if not any(target.rating >= args.positive_threshold for target in all_targets) or not any(
@@ -268,6 +346,7 @@ def build(args: argparse.Namespace) -> dict:
                              "POSITIVE_OBSERVED" if rating.rating >= args.positive_threshold else "NEGATIVE_OBSERVED")
                     candidate_writer.write({
                         "role": role, "uid": case.uid, "prediction_at": case.prediction_at,
+                        "evaluation_split": case.evaluation_split,
                         "target_movie_id": target.movie_id, "candidate_movie_id": movie_id,
                         "candidate_rank": rank, "label_state": state,
                         "observed_rating": None if rating is None else rating.rating,
@@ -283,9 +362,13 @@ def build(args: argparse.Namespace) -> dict:
                 for requested_n in requested_values:
                     history = case.history[:requested_n] if requested_n else []
                     bucket = n_bucket(requested_n)
-                    cell_users[(role, bucket)].add(case.uid)
+                    nested_cell_users[(role, case.evaluation_split, bucket)].add(case.uid)
+                    if requested_n == len(case.history):
+                        low_history_cell_users[(role, case.evaluation_split, bucket)].add(case.uid)
+                        exact_history_users[(role, case.evaluation_split, requested_n)].add(case.uid)
                     episode_writer.write({
                         "role": role, "uid": case.uid, "prediction_at": case.prediction_at,
+                        "evaluation_split": case.evaluation_split,
                         "catalog_snapshot_at": case.prediction_at,
                         "target_movie_id": target.movie_id, "target_rating": target.rating,
                         "target_event_id": target.event_id, "target_event_at": target.timestamp,
@@ -306,7 +389,7 @@ def build(args: argparse.Namespace) -> dict:
     candidate_writer.close()
     comparisons = {}
     shifted = False
-    for other in ("VALIDATION", "FINAL_TEST"):
+    for other in (role for role in active_roles if role != "TRAIN"):
         comparisons[f"TRAIN_vs_{other}"] = {}
         for axis, train_values in role_profiles["TRAIN"].items():
             other_values = role_profiles[other][axis]
@@ -320,17 +403,34 @@ def build(args: argparse.Namespace) -> dict:
             comparisons[f"TRAIN_vs_{other}"][axis] = values
             shifted |= values["psi"] >= 0.1 or values["jensen_shannon_distance_base2"] >= 0.1 or values[
                 "max_percentage_point_difference"] >= 0.05
-    cell_counts = {key: len(users) for key, users in cell_users.items()}
-    insufficient = [{"role": role, "n_bucket": bucket, "users": count}
-                    for (role, bucket), count in sorted(cell_counts.items()) if count < 100]
+    nested_cell_counts = {key: len(users) for key, users in nested_cell_users.items()}
+    low_history_cell_counts = {key: len(users) for key, users in low_history_cell_users.items()}
+    exact_history_counts = {key: len(users) for key, users in exact_history_users.items()}
+    insufficient = [
+        {"role": role, "evaluation_split": split, "n_bucket": bucket, "users": count}
+        for (role, split, bucket), count in sorted(low_history_cell_counts.items())
+        if role == "VALIDATION" and split == "CONFIRM" and count < 100
+    ]
     report = {
         "schema_version": 2,
         "status": "INSUFFICIENT_SAMPLE" if insufficient else "DISTRIBUTION_SHIFT" if shifted else "PASS",
         "thresholds": {"psi": 0.1, "jensen_shannon_distance_base2": 0.1,
                        "max_percentage_point_difference": 0.05, "minimum_users_per_required_cell": 100},
         "role_profiles": role_profiles, "comparisons": comparisons,
-        "role_n_cell_counts": {f"{role}:{bucket}": count for (role, bucket), count in sorted(cell_counts.items())},
-        "insufficient_cells": insufficient,
+        "nested_history_role_n_cell_counts": {
+            f"{role}:{split}:{bucket}": count
+            for (role, split, bucket), count in sorted(nested_cell_counts.items())
+        },
+        "low_history_role_n_cell_counts": {
+            f"{role}:{split}:{bucket}": count
+            for (role, split, bucket), count in sorted(low_history_cell_counts.items())
+        },
+        "exact_history_role_n_counts": {
+            f"{role}:{split}:{n}": count
+            for (role, split, n), count in sorted(exact_history_counts.items())
+        },
+        "low_history_sample_status": "INSUFFICIENT_SAMPLE" if insufficient else "PASS",
+        "insufficient_low_history_cells": insufficient,
     }
     (args.output / "split-distribution-report.json").write_text(
         json.dumps(report, indent=2, ensure_ascii=False) + "\n", encoding="utf-8"
@@ -339,17 +439,24 @@ def build(args: argparse.Namespace) -> dict:
         role: hashlib.sha256(",".join(str(case.uid) for case in selected[role]).encode()).hexdigest()
         for role in ROLES
     }
-    final_test_seal_id = hashlib.sha256(json.dumps({
-        "role": "FINAL_TEST", "user_digest": user_digests["FINAL_TEST"],
-        "window": role_window("FINAL_TEST"), "episode_digest": episode_writer.sha256,
-        "candidate_digest": candidate_writer.sha256,
-    }, sort_keys=True, separators=(",", ":")).encode()).hexdigest()
+    if selected["FINAL_TEST"]:
+        final_test_seal_id = hashlib.sha256(json.dumps({
+            "role": "FINAL_TEST", "user_digest": user_digests["FINAL_TEST"],
+            "window": role_window("FINAL_TEST"), "episode_digest": episode_writer.sha256,
+            "candidate_digest": candidate_writer.sha256,
+        }, sort_keys=True, separators=(",", ":")).encode()).hexdigest()
+    else:
+        if not args.final_test_seal_id:
+            raise RuntimeError("--final-test-seal-id is required when FINAL_TEST users are omitted")
+        final_test_seal_id = args.final_test_seal_id
     manifest = {
-        "schema_version": 2, "status": "PASS" if not insufficient else "BLOCKED",
+        "schema_version": 2,
+        "status": "PASS",
+        "policy_evidence_status": "INSUFFICIENT_SAMPLE" if insufficient else "PASS",
         "created_at": datetime.now(timezone.utc).isoformat(), "seed": args.seed,
         "cutoffs": {role: {"target_start_exclusive": role_window(role)[0],
                             "target_end_inclusive": role_window(role)[1],
-                            "feature_cutoff_inclusive": role_window(role)[0]} for role in ROLES},
+                            "feature_cutoff_inclusive": role_window(role)[0]} for role in active_roles},
         "positive_threshold": args.positive_threshold,
         "input": {"ratings_sha256": file_sha256(args.movielens_root / "ratings.csv"),
                   "movies_sha256": file_sha256(args.movielens_root / "movies.csv")},
@@ -364,12 +471,14 @@ def build(args: argparse.Namespace) -> dict:
         "target_policy": "UP_TO_4_LABEL_BLIND_SHA256_SELECTED_OBSERVED_TARGETS_PER_USER_IN_NON_OVERLAPPING_ROLE_WINDOW",
         "catalog_as_of_policy": "MOVIELENS_TITLE_RELEASE_YEAR_LE_PREDICTION_YEAR; MISSING_YEAR_EXCLUDED",
         "catalog": {role: {"movies": len(role_catalog[role]), "digest": role_catalog_digests[role]}
-                    for role in ROLES},
+                    for role in active_roles},
         "unknown_sampling": {"algorithm": "SHA256_THRESHOLD_V1", "seed": args.seed,
                              "probability": args.unknown_probability,
                              "importance_weight": 1.0 / args.unknown_probability,
                              "global_selected_movies_by_role": {role: len(values) for role, values in global_unknown.items()}},
-        "selection_input_roles": ["TRAIN", "VALIDATION"],
+        "selection_input_roles": ["TRAIN", "VALIDATION:SELECTION"],
+        "confirmation_input_roles": ["VALIDATION:CONFIRM"],
+        "excluded_previously_seen_validation_users": len(excluded_validation_users),
         "final_test_seal_id": final_test_seal_id,
     }
     (args.output / "manifest.json").write_text(
@@ -386,6 +495,8 @@ def main() -> None:
     parser.add_argument("--train-users", type=int, default=200)
     parser.add_argument("--validation-users", type=int, default=200)
     parser.add_argument("--final-test-users", type=int, default=200)
+    parser.add_argument("--final-test-seal-id")
+    parser.add_argument("--exclude-validation-users-parquet", type=Path)
     parser.add_argument("--positive-threshold", type=float, default=4.0)
     parser.add_argument("--unknown-probability", type=float, default=0.0012)
     print(json.dumps(build(parser.parse_args()), indent=2, ensure_ascii=False))

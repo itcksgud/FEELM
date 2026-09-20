@@ -33,7 +33,10 @@ def promotion_decision(validation: dict, sensitivity: dict, rank: dict, policy: 
         for row in selected_metrics["low_history_cohort"]
     }
     rank_ci = rank["paired_user_macro_ndcg_at_10_delta_bootstrap_95_ci"]
-    rank_positive = rank["paired_user_macro_ndcg_at_10_delta"] > 0 and rank_ci[0] > 0
+    rank_delta = rank["paired_user_macro_ndcg_at_10_delta"]
+    rank_positive = bool(
+        rank_delta is not None and rank_ci is not None and rank_delta > 0 and rank_ci[0] > 0
+    )
     seed_stable = bool(sensitivity["all_seeds_pass_nested_point_estimate_gate"])
     unknown_fraction = selected_metrics["candidate_metrics"]["unknown_slot_fraction_at_10"]["value"]
 
@@ -41,19 +44,36 @@ def promotion_decision(validation: dict, sensitivity: dict, rank: dict, policy: 
         "validation_selection_gate": selected in validation["selection_gate"]["eligible_profiles"],
         "all_seeds_nested_non_worse": seed_stable,
         "pairwise_rank_positive_ci": rank_positive,
+        "ndcg_eligibility": validation.get("requirements_coverage", {}).get("ndcg_at_10") == "PASS",
+        "low_history_sample": (
+            validation.get("requirements_coverage", {}).get("low_history_cohort") == "PASS"
+        ),
+        # This verifier has no independent policy-confirmation artifact input yet.
+        "independent_policy_confirmation": False,
     }
     required_gates = [
         name for name, policy_key in (
             ("validation_selection_gate", "require_validation_selection_gate"),
             ("all_seeds_nested_non_worse", "require_all_seeds_nested_non_worse"),
             ("pairwise_rank_positive_ci", "require_pairwise_rank_positive_ci"),
-        ) if policy[policy_key]
+            ("ndcg_eligibility", "require_ndcg_eligibility"),
+            ("low_history_sample", "require_low_history_sample"),
+            ("independent_policy_confirmation", "require_independent_policy_confirmation"),
+        ) if policy.get(policy_key, False)
     ]
     reasons = []
     if not seed_stable:
         reasons.append("selected regression profile is not non-worse across N for every tested seed")
     if not rank_positive:
-        reasons.append("pairwise rank objective does not improve observed NDCG@10")
+        reasons.append(
+            "pairwise rank objective lacks an eligible positive NDCG@10 confidence interval"
+        )
+    if not gates["ndcg_eligibility"]:
+        reasons.append("NDCG@10 has no episode with the required ten observed judgments")
+    if not gates["low_history_sample"]:
+        reasons.append("actual full-history K cohorts do not meet the minimum user count")
+    if not gates["independent_policy_confirmation"]:
+        reasons.append("K routing policy has not passed an independent confirmation set")
     limitations = [
         f"full-history N=1/2 cohorts contain {low_users.get('1', 0)} and {low_users.get('2', 0)} users",
         f"selected-profile unjudged top-10 fraction is {unknown_fraction:.6f}",
@@ -69,8 +89,15 @@ def promotion_decision(validation: dict, sensitivity: dict, rank: dict, policy: 
         "observed": {
             "seed_mse_range": sensitivity["user_macro_mse_range"],
             "seed_mse_span": sensitivity["user_macro_mse_span"],
-            "pairwise_rank_ndcg_delta": rank["paired_user_macro_ndcg_at_10_delta"],
-            "pairwise_rank_ndcg_delta_95_ci": rank_ci,
+            "pairwise_rank_ndcg_delta": (
+                rank_delta if gates["ndcg_eligibility"] else None
+            ),
+            "pairwise_rank_ndcg_delta_95_ci": (
+                rank_ci if gates["ndcg_eligibility"] else None
+            ),
+            "pairwise_rank_ndcg_legacy_value_status": (
+                "ELIGIBLE" if gates["ndcg_eligibility"] else "WITHDRAWN_INELIGIBLE_JUDGMENTS"
+            ),
             "low_history_users": low_users,
             "selected_profile_unknown_top10_fraction": unknown_fraction,
         },
@@ -121,8 +148,22 @@ def main() -> None:
 
     require(verification["selected_profile_on_validation"] == config["sensitivity_profile"],
             "base verification selected the configured sensitivity profile")
-    require(all(value == "PASS" for value in validation["requirements_coverage"].values()),
-            "arbitrary-N, low-history, nested-history, and candidate denominator coverage passed")
+    require(
+        all(validation["requirements_coverage"].get(name) == "PASS" for name in (
+            "nested_history", "candidate_denominators", "arbitrary_full_n",
+        )),
+        "arbitrary-N, nested-history, and candidate denominator coverage passed",
+    )
+    checks.append(
+        "low-history sample status: " + validation["requirements_coverage"].get(
+            "low_history_cohort", "MISSING"
+        )
+    )
+    checks.append(
+        "NDCG@10 eligibility status: " + validation["requirements_coverage"].get(
+            "ndcg_at_10", "MISSING"
+        )
+    )
     require(sensitivity["profile"] == config["sensitivity_profile"],
             "sensitivity report used the selected validation profile")
     require([run["seed"] for run in sensitivity["seeds"]] ==
@@ -154,7 +195,10 @@ def main() -> None:
     report = {
         "schema_version": 1,
         "status": "PASS",
-        "evidence_status": "COMPLETE",
+        "evidence_status": (
+            "COMPLETE" if decision["decision"] == "PROMOTE_TO_FINAL_TEST"
+            else "TECHNICAL_COMPLETE_POLICY_PARTIAL"
+        ),
         "experiment": config["experiment"],
         "checks": checks,
         "promotion": decision,

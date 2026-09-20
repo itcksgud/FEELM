@@ -80,17 +80,23 @@ def main() -> None:
     model.write().save(str(args.output_root / "model" / "native"))
     loaded = GBTRegressionModel.load(str(args.output_root / "model" / "native"))
 
-    target_projection = ["episode_id", "uid", "target_movie_id", "prediction_at", "n", "n_bucket",
-                         "total_history_count", "supported_history_count", "is_full_history",
+    target_projection = ["episode_id", "uid", "evaluation_split", "target_movie_id", "prediction_at", "n", "n_bucket",
+                         "total_history_count", "provided_history_count", "supported_history_count", "is_full_history", "is_controlled_prefix",
                          "label", "sample_weight", "prediction"]
+    for name in ("policy.popular_count_score", "policy.popular_bayes_score"):
+        if name in validation_raw.columns:
+            target_projection.append(F.col(f"`{name}`").alias(name))
     target_predictions = loaded.transform(assembler.transform(add_safe_feature_columns(validation_raw))).select(
         *target_projection
     )
     target_predictions.write.mode("error").parquet(str(args.output_root / "validation-target-predictions.parquet"))
-    candidate_projection = ["episode_id", "uid", "target_movie_id", "candidate_movie_id", "prediction_at",
-                            "n", "n_bucket", "total_history_count", "supported_history_count",
-                            "is_full_history", "candidate_rank", "label_state", "is_target", "label",
+    candidate_projection = ["episode_id", "uid", "evaluation_split", "target_movie_id", "candidate_movie_id", "prediction_at",
+                            "n", "n_bucket", "total_history_count", "provided_history_count", "supported_history_count",
+                            "is_full_history", "is_controlled_prefix", "candidate_rank", "label_state", "is_target", "label",
                             "prediction"]
+    for name in ("policy.popular_count_score", "policy.popular_bayes_score"):
+        if name in candidate_raw.columns:
+            candidate_projection.append(F.col(f"`{name}`").alias(name))
     candidate_predictions = loaded.transform(assembler.transform(add_safe_feature_columns(candidate_raw))).select(
         *candidate_projection
     )

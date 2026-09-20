@@ -1,9 +1,44 @@
 {
-  "schema_version": 1,
-  "policy": "S15P21E106-622-completion-assessment-v1",
-  "require_validation_selection_gate": true,
-  "require_all_seeds_nested_non_worse": true,
-  "require_pairwise_rank_positive_ci": true,
-  "interpretation": "Completion assessment for exploratory evidence; not a preregistered confirmatory threshold",
-  "final_test_policy": "SEALED_FOR_S15P21E106-625"
+  "schema_version": 4,
+  "policy": "S15P21E106-622-controlled-prefix-assessment-v4",
+  "decisions": {
+    "zero_to_n_input_support": "PASS",
+    "rating_prediction_information_curve": "IMPROVES_FROM_K1_ON_CONTROLLED_PREFIX",
+    "hard_switch_k_policy": "REJECTED_THROUGH_K50",
+    "hard_switch_threshold": null,
+    "popularity_80_gbt_20_blend": "OFFLINE_VALIDATED_CANDIDATE",
+    "actual_low_history_population": "NOT_EVALUATED_CONTROLLED_PREFIX",
+    "production_promotion": "DO_NOT_PROMOTE"
+  },
+  "offline_blend_requirements": {
+    "exact_k_values": [0, 1, 2, 5, 10, 20, 40, 50],
+    "score": "WITHIN_EPISODE_PERCENTILE_BLEND",
+    "popularity_alpha": 0.8,
+    "gbt_alpha": 0.2,
+    "disjoint_confirmation_users": true,
+    "confirmation_users": 500,
+    "seeds": [622, 1622, 2622],
+    "noninferiority_margin": 0.02,
+    "require_all_k_all_seeds_recall_noninferior": true,
+    "require_all_k_all_seeds_ndcg_noninferior": true,
+    "require_all_k_all_seeds_low_rating_exposure_point_improved": true,
+    "result": "PASS"
+  },
+  "evidence_scope": {
+    "dataset": "MOVIELENS_32M",
+    "cohort": "CONTROLLED_PREFIX_OF_MATURE_USERS",
+    "ranking": "SAME_POOL_RERANK_WITH_TARGET_FORCED_INTO_POOL",
+    "actual_total_history_below_20": "NOT_AVAILABLE_IN_DATASET",
+    "final_test_opened": false,
+    "receipt": "policy-v16-confirmation.json"
+  },
+  "production_requirements_remaining": [
+    "ACTUAL_ONBOARDING_OR_SERVICE_REPLAY_LOW_HISTORY_COHORT",
+    "END_TO_END_CANDIDATE_GENERATION_RECALL_AT_M",
+    "NO_FORCED_TARGET_INSERTION",
+    "ONLINE_OR_SHADOW_VALIDATION"
+  ],
+  "interpretation": "The confirmed result supports a popularity-dominant same-pool rerank candidate at every tested K. It does not establish a K threshold for replacing popularity with GBT, does not evaluate an actual low-history population, and does not authorize production promotion.",
+  "final_test_policy": "SEALED_FOR_S15P21E106-625",
+  "final_test_seal_id": "358f392e16a142b10a6cc3885370be7f7523624922c44554904360390c7df70"
 }

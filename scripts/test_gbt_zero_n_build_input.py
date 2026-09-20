@@ -1,6 +1,13 @@
 import unittest
 
-from gbt_zero_n_build_input import Rating, choose_targets, history_variant_sizes, role_for_user
+from gbt_zero_n_build_input import (
+    Rating,
+    choose_targets,
+    confirmation_stratum,
+    history_variant_sizes,
+    role_for_user,
+    validation_split,
+)
 
 
 class GbtZeroNInputTest(unittest.TestCase):
@@ -25,8 +32,15 @@ class GbtZeroNInputTest(unittest.TestCase):
     def test_arbitrary_available_n_is_always_included(self):
         self.assertEqual(history_variant_sizes(0), [0])
         self.assertEqual(history_variant_sizes(3), [0, 1, 2, 3])
-        self.assertEqual(history_variant_sizes(41), [0, 1, 2, 4, 7, 15, 25, 40, 41])
+        self.assertEqual(history_variant_sizes(41), [0, 1, 2, 4, 5, 7, 10, 15, 20, 25, 40, 41])
         self.assertEqual(history_variant_sizes(50)[-1], 50)
+
+    def test_confirmation_boundaries_are_exact_strata(self):
+        self.assertEqual(confirmation_stratum(5), "5")
+        self.assertEqual(confirmation_stratum(10), "10")
+        self.assertEqual(confirmation_stratum(20), "20")
+        self.assertEqual(confirmation_stratum(35), "30-49")
+        self.assertEqual(validation_split(622, 123), validation_split(622, 123))
 
 
 if __name__ == "__main__":

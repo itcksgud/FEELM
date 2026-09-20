@@ -77,6 +77,8 @@ class GbtZeroNEvaluateTest(unittest.TestCase):
         metrics, ranked = candidate_metrics(frame)
         self.assertEqual(metrics["unknown_slot_fraction_at_10"]["numerator"], 1)
         self.assertEqual(metrics["observed_positive_recall_at_10"]["value"], 1.0)
+        self.assertEqual(metrics["observed_ndcg_at_10_status"], "INSUFFICIENT_JUDGMENTS")
+        self.assertIsNone(metrics["observed_ndcg_at_10_user_macro"])
         self.assertEqual(int(ranked.iloc[0].model_rank), 1)
 
     def test_low_history_uses_only_full_history_variant(self):
@@ -99,6 +101,7 @@ class GbtZeroNEvaluateTest(unittest.TestCase):
         result = low_history_cohort(targets, candidates)
         self.assertEqual(result[0]["total_history_bucket"], "3-4")
         self.assertEqual(result[0]["user_macro_mse"], 1.0)
+        self.assertEqual(result[0]["sample_status"], "INSUFFICIENT_SAMPLE")
 
 
 if __name__ == "__main__":

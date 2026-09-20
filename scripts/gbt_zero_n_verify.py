@@ -19,10 +19,19 @@ ROOT = Path(__file__).resolve().parents[1]
 CONFIG = ROOT / "experiments" / "gbt-zero-n" / "config.json"
 RUNTIME_SOURCE_FILES = (
     "experiments/gbt-zero-n/config.json",
+    "experiments/gbt-zero-n/config-v2.json",
+    "experiments/gbt-zero-n/config-v3.json",
+    "experiments/gbt-zero-n/config-v4-prefix.json",
+    "experiments/gbt-zero-n/config-v4-prefix-seed1622.json",
+    "experiments/gbt-zero-n/config-v4-prefix-seed2622.json",
+    "experiments/gbt-zero-n/policy-v5-robust-blend.json",
     "scripts/gbt_zero_n_build_input.py",
+    "scripts/gbt_zero_n_prefix_build_input.py",
+    "scripts/gbt_zero_n_blend_evaluate.py",
     "scripts/gbt_zero_n_evaluate.py",
     "scripts/gbt_zero_n_features.py",
     "scripts/gbt_zero_n_prepare.py",
+    "scripts/gbt_zero_n_policy_evaluate.py",
     "scripts/gbt_zero_n_run.py",
     "scripts/gbt_zero_n_worker.py",
 )
@@ -43,26 +52,47 @@ def require(condition: bool, message: str, checks: list[str]) -> None:
 
 
 def verify_input_semantics(input_root: Path, movielens_root: Path, manifest: dict) -> dict:
-    cutoffs = manifest["cutoffs"]
+    controlled_prefix = (
+        manifest.get("experiment_design") == "CONTROLLED_RECENT_PREFIX_AT_PER_USER_ANCHOR_V1"
+    )
+    cutoffs = manifest.get("cutoffs", {})
     users_by_role: dict[str, set[int]] = defaultdict(set)
     user_role: dict[int, str] = {}
+    validation_user_split: dict[int, str] = {}
     episode_pools: dict[tuple[str, int, int], tuple[str, str]] = {}
     episode_rows = 0
+    episode_digest = hashlib.sha256()
     nested_groups = 0
     current_key = None
-    current_histories: list[tuple[str, ...]] = []
+    current_histories: list[tuple[int, tuple[str, ...]]] = []
     current_pool_digest = None
     current_full_history_count = 0
+    current_total_history_counts: set[int] = set()
+    current_source_history_counts: set[int] = set()
 
     def finish_nested() -> None:
         nonlocal nested_groups
         if not current_histories:
             return
-        for previous, following in zip(current_histories, current_histories[1:]):
-            if previous != following[:len(previous)]:
-                raise RuntimeError(f"history is not nested prefix: {current_key}")
-        if current_full_history_count != 1:
-            raise RuntimeError(f"nested group must contain exactly one full-history variant: {current_key}")
+        observed_k = [item[0] for item in current_histories]
+        if controlled_prefix:
+            if observed_k != [int(value) for value in manifest["k_values"]]:
+                raise RuntimeError(f"controlled exact-K variants differ from manifest: {current_key}")
+            for (_, previous), (_, following) in zip(current_histories, current_histories[1:]):
+                if previous and previous != following[-len(previous):]:
+                    raise RuntimeError(f"history is not a nested recent suffix: {current_key}")
+            if len(current_total_history_counts) != 1 or len(current_source_history_counts) != 1:
+                raise RuntimeError(f"hidden source-history metadata changed across K: {current_key}")
+            if current_total_history_counts != current_source_history_counts:
+                raise RuntimeError(f"totalHistoryCount differs from source history: {current_key}")
+            if current_full_history_count > 1:
+                raise RuntimeError(f"controlled group has multiple full-history variants: {current_key}")
+        else:
+            for (_, previous), (_, following) in zip(current_histories, current_histories[1:]):
+                if previous != following[:len(previous)]:
+                    raise RuntimeError(f"history is not nested prefix: {current_key}")
+            if current_full_history_count != 1:
+                raise RuntimeError(f"nested group must contain exactly one full-history variant: {current_key}")
         nested_groups += 1
 
     with (input_root / "episodes.jsonl").open("r", encoding="utf-8") as stream:
@@ -70,6 +100,9 @@ def verify_input_semantics(input_root: Path, movielens_root: Path, manifest: dic
             if not line.strip():
                 continue
             row = json.loads(line)
+            if episode_rows:
+                episode_digest.update(b"\n")
+            episode_digest.update(json.dumps(row, sort_keys=True, separators=(",", ":")).encode())
             episode_rows += 1
             role = row["role"]
             uid = int(row["uid"])
@@ -77,13 +110,24 @@ def verify_input_semantics(input_root: Path, movielens_root: Path, manifest: dic
             if previous_role != role:
                 raise RuntimeError(f"user appears in multiple roles: {uid}")
             users_by_role[role].add(uid)
-            window = cutoffs[role]
-            if int(row["prediction_at"]) != int(window["feature_cutoff_inclusive"]) + 1:
-                raise RuntimeError("prediction_at does not follow feature cutoff")
+            if role == "VALIDATION":
+                split = str(row.get("evaluation_split"))
+                previous_split = validation_user_split.setdefault(uid, split)
+                if split not in {"SELECTION", "CONFIRM"} or previous_split != split:
+                    raise RuntimeError(f"validation user crosses evaluation splits: {uid}")
+            if not controlled_prefix:
+                window = cutoffs[role]
+                if int(row["prediction_at"]) != int(window["feature_cutoff_inclusive"]) + 1:
+                    raise RuntimeError("prediction_at does not follow feature cutoff")
             if int(row["catalog_snapshot_at"]) > int(row["prediction_at"]):
                 raise RuntimeError("catalog snapshot is after prediction")
-            if not (int(window["target_start_exclusive"]) < int(row["target_event_at"]) <=
-                    int(window["target_end_inclusive"])):
+            if controlled_prefix:
+                if int(row["target_event_at"]) <= int(row["prediction_at"]):
+                    raise RuntimeError("controlled-prefix target is not after prediction")
+                if not bool(row.get("is_controlled_prefix")):
+                    raise RuntimeError("controlled-prefix marker is absent")
+            elif not (int(window["target_start_exclusive"]) < int(row["target_event_at"]) <=
+                      int(window["target_end_inclusive"])):
                 raise RuntimeError("target event falls outside its role window")
             if not row["target_eligible"]:
                 raise RuntimeError("target is not eligible")
@@ -97,6 +141,8 @@ def verify_input_semantics(input_root: Path, movielens_root: Path, manifest: dic
                 raise RuntimeError("target movie leaked into history")
             if int(row["supported_history_count"]) != len(history):
                 raise RuntimeError("supported history count mismatch")
+            if int(row.get("provided_history_count", row["n"])) != len(history):
+                raise RuntimeError("provided history count mismatch")
             if len(history) > int(row["total_history_count"]):
                 raise RuntimeError("supported history exceeds total history")
             if int(row["n"]) != len(history):
@@ -111,20 +157,49 @@ def verify_input_semantics(input_root: Path, movielens_root: Path, manifest: dic
                 current_histories = []
                 current_pool_digest = row["candidate_digest"]
                 current_full_history_count = 0
+                current_total_history_counts = set()
+                current_source_history_counts = set()
             elif current_pool_digest != row["candidate_digest"]:
                 raise RuntimeError("candidate pool changed inside a nested-history group")
-            current_histories.append(tuple(str(item["event_id"]) for item in history))
+            current_histories.append((int(row["n"]), tuple(str(item["event_id"]) for item in history)))
             current_full_history_count += int(is_full)
+            current_total_history_counts.add(int(row["total_history_count"]))
+            current_source_history_counts.add(int(row.get("source_history_count", row["total_history_count"])))
             pool_key = (role, uid, int(row["target_movie_id"]))
             episode_pools[pool_key] = (row["candidate_digest"], row["eligible_population_digest"])
     finish_nested()
 
     if episode_rows != int(manifest["episodes"]["rows"]):
         raise RuntimeError("episode row count mismatch")
+    if episode_digest.hexdigest() != manifest["episodes"]["sha256"]:
+        raise RuntimeError("episode semantic digest mismatch")
     for role, users in users_by_role.items():
         digest = hashlib.sha256(",".join(map(str, sorted(users))).encode()).hexdigest()
         if digest != manifest["user_partition"]["role_user_digests"][role]:
             raise RuntimeError(f"role user digest mismatch: {role}")
+        if len(users) != int(manifest["users"][role]):
+            raise RuntimeError(f"role user count mismatch: {role}")
+    if users_by_role.get("FINAL_TEST"):
+        raise RuntimeError("FINAL_TEST rows must be physically omitted")
+    if controlled_prefix:
+        excluded = manifest.get("excluded_validation_users", {})
+        source = excluded.get("source")
+        if source:
+            source_path = Path(source["path"])
+            if not source_path.is_absolute():
+                source_path = ROOT / source_path
+            if not source_path.exists() or file_sha256(source_path) != source["sha256"]:
+                raise RuntimeError("excluded validation-user source is missing or changed")
+            excluded_users = set(
+                int(value) for value in pq.read_table(source_path, columns=["uid"])["uid"].to_pylist()
+            )
+            excluded_digest = hashlib.sha256(
+                ",".join(map(str, sorted(excluded_users))).encode()
+            ).hexdigest()
+            if len(excluded_users) != int(excluded["count"]) or excluded_digest != excluded["uid_digest"]:
+                raise RuntimeError("excluded validation-user receipt mismatch")
+            if excluded_users & users_by_role.get("VALIDATION", set()):
+                raise RuntimeError("confirmation cohort reuses an excluded validation user")
 
     release_years: dict[int, int | None] = {}
     with (movielens_root / "movies.csv").open("r", encoding="utf-8", newline="") as stream:
@@ -133,7 +208,10 @@ def verify_input_semantics(input_root: Path, movielens_root: Path, manifest: dic
             release_years[int(row["movieId"])] = int(match.group(1)) if match else None
 
     probability = float(manifest["unknown_sampling"]["probability"])
+    hash_cutoff = int(probability * (1 << 256))
+    sampling_seed = int(manifest["unknown_sampling"]["seed"])
     candidate_rows = 0
+    candidate_digest = hashlib.sha256()
     candidate_groups = 0
     seen_groups: set[tuple[str, int, int]] = set()
     group_key = None
@@ -158,6 +236,9 @@ def verify_input_semantics(input_root: Path, movielens_root: Path, manifest: dic
             if not line.strip():
                 continue
             row = json.loads(line)
+            if candidate_rows:
+                candidate_digest.update(b"\n")
+            candidate_digest.update(json.dumps(row, sort_keys=True, separators=(",", ":")).encode())
             candidate_rows += 1
             key = (row["role"], int(row["uid"]), int(row["target_movie_id"]))
             if key != group_key:
@@ -188,6 +269,11 @@ def verify_input_semantics(input_root: Path, movielens_root: Path, manifest: dic
                     raise RuntimeError("UNKNOWN sampling probability mismatch")
                 if abs(float(row["importance_weight"]) - 1.0 / probability) > 1e-9:
                     raise RuntimeError("UNKNOWN importance weight mismatch")
+                sampled_value = int.from_bytes(
+                    hashlib.sha256(f"{sampling_seed}:{movie_id}".encode()).digest(), "big"
+                )
+                if sampled_value >= hash_cutoff:
+                    raise RuntimeError("UNKNOWN candidate violates SHA-256 sampling rule")
             else:
                 if row["observed_rating"] is None or row["sampling_probability"] is not None or \
                         row["importance_weight"] is not None:
@@ -195,6 +281,8 @@ def verify_input_semantics(input_root: Path, movielens_root: Path, manifest: dic
     finish_candidates()
     if candidate_rows != int(manifest["candidates"]["rows"]):
         raise RuntimeError("candidate row count mismatch")
+    if candidate_digest.hexdigest() != manifest["candidates"]["sha256"]:
+        raise RuntimeError("candidate semantic digest mismatch")
     if seen_groups != set(episode_pools):
         raise RuntimeError("episode/candidate group sets differ")
     return {
@@ -213,15 +301,26 @@ def main() -> None:
     parser.add_argument("--prepared-root", type=Path, required=True)
     parser.add_argument("--fits-root", type=Path, required=True)
     parser.add_argument("--output", type=Path, required=True)
+    parser.add_argument("--config", type=Path, default=CONFIG)
     args = parser.parse_args()
 
-    config = json.loads(CONFIG.read_text(encoding="utf-8"))
+    config = json.loads(args.config.read_text(encoding="utf-8"))
     input_manifest = json.loads((args.input_root / "manifest.json").read_text(encoding="utf-8"))
     prepared_manifest = json.loads((args.prepared_root / "manifest.json").read_text(encoding="utf-8"))
     validation = json.loads((args.fits_root / "validation-report.json").read_text(encoding="utf-8"))
     checks: list[str] = []
 
     require(input_manifest["status"] == "PASS", "input manifest status is PASS", checks)
+    require(input_manifest.get("final_test") in {"PHYSICALLY_OMITTED", None},
+            "input bundle physically omits FINAL_TEST", checks)
+    require(input_manifest.get("final_test_opened", False) is False,
+            "input bundle keeps FINAL_TEST sealed", checks)
+    distribution_path = args.input_root / "split-distribution-report.json"
+    if distribution_path.exists():
+        require(input_manifest["distribution_report"]["sha256"] == file_sha256(distribution_path),
+                "input manifest pins the distribution report", checks)
+        distribution = json.loads(distribution_path.read_text(encoding="utf-8"))
+        require(distribution["status"] == "PASS", "required exact-K cells pass", checks)
     require(prepared_manifest["status"] == "PASS", "prepared manifest status is PASS", checks)
     require(prepared_manifest["input_manifest"]["sha256"] == file_sha256(args.input_root / "manifest.json"),
             "prepared bundle pins the exact input manifest", checks)
@@ -255,8 +354,8 @@ def main() -> None:
     train = pq.read_table(train_path, columns=["uid", "role", "label_state", "sample_weight"])
     validation_targets = pq.read_table(
         validation_path,
-        columns=["role", "label_state", "n", "total_history_count", "supported_history_count",
-                 "is_full_history"],
+        columns=["role", "label_state", "n", "total_history_count", "provided_history_count",
+                 "supported_history_count", "is_full_history", "is_controlled_prefix"],
     )
     require(set(train["role"].to_pylist()) == {"TRAIN"}, "training parquet contains only TRAIN rows", checks)
     require(set(validation_targets["role"].to_pylist()) == {"VALIDATION"},
@@ -265,6 +364,8 @@ def main() -> None:
             "UNKNOWN_SAMPLED is absent from training labels", checks)
     require(pc.all(pc.equal(validation_targets["n"], validation_targets["supported_history_count"])).as_py(),
             "validation N equals supportedHistoryCount", checks)
+    require(pc.all(pc.equal(validation_targets["n"], validation_targets["provided_history_count"])).as_py(),
+            "validation N equals providedHistoryCount", checks)
     full_expected = pc.equal(validation_targets["supported_history_count"],
                              validation_targets["total_history_count"])
     require(pc.all(pc.equal(validation_targets["is_full_history"], full_expected)).as_py(),
@@ -293,8 +394,7 @@ def main() -> None:
         require(metrics["runtime_source"]["worker"]["sha256"] ==
                 current_source_files["scripts/gbt_zero_n_worker.py"]["sha256"],
                 f"{profile} used the exact worker", checks)
-        require(metrics["runtime_source"]["config"]["sha256"] == current_source_files[
-                    "experiments/gbt-zero-n/config.json"]["sha256"],
+        require(metrics["runtime_source"]["config"]["sha256"] == file_sha256(args.config),
                 f"{profile} used the exact config", checks)
         require(metrics["final_test_opened"] is False, f"{profile} kept FINAL_TEST sealed", checks)
         peak_memory[profile] = int(metrics["resource"]["peak_memory_bytes"])

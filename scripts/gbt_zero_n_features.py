@@ -32,6 +32,10 @@ def parse_movie(movie_id: int, title: str, genres: str) -> Movie:
 def feature_names() -> list[str]:
     names = [f"shared.candidate.genre_{genre}" for genre in GENRES]
     names += ["shared.candidate.year_scaled", "shared.candidate.year_missing"]
+    names += [
+        "shared.candidate.train_asof_log_support",
+        "shared.candidate.train_asof_bayesian_mean_scaled",
+    ]
     names += ["gbt.model_input.candidate_genre_count_scaled"]
     names += [
         "shared.history_response.present", "shared.history_response.n_log",
@@ -50,17 +54,29 @@ def feature_names() -> list[str]:
         "gbt.model_input.relation_year_distance_min",
         "gbt.model_input.relation_year_missing_fraction",
     ]
+    names += [
+        "gbt.model_input.signed_shared_genre_residual_mean",
+        "gbt.model_input.signed_shared_genre_residual_support",
+    ]
+    names += [f"gbt.model_input.signed_genre_affinity_{genre}" for genre in GENRES]
     return names
 
 
 def profile_names(profile: str) -> list[str]:
     names = feature_names()
+    signed = {name for name in names if ".signed_" in name}
+    popularity = {name for name in names if ".train_asof_" in name}
     if profile == "movie_only":
-        return [name for name in names if name.startswith("shared.candidate.") or
+        return [name for name in names if (name.startswith("shared.candidate.") and name not in popularity) or
                 name == "gbt.model_input.candidate_genre_count_scaled"]
     if profile == "history_aggregate":
-        return [name for name in names if ".relation_" not in name]
+        return [name for name in names if ".relation_" not in name and name not in signed
+                and name not in popularity]
     if profile == "response_relation":
+        return [name for name in names if name not in signed and name not in popularity]
+    if profile == "signed_genre_affinity":
+        return [name for name in names if name not in popularity]
+    if profile == "popularity_signed_affinity":
         return names
     raise ValueError(f"unknown profile: {profile}")
 
@@ -71,11 +87,19 @@ def build_features(
     movies: dict[int, Movie],
     total_history_count: int,
     supported_history_count: int,
+    candidate_popularity: dict[str, float] | None = None,
 ) -> dict[str, float]:
+    candidate_popularity = candidate_popularity or {}
     result = {f"shared.candidate.genre_{genre}": float(genre in candidate.genres) for genre in GENRES}
     result.update({
         "shared.candidate.year_scaled": ((candidate.year - 1900) / 150) if candidate.year else 0.0,
         "shared.candidate.year_missing": float(candidate.year is None),
+        "shared.candidate.train_asof_log_support": float(
+            candidate_popularity.get("log_support", 0.0)
+        ),
+        "shared.candidate.train_asof_bayesian_mean_scaled": float(
+            candidate_popularity.get("bayesian_mean_scaled", 0.0)
+        ),
         "gbt.model_input.candidate_genre_count_scaled": min(len(candidate.genres), 10) / 10,
     })
     ratings = [float(row["rating"]) for row in history]
@@ -86,7 +110,10 @@ def build_features(
     result.update({
         "shared.history_response.present": float(bool(count)),
         "shared.history_response.n_log": math.log1p(count) / math.log(51),
-        "shared.history_response.total_log": math.log1p(total_history_count) / math.log(1001),
+        # A nested prefix must not reveal how many events exist in the hidden suffix.
+        # Keep the schema name for compatibility, but derive it only from the events
+        # that are actually available to the scorer.
+        "shared.history_response.total_log": math.log1p(supported_history_count) / math.log(1001),
         "shared.history_response.supported_fraction": supported_history_count / count if count else 0.0,
         "shared.history_response.rating_mean": mean / 5,
         "shared.history_response.rating_std": math.sqrt(variance) / 2.5,
@@ -102,6 +129,7 @@ def build_features(
     shared_ratings: list[float] = []
     year_distances: list[int] = []
     year_missing = 0
+    genre_residuals: dict[str, list[float]] = {genre: [] for genre in GENRES}
     for item in history:
         movie_id = int(item["movie_id"])
         rating = float(item["rating"])
@@ -109,6 +137,10 @@ def build_features(
         if movie is None:
             year_missing += 1
             continue
+        centered = (rating - mean) / 2.5
+        for genre in movie.genres:
+            if genre in genre_residuals:
+                genre_residuals[genre].append(centered)
         if candidate.genres & movie.genres:
             shared += 1
             shared_ratings.append(float(rating))
@@ -130,6 +162,24 @@ def build_features(
         if year_distances else 0.0,
         "gbt.model_input.relation_year_missing_fraction": year_missing / count if count else 0.0,
     })
+    candidate_residuals = [
+        value
+        for genre in candidate.genres
+        for value in genre_residuals.get(genre, [])
+    ]
+    result.update({
+        "gbt.model_input.signed_shared_genre_residual_mean": (
+            sum(candidate_residuals) / len(candidate_residuals) if candidate_residuals else 0.0
+        ),
+        "gbt.model_input.signed_shared_genre_residual_support": (
+            min(len(candidate_residuals) / max(count, 1), 1.0) if count else 0.0
+        ),
+    })
+    for genre in GENRES:
+        values = genre_residuals[genre]
+        result[f"gbt.model_input.signed_genre_affinity_{genre}"] = (
+            (sum(values) / len(values)) if genre in candidate.genres and values else 0.0
+        )
     if set(result) != set(feature_names()) or not all(math.isfinite(value) for value in result.values()):
         raise ValueError("feature schema or finite-value invariant failed")
     return result

@@ -110,7 +110,8 @@ def main() -> None:
     ).select(
         *[F.col(f"c.{name}").alias(name) for name in (
             "episode_id", "uid", "target_movie_id", "candidate_movie_id", "prediction_at",
-            "n", "n_bucket", "total_history_count", "supported_history_count", "is_full_history",
+            "n", "n_bucket", "total_history_count", "provided_history_count", "supported_history_count",
+            "is_full_history", "is_controlled_prefix",
             "candidate_rank", "label_state", "is_target", "label",
         )],
         F.col("a.candidate_rank").alias("anchor_rank"),
@@ -122,13 +123,15 @@ def main() -> None:
     )
     scored_pairs = loaded.transform(assembler.transform(comparison)).select(
         "episode_id", "uid", "target_movie_id", "candidate_movie_id", "prediction_at",
-        "n", "n_bucket", "total_history_count", "supported_history_count", "is_full_history",
+        "n", "n_bucket", "total_history_count", "provided_history_count", "supported_history_count",
+        "is_full_history", "is_controlled_prefix",
         "candidate_rank", "label_state", "is_target", "label",
         vector_to_array("probability")[1].alias("pairwise_probability"),
     )
     group_columns = [
         "episode_id", "uid", "target_movie_id", "candidate_movie_id", "prediction_at",
-        "n", "n_bucket", "total_history_count", "supported_history_count", "is_full_history",
+        "n", "n_bucket", "total_history_count", "provided_history_count", "supported_history_count",
+        "is_full_history", "is_controlled_prefix",
         "candidate_rank", "label_state", "is_target", "label",
     ]
     scores = scored_pairs.groupBy(*group_columns).agg(
