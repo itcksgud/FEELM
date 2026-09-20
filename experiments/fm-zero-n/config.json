@@ -1,0 +1,92 @@
+{
+  "experiment": "S15P21E106-623-fm-zero-n-v1",
+  "input_contract": "S15P21E106-620-zero-n-v1",
+  "input_seed": 622,
+  "frozen_input": {
+    "schema_version": 2,
+    "ratings_sha256": "91159850e41ee59c86231165a688709647e2726cab2e7ba9faf04001bd5261ee",
+    "movies_sha256": "b37ca1abc7798de741138ed252b62f69f7e37c84b8a8fab1b82d409b4c6c5cc2",
+    "users": {"TRAIN": 15000, "VALIDATION": 3000, "FINAL_TEST": 2000},
+    "targets": {"TRAIN": 59030, "VALIDATION": 11756, "FINAL_TEST": 7730},
+    "episodes": {"rows": 277731, "sha256": "2f31b84820cb5de5092173a699ca6e1f8ed0c754df2d67448e795cf4030dc5ea"},
+    "candidates": {"rows": 6869265, "sha256": "e8e45fb391002e52f5a5427093ba1c6ea9b7f2182f8cb01551afed4ece7ad64a"},
+    "selection_episodes": {"rows": 240170, "sha256": "c416bcd29238586a2b4cbdb542a3bb1586ff4508f8c11d6a28b091efe400a827"},
+    "selection_candidates": {"rows": 6077583, "sha256": "8eb1636b2f9dc0349c928246b5a35d85579f872acde86c2184cec2e7118588b4"},
+    "distribution_report_sha256": "1dfd32888a35f5cd8c5593203176e1ad9cb618878143ca6badc1e81ac072abb2",
+    "final_test_seal_id": "a6e3ea39defc90944d73b973ee7feafe80f9eb236c34031812d09b688af319f8",
+    "role_user_digests": {
+      "TRAIN": "d31b2488844e18fe89c229a405ab951283508109ab59d8b8c9931287206301de",
+      "VALIDATION": "aa640c492f418ba4463a97b56a6fd033adb0c59353d802c7a839c2f538d07031",
+      "FINAL_TEST": "b66a09b3779757bfa4fe3a8ec148f0dd1c65a019ff3d1ae67fcac52a1e26121a"
+    }
+  },
+  "fixture_input": {
+    "schema_version": 2,
+    "ratings_sha256": "91159850e41ee59c86231165a688709647e2726cab2e7ba9faf04001bd5261ee",
+    "movies_sha256": "b37ca1abc7798de741138ed252b62f69f7e37c84b8a8fab1b82d409b4c6c5cc2",
+    "users": {"TRAIN": 200, "VALIDATION": 200, "FINAL_TEST": 200},
+    "targets": {"TRAIN": 767, "VALIDATION": 788, "FINAL_TEST": 775},
+    "episodes": {"rows": 11823, "sha256": "5f8940fcf1487d4832172ee0f9db58517699d20bf13c7e7b2c62dea8529fcd9b"},
+    "candidates": {"rows": 219387, "sha256": "5bd526e10295348ef1cd9316ebbc8c81dfec0a2f8147d3839bba165283704cb6"},
+    "selection_episodes": {"rows": 7837, "sha256": "23bc19d0d1e1e02c1bbafdad4ede693e0b0650f3dfe34ccc3b3c0e889c6a4878"},
+    "selection_candidates": {"rows": 140134, "sha256": "95a2926de03ebd8f58c7309c55e2e6351b914af56047f238120bb62beddf0831"},
+    "distribution_report_sha256": "fe4ae651ae37cad539e36ae289d64b1254be44d0595774e95923208a2a8bf43b",
+    "final_test_seal_id": "365d7f0113ff78cd4b7af439b075125b86f25e2a917044b7a7430bb595c7e4a5",
+    "role_user_digests": {
+      "TRAIN": "6fc080d3d459bc89c4898a79eeabdb79cf783845f3790937e77224d5b4ee4fcb",
+      "VALIDATION": "fdc12d29e8f8e5e39b3ba30207c8572d47d81ff3a53054ea43fef0b9901526d1",
+      "FINAL_TEST": "11b279140b2d9f42f8d23f6769c3b1dd8a8898db4df75addb0a7274a2c30492b"
+    }
+  },
+  "model_seeds": [623, 1623, 2623],
+  "runtime": {
+    "docker_image": "feelm-fm-zero-n-spark:local",
+    "image_id": "sha256:5a469f86c21f950cbce0a47e8fe2068f631619d276adfbb82dac245e43eba6a3",
+    "spark_version": "4.1.3",
+    "master": "local[6]",
+    "driver_memory": "12g",
+    "container_memory": "16g",
+    "timeout_seconds_per_profile": 7200,
+    "gpu_training": false
+  },
+  "estimator": {
+    "factorSize": 8,
+    "fitIntercept": true,
+    "fitLinear": true,
+    "regParam": 0.01,
+    "miniBatchFraction": 1.0,
+    "initStd": 0.01,
+    "maxIter": 80,
+    "stepSize": 0.05,
+    "tol": 1e-6,
+    "solver": "adamW"
+  },
+  "linear_estimator": {
+    "elasticNetParam": 0.0,
+    "fitIntercept": true,
+    "maxIter": 100,
+    "regParam": 0.01,
+    "standardization": false,
+    "tol": 1e-6
+  },
+  "positive_threshold": 4.0,
+  "prediction_bounds": [0.5, 5.0],
+  "ranking_cutoff": 10,
+  "bootstrap_replicates": 2000,
+  "training_variant_policy": "ONE_DETERMINISTIC_N_VARIANT_PER_USER_TARGET_SHA256_V1",
+  "profiles": [
+    "movie_only_fm",
+    "sparse_linear_only",
+    "legacy_aggregate_fm",
+    "sparse_pos_neg_history_fm",
+    "sparse_history_content_fm",
+    "unified_history_ablation_fm",
+    "explicit_relation_block_removed_ablation_fm",
+    "genre_content_block_removed_ablation_fm"
+  ],
+  "seed_sensitivity_policy": {
+    "profile": "BEST_VALIDATION_FACTOR_PROFILE_BY_USER_MACRO_MSE",
+    "additional_seeds": [1623, 2623]
+  },
+  "final_test_policy": "SEALED_UNTIL_S15P21E106_625"
+}

@@ -1,0 +1,106 @@
+{
+  "experiment": "S15P21E106-623-fm-v6-full-prefix-k-v1",
+  "status": "PREREGISTERED_REVIEWED",
+  "jira": {
+    "issue": "S15P21E106-623",
+    "updated_at": "2026-09-20T01:22:54.436+09:00",
+    "description_sha256": "9cd0c4f40fb2a295d9cc5f5210fe802d05dd412552e2e5a8e82c69f70b4dd429"
+  },
+  "input": {
+    "id": "fmv6-prefix-input-v3",
+    "manifest": {
+      "bytes": 3902,
+      "sha256": "69425b08f55562a6a7a40592294887923e7c02cff179d7da43935555286be227"
+    },
+    "ratings_sha256": "91159850e41ee59c86231165a688709647e2726cab2e7ba9faf04001bd5261ee",
+    "movies_sha256": "b37ca1abc7798de741138ed252b62f69f7e37c84b8a8fab1b82d409b4c6c5cc2",
+    "eligible_users": 166757,
+    "role_users": {"TRAIN": 116911, "VALIDATION": 24927, "FINAL_TEST": 24919},
+    "episodes_sha256": "06a5da5ef04359524fe44400e71b0b7202357e1b25725f610f434dd454f661b4",
+    "candidates_sha256": "9d26fbbd789770f7b88a895bf26e60b25e83450774e05c06fa0feb0acb5b0313",
+    "final_test_seal_id": "edb4d5516a2d5e585d2a3dae7420f5a52c78486a3dce186af4597d2adeb8fc88",
+    "k_values": [0, 1, 2, 5, 10, 20],
+    "judgment_count": 10,
+    "candidate_count": 50,
+    "same_user_judgments_candidates_across_k": true
+  },
+  "popularity": {
+    "manifest": {"bytes": 1494, "sha256": "c49e41400b72e5a325810a17dfb6f9fb20d2c2f1c278d1287b2b62502d32c2aa"},
+    "artifact": {"bytes": 624779, "sha256": "748781c45920de6c7435b370b0ad651de09ba3da7e819ce1a6391a644e12ad81"},
+    "train_user_digest": "0b0b7ade9b6255b9de8f2ed5c47658c88c084c35b6cb34cb822a37c53eb4eaf3"
+  },
+  "isolated_input": {
+    "manifest": {"bytes": 5819, "sha256": "cd6edc1549c37381c5d1a7771a24cc5682b225a6b067708f0811a4d57d7c27ee"},
+    "validation_labels": {
+      "manifest": {"bytes": 706, "sha256": "3de4390841645f4bc87902d2a0fc1c75c7029474ee5ba009eed9f56815c44e13"},
+      "target": {"bytes": 21357012, "sha256": "6aad6e0c867205c7075c991d532a4b2b2d265670b89f6f22348db931a8df7210"},
+      "candidate_base": {"bytes": 304300121, "sha256": "7a5e2c688825ff7a67340b7fd92b43a0a073e8b831a913b30046a04f74906ef4"}
+    }
+  },
+  "positive_threshold": 4.0,
+  "internal_split": {"algorithm": "SHA256_USER_MOD_5_V1", "salt": "fm-v6-prefix-inner-623", "holdout_bucket": 0},
+  "model": {
+    "profiles": [
+      "popularity_bayes_v5",
+      "content_linear_v5",
+      "aggregate_linear_v5",
+      "legacy_aggregate_fm_v5",
+      "sparse_linear_v5",
+      "sparse_history_fm_v5",
+      "sparse_history_content_fm_v5"
+    ],
+    "linear_reg_grid": [0.0001, 0.001],
+    "fm_grid": [
+      {"factor_size": 8, "learning_rate": 0.01, "reg": 0.001},
+      {"factor_size": 8, "learning_rate": 0.01, "reg": 0.01}
+    ],
+    "model_seeds": [623, 1623, 2623],
+    "optimizer": {"max_epochs": 40, "patience": 8, "beta1": 0.9, "beta2": 0.999,
+                  "epsilon": 1e-8, "gradient_clip_norm": 10.0}
+  },
+  "interaction_comparisons": {
+    "legacy_aggregate_fm_v5": "aggregate_linear_v5",
+    "sparse_history_fm_v5": "sparse_linear_v5",
+    "sparse_history_content_fm_v5": "sparse_linear_v5"
+  },
+  "prediction_bounds": [0.5, 5.0],
+  "metric": {
+    "primary": "USER_MACRO_NDCG_AT_2",
+    "required_cutoffs": [2, 4, 6, 10],
+    "gain": "2_POWER_RATING_MINUS_0_5_MINUS_1",
+    "unknown": "ZERO_GAIN_NOT_NEGATIVE",
+    "population": "SAMPLED_CANDIDATE_POOL_ONLY",
+    "zero_idcg": "ASSIGN_ZERO_AND_RETAIN_USER_IN_ALL_PAIRED_COMPARISONS",
+    "low_exposure": "LOW_OBSERVED_ITEMS_IN_TOP_L_DIVIDED_BY_L_UNKNOWN_CONTRIBUTES_ZERO",
+    "paired_gated_user_set": "EXACT_ALL_VALIDATION_USERS_FAIL_ON_MISSING_OR_NONFINITE"
+  },
+  "policy": {
+    "thresholds": [5, 10, 20],
+    "forms": ["HARD_SWITCH", "LINEAR_HISTORY_BLEND"],
+    "selected_fm_profile": "sparse_history_content_fm_v5",
+    "eligibility": "THRESHOLD_REGION_PASS_AND_POLICY_SAFETY_PASS"
+  },
+  "uncertainty": {"bootstrap_replicates": 10000, "bootstrap_seed": 339, "confidence": 0.95,
+                  "unit": "USER"},
+  "resource_preflight": {
+    "user_modulus": 100,
+    "user_bucket": 0,
+    "maximum_peak_memory_bytes": 30064771072,
+    "minimum_free_output_bytes": 17179869184,
+    "status": "PASS",
+    "required_stages": ["PREPARE", "FIT", "EVALUATE", "VERIFY"],
+    "receipt": {"bytes": 2646, "sha256": "137bac155f68c2d8128e4608f30906eb476b358554e7660eb857601f19f5cfcd"},
+    "results": {"checks": 82, "maximum_observed_peak_ram_bytes": 442941440,
+                "maximum_stage_elapsed_seconds": 172.76600000000326}
+  },
+  "runtime": {
+    "docker_image": "feelm-fm-zero-n-spark:local",
+    "image_id": "sha256:5a469f86c21f950cbce0a47e8fe2068f631619d276adfbb82dac245e43eba6a3",
+    "cpu_limit": 6,
+    "memory": "32g",
+    "timeout_seconds": 28800,
+    "network": "none"
+  },
+  "claim_ceiling": "INPUT_COUNT_POLICY_CANDIDATE",
+  "final_test": "SEALED_FOR_S15P21E106_625"
+}
