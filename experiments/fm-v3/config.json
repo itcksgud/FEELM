@@ -1,0 +1,138 @@
+{
+  "experiment": "S15P21E106-623-fm-v3-full-data-attribution-v1",
+  "input_seed": 3623,
+  "input_contract": "FM_V3_PHYSICALLY_ISOLATED_TRAIN_VALIDATION_V1",
+  "expected_input": {
+    "source_users": {"TRAIN": 21075, "VALIDATION": 2500, "FINAL_TEST": 2000},
+    "eligible_census": {
+      "TRAIN": {"history_50_plus": 4302, "history_below_50": 16773, "total": 21075},
+      "VALIDATION": {"history_50_plus": 829, "history_below_50": 1937, "total": 2766},
+      "FINAL_TEST": {"history_50_plus": 939, "history_below_50": 1207, "total": 2146}
+    },
+    "source_manifest": {
+      "bytes": 4199,
+      "sha256": "eb7cb0d2ee54a2727a029a64133a02c39502fdc3a438267b955aa717af6762ed"
+    },
+    "prior_validation_exclusion": {
+      "manifest": {
+        "bytes": 2943,
+        "sha256": "1a1348cd3ace7bc9e21d0aa8c6162ee67718ec3399365bb2168dcf2bc70239a1"
+      },
+      "users": 3000,
+      "user_digest": "aa640c492f418ba4463a97b56a6fd033adb0c59353d802c7a839c2f538d07031",
+      "input_seed": 622,
+      "role": "VALIDATION",
+      "policy": "EXCLUDE_ALL_PRIOR_SEED_622_VALIDATION_USERS_FROM_NEW_VALIDATION_V1",
+      "new_validation_intersection_users": 0,
+      "new_validation_users": 2500,
+      "new_validation_user_digest": "074541765a2d238e2cf39fe210f3a0acc5576ae0664b9ec0ad04e212d98991e5"
+    },
+    "source_contract": {
+      "schema_version": 2,
+      "status": "PASS",
+      "seed": 3623,
+      "cutoffs": {
+        "TRAIN": {"target_start_exclusive": 1483228799, "target_end_inclusive": 1577836799, "feature_cutoff_inclusive": 1483228799},
+        "VALIDATION": {"target_start_exclusive": 1577836799, "target_end_inclusive": 1640995199, "feature_cutoff_inclusive": 1577836799},
+        "FINAL_TEST": {"target_start_exclusive": 1640995199, "target_end_inclusive": 1697164147, "feature_cutoff_inclusive": 1640995199}
+      },
+      "positive_threshold": 4.0,
+      "users": {"TRAIN": 21075, "VALIDATION": 2500, "FINAL_TEST": 2000},
+      "role_user_digests": {
+        "TRAIN": "fdd7ab9c99526248ef932dfa36096322307574d10bd0e107bedf8aa62e64c6aa",
+        "VALIDATION": "074541765a2d238e2cf39fe210f3a0acc5576ae0664b9ec0ad04e212d98991e5",
+        "FINAL_TEST": "b31a5f2000670d3faf257dc28d38c8bdb8931ed5c551c3993f625fc17fe567e0"
+      },
+      "targets": {"TRAIN": 83185, "VALIDATION": 9774, "FINAL_TEST": 7714},
+      "distribution_report": {
+        "status": "DISTRIBUTION_SHIFT",
+        "sha256": "c7c6c4272c8b8dee2885978963a859371a56db091379b0879b74093ce3faf0b7"
+      },
+      "target_policy": "UP_TO_4_LABEL_BLIND_SHA256_SELECTED_OBSERVED_TARGETS_PER_USER_IN_NON_OVERLAPPING_ROLE_WINDOW",
+      "catalog_as_of_policy": "MOVIELENS_TITLE_RELEASE_YEAR_LE_PREDICTION_YEAR; MISSING_YEAR_EXCLUDED",
+      "catalog": {
+        "TRAIN": {"movies": 72718, "digest": "7741c0ae0e6b04860e16d25513e6548f73520975d8ce88c132e7e375ee13e712"},
+        "VALIDATION": {"movies": 81611, "digest": "d174421f570634a75d5139ca5f3596367417c17ab406ca07525059edadcb3227"},
+        "FINAL_TEST": {"movies": 86016, "digest": "9737ccaf43b6794e8bb4c4226ea57ea1bb057c2bb1b1fa6aa137cf3bfdd84299"}
+      },
+      "unknown_sampling": {
+        "algorithm": "SHA256_THRESHOLD_V1",
+        "seed": 3623,
+        "probability": 0.0012,
+        "importance_weight": 833.3333333333334,
+        "global_selected_movies_by_role": {"TRAIN": 87, "VALIDATION": 103, "FINAL_TEST": 114}
+      },
+      "final_test_seal_id": "8008b068144f4766e18c59df40a727f7ff18eeb6296c33eb9041795d4e65874f"
+    },
+    "role_rows": {
+      "candidates:VALIDATION": 1043166,
+      "episodes:TRAIN": 227654,
+      "episodes:VALIDATION": 36248
+    },
+    "rejected_without_json_parse": {
+      "FINAL_TEST_CANDIDATE_BEFORE_JSON_PARSE": 907239,
+      "FINAL_TEST_EPISODE_BEFORE_JSON_PARSE": 37662,
+      "UNNEEDED_TRAIN_CANDIDATE_BEFORE_JSON_PARSE": 7555936
+    },
+    "isolated_roles": ["TRAIN", "VALIDATION"],
+    "isolated_manifest": {
+      "bytes": 5349,
+      "sha256": "58dde6905d7bed86fb091a53747c5046ec7816769af44cfaf9f54cd8b53af6a4"
+    },
+    "episodes": {
+      "rows": 263902,
+      "sha256": "4973edb929737717ddab0e89de8bc3dc572c57888eb11bd6be05018483caec24"
+    },
+    "validation_candidates": {
+      "rows": 1043166,
+      "sha256": "0f83e7bd8a1911249187e237f803913667cb3784513959b76b5ac66b8525d821"
+    }
+  },
+  "runtime": {
+    "docker_image": "feelm-fm-zero-n-spark:local",
+    "image_id": "sha256:5a469f86c21f950cbce0a47e8fe2068f631619d276adfbb82dac245e43eba6a3",
+    "cpu_limit": 6,
+    "memory": "16g",
+    "timeout_seconds": 14400,
+    "gpu_training": false
+  },
+  "positive_threshold": 4.0,
+  "prediction_bounds": [0.5, 5.0],
+  "ranking_cutoff": 10,
+  "bootstrap_replicates": 2000,
+  "model_seeds": [623, 1623, 2623],
+  "training_variant_policy": "ALL_N_VARIANTS_TARGET_WEIGHT_SUM_ONE_V1",
+  "internal_holdout_policy": "LATEST_TARGET_PER_TRAIN_USER_V1",
+  "preprocessing_fit_policy": "INTERNAL_FIT_ONLY_V1",
+  "profiles": ["matched_additive_v3", "content_cross_factor_v3"],
+  "ridge_initialization_reg_grid": [0.0001, 0.001, 0.01],
+  "additive_grid": [
+    {"learning_rate": 0.005, "reg": 0.0001},
+    {"learning_rate": 0.01, "reg": 0.0001},
+    {"learning_rate": 0.005, "reg": 0.001},
+    {"learning_rate": 0.01, "reg": 0.001}
+  ],
+  "factor_grid": [
+    {"factor_size": 4, "learning_rate": 0.005, "reg": 0.0001},
+    {"factor_size": 8, "learning_rate": 0.005, "reg": 0.0001},
+    {"factor_size": 4, "learning_rate": 0.01, "reg": 0.001},
+    {"factor_size": 8, "learning_rate": 0.01, "reg": 0.001}
+  ],
+  "optimizer": {
+    "name": "full_batch_adam",
+    "max_epochs": 80,
+    "patience": 10,
+    "beta1": 0.9,
+    "beta2": 0.999,
+    "epsilon": 1e-8,
+    "gradient_clip_norm": 10.0
+  },
+  "primary_estimand": "VALIDATION_USER_MACRO_MSE_CONTENT_ENSEMBLE_MINUS_MATCHED_ADDITIVE",
+  "primary_decision": {
+    "full_data_is_the_confirmatory_scale": true,
+    "adopt_interaction_only_if_user_bootstrap_ci_upper_below_zero": true,
+    "otherwise_keep_additive_baseline": true
+  },
+  "validation_selection_policy": "NO_VALIDATION_MODEL_SELECTION; preprocessing, hyperparameters, and epochs selected only inside TRAIN",
+  "final_test_policy": "NOT_MATERIALIZED_IN_MODEL_INPUT_AND_NOT_USED"
+}

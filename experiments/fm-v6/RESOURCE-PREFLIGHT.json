@@ -1,0 +1,75 @@
+{
+  "schema_version": 2,
+  "status": "PASS",
+  "required_stages": ["PREPARE", "FIT", "EVALUATE", "VERIFY"],
+  "design_digest": "930008c3fc04427db530e8097593997cd8e2a474fcc4ea0b9ff98ae91760bf6a",
+  "independent_review": {
+    "status": "GO",
+    "scope": "FRESH_FINAL_CODE_ONE_PERCENT_CHAIN",
+    "remaining_p0_p1_blockers": 0
+  },
+  "protocol_amendment": {
+    "timing": "POST_VALIDATION_UNSEAL",
+    "trigger": "FINITE_ZERO_IDCG_EPISODE_DISCOVERED_IN_FULL_VALIDATION",
+    "rule": "ASSIGN_ZERO_AND_RETAIN_USER_IN_ALL_PAIRED_COMPARISONS",
+    "independent_review": "GO",
+    "claim": "NOT_PREREGISTERED"
+  },
+  "subset": {
+    "algorithm": "SHA256_UID_MOD_V1",
+    "modulus": 100,
+    "bucket": 0,
+    "train_rows": 7362,
+    "validation_target_rows": 1590,
+    "validation_candidate_rows": 79500
+  },
+  "executed_config": {
+    "bytes": 4737,
+    "sha256": "84f88922068945d3f368d5b151c03b49af7d602cdcaabdb9d8855b07115a7cb6"
+  },
+  "source_bundle_digest": "7520515366593a2b0be66c783ff64e3efd03ec6d69ebaff886073a15d99f16e8",
+  "prepare": {
+    "manifest": {"bytes": 7484, "sha256": "ba8a5d6e51e6f813f591f18bb93055932c57fae401fa320cc52b8827330487f8"},
+    "elapsed_seconds": 37.86778227499963,
+    "peak_ram_bytes": 324325376,
+    "output_bytes": 4135257,
+    "validation_labels_mounted": false,
+    "final_test_opened": false
+  },
+  "fit": {
+    "report": {"bytes": 5658, "sha256": "7f5b04098ccf06f30230a17480553a8d9c317b9a4478d7aa3e6d39c8bb0e0651"},
+    "elapsed_seconds": 3.8791919609993784,
+    "peak_ram_bytes": 442941440,
+    "output_bytes": 10126491,
+    "profiles": 7,
+    "fm_profiles": 3,
+    "model_seeds": 3,
+    "validation_labels_mounted": false,
+    "final_test_opened": false
+  },
+  "evaluation": {
+    "report": {"bytes": 550116, "sha256": "1405889a18fb67dc437498ded9d8ffb33595fbb49d4038ba7b57ae4d6241770c"},
+    "elapsed_seconds": 126.56300000000192,
+    "output_bytes": 616208,
+    "K_POLICY_STATUS": "NOT_SUPPORTED",
+    "FM_INTERACTION_STATUS": "NOT_SUPPORTED",
+    "selected_policy": null,
+    "validation_labels_opened": true,
+    "final_test_opened": false
+  },
+  "verification": {
+    "receipt": {"bytes": 4985, "sha256": "b883c51d6af9746211b6e46ff2383bd5d14e778bb0161f0fa86a0912b29919d3"},
+    "elapsed_seconds": 172.76600000000326,
+    "output_bytes": 4985,
+    "checks": 82,
+    "metric_engine_recomputed": true,
+    "status": "PASS"
+  },
+  "capacity": {
+    "free_output_bytes_observed": 1666715025408,
+    "configured_memory_limit_bytes": 34359738368,
+    "configured_peak_gate_bytes": 30064771072,
+    "configured_stage_timeout_seconds": 28800,
+    "assessment": "PASS_FOR_FULL_RUN_WITH_STAGE_TIMEOUT_ENVELOPE"
+  }
+}

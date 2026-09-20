@@ -1,0 +1,153 @@
+{
+  "experiment": "S15P21E106-623-fm-v4-rolling-signed-content-v1",
+  "status": "SUPERSEDED_BEFORE_FULL_PREPARE_BY_JIRA_20260919_233805_KST",
+  "superseded_by": "experiments/fm-v5/DECISION-CRITERIA.md",
+  "split": {
+    "seed": 4623,
+    "train_bucket_upper_exclusive": 70,
+    "validation_bucket_upper_exclusive": 85,
+    "target_limit_per_user": 4,
+    "n_values": [0, 1, 2, 4, 7, 15, 25, 40, 50],
+    "maximum_history": 50,
+    "windows": {
+      "TRAIN": {
+        "target_start_exclusive": 1483228799,
+        "target_end_inclusive": 1577836799
+      },
+      "VALIDATION": {
+        "target_start_exclusive": 1577836799,
+        "target_end_inclusive": 1640995199
+      },
+      "FINAL_TEST": {
+        "target_start_exclusive": 1640995199,
+        "target_end_inclusive": 1697164147
+      }
+    },
+    "inner_user_holdout_modulus": 5,
+    "inner_user_holdout_bucket": 0,
+    "inner_user_salt": "fm-v4-inner-4623"
+  },
+  "expected_census": {
+    "TRAIN": {
+      "eligible_users": 21102,
+      "active_users": 21092,
+      "active_targets": 82215,
+      "n0_targets": 1078
+    },
+    "VALIDATION": {
+      "eligible_users": 2389,
+      "active_users": 2388,
+      "active_targets": 9224,
+      "n0_targets": 135
+    },
+    "FINAL_TEST": {
+      "eligible_users": 2142
+    }
+  },
+  "source": {
+    "ratings": {
+      "bytes": 877076222,
+      "sha256": "91159850e41ee59c86231165a688709647e2726cab2e7ba9faf04001bd5261ee"
+    },
+    "movies": {
+      "bytes": 4242926,
+      "sha256": "b37ca1abc7798de741138ed252b62f69f7e37c84b8a8fab1b82d409b4c6c5cc2"
+    },
+    "tags": {
+      "bytes": 72353890,
+      "sha256": "c52e458a89b9deee410f50813e7a64491fbe92a6f07b5c4b58e64c0b3cc95b89"
+    },
+    "prior_validation": {
+      "seed_622": {
+        "users": 3000,
+        "user_digest": "aa640c492f418ba4463a97b56a6fd033adb0c59353d802c7a839c2f538d07031"
+      },
+      "seed_3623": {
+        "users": 2500,
+        "user_digest": "074541765a2d238e2cf39fe210f3a0acc5576ae0664b9ec0ad04e212d98991e5"
+      },
+      "expected_intersection_users": 0,
+      "expected_union_users": 5500
+    }
+  },
+  "feature": {
+    "positive_threshold_diagnostic_only": 4.0,
+    "tag_vocabulary_size": 128,
+    "tag_min_movie_document_frequency": 20,
+    "tag_vocabulary_timestamp_exclusive": 1483228800,
+    "tag_contributors": "USERS_OUTSIDE_SELECTED_TRAIN_AND_VALIDATION",
+    "tag_normalization": "UNICODE_NFKC_LOWER_TRIM_COLLAPSE_WHITESPACE_V1",
+    "tag_weight": "LOG1P_UNIQUE_CONTRIBUTOR_COUNT_TIMES_FIXED_IDF_THEN_L1_V1",
+    "event_rank_half_life": 10.0,
+    "user_center_prior_weight": 5.0,
+    "profile_shrinkage": 2.0,
+    "confidence_gate_prior": 5.0,
+    "rating_range": 4.5,
+    "numeric_scaling": "INNER_FIT_MINMAX_CLIP_V1",
+    "value_range": [-1.0, 1.0],
+    "user_id_feature": false,
+    "movie_id_feature": false
+  },
+  "model": {
+    "profiles": [
+      "matched_additive_v4",
+      "signed_genre_tag_fm_v4"
+    ],
+    "diagnostic_profiles": [],
+    "ridge_reg_grid": [0.0001, 0.001],
+    "factor_rank": 4,
+    "factor_reg_grid": [0.001, 0.01],
+    "factor_learning_rate": 0.01,
+    "model_seeds": [623, 1623, 2623],
+    "optimizer": {
+      "name": "full_batch_adam",
+      "max_epochs": 80,
+      "patience": 10,
+      "beta1": 0.9,
+      "beta2": 0.999,
+      "epsilon": 1e-8,
+      "gradient_clip_norm": 10.0
+    }
+  },
+  "prediction_bounds": [0.5, 5.0],
+  "primary": {
+    "estimand": "VALIDATION_ACTIVE_USER_MACRO_MSE_SIGNED_GENRE_TAG_FM_ENSEMBLE_MINUS_MATCHED_ADDITIVE",
+    "bootstrap_replicates": 10000,
+    "bootstrap_seed": 4623001,
+    "confidence": 0.95,
+    "minimum_relative_mse_improvement": 0.003,
+    "tie_tolerance": 1e-12,
+    "adopt_only_if_ci_upper_below_zero": true,
+    "n_cell_minimum_users": 200,
+    "n_cell_mse_delta_upper_limit": 0.005,
+    "mae_delta_upper_limit": 0.005,
+    "maximum_clipping_fraction_increase": 0.001
+  },
+  "runtime": {
+    "docker_image": "feelm-fm-zero-n-spark:local",
+    "image_id": "sha256:5a469f86c21f950cbce0a47e8fe2068f631619d276adfbb82dac245e43eba6a3",
+    "cpu_limit": 6,
+    "memory": "32g",
+    "timeout_seconds": 14400,
+    "network": "none"
+  },
+  "resource_preflight": {
+    "run_id": "fresh-preflight-fmv4-v2",
+    "sample_policy": "SHA256_USER_MOD_10_EQ_0",
+    "sample_fraction": 0.1,
+    "report": {
+      "bytes": 2059,
+      "sha256": "9761e68de70671e2bbefea97010c663d577c8041bb456e2e3b84fe4d8c497900"
+    }
+  },
+  "pins": {
+    "source_manifest": {
+      "bytes": 6445,
+      "sha256": "78c2c7909a2e31a0c66894bf7208bf58090f56829aeb3827a21fbebe08ab45cb"
+    },
+    "isolated_manifest": {
+      "bytes": 5208,
+      "sha256": "527f85aec71920d21a4a622188e00cbe3f34ca6d767c1d322dbb00d66f98a47e"
+    }
+  }
+}

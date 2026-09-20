@@ -1,0 +1,181 @@
+{
+  "experiment": "S15P21E106-623-fm-v5-jira-aligned-v1",
+  "status": "INPUT_VERIFIED_IMPLEMENTATION_PENDING_INDEPENDENT_REVIEW",
+  "authoritative_contract": {
+    "jira_updated_at": "2026-09-19T23:38:05.36+09:00",
+    "jira_description_sha256": "814071fb16a16bae4c52daf1ae19466b8c4163b445eb98aa58cfbd4b9ca9141f",
+    "team_revision": "bec8dc4813fd5853f53d32d9b5cec6ae35cab9f3",
+    "zero_n_contract_sha256": "974b03945a86c5db93605a52f57d32755213a492288a1fbd4abda3652678f5ba"
+  },
+  "input_v2_audit_only": {
+    "run_id": "ml32m-zero-n-readiness-10pct-v2",
+    "availability": "RECEIVED_VERIFIED_TRAIN_VALIDATION_ONLY_DECISION_INELIGIBLE",
+    "seed": 621,
+    "users": {"TRAIN": 15000, "VALIDATION": 3000, "FINAL_TEST": 2000},
+    "episode_rows": 161057,
+    "episode_sha256": "58d0d3f81d324823704b11523e89ade5bddbe9c86a84085f2b9ba5c6a38e826f",
+    "candidate_rows": 2000000,
+    "candidate_sha256": "d1fa052649a8bca9132a3ddd52b544626bfdd807106a398eb8d0f2220a808cae",
+    "distribution_report_sha256": "1a2c8c2872cea9b3972edce5f9bb2f7e560ee0611081817fbece4b653398b7c9",
+    "final_test": "SEALED_NOT_TRANSFERRED_FOR_S15P21E106_625",
+    "handoff": {
+      "bundle_sha256": "a5511432d1192c89457042a943b4df7badbe0da6bc6206380888d2bc45048d05",
+      "checksum_entries": 32,
+      "verification": "PASS",
+      "train_validation_episode_rows": 143926,
+      "train_validation_episode_file_sha256": "77d3b972a0977e25e20801ef7cd083c89f7e5e76078b2e5c93b4de634371fdeb",
+      "train_validation_candidate_rows": 1800000,
+      "train_validation_candidate_file_sha256": "b4fac0c97e97f59b08be07f09d6e1fa4139f143eaf206bf3af59a67b46cc5787",
+      "final_test_proxy_seal_id": "3c13988b30d52cbba3e645bb346697789a5ce405eea7bed43f0cffe90db154fc"
+    },
+    "decision_eligibility": {
+      "eligible": false,
+      "reasons": [
+        "V2_HAS_EXACTLY_ONE_OBSERVED_JUDGMENT_PER_USER_SO_NDCG_AT_2_IS_UNDEFINED",
+        "V2_USES_PYTHON_RANDOM_FIXED_99_UNKNOWN_CANDIDATES_NOT_SHA256_THRESHOLD_V1",
+        "COMPLETED_GBT_USES_NON_IDENTICAL_TEN_PERCENT_INPUT_V7"
+      ]
+    }
+  },
+  "execution_input": {
+    "run_id": "ten-percent-input-v7",
+    "availability": "RECEIVED_VERIFIED_TRAIN_VALIDATION_ONLY",
+    "route": "GBT_COMPARABLE_USER_DELIVERED",
+    "seed": 622,
+    "users": {"TRAIN": 15000, "VALIDATION": 3000},
+    "source_episode_rows": 279625,
+    "source_episode_sha256": "b23c86df8cfd0a593323bfb939a7f9d7d10b2c38361285a90daa764e62865fc9",
+    "source_candidate_rows": 6869265,
+    "source_candidate_sha256": "e8e45fb391002e52f5a5427093ba1c6ea9b7f2182f8cb01551afed4ece7ad64a",
+    "source_distribution_report_sha256": "790d85afcd80ab2ff95a681902b2e62b47bef1a5c0dd536800723c223ab1b142",
+    "handoff": {
+      "bundle_bytes": 3398929055,
+      "bundle_sha256": "79318636e8b1ba1df865e0b2969af72fa16f97745a42e430bb8bf47b9a81b7aa",
+      "verification": "PASS",
+      "train_validation_episode_rows": 241767,
+      "train_validation_episode_file_sha256": "010091543342db8dec19f6c25052ed87183ca696c792ad1bd69eede2cc03b5c2",
+      "train_validation_episode_logical_sha256": "c30fcca3fb774fa703b3c7d6339fcb31b260ae52cabe6a31d1935cb35a847bba",
+      "train_validation_candidate_rows": 6077583,
+      "train_validation_candidate_file_sha256": "a328e7fac8507e0ceaa8921818aaeaad518b694f14d8e1bc949c78e1cf789098",
+      "train_validation_candidate_logical_sha256": "8eb1636b2f9dc0349c928246b5a35d85579f872acde86c2184cec2e7118588b4",
+      "source_bundle_digest": "df64a5aa5a54941c428d91e39fe4321b2a27347134555d53f8fea2fa15b5d34b",
+      "final_test_seal_id": "358f392e837825be9bd4a0dc43a925b553da5f2f15f095e143ff58d9d46b1f70"
+    },
+    "unknown_sampling": {
+      "algorithm": "SHA256_THRESHOLD_V1",
+      "probability": 0.0012,
+      "importance_weight": 833.3333333333334
+    },
+    "distribution_status": "DISTRIBUTION_SHIFT",
+    "final_test": "SEALED_NOT_TRANSFERRED"
+  },
+  "lineage_resolution": {
+    "jira_mentions_v7": false,
+    "jira_mentions_seed_622": false,
+    "completed_gbt_input": "ten-percent-input-v7",
+    "completed_gbt_partition_seed": 622,
+    "selected_route": "GBT_COMPARABLE_V7",
+    "selection_basis": "USER_DELIVERED_REQUESTED_BYTE_IDENTICAL_V7_HANDOFF",
+    "claim_ceiling": "K_POLICY_STATUS_CANDIDATE",
+    "jira_lineage_amendment_still_required_for_VALIDATED": true
+  },
+  "popularity_artifact": {
+    "artifact_kind": "TRAIN_ONLY_POPULARITY_V1",
+    "source_ratings_sha256": "91159850e41ee59c86231165a688709647e2726cab2e7ba9faf04001bd5261ee",
+    "ordered_train_user_digest": "d31b2488844e18fe89c229a405ab951283508109ab59d8b8c9931287206301de",
+    "manifest": {
+      "bytes": 1239,
+      "sha256": "adc2f5b85745e1db56f8d7397fe7c5a331fdfbd272dd62afbed0f3a2c5c8a915"
+    },
+    "artifact": {
+      "bytes": 4823485,
+      "sha256": "fcb07bf2466dbf797c533db33799a909164a78a606ef8bc6b78fe1af78884b1d"
+    }
+  },
+  "history_buckets": ["0", "1", "2", "3-4", "5-9", "10-19", "20-29", "30-49", "50+"],
+  "minimum_users_per_required_cell": 100,
+  "positive_threshold": 4.0,
+  "internal_split": {
+    "algorithm": "SHA256_USER_MOD_5_V1",
+    "salt": "fm-v5-v7-inner-622",
+    "holdout_bucket": 0
+  },
+  "model": {
+    "profiles": [
+      "popularity_bayes_v5",
+      "content_linear_v5",
+      "aggregate_linear_v5",
+      "legacy_aggregate_fm_v5",
+      "sparse_linear_v5",
+      "sparse_history_fm_v5",
+      "sparse_history_content_fm_v5"
+    ],
+    "linear_reg_grid": [0.0001, 0.001],
+    "fm_grid": [
+      {"factor_size": 8, "learning_rate": 0.01, "reg": 0.001},
+      {"factor_size": 8, "learning_rate": 0.01, "reg": 0.01}
+    ],
+    "model_seeds": [623, 1623, 2623],
+    "optimizer": {
+      "max_epochs": 40,
+      "patience": 8,
+      "beta1": 0.9,
+      "beta2": 0.999,
+      "epsilon": 1e-8,
+      "gradient_clip_norm": 10.0
+    }
+  },
+  "prediction_bounds": [0.5, 5.0],
+  "policy": {
+    "thresholds": [5, 10, 20],
+    "forms": ["FM_ONLY", "HARD_SWITCH", "LINEAR_HISTORY_BLEND"],
+    "blend": "K0_WEIGHT_0_ELSE_MIN_1_K_DIV_T",
+    "selection_primary": "USER_MACRO_NDCG_AT_2",
+    "supporting_cutoffs": [4, 6, 10]
+  },
+  "metric_contract": {
+    "ranking_population": "SAME_SAMPLED_CANDIDATE_POOL",
+    "unknown_treatment": "ZERO_GAIN_NOT_NEGATIVE",
+    "observed_gain": "2_POWER_RATING_MINUS_0_5_MINUS_1",
+    "ndcg_eligibility": "AT_LEAST_L_OBSERVED_JUDGMENTS_PER_EPISODE",
+    "importance_weights": "REPORTED_FOR_UNKNOWN_SAMPLE_POPULATION_DIAGNOSTICS_ONLY_NOT_USED_IN_OBSERVED_JUDGMENT_NDCG",
+    "support": "FRACTION_OF_TOP_L_ROWS_WITH_SUPPORTED_TRUE",
+    "diversity": "ONE_MINUS_SAME_GENRE_PAIR_FRACTION_AT_L"
+  },
+  "interaction_comparisons": {
+    "legacy_aggregate_fm_v5": "aggregate_linear_v5",
+    "sparse_history_fm_v5": "sparse_linear_v5",
+    "sparse_history_content_fm_v5": "sparse_linear_v5"
+  },
+  "resource_preflight": {
+    "required_before_full_prepare": true,
+    "train_user_modulus": 10,
+    "train_user_bucket": 0,
+    "validation_labels_opened": false,
+    "maximum_peak_memory_bytes": 30064771072,
+    "minimum_free_output_bytes": 17179869184
+  },
+  "uncertainty": {
+    "bootstrap_replicates": 10000,
+    "bootstrap_seed": 339,
+    "confidence": 0.95
+  },
+  "distribution_thresholds": {
+    "psi": 0.1,
+    "max_percentage_point_difference": 0.05,
+    "jensen_shannon_distance_base2": 0.1
+  },
+  "runtime": {
+    "docker_image": "feelm-fm-zero-n-spark:local",
+    "image_id": "sha256:5a469f86c21f950cbce0a47e8fe2068f631619d276adfbb82dac245e43eba6a3",
+    "cpu_limit": 6,
+    "memory": "32g",
+    "timeout_seconds": 14400,
+    "network": "none"
+  },
+  "decision_status": {
+    "K_POLICY_STATUS": "NOT_SUPPORTED",
+    "TRANSITION_THRESHOLD_STATUS": "NOT_EVALUATED",
+    "FM_INTERACTION_STATUS": "NOT_EVALUATED"
+  }
+}

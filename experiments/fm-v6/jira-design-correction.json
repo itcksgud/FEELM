@@ -1,0 +1,20 @@
+{
+  "issue": "S15P21E106-623",
+  "heading": "2026-09-20 설계 정정: 고정 시점 actual-K 폐기, prefix-K로 재실험",
+  "paragraphs": [
+    "기존 v2/v7은 2020-01-01 고정 시점 이전의 실제 이력 수와 exact K의 교집합을 사용해 저이력 셀을 인위적으로 희소하게 만들었다. 이는 MovieLens 사용자 부족이 아니라 평가 설계 불일치다. 따라서 v2/v7 결과는 해당 고정 시점 조건의 비교 이력으로만 보존하고 K 전환 정책의 판정 입력으로 사용하지 않는다.",
+    "또한 사용자별 미래 target을 최대 4개만 만들면서 NDCG@10에 관측 판단 10개 이상을 요구한 계약은 계산 불가능하다. 이 조건에서 나온 INSUFFICIENT_SAMPLE은 데이터 부족 근거가 아니며 TRANSITION_THRESHOLD_STATUS=NOT_VALIDATED 사유는 평가 설계 불일치로 정정한다."
+  ],
+  "bullets": [
+    "주 실험은 사용자별 평점을 (timestamp, 안정 tie-break) 순으로 정렬하고 K={0,1,2,5,10,20} prefix만 모델 입력으로 제공한다.",
+    "모든 K의 paired 비교는 같은 사용자와 같은 미래 관측 판단 10개, 같은 UNKNOWN_SAMPLED 후보, 같은 catalog를 공유한다. 주 NESTED_HISTORY 코호트는 30개 이상 평가 사용자 전체를 사용해 position 20 이후의 동일한 10개 관측 판단을 평가한다.",
+    "TRAIN/VALIDATION/FINAL_TEST는 사용자 단위 SHA-256 분할로 겹치지 않게 고정한다. FINAL_TEST 행과 label은 후속 S15P21E106-625까지 전달하거나 열지 않는다.",
+    "평가 후보에는 POSITIVE_OBSERVED, NEGATIVE_OBSERVED, UNKNOWN_SAMPLED를 구분한다. UNKNOWN은 0 gain일 수 있으나 negative label로 바꾸지 않는다.",
+    "NDCG@2/4/6/10은 에피소드마다 관측 판단이 최소 L개일 때만 계산한다. 이 설계에서는 동일한 미래 관측 판단 10개를 보장해 NDCG@10을 계산 가능하게 한다.",
+    "GBT와 FM은 동일한 role/user/K/candidate/judgment digest를 사용한다. GBT에는 집계 수치 표현, FM에는 분리된 sparse candidate·positive history·negative history namespace를 사용한다.",
+    "FM interaction은 정확히 일치하는 고정 선형항 ablation과 비교한다. tuning 전처리는 내부 FIT에서만 적합하고 선택 후 전체 TRAIN으로 재적합한다.",
+    "K=0~2 결과는 기존 사용자의 초기 prefix 재현이므로 실제 신규 사용자 검증으로 표현하지 않고 입력 수 기준 정책 후보로만 보고한다.",
+    "최소 1% 자원 계측 후 전체 eligible population으로 확대한다. 현재 v7 popularity-only/FM 재학습은 중단하고 prefix-K 공통 입력부터 재생성한다.",
+    "기존 결론 중 'MovieLens에서 저이력 표본이 부족하다'와 '모든 K에서 GBT를 채택할 수 없다'는 철회한다. '현재 고정 시점 same-pool에서 popularity가 GBT보다 좋았다'만 해당 조건의 과거 관찰로 유지한다."
+  ]
+}
