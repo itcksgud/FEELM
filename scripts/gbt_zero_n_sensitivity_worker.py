@@ -73,7 +73,8 @@ def main() -> None:
     validation = transform(spark.read.parquet(str(args.prepared_root / "validation-targets.parquet")))
     projection = [
         "episode_id", "uid", "target_movie_id", "prediction_at", "n", "n_bucket",
-        "total_history_count", "supported_history_count", "is_full_history", "label", "prediction",
+        "total_history_count", "provided_history_count", "supported_history_count",
+        "is_full_history", "is_controlled_prefix", "label", "prediction",
     ]
     predictions = loaded.transform(validation).select(*projection)
     predictions.write.mode("error").parquet(

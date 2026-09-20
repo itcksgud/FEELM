@@ -18,8 +18,10 @@ def main() -> None:
     parser = argparse.ArgumentParser()
     parser.add_argument("--prepared-root", type=Path, required=True)
     parser.add_argument("--output-root", type=Path, required=True)
+    parser.add_argument("--config", type=Path, default=CONFIG)
     args = parser.parse_args()
-    config = json.loads(CONFIG.read_text(encoding="utf-8"))
+    config_path = args.config.resolve()
+    config = json.loads(config_path.read_text(encoding="utf-8"))
     if args.output_root.exists():
         raise FileExistsError(f"output already exists: {args.output_root}")
     prepared = json.loads((args.prepared_root / "manifest.json").read_text(encoding="utf-8"))
@@ -45,13 +47,13 @@ def main() -> None:
             "--mount", f"type=bind,source={ROOT / 'scripts'},target=/scripts,readonly",
             "--mount", f"type=bind,source={args.prepared_root.resolve()},target=/prepared,readonly",
             "--mount", f"type=bind,source={args.output_root.resolve()},target=/output",
-            "--mount", f"type=bind,source={CONFIG.parent.resolve()},target=/config,readonly",
+            "--mount", f"type=bind,source={config_path.parent},target=/config,readonly",
             config["runtime"]["docker_image"], "/opt/spark/bin/spark-submit",
             "--master", config["runtime"]["master"],
             "--driver-memory", config["runtime"]["driver_memory"],
             "--conf", "spark.sql.shuffle.partitions=8", "--conf", "spark.ui.enabled=false",
             "/scripts/gbt_zero_n_worker.py", "--prepared-root", "/prepared",
-            "--output-root", f"/output/{profile}", "--config", "/config/config.json",
+            "--output-root", f"/output/{profile}", "--config", f"/config/{config_path.name}",
             "--profile", profile,
         ]
         started = time.monotonic()
@@ -68,11 +70,18 @@ def main() -> None:
             raise RuntimeError(f"profile failed: {profile}; see {logs / (profile + '.log')}")
         metrics = json.loads((target / "metrics.json").read_text(encoding="utf-8"))
         print(f"{profile}: fit={metrics['fit_seconds']:.3f}s total={time.monotonic()-started:.3f}s", flush=True)
-    subprocess.run(
-        [sys.executable, str(ROOT / "scripts" / "gbt_zero_n_evaluate.py"),
-         "--fits-root", str(args.output_root), "--config", str(CONFIG)],
-        check=True,
-    )
+    evaluate_command = [
+        sys.executable,
+        str(ROOT / "scripts" / "gbt_zero_n_evaluate.py"),
+        "--fits-root",
+        str(args.output_root),
+        "--config",
+        str(config_path),
+    ]
+    selection_split = config.get("policy_selection", {}).get("selection_split")
+    if selection_split:
+        evaluate_command.extend(["--evaluation-split", selection_split])
+    subprocess.run(evaluate_command, check=True)
 
 
 if __name__ == "__main__":

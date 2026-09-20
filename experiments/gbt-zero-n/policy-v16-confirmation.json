@@ -1,0 +1,110 @@
+{
+  "schema_version": 1,
+  "jira": "S15P21E106-622",
+  "run_id": "prefix-v16-contract",
+  "status": "PASS_WITH_LIMITATIONS",
+  "decision": {
+    "hard_switch": "REJECTED_THROUGH_K50",
+    "hard_switch_threshold": null,
+    "popularity_80_gbt_20": "OFFLINE_VALIDATED_CANDIDATE",
+    "actual_low_history": "NOT_EVALUATED_CONTROLLED_PREFIX",
+    "production": "DO_NOT_PROMOTE"
+  },
+  "scope": {
+    "dataset": "MOVIELENS_32M",
+    "evaluation": "SAME_POOL_RERANK_CONTROLLED_PREFIX",
+    "exact_k": [0, 1, 2, 5, 10, 20, 40, 50],
+    "seeds": [622, 1622, 2622],
+    "selection_users": 500,
+    "confirmation_users": 500,
+    "final_test_opened": false
+  },
+  "counts": {
+    "train_users": 5000,
+    "validation_users": 1000,
+    "train_rows": 400000,
+    "validation_target_rows": 80000,
+    "input_episode_rows": 480000,
+    "input_candidate_rows": 3998090,
+    "prediction_candidate_rows_per_seed": 5318240
+  },
+  "identity": {
+    "candidate_identity_algorithm": "SHA256_LENGTH_PREFIXED_ARROW_RECORD_BATCH_V1",
+    "candidate_identity_columns": [
+      "episode_id",
+      "candidate_movie_id",
+      "evaluation_split",
+      "n"
+    ],
+    "candidate_identity_sha256_all_seeds": "9b991a8c31c55bdd23caa25b7aa42cd089570012653b74ed34f269d340113ace",
+    "runtime_source_bundle_sha256": "69865139a221d35cf90b551924fb041b6c025b34aaa974d7f000f4ff7ff09418"
+  },
+  "confirmed_blend": {
+    "score": "0.80_POPULAR_COUNT_PERCENTILE_PLUS_0.20_GBT_PERCENTILE",
+    "noninferiority_margin": 0.02,
+    "validated_cells": 24,
+    "total_cells": 24,
+    "minimum_recall_delta_ci95_lower": 0.010398298150875469,
+    "minimum_ndcg_delta_ci95_lower": 0.02452437729514451,
+    "maximum_low_rating_exposure_delta_ci95_upper": -0.005490992063492066
+  },
+  "artifacts": {
+    "input_manifest": {
+      "bytes": 2826,
+      "sha256": "dc176a1496678e2240c3d13d00429dfca397f3fa78300f0a5c0c6e0b0a4ff8ba"
+    },
+    "prepared_manifest": {
+      "bytes": 21840,
+      "sha256": "05972f5479c4af3c7e2eed6b685934fe1af115396021ede0440dc347317664ca"
+    },
+    "blend_confirmation": {
+      "622": {
+        "bytes": 256161,
+        "sha256": "7800cf73f0fbf6fc018607ffd82dff289d40c63c931243a463d08d0e0137cb70"
+      },
+      "1622": {
+        "bytes": 256172,
+        "sha256": "2aafacb382ade7c18f7fb56ae50408a0568d6bc8aa6cfce5d77746fa46699c33"
+      },
+      "2622": {
+        "bytes": 256184,
+        "sha256": "cffcabaf45f9f70a529eb414faeb3bb9310e8429f2c6d698c4f82a6475425326"
+      }
+    },
+    "hard_switch_selection": {
+      "622": {
+        "bytes": 118261,
+        "sha256": "076877f728dced7d69f6bffad9f9f3103729539f3b247a64adaf27d78f957151"
+      },
+      "1622": {
+        "bytes": 118215,
+        "sha256": "cd35e38c6a7e39b60490642c548ceebc8f13fa50984d9a8980bb2dbdcb059f7d"
+      },
+      "2622": {
+        "bytes": 118166,
+        "sha256": "b06d2b6f41845bbdd7756b51ecf741d76d6af39f233f1198fcfb212ce144c0a4"
+      }
+    },
+    "full_verification": {
+      "622": {
+        "bytes": 2724,
+        "sha256": "4b52ffce1bb14b8c80ccdac3393e110bfebc4a6259de672bfd832142e75860f6"
+      },
+      "1622": {
+        "bytes": 2719,
+        "sha256": "65f09747263fbff94f9f9818940c14341df74a2fccd6d89c17f953cc6754f214"
+      },
+      "2622": {
+        "bytes": 2720,
+        "sha256": "59e8425322d71751d54e1871d048bbbe658f7564dab5eaa8a733a28fdef002ff"
+      }
+    }
+  },
+  "limitations": [
+    "MovieLens controlled prefixes do not represent an actual low-history population",
+    "targets are forced into the candidate pool",
+    "UNKNOWN_SAMPLED candidates are unjudged",
+    "production-domain and online validation remain required"
+  ],
+  "final_test_seal_id": "358f392e16a142b10a6cc3885370be7f7523624922c44554904360390c7df70"
+}

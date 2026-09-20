@@ -1,0 +1,29 @@
+{
+  "schema_version": 1,
+  "status": "PREREGISTERED",
+  "basis": "alpha=0.30 passed base-seed selection/confirm but failed the noninferiority CI at K=5 and K=10 for seed 1622; choose the next lower preregistered grid point before opening a disjoint validation cohort",
+  "score": "WITHIN_EPISODE_PERCENTILE_BLEND=(1-alpha)*POPULAR_COUNT+alpha*GBT",
+  "noninferiority_margin": 0.02,
+  "quality_metrics": [
+    "observed_positive_recall_at_10",
+    "observed_ndcg_at_10"
+  ],
+  "secondary_requirement": "LOW_RATING_EXPOSURE_POINT_DELTA_BELOW_ZERO",
+  "selected_alpha_by_k": {
+    "0": 0.2,
+    "1": 0.2,
+    "2": 0.2,
+    "5": 0.2,
+    "10": 0.2,
+    "20": 0.2,
+    "40": 0.2,
+    "50": 0.2
+  },
+  "confirmation": {
+    "cohort": "DISJOINT_FROM_PREFIX_V11_VALIDATION_USERS",
+    "split": "CONFIRM",
+    "seeds": [622, 1622, 2622],
+    "pass_rule": "ALL_K_ALL_SEEDS_QUALITY_NONINFERIOR_AND_LOW_RATING_EXPOSURE_POINT_IMPROVED"
+  },
+  "final_test_opened": false
+}

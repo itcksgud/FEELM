@@ -13,6 +13,8 @@ import pandas as pd
 
 
 BUCKET_ORDER = ["0", "1", "2", "3-4", "5-9", "10-19", "20-29", "30-49", "50+"]
+NDCG_AT_10_MIN_OBSERVED_JUDGMENTS = 10
+LOW_HISTORY_MIN_USERS_PER_BUCKET = 100
 
 
 def file_sha256(path: Path) -> str:
@@ -92,6 +94,11 @@ def nested_history_curve(target: pd.DataFrame, seed: int = 622) -> list[dict]:
             ),
             "improved_user_target_fraction_by_squared_error": float((frame.mse_delta < 0).mean()),
             "worsened_user_target_fraction_by_squared_error": float((frame.mse_delta > 0).mean()),
+            "bootstrap": {
+                "unit": "USER",
+                "estimand": "USER_MACRO_MEAN_OF_USER_TARGET_DELTAS",
+                "replicates": 2000,
+            },
         })
     return result
 
@@ -123,13 +130,19 @@ def candidate_metrics(candidates: pd.DataFrame) -> tuple[dict, pd.DataFrame]:
         uid=("uid", "first"),
         dcg=("discounted_gain", "sum"),
         positives=("gain", "sum"),
+        observed_judgments=("label", lambda values: int(values.notna().sum())),
         candidate_rows=("candidate_movie_id", "size"),
         supported_rows=("candidate_supported", "sum"),
     )
     ranked["idcg"] = ranked.positives.map(
         lambda count: sum(1 / math.log2(rank + 2) for rank in range(min(int(count), 10)))
     )
-    ranked["observed_ndcg_at_10"] = ranked.dcg / ranked.idcg.where(ranked.idcg > 0)
+    ranked["ndcg_at_10_eligible"] = (
+        (ranked.observed_judgments >= NDCG_AT_10_MIN_OBSERVED_JUDGMENTS) & (ranked.idcg > 0)
+    )
+    ranked["observed_ndcg_at_10"] = (
+        ranked.dcg / ranked.idcg
+    ).where(ranked.ndcg_at_10_eligible)
 
     top10 = candidates[candidates.model_rank < 10].copy()
     top = top10.groupby("episode_id", sort=False).agg(
@@ -162,6 +175,13 @@ def candidate_metrics(candidates: pd.DataFrame) -> tuple[dict, pd.DataFrame]:
         "users": int(ranked.uid.nunique()),
         "observed_ndcg_at_10_user_macro": None if user_ndcg.empty else float(user_ndcg.mean()),
         "observed_ndcg_at_10_users": int(len(user_ndcg)),
+        "observed_ndcg_at_10_eligible_episodes": int(ranked.ndcg_at_10_eligible.sum()),
+        "observed_ndcg_at_10_min_observed_judgments": NDCG_AT_10_MIN_OBSERVED_JUDGMENTS,
+        "observed_ndcg_at_10_status": "PASS" if ranked.ndcg_at_10_eligible.any()
+        else "INSUFFICIENT_JUDGMENTS",
+        "observed_ndcg_excluded_insufficient_judgments": int(
+            (ranked.observed_judgments < NDCG_AT_10_MIN_OBSERVED_JUDGMENTS).sum()
+        ),
         "observed_ndcg_excluded_no_positive_episodes": int((ranked.positives == 0).sum()),
         "observed_positive_recall_at_10": ratio_metric(
             observed_positive_numerator, observed_positive_denominator, "OBSERVED_POSITIVE_CANDIDATE"
@@ -181,12 +201,16 @@ def candidate_metrics(candidates: pd.DataFrame) -> tuple[dict, pd.DataFrame]:
     return metrics, ranked.reset_index()
 
 
-def low_history_cohort(target: pd.DataFrame, candidates: pd.DataFrame) -> list[dict]:
+def low_history_cohort(
+    target: pd.DataFrame,
+    candidates: pd.DataFrame,
+    minimum_users: int = LOW_HISTORY_MIN_USERS_PER_BUCKET,
+) -> list[dict]:
     full_target = target[target.is_full_history].copy()
     if full_target.empty:
         raise RuntimeError("LOW_HISTORY_COHORT requires full-history variants")
-    if full_target.duplicated(["uid", "target_movie_id", "prediction_at"]).any():
-        raise RuntimeError("full-history variant is not unique per user-target")
+    if full_target.duplicated(["uid", "target_movie_id", "prediction_at", "n"]).any():
+        raise RuntimeError("full-history variant is not unique per user-target-N")
     if not (full_target.n == full_target.total_history_count).all():
         raise RuntimeError("full-history variant does not use totalHistoryCount")
     full_target["cohort_bucket"] = full_target.total_history_count.map(n_bucket)
@@ -204,8 +228,10 @@ def low_history_cohort(target: pd.DataFrame, candidates: pd.DataFrame) -> list[d
             "total_history_bucket": bucket,
             "rows": int(len(targets)),
             "users": int(targets.uid.nunique()),
-            "targets": int(targets.target_movie_id.nunique()),
-            "unique_movies": int(targets.target_movie_id.nunique()),
+            "target_rows": int(len(targets)),
+            "unique_target_movies": int(targets.target_movie_id.nunique()),
+            "sample_status": "PASS" if targets.uid.nunique() >= minimum_users else "INSUFFICIENT_SAMPLE",
+            "minimum_users": int(minimum_users),
             "user_macro_mse": float(user.squared_error.mean()),
             "user_macro_mae": float(user.absolute_error.mean()),
             "candidate_metrics": candidate_summary,
@@ -235,19 +261,51 @@ def select_profile(results: dict[str, dict], config: dict) -> tuple[str, dict]:
         if passed:
             eligible.append(profile)
     if not eligible:
-        raise RuntimeError("no profile passed the nested-history selection gate")
+        if not config.get("allow_no_eligible_profile", False):
+            raise RuntimeError("no profile passed the nested-history selection gate")
+        diagnostic = min(
+            config["profiles"], key=lambda name: results[name][config["selection_metric"]]
+        )
+        return diagnostic, {
+            "status": "NO_ELIGIBLE_PROFILE",
+            "policy": gate,
+            "eligible_profiles": [],
+            "diagnostic_profile": diagnostic,
+            "profiles": decisions,
+        }
     selected = min(eligible, key=lambda name: results[name][config["selection_metric"]])
-    return selected, {"policy": gate, "eligible_profiles": eligible, "profiles": decisions}
+    return selected, {
+        "status": "PASS",
+        "policy": gate,
+        "eligible_profiles": eligible,
+        "profiles": decisions,
+    }
 
 
-def evaluate_profile(root: Path, seed: int) -> tuple[dict, pd.DataFrame]:
+def evaluate_profile(
+    root: Path,
+    seed: int,
+    evaluation_split: str | None = None,
+) -> tuple[dict, pd.DataFrame]:
     target = pd.read_parquet(root / "validation-target-predictions.parquet")
     candidates = pd.read_parquet(root / "validation-candidate-predictions.parquet")
-    required = {"total_history_count", "supported_history_count", "is_full_history"}
+    if evaluation_split:
+        if "evaluation_split" not in target.columns or "evaluation_split" not in candidates.columns:
+            raise RuntimeError("predictions do not contain evaluation_split")
+        target = target[target.evaluation_split == evaluation_split].copy()
+        candidates = candidates[candidates.evaluation_split == evaluation_split].copy()
+        if target.empty or candidates.empty:
+            raise RuntimeError(f"no rows for evaluation split {evaluation_split}")
+    required = {
+        "total_history_count", "provided_history_count", "supported_history_count",
+        "is_full_history", "is_controlled_prefix",
+    }
     if not required.issubset(target.columns) or not required.issubset(candidates.columns):
         raise RuntimeError("predictions do not contain the v7 arbitrary-N history columns")
     if not (target.supported_history_count == target.n).all():
         raise RuntimeError("supportedHistoryCount differs from N")
+    if not (target.provided_history_count == target.n).all():
+        raise RuntimeError("providedHistoryCount differs from N")
     target["prediction"] = target.prediction.clip(0.5, 5)
     target["squared_error"] = (target.prediction - target.label) ** 2
     target["absolute_error"] = (target.prediction - target.label).abs()
@@ -264,7 +322,17 @@ def evaluate_profile(root: Path, seed: int) -> tuple[dict, pd.DataFrame]:
         "validation_users": int(target.uid.nunique()),
         "target_by_n": target_by_n,
         "nested_history_paired_vs_n0": nested_history_curve(target, seed),
-        "low_history_cohort": low_history_cohort(target, candidates),
+        "low_history_cohort": (
+            low_history_cohort(target, candidates) if target.is_full_history.any() else []
+        ),
+        "low_history_cohort_status": (
+            "NOT_EVALUATED_CONTROLLED_PREFIX"
+            if target.is_controlled_prefix.all() else "EVALUATED"
+        ),
+        "low_history_cohort_reason": (
+            "controlled prefixes do not represent an actual low-history population"
+            if target.is_controlled_prefix.all() else None
+        ),
         "candidate_metrics": candidate_summary,
         "candidate_episodes": candidate_summary["episodes"],
         "observed_ndcg_at_10": candidate_summary["observed_ndcg_at_10_user_macro"],
@@ -284,13 +352,21 @@ def main() -> None:
     parser = argparse.ArgumentParser()
     parser.add_argument("--fits-root", type=Path, required=True)
     parser.add_argument("--config", type=Path, required=True)
+    parser.add_argument("--output", type=Path)
+    parser.add_argument("--evaluation-split", choices=["SELECTION", "CONFIRM"])
     args = parser.parse_args()
     config = json.loads(args.config.read_text(encoding="utf-8"))
     results = {}
     rows = {}
     for profile in config["profiles"]:
-        results[profile], rows[profile] = evaluate_profile(args.fits_root / profile, config["seed"])
-    baseline = rows["movie_only"].rename(columns={
+        results[profile], rows[profile] = evaluate_profile(
+            args.fits_root / profile, config["seed"], args.evaluation_split
+        )
+    baseline_profile = config.get(
+        "comparison_baseline_profile",
+        "movie_only" if "movie_only" in rows else config["profiles"][0],
+    )
+    baseline = rows[baseline_profile].rename(columns={
         "squared_error": "baseline_squared_error", "observed_ndcg_at_10": "baseline_ndcg",
     })
     paired = {}
@@ -299,23 +375,33 @@ def main() -> None:
         user_mse_delta = joined.assign(
             mse_delta=joined.squared_error - joined.baseline_squared_error
         ).groupby("uid", sort=True).mse_delta.mean()
+        ndcg_delta = joined.observed_ndcg_at_10 - joined.baseline_ndcg
         paired[profile] = {
-            "mean_squared_error_delta_vs_movie_only": float(
+            f"mean_squared_error_delta_vs_{baseline_profile}": float(
                 (joined.squared_error - joined.baseline_squared_error).mean()
             ),
-            "mean_ndcg_at_10_delta_vs_movie_only": float(
-                (joined.observed_ndcg_at_10 - joined.baseline_ndcg).mean()
+            f"mean_ndcg_at_10_delta_vs_{baseline_profile}": (
+                None if ndcg_delta.dropna().empty else float(ndcg_delta.mean())
             ),
             "worse_episode_fraction_by_squared_error": float(
                 (joined.squared_error > joined.baseline_squared_error).mean()
             ),
-            "user_macro_mse_delta_vs_movie_only": float(user_mse_delta.mean()),
-            "user_macro_mse_delta_vs_movie_only_bootstrap_95_ci": bootstrap_mean_ci(
+            f"user_macro_mse_delta_vs_{baseline_profile}": float(user_mse_delta.mean()),
+            f"user_macro_mse_delta_vs_{baseline_profile}_bootstrap_95_ci": bootstrap_mean_ci(
                 user_mse_delta.to_numpy(dtype=float), config["seed"] + config["profiles"].index(profile)
             ),
             "bootstrap": {"unit": "USER", "replicates": 2000, "seed_base": config["seed"]},
         }
     selected, selection_gate = select_profile(results, config)
+    selected_low = results[selected]["low_history_cohort"]
+    if results[selected]["low_history_cohort_status"] == "NOT_EVALUATED_CONTROLLED_PREFIX":
+        low_history_status = "NOT_EVALUATED_CONTROLLED_PREFIX"
+    else:
+        low_history_status = (
+            "PASS" if selected_low and all(row["sample_status"] == "PASS" for row in selected_low)
+            else "INSUFFICIENT_SAMPLE"
+        )
+    ndcg_status = results[selected]["candidate_metrics"]["observed_ndcg_at_10_status"]
     report = {
         "status": "PASS",
         "calculator": {
@@ -324,19 +410,26 @@ def main() -> None:
             "sha256": file_sha256(Path(__file__)),
         },
         "selection_metric": config["selection_metric"],
+        "evaluation_split": args.evaluation_split or "ALL_VALIDATION",
+        "comparison_baseline_profile": baseline_profile,
         "selection_gate": selection_gate,
         "selected_profile_on_validation": selected,
         "profiles": results,
         "paired": paired,
         "requirements_coverage": {
             "nested_history": "PASS",
-            "low_history_cohort": "PASS",
+            "low_history_cohort": low_history_status,
             "candidate_denominators": "PASS",
             "arbitrary_full_n": "PASS",
+            "ndcg_at_10": ndcg_status,
         },
         "final_test_opened": False,
     }
-    (args.fits_root / "validation-report.json").write_text(
+    output = args.output or (args.fits_root / "validation-report.json")
+    if args.output is not None and output.exists():
+        raise FileExistsError(f"output already exists: {output}")
+    output.parent.mkdir(parents=True, exist_ok=True)
+    output.write_text(
         json.dumps(report, indent=2, ensure_ascii=False) + "\n", encoding="utf-8"
     )
     print(json.dumps(report, ensure_ascii=False))

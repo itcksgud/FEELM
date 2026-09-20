@@ -1,0 +1,38 @@
+{
+  "experiment": "S15P21E106-622-gbt-controlled-prefix-k-v4-seed2622",
+  "seed": 2622,
+  "runtime": {
+    "docker_image": "feelm-rec046-spark:local",
+    "image_id": "sha256:de611d62db982bb833b0737a7ddd72a7cd49ab1a7dc9128669cdabae39f46df8",
+    "spark_version": "4.1.3",
+    "master": "local[4]",
+    "driver_memory": "8g",
+    "container_memory": "12g",
+    "timeout_seconds": 5400
+  },
+  "estimator": {
+    "maxIter": 60,
+    "maxDepth": 5,
+    "stepSize": 0.04,
+    "maxBins": 32,
+    "featureSubsetStrategy": "sqrt",
+    "subsamplingRate": 0.8,
+    "maxMemoryInMB": 128,
+    "cacheNodeIds": false,
+    "lossType": "squared"
+  },
+  "profiles": ["popularity_signed_affinity"],
+  "selection_metric": "validation_user_macro_mse",
+  "allow_no_eligible_profile": true,
+  "selection_gate": {
+    "nested_history_all_buckets_non_worse_than_n0": true,
+    "maximum_positive_user_macro_mse_delta": 0.05,
+    "require_strict_improvement": false,
+    "minimum_strict_improvement": 0.0
+  },
+  "policy_selection": {
+    "selection_split": "SELECTION",
+    "confirmation_split": "CONFIRM"
+  },
+  "final_test_policy": "PHYSICALLY_OMITTED_AND_SEALED"
+}
