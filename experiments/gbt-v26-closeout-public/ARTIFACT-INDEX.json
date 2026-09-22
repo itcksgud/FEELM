@@ -1,0 +1,12 @@
+{
+  "format": "feelm-v26-closeout-local-artifact-index-v1",
+  "sharing": "LOCAL_ONLY_NOT_UPLOADED",
+  "is_download_manifest": false,
+  "gbt_model": {"bytes": 168690, "sha256": "4d035f96f362458f0ce9b749bad4decbd4626cf279a072b6c1acd3b3acf92c25"},
+  "ordered_feature_schema": {"bytes": 2452, "sha256": "c052b00282c647af610d6904c4daaa5a19a16a250e28346fbed079c65fb0fa8e"},
+  "frozen_gbt_run_manifest": {"bytes": 6690, "sha256": "f5035a613757652eda03a8f44a57ad6000b13f265e9c69e0624eb2ee868589d0"},
+  "structural_audit_manifest": {"bytes": 11553, "sha256": "33e614bf509fafd46c6bfd9ac31e0f233ccec8d0d631ccd4e7e779b1edd96952"},
+  "reserved_evaluation_manifest": {"bytes": 2550, "sha256": "87abd987fa0f1bba54e95abdfaada64568d07e5d22ea87eb1d427ac2705d1291"},
+  "als_comparison_manifest": {"bytes": 6509, "sha256": "7b061f4eb23d079bb8461530ff8d3907a094fcf83e4e8efdf6c84fc0669f90d9"},
+  "raw_party_clean322_manifest": {"bytes": 7810, "sha256": "5b678767a5ac8fe1782c7d804b86bd16f1381e622d8268f427cb12d2c7fd8a3e"}
+}

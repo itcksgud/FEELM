@@ -13,3 +13,4 @@
 /tests/test_server_handoff_v12.py text eol=lf
 /tests/test_strict_evidence_v12.py text eol=lf
 /tests/test_strict_multiple_links_policy.py text eol=lf
+/experiments/gbt-v26-closeout-public/** text eol=lf
