@@ -1,0 +1,16 @@
+{
+  "scope": "USER_APPROVED_LOCAL_RESEARCH_CLOSEOUT_NOT_DEPLOYMENT",
+  "jira": "S15P21E106-625",
+  "selected_model": "GBT_v26",
+  "training": {"rows": 859363, "features": 71, "trees": 80, "depth": 4, "seed": 625, "policy_target_suppressed_rows": 202103},
+  "inputs": {"service_users": 10, "genuine_preference_ratings": 322, "test_fixture_ratings_excluded": 6, "test_seen_candidate_pairs_restored": 6, "existing_score_parity_candidates": 303, "max_score_parity_error": 0},
+  "reserved_movielens": {"users": 2999, "future_observed_user_movie_rows": 96571, "ndcg10_valid_users": 2994, "ndcg10_rounded": {"gbt_raw": 0.6681, "max": 0.6207, "tmdb_average": 0.6753}, "gbt_minus_max_ndcg10": 0.04750, "paired_bootstrap95": [0.04260, 0.05218], "not_research_lifetime_untouched": true, "not_full_catalog_evaluation": true},
+  "als_comparison": {"users": 10, "prefix_states": 36, "top100_rows": 7200, "als_content_supported_catalog_movies": 207888, "catalog_movies": 237817, "reverse_score_invariance_fail_states": 36, "reverse_top100_order_changed_states": 9, "reverse_top100_set_changed_states": 0, "active_server_settings_verified": false, "test_ratings_absent_from_profile_but_still_in_seen": true},
+  "raw_party": {
+    "public_evidence_filter": false,
+    "two_members": {"parties": 45, "common_candidate_range": [237569, 237671], "top100_union_missing_top100_slots": 264, "top500_union_candidate_range": [538, 635], "top500_union_missing_top100_slots": 0, "top500_same_top100_order_parties": 45},
+    "three_members": {"parties": 120, "common_candidate_range": [237532, 237669], "top100_union_missing_top100_slots": 614, "top500_union_candidate_range": [557, 690], "top500_union_missing_top100_slots": 0, "top500_same_top100_order_parties": 120},
+    "all_member_order_reversals_equal": true,
+    "observed_party_satisfaction_measured": false
+  }
+}

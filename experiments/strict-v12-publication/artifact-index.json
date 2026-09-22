@@ -1,0 +1,303 @@
+{
+  "format": "feelm-research-publication-inventory-v1",
+  "jira": "S15P21E106-625",
+  "selected_implementation_family": "GBT",
+  "service_adoption": "NOT_DEPLOYED_NOT_INTEGRATED",
+  "source_selection": "explicit v12 entrypoints plus transitive local imports and exporter SYMBOLS",
+  "git_artifacts": [
+    {
+      "path": "scripts/audit_log_direct_user8_top100.py",
+      "bytes": 14969,
+      "sha256": "c51cfd6691ec90a682e0419ff9c38b951d8cd25d978124cb145aa659ee6fd550",
+      "role": "source",
+      "sharing": "GITHUB_SOURCE"
+    },
+    {
+      "path": "scripts/audit_strict_multiple_links_policy.py",
+      "bytes": 6300,
+      "sha256": "318b5e7233c55f06098fa0f9a07645925ed726355edba6db9f54eec22ac23667",
+      "role": "source",
+      "sharing": "GITHUB_SOURCE"
+    },
+    {
+      "path": "scripts/build_evidence_rank_dataset_v1.py",
+      "bytes": 21173,
+      "sha256": "7bbfc8ed702d54d0b41ebe0fe8e587f3e334f14e4d3af747ed0b3969fa2a076c",
+      "role": "source",
+      "sharing": "GITHUB_SOURCE"
+    },
+    {
+      "path": "scripts/build_ml32_temporal_examples_v1.py",
+      "bytes": 8937,
+      "sha256": "148bcc269829a36d6bb08cf8c4de35529819e8e84b139cb9610ae80b51d7e1ae",
+      "role": "source",
+      "sharing": "GITHUB_SOURCE"
+    },
+    {
+      "path": "scripts/build_ml32_tmdb_kobis_source_v1.py",
+      "bytes": 10299,
+      "sha256": "6f5547ad784f9a0bdcedab4288a3644f62e1f279f435951d5d2b051ee4aa11da",
+      "role": "source",
+      "sharing": "GITHUB_SOURCE"
+    },
+    {
+      "path": "scripts/build_per_target_rating_pilot_v1.py",
+      "bytes": 15925,
+      "sha256": "b2521b09afdddfce14b8110753ca3cd77a9c7baca86a432d76d38247b757bf87",
+      "role": "source",
+      "sharing": "GITHUB_SOURCE"
+    },
+    {
+      "path": "scripts/build_service_user_k_comparison.py",
+      "bytes": 26476,
+      "sha256": "a9d6dee59c301c95dbb18f2b00e1be572dd41055993a65682085fe8d78cb1cc9",
+      "role": "source",
+      "sharing": "GITHUB_SOURCE"
+    },
+    {
+      "path": "scripts/build_strict_dataset_v12.py",
+      "bytes": 10640,
+      "sha256": "3f7b23dca48b460b3730037716c0718ecb0f55e4f46c66f41544f535b5bd9c02",
+      "role": "source",
+      "sharing": "GITHUB_SOURCE"
+    },
+    {
+      "path": "scripts/export_service_bundle_v12.py",
+      "bytes": 11672,
+      "sha256": "966da4fe72eb8f12c243ccd32c13040347ff2985e73adb3ff4460a894f8a94b8",
+      "role": "source",
+      "sharing": "GITHUB_SOURCE"
+    },
+    {
+      "path": "scripts/model_specific_features_v5.py",
+      "bytes": 20321,
+      "sha256": "d9714d0a22111be3902d9a7a79929f49c1ea1f583ba2523ed0c6bd80edb90de1",
+      "role": "source",
+      "sharing": "GITHUB_SOURCE"
+    },
+    {
+      "path": "scripts/prepare_server_handoff_v12.py",
+      "bytes": 13494,
+      "sha256": "ee5efd4f01f8fb814a92823cf78caefd2e29234ef7e2b4d0295b28d28194220b",
+      "role": "source",
+      "sharing": "GITHUB_SOURCE"
+    },
+    {
+      "path": "scripts/probe_per_target_public_v2.py",
+      "bytes": 12990,
+      "sha256": "bfe87fac498f64b47b1f59cded727423dae8e6e1ae6267ced4b942cb057a14ff",
+      "role": "source",
+      "sharing": "GITHUB_SOURCE"
+    },
+    {
+      "path": "scripts/public_evidence_v2.py",
+      "bytes": 8714,
+      "sha256": "b9a3317dfe08652dcc0ae8b840592adef54b83a1dac4fd6f00edd7cebc30705a",
+      "role": "source",
+      "sharing": "GITHUB_SOURCE"
+    },
+    {
+      "path": "scripts/public_evidence_v3.py",
+      "bytes": 2077,
+      "sha256": "ef81b2f6cd6870946c749178860ba6ed91a1a8e86fb82abb86632ef9aeb7782f",
+      "role": "source",
+      "sharing": "GITHUB_SOURCE"
+    },
+    {
+      "path": "scripts/public_evidence_v4.py",
+      "bytes": 6534,
+      "sha256": "f6352f2edab50b73a3a6e0469d58d21cae2b7f29e41d83246339b972059d3119",
+      "role": "source",
+      "sharing": "GITHUB_SOURCE"
+    },
+    {
+      "path": "scripts/public_evidence_v5.py",
+      "bytes": 7884,
+      "sha256": "cfe92ff3596b07d26b09c238b5173b3ce67de1f73f1ac73e8ee68ab37bd2d498",
+      "role": "source",
+      "sharing": "GITHUB_SOURCE"
+    },
+    {
+      "path": "scripts/rating_semantics_v7.py",
+      "bytes": 1026,
+      "sha256": "5ee7c04049ec14f49dd783d9f2b54134bce8a013a3bd9b778a474a0bd0f85559",
+      "role": "source",
+      "sharing": "GITHUB_SOURCE"
+    },
+    {
+      "path": "scripts/service_model_v12.py",
+      "bytes": 14513,
+      "sha256": "80040643e338dda7c1ad540bcc8e6730c87f5fc98dc3f29d1a51225719c4fdd8",
+      "role": "source",
+      "sharing": "GITHUB_SOURCE"
+    },
+    {
+      "path": "scripts/strict_evidence_v12.py",
+      "bytes": 10304,
+      "sha256": "3eba7929162cdb04c008122da1340bafd9b4dc18e447320ed4a2dd5596d62e4d",
+      "role": "source",
+      "sharing": "GITHUB_SOURCE"
+    },
+    {
+      "path": "scripts/train_evidence_rank_models_v1.py",
+      "bytes": 24506,
+      "sha256": "07307fd4fa7035ea35d1dee468ba3bc46999531334fd430008f6f5c12f88ffab",
+      "role": "source",
+      "sharing": "GITHUB_SOURCE"
+    },
+    {
+      "path": "scripts/train_per_target_public_v3.py",
+      "bytes": 11357,
+      "sha256": "1211fa9767b30476fa3684ae1f62a6e0098d7acb9eae1422b10192a4b1b177b0",
+      "role": "source",
+      "sharing": "GITHUB_SOURCE"
+    },
+    {
+      "path": "scripts/train_per_target_rating_pilot_v1.py",
+      "bytes": 16019,
+      "sha256": "c33e731f09ebacef119ba2bd51449fbb8530b45d48fdbbecd9a71a60dbf38c02",
+      "role": "source",
+      "sharing": "GITHUB_SOURCE"
+    },
+    {
+      "path": "scripts/train_pointwise_rating_pilot_v1.py",
+      "bytes": 17271,
+      "sha256": "1997366dfce2c1188bfcbe013f844dd028c96eff7d6148a2a4bdc7f246ba5633",
+      "role": "source",
+      "sharing": "GITHUB_SOURCE"
+    },
+    {
+      "path": "scripts/train_strict_models_v12.py",
+      "bytes": 11767,
+      "sha256": "50276ba3148cd4cc56e1dddf031b38ddfebc0b0f0ad8e29cb23ce3de53b2254f",
+      "role": "source",
+      "sharing": "GITHUB_SOURCE"
+    },
+    {
+      "path": "scripts/verify_server_handoff_v12.py",
+      "bytes": 5409,
+      "sha256": "1286855ded990a499d1689d39905358177604ae62e76f4dc8f687f8cdfc92882",
+      "role": "source",
+      "sharing": "GITHUB_SOURCE"
+    },
+    {
+      "path": "tests/test_service_model_v12.py",
+      "bytes": 4027,
+      "sha256": "a7cd9d354e07eed512102a132280ea5fef9d78db93c115640b21744cbc945d89",
+      "role": "test",
+      "sharing": "GITHUB_SOURCE"
+    },
+    {
+      "path": "tests/test_server_handoff_v12.py",
+      "bytes": 3504,
+      "sha256": "b4b69d54dca045554789b9659c8b90941a08185b5bfae97b831ef23fe9d1781f",
+      "role": "test",
+      "sharing": "GITHUB_SOURCE"
+    },
+    {
+      "path": "tests/test_strict_evidence_v12.py",
+      "bytes": 3363,
+      "sha256": "d737d0e6a57b1e6460f58cf2ea12aa1378f0024a47dea5630f26b5dc9c76472b",
+      "role": "test",
+      "sharing": "GITHUB_SOURCE"
+    },
+    {
+      "path": "tests/test_strict_multiple_links_policy.py",
+      "bytes": 2686,
+      "sha256": "9d2abca241459c893f381880b5cba71b64ac1d4cb17af1151d62d6bd31bacfca",
+      "role": "test",
+      "sharing": "GITHUB_SOURCE"
+    }
+  ],
+  "external_artifacts": [
+    {
+      "path": "outputs/model-training/strict-v12-server-retrain-20260922/gbt-per-target.json",
+      "bytes": 177399,
+      "sha256": "48a65d6383d114f86a75a96c99d95ba290559ffbd1c1774d19a95ba862ea8332",
+      "sharing": "LOCAL_ONLY_NOT_IN_GIT",
+      "availability": "NOT_DOWNLOADABLE_FROM_THIS_REPOSITORY"
+    },
+    {
+      "path": "outputs/model-training/strict-v12-server-retrain-20260922/fm-per-target.npz",
+      "bytes": 474999,
+      "sha256": "52ca91cb711d6d5cf52b93058d813c9b655e7263c4265f8cc0dc4d72f857e58c",
+      "sharing": "LOCAL_ONLY_NOT_IN_GIT",
+      "availability": "NOT_DOWNLOADABLE_FROM_THIS_REPOSITORY"
+    },
+    {
+      "path": "outputs/model-training/strict-v12-server-retrain-20260922/metrics.json",
+      "bytes": 14736,
+      "sha256": "a2d1013459f3ddacb7f434f79ef1117f3eb1d11f15ccb60046d915d0b451f75d",
+      "sharing": "LOCAL_ONLY_NOT_IN_GIT",
+      "availability": "NOT_DOWNLOADABLE_FROM_THIS_REPOSITORY"
+    },
+    {
+      "path": "outputs/model-training/strict-v12-dataset-20260922/manifest.json",
+      "bytes": 10074,
+      "sha256": "0eafbe13af592125f8e4ba103148a2e7dad4f5f622bd86554bb8e0e2130ef625",
+      "sharing": "LOCAL_ONLY_NOT_IN_GIT",
+      "availability": "NOT_DOWNLOADABLE_FROM_THIS_REPOSITORY"
+    },
+    {
+      "path": "outputs/model-training/strict-v12-dataset-20260922/rows.parquet",
+      "bytes": 41481198,
+      "sha256": "67501f7aee52a9ec7c72a6090fc771774e4e1d4cf0fb0821b1b0f3db098ae7d5",
+      "sharing": "LOCAL_ONLY_NOT_IN_GIT",
+      "availability": "NOT_DOWNLOADABLE_FROM_THIS_REPOSITORY"
+    },
+    {
+      "path": "outputs/model-training/strict-v12-shared-20260922/public_references.parquet",
+      "bytes": 2947364,
+      "sha256": "188e4b89c23eee7ee49347d7c11853c7fff4e289f58d05380dfa209c2f143534",
+      "sharing": "LOCAL_ONLY_NOT_IN_GIT",
+      "availability": "NOT_DOWNLOADABLE_FROM_THIS_REPOSITORY"
+    },
+    {
+      "path": "outputs/model-training/ml32-tmdb-kobis-exact-v1-20260921/movie_bridge.parquet",
+      "bytes": 7527538,
+      "sha256": "002a93ee9a48f3823bc6a640b530e52726109957ef42e50207853516d23e0dd6",
+      "sharing": "LOCAL_ONLY_NOT_IN_GIT",
+      "availability": "NOT_DOWNLOADABLE_FROM_THIS_REPOSITORY"
+    },
+    {
+      "path": "outputs/recommendation-evidence/verified-full-catalog-v1-20260920/catalog.parquet",
+      "bytes": 34402627,
+      "sha256": "f479ec98abd77da8c207869c1f0d880ac86590115b4f13e2e263709c0c162af4",
+      "sharing": "LOCAL_ONLY_NOT_IN_GIT",
+      "availability": "NOT_DOWNLOADABLE_FROM_THIS_REPOSITORY"
+    },
+    {
+      "path": "outputs/model-serving/feelm-gbt-fm-server-handoff-20260922.zip",
+      "bytes": 23331069,
+      "sha256": "0cb4332da474363541e831955019547569ce83db388e2a93fcbbf515ce73eb3c",
+      "sharing": "LOCAL_ONLY_NOT_IN_GIT",
+      "availability": "NOT_DOWNLOADABLE_FROM_THIS_REPOSITORY"
+    },
+    {
+      "path": "outputs/model-serving/feelm-gbt-fm-server-handoff-20260922/handoff.json",
+      "bytes": 8814,
+      "sha256": "68494847bdb15e1edb3795153d7b53cc79bcc61def2dff86fe97138081400792",
+      "sharing": "LOCAL_ONLY_NOT_IN_GIT",
+      "availability": "NOT_DOWNLOADABLE_FROM_THIS_REPOSITORY"
+    },
+    {
+      "path": "outputs/model-serving/strict-v12-server-unzip-check-result-20260922.json",
+      "bytes": 2717,
+      "sha256": "7a7453839232bc900d6e02c04d19664c9acd46bb8fe1686e4e3a2d9d4f15e964",
+      "sharing": "LOCAL_ONLY_NOT_IN_GIT",
+      "availability": "NOT_DOWNLOADABLE_FROM_THIS_REPOSITORY"
+    }
+  ],
+  "archive_integrity": {
+    "files": 43,
+    "crc": "PASS",
+    "declared_files_sha256": "PASS"
+  },
+  "private_data_exported": false,
+  "limitations": [
+    "Only scripts, tests and aggregate/provenance JSON are published.",
+    "No raw data, weights, user HTML or private ratings are included.",
+    "Original two-model bundle is frozen; GBT-only mode-specific service bundle remains Jira 626.",
+    "No new training, holdout access, Linux or server execution was performed for this inventory."
+  ]
+}

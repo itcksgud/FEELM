@@ -8,3 +8,9 @@
 /docs/recommendation/evidence/manifests/** text eol=lf
 /docs/recommendation/evidence/results/** text eol=lf
 /docs/recommendation/evidence/*.md text eol=lf
+/experiments/strict-v12-publication/** text eol=lf
+/tests/test_service_model_v12.py text eol=lf
+/tests/test_server_handoff_v12.py text eol=lf
+/tests/test_strict_evidence_v12.py text eol=lf
+/tests/test_strict_multiple_links_policy.py text eol=lf
+/experiments/gbt-v26-closeout-public/** text eol=lf
